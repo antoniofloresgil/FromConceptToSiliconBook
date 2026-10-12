@@ -9,6 +9,43 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - part: "I. Foundations"
+      chapters:
+        - chapters/01-foundations/risc-v-isa.qmd
+        - chapters/01-foundations/systemverilog.qmd
+        - chapters/01-foundations/microarchitecture.qmd
+    - part: "II. SoC Architecture"
+      chapters:
+        - chapters/02-soc-architecture/pipelines.qmd
+        - chapters/02-soc-architecture/memories-caches.qmd
+        - chapters/02-soc-architecture/buses-interrupts.qmd
+        - chapters/02-soc-architecture/peripherals.qmd
+    - part: "III. Open-Source RISC-V Cores"
+      chapters:
+        - chapters/03-risc-v-cores/core-v-wally.qmd
+        - chapters/03-risc-v-cores/other-architectures.qmd
+    - part: "IV. Simulation and Verification"
+      chapters:
+        - chapters/04-simulation-verification/verilator.qmd
+        - chapters/04-simulation-verification/cocotb.qmd
+        - chapters/04-simulation-verification/spike-sail.qmd
+        - chapters/04-simulation-verification/testing-debugging.qmd
+    - part: "V. FPGA Implementation"
+      chapters:
+        - chapters/05-fpga-implementation/yosys.qmd
+        - chapters/05-fpga-implementation/nextpnr-timing.qmd
+        - chapters/05-fpga-implementation/fpga-soc.qmd
+    - part: "VI. ASIC Implementation"
+      chapters:
+        - chapters/06-asic-implementation/rtl-to-gdsii.qmd
+        - chapters/06-asic-implementation/openroad.qmd
+        - chapters/06-asic-implementation/librelane.qmd
+    - part: "VII. Advanced Topics"
+      chapters:
+        - chapters/07-advanced-topics/pmu.qmd
+        - chapters/07-advanced-topics/debug.qmd
+        - chapters/07-advanced-topics/accelerators-extensions.qmd
+        - chapters/07-advanced-topics/architecture-exploration.qmd
     - summary.qmd
     - references.qmd
 

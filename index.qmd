@@ -1,5 +1,11 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
+This book follows the path from RISC-V fundamentals to the implementation of a system-on-chip on FPGA and in an ASIC flow. CORE-V Wally serves as the main case study, alongside other open-source RISC-V architectures.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Each chapter develops its topic through three levels:
+
+1. **Concepts** explains the foundations independently of a particular tool or implementation.
+2. **Implementation** connects those foundations to SystemVerilog examples and real designs, especially CORE-V Wally.
+3. **Hands-on Experiments** provides a plan for reproducible simulation, verification, synthesis, or performance experiments.
+
+The current chapters provide an outline for developing the explanations, examples, and experiments.

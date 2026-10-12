@@ -1,5 +1,25 @@
-# Introduction
+# Introduction {.unnumbered}
 
-This is a book created from markdown and executable code.
+The book is organized into seven parts:
 
-See @knuth84 for additional discussion of literate programming.
+| Part | Scope |
+| --- | --- |
+| I. Foundations | RISC-V ISA, SystemVerilog, and microarchitecture fundamentals |
+| II. SoC Architecture | Pipelines, memories, caches, buses, interrupts, and peripherals |
+| III. Open-Source RISC-V Cores | CORE-V Wally as the main case study and other architectures |
+| IV. Simulation and Verification | Verilator, cocotb, Spike, Sail, testing, and debugging |
+| V. FPGA Implementation | Yosys, nextpnr, timing, and SoC integration |
+| VI. ASIC Implementation | OpenROAD, LibreLane, and the RTL-to-GDSII flow |
+| VII. Advanced Topics | Performance monitoring, hardware debug, accelerators, extensions, and architectural exploration |
+
+## Concepts
+
+Start with the architectural and hardware principles needed to understand the topic. Distinguish architectural requirements from implementation choices.
+
+## Implementation
+
+Translate the principles into SystemVerilog examples and analyze real processor designs. Use CORE-V Wally as the main reference and compare other implementations where useful.
+
+## Hands-on Experiments
+
+Apply the ideas through simulation, verification, synthesis, and measurement. Each experiment should specify prerequisites, tool versions, configuration, commands, inputs, expected results, and exercises so that readers can reproduce and explain the outcome.
