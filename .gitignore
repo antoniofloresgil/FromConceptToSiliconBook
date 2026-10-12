@@ -1,0 +1,25 @@
+# Quarto: rendered book and local project metadata
+/_book/
+/.quarto/
+**/*.quarto_ipynb
+
+# Execution caches
+**/*_cache/
+
+# Temporary files from PDF rendering (LaTeX)
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.synctex.gz
+
+# Operating system and editor temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~

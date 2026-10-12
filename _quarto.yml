@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "From Concept to Silicon"
+  subtitle: "A Hands-On Guide to Open-Source SoC Design Using RISC-V"
+  author: "Antonio Flores Gil"
+  date: "12/10/2026"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+
+
+
