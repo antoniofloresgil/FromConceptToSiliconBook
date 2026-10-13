@@ -7,13 +7,21 @@
 **/*_cache/
 
 # Temporary files from PDF rendering (LaTeX)
+/index.tex
+/index.log
+/index_files/
 *.aux
 *.bbl
 *.blg
+*.bcf
 *.fls
 *.fdb_latexmk
+*.lof
+*.lot
 *.out
+*.run.xml
 *.toc
+*.xdv
 *.synctex.gz
 
 # Operating system and editor temporary files
