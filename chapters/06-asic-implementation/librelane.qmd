@@ -1,61 +1,442 @@
-# Integrated ASIC Flow with LibreLane
+# Integrated ASIC Flow with LibreLane {#sec-librelane}
 
 ## Concepts
 
-LibreLane orchestrates tools and implementation stages around a configuration. Reproducibility requires recording the resolved settings, RTL revision, tool environment, PDK, libraries, and reports, including defaults that are not visible in the input YAML.
+LibreLane is open-source infrastructure for building and running digital ASIC implementation flows. It is the maintained successor to the OpenLane 2 codebase, now under the stewardship of the FOSSi Foundation. Rather than replacing the tools studied in the preceding chapter, it coordinates them: a reference flow named **Classic** runs a design through Yosys, OpenROAD, Magic, KLayout, Netgen and a set of checks to obtain a GDSII for suitable digital designs [@librelaneClassic].
 
-UART loopback is a useful target for an initial complete flow. It exercises state machines, counters, an asynchronous input synchronizer, and a byte-wide ready/valid connection without introducing a large memory macro.
+The key contribution of LibreLane is not a new placer or router. It supplies a typed configuration system, a reproducible tool environment, explicit steps, checkpoints, logs, reports and a resolved configuration for every run. A designer writes what the design requires--RTL sources, clock, target period, PDK, standard-cell library, floorplan choices and exceptions--and LibreLane applies a documented sequence of implementation and verification stages.
 
-## Implementation
+The result is a useful division of responsibilities:
 
-Prepare the UART RTL files and configuration in the following directory structure. These files and the installed toolchain are prerequisites for the exercise:
+| Layer | Primary responsibility |
+| --- | --- |
+| SystemVerilog and tests | Define and verify intended functional behavior |
+| LibreLane configuration | State the implementation intent and policy |
+| PDK and standard-cell library | Supply manufacturing rules, physical views and electrical characterization |
+| Yosys | Elaborate and synthesize RTL to cells |
+| OpenROAD | Floorplan, power grid, placement, CTS, routing, extraction and timing |
+| Magic, KLayout and Netgen | Stream-out and physical verification activities supported by the PDK |
+| LibreLane run directory | Preserve states, reports, metrics and resolved settings |
+
+LibreLane therefore makes a flow repeatable; it does not make an incorrect specification correct or make a PDK production-qualified. Every timing constraint, macro view, I/O assumption, physical-verification result and tapeout requirement still needs engineering review.
+
+![LibreLane can manage the same RTL-to-GDSII flow that was exposed command by command in the OpenROAD chapter.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="SystemVerilog RTL and a PDK enter the managed ASIC implementation flow and produce GDSII"}
+
+### Direct OpenROAD or LibreLane?
+
+The preceding chapter used OpenROAD directly so that every floorplan, placement, CTS and routing command was visible. LibreLane automates that sequence and the surrounding tools. Both approaches are useful.
+
+| Question | Direct OpenROAD | LibreLane Classic |
+| --- | --- | --- |
+| Where is the flow defined? | Tcl scripts maintained by the project | LibreLane reference flow plus a project configuration |
+| How are tools invoked? | The designer calls each command | Steps invoke compatible tools in a fixed, inspectable order |
+| Best use | Learning, experiments, unusual physical flows | Repeated hardening, CI, shared projects and conventional macros |
+| Main artifact | Tcl, OpenDB/DEF checkpoints and hand-written reports | Resolved configuration, step states, metrics, reports and final views |
+| Main danger | Missing a dependency or an implementation stage | Treating defaults and green logs as a sign-off decision |
+
+Use direct OpenROAD when the sequence itself is the subject of the work. Use LibreLane when the main question is whether a defined SystemVerilog block can be hardened reproducibly with a known PDK and a conventional flow. A mature project often uses both: investigation in a direct Tcl prototype and stable regression runs through LibreLane.
+
+### What LibreLane automates
+
+The default Classic flow is a `SequentialFlow`: each step receives a validated configuration and a state produced by the preceding step. It normally includes linting and synthesis, pre-layout checks, floorplan and PDN generation, I/O placement, global and detailed placement, CTS, timing repair, global and detailed routing, parasitic extraction, multi-corner timing, GDSII stream-out, DRC, LVS and manufacturing reports. Individual stages are named, logged and can be selected for debugging [@librelaneClassic].
+
+This automation delivers five practical benefits.
+
+1. **A single design contract.** A YAML or JSON file replaces a scattered set of environment variables and shell options. The configuration is validated before a long run begins.
+2. **Reproducible defaults.** The flow resolves the project configuration together with PDK and standard-cell defaults, then writes the effective `resolved.json`. That file captures values which were inherited rather than explicitly written by the designer.
+3. **Consistent hand-off between tools.** The flow manages the files, databases and conversion steps between Yosys, OpenROAD, Magic, KLayout and Netgen.
+4. **Inspectability.** Each step has its own logs, reports, metrics and state. A designer can locate the first failing stage instead of reading one huge terminal transcript.
+5. **Controlled variation.** A run tag separates experiments. Clock period, floorplan utilization or synthesis strategy can be varied without overwriting the baseline.
+
+Automation has limits. It cannot infer a credible interface delay, decide whether an asynchronous reset is safe, choose package parasitics, or accept a waiver on behalf of the foundry. It also cannot guarantee that a local DRC run matches an external sign-off deck. Think of LibreLane as a reproducible laboratory notebook and implementation driver, not as an automatic tapeout approval system.
+
+## Installing LibreLane
+
+LibreLane supports Nix, AppImage, Docker and an advanced Python-only installation. The project recommends Nix for Linux and macOS because it supplies a reproducible environment and efficiently reuses cached tool builds. The AppImage is the quickest route on Linux or WSL2. Docker works on Windows, macOS and Linux and is often the simplest cross-platform choice when Docker is already available [@librelaneInstallation].
+
+### Hardware and operating-system expectations
+
+For an educational macro, use a modern multi-core machine with at least 8 GiB of RAM; 16 GiB is a more comfortable starting point for SKY130 work. LibreLane documentation primarily supports Ubuntu 22.04 or later on Linux. On Windows, run it in WSL2 or through Docker Desktop rather than attempting a native Windows EDA installation [@librelaneNixInstall].
+
+The first invocation downloads a substantial tool and PDK environment. Keep the PDK cache outside the book repository and do not commit it. Record the LibreLane version, PDK version, standard-cell library and host/container identity in every report.
+
+### Option A: Nix installation on Linux or WSL2
+
+Nix is the recommended method. It creates a controlled shell that exposes LibreLane and the exact tool set it expects. Install Nix using the current instructions from the LibreLane documentation; do not use an old system-package Nix merely because it is convenient, as it may not support the required features. Then clone LibreLane and enter its shell:
+
+```bash
+git clone https://github.com/librelane/librelane.git
+cd librelane
+nix-shell shell.nix
+```
+
+The first `nix-shell` fetches binaries and can take time. The prompt changes to indicate the shell is active. Run the smoke test before bringing in a project:
+
+```bash
+librelane --version
+librelane --log-level ERROR --condensed --show-progress-bar --smoke-test
+```
+
+The smoke test exercises the installed tools and a supported open PDK. It is the correct first diagnosis if a later run fails before synthesis. The project documents its Nix binary cache and the exact Nix configuration needed by current releases; follow that documentation rather than copying cache keys from this chapter [@librelaneNixInstall].
+
+### Option B: Docker, including Windows
+
+Docker isolates LibreLane and its tools from the host. It is a good choice on Windows with Docker Desktop, on macOS, or when a team wants the same runtime image. Install a supported Docker version, Python 3.10 or newer with `pip` and `tkinter`, then install the LibreLane launcher:
+
+```bash
+python3 -m pip install --upgrade librelane
+python3 -m librelane --dockerized --smoke-test
+```
+
+Most commands in this mode insert `--dockerized` directly after `librelane`:
+
+```bash
+python3 -m librelane --dockerized --run-example spm
+```
+
+The launcher mounts the current working directory, home directory and PDK root into the container. Treat that as an access decision: a source file outside those mounts is invisible to the flow, and writable mounted paths can be changed by it. Add only necessary project paths with `--docker-mount` when a design uses sources outside its directory [@librelaneDockerInstall].
+
+On Windows, prefer a project checkout inside the WSL2 filesystem when possible. Large source trees accessed through `/mnt/c` may work but can be slower and can expose line-ending or case-sensitivity surprises. The repository's `.gitattributes` file already normalizes text files to LF, which is appropriate for the Linux tools in this flow.
+
+### Option C: AppImage for quick WSL2/Linux evaluation
+
+The documentation describes the AppImage as the easiest Linux or WSL2 option. It is a single file and avoids a general Nix installation, but it is not the route for Docker containers and is less convenient when changing tool versions. Use it to evaluate the tutorial or a small run; choose Nix or Docker for a project that needs a pinned, shared environment [@librelaneInstallation].
+
+### PDK acquisition and selection
+
+LibreLane uses a PDK root containing process packages built into the layout expected by the tools. The PDK root can be set by `--pdk-root`, the `PDK_ROOT` environment variable, or the default cache location. The project can obtain supported PDK versions through its PDK-management mechanism; a manually installed PDK must include LibreLane-specific configuration files before the Classic flow can use it [@librelanePdks].
+
+For the examples in this chapter, select `sky130A` and the high-density standard-cell library `sky130_fd_sc_hd` unless the installed environment explicitly documents a different default. Pin names, fill cells, power rails, Liberty corners and LEF files are then chosen coherently by the PDK configuration. That is safer than hard-coding absolute `.lib` and `.lef` paths, as in the direct OpenROAD exercise.
+
+## The LibreLane design contract
+
+Each design directory contains a configuration file named `config.json`, `config.yaml`, `config.yml` or `config.tcl`. YAML and JSON are recommended: they are simpler, safer and easier to review than Tcl. Paths expressed with `dir::` are resolved relative to the design directory, which makes the configuration portable after cloning [@librelaneConfiguration].
+
+At minimum, a synchronous digital macro needs the following:
+
+| Variable | Meaning | Example |
+| --- | --- | --- |
+| `DESIGN_NAME` | The synthesized top-level module | `accumulator` |
+| `VERILOG_FILES` | RTL sources, relative to the design directory | `dir::../../verilator/accumulator.sv` |
+| `CLOCK_PORT` | Top-level clock port | `Clk` |
+| `CLOCK_PERIOD` | Clock period in ns | `10.0` |
+| `PDK` | Manufacturing PDK, if overriding the default | `sky130A` |
+| `STD_CELL_LIBRARY` | Standard-cell family, if overriding the default | `sky130_fd_sc_hd` |
+
+Variables can be scoped to a PDK or standard-cell library. That is useful when the same RTL is evaluated in several technologies. LibreLane evaluates a nested `pdk::sky130A` section only for that PDK and a nested `scl::...` section only for the matching cell library. Simple expressions can derive a placement density from a core-utilization target [@librelaneConfiguration].
+
+### The effective configuration is the specification of a run
+
+The user configuration is deliberately small. LibreLane combines it with flow defaults, PDK defaults, cell-library defaults and command-line overrides, validates types and paths, and writes a final resolved configuration. Preserve that `resolved.json` with the reports. Two runs that use the same `config.yaml` may still be different if the PDK, LibreLane version or inherited defaults differ.
+
+Avoid silently relying on the latest PDK. For coursework and a book example, pin a known LibreLane release and PDK version in the project notes. For a real program, place those versions in CI and require a deliberate review for upgrades.
+
+## Complete example: hardening the accumulator through LibreLane
+
+This section reuses the SystemVerilog accumulator from the OpenROAD and Verilator chapters. Its behavior has already been checked in simulation. The LibreLane run answers a different question: can that same registered arithmetic block be mapped, placed, clocked, routed and checked using a selected standard-cell technology?
+
+### Step 0: arrange the project
+
+Use this directory layout. The RTL remains in the existing Verilator example directory, avoiding two independently edited copies of the design.
 
 ```text
 examples/
-  rtl/
-    uart_loopback.sv
-    uart_rx.sv
-    uart_tx.sv
-  asic/
-    uart_loopback/
-      config.yaml
+├── verilator/
+│   └── accumulator.sv
+└── librelane/
+    └── accumulator/
+        ├── config.yaml
+        └── pin_order.cfg
 ```
 
-Run the commands from `examples/asic/uart_loopback` inside a configured LibreLane environment. On Windows, use WSL2 or a suitable Linux container. Install the tools and PDK before starting the exercise.
+The LibreLane configuration lives beside implementation-specific inputs; it is not a replacement for the testbench. Generated `runs/` directories, GDSII, reports and PDK cache data are build products and should remain ignored by Git.
 
-Use the following configuration:
+### Step 1: write the configuration
+
+Create `examples/librelane/accumulator/config.yaml`:
 
 ```yaml
-DESIGN_NAME: uart_loopback
+DESIGN_NAME: accumulator
 VERILOG_FILES:
-  - dir::../../rtl/uart_loopback.sv
-  - dir::../../rtl/uart_rx.sv
-  - dir::../../rtl/uart_tx.sv
-CLOCK_PORT: i_clk
-CLOCK_PERIOD: 20
-FP_CORE_UTIL: 45
-PL_TARGET_DENSITY_PCT: 55
-RUN_HEURISTIC_DIODE_INSERTION: true
+  - dir::../../verilator/accumulator.sv
+
+PDK: sky130A
+STD_CELL_LIBRARY: sky130_fd_sc_hd
+
+CLOCK_PORT: Clk
+CLOCK_PERIOD: 10.0
+
+# Conservative first-pass geometry for a small standard-cell macro.
+FP_CORE_UTIL: 55
+PL_TARGET_DENSITY_PCT: expr::($FP_CORE_UTIL + 5)
+
+# Request the normal physical checks supported by the selected PDK.
+RUN_LINTER: true
+RUN_LVS: true
+RUN_MAGIC_DRC: true
+RUN_KLAYOUT_DRC: true
+RUN_MCSTA: true
 ```
 
-The 20 ns period corresponds to 50 MHz, matching the wrapper's default system-clock parameter. It is independent of the serial baud period. These utilization settings are starting points for the exercise, not universal recommendations.
+The 10 ns period means a 100 MHz target. It is a constraint to be proved by timing analysis, not a guarantee made by the YAML file. A 55% utilization intentionally leaves room for routing and inserted buffers in this small first-pass core. A compact design may tolerate higher density later, but begin with a run that is easy to route and understand.
 
-## Hands-on Experiments
+The source uses `logic`, `always_ff` and `always_comb`, so it must be parsed as SystemVerilog. LibreLane's synthesis step handles the source according to its extension and configuration. If a project uses generated RTL, memory models or include files, list every required source and include path explicitly; a successful synthesis of an incomplete hierarchy is not a valid result.
 
-First check elaboration and synthesis:
+### Step 2: constrain interface placement
 
-```sh
+Leaving pins completely unconstrained is acceptable for an initial core experiment, but it is poor practice for a reusable macro. A pin-order file can place the clock and controls on one side and group the data buses. Create `pin_order.cfg`:
+
+```text
+#N
+Clk
+Reset
+Enable
+Clear
+
+#E
+A\[.*\]
+B\[.*\]
+
+#S
+Sum\[.*\]
+Valid
+Overflow
+```
+
+Then add this to `config.yaml`:
+
+```yaml
+FP_PIN_ORDER_CFG: dir::pin_order.cfg
+```
+
+The syntax uses regular expressions, hence the escaped brackets for buses. Check the final layout to verify that the exact port naming emitted by synthesis matches the expressions. Pin placement affects wire length, congestion and timing; it is a physical interface decision, not cosmetic formatting.
+
+### Step 3: validate the environment and run synthesis only
+
+From inside a Nix shell, or by adding `--dockerized` in Docker mode, run:
+
+```bash
+cd examples/librelane/accumulator
 librelane --version
 librelane config.yaml --to Yosys.Synthesis --run-tag synth-only
 ```
 
-Review inferred structures and warnings before running the complete flow:
+The `--to` option stops after the named step. The run tag prevents this exploratory result from being confused with the full implementation. Inspect the run directory before continuing:
 
-```sh
-librelane config.yaml
+```text
+runs/synth-only/
+├── config.json          # resolved configuration for this run
+├── logs/
+├── reports/
+└── ... state information and step products ...
+```
+
+Exact directory names can change between releases, but the principle does not: use the run's state, reports and resolved configuration rather than guessing output paths from an old tutorial. Verify the top module, source list, inferred flip-flops, unmapped cells, warnings and synthesis area. If the result contains unexpected latches, an unresolved module or no sequential cells, correct the RTL/source configuration first.
+
+### Step 4: run the Classic flow
+
+Launch a separate full run using a meaningful tag:
+
+```bash
+librelane config.yaml --run-tag baseline-100MHz
+```
+
+The command-line default is the Classic flow. Naming it explicitly is useful in scripts:
+
+```bash
+librelane --flow Classic config.yaml --run-tag baseline-100MHz
+```
+
+LibreLane resolves configuration, checks the PDK and source files, then drives the stages. The Classic flow performs substantially more than the concise direct OpenROAD listing:
+
+| Flow region | Representative work automated by LibreLane | Evidence to review |
+| --- | --- | --- |
+| Front end | Lint, Yosys synthesis, unmapped-cell and netlist checks | Lint/synthesis logs and mapped-netlist report |
+| Pre-layout | SDC and macro checks, pre-PNR STA | Clocks, unconstrained paths and initial slack |
+| Floorplan | Core size, rows, tap/endcaps, I/O placement, PDN | Floorplan DEF/ODB, utilization and PDN checks |
+| Placement | Global/detailed placement, repair, density and wire-length checks | Congestion, placement legality and mid-PNR timing |
+| Clock/routing | CTS, setup/hold repair, global/detailed routing, antenna checks | CTS metrics, route DRCs, post-route timing |
+| Sign-off support | RC extraction, multi-corner STA, stream-out, DRC, LVS, XOR/density as supported | GDSII, DRC/LVS reports and manufacturability summary |
+
+The Classic flow's step list is public and should be consulted for the installed release. A project can disable or substitute a step only when it has a documented reason and an equivalent verification plan [@librelaneClassic].
+
+### Step 5: inspect the result rather than trusting the exit code
+
+Start by reading the summarized metrics and the final timing reports. The critical questions are:
+
+1. Did the flow select the intended `sky130A` PDK and `sky130_fd_sc_hd` library?
+2. Did every intended clock receive a period, and are there unconstrained paths?
+3. Are setup, hold, slew, capacitance and fanout violations zero at the reported corners?
+4. Are placement, routing, antenna, DRC and LVS reports clean? If not, is every remaining item understood and accepted under the project's rules?
+5. Does the final GDSII correspond to the current RTL revision and `resolved.json`?
+
+Open the final implementation in the tools managed by LibreLane:
+
+```bash
+librelane --last-run --flow OpenInOpenROAD config.yaml
 librelane --last-run --flow OpenInKLayout config.yaml
 ```
 
-Inspect the run's logs, resolved configuration, synthesis reports, placement/routing results, timing reports, and final layout artifacts. Explain DRC and LVS status separately. Preserve a concise report with the reviewed warnings and constraints, rather than committing every generated intermediate file.
+The first command opens the OpenROAD database for physical inspection; the second opens the layout in KLayout. Use them to correlate report paths with real cells, pins, clock routes and DRC markers. Do not repair the layout manually and then call the run reproducible: change configuration or source inputs and run again.
 
-The book's HTML build does not execute or validate the ASIC flow.
+### Step 6: compare a controlled experiment
+
+Make a second configuration, `config-8ns.yaml`, identical except for:
+
+```yaml
+CLOCK_PERIOD: 8.0
+```
+
+Run it with a new tag:
+
+```bash
+librelane config-8ns.yaml --run-tag target-125MHz
+```
+
+Compare the resolved configuration, cell area, core area, worst setup slack, total negative slack, worst hold slack, buffer count, route DRC count and power estimate. Do not compare only frequency. If 8 ns fails after routing but 10 ns passes, read the failing path and decide whether the correct action is a pipeline stage, a different microarchitecture, a lower target frequency, a floorplan change or an allowed library/constraint change.
+
+### Step 7: make an implementation record
+
+At the end of a run, commit the small inputs: the YAML configuration, pin-order file, RTL revision identifier and a concise human-written report. Preserve build artifacts in CI, release storage or a project archive according to the team's policy. The report should include:
+
+| Item | Example evidence |
+| --- | --- |
+| Design identity | Git revision, `DESIGN_NAME`, source checksum |
+| Tool identity | LibreLane version, Nix/Docker image or environment digest |
+| Technology | PDK revision and selected standard-cell library/corners |
+| Constraints | Clock, interface assumptions and reviewed exceptions |
+| Physical result | Core area, utilization, cell count, routing completion |
+| Timing result | Setup/hold/transition/capacitance status by corner |
+| Verification result | DRC, LVS, antenna and density status, with justified waivers |
+| Reproduction command | Exact command and run tag |
+
+## How LibreLane maps configuration to implementation
+
+### Configuration layering
+
+The apparent simplicity of a four-line configuration can be misleading. LibreLane resolves values in layers: the built-in flow defines defaults; the PDK and cell library define technology-specific values; the user design file supplies intent; command-line flags make temporary overrides. The final configuration is immutable for the run, which prevents an individual step from silently redefining the project contract [@librelaneArchitecture].
+
+This layering allows a common SystemVerilog design to be evaluated under several PDKs while keeping technology-specific facts in the appropriate place. It also means that a local YAML file should not reproduce every PDK default. Specify values that express design intent--clock, sources, core utilization, macro placement, pin plan and justified overrides--and inspect `resolved.json` for the rest.
+
+### States, steps and checkpoints
+
+Each LibreLane step consumes a state containing the available design views and produces an updated state. A synthesis step adds a mapped netlist; a floorplan step adds physical geometry; a routing step produces a routed layout; sign-off-oriented steps add GDSII, reports and check results. This structure makes restart and targeted debugging possible without converting the entire flow into a collection of untracked shell commands.
+
+For a failure, find the earliest step whose report is invalid. A synthesis problem does not need a rerun of KLayout DRC. A post-route timing violation needs the corresponding routing and extraction context, not a new unrelated lint invocation. When an ECO is needed, begin from the documented state required by the step and give the ECO run a new tag.
+
+### PDK-aware behavior
+
+The same high-level request, such as “create a power grid,” has different concrete choices for different PDKs: power-pin names, metal layers, via rules, fill cells, clock buffers and DRC decks. LibreLane uses PDK and standard-cell configuration files to supply these values. This is what makes `PDK: sky130A` meaningful; it is not a label attached after layout.
+
+When porting a design to a new process, do not assume that a successful SKY130 configuration transfers unchanged. Re-evaluate the clock target, core utilization, I/O/pad requirements, macro views, power intent, process corners and sign-off criteria. A custom PDK must provide the LibreLane configuration required by the steps it intends to support [@librelanePdks].
+
+## Customizing the managed flow
+
+Classic is a reference flow, not a prison. LibreLane can select a flow from the command line, replace or remove named steps through configuration metadata, or construct a custom sequential flow with the Python API. The documentation gives examples of a flow that explicitly lists Yosys, OpenROAD, Magic and Netgen steps [@librelaneCustomFlows].
+
+Customization is appropriate when a project has a proven need: a foundry-specific check, a macro assembly stage, a formal equivalence gate, a custom extraction recipe or an ECO. It is not a cure for a warning that has not been understood. Start from Classic, record each substitution and preserve an equivalent check for anything removed.
+
+For example, a project might disable a stream-out tool only when the selected PDK does not support it and another approved stream-out and DRC path exists. Disabling LVS merely because it is inconvenient creates an implementation gap, not a valid faster flow.
+
+## Debugging guide
+
+| Observation | Where to look first | Likely cause | Responsible response |
+| --- | --- | --- | --- |
+| Flow stops before synthesis | Configuration validation and source paths | Misspelled key, path outside design directory, missing PDK | Correct configuration; do not bypass validation |
+| Wrong top or unmapped modules | Yosys logs and source list | Missing source/include or unsupported RTL construct | Add the real source, fix RTL or model the macro correctly |
+| No usable clock | Resolved `CLOCK_PORT`, SDC and synthesis netlist | Port/name mismatch or an optimized-away clock | Correct port/constraint and recheck sequential logic |
+| Congestion or placement failure | Floorplan, placement and pin reports | Core too dense, bad pin plan, macro blockage | Reduce density, enlarge core or revise physical interface |
+| Setup failure after routing | Post-route STA and detailed route | Logic depth, wire RC, CTS or ambitious period | Diagnose path; pipeline, revise floorplan or change justified target |
+| Hold failure | Post-CTS/post-route minimum-delay reports | Fast path relative to clock arrival | Use a documented hold repair; never invent a false path |
+| DRC/LVS/antenna errors | Specific checker report and layout viewer | Technology, routing, stream-out or connectivity issue | Repair upstream input and rerun affected flow stages |
+| Different results on another machine | `resolved.json`, environment and PDK metadata | Different tool/PDK versions or a missing input | Pin environment and rerun from clean checkout |
+
+## Reading a LibreLane run
+
+### Treat the run directory as engineering evidence
+
+A complete run contains far more useful information than its final GDSII. LibreLane writes a run tag beneath the design directory and organizes products by step. The exact directory names are release-dependent, but the evidence has stable roles:
+
+| Evidence | Why it matters | Typical question it answers |
+| --- | --- | --- |
+| `resolved.json` | Records the validated combination of defaults, PDK values and user choices | Which cell library and actual clock constraint were used? |
+| Per-step log | Preserves the command transcript, warnings and runtime context | Where did the first warning or error occur? |
+| Per-step report | Summarizes timing, area, DRC, LVS, antenna or density result | Did this particular check pass at the relevant stage? |
+| State/checkpoint | Captures the views that allow a later step or GUI to reopen the design | What was the placed/routed design when the failure happened? |
+| Metrics | Supplies comparable values for design-space exploration and CI | Did an RTL change worsen area or slack? |
+| Final views | Gives DEF, GDSII, netlist, SPEF and other physical handoff products | What exactly was exported? |
+
+Start at the earliest failing checker, not at the last line of the console. For example, a final hold checker failure can be investigated through the post-route STA report, extracted parasitics and routed state. An LVS failure should be investigated through the corresponding Netgen, extraction and stream-out logs. A later checker often reports the symptom; the earlier step tells you the cause.
+
+Do not commit all generated files to the source repository. They can be large, PDK-dependent and regenerated. Preserve them as CI artifacts, a release archive or reproducible experiment record. Commit inputs, a short results summary and any scripts needed to reproduce the run.
+
+### Run tags, partial runs and ECOs
+
+Use an informative run tag for every intentional experiment:
+
+```bash
+librelane --flow Classic config.yaml --run-tag baseline-100MHz
+librelane --flow Classic config.yaml --run-tag util-45
+librelane --flow Classic config.yaml --run-tag util-65
+```
+
+Avoid reusing a tag after modifying RTL or configuration. A unique tag makes report comparisons reliable and prevents stale state from appearing to be a fresh result. In automated builds, construct tags from a commit short hash plus the experiment name.
+
+LibreLane can also run a selected range of named steps. This is useful after a targeted physical ECO, but only when the initial state satisfies the selected step's declared inputs. Before using `--from`, `--to` or an initial state, inspect the installed flow with its help command and read the current step documentation. An invalid restart can produce a run that looks complete while omitting a necessary transformation or check.
+
+The normal hierarchy of choices is:
+
+1. Change RTL when the architecture or functional behavior needs improvement.
+2. Change a constrained physical input, such as core utilization, pin order or macro placement, when reports show a physical cause.
+3. Use a documented ECO or selected step range only when its input state is known and recorded.
+4. Rerun the full flow before calling the result a release candidate.
+
+### Quality gates for continuous integration
+
+LibreLane is especially useful in CI because the resolved configuration and metrics allow a project to define objective regression rules. A fast merge-request job can run lint and synthesis; a longer protected-branch job can execute the full flow. Examples of useful gates are:
+
+| Gate | Example criterion | Reason |
+| --- | --- | --- |
+| Configuration | Validation succeeds with pinned PDK | Prevents unreviewed environment drift |
+| Synthesis | No unmapped cells or new fatal lint errors | Confirms the intended RTL was elaborated |
+| Timing | No setup/hold violations at required corners | Prevents a faster-looking but invalid netlist |
+| Physical | No unreviewed route, DRC, LVS or antenna errors | Preserves manufacturing legality evidence |
+| QoR trend | Area and negative slack stay within reviewed limits | Detects regressions that still technically complete |
+
+Thresholds should be project-specific. A small educational accumulator can require zero violations; a larger SoC may permit a temporary, documented waiver during development but must clear it before tapeout. CI should publish reports and resolved configuration so a reviewer can distinguish a real improvement from an environment change.
+
+## From the LibreLane GDSII to a tapeout review
+
+LibreLane's GDSII is an important deliverable, but it is a macro-level physical result. A fabrication submission adds requirements outside the generic Classic flow: pad-frame or harness integration, ESD and I/O rules, package and bump/pad assignment, power integrity, test strategy, foundry-specific sign-off and the current shuttle submission checklist.
+
+Before declaring the accumulator or a larger SystemVerilog block fabrication-ready, review the following with the selected provider:
+
+- The exact PDK revision and whether its views are approved for the intended programme.
+- The required top-level integration, pad ring, power domains and protection cells.
+- DRC, LVS, density, antenna, extraction and timing criteria for the submission.
+- Ownership and licenses for every RTL, macro, memory and standard-cell dependency.
+- Package, board, firmware and silicon-test plans.
+
+The Google/SkyWater open PDK made the technology collateral inspectable, and open MPW programmes demonstrated that community designs could be fabricated. It does not turn a local flow result into a standing right to manufacture. Use the foundry or shuttle's current rules and acceptance process together with the evidence produced by LibreLane.
+
+## Hands-on Experiments
+
+### Experiment 1: validate the baseline
+
+Run the accumulator at 10 ns. Make a one-page report containing the resolved PDK/library, cell and core area, worst setup/hold slack, count of route DRC markers, DRC/LVS result and final GDSII location. Inspect the OpenROAD view and identify the clock network and each grouped set of pins.
+
+### Experiment 2: sweep placement density
+
+Copy the baseline YAML into two variants with `FP_CORE_UTIL` values of 45 and 65. Keep RTL, PDK, cell library and period unchanged. Use a derived placement density only where the values stay feasible. Compare area, wire length, buffer insertion, congestion, timing and DRC. Explain which result offers the best engineering trade-off rather than choosing the smallest core mechanically.
+
+### Experiment 3: make the run suitable for CI
+
+Add a CI job that enters the pinned LibreLane environment, runs synthesis on each merge request and preserves the resolved configuration and selected reports as artifacts. Run the full hardening flow on protected branches or scheduled jobs if it is too expensive for every change. Define thresholds for unacceptable new setup/hold violations and document how a PDK or tool upgrade is reviewed.
+
+### Experiment 4: compare direct and managed implementation
+
+Use the same RTL, 10 ns target and SKY130 library in the direct OpenROAD exercise and in LibreLane. Compare the visible inputs and outputs. Identify which Tcl choices LibreLane has taken from the PDK/default flow, and which design choices remain your responsibility. The expected lesson is not identical files or numbers; it is an understanding of why a reproducible managed flow is valuable after the underlying physical stages are understood.
+
+## Closing perspective
+
+LibreLane makes the full open ASIC stack practical for repeated work: a design configuration chooses the intent, a PDK supplies technology facts, and the flow records how the tools transform SystemVerilog into physical views. Use the convenience to make evidence easier to review, not to conceal engineering choices. Before any fabrication submission, apply the current rules and acceptance process of the selected foundry or MPW programme in addition to the local LibreLane reports.

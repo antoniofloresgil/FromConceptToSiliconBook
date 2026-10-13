@@ -1,21 +1,533 @@
-# Physical Design with OpenROAD
+# Physical Design with OpenROAD {#sec-openroad}
 
 ## Concepts
 
-Physical design optimizes interacting constraints. Higher utilization reduces available whitespace but can increase congestion; long wires can worsen timing; clock distribution adds real insertion delay and skew. A physically reasonable implementation requires more than a logically correct netlist.
+OpenROAD is an open-source application for the physical implementation of digital integrated circuits. Its purpose is to take a synthesizable hardware design and the views supplied by a technology, then produce a placed and routed layout that can be checked for manufacturing. The project was launched in June 2018 within DARPA's IDEA programme; its name expands to *Foundations and Realization of Open, Accessible Design*. The original objective was ambitious: an autonomous, no-human-in-the-loop RTL-to-GDSII flow with a turnaround close to 24 hours [@openroadProject].
 
-A standard-cell library supplies timing and physical views, while the PDK supplies technology rules and models. Analyze results at named operating corners. Power estimates also depend on activity assumptions; area and timing reports alone cannot establish power consumption.
+That goal explains an important design choice. OpenROAD is not simply a collection of shell commands. Its physical-design engines share one process and one OpenDB database, and users control them mainly with Tcl commands. A command modifies the same in-memory design that subsequent commands analyze. This avoids repeatedly exporting and importing incomplete representations of the design, and makes it possible to stop at any stage, inspect the database in the GUI, change one constraint, and continue [@openroadApplication].
 
-## Implementation
+This chapter uses OpenROAD **directly**. It does not use LibreLane, OpenLane, or another flow controller. That is valuable pedagogically: each Tcl command corresponds to a physical-design decision. It is also useful when a project needs a custom sequence, a research experiment, or integration into its own build system. For a production team, a higher-level flow can still be useful for configuration management and regression infrastructure; direct use does not remove the need for reproducibility or sign-off.
 
-Use the OpenROAD stages invoked by the selected flow to inspect floorplan, placement, clock tree, and routing. Identify large macros, high-fanout controls, long buses, and pin placement constraints.
+### Two ways to use the same implementation engines
 
-For the UART case, locate the synchronizer, state machines, counters, and RX-to-TX connection. Relate critical timing paths to these structures. Compare pre-route estimates with post-route results that include interconnect effects.
+There are two practical ways to harden a SystemVerilog block with this ecosystem. The direct path, developed in detail in this chapter, invokes OpenROAD and its Tcl commands explicitly. The managed path uses LibreLane to resolve a configuration, invoke the implementation tools in a tested order, and preserve a structured run directory. They are not competing physical algorithms: LibreLane uses OpenROAD for the physical implementation.
 
-DRC checks layout against geometric rules. LVS compares extracted connectivity with the expected circuit. Antenna checks and density constraints address additional fabrication concerns. Record these results separately from timing status.
+| Choice | Direct OpenROAD | LibreLane-managed flow |
+| --- | --- | --- |
+| Primary input | Tcl scripts, PDK paths and explicit commands | Project configuration plus RTL and constraints |
+| Best fit | Learning, research, custom stages, debugger-like inspection | Repeatable project runs, team defaults and CI |
+| Control | Every command, checkpoint and repair point is visible | Flow selects and sequences documented stages |
+| Main risk | The author must maintain all technology details and stage ordering | Defaults can obscure a physical decision unless reports/configuration are reviewed |
+| Common practice | Prototype a command sequence, then keep it in version control | Run the stabilized configuration in CI and compare QoR reports |
+
+For a small block, direct OpenROAD is the best way to learn why a floorplan, PDN or clock tree is needed. For a larger design, the LibreLane option reduces accidental variation. A robust project can use both: develop and debug a Tcl experiment directly, then transfer the justified parameters into the managed configuration. The LibreLane chapter describes its project structure and commands; neither approach removes the need to check timing, routing and physical-verification reports.
+
+![The direct OpenROAD flow: SystemVerilog and PDK views enter a Tcl-controlled sequence of synthesis, floorplanning, placement, CTS, routing, extraction and checks.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="SystemVerilog RTL and a PDK enter a direct OpenROAD physical implementation flow and produce GDSII"}
+
+### What OpenROAD does and does not provide
+
+OpenROAD contains engines for the central digital back-end tasks:
+
+| Activity | Representative OpenROAD capability | Engineering purpose |
+| --- | --- | --- |
+| Database and timing | OpenDB and OpenSTA | Keep layout, netlist, parasitics and timing constraints consistent |
+| Floorplan | `initialize_floorplan`, pin placement, tap-cell insertion | Define die/core, rows, I/O access and well/substrate ties |
+| Power | PDN generator and IR-drop analysis support | Create and assess the supply network |
+| Placement | Global and detailed placement | Put standard cells into legal rows while controlling wire length and congestion |
+| Timing repair | Resizer and STA | Fix transition, capacitance, fanout, setup and hold problems within legal limits |
+| Clock tree | `clock_tree_synthesis` | Distribute clocks with controlled skew and insertion delay |
+| Routing | Global routing and TritonRoute detailed routing | Connect nets with legal tracks, wires and vias |
+| Finishing | Extraction, antenna checks, fill support and reports | Prepare physical data for final verification |
+
+The application does not turn arbitrary RTL into a tapeout automatically. It needs a PDK, characterized cell libraries, realistic timing and I/O constraints, a power intent, and decisions about the die, pins, macros and packaging. In particular, OpenROAD does not replace a foundry's final DRC/LVS deck, pad-ring requirements, ESD rules, package co-design, or acceptance review. It is an implementation engine whose output must be validated in the context of the target technology.
+
+### The views that join RTL to geometry
+
+The same design appears in several forms during implementation. Understanding the forms makes OpenROAD reports much easier to interpret.
+
+| File or view | Contains | Used primarily by |
+| --- | --- | --- |
+| SystemVerilog | Behavioral and structural RTL | Simulation, elaboration and synthesis |
+| Gate-level Verilog | Instances of technology cells and net connectivity | STA, placement, CTS and equivalence checking |
+| Liberty (`.lib`) | Cell functions, delays, power, limits and operating corners | Synthesis, timing analysis and optimization |
+| Technology LEF | Routing layers, vias, sites and manufacturing grid | Floorplan and routing |
+| Cell LEF | Abstract cell outlines, pins and obstructions | Placement and routing |
+| DEF | Floorplan, instances, pins and routes | Physical-design interchange and snapshots |
+| SDC | Clocks, I/O delays, uncertainties and timing exceptions | Static timing analysis |
+| SPEF | Extracted resistance and capacitance | Post-route timing and power analysis |
+| GDSII | Exact polygons for all relevant layers | Layout viewing, physical verification and tapeout handoff |
+
+Liberty and LEF are complementary. A Liberty file can tell the timer that a NAND gate is fast enough, but it does not tell the placer how wide the gate is or where its pins are. A LEF can describe those pins and the routing blockages but says nothing about delay. Supplying mismatched Liberty, LEF and GDSII views is a frequent cause of apparently successful but invalid runs. Freeze their PDK and library revision together.
+
+### A direct-flow mental model
+
+The direct flow in this chapter follows this sequence:
+
+```text
+SystemVerilog + tests ──► synthesis ──► mapped netlist
+                                      │
+PDK: .lib + tech LEF + cell LEF ──────┼──► OpenROAD database
+SDC constraints ──────────────────────┘
+                                            │
+ floorplan → I/O + PDN → placement → CTS → routing → extraction
+                                            │
+                              reports + DEF + SPEF + GDSII for sign-off
+```
+
+Do not treat this as a one-way conveyor belt. A failed endpoint after routing may call for a new RTL pipeline stage, a better constraint, a larger die, more whitespace, different cells, or a different pin location. The discipline is to modify one controlled input, retain the reports, and compare the result with the baseline.
+
+## Installing OpenROAD
+
+The project currently recommends, in order, prebuilt binaries, Docker images, source builds using Bazel, and only then the legacy CMake build. CMake is deprecated for new installations. The following choices separate a quick learning environment from a development environment [@openroadInstall].
+
+### Recommended environments
+
+On Linux, use either an official prebuilt binary or a container. On Windows, use WSL2 with a Linux distribution or Docker Desktop with the repository mounted into the container. Native Windows is not the normal target of the build instructions. macOS can build the project, but library paths and developer tools require the platform-specific instructions in the official documentation.
+
+For any method, record the output of `openroad -version`, the commit or image digest, the PDK revision and the standard-cell library. A timing number without this information cannot be reliably reproduced.
+
+### Option A: prebuilt binary
+
+Prebuilt releases are the fastest way to start. Download the binary package using the current official release instructions, unpack it outside the repository, and place its `bin` directory on `PATH`. Verify the result before trying a full design:
+
+```bash
+openroad -version
+openroad -no_init -exit
+```
+
+The `-no_init` option prevents a personal `~/.openroad` Tcl file from silently changing a run. Use it in scripted, reproducible invocations. The second command starts the application without an input script and exits; it confirms that the executable and its run-time files are visible.
+
+### Option B: Docker or WSL2
+
+Containers are particularly useful for a book exercise because the host needs only Docker and the sources remain mounted in a known directory. OpenROAD documents Docker as a supported installation route and recommends allocating adequate CPU and memory to the virtual machine [@openroadInstall]. A minimal pattern is:
+
+```bash
+docker run --rm -it \
+  -v "$PWD":/work \
+  -w /work \
+  <openroad-image> \
+  openroad -version
+```
+
+Replace `<openroad-image>` with the current image named by the project's release documentation. Do not blindly use an old image copied from a tutorial: command availability and bundled PDK collateral evolve. On Windows PowerShell, mount the current directory with an absolute path if the shell does not expand `$PWD` as expected; in WSL2, run the same command from the Linux shell.
+
+### Option C: build from source with Bazel
+
+Use a source build when you need a particular commit, GUI support, debug symbols, or intend to modify OpenROAD. Clone recursively because OpenROAD includes submodules:
+
+```bash
+git clone --recursive https://github.com/The-OpenROAD-Project/OpenROAD.git
+cd OpenROAD
+```
+
+The project recommends its `setup.sh` script from OpenROAD-flow-scripts to install the complete flow environment, or its dependency helper when building the application alone. Those scripts install packages and therefore should be inspected and run only with the required administrative permissions on the target system. With dependencies and Bazelisk available, the supported installation command is:
+
+```bash
+bazelisk run --//:platform=gui //:install
+```
+
+It installs `openroad` and its required runfiles under the repository's installation tree. A headless build can omit the GUI platform option if the current build documentation provides that variant. Add `--config=release` when a release version string is required in the binary [@openroadInstall].
+
+After installation, confirm both the command and Tcl help:
+
+```bash
+openroad -version
+openroad -no_init
+% man initialize_floorplan
+% man clock_tree_synthesis
+% exit
+```
+
+The percent signs are interactive Tcl prompts, not characters to copy into a shell. The built-in `man` command is one advantage of the unified application: it documents the exact options supported by the installed version.
+
+### The PDK is a separate installation
+
+Installing OpenROAD does not install permission to fabricate, nor does it automatically provide a complete commercial PDK. For an open learning flow, SKY130 packages supply public technology information and standard-cell libraries; other technologies have their own installation and license terms. The project also includes test designs for the open Nangate45 reference technology, which is convenient for command experiments but is not a manufacturing PDK.
+
+For a real target, set and record paths to at least these views:
+
+```text
+TECH_LEF    routing layers, sites and vias
+CELL_LEF    physical abstracts of the selected standard-cell library
+LIBERTY     timing/power characterization for the selected corner
+GDS         standard-cell layouts, if the chosen stream-out flow needs them
+```
+
+Never combine a `sky130_fd_sc_hd` Liberty file with a LEF from another library variant merely because the names look similar. Use a PDK installation method that keeps the views versioned together.
+
+## How OpenROAD runs
+
+OpenROAD can execute one Tcl file and exit, or start interactively. The normal reproducible form is:
+
+```bash
+openroad -no_init -exit -threads max \
+  -log results/openroad.log \
+  scripts/harden.tcl
+```
+
+Tcl is the control language. `read_lef`, `read_liberty`, `read_verilog` and `link_design` create or complete the database. Later commands see precisely the design state left by earlier commands. Use `write_db` to save a binary OpenDB checkpoint and `write_def` to save a portable physical snapshot. The GUI can reopen an OpenDB checkpoint:
+
+```bash
+openroad -gui -db results/placed.odb
+```
+
+The command-line application supports a Tcl interface and limited Python support. Tcl is the correct choice for the full physical flow; Python support is primarily for database operations [@openroadApplication].
+
+### Constraints are part of the design
+
+A module named `clk` is not a clock until the timing model says so. The minimum useful SDC defines a clock and input/output assumptions. For a 10 ns clock with one nanosecond of uncertainty:
+
+```tcl
+create_clock -name core_clk -period 10.0 [get_ports Clk]
+set_clock_uncertainty 1.0 [get_clocks core_clk]
+
+set_input_delay  1.0 -clock core_clk [get_ports {Enable Clear}]
+set_output_delay 1.0 -clock core_clk [get_ports {Valid Overflow}]
+```
+
+In a real chip, input and output delays come from the external source, receiver, package and board budget; they are not arbitrary round numbers. Resets, asynchronous inputs, generated clocks, false paths and multi-cycle paths require equally explicit reasoning. An exception is a proof obligation: document the protocol that makes it safe.
+
+### Timing before and after wires
+
+Before placement, timing uses cell arcs plus estimated interconnect. After routing, extracted parasitics provide resistance and capacitance for actual wires and vias. Therefore, a design can meet timing before CTS and fail after detailed routing. The relevant reports include both setup and hold, all clocks, all corners, unconstrained paths, max transition, max capacitance and max fanout. A single positive worst slack is insufficient evidence.
+
+## A complete direct example: hardening a SystemVerilog accumulator
+
+This worked example uses the `accumulator` module introduced in the Verilator chapter. It has a clock, reset, enable, clear, two 16-bit inputs, a 16-bit registered sum and two status outputs. It is intentionally small enough to inspect in the GUI, but it exercises sequential logic, arithmetic, control and a clock tree.
+
+The example assumes a clean working directory with these files:
+
+```text
+examples/openroad/
+├── accumulator.sv
+├── synth.ys
+├── constraints.sdc
+├── config.tcl
+└── harden.tcl
+```
+
+`accumulator.sv` may be the same tested RTL used for simulation. Do not create a separate implementation-only version of the module; any intentional difference must be reviewed and verified.
+
+### Step 0: verify the RTL before implementation
+
+Run the unit or cocotb testbench first. Physical implementation cannot reveal that an overflow bit or reset priority has the wrong specification. Then lint/elaborate the design and ensure it has one intended top module. For this example the top module is `accumulator` and the primary clock input is `Clk`.
+
+The following RTL is a compact version of the example:
+
+```systemverilog
+module accumulator (
+    input  logic        Clk,
+    input  logic        Reset,
+    input  logic        Enable,
+    input  logic        Clear,
+    input  logic [15:0] A,
+    input  logic [15:0] B,
+    output logic [15:0] Sum,
+    output logic        Valid,
+    output logic        Overflow
+);
+  logic [16:0] next_sum;
+  always_comb next_sum = {1'b0, Sum} + {1'b0, A} + {1'b0, B};
+  always_ff @(posedge Clk) begin
+    if (Reset || Clear) begin
+      Sum      <= '0;
+      Valid    <= 1'b0;
+      Overflow <= 1'b0;
+    end else if (Enable) begin
+      Sum      <= next_sum[15:0];
+      Valid    <= 1'b1;
+      Overflow <= next_sum[16];
+    end else begin
+      Valid    <= 1'b0;
+      Overflow <= 1'b0;
+    end
+  end
+endmodule
+```
+
+This module is only a core-level block. It has no pad cells, power ports or package. The implementation below therefore creates a core floorplan and signal pins; it is not an MPW submission top-level.
+
+### Step 1: synthesize SystemVerilog to the target cells
+
+Current OpenROAD releases include `sv_elaborate` and `synthesize`, which can elaborate SystemVerilog and map it into the OpenROAD database [@openroadSynthesis]. For portability across installed releases, this chapter uses Yosys as a separate synthesis step and OpenROAD directly for every physical stage. This remains a direct OpenROAD flow because no workflow orchestrator selects or hides the physical commands.
+
+Create `synth.ys`, replacing the Liberty path with the exact corner and library selected from the PDK:
+
+```tcl
+read_verilog -sv accumulator.sv
+hierarchy -check -top accumulator
+proc; opt
+memory; opt
+techmap; opt
+abc -liberty $::env(LIBERTY)
+clean
+write_verilog -noattr results/accumulator_mapped.v
+stat -liberty $::env(LIBERTY)
+```
+
+Run it from the example directory:
+
+```bash
+mkdir -p results
+LIBERTY=/absolute/path/to/selected_corner.lib yosys -s synth.ys \
+  | tee results/yosys.log
+```
+
+Read the statistics. If Yosys reports latches, unrecognized constructs, an unexpected top module, or zero sequential cells, stop before physical design. The resulting netlist should instantiate only cells present in both the chosen Liberty file and its matching LEF.
+
+### Step 2: state the physical configuration
+
+Make technology paths and cell choices explicit in `config.tcl`. The actual names vary by PDK. The values below are placeholders deliberately written as variables rather than pretending that one set of SKY130 names fits every library:
+
+```tcl
+set design_name accumulator
+set tech_lef  $::env(TECH_LEF)
+set cell_lef  $::env(CELL_LEF)
+set liberty   $::env(LIBERTY)
+set sdc_file  constraints.sdc
+set netlist   results/accumulator_mapped.v
+
+# These must exist in the selected standard-cell library.
+set buffer_cell $::env(BUFFER_CELL)
+set inv_cell    $::env(INVERTER_CELL)
+set site_name   $::env(SITE_NAME)
+```
+
+For a SKY130 library, determine the site and legal buffer/inverter names from that library's LEF and Liberty files. Do not copy cell names from a different library family. A high-density, low-leakage or high-voltage library can differ in available cells and physical dimensions.
+
+### Step 3: read the technology, netlist and constraints
+
+The first section of `harden.tcl` loads the database. `read_lef -tech` loads the technology; the other LEF is the standard-cell library. Liberty must be read before linking the gate-level Verilog so timing arcs can be attached to cell instances.
+
+```tcl
+source config.tcl
+file mkdir results
+
+read_lef -tech $tech_lef
+read_lef $cell_lef
+read_liberty $liberty
+read_verilog $netlist
+link_design $design_name
+read_sdc $sdc_file
+
+report_units
+check_setup
+report_design_area
+```
+
+`check_setup` finds basic consistency issues such as unlinked cells or absent clocks. `report_units` matters because the first Liberty file establishes units for timing and capacitance. Save the output to a report file; otherwise a terminal scrollback buffer becomes the only record of a failure.
+
+### Step 4: create the floorplan and place I/O pins
+
+Floorplanning decides the available area and geometry. `initialize_floorplan` can receive explicit die/core coordinates or compute dimensions from utilization and aspect ratio. A low utilization leaves more whitespace for buffers and routing but increases die area; a high utilization saves area but risks congestion. The official command documentation gives the conceptual calculation:
+
+\[
+A_{core} = \frac{A_{cells}}{U/100}
+\]
+
+where \(U\) is target utilization. For a small educational block, begin around 50--60%, not 80--90%.
+
+```tcl
+initialize_floorplan \
+  -utilization 55 \
+  -aspect_ratio 1.0 \
+  -core_space 15 \
+  -site $site_name
+
+make_tracks
+place_pins -random
+write_def results/01_floorplan.def
+write_db  results/01_floorplan.odb
+```
+
+The technology LEF normally supplies track pitch and offset, so the generic form is simply `make_tracks`; a custom flow may also call it once per layer while overriding pitch and offsets. The essential requirement is that routing tracks originate from technology rules, not guessed dimensions. Start with `place_pins -random` only to make the block routable. For an interface block, replace it with an intentional pin-placement strategy that groups related buses, keeps clocks clear of noisy signals, and minimizes long crossings.
+
+Open the checkpoint and inspect rows, core boundary and pins:
+
+```bash
+openroad -gui -db results/01_floorplan.odb
+```
+
+### Step 5: establish power and ground
+
+Power distribution must be created before ordinary signal placement and routing. At block level, the configuration defines power/ground nets and connects each standard cell's supply pins. The exact pin patterns and metal layers are PDK-specific. The following pattern illustrates the required decisions:
+
+```tcl
+add_global_connection -net VDD -pin_pattern {^VPWR$} -power
+add_global_connection -net VSS -pin_pattern {^VGND$} -ground
+set_voltage_domain -power VDD -ground VSS
+
+define_pdn_grid -name Core
+add_pdn_stripe -grid Core -followpins -layer met1
+add_pdn_stripe -grid Core -layer met4 -width 1.6 -pitch 40 -offset 2
+add_pdn_connect -grid Core -layers {met1 met4}
+pdngen
+write_def results/02_pdn.def
+```
+
+Here `VPWR`, `VGND`, `met1` and `met4` are examples, not universal names. Use the actual supply pins and routing layers from the selected library and PDK. The PDN generator lets the designer state a policy--layers, widths, spacing, pitch and connections--then creates the grid [@openroadPdn]. A real implementation must check voltage drop, current density, macro supplies and package/bumps; a small core-only demonstration cannot establish those properties.
+
+Add tap cells and end caps according to the PDK's required insertion rules before placement. They maintain well/substrate ties and legal row boundaries. The appropriate command and master-cell names must be taken from the technology collateral; do not invent them.
+
+### Step 6: global placement, legalization and pre-CTS repair
+
+Global placement chooses approximate cell locations to reduce wire length and density overflow. It is not legal manufacturing placement. Detailed placement snaps cells to rows and resolves overlaps. The sequence below uses timing-aware global placement, then asks the resizer to repair electrically problematic nets within the cells permitted by the library.
+
+```tcl
+global_placement -density 0.55
+detailed_placement
+check_placement
+
+estimate_parasitics -placement
+repair_design -max_utilization 65
+detailed_placement
+
+tee -file results/03_area.rpt { report_design_area }
+tee -file results/03_prects_setup.rpt { report_checks -path_delay max -fields {slew cap input_pins} }
+tee -file results/03_prects_hold.rpt  { report_checks -path_delay min -fields {slew cap input_pins} }
+write_db results/03_placed.odb
+```
+
+Do not interpret pre-CTS timing as final. It is useful for identifying an impossible clock target or a logic path that is already too deep. If congestion is high, reduce utilization, enlarge the core, reconsider pin positions, or examine macro placement. Increasing the clock period hides the symptom but does not explain its cause.
+
+### Step 7: build and analyze the clock tree
+
+The RTL clock port is a logical source. Clock-tree synthesis (CTS) inserts buffers and constructs branches that deliver the clock to all sequential sinks with controlled delay and skew. Select only legal buffer cells from the current library:
+
+```tcl
+set_wire_rc -signal -layer $::env(CLOCK_LAYER)
+clock_tree_synthesis \
+  -root_buf $buffer_cell \
+  -buf_list [list $buffer_cell] \
+  -clk_nets {Clk}
+
+report_cts -out_file results/04_cts.rpt
+set_propagated_clock [all_clocks]
+estimate_parasitics -placement
+repair_timing -setup
+repair_timing -hold
+detailed_placement
+check_placement
+write_db results/04_cts.odb
+```
+
+The CTS engine performs on-the-fly characterization, so it does not require a separately generated characterization table [@openroadCts]. The selected `buffer_cell` must have usable timing data and be appropriate for clock distribution. In a real design, choose a library-approved set of clock buffers/inverters and review the clock report: number of roots, sinks, inserted buffers, skew, latency, transition and clock-domain coverage.
+
+### Step 8: route, extract and repair
+
+Global routing reserves paths and produces guides. Detailed routing converts those guides into legal wires and vias, performing search and repair. OpenROAD's detailed router is TritonRoute; it includes pin access, track assignment, detailed route and a DRC engine [@openroadRouting].
+
+```tcl
+global_route -congestion_iterations 100
+detailed_route \
+  -output_drc results/05_route_drc.rpt \
+  -output_maze results/05_route.maze
+
+estimate_parasitics -global_routing
+tee -file results/05_postroute_setup.rpt { report_checks -path_delay max -fields {slew cap input_pins} }
+tee -file results/05_postroute_hold.rpt  { report_checks -path_delay min -fields {slew cap input_pins} }
+
+repair_timing -setup
+repair_timing -hold
+detailed_placement
+global_route -congestion_iterations 100
+detailed_route -output_drc results/06_final_route_drc.rpt
+write_def results/06_routed.def
+write_db  results/06_routed.odb
+```
+
+`estimate_parasitics` is appropriate for a learning flow and early decisions. A sign-off flow uses the extraction settings and corners required by the PDK, commonly writes SPEF, and performs final timing with the foundry-qualified methodology. The route DRC report from the router is valuable feedback, but it is not automatically equivalent to the foundry sign-off DRC result.
+
+### Step 9: inspect, report and export
+
+Review the final database graphically and keep machine-readable reports:
+
+```tcl
+check_placement
+tee -file results/07_area.rpt { report_design_area }
+tee -file results/07_setup.rpt { report_checks -path_delay max -digits 4 }
+tee -file results/07_hold.rpt { report_checks -path_delay min -digits 4 }
+tee -file results/07_floating_nets.rpt { report_floating_nets }
+write_verilog results/accumulator_physical.v
+write_def     results/accumulator_final.def
+write_db      results/accumulator_final.odb
+```
+
+Launch `openroad -gui -db results/accumulator_final.odb` and inspect the core boundary, supply stripes, clock routes, pin access, congestion and detailed-route DRC markers. Use the GUI to understand a report, not to make undocumented edits. All deliberate changes belong in Tcl or version-controlled inputs.
+
+Producing GDSII requires a stream-out path that combines the routed design with the technology and cell GDS data, often through KLayout or Magic as prescribed by the PDK. Run the PDK/foundry DRC, LVS and density/fill procedure on that GDSII. The result is ready for a tapeout review only when the physical, timing, power, integration and documentation criteria for the chosen programme are satisfied.
+
+## Understanding every physical step
+
+### Floorplan and utilization
+
+The floorplan determines the geometry in which every later optimization must work. Core area is not empty space; it must accommodate standard cells, clock buffers, tie cells, tap cells, decoupling, power straps, signal routes and margins. A block with 65% nominal cell utilization can still fail routing if wide buses, macro blockages or a dense pin region concentrate demand in one location.
+
+Use a square aspect ratio only as a starting point. A memory macro or a wide streaming interface can favor a rectangular core. Reserve channels around macros and keep their pins accessible. For top-level chips, I/O placement, bump/pad assignment and the power grid are jointly determined; changing one late in the project can affect all three.
+
+### Placement and routability
+
+Global placement minimizes a mathematical cost involving wire length and density. It can make a path shorter while creating a local density peak that later prevents routing. Detailed placement legalizes the result on the standard-cell rows and placement grid. Check utilization, overflow, row legality, pin density and estimated wire length after each stage.
+
+High fanout control signals deserve special attention. An enable or reset that reaches many flops may need buffering, but its semantics must remain valid. Asynchronous resets and cross-domain signals require architecture and verification treatment; placement tools cannot make an unsafe CDC safe.
+
+### Clock-tree synthesis
+
+Clock trees have different objectives from data networks. They must reach every sink with low skew, controlled insertion delay, legal transitions and sufficient buffering. A clock tree can consume a meaningful fraction of total dynamic power. CTS therefore changes both timing and power, and is followed by setup/hold repair.
+
+After CTS, verify that the intended clocks are propagated, that no unexpected clocks appeared, and that the clock root is where the integration plan expects it. A warning about a clock with zero sinks can reveal a naming mismatch, a failed synthesis inference, or an incorrect constraint.
+
+### Routing, parasitics and antenna effects
+
+Global routing selects broad paths through routing resources; detailed routing chooses exact tracks and vias. It must honor spacing, width, enclosure, via and pin-access rules. Long or crowded nets accrue resistance and capacitance, which slow signals and consume routing resources.
+
+An antenna violation arises when a conductive region connected to a gate can accumulate charge during manufacturing. Repair may insert an antenna diode, change a route layer or alter the topology. Treat it as a physical-manufacturing issue, separate from a functional simulation failure.
+
+### What to compare between experiments
+
+Change one input at a time and capture a compact table such as the following:
+
+| Run | Utilization | Clock period | Core area | Worst setup slack | Worst hold slack | Routed DRCs | Observation |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Baseline | 55% | 10 ns | measured | measured | measured | measured | Reference run |
+| A | 65% | 10 ns | measured | measured | measured | measured | Tests whitespace/congestion |
+| B | 55% | 8 ns | measured | measured | measured | measured | Tests timing margin |
+
+Do not claim a physical improvement solely because area decreases. A valid comparison keeps the PDK, cell library, RTL, constraints, tool version and relevant settings fixed.
+
+## Failure diagnosis
+
+Physical-design failures are information. The correct response is to locate the first stage where the design becomes invalid, then repair the relevant input.
+
+| Symptom | Likely cause | First checks | Typical correction |
+| --- | --- | --- | --- |
+| Cells cannot be linked | Netlist and Liberty use different cell names or libraries | `check_setup`, synthesis log | Use matching Liberty/LEF/Verilog views |
+| No clock or zero clock sinks | Port name or SDC does not match the netlist | `report_clocks`, `report_checks` | Correct SDC and verify flop clock pins |
+| Overlapping or illegal cells | Incomplete rows, bad site, too little area | `check_placement`, floorplan view | Correct site/rows or enlarge the core |
+| Routing overflow | Utilization/pin density too high or macro blockage | Global-route congestion report | Add whitespace, change floorplan/pins, reduce density |
+| Setup failure after route | Wire delay, logic depth or CTS insertion delay | Compare pre/post-route paths | Pipeline RTL, resize/repair, change placement/floorplan |
+| Hold failure after CTS | Fast data path relative to clock arrival | Minimum-delay report | Apply hold repair; never hide it with an unjustified exception |
+| Repeated antenna/DRC markers | Routing/resource or rule issue | Detailed-route report and GUI markers | Use PDK-approved repair, change route/floorplan |
+| Great reports but no fabrication path | Missing sign-off, pads, package, or accepted PDK flow | Tapeout checklist | Complete integration and foundry requirements |
 
 ## Hands-on Experiments
 
-Run a baseline and vary one floorplan or utilization choice. Compare cell area, die/core area, congestion, routing completion, and setup/hold results using the same RTL and clock target.
+### Experiment 1: run and inspect the baseline
 
-Explain whether a timing change came from logic, cell selection, or routing. Review failures before increasing margins or adding exceptions. Include the selected corner and configuration with every report excerpt.
+Set the four technology paths and legal cell names, synthesize the accumulator, and execute `harden.tcl`. Preserve every log and checkpoint. In the GUI, identify the clock input, a register, a clock buffer and the power rails. Relate the longest timing path to RTL arithmetic or control rather than merely copying the path report.
+
+### Experiment 2: utilization sweep
+
+Repeat with 45%, 55% and 65% target utilization. Keep the clock, PDK, cells and RTL unchanged. Record core dimensions, placed-cell count, estimated total wire length, congestion, setup/hold slack and detailed-route DRCs. Explain why lower utilization can improve routability yet increase area and wire length.
+
+### Experiment 3: timing sweep
+
+Return to the baseline floorplan and reduce the clock period in 1 ns steps. Identify the first failing endpoint. Compare its cell delay and wire delay before and after CTS/routing. Decide whether the educational accumulator should be pipelined, assigned a slower architectural clock, or optimized physically. State the evidence for the decision.
+
+### Experiment 4: reproducible handoff
+
+Make a `README` for the run containing the OpenROAD version, host/container identity, PDK commit, library/corner, RTL commit, complete SDC, command line, configuration variables and a report summary. A peer should be able to reproduce the same `DEF` and explain any remaining differences caused by tool nondeterminism or environment changes.
+
+## Further reading
+
+The official OpenROAD documentation is the command reference for the installed release. Its built-in `man` pages and online module pages should take priority over old blog posts and command snippets. The project documents examples from synthesizable RTL through detailed routing for Nangate45 and SKY130HD technologies, which are useful references when adapting a direct Tcl flow [@openroadApplication]. The next chapter returns to a managed flow and explains how LibreLane can package a similar sequence for repeated runs.

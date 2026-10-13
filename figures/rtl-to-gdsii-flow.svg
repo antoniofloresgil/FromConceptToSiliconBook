@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="1240" viewBox="0 0 1200 1240" role="img" aria-labelledby="title desc">
+<title id="title">RTL to GDSII Flow</title>
+<desc id="desc">SystemVerilog RTL input followed by Yosys and ABC synthesis, OpenSTA timing analysis, Fault DFT, OpenROAD floorplanning, placement, CTS, optimization and global routing, antenna diode insertion, equivalence check, TritonRoute detailed routing, then GDSII and LEF output. SkyWater PDK feeds the physical flow.</desc>
+<defs>
+ <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 Z" fill="#304966"/></marker>
+ <style><![CDATA[
+ text {font-family:Arial,Helvetica,sans-serif;fill:#172a42}
+ .heading {font-size:43px;font-weight:700;letter-spacing:.4px}
+ .subtitle {font-size:18px;fill:#536782}
+ .section {font-size:19px;font-weight:700;fill:#244f79}
+ .stage {fill:#fff;stroke:#51799c;stroke-width:2}
+ .physical {fill:#ecf5fb;stroke:#3981af;stroke-width:2}
+ .utility {fill:#f5f8fc;stroke:#829ab1;stroke-width:2;stroke-dasharray:6 5}
+ .txt {font-size:19px;font-weight:600;text-anchor:middle}
+ .detail {font-size:15px;font-weight:400;fill:#536782;text-anchor:middle}
+ .arrow {stroke:#304966;stroke-width:2.8;fill:none;marker-end:url(#arr);stroke-linejoin:round}
+ .line {stroke:#304966;stroke-width:2.8;fill:none;stroke-linejoin:round}
+ ]]></style>
+</defs>
+<rect width="1200" height="1240" fill="#fff"/>
+<text x="600" y="78" class="heading" text-anchor="middle">RTL to GDSII Flow</text>
+<text x="600" y="113" class="subtitle" text-anchor="middle">Open-source ASIC implementation flow</text>
+<!-- input -->
+<rect x="385" y="147" width="430" height="77" rx="13" class="stage"/>
+<text x="600" y="181" class="txt">SystemVerilog RTL</text><text x="600" y="205" class="detail">Design sources (.sv)</text>
+<path d="M600 224 V262" class="arrow"/>
+<!-- top synthesis and PDK -->
+<rect x="80" y="269" width="1040" height="831" rx="20" fill="#fafcff" stroke="#9bafc4" stroke-width="2.3" stroke-dasharray="10 7"/>
+<text x="103" y="302" class="section">RTL synthesis &amp; physical implementation</text>
+<rect x="410" y="332" width="380" height="72" rx="11" class="stage"/>
+<text x="600" y="361" class="txt">RTL synthesis</text><text x="600" y="384" class="detail">Yosys + ABC</text>
+<path d="M600 262 V332" class="arrow"/>
+<path d="M600 404 V442" class="arrow"/>
+<rect x="410" y="442" width="380" height="72" rx="11" class="stage"/>
+<text x="600" y="471" class="txt">Static timing analysis</text><text x="600" y="494" class="detail">OpenSTA</text>
+<path d="M600 514 V552" class="arrow"/>
+<rect x="410" y="552" width="380" height="72" rx="11" class="stage"/>
+<text x="600" y="581" class="txt">Design for test (DFT)</text><text x="600" y="604" class="detail">Fault</text>
+<!-- auxiliary -->
+<rect x="115" y="345" width="230" height="95" rx="12" class="utility"/>
+<text x="230" y="379" class="txt" style="font-size:17px">Synthesis exploration</text><text x="230" y="404" class="detail">Iterate on RTL / constraints</text>
+<path d="M410 369 H367" class="arrow"/>
+<path d="M345 412 H375 V478 H410" class="arrow"/>
+<rect x="855" y="341" width="226" height="110" rx="13" class="utility"/>
+<text x="968" y="372" class="txt">Process Design Kit</text>
+<text x="968" y="397" class="detail">SkyWater PDK</text><text x="968" y="420" class="detail">cells / layers / rules</text>
+<!-- physical flow -->
+<path d="M600 624 V665" class="arrow"/>
+<rect x="390" y="660" width="420" height="325" rx="16" fill="#eff7fc" stroke="#7aa6c5" stroke-dasharray="8 5" stroke-width="2"/>
+<text x="414" y="688" class="section">OpenROAD flow</text>
+<rect x="455" y="704" width="290" height="44" rx="9" class="physical"/><text x="600" y="732" class="txt">Floorplanning</text>
+<path d="M600 748 V763" class="arrow"/>
+<rect x="455" y="763" width="290" height="44" rx="9" class="physical"/><text x="600" y="791" class="txt">Placement</text>
+<path d="M600 807 V822" class="arrow"/>
+<rect x="455" y="822" width="290" height="44" rx="9" class="physical"/><text x="600" y="849" class="txt">Clock tree synthesis</text>
+<path d="M600 866 V881" class="arrow"/>
+<rect x="455" y="881" width="290" height="44" rx="9" class="physical"/><text x="600" y="909" class="txt">Optimization</text>
+<path d="M600 925 V940" class="arrow"/>
+<rect x="455" y="940" width="290" height="44" rx="9" class="physical"/><text x="600" y="968" class="txt">Global routing</text>
+<!-- PDK -->
+<path d="M968 451 V680 H810" class="arrow"/>
+<!-- post physical flow -->
+<path d="M810 963 H850 V719 H865" class="arrow"/>
+<rect x="865" y="699" width="215" height="75" rx="11" class="stage"/>
+<text x="972" y="728" class="txt" style="font-size:17px">Antenna diode</text><text x="972" y="750" class="txt" style="font-size:17px">insertion</text>
+<path d="M972 774 V800" class="arrow"/>
+<rect x="865" y="800" width="215" height="75" rx="11" class="stage"/>
+<text x="972" y="828" class="txt" style="font-size:17px">Logic equivalence</text><text x="972" y="850" class="detail">Yosys</text>
+<path d="M972 875 V901" class="arrow"/>
+<rect x="865" y="901" width="215" height="75" rx="11" class="stage"/>
+<text x="972" y="929" class="txt" style="font-size:17px">Detailed routing</text><text x="972" y="953" class="detail">TritonRoute</text>
+<!-- design exploration -->
+<rect x="115" y="810" width="230" height="86" rx="12" class="utility"/>
+<text x="230" y="844" class="txt" style="font-size:17px">Design exploration</text><text x="230" y="867" class="detail">PPA iterations</text>
+<path d="M865 946 H826 V1036 H230 V896" class="arrow"/>
+<path d="M230 810 V682 H390" class="arrow"/>
+<!-- outputs -->
+<path d="M972 976 V1135 H600" class="arrow"/>
+<rect x="354" y="1108" width="492" height="96" rx="14" fill="#eaf5ed" stroke="#4b9272" stroke-width="2.5"/>
+<text x="600" y="1147" class="txt" style="font-size:22px">Manufacturing-ready files</text>
+<text x="600" y="1177" class="detail" style="font-size:19px">GDSII / LEF</text>
+</svg>
