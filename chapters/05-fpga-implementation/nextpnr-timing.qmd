@@ -2,15 +2,20 @@
 
 ## Concepts
 
-Placement, routing, timing constraints, critical paths, and timing closure.
+Placement assigns physical sites; routing connects them through the FPGA's programmable interconnect. Timing closure means the implementation meets its specified timing checks. A successful bitstream build without adequate constraints does not establish correct timing.
+
+Constraint coverage includes clocks, generated clocks, external interface timing, pin assignments, and IO standards. False-path and multicycle exceptions require a design justification; they must not conceal paths that need to meet the ordinary clock requirement.
 
 ## Implementation
 
-Use nextpnr on a supported FPGA target and inspect timing and routing reports.
+Select a nextpnr backend and device supported by the installed toolchain. An Artix-7 implementation requires a compatible toolchain and a board-specific pin map. Record the board, device, backend, architecture data, and bitstream tools before selecting commands.
+
+For each critical path, identify launch and capture registers, combinational logic, routing contribution, and slack. A UART's slow serial rate does not relax its synchronous counters and state machines: a 50 MHz implementation still has a 20 ns system-clock target.
+
+Compare pre-route and post-route reports. Placement and routing can expose long control nets or congested paths that are absent from an RTL-level view.
 
 ## Hands-on Experiments
 
-Vary clock constraints and implementation choices and compare achieved timing.
+Implement a verified small block on the selected FPGA. Record utilization, requested clock period, worst timing result, and unconstrained paths. Change one RTL or placement variable at a time and compare reports under the same constraints.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Inventory asynchronous inputs and clock crossings. Document which synchronizers or protocols handle each crossing and why each timing exception is valid. Keep the board pin map with the experiment.

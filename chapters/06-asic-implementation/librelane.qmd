@@ -2,15 +2,60 @@
 
 ## Concepts
 
-Flow orchestration, configuration, reproducibility, and implementation checks.
+LibreLane orchestrates tools and implementation stages around a configuration. Reproducibility requires recording the resolved settings, RTL revision, tool environment, PDK, libraries, and reports, including defaults that are not visible in the input YAML.
+
+UART loopback is a useful target for an initial complete flow. It exercises state machines, counters, an asynchronous input synchronizer, and a byte-wide ready/valid connection without introducing a large memory macro.
 
 ## Implementation
 
-Configure a LibreLane run and inspect how its stages transform RTL into layout artifacts.
+Prepare the UART RTL files and configuration in the following directory structure. These files and the installed toolchain are prerequisites for the exercise:
+
+```text
+examples/
+  rtl/
+    uart_loopback.sv
+    uart_rx.sv
+    uart_tx.sv
+  asic/
+    uart_loopback/
+      config.yaml
+```
+
+Run the commands from `examples/asic/uart_loopback` inside a configured LibreLane environment. On Windows, use WSL2 or a suitable Linux container. Install the tools and PDK before starting the exercise.
+
+Use the following configuration:
+
+```yaml
+DESIGN_NAME: uart_loopback
+VERILOG_FILES:
+  - dir::../../rtl/uart_loopback.sv
+  - dir::../../rtl/uart_rx.sv
+  - dir::../../rtl/uart_tx.sv
+CLOCK_PORT: i_clk
+CLOCK_PERIOD: 20
+FP_CORE_UTIL: 45
+PL_TARGET_DENSITY_PCT: 55
+RUN_HEURISTIC_DIODE_INSERTION: true
+```
+
+The 20 ns period corresponds to 50 MHz, matching the wrapper's default system-clock parameter. It is independent of the serial baud period. These utilization settings are starting points for the exercise, not universal recommendations.
 
 ## Hands-on Experiments
 
-Run a small design through the flow and review timing, physical checks, and generated deliverables.
+First check elaboration and synthesis:
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
+```sh
+librelane --version
+librelane config.yaml --to Yosys.Synthesis --run-tag synth-only
+```
 
+Review inferred structures and warnings before running the complete flow:
+
+```sh
+librelane config.yaml
+librelane --last-run --flow OpenInKLayout config.yaml
+```
+
+Inspect the run's logs, resolved configuration, synthesis reports, placement/routing results, timing reports, and final layout artifacts. Explain DRC and LVS status separately. Preserve a concise report with the reviewed warnings and constraints, rather than committing every generated intermediate file.
+
+The book's HTML build does not execute or validate the ASIC flow.

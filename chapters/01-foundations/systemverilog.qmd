@@ -2,15 +2,226 @@
 
 ## Concepts
 
-Combinational and sequential logic, types, modules, interfaces, and synthesizable coding patterns.
+This chapter follows the hardware-design topics in Chapter 4 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc]. The explanations and examples below are written for this book. The [Wally coding-style appendix](../../appendices/wally-style.qmd) summarizes Section 4.3 of the supplied edition; the [keyword cheat sheet](../../appendices/systemverilog-cheatsheet.qmd) provides a quick reference.
+
+### From Verilog to SystemVerilog
+
+Verilog began as a language for modeling and simulating digital circuits and became a widely used input to logic synthesis. Classic Verilog already describes modules, continuous assignments, clocked processes, hierarchy, and parameterized hardware. Later revisions improved practical RTL coding with features such as ANSI-style port declarations, automatic combinational sensitivity lists, and generate constructs.
+
+SystemVerilog extends that foundation rather than replacing its hardware model. Existing Verilog constructs remain available, but newer constructs express intent more clearly and support stronger checks. For example, a classic `reg` is a procedural variable: its name does not mean that synthesis necessarily creates a register. A `reg` assigned completely in a combinational process can represent combinational logic. SystemVerilog's `logic` avoids that misleading name, while `always_comb` and `always_ff` distinguish combinational and sequential intent.
+
+| Classic Verilog pattern | SystemVerilog approach | Practical benefit |
+| --- | --- | --- |
+| `reg` for procedural variables | `logic` for ordinary RTL signals | The declaration no longer suggests storage by itself |
+| `always @*` | `always_comb` | Declares combinational intent, evaluates initially, and enables additional tool checks |
+| `always @(posedge clk)` | `always_ff @(posedge clk)` | Declares sequential intent and constrains how the written variables are driven |
+| Numeric state constants | `typedef enum` | Named states and a defined state type |
+| Related declarations repeated across files | `package`, `import`, `struct` | Shared types and structured configuration |
+| Procedural testbench checks | Assertions and temporal properties | Checks can express behavior across clock cycles |
+
+SystemVerilog also adds classes, constrained randomization, coverage, and other verification facilities. Those features help build test environments but are not the normal way to describe a synthesizable processor datapath. File extensions such as `.sv` select language mode in many tools; confirm the selected frontend and supported language subset rather than assuming every feature is supported.
+
+### Think in hardware before writing code
+
+An HDL description contains concurrent processes and connected components. The ordering of statements inside one process matters, but different modules and processes operate concurrently. A procedural `for` loop with a static bound commonly describes repeated hardware work; it does not automatically mean one operation per clock cycle. A multicycle algorithm needs explicit state and sequencing.
+
+Start from a block diagram, interface contract, and clock/reset plan. Identify combinational transformations, registers, memories, and control state. Decompose the design hierarchically, reuse verified components, and keep changes under version control. Simulation checks modeled behavior; synthesis maps supported RTL into a target technology. Neither step alone proves that the physical circuit meets its timing constraints.
+
+### Modules, hierarchy, and parameters
+
+A `module` defines a component with ports and internal logic. Instantiating it creates an instance of that component, rather than calling a software subroutine. Inputs and outputs describe signal direction; an `inout` models a bidirectional connection and normally belongs at an external IO boundary.
+
+`parameter` values configure an instance during elaboration. `localparam` names a constant that cannot be overridden by an instantiation. Width and depth parameters change the generated hardware; they are not runtime control registers. Require legal values before using them in ranges or replication counts.
+
+Named connections such as `.Data(DataE)` make port mapping explicit. The shorthand `.clk` means `.clk(clk)`. Positional connections are concise but depend on declaration order. Wildcard `.*` connects matching names implicitly and can make large interfaces harder to trace.
+
+### Types, widths, and four-state simulation
+
+`logic` represents `0`, `1`, `x`, and `z`. An `x` represents an unknown simulation value, often from uninitialized state; `z` represents high impedance. Neither is an extra binary state stored by an ordinary flip-flop. Investigate unexpected unknowns instead of relying on them as a universal error-detection mechanism.
+
+`bit` is a two-state type. Converting an unknown to a two-state value can hide an initialization error. Use it deliberately, especially in memory models and testbenches. A variable declared `logic` is appropriate for ordinary single-driver RTL; use a net such as `tri` when modeling a resolved, multiply driven IO connection. The data type alone does not decide whether hardware is combinational or sequential.
+
+```systemverilog
+logic [15:0] Word;          // One packed 16-bit vector
+logic [15:0] Bank [0:7];   // Eight unpacked entries, each 16 bits
+logic signed [15:0] Offset;
+```
+
+Dimensions before the identifier are packed; dimensions after it describe an unpacked array. Signedness affects arithmetic, extension, comparisons, and right shifts. Explicitly size constants and review mixed signed/unsigned expressions.
+
+| Expression | Meaning |
+| --- | --- |
+| `12'hA35` | A 12-bit hexadecimal value |
+| `8'd19` | An 8-bit decimal value |
+| `'0`, `'1` | Fill the destination context with zeros or ones |
+| `Word[7:0]` | Select the low byte |
+| `Word[ByteIndex*8 +: 8]` | Select eight bits starting at a variable bit position |
+| `{Upper, Lower}` | Concatenate two vectors |
+| `{{8{Offset[7]}}, Offset[7:0]}` | Sign-extend an 8-bit slice to 16 bits |
+
+Bitwise operators (`&`, `\|`, `^`, `~`) operate on individual bits. Logical operators (`&&`, `\|\|`, `!`) evaluate truth values. A unary reduction such as `\|Word` reduces a vector to one bit. In a four-state simulator, `==` can return unknown, whereas `===` compares unknown and high-impedance values explicitly; case equality is useful in testbench checks.
+
+### Combinational logic
+
+Use `assign` for a continuously driven expression and `always_comb` for procedural decisions or several related calculations. Both describe logic whose outputs depend on current inputs, without storage.
+
+Within `always_comb`, use blocking assignments (`=`), set defaults, and cover all paths. An omitted assignment can imply a latch even when the block is labeled combinational; lint and synthesis should flag that mismatch. `if` chains express priority. `case` selects among patterns; `casez` supports wildcard matching, which requires care because it can hide unexpected input values. `unique` adds an exclusivity/completeness expectation, but does not remove the need to define intended behavior.
+
+### Registers, reset, and assignment scheduling
+
+Use `always_ff @(posedge clk)` to describe rising-edge storage and nonblocking assignments (`<=`) to update it. Right-hand sides are evaluated when the process runs; updates occur later in the simulation time step. Thus, two chained nonblocking assignments can preserve two distinct pipeline stages.
+
+A synchronous reset is tested inside a clock-only process. An asynchronous reset also appears as an event in the sensitivity list. Reset polarity, assertion, release, and priority relative to enable or clear are part of the interface contract. An omitted clocked assignment retains state; an omitted combinational assignment can infer unwanted storage.
+
+A latch is level-sensitive, not edge-triggered. `always_latch` documents intentional latch behavior, but the synchronous design discipline used here normally avoids latches outside carefully reviewed special circuits.
+
+### Finite-state machines and memories
+
+An FSM combines a state register, next-state logic, and outputs. Moore outputs depend on registered state; Mealy outputs also depend on current inputs. Enumerated states, combinational defaults, and a defined response to invalid encodings make the controller easier to inspect. Recovery behavior must follow the specification rather than silently masking faults.
+
+A memory declaration describes an array, not a guarantee of a particular RAM resource. Define synchronous or asynchronous read timing, write ports, byte enables, chip enable, and same-address read/write behavior. A synchronous read is commonly written `ReadData <= Memory[Address]` in a clocked process; an asynchronous read commonly uses `assign`. Multiported arrays may require a register-based implementation or a suitable macro. FPGA and ASIC memory libraries impose different constraints.
+
+### Configurable hardware and verification boundaries
+
+An elaboration-time `if` selects which hardware exists. A generate `for` with a `genvar` creates instances or structures; a procedural loop inside a process describes that process's behavior. Neither loop is an implicit cycle counter.
+
+Packages share types and constants. A packed configuration structure can carry many parameters through a hierarchy, allowing separate core instances to use different configurations. Wally uses a structure named `P`, with fields such as `P.XLEN`, rather than relying entirely on global text macros.
+
+Preprocessor directives such as backtick `include` and `define` act on source text. They are distinct from typed parameters and package imports. Preserve stable interfaces across configurations and drive disabled-feature outputs to defined values.
+
+Assertions check assumptions and behavior; specify their sampling and reset conditions. Delay controls such as `#5` schedule simulation events and belong in testbenches here. They are not physical timing constraints. Classes, randomized stimulus, reporting tasks, and coverage belong to verification; synthesis support for initialization and memory-loading constructs is target dependent.
+
+### Reusable interfaces
+
+Reusable RTL describes hardware with an explicit contract: interface widths, legal parameter values, reset behavior, latency, and rules for accepting transactions. Parameterization is useful when it exposes architectural choices; it becomes costly when every combination creates a different, unverified design.
+
+Use `always_ff` for registers and nonblocking assignments for their updates. Use `always_comb` and blocking assignments for combinational calculations, assigning every output on every path to avoid accidental latches. Enumerated states make control logic easier to review. Keep the datapath (storage, arithmetic, and multiplexers) distinct from control (state transitions, enables, and counters).
+
+A ready/valid channel transfers an item when both signals are high at the sampling clock edge. The producer owns data and valid; the consumer owns ready. Once valid is asserted, the producer must retain valid and the payload until acceptance. Backpressure changes when a transaction completes, not its contents.
 
 ## Implementation
 
-Build arithmetic units, register files, and finite-state machines in SystemVerilog.
+### A parameterized combinational block
+
+```systemverilog
+module word_select #(parameter int WIDTH = 16)(
+  input  logic [WIDTH-1:0] Left, Right,
+  input  logic            UseRight,
+  output logic [WIDTH-1:0] Selected);
+
+  always_comb begin
+    Selected = Left;
+    if (UseRight) Selected = Right;
+  end
+endmodule
+```
+
+Every path assigns `Selected`, so this describes a multiplexer without a latch. In a parent module, `word_select #(.WIDTH(32)) choice(.Left(A), .Right(B), .UseRight(Sel), .Selected(Y));` creates a 32-bit instance. `A`, `B`, `Sel`, and `Y` must be declared in that parent.
+
+### An enabled register and a two-stage pipeline
+
+```systemverilog
+module sample_pipeline #(parameter int WIDTH = 16)(
+  input  logic             clk, reset, Enable,
+  input  logic [WIDTH-1:0]  Sample,
+  output logic [WIDTH-1:0]  StageOne, StageTwo);
+
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      StageOne <= '0;
+      StageTwo <= '0;
+    end else if (Enable) begin
+      StageOne <= Sample;
+      StageTwo <= StageOne;
+    end
+  end
+endmodule
+```
+
+When enabled, `StageTwo` receives the previous `StageOne`, not the newly sampled input. This example uses synchronous active-high reset and gives reset priority over enable. When enable is low, both stages hold. Replacing the assignments with blocking assignments changes the sequential behavior described by the process.
+
+### An enumerated controller
+
+```systemverilog
+module request_control(input logic clk, reset, Start, Complete,
+                       output logic Busy);
+  typedef enum logic {Idle, Active} state_t;
+  state_t State, NextState;
+
+  always_ff @(posedge clk)
+    if (reset) State <= Idle;
+    else       State <= NextState;
+
+  always_comb begin
+    NextState = State;
+    case (State)
+      Idle:    if (Start) NextState = Active;
+      Active:  if (Complete) NextState = Idle;
+      default: NextState = Idle;
+    endcase
+  end
+
+  assign Busy = (State == Active);
+endmodule
+```
+
+`Busy` is a Moore output. `Start` while active is ignored in this contract, and reset returns the controller to idle. These decisions belong in its tests.
+
+### A ready/valid elastic buffer
+
+Consider a one-entry elastic buffer, `rv_slice`. It stores a payload and a valid bit:
+
+```systemverilog
+module rv_slice #(
+  parameter int DATA_WIDTH = 32
+) (
+  input  logic clk, rst_n,
+  input  logic in_valid,
+  output logic in_ready,
+  input  logic [DATA_WIDTH-1:0] in_data,
+  output logic out_valid,
+  input  logic out_ready,
+  output logic [DATA_WIDTH-1:0] out_data
+);
+  logic full_q;
+  logic [DATA_WIDTH-1:0] data_q;
+
+  assign in_ready = !full_q || out_ready;
+  assign out_valid = full_q;
+  assign out_data = data_q;
+
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      full_q <= 1'b0;
+      data_q <= '0;
+    end else if (in_ready) begin
+      full_q <= in_valid;
+      if (in_valid) data_q <= in_data;
+    end
+  end
+endmodule
+```
+
+When empty, the buffer accepts input even if the consumer is stalled. When full and the consumer is ready, it can deliver the old item and capture a replacement on the same edge. When full and stalled, both registers retain their values. The resulting registered forward path has one-cycle latency and can sustain one transfer per cycle after filling.
+
+This design still has a combinational path from `out_ready` to `in_ready`; it does not isolate the backward timing path. Reset is asynchronously asserted and active low. System integration must define safe reset release and suppress transactions during reset.
 
 ## Hands-on Experiments
 
-Simulate each module, test boundary cases, and inspect synthesis results.
+### Fundamentals exercises
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
+1. Draw the hardware implied by `word_select`, then test both select values and boundary payloads.
+2. Simulate `sample_pipeline` with distinct samples. Check reset priority, disabled cycles, and the two successive register captures. Compare blocking and nonblocking versions as an intentionally incorrect experiment.
+3. Test `request_control` against a transition table, including start while busy and reset while active.
+4. Describe a small RAM with synchronous read and byte writes. Define the collision policy before writing a scoreboard; inspect whether the target tool infers memory or registers.
+5. Elaborate two widths and one disabled optional feature. Confirm interface stability and absence of undriven outputs.
 
+### Ready/valid experiment
+
+1. Save the listing as `rv_slice.sv` and lint it with `verilator --lint-only -Wall rv_slice.sv`.
+2. Simulate reset, one transfer, several stalled cycles, and simultaneous output consumption/input replacement.
+3. Count accepted input and output transactions at each rising edge. A scoreboard should compare output data with the oldest queued input.
+4. Repeat with data widths of 8 and 32. Reject nonpositive widths in the integration specification.
+5. Extend the block into a FIFO and document whether a full FIFO can accept a write when a read occurs on the same edge.
+
+Record commands, tool versions, waveforms for failures, and an explicit pass/fail result.

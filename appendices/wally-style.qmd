@@ -1,0 +1,58 @@
+# Wally RTL Coding Style
+
+This appendix summarizes the design conventions described in Section **4.3, Wally Style Guidelines**, of the supplied edition of *RISC-V System-on-Chip Design* [@harrisRiscvSoc]. They help explain the RTL's organization; they are project conventions rather than requirements of SystemVerilog.
+
+## Signals and pipeline stages
+
+Use `clk` and `reset` for the pervasive clock/reset names. Ordinary signals use UpperCamelCase, while constants and parameters use uppercase names separated by underscores. Declare internal signals explicitly, including single-bit signals, and normally use `logic` for RTL variables. Packed buses use descending ranges such as `[31:0]`; this indexing convention does not by itself specify memory byte endianness.
+
+Pipeline suffixes identify where a value belongs:
+
+| Suffix | Stage | Illustrative signal |
+| --- | --- | --- |
+| `F` | Fetch | `PCF` |
+| `D` | Decode | `InstrD` |
+| `E` | Execute | `ALUResultE` |
+| `M` | Memory | `IEUResultM` |
+| `W` | Writeback | `RegWriteW` |
+
+Signals produced inside the pipeline retain their originating-stage suffix when crossing unit boundaries. Controls produced outside it use the stage where they apply, such as `StallD`. Signals unrelated to a pipeline stage need no stage suffix. Prefixes distinguish source units: `IEU`, `IFU`, `LSU`, `FPU`, and `MDU` help identify related results from different blocks.
+
+Reserve bidirectional `inout tri` connections for genuine external interfaces. Inside the chip, prefer directional connections and multiplexers. Keep arrays internal where practical; explicit `var logic` ports can identify variable array interfaces when an array must cross a boundary.
+
+## Connections, hierarchy, and storage
+
+Small, familiar primitives such as flip-flops and multiplexers may use positional ports. Larger modules use named connections, with `.Name` shorthand when the port and connected signal share a name. Preserve names across single-use unit boundaries so that tracing a datapath does not require repeated renaming. Limit `.*` to suitable wrappers.
+
+Behavioral code is used for leaf logic and controllers. Datapaths preferentially instantiate recognizable storage, mux, and arithmetic blocks. Put substantial control in separate modules, but avoid excessive hierarchy that makes a simple connection hard to follow. A module normally lives in a same-named file; closely related small primitives may share a file.
+
+Within each clock domain, use rising-edge synchronous design. Unusual clocking, asynchronous interfaces, or intentional latches require explicit explanation and review. Wally commonly instantiates register and memory primitives so that storage and reset features are visible and replaceable. Enumerated FSM state is a useful exception: a local `always_ff` can preserve its state type. Do not put simulation `#` delays in datapath RTL.
+
+The generic ready/valid example in the SystemVerilog chapter is not styled as Wally RTL: it uses snake_case names and a local asynchronous-reset process. These are legal SystemVerilog choices, but a contribution to Wally should follow the surrounding unit's conventions.
+
+## Layout and comments
+
+Use spaces with two-space indentation. Align related declarations, add spaces around operators and after control keywords, and keep punctuation compact. Group related ports and connections rather than expanding every signal onto a separate line. Use `begin`/`end` where a compound statement is needed, with `begin` on the opening line where practical.
+
+The book's Wally style targets a maximum line length of 95 characters. Blank lines divide logical sections; large banner comments are used sparingly. Start files with identification, purpose, authorship, and licensing information. Comments should explain protocol intent, architecture, and nonobvious decisions rather than narrating each assignment.
+
+## Configuration
+
+Pass a typed configuration structure through the hierarchy. In the book's Wally examples, `cvw_t P` carries fields such as `P.XLEN` and supported-extension flags. Local module parameters remain useful for reusable components. Configuration headers are loaded at the boundary and translated into instance parameters.
+
+Keep the same ports when optional hardware is disabled, and drive unused outputs to defined values. Prefer elaboration-time selection over deleting interface signals with preprocessor conditionals. Name generate blocks that declare signals or instances, making hierarchical debug paths predictable. Wally's style omits optional `generate`/`endgenerate` delimiters; other projects may require them.
+
+```systemverilog
+// Illustrative naming and formatting; not copied Wally source.
+module stage_hold #(parameter int WIDTH = 32)(
+  input  logic             clk, reset, StallE,
+  input  logic [WIDTH-1:0]  OperandD,
+  output logic [WIDTH-1:0]  OperandE);
+
+  always_ff @(posedge clk)
+    if (reset)        OperandE <= '0;
+    else if (!StallE) OperandE <= OperandD;
+endmodule
+```
+
+This compact example demonstrates names, suffixes, alignment, and enable behavior. A full Wally datapath would normally use the project's storage primitives and specified reset/flush policy.

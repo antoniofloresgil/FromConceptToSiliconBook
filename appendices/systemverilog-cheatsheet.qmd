@@ -1,0 +1,114 @@
+# SystemVerilog Keyword Cheat Sheet
+
+The following tables focus on common RTL and verification constructs. Examples are independent fragments: referenced signals, types, and clocks must be declared in their surrounding context. The overview complements Chapter 4 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc]; additional verification constructs are included for practical reference.
+
+## Modules, types, and configuration
+
+| Keyword(s) | Explanation | Small use case |
+| --- | --- | --- |
+| `module`, `endmodule` | Define a hardware component. | `module invert(input logic A, output logic Y); assign Y = ~A; endmodule` |
+| `input`, `output` | Declare port direction. | `input logic [7:0] Data; output logic Ready;` |
+| `inout`, `tri` | Model a resolved bidirectional connection, typically IO. | `inout tri Pin; assign Pin = Drive ? Value : 1'bz;` |
+| `logic` | Four-state type for ordinary RTL variables. Storage depends on the driver. | `logic [31:0] Result;` |
+| `bit` | Two-state type; cannot retain `x`/`z`. | `bit Passed = 0;` in a testbench |
+| `wire` | Net kind for connections driven by continuous assignments or outputs. | `wire logic Link; assign Link = Source;` |
+| `reg` | Legacy four-state procedural variable, not necessarily a physical register. | `reg Flag;` when reading older Verilog |
+| `var` | Explicitly declares variable port kind. | `input var logic [7:0] Values [0:3];` |
+| `signed`, `unsigned` | Set arithmetic signedness. | `logic signed [15:0] Delta;` |
+| `int`, `integer` | 32-bit integer types; `int` is four-state and signed by default. | `int Count; integer LegacyCount;` |
+| `parameter` | Instance-overridable elaboration constant. | `parameter int WIDTH = 32;` |
+| `localparam` | Non-overridable local constant. | `localparam int BYTES = WIDTH / 8;` |
+| `typedef` | Name a type for reuse. | `typedef logic [31:0] word_t;` |
+| `enum` | Define named, typed values. | `typedef enum logic {Idle, Run} state_t;` |
+| `struct`, `packed` | Group named fields; packed fields form a contiguous vector. | `typedef struct packed {logic Valid; logic [7:0] Data;} item_t;` |
+| `package`, `endpackage` | Container for shared definitions. | `package sizes; parameter int WIDTH = 32; endpackage` |
+| `import` | Make package names accessible. | `import sizes::*;` |
+| `interface`, `endinterface` | Bundle related interface signals. Check frontend support. | `interface link; logic Valid, Ready; endinterface` |
+| `modport` | Describe access directions through an interface view. | `modport sender(output Valid, input Ready);` inside `link` |
+
+## Processes, decisions, and replication
+
+| Keyword(s) | Explanation | Small use case |
+| --- | --- | --- |
+| `assign` | Continuously drive a net or permitted single-driver variable. | `assign Y = Select ? B : A;` |
+| `always_comb` | Combinational process; use complete assignments and `=`. | `always_comb begin Y = '0; if (Enable) Y = A; end` |
+| `always_ff` | Sequential process with an event control; use `<=` for state. | `always_ff @(posedge clk) Q <= D;` |
+| `always_latch` | Describe intentional level-sensitive storage. | `always_latch if (Gate) Q <= D;` |
+| `always` | General recurring process; common in legacy RTL and testbenches. | `always #5 clk = ~clk;` in a testbench with defined time units |
+| `initial` | Process executed once at simulation start; synthesis support is target dependent. | `initial begin clk = 0; end` |
+| `posedge`, `negedge` | Select rising or falling transitions in an event control. | `@(posedge clk or negedge rst_n)` |
+| `begin`, `end` | Group statements; optionally name a block. | `begin : update Q <= D; Valid <= 1'b1; end` |
+| `if`, `else` | Conditional behavior; at module scope, constant conditions can select generated hardware. | `if (reset) Q <= '0; else Q <= D;` |
+| `case`, `endcase` | Select a matching branch. | `case (Sel) 1'b0: Y = A; 1'b1: Y = B; default: Y = '0; endcase` |
+| `default` | Define the unmatched branch of a case. | `default: NextState = Idle;` |
+| `casez` | Wildcard matching of `z`/`?`; review unknown handling. | `casez (Request) 2'b1?: Grant = 2'b10; default: Grant = '0; endcase` |
+| `casex` | Treat `x` and `z` as wildcards; can hide faults, so avoid in ordinary RTL. | Recognize `casex (Opcode)` during review and assess replacement with `case` |
+| `unique`, `priority` | Add selection expectations, with tool checks and optimization implications. | `unique case (State) Idle: NextState = Run; Run: NextState = Idle; endcase` |
+| `for` | Iterate in a process or replicate at elaboration, depending on context. | `for (int i = 0; i < 4; i++) Sum = Sum + Data[i];` |
+| `genvar` | Index used during hardware elaboration, not runtime state. | `for (genvar g = 0; g < 4; g++) begin : lanes assign Y[g] = A[g]; end` at module scope |
+| `generate`, `endgenerate` | Optional delimiters for generate regions. | `generate if (FEATURE) begin : enabled assign Y = A; end else assign Y = '0; endgenerate` |
+| `while` | Repeat while a condition holds; unbounded loops belong in testbenches. | `while (!Done) @(posedge clk);` with an independent timeout |
+| `repeat` | Repeat a specified number of times. | `repeat (3) @(posedge clk);` in a testbench |
+| `function`, `endfunction` | Compute a result without consuming simulation time; simple forms can synthesize. | `function automatic logic invert_bit(input logic A); return ~A; endfunction` |
+| `return` | Return a function result. | `return A + B;` inside a suitably typed function |
+| `task`, `endtask` | Reusable procedure; testbench tasks may consume time. | `task automatic wait_edge; @(posedge clk); endtask` |
+| `automatic` | Give each call its own local storage. | `task automatic send(input logic [7:0] Value); ... endtask` |
+
+## Verification
+
+| Keyword(s) | Explanation | Small use case |
+| --- | --- | --- |
+| `assert`, `else` | Check a required condition or temporal property. | `assert (Count <= LIMIT) else $error("Capacity exceeded");` |
+| `property`, `endproperty` | Name a temporal check. | `property holds; @(posedge clk) disable iff (reset) Valid && !Ready \|=> Valid; endproperty` |
+| `disable`, `iff` | Disable a concurrent assertion, commonly during reset. | `disable iff (reset)` inside a property |
+| `assume` | Constrain a formal environment; does not prove the assumed behavior. | `assume property (@(posedge clk) Request \|-> Legal);` |
+| `cover` | Record whether a condition or sequence is reached. | `cover property (@(posedge clk) Valid && Ready);` |
+| `fork`, `join` | Start concurrent testbench branches and wait for all. | `fork drive_inputs(); monitor_outputs(); join` |
+| `class`, `endclass` | Define a verification object type; normally not synthesizable. | `class transaction; rand bit [7:0] Data; endclass` |
+| `rand`, `constraint` | Declare randomized fields and legal-value constraints. | `rand bit [3:0] Length; constraint range_c { Length inside {[1:8]}; }` inside a class |
+| `inside` | Test membership in a set or range. | `assert (Mode inside {2'd0, 2'd1});` |
+
+## Number formats
+
+Sized integer literals use the format `<width>'[s]<base><digits>`. The width is in bits, optional `s` marks the value as signed, and the base is `b` (binary), `o` (octal), `d` (decimal), or `h` (hexadecimal). Base letters are case insensitive. Underscores separate digits for readability without changing the value.
+
+| Format | Explanation | Small use case |
+| --- | --- | --- |
+| `8'b0010_1101` | An 8-bit binary value: decimal 45. | `logic [7:0] Pattern; assign Pattern = 8'b0010_1101;` |
+| `12'o753` | A 12-bit octal value: decimal 491. | `logic [11:0] Code; assign Code = 12'o753;` |
+| `8'd45` | An 8-bit unsigned decimal value. | `assign Limit = 8'd45;` |
+| `16'h2A7F` | A 16-bit hexadecimal value: decimal 10879. | `assign Address = 16'h2A7F;` |
+| `8'shFF` | A signed 8-bit bit pattern representing -1 in two's complement. | `logic signed [7:0] Delta; assign Delta = 8'shFF;` |
+| `-8'sd5` | Unary minus applied to a signed 8-bit literal: -5. The minus sign precedes the literal. | `assign Delta = -8'sd5;` |
+| `42` | Unsized decimal integer, signed and at least 32 bits. | `localparam int COUNT = 42;` |
+| `'h2A` | Unsized based integer, unsigned unless `s` is specified, and at least 32 bits. | `localparam int CODE = 'h2A;` |
+| `'0`, `'1` | Unbased, unsized fill literals: all zero or all one bits in the destination context. | `assign Cleared = '0; assign Mask = '1;` |
+| `'x`, `'z` | Fill the destination with unknown or high-impedance bits in four-state modeling. | `assign Pin = Drive ? Data : 'z;` for a suitable tri-state net |
+| `8'b10xx_zz01` | A sized binary pattern containing unknown and high-impedance digits. | Use in four-state simulation to investigate initialization or bus behavior |
+| `3.125`, `2.5e-3` | Real-number literals; normally used in testbenches and calculations rather than RTL datapaths. | `real Period = 2.5e-3;` |
+| `10ns`, `250ps` | Time literals with explicit units; rounding depends on the enclosing time precision. | `#10ns;` in a testbench |
+
+Size is not the same as value: `8'd255` is 255, while `8'shFF` has the same eight bits but is signed -1. Values that do not fit their specified width lose their most significant bits; for example, `4'h1F` truncates to `4'hF` and should trigger a tool warning. When a value is assigned to a wider destination, extension depends on expression width and signedness. Use explicit widths, types, and casts when combining signed and unsigned operands.
+
+`'1` fills every destination bit with one; `1'b1` is an explicitly sized one-bit value and normally zero-extends when assigned to a wider unsigned vector. Two-state types such as `bit` cannot retain `x` or `z`.
+
+## Common syntax that is not a reserved keyword
+
+Directives begin with a backtick; system functions/tasks begin with `$`. Operators and port-connection shorthand are also distinct from reserved words.
+
+| Construct | Explanation | Small use case |
+| --- | --- | --- |
+| `=` / `<=` | Blocking procedural assignment / nonblocking assignment. | `Tmp = A;` in combinational logic; `Q <= D;` in a clocked process |
+| `#` | Delay in simulation, or parameter override when followed by an instance parameter list. | `#5;` in a testbench; `block #(.WIDTH(8)) u(...);` for configuration |
+| `.Name`, `.Name(Signal)` | Named port connection shorthand / explicit mapping. | `.clk, .Data(OperandE)` |
+| `{...}`, `{N{...}}` | Concatenation and replication. | `{High, Low}`; `{WIDTH{Enable}}` |
+| `+:`, `-:` | Indexed slice with a constant width. | `Data[Byte*8 +: 8]` |
+| `'0`, `'1` | Context-sized fill literals. | `assign Mask = '1;` |
+| `$clog2` | Ceiling of base-two logarithm; check zero/one-depth corner cases. | `localparam int AW = (DEPTH > 1) ? $clog2(DEPTH) : 1;` |
+| `$signed`, `$unsigned` | Convert expression signedness without increasing its width. | `assign Less = $signed(A) < $signed(B);` |
+| `$display`, `$error`, `$fatal` | Simulation reporting; fatal terminates the run. | `if (Mismatch) $fatal(1, "Mismatch");` |
+| `$readmemh` | Load hexadecimal values into a memory model; synthesis support varies. | `initial $readmemh("image.hex", Memory);` |
+| `$stable` | Sampled-value stability test in an assertion. | `Valid && !Ready \|=> $stable(Data)` |
+| backtick `include`, `define`, `ifdef` | Source insertion, textual macros, and conditional preprocessing. | A backtick `include` followed by `"config.svh"` |
+
+Wally's coding style deliberately uses a narrower subset than this table. In particular, a synthesizable function is legal SystemVerilog even when a project's style favors modules instead. Verify tool support and project conventions separately.

@@ -2,15 +2,18 @@
 
 ## Concepts
 
-Custom instructions, accelerator interfaces, software support, and correctness requirements.
+Hardware/software partitioning starts from measurable needs. Hardware is useful for repeated work with high throughput or strict timing; software retains flexibility for policy and irregular control. Offloading adds communication, synchronization, and software integration costs.
+
+A memory-mapped accelerator and a custom instruction create different contracts. The first exposes registers or queues; the second changes instruction execution and needs ISA semantics, toolchain support, and precise handling of exceptions and side effects.
 
 ## Implementation
 
-Implement a small SystemVerilog accelerator or instruction extension with a reference model.
+Begin with a small streaming operation and a ready/valid interface. Define payload format, latency, ordering, backpressure, reset, and errors. Keep software-visible controls separate from the datapath.
+
+Before choosing a custom instruction, write a reference function and specify operand/result widths and corner cases. For a memory-mapped implementation, define input/output registers or buffers, completion status, and interrupt behavior. Preserve privilege and isolation requirements at the hardware/software boundary.
 
 ## Hands-on Experiments
 
-Verify functional behavior and compare software and hardware execution costs.
+Compare a software baseline and hardware implementation on identical inputs. Measure transfer overhead as well as computation time. Report total cycles, workload size, resource use, and the configuration that produced the measurements.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Stress downstream stalls, reset during work, and malformed requests. Deliver the specification, reference model, RTL, automatic tests, and integration guide as a reusable IP package.

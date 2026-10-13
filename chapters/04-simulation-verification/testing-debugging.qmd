@@ -2,15 +2,37 @@
 
 ## Concepts
 
-Verification planning, assertions, coverage, regression tests, and failure isolation.
+Verification begins with requirements, not stimulus. Turn each requirement into scenarios, properties, and evidence. Simulation evaluates concrete traces; formal analysis checks behavior under explicit assumptions and either a finite bound or a proof procedure.
+
+A self-checking environment separates the driver, monitor, reference model, and scoreboard. Waveforms help explain a failure, but automated checks decide whether the test passes. Safety properties exclude bad behavior; progress properties require eventual completion and usually need assumptions about the environment.
 
 ## Implementation
 
-Combine directed tests, assertions, and trace comparison for CORE-V Wally.
+For a ready/valid FIFO, track reset emptiness, capacity, ordering, and stability during stalls. A reference queue enqueues on accepted inputs and dequeues on accepted outputs. Check both events at the same sampling edge, using the values that determine those transfers.
+
+An output-stability assertion can express a local guarantee:
+
+```systemverilog
+assert property (
+  @(posedge clk) disable iff (!rst_n)
+    out_valid && !out_ready |=> out_valid && $stable(out_data)
+);
+```
+
+The corresponding input property constrains the producer. Assert it when checking an integrated producer; assume it when proving the buffer under a legal external environment. Reset history and initial-state assumptions must be explicit.
+
+When a testbench helper samples after a rising edge, review whether checks observe the transaction at the edge or the updated state after it. A consumer can clear valid on the very edge that completes a transfer; checking only the updated valid can miss that transfer.
 
 ## Hands-on Experiments
 
-Minimize a failing test and produce a reproducible debugging report.
+Create a verification matrix:
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
+| Requirement | Scenario or property | Evidence |
+| --- | --- | --- |
+| Empty after reset | Reset with and without pending data | Automatic check |
+| Ordered output | Numbered payload sequence | Queue scoreboard |
+| Stable stalled output | Consumer stalls for several cycles | Assertion |
+| Capacity respected | Input attempts while full | Occupancy check |
+| Sustained throughput | Producer and consumer continuously active | Transfer counts |
 
+Use deterministic seeds and a simulation timeout. Add a deliberate ordering or overwrite fault and ensure the checks detect it. Run a bounded formal case, recording assumptions, depth, engine, and result; a bounded pass alone does not establish unrestricted correctness.

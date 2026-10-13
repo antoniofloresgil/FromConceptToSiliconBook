@@ -2,15 +2,30 @@
 
 ## Concepts
 
-Standard cells, process design kits, constraints, and the stages from RTL to physical layout.
+The ASIC flow turns a verified RTL description into a physical implementation using a selected process design kit and libraries. Its stages include synthesis, floorplanning, power distribution, placement, clock-tree synthesis, routing, parasitic extraction, timing analysis, and physical checks.
+
+Different views serve different consumers:
+
+| View | Purpose |
+| --- | --- |
+| Verilog netlist/model | Connectivity or simulation |
+| Liberty | Cell or macro timing and power characterization |
+| LEF | Abstract geometry, pins, and routing obstructions |
+| DEF | Placed design and routing information |
+| GDSII | Detailed layout geometry |
+| SDC | Timing constraints |
+| SPEF | Extracted interconnect parasitics |
+
+Producing GDSII is an implementation milestone. Review timing, DRC, LVS, and integration requirements before treating the block as ready for a larger design or fabrication.
 
 ## Implementation
 
-Define the inputs and deliverables for implementing a RISC-V design as an ASIC.
+Begin with UART loopback as a small physical-design case, then apply the workflow to larger SoC blocks. Freeze the RTL revision, parameters, PDK/library versions, clock constraints, and configuration for every run.
+
+Soft IP includes RTL, tests, constraints, and documentation. An ASIC-hardened block also needs physical and timing views plus evidence that its checks passed under stated conditions. Memory macros require wrappers and compatible simulation/physical views.
 
 ## Hands-on Experiments
 
-Inspect flow artifacts and establish reproducible area and timing baselines.
+Package one implemented block so another engineer can reproduce and integrate it. Include interface and reset contracts, configuration, verification status, timing summary, layout/check results, and known limitations.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Audit the package for missing macro views, unjustified timing exceptions, stale reports, and absolute machine-specific paths. Distinguish requirements that passed from requirements that were not checked.

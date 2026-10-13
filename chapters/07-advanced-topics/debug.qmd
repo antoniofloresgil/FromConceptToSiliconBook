@@ -2,15 +2,18 @@
 
 ## Concepts
 
-Debug interfaces, execution control, observability, and interactions with architectural state.
+Debug improves observability and control but also creates access to architectural state. Define who may halt a processor, inspect memory, alter registers, or access protected peripherals, and in which lifecycle states those actions are permitted.
+
+Functional verification, manufacturing test, and runtime debug serve different purposes. Scan chains and BIST help identify fabricated defects; debug helps investigate executing systems. Their access paths can nevertheless overlap with security-sensitive state.
 
 ## Implementation
 
-Analyze debug integration in a processor and its surrounding SoC.
+Create a threat model listing assets, entry points, allowed users, and required isolation. Include debug ports, buses, reset controls, and test modes. Identify whether these paths can bypass normal privilege checks.
+
+For a RISC-V SoC, trace debug access through the processor and interconnect using the actual implementation. Check the selected CORE-V Wally configuration before assigning a security policy to the debug interface. Specify reset and lock behavior, including whether a locked setting can be reopened.
 
 ## Hands-on Experiments
 
-Exercise halt, resume, and state inspection and document the observed behavior.
+Add tests for allowed and rejected debug transactions in each modeled state. Attempt a protected register access through both the normal bus and the debug path. Check behavior during reset and when configuration locks are set.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Inject a selected control-state fault in simulation and classify the result: detected, contained, silently corrupted, or an access-control violation. Record what the experiment models and what it cannot establish about physical attacks.

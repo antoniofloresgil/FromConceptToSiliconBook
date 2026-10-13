@@ -2,15 +2,20 @@
 
 ## Concepts
 
-Floorplanning, power distribution, placement, clock tree synthesis, and routing.
+Physical design optimizes interacting constraints. Higher utilization reduces available whitespace but can increase congestion; long wires can worsen timing; clock distribution adds real insertion delay and skew. A physically reasonable implementation requires more than a logically correct netlist.
+
+A standard-cell library supplies timing and physical views, while the PDK supplies technology rules and models. Analyze results at named operating corners. Power estimates also depend on activity assumptions; area and timing reports alone cannot establish power consumption.
 
 ## Implementation
 
-Analyze OpenROAD stages and their reports for a representative design.
+Use the OpenROAD stages invoked by the selected flow to inspect floorplan, placement, clock tree, and routing. Identify large macros, high-fanout controls, long buses, and pin placement constraints.
+
+For the UART case, locate the synchronizer, state machines, counters, and RX-to-TX connection. Relate critical timing paths to these structures. Compare pre-route estimates with post-route results that include interconnect effects.
+
+DRC checks layout against geometric rules. LVS compares extracted connectivity with the expected circuit. Antenna checks and density constraints address additional fabrication concerns. Record these results separately from timing status.
 
 ## Hands-on Experiments
 
-Explore floorplan and timing choices and track their effects on physical design results.
+Run a baseline and vary one floorplan or utilization choice. Compare cell area, die/core area, congestion, routing completion, and setup/hold results using the same RTL and clock target.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Explain whether a timing change came from logic, cell selection, or routing. Review failures before increasing margins or adding exceptions. Include the selected corner and configuration with every report excerpt.

@@ -2,15 +2,18 @@
 
 ## Concepts
 
-Design-space exploration and tradeoffs among performance, area, power, and implementation complexity.
+An experiment compares design choices under controlled conditions. Fix workload, correctness criteria, tool environment, target technology, and measurement definitions before changing a configuration.
+
+Latency, sustained throughput, timing slack, resource use, and area describe different aspects of a design. A smaller block can lose end-to-end performance through transfer overhead; a faster simulated datapath may miss its physical clock target.
 
 ## Implementation
 
-Define comparable processor configurations and automate collection of relevant reports.
+Use a reusable subsystem as the experimental unit: processor/peripheral integration, a buffered stream, or a small accelerator. Store the specification, RTL, tests, formal properties, constraints, and implementation configuration together.
+
+Separate FPGA and ASIC metrics. Keep technology, operating corner, clock period, software, and parameter values alongside each result. For power analysis, state the activity and modeling assumptions.
 
 ## Hands-on Experiments
 
-Run a reproducible experiment matrix and explain results with their measurement limitations.
+Compare two buffer depths or hardware/software partitions. Change one variable per run, verify correctness, and then collect timing and resource results. Include failed configurations and explain why they failed.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Conclude with an integration package: interface contract, build commands, verification evidence, implementation summaries, and limitations. This follows a project progression from specification through verification, FPGA prototype, and ASIC implementation.

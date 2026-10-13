@@ -2,15 +2,24 @@
 
 ## Concepts
 
-RTL synthesis, inferred hardware, technology mapping, and resource utilization.
+Synthesis elaborates the design, transforms logic, and maps it into available implementation resources. A generic synthesized netlist is useful for structural review, but it does not provide a placed-and-routed FPGA timing result or a technology-specific ASIC area result.
+
+Review warnings before totals. Unexpected latches, undriven nets, missing modules, or parameter mismatches can make a small report misleading.
 
 ## Implementation
 
-Synthesize SystemVerilog modules and examine the generated netlist and reports.
+The ready/valid slice from the SystemVerilog chapter is a compact first target. With its listing saved as `rv_slice.sv`, run:
+
+```sh
+yosys -p "read_verilog -sv rv_slice.sv; synth -top rv_slice; stat" -l rv_slice_yosys.log
+```
+
+Expect payload storage, occupancy state, and control logic; use the actual report to establish counts. The UART exercise is a larger target with two state machines, counters, shift registers, and an input synchronizer. Its synthesis-only LibreLane run is described in the LibreLane chapter.
+
+For FPGA implementation, choose the synthesis flow for the device and toolchain. Mapping to LUTs, flip-flops, RAM, and DSP resources changes the meaning of utilization figures.
 
 ## Hands-on Experiments
 
-Compare alternative RTL implementations and explain their resource usage.
+Synthesize the slice at widths of 8 and 32. Inspect the generated registers and logic, and explain how width affects resource use. Confirm that no unintended latch is inferred.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+For UART, locate the synchronizer, FSM state, prescalers, and payload registers in the mapped design. Compare results under identical parameters and constraints. Record target library or FPGA device, frontend, tool version, command, warnings, and resource counts.

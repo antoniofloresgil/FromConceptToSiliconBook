@@ -2,15 +2,18 @@
 
 ## Concepts
 
-Board interfaces, clock and reset requirements, memories, and hardware bring-up.
+An FPGA prototype brings together processor, memory, peripherals, clocks, reset, and software. Integration is successful when these blocks satisfy a common specification and software can exercise their intended behavior.
+
+FPGA results answer questions about that implementation. LUT count is not ASIC cell area, and FPGA timing is not ASIC timing. FPGA memory inference and clock primitives also need separate treatment when migrating to an ASIC.
 
 ## Implementation
 
-Adapt a RISC-V SoC to a selected FPGA board and document target-specific requirements.
+Define a minimal subsystem before adding optional features: processor configuration, boot address, program/data memory, one UART or timer, address map, and interrupt wiring. For CORE-V Wally, document the selected configuration and the wrapper boundaries rather than assuming a generic subsystem specification provides a ready-made Wally design.
+
+Verify the subsystem in simulation first. Then add board-specific pin constraints, clock generation, reset handling, and programming steps. Preserve an observable boot milestone, such as a known serial message or register write.
 
 ## Hands-on Experiments
 
-Load the design, run a small software workload, and compare hardware results with simulation.
+Prepare a software workload that exercises memory and one peripheral. Run it in simulation, synthesize and route the same configured RTL, and reproduce the expected behavior on the board.
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
-
+Deliver the RTL configuration, software image build instructions, verification log, pin/timing constraints, resource and timing reports, and bring-up observations. Classify failures as software, integration, timing, or board-interface problems before changing the design.
