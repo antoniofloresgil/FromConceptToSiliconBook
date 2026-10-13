@@ -1,19 +1,293 @@
-# Hardware Debug
+# Hardware Debug for RISC-V {#sec-riscv-debug}
 
 ## Concepts
 
-Debug improves observability and control but also creates access to architectural state. Define who may halt a processor, inspect memory, alter registers, or access protected peripherals, and in which lifecycle states those actions are permitted.
+Hardware debug gives an external agent controlled access to a running RISC-V system. It can stop one or more harts, inspect and modify registers, examine memory, execute small debug programs, reset selected harts and resume execution. That capability is essential for board bring-up, firmware development, post-silicon diagnosis and laboratory teaching. It is also a privileged access path that can bypass normal software privilege and protection mechanisms, so it must be designed as both a functional and a security feature.
 
-Functional verification, manufacturing test, and runtime debug serve different purposes. Scan chains and BIST help identify fabricated defects; debug helps investigate executing systems. Their access paths can nevertheless overlap with security-sensitive state.
+The RISC-V Debug Specification separates the architectural interface from its transport. A debugger such as GDB normally communicates through a probe and a Debug Transport Module (DTM), often using JTAG. The DTM reaches a Debug Module (DM) through the Debug Module Interface (DMI). The DM controls one or more harts and may access the SoC system bus. The hart implements Debug Mode and the required debug CSRs. The current ratified specification is version 1.0, revised in February 2025 [@riscvDebugSpec].
 
-## Implementation
+```text
+GDB ─► OpenOCD/debug server ─► probe ─► JTAG DTM ─► DMI ─► Debug Module
+                                                               │
+                         ┌─────────────────────────────────────┼─────────────────────┐
+                         │                                     │                     │
+                     halt/resume                         abstract commands     System Bus Access
+                         │                                     │                     │
+                    RISC-V hart ◄── debug ROM / program buffer ┘                SoC interconnect
+```
 
-Create a threat model listing assets, entry points, allowed users, and required isolation. Include debug ports, buses, reset controls, and test modes. Identify whether these paths can bypass normal privilege checks.
+This chapter focuses on the digital design behind that diagram. It uses the RISC-V specification as the architectural contract and NEORV32 as the principal open-source implementation example: its on-chip debugger combines a Debug Module (DM), a JTAG Debug Transport Module (DTM), and an execution-based CPU Debug Mode compatible with the Minimal RISC-V Debug Specification 1.0 [@neorv32Ocd]. PULP `riscv-dbg` and CV32E40P are useful comparison points for the earlier 0.13.2 generation. The emphasis is on a system that can be verified and integrated, not only on connecting a JTAG header.
 
-For a RISC-V SoC, trace debug access through the processor and interconnect using the actual implementation. Check the selected CORE-V Wally configuration before assigning a security policy to the debug interface. Specify reset and lock behavior, including whether a locked setting can be reopened.
+### Specification version and implementation claims
+
+RISC-V Debug 1.0 is the current reference specification [@riscvDebugSpec]. NEORV32 explicitly documents its Debug Module and CPU Debug Mode as compatible with the minimal 1.0 `Sdext` extension [@neorv32Ocd]. By comparison, `riscv-dbg` states compatibility with the earlier 0.13.2 specification and is used by CVA6, CV32E40P and Ibex; CV32E40P documentation also describes execution-based debug according to 0.13.2 [@pulpRiscvDbg; @cv32e40pDebug]. The basic architecture is closely related, but optional features, clarified behavior and compatibility details evolve.
+
+Therefore state the exact debug-specification version and implemented feature set for a real chip. Do not write only “RISC-V debug supported.” For example, trigger count/type, System Bus Access (SBA), authentication, abstract memory commands, quick access, hardware breakpoints, trace and behavior during single-step interrupts may differ between implementations.
+
+| Question | Why it matters |
+| --- | --- |
+| Which debug-specification version is targeted? | Determines required register semantics and compatibility expectations |
+| Is debug execution-based or halt/stall based? | Changes the core/DM interface and debug-ROM requirements |
+| Which abstract commands are implemented? | Determines register, memory and program-buffer access available to tools |
+| Does the DM implement SBA? | Determines whether memory can be accessed without executing the hart |
+| Which triggers are implemented? | Determines breakpoint/watchpoint capability |
+| How is access authenticated or disabled? | Defines the security and lifecycle policy |
+
+### Debug Mode is distinct from privilege modes
+
+Debug Mode is separate from U/S/VS/M privilege modes. When a hart enters Debug Mode it stops normal program execution and starts a debug control sequence. Debug CSRs, such as `dcsr` and `dpc`, describe and control that state. Normal software cannot freely use debug state as an ordinary runtime service; implementations must enforce the specified access restrictions.
+
+For an execution-based core, debug entry typically performs these conceptual actions:
+
+1. Save the interrupted program counter in `dpc`.
+2. Record the entry cause in `dcsr`.
+3. Redirect the PC to the debug halt address supplied by the DM.
+4. Execute trusted debug code from a debug ROM or program buffer context.
+
+NEORV32 enters Debug Mode after a DM halt request, a suitably configured `ebreak`, single-step completion or a trigger event; the mode supplies the debug CSRs and `dret` required by the minimal 1.0 interface [@neorv32Ocd]. CV32E40P illustrates the equivalent 0.13.2 integration: an external `debug_req_i`, a trigger match or an appropriately configured `ebreak` requests entry; the core saves PC/cause and begins debug control code at `dm_halt_addr_i` [@cv32e40pDebug]. Debug entry is architectural control flow, not a software interrupt handler and not merely a clock gate.
+
+### Hart states and run control
+
+The DM sees each selectable hart as exactly one of four states: **nonexistent**, **unavailable**, **running** or **halted** [@riscvDebugSpec]. A multi-hart SoC must report status accurately because the debugger uses it to decide when commands are legal.
+
+| State | Meaning | Typical debugger action |
+| --- | --- | --- |
+| Nonexistent | The selected hart index is not implemented | Do not issue per-hart commands |
+| Unavailable | Present but cannot currently participate, often during reset/power-up | Wait or reset according to policy |
+| Running | Executing normal program code | Request halt, inspect nonintrusive state only if supported |
+| Halted | In Debug Mode under DM control | Read/write registers, execute debug sequences, resume |
+
+The DM selects a hart with `hartsel`; it can halt and resume selected harts through `haltreq` and `resumereq`. In a multicore system, system-level debug must define whether all harts stop together, only one stops, or a halt request affects a coherent group. Halting a producer while a consumer continues can deadlock an interconnect protocol or leave a shared peripheral in an unusual state. These are integration decisions above the basic register interface.
+
+## Debug architecture
+
+### Debug Transport Module and JTAG
+
+A DTM exposes the DM through one or more physical transports. The specification defines a JTAG DTM based on a standard JTAG Test Access Port (TAP), with registers including `dtmcs` and `dmi` [@riscvDebugSpec]. JTAG shifts data serially using TCK/TMS/TDI/TDO and is independent from the SoC system clock, so the DTM/DM boundary requires a clock-domain crossing.
+
+The DMI is a register-oriented request/response interface. A debugger sends an operation, address and data; the DM returns data and status. The transport can be busy or report errors, so a host must observe the DTM status and insert idle cycles or reset the DMI transaction state when required. A correct JTAG waveform alone is not enough: request ordering, back-pressure, reset and CDC behavior need RTL verification.
+
+NEORV32 implements this boundary in `neorv32_debug_dtm.vhd`, whose source declares compatibility with Debug Specification 0.13 and 1.0 [@neorv32Dtm]. `riscv-dbg` also includes a JTAG DTM and cautions that its JTAG clock needs to be lower than the system clock frequency [@pulpRiscvDbg]. That is an implementation limitation, not a general license to ignore CDC. The integration must state both clock rates, reset behavior and synchronization assumptions.
+
+### Debug Module Interface and Debug Module
+
+The DM is the architectural control point. It exposes registers for activation, hart selection/status, halt/resume requests, reset behavior, abstract commands, program buffer and optional SBA. The debugger commonly starts by setting `dmactive`, discovering capability fields, selecting a hart, halting it and polling status before attempting a register access.
+
+Important DM register groups include:
+
+| Register group | Role |
+| --- | --- |
+| `dmcontrol` | DM activation, hart selection, halt/resume/reset requests and reset-halt policy |
+| `dmstatus` | Capability and aggregate selected-hart status: running, halted, unavailable, reset |
+| `abstractcs` / `command` | Abstract command capability, busy/error state and command launch |
+| `data0` ... | Data registers used by abstract commands |
+| `progbuf0` ... | Optional program buffer instructions |
+| `sbcs`, `sbaddress`, `sbdata` | Optional system-bus access control, address and data |
+
+The DM is active only when `dmactive` is asserted. Deactivating it resets DM state as defined by the specification. This is useful for recovering a stuck debug transaction, but it is not a substitute for a SoC reset policy. Decide whether DM state survives system reset, how a debugger observes `havereset`, and whether reset can be requested per hart or for the non-debug module.
+
+### The hart-facing interface
+
+The core and DM exchange a small set of control/status signals plus addresses for debug control code. NEORV32 packages this in its on-chip debugger: the DTM feeds the DM, which supplies a debug ROM, a program buffer, a data buffer and the halt/resume/execute control path [@neorv32Ocd]. CV32E40P provides a particularly visible core-facing form: `debug_req_i`, `debug_havereset_o`, `debug_running_o`, `debug_halted_o`, `dm_halt_addr_i` and `dm_exception_addr_i` [@cv32e40pDebug]. Its `debug_req_i` is synchronous to the core clock and must be asserted for at least one cycle; the status signals are mutually exclusive in the documented integration.
+
+An execution-based design keeps the core interface compact. The DM does not need a direct external wire for every GPR, FPR and CSR. Instead, the halted hart executes a short sequence that transfers a requested register to/from DM data registers. That saves core integration logic but requires a debug ROM, correct exception behavior and a trusted execution environment.
+
+```text
+DM abstract command ─► data register / command state
+                               │
+                               ▼
+                    debug ROM command sequence
+                               │
+                               ▼
+                 hart reads/writes GPR, CSR or program buffer
+                               │
+                               ▼
+                 data register updated ─► DMI response ─► debugger
+```
+
+The debug halt and exception addresses must be valid, aligned, executable locations in the system address map. CV32E40P requires both addresses to be word aligned [@cv32e40pDebug]. Place the debug ROM so that it remains accessible while normal software is stopped; protect it from untrusted writes; and ensure that bus/firewall policy permits the required debug accesses only in the intended lifecycle state.
+
+## Access mechanisms
+
+### Abstract commands
+
+Abstract commands give debugger software an implementation-independent way to access a halted hart. The standard defines command types including access register, quick access and access memory; implementations advertise what they support [@riscvDebugSpec]. Access-register commands can transfer GPR, floating-point registers or CSRs through abstract data registers and may execute the program buffer.
+
+The basic transaction is:
+
+1. Select and halt the target hart.
+2. Check that `abstractcs.busy` is clear and `cmderr` is zero.
+3. Write input data when a write command needs it.
+4. Write `command` to launch the abstract operation.
+5. Poll until `busy` clears.
+6. Check and clear `cmderr` if necessary.
+7. Read returned `data` for a register-read command.
+
+The ordering is important. While an abstract command is busy, the specification restricts changing hart selection and control requests, and an implementation should enforce ignored writes as required [@riscvDebugSpec]. `cmderr` is sticky until cleared; issuing more commands without understanding it makes diagnosis harder.
+
+For example, a debugger reads integer register `x10` by issuing an access-register command for the corresponding abstract register number with transfer enabled, then reads the result from `data0`. The precise encoding is debugger/DM protocol detail; at RTL integration level, verify the observable sequence: the hart is halted, no normal instruction retires unexpectedly, the right register value arrives, busy clears, errors propagate and resume restores normal execution.
+
+### Program buffer and execution-based debug
+
+The program buffer is a small optional instruction storage area controlled by DM registers. It lets a debugger cause the halted hart to execute a short sequence, for example moving a value between a CSR and an abstract data register or performing an operation not directly covered by an abstract command.
+
+Execution-based debug is a common implementation technique. NEORV32 combines a debug ROM with a two-entry program buffer; an implicit `ebreak` completes the program-buffer sequence, and abstract register commands can use auto-execution [@neorv32Ocd]. `riscv-dbg` offers a useful 0.13.2 comparison: it uses a park loop in which the core runs controlled code and the DM dynamically changes what it executes in response to JTAG/DTM requests [@pulpRiscvDbg]. The approach simplifies core-side register access but means a hart may be busy-looping in debug control code rather than electrically stopped at every internal pipeline stage.
+
+This distinction matters for observation. Architectural state is well defined at debug boundaries; transient pipeline signals are not necessarily frozen in a way suitable for a debugger. If post-silicon investigation requires trace of microarchitectural events, add a trace or performance-monitoring mechanism rather than assuming run-control debug exposes every internal wire.
+
+### System Bus Access
+
+SBA allows the DM to act as a bus manager and access physical memory/peripherals without involving a hart. It can support 8-, 16-, 32-, 64- or 128-bit accesses according to implemented capabilities. The debug specification explicitly warns that SBA data might not be coherent with what each hart observes; the debugger must enforce coherence if the implementation does not [@riscvDebugSpec].
+
+SBA is powerful because it can read memory while a hart runs and can access peripherals without executing debug code. It also introduces major integration questions:
+
+| Question | Required design decision |
+| --- | --- |
+| Bus identity | Is the DM a privileged master, and which interconnect/firewall policy applies? |
+| Coherency | Must harts be halted, caches flushed, or a coherent path used? |
+| Side effects | Which memory-mapped reads/writes are safe during debug? |
+| Address visibility | Can debug access secure RAM, boot ROM, key storage or fuse controllers? |
+| Error handling | How do timeout, alignment and bus errors map to `sberror` and host diagnostics? |
+
+An SBA test must prove more than a successful RAM read. It should cover alignment, each supported access size, error propagation, auto-increment, accesses while the bus is busy, peripheral side effects and the security policy for protected address ranges.
+
+### Triggers and breakpoints
+
+The Trigger Module provides hardware events that can enter Debug Mode or cause other configured actions. A common trigger is an instruction-address match, the hardware basis for a breakpoint. Data/address watchpoints and other trigger types are optional. NEORV32 can implement up to 16 optional hardware triggers through its `Sdtrig` support [@neorv32Ocd]. CV32E40P documents one instruction-address match trigger and exposes the relevant trigger CSRs; its documented trigger configuration is intentionally limited [@cv32e40pDebug].
+
+Software breakpoints replace an instruction with `ebreak`; hardware breakpoints compare address without changing program memory. The behavior of `ebreak` depends on `dcsr` configuration and whether the hart is already in Debug Mode. In CV32E40P, `ebreak` outside Debug Mode enters the ordinary exception handler unless `DCSR.EBREAKM` has been enabled from Debug Mode; while already in Debug Mode, `ebreak` restarts debug code without modifying status CSRs [@cv32e40pDebug].
+
+These cases must be tested separately. A debugger cannot assume that every `ebreak` is a breakpoint, and firmware cannot assume a debugger is attached merely because it executes one.
+
+## Integration example: a single-hart SoC
+
+### Architecture
+
+The following conceptual integration uses an execution-based hart and NEORV32-style 1.0 infrastructure:
+
+```text
+JTAG connector ─► JTAG DTM ─► DMI CDC ─► Debug Module
+                                             ├─► debug_req ─► RISC-V hart
+                                             │                 ◄─ halted/running/havereset
+                                             ├─► debug ROM ──► instruction/data path visible to hart
+                                             └─► SBA master ─► SoC interconnect ─► RAM/peripherals
+```
+
+The integration plan must define:
+
+- Core clock and JTAG TCK domains, plus reset sequencing across them.
+- Debug ROM base, size, alignment and access permissions.
+- `dm_halt_addr` and `dm_exception_addr` values wired to the core.
+- DMI address width and DM bus width.
+- SBA master ID, arbitration, address map and firewall permissions.
+- JTAG pin multiplexing, pull resistors, voltage reference and production availability.
+- Lifecycle policy: development, production, return/service and permanently disabled states.
+
+CORE-V Wally configurations should be evaluated against their actual RTL debug capability and selected build options. Do not infer NEORV32, CV32E40P or `riscv-dbg` compatibility from the fact that all are RISC-V cores.
+
+### Example control sequence
+
+At an architectural level, a debugger halts a core, reads `x10`, writes a new value, and resumes as follows:
+
+```text
+1. Reset/activate DTM and DM; read version and capability fields.
+2. Select hart 0; wait until it is available and running or halted.
+3. Set haltreq; poll dmstatus until hart 0 is halted.
+4. Clear stale abstract-command errors; access-register read x10.
+5. Poll abstractcs.busy; read data0; verify cmderr == 0.
+6. Write data0; access-register write x10; poll completion/error.
+7. Set resumereq; observe transition back to running.
+```
+
+This sequence becomes verification scenarios at several boundaries. At the JTAG/DMI boundary, requests must be serialized and errors reported. At the DM/hart boundary, halt and resume requests must not be lost across clocks/resets. At the architectural boundary, `dpc`, `dcsr`, register contents and executed instructions must have the specified result.
+
+### Pseudocode for a verification monitor
+
+The following SystemVerilog-style pseudocode illustrates a property for run-control status. Adapt signal names and latency bounds to the real core/DM interface:
+
+```systemverilog
+property halt_request_reaches_halted;
+  @(posedge core_clk) disable iff (!rst_n)
+    debug_req && debug_running |-> ##[1:MAX_HALT_CYCLES] debug_halted;
+endproperty
+assert property (halt_request_reaches_halted);
+
+property mutually_exclusive_debug_status;
+  @(posedge core_clk) disable iff (!rst_n)
+    $onehot({debug_havereset, debug_running, debug_halted});
+endproperty
+assert property (mutually_exclusive_debug_status);
+```
+
+The first property needs a bounded response guarantee from the implementation. If the architecture permits unbounded bus completion or a halted fetch, define a realistic bound or an explicit progress/error condition. The second property matches the CV32E40P integration contract; another core may have a different exposed status interface.
+
+## Security and lifecycle design
+
+Debug access is often more privileged than ordinary software. A debugger that can halt a secure hart, read memory through SBA or execute a program buffer can defeat secure boot, authentication or isolation unless the system deliberately restricts it. Security policy must be enforced in hardware and lifecycle logic, not solely by hiding a connector.
+
+| Lifecycle state | Example debug policy |
+| --- | --- |
+| Development | Full authenticated or physically controlled JTAG/DM/SBA access |
+| Manufacturing test | Limited test/debug access with controlled test keys and audit |
+| Production | Disabled, permanently locked, or enabled only after strong authentication |
+| Field service | Narrow authenticated access, possibly without SBA to secure regions |
+| RMA/return | Explicit unlock process with destructive erase or owner authorization |
+
+Decide independently whether to disable the DTM, DM, SBA, triggers and debug ROM. Disabling only JTAG may leave another DTM or an internal software path. Disabling the DM may still leave test logic. Lock bits must themselves have a reset and permanence policy: can a warm reset reopen debug, is the lock one-time programmable, and can fault injection bypass the state machine?
+
+Model policy in verification. Attempt prohibited DMI operations, SBA access to secure regions, reset while locked, and transitions between lifecycle states. Verify that errors are visible and that no request changes architectural state when it should be rejected.
+
+## Verification strategy
+
+### Layered tests
+
+Test each layer independently before relying on a debugger session:
+
+| Layer | Directed checks |
+| --- | --- |
+| JTAG TAP/DTM | Reset, instruction selection, shift/update sequence, ID code, DMI busy/error/reset |
+| DMI/DM | `dmactive`, hart selection, status aggregation, halt/resume/reset requests, abstract-command error handling |
+| Hart Debug Mode | External request, trigger and `ebreak` entry; `dpc`/`dcsr`; debug exception; resume/single step |
+| Abstract access | GPR/CSR read/write, unsupported register, busy collision, unavailable hart, error clear |
+| SBA | Widths, alignment, auto-increment, timeout, side-effect registers, coherency and firewall denial |
+| Security | Disabled/authenticated modes, lifecycle locks and prohibited address access |
+
+Use a reference debugger stack where possible. NEORV32 documents use of OpenOCD and GNU GDB through its JTAG on-chip debugger [@neorv32Usage]. `riscv-dbg` reports OpenOCD compliance tests, custom testbench coverage and `riscv-tests/debug` as complementary validation methods [@pulpRiscvDbg]. A project integrating either approach must still test its own clock/reset wiring, address map, debug ROM, bus adapters and security controls.
+
+### Debug versus manufacturing test and trace
+
+Run-control debug, scan/BIST and trace solve different problems:
+
+| Capability | Primary purpose | Typical observability |
+| --- | --- | --- |
+| Run-control debug | Stop/control software-visible execution | Architectural registers, memory, CSRs and selected triggers |
+| Scan/BIST | Detect manufacturing defects | Scan chains, memories and structural test logic |
+| Trace | Reconstruct execution history/performance | Retired instructions, branches, buses or microarchitectural events |
+
+Their access paths can overlap, and each must respect the security lifecycle. A halted processor snapshot may not explain a transient cache, bus or clock problem; trace and performance counters complement debug rather than replace it.
 
 ## Hands-on Experiments
 
-Add tests for allowed and rejected debug transactions in each modeled state. Attempt a protected register access through both the normal bus and the debug path. Check behavior during reset and when configuration locks are set.
+### Experiment 1: capability inventory
 
-Inject a selected control-state fault in simulation and classify the result: detected, contained, silently corrupted, or an access-control violation. Record what the experiment models and what it cannot establish about physical attacks.
+Choose a target core and DM. Create a table that names the debug-specification version, hart XLEN, DTM transport, DM data width, debug ROM location, implemented abstract commands, program-buffer size, SBA widths, trigger types/count and authentication/lock policy. Mark every entry as verified from RTL/documentation, tested in simulation, or not implemented.
+
+### Experiment 2: halt, inspect and resume
+
+With an OpenOCD-compatible JTAG transport or a simulation DMI driver, run the seven-step control sequence above. Check that `dpc` captures the expected PC, `dcsr` identifies an external halt, a GPR read returns the expected architectural value, and `resumereq` resumes from the intended instruction. Repeat while the core is in reset/unavailable state and verify the documented result.
+
+### Experiment 3: breakpoint and trigger behavior
+
+Place a software `ebreak` in a test program and observe the ordinary exception path with the relevant `dcsr` ebreak bit disabled. Configure the supported debug behavior, repeat, and compare `dpc`, cause and PC redirect. If the core implements an address trigger, program a hardware breakpoint and verify that it enters Debug Mode without modifying instruction memory.
+
+### Experiment 4: system-bus access and policy
+
+Use SBA to read/write ordinary RAM, then test an unaligned access, an unsupported size and an address intentionally denied by the interconnect/firewall. Confirm the expected data or `sberror` result. Repeat while a hart has cached or recently written the same region; document the coherence mechanism or demonstrate why the observation is not coherent.
+
+### Experiment 5: debug lock verification
+
+Model development and production lifecycle states. In production, attempt JTAG DMI access, halt request, abstract register access and SBA reads of a protected memory. Verify that the implementation rejects every forbidden route and that warm reset does not accidentally re-enable it. Record the threat model and what physical attacks the RTL test does not cover.
+
+## Further reading
+
+Use the ratified [RISC-V Debug Specification](https://docs.riscv.org/reference/debug/_attachments/riscv-debug-specification.pdf) as the architectural source of truth, then consult the [NEORV32 on-chip debugger documentation](https://github.com/stnolting/neorv32/blob/main/docs/datasheet/on_chip_debugger.adoc) and its [OpenOCD/GDB guide](https://github.com/stnolting/neorv32/blob/main/docs/userguide/using_ocd.adoc) for a 1.0 implementation and host workflow. The [PULP `riscv-dbg` repository](https://github.com/pulp-platform/riscv-dbg/) documents a reusable execution-based 0.13.2 comparison, while the [CV32E40P debug manual](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/cv32e40p_v1.8.0/debug.html) shows a concrete 0.13.2 hart-facing interface. Keep the specification version visible in every integration and verification plan.

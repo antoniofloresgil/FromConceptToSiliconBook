@@ -1,19 +1,62 @@
 # Architectural Design Exploration
 
-## Concepts
+Architectural design-space exploration (DSE) compares alternative processor and SoC configurations under a controlled, reproducible method. Its purpose is not to find a universally best core, but to select the configuration that best satisfies a stated objective: throughput, response time, FPGA resources, clock frequency, energy estimate, verification effort, or software capability.
 
-An experiment compares design choices under controlled conditions. Fix workload, correctness criteria, tool environment, target technology, and measurement definitions before changing a configuration.
+## Method
 
-Latency, sustained throughput, timing slack, resource use, and area describe different aspects of a design. A smaller block can lose end-to-end performance through transfer overhead; a faster simulated datapath may miss its physical clock target.
+Formulate a hypothesis, choose a baseline, change one factor, prove functional equivalence where applicable, then collect measurements. Record RTL commit, configuration parameters, compiler and benchmark options, tool versions, target clock, constraints and input data. A table of results without this provenance cannot be compared later.
 
-## Implementation
+| Metric | Meaning | Common mistake |
+|---|---|---|
+| Cycles | Work at a given microarchitecture | Comparing runs with different workloads |
+| CPI | Cycles / retired instructions | Ignoring changed instruction mix |
+| Frequency | Physical timing limit | Treating a requested clock as achieved |
+| Time | cycles / achieved frequency | Reporting cycles alone |
+| LUT/BRAM/DSP | FPGA resource cost | Interpreting it as ASIC area |
+| Cache misses | Memory-system behavior | Missing cache warm-up policy |
 
-Use a reusable subsystem as the experimental unit: processor/peripheral integration, a buffered stream, or a small accelerator. Store the specification, RTL, tests, formal properties, constraints, and implementation configuration together.
+Use Wally's parameterized RTL as the experimental platform. Meaningful axes include RV32/RV64, ISA extensions, cache size/associativity/line length, branch predictor, multiplier/divider, FPU, MMU/PMP, memories, buses and peripherals. Some parameters interact: a bigger cache can improve CPI while increasing BRAM use and lowering maximum frequency; a branch predictor can reduce control stalls but increase front-end critical paths.
 
-Separate FPGA and ASIC metrics. Keep technology, operating corner, clock period, software, and parameter values alongside each result. For power analysis, state the activity and modeling assumptions.
+## A Wally exploration plan
 
-## Hands-on Experiments
+Begin with a minimal configuration that boots a fixed bare-metal benchmark from internal memory. Establish correctness in simulation, then make three configurations:
 
-Compare two buffer depths or hardware/software partitions. Change one variable per run, verify correctness, and then collect timing and resource results. Include failed configurations and explain why they failed.
+1. **Minimal:** RV32IMC, internal memories, UART/GPIO and no caches.
+2. **Balanced:** small I/D caches and branch prediction, sized for the Nexys Video.
+3. **Performance-oriented:** a richer RV64GC configuration with larger cache resources, only if the software and FPGA budget justify it.
 
-Conclude with an integration package: interface contract, build commands, verification evidence, implementation summaries, and limitations. This follows a project progression from specification through verification, FPGA prototype, and ASIC implementation.
+Run identical kernels: arithmetic, sequential memory, pointer chasing, branch-heavy control and a realistic application such as CoreMark. Warm caches consistently. Use PMU counters for cycles, instructions, branch-prediction failures, cache misses and stall cycles. Then synthesize and route the same configuration; a simulated improvement that prevents timing closure is not a finished architectural result.
+
+### Focused experiments
+
+**Caches.** Sweep capacity, associativity and line length. Compare compulsory, capacity and conflict behavior using sequential, blocked and irregular access workloads. Measure miss rate *and* miss-stall cycles; a lower miss rate can still have poor time if refill latency or clock period changes.
+
+**Branch prediction.** Compare no predictor, static policy and available dynamic structures. Measure branches, wrong predictions and CPI. Relate the result to the pipeline flush penalty, not simply to the raw misprediction rate.
+
+**Pipeline and functional units.** Wally is a five-stage pipeline. A deeper pipeline can improve frequency but raises forwarding, hazard, control-flush and verification complexity. Test alternatives only with a precise instruction-retirement and exception contract. For multiply/divide, compare iterative, pipelined and FPGA-DSP implementations using total application time and resources.
+
+**Accelerators.** Use the FIR/DSP case from the previous chapter to compare software, a custom instruction and a DMA-capable peripheral. Include setup and transfer costs; engine throughput alone is not end-to-end speedup.
+
+## Automating DSE
+
+Generate configurations from a manifest, launch simulation and implementation jobs, parse PMU/log reports, and save one row per run to CSV or JSON. Reject a row if functional tests fail, timing is negative or constraints are incomplete. Plot Pareto frontiers such as performance versus LUTs or frequency versus BRAM. A Pareto point is useful because no other tested design is both faster and smaller for the selected metrics.
+
+```text
+configuration manifest -> RTL generation -> simulation/tests
+        |                                      |
+        +-> Yosys/nextpnr -> timing/resources -+-> results database
+```
+
+Change one architectural parameter at a time for causal understanding; use a factorial or search strategy only after baseline interactions are understood. Include failed configurations in the database: a cache that exceeds BRAM or a predictor that misses timing defines the practical design boundary.
+
+## FPGA limits and gem5
+
+FPGA evidence is valuable because it exposes resource use, place-and-route congestion, real clocking and board integration. It is slow for broad DSE: every variant needs elaboration, synthesis, place-and-route, bitstream generation, programming and hardware execution. A full XC7 build can take far longer than a simulation, and measurements may be limited by UART, boot time or external-memory bring-up rather than the core.
+
+Use FPGA late in the loop to validate selected candidates. Use RTL simulation for functional and cycle-accurate core behavior. For a much wider early search, architectural simulators such as gem5 can run workloads under many cache, memory and CPU-model parameters without FPGA compilation. gem5 results are models, not physical proof: calibrate and validate them against RTL/PMU measurements for matching configurations before using them for decisions.
+
+XiangShan is a useful research-oriented RISC-V example. Its community maintains a gem5 model intended to follow its evolving out-of-order microarchitecture, enabling broad studies before expensive RTL implementation. The lesson is methodological: simulator fidelity requires a maintained correspondence between model parameters, microarchitectural behavior, workloads and RTL evidence. A stale gem5 model can rank alternatives incorrectly even if its absolute performance looks plausible.
+
+## Hands-on study
+
+Choose one workload and compare the three Wally configurations. State the objective, collect correctness evidence, PMU data and FPGA reports, then select a design. Explain whether the limiting factor is execution, branches, cache/memory, frequency or FPGA resources. Finally, model the same cache sweep in gem5, identify which ranking agrees with RTL/FPGA, and document every mismatch as a modeling or integration question.

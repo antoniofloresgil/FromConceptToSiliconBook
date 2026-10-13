@@ -1,0 +1,404 @@
+# Clocking, Reset, and Timing Constraints {#sec-clocking-timing}
+
+## Concepts
+
+Digital hardware is only synchronous when a timing contract makes it synchronous. SystemVerilog can describe a register with `always_ff @(posedge clk)`, but that syntax neither creates a physical clock network nor states how fast the circuit must run. The contract connects three levels of design:
+
+1. **RTL intent:** which signals are sampled by which edge, how reset behaves, and which paths cross domains.
+2. **Timing constraints:** clock periods, uncertainty, external delays and any justified exceptions.
+3. **Physical implementation:** cells, clock tree, interconnect, voltage and process conditions that determine whether the constraints are met.
+
+This chapter establishes that contract before the book applies it in FPGA timing, OpenROAD and LibreLane. The nextpnr chapter focuses on an FPGA implementation; the ASIC chapters use the same concepts with Liberty libraries, SDC and post-layout extraction.
+
+### The synchronous abstraction
+
+In a single synchronous clock domain, a register launches new data at an active clock edge. Combinational logic transforms that data. A receiving register captures it on a later active edge. The abstraction works when the data path settles before the capture requirement and remains stable around the capture edge.
+
+```text
+launch flip-flop ── clock-to-Q ── combinational logic + wires ──► capture flip-flop
+       │                                                         │
+       └──────────────────── shared clock network ──────────────┘
+```
+
+The clock is therefore not an ordinary data signal. It reaches many sequential elements, has delay and skew, consumes power, and determines the time available to every path. Treating it as a casual top-level input is one of the fastest ways to create a design that passes simulation but fails in hardware.
+
+An RTL clocked process describes the intended edge behavior:
+
+```systemverilog
+always_ff @(posedge clk) begin
+  if (reset) State <= Idle;
+  else       State <= NextState;
+end
+```
+
+This says that `State` changes on rising edges under the stated reset rule. It does **not** specify a 10 ns period, a duty cycle, a clock source, clock uncertainty, skew, or the physical cells that distribute `clk`. Those facts belong to the clock/reset architecture and timing constraints.
+
+### Clock domains
+
+A clock domain is a collection of sequential elements that share a defined timing relationship. A simple core may have one free-running clock. A realistic SoC commonly has a processor clock, an interconnect clock, peripheral clocks, an external serial clock, PLL-generated clocks and reset domains.
+
+Signals should cross between unrelated domains only through a deliberate clock-domain crossing (CDC) mechanism. An ordinary two-flop synchronizer is appropriate for a single-bit level/control signal when loss of individual events is acceptable. It is not a safe transport for a multi-bit word, a pulse that can be missed, or a transaction with data/control coherence requirements. Those cases require a handshake, request/acknowledge protocol, asynchronous FIFO or another reviewed structure.
+
+| Crossing type | Common mechanism | Important limitation |
+| --- | --- | --- |
+| Single, slowly changing control bit | Two-flop synchronizer | Latency is variable; an event can be missed if too short |
+| Pulse/event | Toggle synchronizer or request/acknowledge | Source must observe completion or retain the event |
+| Multi-bit data with control | Handshake with stable payload | Source must hold payload until accepted |
+| Independent streaming clocks | Asynchronous FIFO with Gray-coded pointers | Requires correct pointer synchronization and overflow/underflow policy |
+| Related clocks with known phase | Explicit generated-clock constraints | Relationship must be true in hardware, not assumed |
+
+Metastability cannot be eliminated by RTL. A synchronizer reduces the probability that a metastable first-stage output propagates, but it does not make the first flip-flop magically deterministic. The architecture must tolerate its latency and the verification plan must test the protocol rather than relying on a simulation to display analog metastability.
+
+### Reset is a clocking problem too
+
+Reset defines the state from which a domain begins operation. It also crosses physical regions and, sometimes, clock domains. Specify all of the following:
+
+- Reset polarity and whether assertion is synchronous or asynchronous.
+- Which registers, memories and interfaces must reset, and which may initialize through another mechanism.
+- Priority relative to enable, clear and normal data updates.
+- How deassertion is synchronized in every receiving clock domain.
+- When traffic is allowed to begin after release.
+
+An asynchronous assertion can force a design promptly into a safe state, while asynchronous deassertion near a clock edge can violate recovery/removal requirements or release different registers on different cycles. A common architecture asynchronously asserts reset and synchronizes its release locally. The exact circuit and policy depend on the system; document it rather than mixing reset styles by accident.
+
+## The timing budget
+
+### Setup timing
+
+For a register-to-register path, a simplified setup requirement is:
+
+\[
+T_{clk} \geq T_{cq,max} + T_{comb,max} + T_{route,max} + T_{setup} + T_{uncertainty} + T_{skew}
+\]
+
+where:
+
+- \(T_{clk}\) is the clock period.
+- \(T_{cq,max}\) is maximum clock-to-Q delay of the launching register.
+- \(T_{comb,max}\) is maximum delay through combinational cells.
+- \(T_{route,max}\) is maximum delay through wires and vias.
+- \(T_{setup}\) is the capture register's setup requirement.
+- \(T_{uncertainty}\) reserves clock jitter, modeling error and margin.
+- \(T_{skew}\) captures the relative clock arrival effect for the path.
+
+Static timing analysis (STA) compares the required arrival time against the calculated data arrival time. Their difference is **setup slack**. Positive slack means the checked setup requirement is met; negative slack means the path is too slow for that constraint. The frequency target follows from the period: a 10 ns period requests 100 MHz, while 20 ns requests 50 MHz.
+
+The equation is a reasoning model, not a license to add arbitrary margins until a report turns green. Each term should have an engineering basis. On an FPGA, routing and dedicated clock resources dominate different parts of the path than on an ASIC. On an ASIC, library corner, extracted RC, voltage and temperature change the delays. The constraint itself must remain stable enough that results can be compared.
+
+### Hold timing
+
+Hold timing checks the other direction: data must not arrive at the capture register too early after a clock edge. A simplified form is:
+
+\[
+T_{cq,min} + T_{comb,min} + T_{route,min} \geq T_{hold} + T_{uncertainty} + T_{skew,hold}
+\]
+
+Hold failures are not repaired by reducing the clock frequency. They are minimum-delay failures caused by paths that are too fast relative to the clock arrival relationship. Typical repairs add delay, buffer the data path, adjust clock skew within the clock methodology, or change logic deliberately. A design can meet setup timing and still fail hold timing; both reports are required.
+
+### Slack, corners and modes
+
+The same path has different delays across process, voltage and temperature corners. Slow cells at low voltage and high temperature often stress setup; fast cells at high voltage and low temperature can stress hold. Libraries encode relevant timing information, and a complete ASIC flow analyzes the required corners and modes. FPGA tools similarly model the selected device and speed grade.
+
+Timing results must state the implementation context:
+
+| Record | Why it is needed |
+| --- | --- |
+| Clock and period | Defines the primary performance requirement |
+| PDK/device and library or speed grade | Determines timing models |
+| Operating corner/mode | Establishes which delays were analyzed |
+| Tool version and constraints revision | Makes results reproducible |
+| Worst setup and hold slack | Shows whether both requirements are met |
+| Unconstrained paths and exceptions | Reveals timing that was not checked normally |
+
+Do not compare an FPGA slack at one speed grade with an ASIC slack at a different corner as if they measured the same physical result. Compare only runs with the same stated assumptions.
+
+## From RTL to constraints
+
+### Inventory clocks before writing SDC
+
+Make a clock/reset table before entering tool commands. For each clock, identify its source, nominal frequency, waveform, destination domain, relationship to other clocks, reset, and enable/gating behavior.
+
+| Clock | Source | Target | Domain | Relationship | Reset/release rule |
+| --- | --- | ---: | --- | --- | --- |
+| `clk_sys` | Board oscillator or PLL | 100 MHz | Core/interconnect | Primary clock | Reset release synchronized to `clk_sys` |
+| `clk_uart` | Clock-enable, not a new clock | 16× baud tick | UART logic | Derived enable in `clk_sys` domain | Follows `clk_sys` reset |
+| `clk_ext` | External device | Device interface | Asynchronous unless characterized | No assumed relation | Synchronize controls/data protocol |
+
+Prefer a clock enable to fabricating a slow local clock for simple rate division. A clock enable keeps logic in one domain and avoids unnecessary generated-clock and CDC complexity:
+
+```systemverilog
+always_ff @(posedge clk_sys) begin
+  if (reset) begin
+    Count <= '0;
+    Tick  <= 1'b0;
+  end else if (Count == DIVISOR - 1) begin
+    Count <= '0;
+    Tick  <= 1'b1;
+  end else begin
+    Count <= Count + 1'b1;
+    Tick  <= 1'b0;
+  end
+end
+```
+
+`Tick` is a one-cycle enable in the `clk_sys` domain. It is not a clock and should not drive the clock pin of another general-purpose flip-flop. Use dedicated clock-control resources only when the target FPGA/ASIC methodology permits them and constraints model the resulting clock correctly.
+
+### The purpose of SDC
+
+Synopsys Design Constraints (SDC) are Tcl commands used by many implementation and timing tools. They make the timing intent machine-readable. The most important commands define clocks, uncertainty and external interface requirements. OpenSTA, embedded in OpenROAD, reads Liberty, netlist and SDC information to calculate timing paths [@openroadApplication].
+
+A minimal constraint file for the accumulator example is:
+
+```tcl
+# constraints.sdc
+create_clock -name core_clk -period 10.0 [get_ports clk]
+set_clock_uncertainty 0.20 [get_clocks core_clk]
+
+# Values must come from the actual external timing budget.
+set_input_delay  1.0 -clock core_clk [get_ports {Clear Enable Operand[*]}]
+set_output_delay 1.0 -clock core_clk [get_ports {Sum[*] Valid Overflow}]
+```
+
+`create_clock` tells the timing engine that `clk` launches and captures sequential paths every 10 ns. `set_clock_uncertainty` reserves 0.20 ns for clock variation; it is an illustrative value, not a universal number. Input and output delays describe the part of an interface budget outside the block: transmitter clock-to-output, package/board trace, receiver setup, or the equivalent system boundary. Leaving them undefined can make a block report appear faster than its real integration contract.
+
+The accumulator's `reset` is normally excluded from ordinary synchronous data timing only after its reset architecture is understood. Do not call every inconvenient control signal a false path. If reset deassertion is synchronous to `clk`, it has a meaningful timing/recovery story; if it is asynchronous, the implementation still needs an explicit release strategy.
+
+### Generated clocks
+
+A PLL output, a divide-by-two flop output, or a dedicated clock-control block can create a clock with a known relationship to its parent. Constrain it as generated so tools understand launch/capture phase relationships. The exact syntax depends on the source object and tool, but the design question comes first: is it a physically generated clock, or merely a one-cycle clock enable?
+
+```tcl
+# Illustrative only: name and source pin depend on the implementation.
+create_generated_clock -name clk_div2 \
+  -source [get_ports clk] -divide_by 2 [get_pins u_divider/Q]
+```
+
+Generated-clock constraints belong with the implementation that produces them. A divide-by-two signal used as a data enable is not a generated clock constraint candidate. Conversely, omitting a real PLL clock can leave an entire domain unconstrained.
+
+### Exceptions are proof obligations
+
+The most common timing exceptions are false paths and multicycle paths. They are valid only when the hardware protocol proves the normal one-cycle relationship does not apply.
+
+```tcl
+# Illustrative: apply only after reviewing the actual path endpoints.
+set_false_path -from [get_clocks clk_a] -to [get_clocks clk_b]
+set_multicycle_path 2 -setup -from [get_cells SourceRegs*] -to [get_cells DestRegs*]
+set_multicycle_path 1 -hold  -from [get_cells SourceRegs*] -to [get_cells DestRegs*]
+```
+
+A false-path declaration is often used between truly asynchronous domains, but it does not make the crossing safe; the synchronizer or protocol does that. A multicycle path requires a guarantee that the capture register does not need the new value on the ordinary next edge. Its hold requirement must be adjusted consistently. Broad wildcards and blanket `set_false_path` commands can hide real failures. Review every exception as carefully as an RTL change.
+
+## Designing the clock and interface architecture
+
+### Clock source, quality and distribution
+
+A clock begins as an oscillator, PLL/DLL output, recovered serial clock or externally supplied board signal. It enters a clock-management and distribution network before it reaches sequential elements. The network may multiply/divide frequency, select between sources, gate portions of the design, balance tree branches and use dedicated routing resources. Every transformation affects the timing model.
+
+Three related terms are often confused:
+
+| Term | Meaning | Consequence for timing |
+| --- | --- | --- |
+| Clock latency | Delay from source definition to a sequential clock pin | Changes the absolute arrival time; after CTS it is part of the clock-path report |
+| Clock skew | Difference in latency at two sequential clock pins | Changes time available for setup and hold on their data path |
+| Jitter | Edge-to-edge variation of a clock source | Reduces the reliable timing budget and is modeled as uncertainty/margin |
+
+Before clock-tree synthesis, an implementation can use an ideal clock model. That is useful for logical optimization, but it cannot expose the actual latency/skew caused by buffers and wires. After CTS, clocks are propagated through the generated tree and timing analysis uses their physical arrival information. A path that passes with an ideal clock can fail after CTS; a path that passes after CTS can still fail after detailed routing and extraction.
+
+Clock duty cycle matters to interfaces that use both edges, latches, level-sensitive timing or external DDR signaling. A conventional single-edge synchronous block typically constrains only the active rising edge, but its clock generator still needs a legal waveform and duty-cycle specification at the technology level. Do not rely on an arbitrary simulator `#5` toggle as evidence that a hardware PLL, oscillator or clock mux has a valid duty cycle.
+
+### Clock enables, gating and power
+
+A register clock enable controls whether a register captures new data; the clock itself still arrives at the register. It is the preferred RTL mechanism for low-rate counters, intermittent peripherals and pipeline stalls because it retains one well-defined clock domain:
+
+```systemverilog
+always_ff @(posedge clk) begin
+  if (reset)         Counter <= '0;
+  else if (CountEn)  Counter <= Counter + 1'b1;
+end
+```
+
+Clock gating prevents clock transitions from reaching a region and can save dynamic power, but it is an implementation and verification concern. A gate must not create runt pulses, and its enable must be stable at the point required by the technology's integrated clock-gating (ICG) cell. In ASIC RTL, describe clock-gating intent using the project's approved methodology; synthesis and CTS can then use legal ICG cells and preserve test/scan behavior. In FPGA designs, use the device's recommended clock-control primitive rather than fabric logic unless the vendor flow explicitly supports the pattern.
+
+Do not write a general combinational gate on a clock merely because it simulates:
+
+```systemverilog
+// Unsafe general pattern: can generate a shortened pulse when Enable changes.
+assign GatedClk = clk & Enable;
+```
+
+Use a clock enable for ordinary sequential logic. Where physical clock gating is genuinely required, constrain the generated/gated clock, verify its enable protocol, and include it in the test and power plan.
+
+### Interface budgets belong on both sides of the boundary
+
+Input and output delays divide an end-to-end timing path at a block boundary. Consider an external source register, package, board trace and the accumulator's input port. The source clock-to-Q and interconnect delay consume part of the time before the block sees the input. An input-delay constraint tells the block-level STA how much time has already been consumed. Output delay reserves time after an output port for its destination's route and setup requirement.
+
+```text
+external launch FF ─ package/board ─► block input ─► internal logic ─► block output ─ package/board ─► external capture FF
+       source-side budget                 block timing budget                  destination-side budget
+```
+
+Without those delays, a block can appear to have a full clock period for its internal logic while its integrated interface has much less. Conversely, assigning excessive arbitrary delays can make a feasible interface look impossible. The system architect, board/pad/package data and the interface protocol determine the numbers.
+
+For source-synchronous interfaces, the receiver may capture data with a forwarded clock or strobe rather than the system clock. Such interfaces need an explicit timing model for the strobe, data relationship, phase and uncertainty. They cannot be constrained correctly by copying a generic synchronous `set_input_delay` template.
+
+### Timing constraints review checklist
+
+Review a constraint set as a design artifact before accepting an implementation result:
+
+1. Every physical clock source has a primary or generated-clock definition.
+2. Every sequential endpoint belongs to a timed clock domain or has a documented asynchronous/exception rationale.
+3. Clock period, waveform and uncertainty match the clock-source and integration budget.
+4. Input/output delays cover every synchronous external interface.
+5. CDC structures, resets and generated clocks have a stated timing relationship.
+6. False-path and multicycle commands name narrow, reviewed endpoint sets.
+7. Reports show zero unexpected unconstrained paths and zero unreviewed violations.
+
+Constraint review is a collaborative activity between RTL, verification, FPGA/ASIC implementation and board/package engineers. A perfect SDC syntax file is not enough if it describes the wrong physical system.
+
+## Implementation patterns
+
+### A clean single-domain block
+
+The accumulator already used in the verification and ASIC chapters is a useful single-clock example:
+
+```systemverilog
+module accumulator(
+  input  logic        clk, reset, Clear, Enable,
+  input  logic [15:0] Operand,
+  output logic [15:0] Sum,
+  output logic        Valid, Overflow);
+
+  logic [16:0] ExtendedSum;
+  assign ExtendedSum = {1'b0, Sum} + {1'b0, Operand};
+
+  always_ff @(posedge clk) begin
+    if (reset || Clear) begin
+      Sum      <= '0;
+      Valid    <= 1'b0;
+      Overflow <= 1'b0;
+    end else begin
+      Valid    <= Enable;
+      Overflow <= Enable && ExtendedSum[16];
+      if (Enable) Sum <= ExtendedSum[15:0];
+    end
+  end
+endmodule
+```
+
+The critical data path is conceptually `Sum` register → adder → `Sum` register. `Enable`, `Clear` and `Operand` are external inputs; their arrival relative to the clock must be defined at the block boundary. `reset` has a synchronous effect in this RTL because it is tested only inside the rising-edge process. The design contract should state that it is asserted and stable before the active edge where reset behavior is required.
+
+Start with the SDC above, then use the actual tool reports to determine whether a 10 ns target is realistic. If the path fails, possible repairs include a longer period, a pipeline stage, a different arithmetic architecture or physical optimization. Do not add a multicycle exception merely because the adder is slow unless the architectural behavior really allows multiple cycles.
+
+### Synchronizing a single control bit
+
+The following structure is suitable for a level signal entering `clk` domain. The `async_reg` attribute helps tools recognize the intent; check the target flow's CDC and placement guidance.
+
+```systemverilog
+module bit_synchronizer(
+  input  logic clk, reset,
+  input  logic AsyncIn,
+  output logic SyncOut
+);
+  (* async_reg = "true" *) logic Meta, Sync;
+
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      Meta <= 1'b0;
+      Sync <= 1'b0;
+    end else begin
+      Meta <= AsyncIn;
+      Sync <= Meta;
+    end
+  end
+
+  assign SyncOut = Sync;
+endmodule
+```
+
+This does not preserve pulse width or transport a coherent data bus. If `AsyncIn` is an event, use a handshake/toggle scheme. If the input belongs to a different clock, constrain the two domains according to their actual relationship and run a dedicated CDC review in addition to STA.
+
+### Reset-release synchronizer
+
+For a design using asynchronous assertion and synchronous release, a local synchronizer can make release deterministic for one domain:
+
+```systemverilog
+module reset_release(
+  input  logic clk,
+  input  logic ResetNAsync,
+  output logic ResetN
+);
+  (* async_reg = "true" *) logic [1:0] Release;
+
+  always_ff @(posedge clk or negedge ResetNAsync) begin
+    if (!ResetNAsync) Release <= 2'b00;
+    else              Release <= {Release[0], 1'b1};
+  end
+
+  assign ResetN = Release[1];
+endmodule
+```
+
+Each clock domain needs its own release synchronizer. The design must tolerate the additional two-cycle delay and prevent protocols from interpreting the release difference between domains as a valid transaction.
+
+## Verification and analysis
+
+### Simulation answers different questions
+
+Simulation verifies the edge-level functional contract: state changes on the intended edge, reset dominates as specified, enables hold state, and protocols maintain payload stability. It does not prove that a 10 ns period is physically achievable unless the testbench uses a characterized timing model and an appropriate timing analysis exists. HDL `#` delays schedule simulator events; they are not SDC constraints or a substitute for STA.
+
+Useful assertions express cycle behavior:
+
+```systemverilog
+property sum_holds_when_disabled;
+  @(posedge clk) disable iff (reset)
+    !Enable |=> $stable(Sum);
+endproperty
+assert property (sum_holds_when_disabled);
+```
+
+For a ready/valid interface, assert that valid and payload remain stable while valid is high and ready is low. For a CDC handshake, assert that source data stays stable throughout the request/acknowledge transaction. Assertions reveal protocol errors that a timing exception would otherwise hide.
+
+### STA answers timing questions
+
+Static timing analysis propagates arrival and required times through every relevant path without applying exhaustive input vectors. It requires a linked netlist, timing libraries, clock/IO constraints and, after physical implementation, estimates or extracted parasitics. It reports worst paths and violations such as setup, hold, transition, capacitance and fanout. The OpenROAD flow uses this information before and after physical stages [@openroadApplication].
+
+Before sign-off, inspect at least:
+
+- `report_clocks` and clock coverage;
+- unconstrained startpoints/endpoints;
+- worst setup and hold paths at every required corner;
+- max transition, capacitance and fanout violations;
+- clock skew and insertion delay after CTS;
+- the list and justification of timing exceptions.
+
+An unconstrained path is neither automatically safe nor automatically a failure. It is a review item: either add a real constraint, prove it is asynchronous and protect the CDC, or document a valid exception.
+
+## Hands-on Experiments
+
+### Experiment 1: create and audit an SDC file
+
+Create `constraints.sdc` for the accumulator at 10 ns. Include one clock, uncertainty and interface delays. Run the relevant FPGA or ASIC timing tool and answer:
+
+1. Is `clk` recognized as a clock with the intended period?
+2. Which inputs and outputs receive external timing constraints?
+3. Is the `Sum` feedback path the reported critical path?
+4. Are there unconstrained endpoints? Explain each one.
+5. What physical/tool assumptions determine the reported slack?
+
+Repeat at 8 ns and 12 ns. Record period, frequency, worst setup slack, worst hold slack, tool/version and target technology. Do not change RTL between the three runs.
+
+### Experiment 2: distinguish enable from clock
+
+Implement the `Tick` generator with a slow `Tick` enable. Keep all registers clocked by `clk_sys`, and update a counter only when `Tick` is high. Then make an intentionally incorrect version that uses a fabric-generated `Tick` as a clock. Compare the required constraints, inferred clock domains and implementation warnings. Explain why the enable version is simpler to verify and constrain.
+
+### Experiment 3: review a crossing
+
+Instantiate `bit_synchronizer` for an asynchronous pushbutton or simulated external control. Generate input transitions near several clock edges. Verify that the output changes only after synchronization latency, then replace the input with one-cycle pulses and observe why event delivery is not guaranteed. Design a request/acknowledge protocol for reliable pulse transfer.
+
+### Experiment 4: reset release and timing evidence
+
+Use `reset_release` in two independently clocked test domains. Assert reset asynchronously, then release it at several phases of each clock. Confirm that each local reset release is synchronous but can occur in a different cycle. Write the reset contract, CDC assumptions and timing constraints required before integrating the domains.
+
+## Connection to later chapters
+
+The SystemVerilog chapter defines clocked RTL semantics; this chapter supplies the system-level timing contract. The cocotb and Verilator chapters verify the edge behavior in simulation. The FPGA timing chapter applies constraints to a selected board and device. The OpenROAD chapter develops SDC, STA, CTS and post-route timing in an ASIC context, while LibreLane packages those activities into a reproducible flow. Carry the same clock/reset table and constraint-review discipline through all of them.

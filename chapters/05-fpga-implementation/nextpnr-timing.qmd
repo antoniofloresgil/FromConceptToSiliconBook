@@ -1,21 +1,236 @@
-# Place, Route, and Timing with nextpnr
+# Place, Route, Timing, and Programming with nextpnr
 
 ## Concepts
 
-Placement assigns physical sites; routing connects them through the FPGA's programmable interconnect. Timing closure means the implementation meets its specified timing checks. A successful bitstream build without adequate constraints does not establish correct timing.
+Yosys establishes which FPGA primitives implement the design. Physical implementation decides where they go, which programmable wires connect them and whether signals can arrive within the available clock period. For Xilinx 7-series devices, the open stack combines `nextpnr-xilinx` with Project X-Ray device data. nextpnr is timing-driven free and open-source place-and-route software; XC7 support is marked experimental, so each bitstream needs explicit report review and hardware validation [@nextpnrRepository].
 
-Constraint coverage includes clocks, generated clocks, external interface timing, pin assignments, and IO standards. False-path and multicycle exceptions require a design justification; they must not conceal paths that need to meet the ordinary clock requirement.
+The implementation has a causal chain:
+
+```text
+JSON netlist + XDC constraints
+             |
+       pack / place / route
+             |
+ nextpnr report + routed JSON + FASM features
+             |
+     fasm2frames -> frame data
+             |
+   xc7frames2bit -> configuration bitstream
+             |
+ openFPGALoader -> volatile SRAM or nonvolatile flash
+```
+
+**Packing** groups logical cells into legal FPGA sites; **placement** chooses sites; **routing** selects programmable interconnect; and **static timing analysis (STA)** evaluates delays in the resulting implementation. These are not separate decorations. A valid location may introduce a long route; a change in placement can alter both slack and congestion.
+
+### Constraints are part of the design
+
+An XDC file connects the logical top-level ports to the Nexys Video board and states the electrical/timing assumptions. A typical fragment from the open Wally constraints is:
+
+```tcl
+set_property -dict {PACKAGE_PIN R4 IOSTANDARD LVCMOS33} \
+  [get_ports default_100mhz_clk]
+set_property -dict {PACKAGE_PIN G4 IOSTANDARD LVCMOS15} \
+  [get_ports resetn]
+set_property -dict {PACKAGE_PIN AA19 IOSTANDARD LVCMOS33} \
+  [get_ports UARTSout]
+```
+
+Every signal must use the voltage standard of its bank and connected peripheral. A correct port name with the wrong IO standard can produce a board that fails electrically, while an unconstrained port makes the physical result non-reproducible. Keep the XDC together with the board wrapper and review it when either changes.
+
+Timing constraints state facts that pins do not: input clock frequency, generated clocks, external IO requirements and the rare intentional exceptions. The board oscillator is 100 MHz, but the open Nexys Video Wally configuration targets a 40 MHz system clock produced as part of its open design. The 40 MHz number is a requirement for the routing run, not evidence that every derived domain is automatically understood.
+
+### What timing closure means
+
+For a same-clock register-to-register path, the available time is the period after clock uncertainty, skew and setup requirement. The data path includes clock-to-Q delay, LUT/carry logic and physical routing. Slack is required time minus arrival time.
+
+| Result | Interpretation | Action |
+|---|---|---|
+| Positive worst slack | Constrained checked paths meet the stated target | Review coverage and hold checks |
+| Negative setup slack | A path is too slow for the requested period | Change microarchitecture, constraints or target frequency |
+| Unconstrained clock/path | The tool cannot establish the required relationship | Add/correct constraints before trusting the build |
+| Passed at a lower frequency | Functional configuration may be useful for bring-up | Do not claim the higher target is closed |
+
+Timing closure does not prove functional correctness, CDC safety or DDR calibration. Conversely, an RTL simulation with correct behavior says nothing about delay through an actual FPGA. Require both forms of evidence.
 
 ## Implementation
 
-Select a nextpnr backend and device supported by the installed toolchain. An Artix-7 implementation requires a compatible toolchain and a board-specific pin map. Record the board, device, backend, architecture data, and bitstream tools before selecting commands.
+### nextpnr-xilinx and Project X-Ray
 
-For each critical path, identify launch and capture registers, combinational logic, routing contribution, and slack. A UART's slow serial rate does not relax its synchronous counters and state machines: a 50 MHz implementation still has a 20 ns system-clock target.
+`nextpnr-xilinx` reads the Yosys JSON netlist, XDC constraints and a chip database for the FPGA die. Project X-Ray supplies the reverse-engineered database and bitstream tooling for Xilinx 7-series [@projectXray]. The tool produces three important implementation artifacts:
 
-Compare pre-route and post-route reports. Placement and routing can expose long control nets or congested paths that are absent from an RTL-level view.
+| File | Purpose |
+|---|---|
+| `nexysvideo-routed.json` | Netlist after packing, placement and routing |
+| `nexysvideo-report.json` | Resource, placement and timing-report data |
+| `nexysvideo.fasm` | Human-readable FPGA assembly features |
+
+FASM is not the hardware configuration itself. It records enabled FPGA features in a textual form. `fasm2frames` converts those features into frame data using the Project X-Ray database, and `xc7frames2bit` serializes frame data into the `.bit` configuration file for the exact part.
+
+The full CVW command is deliberately short because the generated artifacts carry the detail:
+
+```sh
+nextpnr-xilinx \
+  --chipdb "$NEXTPNR_XILINX_CHIPDB_XC7A200T" \
+  --xdc opensource-nexysvideo/constraints.xdc \
+  --json opensource-nexysvideo/nexysvideo.json \
+  --top fpgaOpenSource \
+  --freq 40 \
+  --write opensource-nexysvideo/nexysvideo-routed.json \
+  --report opensource-nexysvideo/nexysvideo-report.json \
+  --fasm opensource-nexysvideo/nexysvideo.fasm
+```
+
+`--freq 40` supplies the 40 MHz implementation target. It must agree with the actual synchronous design and the declared clocks. Do not use it to mask a missing generated-clock or external-interface constraint. The `--top` value must be the same one Yosys synthesized.
+
+### Device database and part identity
+
+The Nexys Video board uses the `xc7a200tsbg484-1` part. The branch selects the `xc7a200t` chip database and the complete part string for frame conversion. Those names are not interchangeable:
+
+```sh
+fasm2frames --db-root "$XRAY_DATABASE_DIR" \
+  --part xc7a200tsbg484-1 \
+  opensource-nexysvideo/nexysvideo.fasm \
+  opensource-nexysvideo/nexysvideo.frames
+
+xc7frames2bit \
+  --part_file "$XRAY_DATABASE_DIR/xc7a200tsbg484-1/part.yaml" \
+  --part_name xc7a200tsbg484-1 \
+  --frm_file opensource-nexysvideo/nexysvideo.frames \
+  --output_file opensource-nexysvideo/nexysvideo.bit
+```
+
+Always retain the database revision. A bitstream built for a different package, speed grade or device is not a harmless experiment; it must never be loaded into the board. Let scripts derive values from one board definition rather than duplicating part strings across files.
+
+### Reading the report
+
+Inspect the nextpnr terminal output and the JSON report after every implementation. At minimum answer these questions:
+
+1. Did all intended top-level ports receive locations and IO standards?
+2. Does utilization leave adequate LUT, flip-flop, BRAM, DSP, IO and clocking headroom?
+3. Which clock domains were timed and which were not?
+4. What is the worst setup slack and its launch/capture endpoints?
+5. Are there warnings about routing, pack failures, unavailable resources or ignored constraints?
+6. Does the achieved maximum frequency exceed the requested frequency with enough margin for the experiment?
+
+The CVW Nexys Video implementation reports the principal `HCLK`, `clk100` and IDELAY-related paths. Its documented current limitation is important: the DDR PHY `sys4x` domain is not fully constrained in this open flow, even though the complete design creates a bitstream. This means the result is a useful reproducible bring-up platform, not timing closure for a production DDR3 subsystem [@cvwOpenSourceFpga].
+
+### Clock, reset and CDC review
+
+The open configuration runs Wally and the LiteDRAM controller in one shared system clock domain. The arrangement avoids an AHB-to-Wishbone CDC bridge: a bus transfer carries address, write data, byte enables and response semantics, so a two-flop synchronizer would be invalid. Wally remains in reset until the DDR initialization path reports successful completion.
+
+This is a good integration decision for a first hardware prototype. It does not remove the need to analyze asynchronous inputs, the JTAG/UART boundaries, resets and generated clocks. In particular:
+
+- Synchronize a pushbutton/reset release and any asynchronous peripheral input.
+- State how the board oscillator reaches a global buffer and clock primitive.
+- Use clock enables for slow functions; do not create LUT-gated clocks.
+- Describe every clock domain and its relationship to every other domain.
+- Put exceptions next to the CDC protocol that justifies them; never use a false path to hide an ordinary failing register path.
+
+The clocking and timing foundations chapter explains the relevant setup/hold and CDC principles in detail.
+
+### From FASM to `.bit`
+
+Project X-Ray makes the open bitstream step explicit. This gives valuable auditability: a routed JSON and FASM file are inspectable evidence of the placed/routed configuration that produced the bitstream. It also exposes a practical boundary: coverage and tool maturity differ among FPGA families and primitives. Lock tool/database versions for any published result.
+
+Once the commands complete, check that the expected files exist and record checksums:
+
+```sh
+sha256sum opensource-nexysvideo/nexysvideo.json \
+          opensource-nexysvideo/nexysvideo-report.json \
+          opensource-nexysvideo/nexysvideo.fasm \
+          opensource-nexysvideo/nexysvideo.bit
+```
+
+The `.bit` is a configuration image, not a software executable. It can include initialized BRAM contents, so its checksum changes when firmware changes even if the processor RTL does not.
+
+### Programming the Nexys Video physically
+
+Connect the Nexys Video board through its USB-JTAG connection, apply stable board power and identify the programmer before loading any image. `openFPGALoader` supports volatile SRAM configuration and configuration-flash programming; list board targets and inspect the installed help because option spelling can change between releases [@openFPGALoader].
+
+Start with volatile configuration. It disappears after power cycling, which makes it safer during bring-up:
+
+```sh
+openFPGALoader --list-boards
+openFPGALoader --board nexys_video \
+  opensource-nexysvideo/nexysvideo.bit
+```
+
+If the installed board definition uses a different spelling, use the result of `--list-boards`; do not substitute a similar Nexys model. Confirm the board's DONE indicator and use an observable design event: a known LED sequence, UART banner or GPIO transition.
+
+Only after volatile loading is repeatable should persistent configuration be considered. The generic form is:
+
+```sh
+openFPGALoader --board nexys_video --write-flash \
+  opensource-nexysvideo/nexysvideo.bit
+```
+
+Flash programming is slower and survives power cycles; it should be treated as a release operation with a recorded bitstream hash and recovery plan. Consult the board schematic/manual and the installed programmer documentation before selecting a flash target. Never unplug power or USB while flash writing is active.
+
+### Bring-up sequence
+
+Use short feedback loops:
+
+1. Build and archive reports before touching the board.
+2. Program SRAM only and check that configuration completes.
+3. Verify oscillator/reset health with a simple LED heartbeat.
+4. Confirm UART electrical path and baud rate with a boot banner.
+5. Confirm the CPU reaches its first known software milestone.
+6. Enable external-memory and peripheral tests one at a time.
+7. Preserve the successful bitstream, logs, source commit and observations.
+
+The CVW branch maps five user LEDs to bring-up telemetry, including input-clock activity, LiteDRAM initialization state, service-CPU activity and UART activity. This is a sensible replacement for unavailable internal logic-analyzer infrastructure during an open-flow first bring-up; remove or gate diagnostic logic before collecting performance/resource results.
+
+### Timing closure method
+
+When timing fails, begin with the reported endpoints rather than changing random tool options. Determine whether the path is a true synchronous path, a missing clock relationship, a fanout/routing problem, a deep logic cone or a poor architectural boundary. Then make the smallest change that addresses that cause.
+
+| Critical-path pattern | RTL or architecture response |
+|---|---|
+| Deep arithmetic plus comparison | Pipeline the operation or use a dedicated arithmetic resource |
+| Long priority chain | Recode the decision tree, balance selection or register an intermediate result |
+| High-fanout control/reset | Reduce fanout, localize enables or use intended distribution resources |
+| RAM output into complex decode | Register the RAM output and accept the added cycle explicitly |
+| Cross-module ready/valid loop | Break the combinational loop with an elastic register or pipeline stage |
+| Slow external interface path | Add valid IO timing constraints and pipeline at the interface if protocol permits |
+
+Retiming may change latency and reset behavior; it is an architectural change unless the interface contract explicitly tolerates it. A RISC-V core cannot arbitrarily insert a cycle into a trap, cache, bus response or forwarding path. Start by preserving observable protocol behavior, then rerun simulation and formal/property checks before relying on the new timing report.
+
+The frequency number emitted by nextpnr should be read as a result under a stated model. It does not include unknown board-level effects, incorrect constraints or unanalysed high-speed domains. A laboratory prototype should aim for margin, particularly when temperature, voltage and USB power conditions differ from the development desktop.
+
+### Multiple clocks and IO timing
+
+Large FPGA systems rarely have a single clock. The Nexys Video Wally example contains the board clock, a generated system clock and DDR-related clocks. Each clock needs a source, frequency, destination registers and a reset relationship. Build a clock table before interpreting STA:
+
+| Clock/domain | Source | Consumers | Required evidence |
+|---|---|---|---|
+| `clk100` | Board oscillator | Input buffering/clock generation | Pin location, period and clock primitive |
+| `HCLK` / system | Generated common clock | Wally, bridge and LiteDRAM bus port | Post-route setup/hold report at target frequency |
+| IDELAY/DDR related | DDR PHY clocking | Delay/serializer resources | Correct primitive configuration and explicit timing review |
+| JTAG/USB/UART inputs | External asynchronous sources | Debug/serial receiver | Synchronizer or protocol crossing, not ordinary STA |
+
+Do not declare asynchronous clocks solely because a report is inconvenient. Asynchronous groups are valid only where a real CDC protocol carries data. Generated clocks need an understood parent and ratio; an unconstrained divided clock makes its paths invisible to analysis. External inputs and outputs require input/output delay assumptions relative to a reference clock when their protocol is synchronous.
+
+### Physical programming diagnostics
+
+If `openFPGALoader` cannot find the cable, first check USB enumeration and permissions, then cable selection and board power. If it loads but DONE never asserts, stop and re-check the part, board target and bitstream hash. If DONE asserts but no behavior appears, test the simplest clock/LED image before investigating Wally software.
+
+| Symptom | First evidence to collect |
+|---|---|
+| No programmer device | USB cable supports data, board power, user permissions and `--list-cables`/help output |
+| Programming error | Exact part/board option, tool version and programming log |
+| DONE absent | Bitstream part identity, configuration mode and power/reset state |
+| DONE present, no UART | Clock/reset LED, port/baud configuration and firmware image hash |
+| Board works once only | Distinguish volatile SRAM from flash configuration and record power-cycle behavior |
+
+Do not place a USB/JTAG access procedure inside a build script that is also used by continuous integration. Building a `.bit` is repeatable in CI; touching a physical board is a separate, observable lab action.
 
 ## Hands-on Experiments
 
-Implement a verified small block on the selected FPGA. Record utilization, requested clock period, worst timing result, and unconstrained paths. Change one RTL or placement variable at a time and compare reports under the same constraints.
+1. Build the Nexys Video configuration and identify the generated JSON, routed JSON, report, FASM, frames and bitstream files.
+2. Request 50 MHz instead of 40 MHz without changing RTL. Compare the timing reports and explain why a failing 50 MHz report must not be ignored merely because the 40 MHz configuration runs.
+3. Add an LED heartbeat generated from the synchronized system clock. Program SRAM and confirm it after every reset before debugging the processor.
+4. Disconnect or rename one XDC port in a copy of the exercise. Observe the implementation error/warning, restore the constraint and verify that the pin name matches the top-level port exactly.
+5. Program only SRAM, power-cycle the board and confirm that the configuration vanishes. Then, after following the board-specific procedure, compare this with a deliberately programmed flash image.
+6. Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstream hash, DONE state and observed LEDs.
 
-Inventory asynchronous inputs and clock crossings. Document which synchronizers or protocols handle each crossing and why each timing exception is valid. Keep the board pin map with the experiment.
+The following chapter applies this complete flow to CORE-V Wally. It identifies what the open Nexys Video configuration implements, how LiteDRAM replaces closed Vivado MIG IP, and which hardware claims are currently supported by evidence.

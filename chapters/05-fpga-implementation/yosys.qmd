@@ -1,25 +1,210 @@
-# Synthesis with Yosys
+# FPGA Synthesis with Yosys
 
 ## Concepts
 
-Synthesis elaborates the design, transforms logic, and maps it into available implementation resources. A generic synthesized netlist is useful for structural review, but it does not provide a placed-and-routed FPGA timing result or a technology-specific ASIC area result.
+An FPGA implementation turns a parameterized RTL design into the configuration bits of a particular device. It is a compilation flow, but the target is not a generic gate library: it has LUTs, flip-flops, block RAMs, DSP blocks, clock networks, IO banks and programmable routing. The device selected for this chapter is the AMD/Xilinx Artix-7 `xc7a200tsbg484-1` on the Digilent Nexys Video board.
 
-Review warnings before totals. Unexpected latches, undriven nets, missing modules, or parameter mismatches can make a small report misleading.
+The open flow separates the work into four reproducible stages:
+
+```text
+SystemVerilog + constraints + firmware
+                |
+              Yosys
+                |  technology-mapped netlist (.json)
+         nextpnr-xilinx
+                |  placed/routed netlist + timing report + FASM
+ Project X-Ray bitstream tools
+                |  .bit
+         openFPGALoader
+                |  FPGA SRAM or configuration flash
+             Nexys Video
+```
+
+Yosys performs the first transformation. It reads RTL, elaborates the selected top-level configuration, checks hierarchy, lowers behavioral constructs to hardware cells, optimizes the logic and maps it to resources understood by the selected FPGA flow [@yosysDocumentation]. It is not a simulator and it does not assign physical FPGA locations. Its result is nevertheless the decisive boundary between a logical SystemVerilog design and a device-specific implementation.
+
+### The compilation contract
+
+Before invoking any tool, make the compilation contract explicit:
+
+| Item | Nexys Video example |
+|---|---|
+| Device | `xc7a200tsbg484-1`, Artix-7 family |
+| RTL top level | `fpgaOpenSource` in the open CVW flow |
+| Language | Synthesizable SystemVerilog, IEEE 1800-2017 frontend |
+| Clock source | Board 100 MHz oscillator; the implemented open SoC uses a 40 MHz system target |
+| Constraints | XDC pin, IO-standard and timing constraints |
+| Firmware | Boot image in on-chip memories and LiteDRAM service firmware when DDR3 is enabled |
+| Result | JSON for nextpnr, then FASM/frames and a `.bit` file |
+
+The chosen top level is a board wrapper, not the processor core. It instantiates the selected CORE-V Wally configuration, memories, reset logic and board peripherals, and exports only physical signals such as clock, reset, UART, LEDs and DDR3 pins. Keeping the board layer separate prevents a pin edit from leaking into reusable processor RTL.
+
+### What Yosys does
+
+Yosys uses a pass-based internal representation called RTLIL. A script is more useful than a one-line command because it records every source, include path, top level and technology choice. The important phases are:
+
+1. **Frontend and elaboration.** `read_verilog -sv`, `read_slang`, include directories and parameter overrides parse source files and choose the configured hierarchy. The project uses `read_slang --std 1800-2017` for Wally SystemVerilog. Run a simulator or linter first: synthesis acceptance is not a proof of intended behavior.
+2. **Hierarchy and checks.** `hierarchy -top fpgaOpenSource` resolves modules, parameters and the root. `check` detects disconnected cells, multiply driven nets and other structural errors.
+3. **Process lowering.** `proc` converts `always_comb`, `always_ff`, case statements and conditional assignments into multiplexers, latches where they are genuinely implied, and flip-flop processes. An unintended latch warning is a design defect to resolve at RTL level.
+4. **Coarse-grain optimization.** Constant propagation, width reduction, dead-logic removal, arithmetic sharing, FSM processing and memory analysis make the structure smaller without changing the synchronous behavior. This phase can still identify memories and arithmetic before they become simple gates.
+5. **Technology mapping.** `techmap`, `abc`/`abc9`, flip-flop legalization and memory mapping implement the design using FPGA primitives. For Xilinx 7-series, `synth_xilinx -arch xc7` targets LUTs, flip-flops, carry chains, BRAM and selected hard primitives [@yosysSynthXilinx].
+6. **Netlist export and reporting.** `write_json` supplies nextpnr with cells, nets and attributes. `stat` and the synthesis log report estimated resource use. They are estimates before placement and routing, not a timing sign-off.
+
+The packaged `synth_xilinx` command is a maintained synthesis recipe, not a magic command: inspect it with `yosys -p "help synth_xilinx"` in the installed version. Scripts should pin versions because tool upgrades can improve mapping, reject previously tolerated RTL or alter a report.
+
+### Hardware that must be inferred deliberately
+
+An FPGA implementation benefits from expressing intent in RTL.
+
+| RTL intent | Expected FPGA resource | Review question |
+|---|---|---|
+| Registered pipeline state | Flip-flops, often with clock-enable muxing | Is reset needed for every bit? |
+| Small combinational table | LUT network | Can a case statement be complete? |
+| Wide add/compare | LUTs plus dedicated carry chain | Are widths and signedness correct? |
+| Array with synchronous access | Block RAM or distributed RAM | Does the coding pattern match the primitive? |
+| Multiply/accumulate | DSP block or LUT logic | Is `-nodsp` intentional? |
+| Clock generation | Dedicated PLL/MMCM and buffers | Is the primitive supported and constrained? |
+
+BRAM, DSP and clock resources are limited physical blocks. A design that synthesizes successfully can still fail later because it uses too many of one resource, because an inferred RAM no longer matches the required read behavior, or because a high-fanout reset/control signal has poor routing. Resource reports are therefore a design-review input, not a success badge.
 
 ## Implementation
 
-The ready/valid slice from the SystemVerilog chapter is a compact first target. With its listing saved as `rv_slice.sv`, run:
+### Installing the open toolchain
+
+For an XC7 target, install a coherent toolchain rather than unrelated package versions: Yosys (with the SystemVerilog frontend used by the project), `nextpnr-xilinx`, Project X-Ray database/tools and a programmer such as `openFPGALoader`. The CVW branch used here provides an installation script that pins these dependencies and creates chip databases for `xc7a100t` and `xc7a200t` [@cvwOpenSourceFpga]. The general Yosys project also publishes OSS CAD Suite binaries and source build instructions [@yosysRepository].
+
+On Linux, clone the selected CVW branch, install its documented toolchain and load its environment:
 
 ```sh
-yosys -p "read_verilog -sv rv_slice.sv; synth -top rv_slice; stat" -l rv_slice_yosys.log
+git clone --branch opensource-fpga-bitstream \
+  https://github.com/antoniofloresgil/cvw.git
+cd cvw
+./bin/wally-tool-chain-install.sh
+source setup.sh
 ```
 
-Expect payload storage, occupancy state, and control logic; use the actual report to establish counts. The UART exercise is a larger target with two state machines, counters, shift registers, and an input synchronizer. Its synthesis-only LibreLane run is described in the LibreLane chapter.
+The installation may take considerable time because it builds the XC7 device database. Confirm the actual commands rather than guessing from `PATH`:
 
-For FPGA implementation, choose the synthesis flow for the device and toolchain. Mapping to LUTs, flip-flops, RAM, and DSP resources changes the meaning of utilization figures.
+```sh
+yosys -V
+yosys-config --datdir
+nextpnr-xilinx --help | head
+fasm2frames --help | head
+openFPGALoader --version
+```
+
+The flow is best supported on Linux. A Windows host can use WSL2 or a Linux container with USB passthrough arranged separately; the FPGA cable needs host USB access, so build and program are often performed from a native Linux machine. None of these steps invokes Vivado.
+
+### The CVW synthesis script
+
+The branch encodes its reproducible implementation in `fpga/generator/build-opensource.sh`. For Nexys Video it selects the board XDC, `xc7a200tsbg484-1` part, an XC7A200T chip database and a 40 MHz nextpnr target. It creates `opensource-nexysvideo/synth.ys`; its essential synthesis section is:
+
+```tcl
+read_verilog -lib $YOSYS_XILINX/cells_sim.v
+read_verilog -lib $YOSYS_XILINX/cells_xtra.v
+read_verilog opensource-litedram/*.v
+read_slang --std 1800-2017 --ignore-timing --ignore-assertions \
+  -I $CONFIG -I $SOURCES -I ../../config/shared -I ../../src \
+  --top fpgaOpenSource $SOURCE_LIST
+hierarchy -top fpgaOpenSource
+synth_xilinx -flatten -arch xc7 -abc9 -nodsp
+delete t:$buf
+delete t:$scopeinfo
+write_json opensource-nexysvideo/nexysvideo.json
+```
+
+The cell-library reads describe vendor primitives to Yosys; they do not call a vendor implementation tool. LiteDRAM-generated Verilog is read separately because it contains parameters and primitives for which that path is appropriate. `--ignore-timing` and `--ignore-assertions` prevent simulation-only timing checks and assertions from becoming a synthesis-language issue; they do **not** waive static timing analysis after routing.
+
+`-flatten` makes the implementation hierarchy easier for the mapper to optimize across module boundaries. It makes debug names less convenient, so preserve the source tree, source list and build log. `-abc9` selects the newer LUT-mapping flow. The explicit `-nodsp` is a design decision in this branch: multipliers map away from DSP blocks, which must be reconsidered if performance or DSP utilization becomes a limiting factor.
+
+### A small standalone synthesis experiment
+
+Start with a verified module before building the full SoC. The following script demonstrates the shape of an XC7 synthesis run; a real board build needs its own top-level ports and XDC file.
+
+```tcl
+# counter.ys
+read_verilog -sv counter.sv
+hierarchy -check -top counter
+synth_xilinx -top counter -family xc7 -abc9
+stat
+write_json counter.json
+```
+
+```sh
+yosys -l counter-yosys.log counter.ys
+```
+
+Read the final `stat` section. Check that the counter has the expected number of flip-flops, that no latch warning appeared, and that arithmetic maps through an efficient carry structure. Generate a schematic only for a small module:
+
+```sh
+yosys -p 'read_verilog -sv counter.sv; prep -top counter; show counter'
+```
+
+Large SoCs generate unreadable diagrams; hierarchy, resource reports and source-level assertions are better review tools.
+
+### Firmware and memories
+
+FPGA bitstreams can carry initial contents of inferred BRAM. This makes boot ROMs and small instruction/data memories reproducible, but it changes the build dependency graph: modifying firmware can require regenerating a memory image and then rerunning synthesis, place-and-route and bitstream generation. The open Wally configuration boots from internal memory at `0x80000000`; when DDR3 is enabled, external memory is mapped separately at `0x40000000` [@cvwOpenSourceFpga].
+
+Use deterministic source paths and generated-image rules. A `$readmemh` file that is found only from one working directory is not a reliable hardware build. The CVW LiteDRAM generator rewrites generated ROM-image paths after generation so Yosys can find them consistently.
+
+### Review the synthesis result
+
+Keep the following artifacts with every bitstream:
+
+| Artifact | What it establishes |
+|---|---|
+| `synth.ys` and source list | Exact synthesis inputs and options |
+| `synthesis.log` | Warnings, top-level selection and mapped resources |
+| JSON netlist | Input to physical implementation |
+| Firmware hashes | Which software is embedded in memories |
+| Git commit and tool versions | Rebuild provenance |
+
+Do not treat a zero exit code as proof of a correct processor. Compare the resource trend with the previous build; unexpected changes in LUT, BRAM or flip-flop count frequently expose a missing source file, different parameter override or an accidentally optimized-away peripheral. Run simulation and ISA/software tests before FPGA compilation, then use the board to validate integration and physical interfaces.
+
+### SystemVerilog boundary and reproducible source sets
+
+Yosys does not accept every construct permitted by the SystemVerilog language, because many language features describe testbench behavior rather than hardware. Interfaces, classes, dynamic arrays, constrained randomization, delays, coverage and most assertion semantics are not an FPGA circuit. The safe workflow is to compile the synthesizable design with the same frontend and source manifest that will be used for implementation, while running verification constructs in Verilator or another simulator.
+
+The CVW command uses `read_slang` rather than silently treating all files as Verilog-2005. It also records the include roots and the selected `fpgaOpenSource` top. This matters for a large parameterized processor: a source list that omits a configuration header can synthesize a different, apparently valid SoC. Prefer a generated, sorted source manifest over shell globbing, and keep it in the build output.
+
+Some portable RTL rules are especially useful:
+
+- Use `logic` and one clear driver per signal. Multiple drivers that happen to resolve in simulation are poor synthesis intent.
+- Use `always_ff` for sequential state and `always_comb` for combinational logic; give every combinational output a value on every path.
+- Specify widths and signedness on arithmetic boundaries. A 32-bit unsigned comparison can change when one operand becomes signed.
+- Do not rely on `initial` blocks for architectural reset unless the target and coding style explicitly use FPGA memory/flip-flop initialization.
+- Isolate device primitives in a small wrapper. A generic core should not instantiate an Artix-7 `BUFG`, `MMCME2_BASE` or IO buffer directly.
+
+`read_slang` accepts the IEEE language syntax; it does not turn non-synthesizable behavior into gates. `--ignore-assertions` in the example prevents synthesis from handling assertion constructs, but assertions still belong in the simulation/formal verification flow. A useful policy is: testbench-only code sits outside the source manifest, synthesizable assertions are either supported intentionally or excluded explicitly, and every exclusion is visible in the script.
+
+### Optimization is a hypothesis to test
+
+Yosys applies transformations that preserve its hardware model. The outcome can still surprise a designer who expected a particular structure. A debug counter may vanish because no output observes it; a RAM can turn into registers because its asynchronous read/reset behavior did not match BRAM; two nearly identical adders may be shared; and a `keep` attribute may prevent beneficial optimization.
+
+Use reports to formulate a narrow hypothesis, then test one change at a time:
+
+| Observation | Likely cause | Productive next step |
+|---|---|---|
+| A peripheral consumes zero logic | It is disconnected or optimized away | Trace its top-level/bus connectivity and use an observable output |
+| BRAM count unexpectedly drops | Memory template or read mode changed | Compare inferred memory messages and RTL read timing |
+| LUT count rises after a parameter change | Wider datapath, muxing or lost resource inference | Inspect width/sign changes and resource breakdown |
+| DSP use is zero | Mapping option forbids it or operands are unsuitable | Check `-nodsp`, widths and signed multiply coding |
+| Many resettable flops | Reset was applied broadly | Decide which state genuinely needs architectural reset |
+
+For equivalence-sensitive work, compare a simulation of the RTL against a simulation of the mapped netlist, or use formal equivalence when the design/toolchain supports it. This is particularly valuable after RAM inference, reset refactoring or aggressive parameter changes. It catches mismatches at the logical boundary before place-and-route makes the artifacts much larger.
+
+### Reports for architecture decisions
+
+Synthesis data can guide microarchitecture only when experiments are controlled. Compile a baseline with a fixed source commit, configuration, tool version and constraints. Change one item, then compare both resource totals and critical structural messages. For a processor, meaningful alternatives include branch-predictor size, cache ways, multiplier implementation, register-file realization, reset policy and optional peripherals.
+
+Do not translate FPGA LUT counts into ASIC area or power. The value of the FPGA measurement is comparative: it tells you how this RTL maps to this device under this implementation flow. A cache that consumes BRAM but reduces instruction-bus activity can be a good FPGA trade-off even when its ASIC cost would be evaluated differently.
 
 ## Hands-on Experiments
 
-Synthesize the slice at widths of 8 and 32. Inspect the generated registers and logic, and explain how width affects resource use. Confirm that no unintended latch is inferred.
+1. Run `make FLOW=opensource nexysvideo` from `fpga/generator` after loading the CVW environment. Save `opensource-nexysvideo/synthesis.log` and note tool versions.
+2. Change only a benign Wally configuration option or a small GPIO width. Rebuild and compare resources; explain every large difference.
+3. Remove a reset assignment in a controlled test module. Inspect whether the mapping now uses resetless flip-flops and explain why this may help density but complicate deterministic bring-up.
+4. Replace a small register array with a synchronous memory coding pattern. Determine whether it maps to LUT RAM or BRAM, then confirm the intended read latency in simulation.
+5. Deliberately introduce an incomplete combinational assignment in an isolated exercise. Observe the latch warning, fix the RTL and record the corrected report.
 
-For UART, locate the synchronizer, FSM state, prescalers, and payload registers in the mapped design. Compare results under identical parameters and constraints. Record target library or FPGA device, frontend, tool version, command, warnings, and resource counts.
+The next chapter takes the JSON netlist and constraints through packing, placement, routing, timing analysis, FASM/bitstream generation and physical programming.

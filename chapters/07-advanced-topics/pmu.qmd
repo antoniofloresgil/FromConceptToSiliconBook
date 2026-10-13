@@ -1,16 +1,266 @@
-# Performance Monitoring
+# Performance Monitoring Units {#sec-pmu}
 
 ## Concepts
 
-Performance counters, event selection, measurement methodology, and bottleneck analysis.
+A performance monitoring unit (PMU) converts microarchitectural activity into measurements that software can read. A cycle count answers *how long* a workload ran; instruction-retirement count answers *how much architectural work* completed; event counters explain *why* the ratio changed. Together they make performance work repeatable rather than an exercise in interpreting a waveform.
 
-## Implementation
+For a RISC-V core, the architectural interface is a set of Control and Status Registers (CSRs). The privileged architecture defines counters and their access controls, while leaving most event encodings deliberately implementation-defined [@riscvPrivilegedSpec]. This division is important: software can use standard CSR addresses, but it must obtain the meaning of `mhpmevent3` from the selected core's documentation.
 
-Study performance monitoring hardware and software access in a RISC-V design.
+### Measurement questions
 
-## Hands-on Experiments
+Start every experiment with a question and a boundary. Examples are:
 
-Measure cycles, instructions, and selected events for controlled workloads.
+| Question | Minimum measurements | Useful derived quantity |
+|---|---|---|
+| Did a change improve throughput? | `cycle`, `instret` | CPI = cycles / retired instructions |
+| Is the branch predictor useful? | retired branches, mispredictions, cycles | misprediction rate and cycles per miss |
+| Is a cache helping? | cache accesses, misses, stall cycles | miss rate and miss penalty estimate |
+| Does division dominate? | divide-busy cycles, `instret` | fraction of elapsed execution occupied |
+| Did a compiler option change code quality? | `instret`, cycles, code size | instructions/work item and CPI |
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
+A counter has no meaning without a definition. “Cache miss” may mean a request that starts a miss, every cycle during refill, a writeback, or a request later squashed by a pipeline flush. Define the event at a pipeline boundary and specify whether it is counted once per occurrence or once per cycle.
 
+### Counters are observations, not the workload
+
+Counters perturb the system in two ways. Reading CSRs consumes instructions and can affect cache state; enabling extra events adds logic, fanout and switching activity. Use a warm-up interval, measure a sufficiently large region, repeat it, and subtract/estimate measurement overhead when it matters. Keep input data, compiler flags, linker map, clock frequency and PMU configuration in the result record.
+
+For short code on a simple in-order core, `mcycle` and `minstret` may be enough. For a larger software workload, collect a small coherent set rather than all available events: cycles, instructions, branch mispredictions, I-cache misses, D-cache misses and relevant stall cycles. A long list of counters without a hypothesis tends to obscure the actual bottleneck.
+
+## RISC-V Counter Architecture
+
+### Base counters and extensions
+
+RISC-V defines three base counter names in the unprivileged CSR space:
+
+| Unprivileged CSR | Machine CSR | Meaning |
+|---|---|---|
+| `cycle` (`0xC00`) | `mcycle` (`0xB00`) | Cycle counter |
+| `time` (`0xC01`) | — | Shadow of the platform timer, not a PMU event counter |
+| `instret` (`0xC02`) | `minstret` (`0xB02`) | Retired-instruction counter |
+
+`Zicntr` identifies the base counter extension. On RV32, the corresponding `cycleh` and `instreth` CSRs expose the upper 32 bits; software must use a stable high-low-high read sequence to obtain a coherent 64-bit value. On RV64, a single CSR read provides the 64-bit value. `time` reflects the platform timebase and need not run at core-clock frequency, so it must not be used as a synonym for `cycle`.
+
+Hardware performance monitors are addressed as `hpmcounter3` through `hpmcounter31` at `0xC03`–`0xC1F`, with machine-mode aliases `mhpmcounter3`–`mhpmcounter31` at `0xB03`–`0xB1F`. Their high halves are at `0xC83`–`0xC9F` and `0xB83`–`0xB9F` for RV32. `Zihpm` identifies the optional hardware-performance-monitor extension. An implementation may provide any number of counters from zero through 29; unimplemented locations have behavior specified by the privileged architecture and core configuration, so portable software must discover or be told what exists.
+
+### Event selector CSRs
+
+Machine CSRs `mhpmevent3` through `mhpmevent31` live at `0x323`–`0x33F`. Each selector controls the counter with the same number. The standard reserves the CSR locations and pairing, but it does **not** standardize the event-number encoding in the ordinary `mhpmevent` fields [@riscvPrivilegedSpec]. For example, one core may assign value 14 to D-cache miss while another assigns it to a load-stall event.
+
+There are two valid implementation styles:
+
+1. **Fixed event per counter.** `mhpmcounter3` always means branches, `mhpmcounter4` always means branch mispredictions, and `mhpmeventN` acts as an enable or has a documented fixed value. This is small and easy to verify.
+2. **Programmable multiplexing.** Every `mhpmeventN` contains an event code; a decoder selects one signal from a common event vector. This is flexible but costs comparators/multiplexers and requires an explicit event-ID ABI.
+
+A first FPGA PMU should use a small programmable design or a few fixed counters. Avoid exposing an apparently standard selector register whose values do nothing: that produces misleading software measurements.
+
+### Control and privilege
+
+`mcountinhibit` at `0x320` controls whether each implemented counter increments. Bit 0 inhibits `mcycle`, bit 2 inhibits `minstret`, and bits 3–31 control the corresponding hardware monitors. It allows software to reset, configure and start a group of counters at a well-defined boundary.
+
+`mcounteren` and `scounteren` determine whether lower-privilege software can read the counter CSRs. Machine mode retains control over the machine CSRs and event selectors. This is both a virtualization/operating-system mechanism and a security consideration: fine-grained timing and cache events can reveal information about other work sharing a microarchitecture.
+
+The ratified `Sscofpmf` extension adds standardized overflow and privilege-mode filtering facilities for richer supervisor systems. It is not required for a first Wally FPGA PMU. A lean design should initially document it as unsupported rather than partially implementing overflow interrupts without the required semantics [@riscvSscofpmf].
+
+### Safe RV32 reads
+
+An RV32 counter may change between reading its low and high halves. Read it as follows:
+
+```c
+static inline uint64_t read_mcycle64(void) {
+    uint32_t hi0, lo, hi1;
+    do {
+        asm volatile ("csrr %0, mcycleh" : "=r"(hi0));
+        asm volatile ("csrr %0, mcycle"  : "=r"(lo));
+        asm volatile ("csrr %0, mcycleh" : "=r"(hi1));
+    } while (hi0 != hi1);
+    return ((uint64_t)hi0 << 32) | lo;
+}
+```
+
+The same pattern applies to `minstret` and every RV32 `hpmcounterN`. It avoids a value assembled from the high word before wraparound and the low word after wraparound. For a short measurement window, wraparound is still a real possibility if software stores only a 32-bit delta.
+
+## CORE-V Wally: Current Counter Infrastructure
+
+### What exists in the RTL
+
+Wally's privileged CSR logic already contains substantial counter machinery. Its `csrc.sv` defines a counter array parameterized by `P.COUNTERS`, provides 64-bit accumulation even for RV32 configurations, implements `mcountinhibit`, exposes the standard CSR address ranges and includes `mhpmevent` storage when more than the three base counter slots exist [@cvwPerformanceCounters].
+
+The current event vector includes, subject to configuration, cycle, retired instructions, branches, jumps, returns, branch-prediction failures by class/direction/target, load/store stalls, I-cache and D-cache accesses/misses/stall cycles, CSR writes, fences, interrupts, exceptions and divide-busy cycles. This is an unusually useful event inventory for simulation-based architectural study. The counter increment logic uses an event signal indexed by counter number; therefore its current programmable interface is effectively a per-counter enable rather than a general event-selector multiplexer. The associated `mhpmeventN` must be nonzero for generic counters to increment, but it does not currently select an arbitrary event ID.
+
+In the default full configurations, `COUNTERS` can be 32, giving base slots and up to 29 generic counter slots. The repository also defines smaller derivative configurations: `COUNTERS=5` retains counters 3 and 4, and `COUNTERS=3` keeps only the base slots. This is a valuable area/performance trade-off knob. It should be recorded beside every benchmark because two Wally builds may expose different PMU capabilities.
+
+### Simulation visibility versus synthesized hardware
+
+There are two distinct meanings of “the Wally performance counters are available,” and they must not be conflated.
+
+During simulation, the Wally testbench can hierarchically access `HPMCOUNTER_REGW`, automatically take samples around CoreMark or Embench markers, print named counter reports and use `minstret` for instruction-limit/progress control. Waveforms and simulation loggers can inspect any internal event without changing processor software. This is the rich performance-monitoring experience normally used in Wally architecture experiments.
+
+The current open FPGA/Nexys Video flow does **not** provide that simulation instrumentation to a board user. The testbench hierarchy, sample triggers, counter logger and waveform database are not synthesized; the `fpgaOpenSource` board top neither exports a PMU measurement interface nor captures counter samples for retrieval. As a result, the configured bitstream has no equivalent automatic performance report after synthesis. In this practical sense, Wally performance monitoring is available during simulation but is not available as an observable PMU service in the current synthesized FPGA design.
+
+This is not the claim that the counter RTL is intrinsically unsynthesizable. The CSR counter registers themselves are ordinary sequential hardware and can exist when the selected Wally parameters retain them. The missing pieces are a deliberate FPGA configuration, a documented event-selection ABI and an observation path: software access, a memory-mapped snapshot block, UART transport, debug capture or a trace interface. Separating these statements prevents two errors: claiming that a simulator-only logger is hardware, and claiming that useful hardware counters would require redesigning the whole processor.
+
+### Why the distinction matters
+
+An FPGA build may optimize away logic that has no architectural or top-level observable use. More importantly, a counter that exists only behind internal hierarchy cannot be read by application code unless its standard CSR access is enabled and preserved in the selected configuration. A waveform probe used in a commercial FPGA flow is also not a reproducible open-board PMU: it consumes debug resources, is build-specific and does not define a software interface.
+
+For FPGA experiments, the target should be explicit:
+
+| Target | Appropriate collection mechanism |
+|---|---|
+| Microarchitecture exploration in simulation | Existing Wally logger and waveform event visibility |
+| Bare-metal benchmark on a board | Standard CSR reads plus UART/semihosting-style result output |
+| Continuous board regression | Memory-mapped snapshot buffer read by test firmware |
+| Interactive lab demonstration | Selected counters shown through UART or LEDs, not raw wide values |
+| Post-silicon/system profiling | Documented PMU ABI plus debug/trace transport and access control |
+
+## Proposed FPGA PMU for Wally
+
+The following is an integration plan, not a claim about the current upstream FPGA bitstream. It preserves Wally's existing CSR machinery where possible and adds only the missing configuration, semantics and export path.
+
+### Step 1: choose a realistic PMU profile
+
+For the Nexys Video prototype, begin with five 64-bit counters:
+
+| CSR | Event | Rationale |
+|---|---|---|
+| `mcycle` | Core clock cycles | Overall elapsed execution |
+| `minstret` | Nonflushed retired instructions | Work completed and CPI |
+| `mhpmcounter3` | Branch predictor wrong | Control-flow quality |
+| `mhpmcounter4` | D-cache miss or D-cache stall cycles | Data-memory bottleneck |
+| `mhpmcounter5` | I-cache miss or I-cache stall cycles | Instruction-supply bottleneck |
+
+Use `COUNTERS=6` for this minimal profile. If cache or branch prediction is disabled, map the corresponding slot to zero and document that choice; do not reuse an event number silently. A 64-bit physical counter avoids frequent wraparound on an FPGA, although an RV32 core still accesses it through low/high CSR halves.
+
+The event definitions should be written in a small PMU specification stored next to the configuration. For example: “D-cache miss increments exactly once when the D-cache state machine accepts a CPU request that causes a miss,” while “D-cache stall cycles increments once per active core cycle in which a D-cache miss stalls the memory stage.” These count different things and should normally occupy different counters.
+
+### Step 2: make selectors genuinely programmable
+
+Wally currently wires each generic event into a matching counter position. To support the RISC-V idea of `mhpmeventN` as an event selector, add an event multiplexer between the event-vector producers and counter increment logic.
+
+```text
+pipeline/cache/privilege event taps
+          |
+   EventBus[0:K-1] with stable IDs
+          |
+   mhpmevent3..N event-ID fields
+          |
+  one selector per generic counter
+          |
+ mcountinhibit / mode-filter gate
+          |
+  64-bit counter registers and CSR reads
+```
+
+An implementation sketch is intentionally simple:
+
+```systemverilog
+function automatic logic select_event(
+  input logic [7:0] event_id,
+  input logic [K-1:0] event_bus
+);
+  if (event_id < K) return event_bus[event_id];
+  else              return 1'b0;
+endfunction
+
+assign counter_inc[n] = !mcountinhibit[n]
+                     && (mhpmevent[n].event_id != 0)
+                     && select_event(mhpmevent[n].event_id, event_bus);
+```
+
+Reserve event ID zero for disabled. Use a compact documented field, such as bits `[7:0]`, and read zero for unsupported higher fields until a future standard extension is intentionally adopted. A simple mux is sufficient for a small event bus; a 29-counter × many-event implementation can create area and fanout pressure, so the FPGA profile should expose only the needed generic counters.
+
+### Step 3: identify and pipeline event taps
+
+Most Wally event sources already reach `csr.sv`: branch-predictor results, cache access/miss/stall signals, load/store stalls, retirement validity, exceptions and divide-busy state. Refactor these into a named `pmu_events_t` struct or a vector in one module rather than adding another set of long top-level CSR ports. The source must define the clock domain and the sampling stage.
+
+Retirement-related events should be qualified by the existing nonflushed valid signal so squashed instructions do not inflate `minstret`, branches or CSR-write counts. Cache access/miss semantics must be agreed with the cache team. Multi-cycle events such as divide busy and cache stall are naturally level signals and count cycles; occurrence events such as exception entry should be a one-cycle pulse. Pipeline an event if necessary to avoid lengthening a critical path, then document the one-cycle observation delay. Counter accuracy at a defined boundary is more valuable than an unpipelined signal that breaks timing.
+
+### Step 4: CSR integration and software accessibility
+
+The existing CSR decode already covers `mcycle`, `minstret`, `mhpmcounterN`, `mhpmeventN`, `mcountinhibit`, `mcounteren` and `scounteren`. Required changes are therefore focused:
+
+1. Set `COUNTERS` to the selected number in a derivative configuration such as `fpgaopensource_pmu`.
+2. Ensure `ZICNTR_SUPPORTED` and `ZIHPM_SUPPORTED` truthfully describe the exposed CSRs.
+3. Replace fixed event-to-counter wiring with selector output for generic counters.
+4. Define reset values: counters reset to zero, selectors disabled, and access defaults machine-only.
+5. Add directed CSR tests for read, write, inhibit, selector-zero, unsupported selector and RV32 high-half behavior.
+6. Decide whether `mcounteren` permits user/supervisor reads; default to machine-only on a teaching FPGA image.
+
+Software can then bracket a workload in machine mode:
+
+```c
+write_csr(mcountinhibit, ~0u);       // stop implemented counters
+write_csr(mcycle, 0);
+write_csr(minstret, 0);
+write_csr(mhpmcounter3, 0);
+write_csr(mhpmcounter4, 0);
+write_csr(mhpmevent3, PMU_BP_WRONG);
+write_csr(mhpmevent4, PMU_DCACHE_MISS);
+write_csr(mcountinhibit, ~(BIT(0)|BIT(2)|BIT(3)|BIT(4)));
+
+benchmark_body();
+
+write_csr(mcountinhibit, ~0u);
+report(read_mcycle64(), read_minstret64(),
+       read_hpmcounter64(3), read_hpmcounter64(4));
+```
+
+The macro names are illustrative. Provide a Wally-specific header that uses the exact CSR names/encodings supported by the selected compiler and a stable event-ID header shared with the RTL documentation.
+
+### Step 5: get results off the FPGA
+
+The simplest observation path is software: benchmark firmware reads the standard CSRs and prints an unambiguous line on the board UART. This is portable, has no new bus peripheral and verifies both CSR access and serial output. It is sufficient for bare-metal benchmarking.
+
+A second option is a snapshot peripheral. It exposes a memory-mapped command register that atomically captures all selected counters into shadow registers. Host-side firmware can read the frozen values without implementing repeated low/high CSR sequences, and an external debugger can inspect one address range. The snapshot must be atomic with respect to the core clock: implement a request/acknowledge handshake or clock it in the same domain, and define whether the capture cycle itself is counted.
+
+LEDs are useful only for state or low-order diagnostic bits. A UART, JTAG debug path or memory-mapped buffer is required for full 64-bit results. Avoid exporting dozens of counter bits as raw top-level pins; it wastes IO and makes the PMU board-specific.
+
+### Area, timing and security trade-offs
+
+Each 64-bit counter costs flip-flops plus an incrementer. Event multiplexers add LUTs and can load signals that lie on front-end/cache critical paths. Use `mcountinhibit` to reduce needless switching during ordinary execution, but remember that a counter still occupies area. Measure the PMU configuration against the baseline through the exact Yosys/nextpnr flow described in the FPGA chapters.
+
+Expose counters deliberately. User-mode access can help benchmarking but may reveal cache or branch behavior across protection boundaries. On a single-core teaching FPGA this may be an acceptable documented choice; on a system running mutually untrusted software, leave counters machine-only or implement access policy and filtering. Treat PMU access as part of the threat model, alongside debug enablement.
+
+## Verification and Experiments
+
+### Directed RTL tests
+
+Verify semantics before running a benchmark. A concise test matrix is:
+
+| Case | Expected result |
+|---|---|
+| Reset | All counters and selectors are zero/disabled |
+| One active cycle | `mcycle` increments once unless inhibited |
+| Retire then flush | `minstret` counts only the nonflushed retirement |
+| Selected branch event | Only the counter selecting that ID increments |
+| Selector zero/unknown | Generic counter remains unchanged |
+| `mcountinhibit` set | Associated counter stops without changing its value |
+| CSR software write | Written counter value is visible at the correct boundary |
+| RV32 carry | Low-half wrap increments high half; stable read works |
+| Lower privilege read | Allowed or traps according to `mcounteren`/`scounteren` |
+
+Add SystemVerilog assertions for invariants such as “an inhibited counter does not change except on its permitted CSR write” and “a generic counter cannot increment when its selector is zero.” Compare event totals with a reference scoreboard driven from the same defined pipeline events, not from ad hoc waveform observations.
+
+### Correlate simulation and FPGA
+
+Run the same bare-metal benchmark in Wally simulation and on the synthesized board. Exact cycles may differ if FPGA wrappers, memories or clocking change the configuration, but event relationships should be explainable. Archive:
+
+- Wally configuration and PMU event-ID specification;
+- simulator/tool versions and FPGA bitstream hash;
+- software ELF, compiler version and UART transcript;
+- counter values, input size, warm-up policy and repetitions;
+- synthesis resource/timing change from the no-PMU baseline.
+
+If numbers differ, first check that the two builds use the same cache, branch-predictor, memory and reset configuration. Then inspect firmware placement and external-memory behavior. Do not tune RTL based on a single unrepeatable FPGA result.
+
+### Hands-on experiments
+
+1. Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache events around a CoreMark or Embench region. Compute CPI and annotate the event definitions.
+2. Build an RV32 program that reads `mcycle` using the high-low-high sequence. Force a low-half wrap in simulation and verify that a naïve low/high read can fail.
+3. Define a five-counter FPGA PMU profile and write its event-ID table before changing RTL.
+4. Implement one selector, one counter and one UART report first. Verify reset, inhibit and one selected event in simulation.
+5. Synthesize the PMU-enabled configuration for Nexys Video. Compare LUTs, flip-flops, maximum frequency and critical path with the baseline.
+6. Run the same microbenchmark five times on the FPGA, report min/median/max and explain any spread.
+7. Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR reads explicitly.
+
+The result is a PMU that is useful at both stages: rich internal evidence during Wally simulation and a smaller, architecturally documented measurement service on actual FPGA hardware.
