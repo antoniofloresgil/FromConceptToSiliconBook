@@ -1,0 +1,738 @@
+# Buses and Interrupts {#sec-buses-interrupts}
+
+A processor becomes a system when its instructions can reach memories and peripherals and peripheral events can reach software. A load from RAM and a load from a UART status register look similar in assembly, but their hardware contracts differ. A peripheral may return changing state, consume a received byte or acknowledge an event. The interconnect must preserve those meanings while devices respond at different speeds.
+
+This chapter follows two paths: an instruction's request to a device, and an interrupt's journey back to the processor. It develops APB, AHB and AXI, then uses full CORE-V Wally to connect transactions, registers and RISC-V interrupt handling. The main textbook references are Chapters 8 and 9 and Sections 20.2–20.3 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc].
+
+Distinguish a **protocol** from an **implementation**. Wally's EBU/uncore path uses AHB and an AHB-to-APB bridge. AXI is studied as another SoC design option, not described as the native interface of that path. The interrupt examples require privileged support; the simplified teaching pipeline studied elsewhere omits traps and privileged state.
+
+## Concepts
+
+### From core to uncore
+
+The core executes instructions and maintains architectural state. The **uncore** surrounds it with interconnect, memories and peripheral interfaces. The instruction fetch unit (IFU) requests executable data; the load/store unit (LSU) requests or writes data. Interconnect selects a destination and returns the response to the correct requester.
+
+```text
+IFU requests ----+                    +---- memory / boot ROM
+                +-- interconnect ----+
+LSU requests ---+                    +---- bridge ---- peripheral registers
+                                                        |
+                                                        event
+                                                          |
+CPU trap logic <-------- interrupt controller <------------+
+```
+
+The outward transaction and inward event are different paths. A register read can occur with interrupts disabled; an interrupt can become pending without a simultaneous bus access. Software uses the bus to configure interrupt generation and later to service a source, but the interrupt request itself is not a memory transaction.
+
+A shared bus saves hardware but makes unrelated users compete. A crossbar can let two controllers access different devices concurrently, with arbitration when they select the same destination. The topology should match traffic: occasional configuration writes and sustained cache-line or DMA transfers have different bandwidth and latency needs.
+
+### Memory-mapped I/O
+
+In **memory-mapped I/O (MMIO)**, a peripheral occupies an address region. Ordinary loads and stores access its registers. The map is a contract shared by RTL, linker scripts, firmware and verification. The book's representative Wally platform uses the following regions; verify configuration parameters for the selected build before using these addresses [@harrisRiscvSoc].
+
+| Region | Representative base | Purpose |
+|---|---:|---|
+| CLINT | `0x02000000` | Time, timer and software interrupts |
+| PLIC | `0x0C000000` | External interrupt routing |
+| UART | `0x10000000` | Serial data and status |
+| GPIO | `0x10060000` | Pin control and event state |
+| Main RAM | `0x80000000` | Program and data storage |
+
+A register table must also state offset, access width, reset value, permissions and side effects. **Read-only**, **read/write** and **write-one-to-clear (W1C)** registers differ: writing one to a W1C bit requests clearing, while writing zero leaves it unchanged. Reading a FIFO data register may consume an entry. Duplicate accesses can therefore corrupt behavior even when the final register value looks correct.
+
+MMIO needs appropriate memory attributes. Speculative reads must not consume data, and cache hits must not hide changing device status. `volatile` in C does not configure these attributes or enforce every hardware ordering requirement. Address decoding also does not automatically enforce privilege or protection; access checks require explicit hardware.
+
+### Acceptance, completion and backpressure
+
+A transaction defines what is requested, when it is accepted, when it completes and whether it succeeds. A requester cannot advance merely because an address appeared on wires. A responder cannot repeat an operation on every cycle while a waiting request remains visible.
+
+| Contract item | Typical information | Failure if missing |
+|---|---|---|
+| Destination | Address and region selection | Wrong device accessed |
+| Operation | Direction, size, byte enables | Wrong bytes changed |
+| Acceptance | Protocol-specific handshake | Request lost or duplicated |
+| Completion | Read result or write response | Requester advances prematurely |
+| Status | Success/error | Failure mistaken for valid data |
+| Association | Saved selection, queue entry, ID | Response matched incorrectly |
+
+**Latency** is time from request to response; **throughput** is completed work per unit time. A memory might return its first word after four cycles and then one word per cycle. A simple peripheral might take two cycles per access and accept no overlap. Bus design should distinguish these properties.
+
+Backpressure lets a receiver delay acceptance. A buffer absorbs a bounded mismatch; when full, it must stop admitting work. Accepting an address without enough state to track its eventual response is unsafe even if the data wires happen to be idle.
+
+### APB: Setup and Access
+
+The Advanced Peripheral Bus suits low-bandwidth register interfaces. Each transfer has a one-cycle **Setup** phase followed by an **Access** phase of one or more cycles. Consecutive APB transfers do not overlap these phases [@harrisRiscvSoc].
+
+| Signal | Driven by | Meaning |
+|---|---|---|
+| `PCLK`, `PRESETn` | Clock/reset infrastructure | Clock and active-low reset |
+| `PADDR`, `PWRITE` | Controller | Address and direction |
+| `PSEL` | Controller/decoder | Selected device |
+| `PENABLE` | Controller | Access phase |
+| `PWDATA`, `PSTRB` | Controller | Write payload and supported byte strobes |
+| `PRDATA`, `PREADY` | Device | Read result and completion |
+| `PSLVERR`, where supported | Device | Error at completion |
+
+During Setup the controller asserts `PSEL`, drives address, direction and write payload, and leaves `PENABLE` low. In Access it raises `PENABLE`. If `PREADY` is low, it keeps selection and payload stable. Completion occurs on a rising edge with `PSEL`, `PENABLE` and `PREADY` high. Another transfer requires another Setup phase, including a cycle with `PENABLE` low.
+
+Throughout this chapter, each timing-table row describes the interval **before** its numbered sampling edge.
+
+| Edge | Phase | `PSEL` | `PENABLE` | `PREADY` | Result |
+|---:|---|---:|---:|---:|---|
+| 1 | Setup | 1 | 0 | irrelevant | No completion |
+| 2 | Access, waiting | 1 | 1 | 0 | Hold payload |
+| 3 | Access, waiting | 1 | 1 | 0 | Hold payload |
+| 4 | Access, ready | 1 | 1 | 1 | One access completes |
+| 5 | Idle or new Setup | 0 or 1 | 0 | irrelevant | No completion |
+
+A straightforward register frontend derives its operation enables from completion:
+
+```systemverilog
+logic AccessDone, WriteDone, ReadDone;
+assign AccessDone = PSEL & PENABLE & PREADY;
+assign WriteDone  = AccessDone &  PWRITE;
+assign ReadDone   = AccessDone & ~PWRITE;
+```
+
+For a side-effecting read, another valid internal schedule captures data once in Setup and holds it through Access. Wally's PLIC uses such a Setup read strobe so claim processing occurs once. Do not combine schedules and perform the side effect again at completion. In a waiting device, an enable based only on `PSEL && PENABLE` may execute an operation repeatedly.
+
+APB revisions add capabilities. A block with older/basic signals does not acquire strobes, protection or error propagation merely through its name. In particular, a device's `PSLVERR` cannot pass through a bridge with no corresponding input. State the common implemented subset at integration boundaries.
+
+### AHB: address/data pipelining
+
+The Advanced High-performance Bus overlaps consecutive address and data phases. While A uses its data phase, B may present its address. A stalled data phase still prevents later address phases from advancing. AHB is therefore a pipelined bus, but not an independently queued set of AXI channels [@harrisRiscvSoc].
+
+| Signal | Purpose |
+|---|---|
+| `HADDR`, `HWRITE`, `HSIZE` | Address, direction, bytes per beat |
+| `HTRANS` | `IDLE`, `BUSY`, `NONSEQ`, `SEQ` |
+| `HBURST` | Burst organization |
+| `HSEL` | Destination in the address phase |
+| `HWDATA`, `HRDATA` | Write/read data in the data phase |
+| `HREADYOUT` | Responder completion indication |
+| `HREADY` | Completion selected by interconnect |
+| `HRESP` | Response status |
+
+The address currently visible can belong to the **next transaction**, while data and completion belong to the previous one. A response multiplexer must retain the accepted selection. Using the live address to select data can return B's response while A still owns the data phase.
+
+| Edge | Address phase | Data phase | `HREADY` | Consequence |
+|---:|---|---|---:|---|
+| 1 | A | None | 1 | Accept A |
+| 2 | B | A, waiting | 0 | Keep A active; hold B |
+| 3 | B, held | A, complete | 1 | Complete A; accept B |
+| 4 | C | B, complete | 1 | Complete B; accept C |
+| 5 | Idle | C, complete | 1 | Complete C |
+
+For writes, `HWDATA` belongs to the data phase. If A writes and B reads, live `HWRITE` can already describe B while A's data is transferred. Preserve the accepted direction as well as the destination. In a simple AHB-Lite responder, selection, `HTRANS[1]` and `HREADY` identify an accepted active address phase:
+
+```systemverilog
+always_ff @(posedge HCLK or negedge HRESETn) begin
+  if (!HRESETn) begin
+    SelectedD <= 1'b0;
+    WriteD    <= 1'b0;
+    AddressD  <= '0;
+  end else if (HREADY) begin
+    SelectedD <= HSEL & HTRANS[1];
+    WriteD    <= HWRITE;
+    AddressD  <= HADDR;
+  end
+end
+```
+
+This fragment captures controls; it is not a complete responder. The `HREADY` enable prevents a wait from overwriting ownership. A complete design also defines data timing, byte lanes, side effects and response behavior. An AHB error response has a protocol-specific two-cycle sequence; an arbitrary combinational error flag is insufficient.
+
+AHB bursts begin with `NONSEQ`, followed by related `SEQ` transfers. A four-word incrementing burst accesses, for example, `0x80000100`, `0x80000104`, `0x80000108`, `0x8000010C`. Every beat still obeys completion and wait rules. Cache-line traffic benefits from bursts, but a peripheral is not required to become a fast memory just because burst controls are present.
+
+Arbitration selects which controller proceeds. Fixed priority is simple but can starve other traffic; round-robin improves fairness. Bursts, locks and slow responders also influence worst-case service time. A high average bandwidth does not prove that an interrupt-driven control loop has bounded access latency.
+
+### AXI: why independent channels matter
+
+SoCs with several controllers and high-latency memories need to issue new work while earlier responses remain pending. AXI separates request, payload and response channels so queues and pipeline stages can absorb latency. The book introduces this progression in Section 9.2.3 [@harrisRiscvSoc].
+
+The detailed discussion concerns **AXI4** and **AXI4-Lite**, using Arm IHI 0022H as their protocol reference [@armAxi4Spec]. Later family members add capabilities; those additions are not automatically present in an AXI4 block.
+
+#### The five channels
+
+The **manager** initiates a transaction and the **subordinate** responds. These are port roles: a DMA engine is a subordinate when software configures its registers and a manager when it accesses RAM.
+
+| Channel | Payload direction | Main AXI4 payload | Purpose |
+|---|---|---|---|
+| AR | Manager → subordinate | `ARADDR`, `ARLEN`, `ARSIZE`, `ARBURST`, `ARID` | Read description |
+| R | Subordinate → manager | `RDATA`, `RRESP`, `RLAST`, `RID` | Read beats and status |
+| AW | Manager → subordinate | `AWADDR`, `AWLEN`, `AWSIZE`, `AWBURST`, `AWID` | Write description |
+| W | Manager → subordinate | `WDATA`, `WSTRB`, `WLAST` | Write beats |
+| B | Subordinate → manager | `BRESP`, `BID` | One write response |
+
+Each row has its own VALID/READY pair. The manager produces `ARVALID` but consumes `RVALID`. A read uses AR and R; a write uses AW, W and B. There is no additional B response for a read.
+
+```text
+Manager                                 Subordinate
+   |---------- AR: address/control --------->|
+   |<--------- R: data/status/last -----------|
+   |---------- AW: address/control --------->|
+   |---------- W: data/strobes/last --------->|
+   |<--------- B: write status ---------------|
+```
+
+Channels can operate concurrently when the implementation has resources. Accepting AR while a B response waits is possible, but independent channels do not promise unlimited queues or one accepted transaction every cycle.
+
+#### VALID/READY handshaking
+
+A channel transfers on a rising `ACLK` edge when VALID and READY are high. The source retains VALID and payload until acceptance. It must not wait for READY before offering available information; otherwise a receiver that waits for VALID could deadlock with it. The receiver controls READY according to available capacity.
+
+| Edge | VALID | READY | Payload | Accepted? |
+|---:|---:|---:|---|---|
+| 1 | 1 | 0 | A | No |
+| 2 | 1 | 0 | A | No; keep A |
+| 3 | 1 | 1 | A | Yes |
+| 4 | 1 | 1 | B | Yes |
+| 5 | 0 | 1 | irrelevant | No |
+
+Consecutive transfers do not require a low VALID cycle. After edge 3 the source may offer B immediately because A was accepted. READY by itself does not acknowledge anything while VALID is low. A teaching assertion for a stalled AXI4 write-data channel is:
+
+```systemverilog
+assert property (@(posedge ACLK) disable iff (!ARESETn)
+  WVALID && !WREADY |=> WVALID && $stable({WDATA, WSTRB, WLAST}));
+```
+
+A complete checker covers all channels and payload fields. AXI forbids combinational paths between interface inputs and outputs. Registered state and appropriate elastic buffers help meet this requirement and timing constraints. A long combinational READY chain is not a harmless optimization.
+
+#### Write address and data can arrive in either order
+
+AW and W are independent: address first, data first and simultaneous arrival are all legal. Different pipeline depths can change their relative arrival after leaving the manager. Capturing a write only when `AWVALID && WVALID` coincide loses legal requests.
+
+| Edge | AW action | W action | B action |
+|---:|---|---|---|
+| 1 | Address accepted | None | None |
+| 2 | No new address | None | None |
+| 3 | None | Data accepted | None |
+| 4 | Use retained address/data once | None | Response produced after edge |
+| 5 | None | None | VALID=1, READY=0: retain status |
+| 6 | None | None | Response accepted |
+
+Exchanging address and data arrival must not break the design. Each accepted payload needs storage or an equivalent control mechanism. AXI4 requires B to follow acceptance of the write address and final data beat; in Lite the only beat is also the final beat. Address acceptance alone cannot generate a successful write response.
+
+B itself may stall. A pending response cannot disappear or be replaced while BREADY is low. The response reports the outcome defined by the transaction's attributes and destination contract; it should not be interpreted as an unspecified global ordering guarantee.
+
+#### Read snapshots and side effects
+
+After AR acceptance, the subordinate eventually presents R data/status. If RREADY is low, it retains that response. Reading a changing register afresh on every stalled R cycle violates stability; popping a FIFO every cycle corrupts it.
+
+A device can consume a FIFO entry when it creates a retained response, or use another defined internal schedule. In either case, one request consumes one entry. The design must assign ownership of the entry to either the FIFO or the response buffer throughout the wait.
+
+Concurrent reads and writes also require a register-bank policy. A same-edge read of an output register being written can observe old or new data depending on the implementation. State that policy in the device contract; the bus protocol does not choose it.
+
+#### AXI4-Lite for registers
+
+AXI4-Lite retains the five channels but uses single-beat accesses on 32- or 64-bit data buses, without general bursts or transaction IDs. Lite still requires independent AW/W handling and retained responses.
+
+A teaching endpoint can limit itself to one pending read and one pending write. **AXI4-Lite itself permits multiple outstanding transactions**, completed in order. Queue depth is therefore an implementation choice, not a restriction implied by the word Lite [@armAxi4Spec].
+
+`WSTRB` identifies valid write byte lanes. On a 32-bit port, `4'b0011` selects the low two bytes. A register bank documents supported strobes; a W1C bit must not clear when its byte's strobe is zero. Ignoring strobes silently can overwrite neighboring fields. If an interface supports only certain combinations, it needs a documented policy for other accesses.
+
+#### AXI4 bursts, sizes and boundaries
+
+An address describes an entire burst: `AxLEN + 1` beats, `2^AxSIZE` bytes per beat and an `AxBURST` address pattern. Here Ax denotes AR or AW. INCR advances addresses, FIXED repeats an address, and WRAP cycles within a specified aligned boundary.
+
+| Field | Four-beat 32-bit write example |
+|---|---|
+| `AWADDR` | `0x80000100` |
+| `AWLEN` | `3` |
+| `AWSIZE` | `2`, meaning four bytes |
+| `AWBURST` | INCR |
+| `WLAST` | High on the fourth beat |
+
+The effective addresses are `0x80000100`, `0x80000104`, `0x80000108` and `0x8000010C`. There is one AW transfer, four W transfers and one B response. A read has one AR and four R transfers, ending with RLAST. A **beat** is not a whole **transaction**.
+
+AXI4 INCR bursts can have up to 256 beats and must not cross a 4 KiB boundary. Size, alignment and address progression must also be legal; an eight-byte beat cannot fit a four-byte data port. Begin with aligned, full-width INCR accesses before implementing narrow, unaligned or wrapping traffic.
+
+R and W may stall between beats. Advance a beat counter only on acceptance. Counting cycles with VALID alone can assert LAST too early. Once a burst is accepted, a manager cannot end it early because software no longer wants the remaining data; the protocol obligation still exists.
+
+#### Outstanding requests, IDs and ordering
+
+An outstanding transaction is accepted but incomplete. IDs associate responses with requests and enable eligible different-ID transactions to complete out of order. Same-ID ordering constraints still apply. For example, a slow read with ID 1 need not block a ready read with ID 2 if the manager has state to place both results correctly.
+
+That state includes destination, length and completion progress. A manager with one response slot expecting issue order cannot safely enable arbitrary response reordering. An AXI ID is a transport label, not a RISC-V destination register or retirement mechanism.
+
+AXI4 has no W-channel transaction ID and does not allow AXI3-style write-data interleaving. Write data must maintain its required association with write-address order. Read-data interleaving across eligible different IDs is a separate capability. Adding AWID wires without data-association logic does not create a correct interconnect.
+
+Separate read/write channels also do not establish universal read-after-write order. A command write followed by a status read needs the platform's ordering rules, device attributes and software synchronization. IDs alone do not supply them.
+
+#### Responses, routing and failure recovery
+
+AXI reports outcome on R for reads and B for writes. Interpret the response along with the transaction's capabilities; a two-bit code is not an instruction-level exception by itself.
+
+| Encoding | Name | Interpretation |
+|---|---|---|
+| `00` | OKAY | Normal success; also used in exclusive-access handling |
+| `01` | EXOKAY | Successful exclusive access where that feature exists |
+| `10` | SLVERR | Destination reports an access failure |
+| `11` | DECERR | Interconnect cannot route the access appropriately |
+
+AXI4-Lite does not support exclusive accesses or EXOKAY responses. In a full AXI design, exclusive-access outcomes require their own semantics; ordinary software must not interpret every OKAY as a successful exclusive update. This chapter's register example uses only OKAY and SLVERR [@armAxi4Spec].
+
+An interconnect decodes AW/AR, selects a destination and remembers enough routing state for W, B and R. Different managers may reuse the same local ID, so the fabric needs source tracking or an ID-extension scheme to route responses correctly. An accepted W payload must never be sent to whichever address happens to appear next on AW.
+
+Error handling must preserve the protocol's outstanding obligations. A failed read burst still needs the required response beats and final indication; a write path must consume the associated data and return its response according to the protocol. Neither party can simply stop exchanging information after noticing an error. Nor does a failure promise that earlier device side effects were rolled back: blindly retrying a command can duplicate work.
+
+Protection, cache attributes and optional quality-of-service metadata describe additional contracts. Their presence does not prove enforcement. If a fabric ignores privilege metadata, it needs a separate mechanism for access control. If it accepts QoS metadata but uses fixed arbitration, software cannot assume bounded service solely from a QoS value.
+
+#### Buffer depth and bandwidth
+
+For data width $W$ bits and frequency $f$, the peak payload rate of one channel is
+
+$$
+B_{\mathrm{peak}} = \frac{W}{8} f.
+$$
+
+A 64-bit channel at 100 MHz has a theoretical 800 MB/s capacity when every cycle transfers useful data. If $\eta$ is the accepted useful-payload fraction, $B_{\mathrm{useful}} = \eta B_{\mathrm{peak}}$. Arbitration, stalls and partially used beats reduce efficiency. This is a capacity calculation, not a measured Wally result.
+
+For fixed-latency single-beat reads with latency $L$ cycles and desired rate $r$ requests/cycle, roughly $N \geq Lr$ outstanding slots are needed to hide latency in steady state. A 20-cycle path with one outstanding request cannot sustain a returned word every cycle. Bursts and variable service need a more detailed model.
+
+For read occupancy, an accepted AR adds one transaction; accepted R with RLAST removes one. Subtracting every R beat instead produces an incorrect queue count. Writes additionally need tracking of unmatched AW/W payloads and pending B responses. Buffer depth costs storage, bookkeeping and verification, so choose it against a traffic/latency requirement.
+
+#### AXI-Stream, DMA and coherence
+
+AXI4-Stream carries data using TVALID/TREADY, TDATA and optional byte/packet metadata such as TKEEP and TLAST. It has no memory address channel. It cannot become an AXI4-Lite register port by renaming pins.
+
+```text
+CPU -- AXI4-Lite --> DMA control/status
+RAM <-- AXI4 ------ DMA mover <-- AXI4-Stream --> accelerator
+```
+
+Plain AXI4 does not automatically keep CPU caches coherent with DMA. Noncoherent systems need cache maintenance, uncached buffers or another explicit ownership policy. ACE and coherent interconnects add machinery beyond plain AXI4. A completion interrupt notifies software; it does not itself make cached DMA results visible.
+
+### Bridges, clock crossings and reset
+
+Choose the interface for the endpoint's actual traffic rather than for the largest possible feature set:
+
+| Interface | Useful role | Main design responsibility |
+|---|---|---|
+| APB | Low-rate control registers | Setup/Access timing and side effects |
+| AHB-Lite | Small-core memory/peripheral path | Address/data association across waits |
+| AXI4-Lite | Queued register access | Independent channels and ordered responses |
+| AXI4 | Bursts, memory and multiple controllers | Queues, IDs, routing and ordering |
+| AXI4-Stream | Packet/sample transport | Stream buffering and packet boundaries |
+
+These protocols describe communication, not the processor ISA or a required vendor toolchain. A RISC-V core can use AMBA interfaces, and an AXI peripheral need not depend on a proprietary FPGA development flow. The costs are RTL complexity, storage, timing and verification.
+
+A bridge preserves transaction meaning, not just signal names. AXI4-Lite-to-APB conversion retains AW and W separately, runs Setup/Access, then produces B. It retains AR and read results until R acceptance. A serialized bridge also arbitrates its read/write paths.
+
+Splitting an AXI4 burst into Lite accesses requires ID tracking and response aggregation. That may suit ordinary memory but cannot casually change a side-effecting register sequence. Width conversion must preserve addresses, byte lanes and operation semantics.
+
+No synchronous bus handshake makes an asynchronous clock crossing safe. Use reviewed FIFOs or coherent multi-bit handshakes, as explained in the clocking chapter. Synchronizing each address bit independently can deliver a mixture of two requests.
+
+Reset must also account for accepted work. Resetting a subordinate while a manager awaits its response can leave a request permanently outstanding. Coordinate reset, drain traffic or provide recovery. A timeout is a system policy, not permission to forget a transaction while late data remains possible.
+
+### Interrupts, exceptions and traps
+
+Polling repeatedly reads status; an interrupt lets the processor do other work until an enabled event requests service. Interrupt entry and service still cost cycles, so high-rate devices may benefit from buffering and batching.
+
+An **exception** is associated with an instruction, such as an illegal opcode; an **interrupt** reports a device or timer event external to that instruction's execution. A **trap** transfers control to handle either. RISC-V trap entry is architectural behavior, not an ordinary function call [@harrisRiscvSoc; @riscvPrivilegedSpec].
+
+```text
+event -> device pending/local enable -> controller pending/priority/enable
+      -> CPU pending/enable -> handler -> device service -> completion
+```
+
+Disabling a delivery gate does not necessarily clear pending state. A pulse needs retention or a suitable crossing protocol; a two-flop level synchronizer is not general pulse capture. A pending bit records at least one event, not event multiplicity. Use a counter or FIFO when every occurrence matters.
+
+A level request remains active until its condition is removed. An edge detector can instead retain a pending bit until software clears it. Event/clear coincidence needs defined precedence. The teaching peripheral below lets a new event win over a simultaneous clear, avoiding loss at that boundary.
+
+### Machine-mode architectural state
+
+The examples use one hart in M-mode with nested interrupts disabled. Supervisor delegation and OS scheduling are beyond this initial integration.
+
+| CSR/field | Role |
+|---|---|
+| `mip` | Pending interrupt classes |
+| `mie` | Per-class interrupt enables |
+| `mstatus.MIE` | Global enable while executing in M-mode |
+| `mtvec` | Handler base and direct/vectored mode |
+| `mcause` | Interrupt/exception flag and cause |
+| `mepc` | Resume address |
+| `mstatus.MPIE`, `MPP` | Saved enable and privilege state |
+
+Machine software, timer and external interrupt cause codes are 3, 7 and 11. The high bit of `mcause`, at an XLEN-dependent position, identifies an interrupt. Comparing the entire CSR to integer 11 therefore does not detect a machine external interrupt.
+
+Hardware records cause/PC, updates privilege and enables, and redirects execution. It does not automatically save all integer registers to a stack. Entry software preserves the state it clobbers; `mret` returns architecturally, whereas `ret` follows the function-call convention. Install a valid stack and handler before enabling interrupts.
+
+Direct `mtvec` sends all traps to one base. Vectored mode uses cause-derived offsets for interrupts while exceptions still enter at the base. The examples use direct mode. A `wfi` loop must recheck its work condition; waiting does not replace a correct event/enable contract.
+
+For a pipeline, a precise trap must avoid unintended younger effects and duplicate older operations. An MMIO store already accepted by a device may be irreversible. Bus ownership and trap control must therefore agree about when an instruction can be interrupted or resumed.
+
+## Implementation
+
+### Following Wally's request path
+
+The book's Sections 9.5.1–9.5.5 cover IFU/LSU interfaces, the EBU, uncore and bus hazards. Start from the selected repository commit and configuration, preserving XLEN, physical-address width, bus width and enabled devices alongside results [@harrisRiscvSoc].
+
+| Source | What to inspect |
+|---|---|
+| `src/ebu/ebu.sv`, `ebufsmarb.sv` | IFU/LSU selection and request retention |
+| `src/uncore/uncore.sv` | Region selection, device wiring, response multiplexing |
+| `src/uncore/ahbapbbridge.sv` | Phase alignment and APB completion |
+| `src/uncore/clint_apb.sv` | Time and software/timer request registers |
+| `src/uncore/plic_apb.sv` | Source IDs, pending state, priorities and contexts |
+| `src/privileged/trap.sv` and CSR logic | Interrupt enables and acceptance |
+
+The inspected EBU prioritizes LSU requests over IFU requests and retains delayed IFU address-phase information. Its output follows AHB-style phases; the IFU does not write through this interface. Fixed LSU priority is a concrete policy when analyzing instruction-fetch delay [@cvwEbu].
+
+In the uncore, decoded physical-address regions select memories or the AHB–APB bridge. Delayed selection controls returned data/completion across wait states. APB connects CLINT, PLIC, GPIO and other enabled devices. The no-region completion path is made ready to avoid permanent blockage [@cvwUncore].
+
+Do not infer complete fault handling from a port called `HRESP`. The inspected EBU describes that input as presently ignored. The APB bridge drives its error output to zero and has no APB error input. Extending error reporting therefore requires changes along the complete path, including architectural access-fault handling, rather than adding one signal to a peripheral [@cvwEbu; @cvwAhbApb].
+
+Consider a GPIO write: the LSU creates direction, size, address and data; the EBU grants the request; the uncore selects the GPIO region; the bridge aligns the address/control with the later AHB data phase and generates APB phases. Completion returns to the LSU when the device finishes. In the inspected bridge, `PCLK` equals `HCLK`, so this bridge is not an asynchronous crossing [@cvwAhbApb].
+
+At every boundary check both the physical region and the local register offset. The uncore may pass only low address bits to a device. A driver uses the full platform address, while the device decodes an offset inside its selected region. Confusing these two views is a common integration error.
+
+### A complete teaching AXI4-Lite endpoint
+
+The following event peripheral demonstrates channel independence without changing Wally's native bus. It has a 32-bit AXI4-Lite interface, one write-address slot, one write-data slot and one read-response slot. Its six-bit addresses are local offsets supplied by an upstream decoder. `EventPulse` must already be synchronous to `ACLK`; an external pin requires synchronization and event detection first.
+
+| Offset | Register | Access/reset | Meaning |
+|---:|---|---|---|
+| `0x00` | OUTPUT | RW / 0 | Byte-strobed output value |
+| `0x04` | IRQ_ENABLE | RW / 0 | Bit 0 enables the request |
+| `0x08` | IRQ_PENDING | Read, W1C / 0 | Bit 0 retains an event |
+| `0x0C` | EVENT_COUNT | RO / 0 | Sampled events, modulo $2^{32}$ |
+
+The module joins accepted AW/W payloads exactly once, updates the bank and holds B until accepted. It snapshots read data when accepting AR and holds R. Invalid local offsets, unaligned addresses and writes to EVENT_COUNT return `SLVERR`. An interconnect normally returns `DECERR` for an unmapped **region**, which is a different error boundary.
+
+`AWPROT/ARPROT` are admitted but ignored: this teaching bank does not enforce privilege or security policy. A concurrent same-edge read/write observes pre-edge state. Reserved enable/pending bits read as zero; their writes have no effect.
+
+```systemverilog
+module event_axil (
+  input  logic        ACLK, ARESETn,
+  input  logic [5:0]  AWADDR, ARADDR,
+  input  logic [2:0]  AWPROT, ARPROT,
+  input  logic        AWVALID, WVALID, BREADY,
+  input  logic        ARVALID, RREADY,
+  input  logic [31:0] WDATA,
+  input  logic [3:0]  WSTRB,
+  output logic       AWREADY, WREADY, BVALID,
+  output logic       ARREADY, RVALID,
+  output logic [1:0] BRESP, RRESP,
+  output logic [31:0] RDATA, OutputValue,
+  input  logic       EventPulse,
+  output logic       Irq
+);
+  logic AddressFull, DataFull;
+  logic [5:0] SavedAddress;
+  logic [31:0] SavedData, EventCount;
+  logic [3:0] SavedStrobe;
+  logic Enable, Pending, WriteCommit, ClearPending;
+
+  assign AWREADY = ARESETn && !AddressFull && !BVALID;
+  assign WREADY  = ARESETn && !DataFull && !BVALID;
+  assign ARREADY = ARESETn && !RVALID;
+  assign WriteCommit = AddressFull && DataFull && !BVALID;
+  assign ClearPending = WriteCommit && SavedAddress == 6'h08
+                        && SavedStrobe[0] && SavedData[0];
+  assign Irq = Enable && Pending;
+
+  always_ff @(posedge ACLK or negedge ARESETn) begin
+    if (!ARESETn) begin
+      AddressFull <= 1'b0;
+      DataFull <= 1'b0;
+      SavedAddress <= '0;
+      SavedData <= '0;
+      SavedStrobe <= '0;
+      BVALID <= 1'b0;
+      BRESP <= 2'b00;
+      RVALID <= 1'b0;
+      RDATA <= '0;
+      RRESP <= 2'b00;
+      OutputValue <= '0;
+      Enable <= 1'b0;
+      Pending <= 1'b0;
+      EventCount <= '0;
+    end else begin
+      if (AWVALID && AWREADY) begin
+        SavedAddress <= AWADDR;
+        AddressFull <= 1'b1;
+      end
+      if (WVALID && WREADY) begin
+        SavedData <= WDATA;
+        SavedStrobe <= WSTRB;
+        DataFull <= 1'b1;
+      end
+      if (BVALID && BREADY) BVALID <= 1'b0;
+
+      if (WriteCommit) begin
+        AddressFull <= 1'b0;
+        DataFull <= 1'b0;
+        BVALID <= 1'b1;
+        BRESP <= 2'b00;
+        case (SavedAddress)
+          6'h00: for (int i = 0; i < 4; i++)
+            if (SavedStrobe[i])
+              OutputValue[8*i +: 8] <= SavedData[8*i +: 8];
+          6'h04: if (SavedStrobe[0]) Enable <= SavedData[0];
+          6'h08: begin end // pending update below
+          default: BRESP <= 2'b10;
+        endcase
+      end
+
+      if (EventPulse) begin
+        Pending <= 1'b1; // event wins over simultaneous clear
+        EventCount <= EventCount + 32'd1;
+      end else if (ClearPending) Pending <= 1'b0;
+
+      if (RVALID && RREADY) RVALID <= 1'b0;
+      if (ARVALID && ARREADY) begin
+        RVALID <= 1'b1;
+        RRESP <= 2'b00;
+        case (ARADDR)
+          6'h00: RDATA <= OutputValue;
+          6'h04: RDATA <= {31'b0, Enable};
+          6'h08: RDATA <= {31'b0, Pending};
+          6'h0C: RDATA <= EventCount;
+          default: begin
+            RDATA <= '0;
+            RRESP <= 2'b10;
+          end
+        endcase
+      end
+    end
+  end
+endmodule
+```
+
+The full flags express ownership of accepted payloads. Commit consumes both flags and produces B. While B waits, the endpoint refuses replacement AW/W payloads, preventing overwrite. The read path similarly holds R unchanged. This implementation inserts bubbles rather than accepting replacement work on a completion edge; limited throughput is an intentional simplification.
+
+Byte strobes preserve unselected OUTPUT bytes. IRQ_ENABLE and IRQ_PENDING interpret only bit 0 with byte-0 enable. EVENT_COUNT records multiplicity beyond the one-bit pending state. Reads are snapshots, so software may need more than one access to obtain a consistent view across several changing registers.
+
+To integrate equivalent functionality with Wally, create an APB frontend for this register contract, or add a reviewed AHB-to-AXI4-Lite bridge and address-region wiring. The endpoint is not directly compatible with an existing APB port. Separating bank semantics from protocol adaptation makes such alternatives easier to verify.
+
+### CLINT: time and local requests
+
+The Core Local Interruptor exposes `msip`, `mtimecmp` and `mtime`. The latter two are 64-bit values. A timer request is asserted when `mtime >= mtimecmp`; bit 0 of `msip` requests a software interrupt. These paths reach the hart without competing with GPIO/UART in the PLIC [@harrisRiscvSoc].
+
+| Hart-0 CLINT offset | Register | Purpose |
+|---:|---|---|
+| `0x0000` | `msip` | Machine software interrupt |
+| `0x4000` | `mtimecmp` | Next deadline |
+| `0xBFF8` | `mtime` | System time |
+
+A platform timer needs a declared frequency. It can run independently of the processor in a general SoC, requiring CDC. In the inspected Wally `clint_apb.sv`, the counter advances on `PCLK`; comments discuss future separate-clock synchronization. Do not describe an independent real-time clock as implemented merely because a surrounding module exposes a time-related input [@harrisRiscvSoc; @cvwRepository].
+
+RV32 cannot read a 64-bit counter with one ordinary load. A low-half rollover between loads can produce an inconsistent value. Reading high–low–high and retrying if the high half changes solves that problem under the declared device-access ordering:
+
+```c
+#include <stdint.h>
+#include <stddef.h>
+
+#define MMIO32(a) (*(volatile uint32_t *)(uintptr_t)(a))
+#define CLINT_BASE 0x02000000u
+#define MTIME_LO (CLINT_BASE + 0xBFF8u)
+#define MTIME_HI (CLINT_BASE + 0xBFFCu)
+#define MTIMECMP_LO (CLINT_BASE + 0x4000u)
+#define MTIMECMP_HI (CLINT_BASE + 0x4004u)
+
+static inline void io_fence(void) {
+  __asm__ volatile ("fence iorw, iorw" ::: "memory");
+}
+
+static uint64_t read_time_rv32(void) {
+  uint32_t hi0, lo, hi1;
+  do {
+    hi0 = MMIO32(MTIME_HI);
+    io_fence();
+    lo = MMIO32(MTIME_LO);
+    io_fence();
+    hi1 = MMIO32(MTIME_HI);
+    io_fence();
+  } while (hi0 != hi1);
+  return ((uint64_t)hi1 << 32) | lo;
+}
+
+static void set_deadline_rv32(uint64_t deadline) {
+  // Caller excludes concurrent writers.
+  MMIO32(MTIMECMP_LO) = UINT32_MAX;
+  io_fence();
+  MMIO32(MTIMECMP_HI) = (uint32_t)(deadline >> 32);
+  io_fence();
+  MMIO32(MTIMECMP_LO) = (uint32_t)deadline;
+  io_fence();
+}
+```
+
+The temporary low-half maximum prevents an unintended early compare while the halves change. The writer must exclude concurrent updates. On RV64, naturally aligned 64-bit operations simplify access when supported by the platform. The conservative fences include compiler clobbers: `volatile` alone does not supply all device ordering, cache attributes or inter-context synchronization.
+
+For stable periodic scheduling, advance a stored deadline by the period. Replacing it with `now + period` each time accumulates service latency. If software is several periods late, explicitly choose whether to account for missed ticks or skip forward. A deadline left in the past can immediately request another interrupt.
+
+Reprogramming the future compare removes the timer condition, but pending visibility may lag. A handler should tolerate a possible subsequent timer entry rather than assume that writing the compare synchronously clears every CPU-side indication. The interval must be expressed in timer ticks, not assumed to equal processor cycles on every platform [@riscvPrivilegedSpec].
+
+### PLIC: claim, service and complete
+
+The PLIC aggregates external interrupt sources. Each has priority and pending state; each hart/privilege context has enables and a threshold. Priority zero suppresses delivery, and equal-priority sources are selected by lower source ID. ID zero means no claimed interrupt [@harrisRiscvSoc].
+
+The book uses GPIO ID 3 and UART ID 10. These are configuration choices, not RISC-V constants. Verify source IDs, source count and context mapping in the selected build. The inspected Wally PLIC supports M/S contexts and level-style inputs; current source wiring includes peripherals beyond the book's GPIO/UART example [@cvwPlic].
+
+Service has four stages: read claim, service the device, order device operations, and write completion. Claim has a side effect and is not equivalent to reading a pending bitmap. Completion tells the controller service is finished; it does not necessarily remove the device's interrupt condition. If the source remains high, another request can occur.
+
+| PLIC offset, illustrative machine context 0 | Meaning |
+|---:|---|
+| `4 × source_id` | Source priority |
+| `0x001000` | First pending bitmap |
+| `0x002000` | First context-0 enable bitmap |
+| `0x200000` | Context-0 threshold |
+| `0x200004` | Claim on read, completion on write |
+
+These registers are 32 bits even on RV64. Device width and hart XLEN are separate facts. The code below builds on MMIO32/io_fence above and assumes both source IDs are below 32, context 0 maps to M-mode, and the device service functions implement their documented clearing behavior.
+
+```c
+#define PLIC_BASE 0x0C000000u
+#define GPIO_ID 3u
+#define UART_ID 10u
+#define PLIC_ENABLE (PLIC_BASE + 0x002000u)
+#define PLIC_THRESHOLD (PLIC_BASE + 0x200000u)
+#define PLIC_CLAIM (PLIC_BASE + 0x200004u)
+
+void gpio_service_and_clear(void);
+void uart_service_receive(void);
+void record_unexpected_source(uint32_t id);
+
+static void plic_init(void) {
+  MMIO32(PLIC_BASE + 4u * GPIO_ID) = 5u;
+  MMIO32(PLIC_BASE + 4u * UART_ID) = 4u;
+  MMIO32(PLIC_ENABLE) = (1u << GPIO_ID) | (1u << UART_ID);
+  MMIO32(PLIC_THRESHOLD) = 2u;
+  io_fence();
+}
+
+static void external_service(void) {
+  uint32_t id = MMIO32(PLIC_CLAIM);
+  io_fence();
+  if (id == 0u) return;
+  if (id == GPIO_ID) gpio_service_and_clear();
+  else if (id == UART_ID) uart_service_receive();
+  else record_unexpected_source(id);
+  io_fence();
+  MMIO32(PLIC_CLAIM) = id;
+  io_fence();
+}
+```
+
+Configure device state and controller registers before globally enabling CPU interrupts. An unexpected-source policy should diagnose or mask a stuck request instead of completing it endlessly. The functions above are integration points, not complete GPIO/UART drivers: FIFO handling and software queues belong to the peripherals chapter.
+
+PLIC priority differs from the CPU's priority among timer, software and external interrupt classes. Raising a UART's PLIC priority does not define its priority against all local timer interrupts. These are distinct arbitration layers.
+
+### Trap entry on full Wally
+
+Wally's trap logic combines pending classes, enables, privilege/delegation and global state. It defers interrupt acceptance around committed IFU/LSU activity so a partially processed operation is not replayed incorrectly. This ties a precise trap to irreversible MMIO effects [@cvwTrap].
+
+For a minimal M-mode program: initialize a valid stack, install a direct-mode handler in `mtvec`, configure CLINT/PLIC/devices, enable required `mie` bits, then set `mstatus.MIE`. Setting global enable first can enter unprepared software. The simplified Wally without privileged support cannot run this sequence unchanged.
+
+RISC-V GCC can generate handler entry/exit using `interrupt("machine")`. Do not call the handler as an ordinary function or add a manual `mret` inside its C body [@gccRiscvInterrupt].
+
+```c
+void timer_service(void); // programs a future deadline
+void software_service(void); // clears CLINT msip
+__attribute__((noreturn)) void fatal_trap(uintptr_t cause);
+
+__attribute__((interrupt("machine"), aligned(4)))
+void machine_trap(void) {
+  uintptr_t cause;
+  __asm__ volatile ("csrr %0, mcause" : "=r"(cause));
+  const uintptr_t interrupt_bit =
+      (uintptr_t)1 << (sizeof(uintptr_t) * 8u - 1u);
+  if (!(cause & interrupt_bit)) fatal_trap(cause);
+  switch (cause & ~interrupt_bit) {
+    case 3: software_service(); break;
+    case 7: timer_service(); break;
+    case 11: external_service(); break;
+    default: fatal_trap(cause);
+  }
+}
+```
+
+Compile for the selected ISA/ABI and inspect the assembly. An integer-only exercise should avoid floating-point/vector instructions in the handler and callees unless their state is explicitly managed. Systems with nesting, stack switching or multiple privilege modes need a more complete entry convention.
+
+An asynchronous interrupt normally resumes interrupted execution; it should not blindly increment `mepc` by four. Advancing PC is exception-specific, and compressed instructions need not occupy four bytes. The example treats synchronous exceptions as fatal so an invalid access is not accidentally hidden by interrupt handling.
+
+## Hands-on Experiments
+
+### Experiment 1: verify the register bank
+
+Save the module as `event_axil.sv` in a local experiment directory. Use a testbench with independent channel drivers, synchronous event injection and a scoreboard. Test device behavior before adding a processor so firmware cannot hide register-contract errors.
+
+| Step | Operation | Expected result |
+|---:|---|---|
+| 1 | Reset and read four registers | All zero, Irq=0 |
+| 2 | Write OUTPUT=`0x11223344`, strobe=`1111` | Output=`0x11223344` |
+| 3 | Write OUTPUT=`0xAABBCCDD`, strobe=`0101` | Output=`0x11BB33DD` |
+| 4 | Event with IRQ_ENABLE=0 | Pending=1, count=1, Irq=0 |
+| 5 | Enable bit 0 | Irq=1 for retained event |
+| 6 | W1C with byte-0 strobe off | Pending unchanged |
+| 7 | W1C with byte-0 strobe on | Pending cleared without a new event |
+| 8 | Event coincident with clear commit | Pending remains 1, count increments |
+| 9 | Write EVENT_COUNT or offset `0x02` | SLVERR, no corruption |
+
+For step 8 align the event with internal commit, not merely AW acceptance. Commit occurs after both payload slots are full. Record the relevant edges so the test exercises the intended race.
+
+### Experiment 2: independent channels and response stalls
+
+Run AW-before-W, W-before-AW and simultaneous arrival with distinct payloads. A driver may release VALID after acceptance; the endpoint must retain accepted data. Insert randomized gaps and hold BREADY low while checking that the register update occurs once and response status remains stable.
+
+On reads, accept AR, stall RREADY and modify the underlying device state while R waits. RDATA/RRESP must remain the captured snapshot. A later read sees subsequent changes. Model same-edge read/write behavior in the scoreboard rather than allowing whichever value happens to arrive.
+
+| Invariant | Defect detected |
+|---|---|
+| AW/W retained until joined | Lost early data or wrong association |
+| One B per committed write | Missing/duplicate response |
+| R/B stable while stalled | Response overwritten |
+| No repeated side effect while B waits | Duplicate operation |
+| One R for each accepted AR | Lost read |
+| Reset clears pending ownership | Stale operation after reset |
+
+A watchdog detects lack of progress, but liveness needs environmental assumptions. A manager that holds BREADY low forever cannot demand eventual acceptance of B. State bounded-stall assumptions without weakening stability checks.
+
+### Experiment 3: APB and AHB phase tracing
+
+Draw an APB read with zero and two extra waits. Then follow a Wally access through AHB and the bridge, observing address, transfer type, delayed selection, write data, HREADY, PSEL, PENABLE and PREADY. Identify acceptance and completion separately at both interfaces.
+
+Make one memory responder wait while the next address names another region. Check that the previous destination still owns data/completion. A deliberately incorrect live-address mux should fail this case, explaining the purpose of delayed selection.
+
+Use a counting APB responder to test exactly-once writes under waits. Do not just force PREADY low while leaving a device that updates on every Access cycle: that creates a broken responder rather than a valid stalled transaction.
+
+### Experiment 4: AXI4 bursts and outstanding depth
+
+Use a verified AXI4 memory component or memory model for a four-beat INCR test. The Lite endpoint above cannot accept that burst directly. Check addresses, byte lanes, LAST, response counts and payload stability under per-beat stalls.
+
+Then compare outstanding depths using a declared memory latency. Count accepted AR requests, R beats, final R beats and occupied descriptors separately. Compute bandwidth from accepted useful bytes. The traffic is synthetic; results explain interconnect behavior, not Wally application performance.
+
+| Run | Controlled change | Measurement |
+|---|---|---|
+| A | One outstanding single-beat read | Latency-limited rate |
+| B | Several outstanding reads | Latency hiding |
+| C | Aligned bursts | Burst service and address overhead |
+| D | Random response stalls | Buffer occupancy and correctness |
+
+Keep width, clock and memory behavior fixed. A model accepting requests into an unlimited queue overstates the benefit of depth. Preserve failed points and protocol errors rather than reporting only maximum throughput.
+
+### Experiment 5: timer and external interrupts on Wally
+
+Select full Wally with M-mode support, CLINT, PLIC and GPIO. Record the commit, ISA/ABI, configuration, simulator, addresses, source IDs and context mapping. Use that revision's startup/linker layout and documented simulation commands.
+
+First poll mtime and GPIO status. Install the handler and test CLINT software interrupts alone: set msip, verify cause 3, clear the condition and check preserved foreground registers. Add timer service with a stored deadline and tick counter, tracing entry, service and return. Explain late deadlines and distinguish timer ticks from assumed wall-clock seconds.
+
+Next route GPIO through the PLIC: configure its local event registers, priority, context enable and threshold, then enable CPU delivery. Claim the source, clear device state and complete service. Add UART after this path works. Test different priorities and then equal priorities.
+
+| Interrupt case | Property to verify |
+|---|---|
+| Local enable off | Retention follows device contract |
+| PLIC context enable off | Pending does not imply delivery |
+| CPU global enable off | Handler deferred, event not mistaken for absent |
+| Equal-priority sources | Lower ID selected first |
+| Completion before source deassertion | Possible retrigger understood |
+| Event during W1C | Defined precedence preserved |
+| Expired timer after service | Deadline policy avoids interrupt storm |
+| Interrupt near MMIO write | No duplicated irreversible access |
+
+For the last case, let foreground code write numbered values to a counting device while interrupts are injected at varying cycles. Its trace must contain the intended sequence exactly once per committed write. A final output value alone can hide a duplicate write to the same register.
+
+### Deliverables
+
+Preserve the register map, clock/reset contract, configuration manifest, bus traces, interrupt traces and scoreboard results. Mark request acceptance, side-effect execution and response acceptance separately. Report queue depth and measured bandwidth with their assumptions. A useful result connects software-visible behavior to exact hardware transactions, providing a repeatable basis for adding a peripheral, bridge or DMA engine.

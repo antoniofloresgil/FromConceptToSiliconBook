@@ -1,0 +1,626 @@
+# Peripherals and SoC Integration {#sec-peripherals}
+
+A peripheral connects software-visible state to activity outside the processor. An LED, serial console and SPI sensor all need more than a datapath: registers, clock/reset behavior, buffering, event handling and a physical connection. The design is complete only when software can operate it and the external interface obeys its timing contract.
+
+This chapter builds on Chapter 20 of *RISC-V System-on-Chip Design*, particularly GPIO, UART and SPI. CLINT and PLIC connect these devices to the interrupt mechanisms developed in the preceding buses chapter. PWM is also studied using the inspected Wally repository, where it is an additional configurable peripheral [@harrisRiscvSoc; @cvwRepository].
+
+The examples distinguish Wally's actual register interfaces from small teaching modules. A generic byte FIFO is not a UART, a GPIO synchronizer is not a debounce circuit, and an SPI controller is not a complete sensor driver or native SD host. Each provides one part of the system contract.
+
+## Concepts
+
+### The layers of a peripheral
+
+A useful decomposition separates the processor interface, register semantics, transport/datapath and external pins. Changes to one layer can affect another: deeper FIFOs change service deadlines, a slower clock changes UART divisors, and a read side effect changes the driver.
+
+```text
+CPU loads/stores -> address decoder -> APB register frontend
+                                             |
+                                      control / status
+                                             |
+                                   FIFO / timer / state machine
+                                             |
+                                       physical pins
+                                             |
+                                         device
+
+device event -> local pending/enable -> PLIC -> CPU handler
+```
+
+The bus connects the processor to a controller; UART or SPI connects that controller to the external device. Their speeds and completion meanings differ. Accepting a byte into a transmit FIFO does not mean its last bit has left the pin. Returning from an interrupt does not mean all software queues are empty.
+
+| Layer | Contract to specify |
+|---|---|
+| Bus | Address region, access sizes, phases, waits and errors |
+| Registers | Reset values, permissions, masks and side effects |
+| Datapath | FIFO depth, framing, state transitions and throughput |
+| Events | Retention, enables, priority and acknowledgement |
+| Clock/reset | Clock source, domains and behavior during reconfiguration |
+| Pads/board | Pin direction, voltage standard, constraints and connections |
+| Software | Initialization, ownership, buffering and recovery |
+
+Start with a register specification and timing diagrams before integrating a processor. A standalone bus testbench and external-device model make defects easier to localize than a full software workload that fails silently.
+
+### Registers are not ordinary RAM
+
+Control registers configure future behavior. Status registers expose device state. Data registers can enqueue or dequeue a byte. Command registers can start a transaction. Reading all addresses to inspect the device can therefore change it.
+
+| Register behavior | Example | Driver implication |
+|---|---|---|
+| Read/write | GPIO output value | Preserve fields owned by other software |
+| Read-only | FIFO occupancy | Value may change between accesses |
+| Write-only action | Output-set alias | A write performs an operation |
+| W1C | GPIO pending bits | Write only the events being acknowledged |
+| Read-to-consume | UART/SPI receive data | Save the result of the first successful read |
+| Banked address | UART divisor/data selection | Serialize reconfiguration and normal access |
+
+Read-modify-write can lose an update if an interrupt handler changes the same register between the read and write. Set/clear aliases provide atomic bit operations when implemented; otherwise software needs a critical section or another ownership rule. A C `volatile` qualifier does not make a read-modify-write sequence atomic.
+
+Register width is device-specific. Wally GPIO and SPI use 32-bit registers even on an RV64 hart; the UART's 16550-style register addresses expose bytes. A wide bus port does not mean a driver may replace byte accesses with arbitrary doubleword loads/stores.
+
+Unmapped local offsets and unsupported accesses need a defined outcome. The teaching APB GPIO below returns an error; Wally's current APB bridge does not propagate a peripheral error input. This distinction must survive into verification and documentation [@cvwAhbApb].
+
+### GPIO: values, direction and alternate functions
+
+General-purpose I/O provides independently controlled pins. Output-value storage and output enable are separate: a bit can remember the intended value while its driver is disabled. Firmware can write the safe value first, then enable the driver, reducing unintended transitions during initialization.
+
+An input enable determines which sampled pins are exposed or monitored. Some implementations use it before synchronization, others after; enabling an already-high pin can have different event consequences. The exact pipeline is part of the device contract, not a software assumption.
+
+An **alternate function** selects a peripheral-generated signal instead of the software output value. A UART or PWM signal can then reach a shared pin. Selection, output enable and any polarity inversion must agree. Enabling a PWM block without routing its output through the pin mux may produce perfect internal waveforms and no external activity.
+
+Drive strength and pull-up configuration belong to the pad or FPGA I/O implementation. Listing their offsets in a family manual does not prove a particular RTL implements them. Verify the selected backend and board connection.
+
+### Synchronization, event capture and debounce
+
+External digital inputs are usually asynchronous to PCLK. A synchronizer reduces the probability that metastability propagates into ordinary control logic; it does not eliminate it. Add a delayed synchronized sample to detect edges. A pulse shorter than the sampling opportunity may still be missed.
+
+```text
+external input -> first sampling stage -> second stage -> history / edge detector
+                                                        |
+                                                        +-> pending bit
+```
+
+Independent GPIO bits may be synchronized independently. That does not make a multi-bit external word coherent: a parallel sensor bus needs its own capture/handshake contract. Use the clocking chapter's CDC mechanisms when the information must move as a unit.
+
+A mechanical button can bounce through several transitions. Synchronization makes those transitions usable by clocked logic but does not turn them into one press. Debounce can require a stable level for a chosen interval, either with a hardware counter or periodic software sampling. A 5 ms interval at 100 MHz represents 500,000 clock cycles; it is unrelated to a two-cycle synchronizer delay.
+
+Edge and level interrupts also differ. An edge pending bit retains an observed transition until cleared. A level condition can immediately become pending again after acknowledgement while the pin remains active. A single pending bit coalesces multiple events; count events or buffer samples when multiplicity matters.
+
+Define precedence when software clearing coincides with a new event. The teaching GPIO uses event-wins semantics. Wally's inspected GPIO clear branch has clear priority; its behavior must be checked directly rather than inferred from the teaching design [@cvwGpio].
+
+### UART: asynchronous framed bytes
+
+A UART sends a serial frame without a shared clock. In the common **8N1** format, the line idles high, a low start bit begins a frame, eight data bits follow least-significant bit first, and one high stop bit ends it. No parity bit is included. Both ends must agree on the format and rate [@harrisRiscvSoc].
+
+For byte `0x53`, the transmitted data-bit order is `1, 1, 0, 0, 1, 0, 1, 0`:
+
+```text
+       idle | start | D0 D1 D2 D3 D4 D5 D6 D7 | stop | idle
+level    1  |   0   |  1  1  0  0  1  0  1  0 |   1  |  1
+```
+
+The receiver detects a start transition, validates it and samples near each bit's center. Oversampling supplies finer timing and can support noise filtering. A synchronizer protects the input path; it does not establish the baud rate or validate the stop bit.
+
+For binary UART signaling, one baud interval carries one serial bit. An 8N1 frame spends ten intervals carrying eight payload bits. At 115,200 baud the theoretical continuous payload rate is 11,520 bytes/s. Software formatting, idle gaps and flow control reduce practical throughput.
+
+### Baud generation and error budgets
+
+For a simple UART with oversampling factor $O$, integer divisor $D$ and optional prescale $2^p$,
+
+$$
+\mathrm{baud}_{\mathrm{actual}}=\frac{f_{\mathrm{PCLK}}}{O D 2^p}, \qquad
+\epsilon=\frac{\mathrm{baud}_{\mathrm{actual}}-\mathrm{baud}_{\mathrm{target}}}
+{\mathrm{baud}_{\mathrm{target}}}.
+$$
+
+Wally's UART uses 16× timing and the UART_PRESCALE parameter. At a declared 100 MHz PCLK, prescale 1 and divisor 27 give approximately 115,740.7 baud: about +0.47% relative to 115,200. These are illustrative clock/configuration values; the board oscillator is not automatically the actual peripheral clock [@harrisRiscvSoc].
+
+The transmitter and receiver both contribute error. Their relative frequency mismatch accumulates through the frame until a late sample can cross a bit boundary. Start detection, synchronization and oversampling also consume margin. A single universal tolerance percentage is not a substitute for testing the chosen receiver.
+
+Measure generated bit periods in simulation. A divider counting zero through N inclusively differs from one counting one through N. Integer rounding must use the actual implemented convention. Reprogramming a divisor in the middle of a frame can corrupt it, so drain or reset the relevant path before changing rate.
+
+### UART errors, buffering and flow control
+
+| Condition | Meaning | Required policy |
+|---|---|---|
+| Parity error | Received parity disagrees with the chosen format | Report, discard or pass with an error flag |
+| Framing error | Expected stop sample is not high | Recover framing and report the byte/state |
+| Overrun | New data arrives without enough receive capacity | Define which data is lost and record the loss |
+| Break | Line remains low across a prolonged frame interval | Distinguish from a normal zero byte |
+
+An RX FIFO decouples wire arrival from processor service. A TX FIFO decouples software writes from serialization. Their usable capacities and full/empty definitions must be checked, not inferred only from array declarations.
+
+A generic sixteen-byte FIFO at continuous 115,200-baud 8N1 traffic fills from empty in roughly 1.39 ms. If an interrupt is raised with twelve occupied entries, only four byte times—about 347 microseconds—remain before capacity is exhausted, ignoring bytes already in flight. Budget interrupt masking, arbitration, handler entry and actual service time.
+
+Internal ready/valid backpressure cannot pause an external UART sender. RTS/CTS may do so when implemented and wired, with allowance for in-flight data. A two-wire board console without handshake needs sufficient buffering and a bounded traffic/service policy. Moving data into a software ring buffer only shifts the bottleneck if the application remains slower than the sender.
+
+The distinction between transmit-ready and transmit-complete matters. A holding register/FIFO can accept more data while the shift register still transmits. Wait for full transmitter-empty state before changing baud, disabling a pin or assuming the last stop bit has finished.
+
+### SPI: clocked full-duplex frames
+
+SPI connects a controller to a device with serial clock, data out, data in and chip select. The controller supplies the clock. Each clocked bit shifts data in both directions; a command's received bytes may be dummy information, while extra transmitted dummy bytes clock a later response [@harrisRiscvSoc].
+
+```text
+SoC SPI controller                   external device
+          SCK -----------------------> clock
+          SDO -----------------------> data in
+          SDI <----------------------- data out
+          CSn -----------------------> select
+```
+
+Different devices share clock/data-out lines when separate selects isolate them. Only the selected device may drive the shared return path. Bit order, frame length, select polarity and command format must come from the target device's specification.
+
+**CPOL** defines idle clock polarity. **CPHA** chooses whether sampling occurs on the leading or trailing edge. Leading means the first edge away from idle, not always rising:
+
+| Mode | CPOL | CPHA | Sample edge | Shift edge |
+|---:|---:|---:|---|---|
+| 0 | 0 | 0 | Leading, rising | Trailing, falling |
+| 1 | 0 | 1 | Trailing, falling | Leading, rising |
+| 2 | 1 | 0 | Leading, falling | Trailing, rising |
+| 3 | 1 | 1 | Trailing, rising | Leading, falling |
+
+In CPHA=0, the first data bit must already be available before the first sample edge. Sampling and shifting on the same edge in a simplistic loopback can pass simulation while failing an external device's setup/hold timing.
+
+The Wally/SiFive-style divider follows
+
+$$
+f_{\mathrm{SCK}}=\frac{f_{\mathrm{PCLK}}}{2(\mathrm{sckdiv}+1)}.
+$$
+
+A 100 MHz PCLK and sckdiv=49 produce 1 MHz SCK. Unlike UART, the device follows the provided clock, but board delay and input timing still limit speed. A synchronous controller implemented with PCLK enables must capture SDI according to its external timing relationship rather than insert an arbitrary extra synchronizer that changes the sampled bit.
+
+### Transactions span more than one SPI byte
+
+A device transaction may require command, address, dummy clocks and payload under one continuous select. Releasing CS after each FIFO byte can abort that command. Specify assertion-to-clock delay, hold after the final edge and minimum inactive time between transactions.
+
+FIFO write completion means a frame was queued. It does not prove wire completion or CS release. A driver must preserve transaction ownership until all associated received frames and completion conditions are accounted for. Stale RX data must not be mistaken for the response to a new command.
+
+Every received frame has an association. For a command followed by two dummy transmit bytes, expect three received frames, even if the first is discarded. Reading an RX data register to check readiness may consume a valid frame; save that first result instead of performing a second read for its value.
+
+FIFO watermarks report occupancy conditions. A transmit-low watermark can request more queued work; a receive-high watermark can request draining. These are level conditions rather than generic W1C event bits. Clearing a PLIC request without changing the FIFO condition can immediately retrigger delivery.
+
+### Timers, PWM and pin ownership
+
+CLINT provides software-visible time and interrupt deadlines, as explained in the buses chapter. A hardware timer/PWM engine produces regular pin transitions without executing an interrupt handler on every edge. This avoids software-induced edge jitter, although its clock and configuration still matter.
+
+For a simple edge-aligned PWM with P timer ticks per period and H high ticks,
+
+$$
+f_{\mathrm{PWM}}=\frac{f_{\mathrm{tick}}}{P}, \qquad
+\mathrm{duty}=\frac{H}{P}.
+$$
+
+At 100 MHz, P=5,000 gives 20 kHz; H=1,250 gives 25% duty. Values zero and P define fully low and fully high outputs. A design that represents only counts up to P−1 needs an additional representable value or explicit mode for 100% duty.
+
+Changing the active comparator halfway through a period can shorten or extend a pulse. Shadowing the requested duty and committing it at a period boundary provides coherent updates. Enabling/disabling output is a separate policy and can intentionally terminate a pulse immediately.
+
+Wally's PWM block has additional scaling and comparator modes. The simple example later is not an implementation of its whole register map. In either design, a correct internal PWM signal still needs pin-mux selection and an enabled output driver.
+
+### Other devices and integration boundaries
+
+I2C uses addressed transactions, acknowledgements and open-drain SDA/SCL with pull-ups. It needs its own controller, including supported clock stretching and arbitration behavior; an SPI shifter cannot become I2C by renaming pins. The inspected Wally uncore does not supply such an I2C controller in the paths studied here.
+
+SPI flash and SD cards also need protocol software. A byte-oriented SPI port does not automatically provide memory-mapped execute-in-place or a native four-bit SD host. Boot support requires command sequencing, device readiness, data transfer and error recovery. Likewise, attaching an Ethernet PHY requires a MAC and buffering, not only GPIO directions.
+
+These boundaries help select an IP block: start from the required external protocol, then list register, interrupt, DMA, clock, reset and physical requirements. License notices and exact revisions belong with any reused implementation. The teaching modules below are separate examples; inspect Wally's own source headers when reusing its RTL.
+
+## Implementation
+
+### Wally's APB peripheral organization
+
+The uncore decodes physical regions and connects its AHB–APB bridge to enabled peripherals. It routes peripheral interrupts to the PLIC, while CLINT's timer/software requests have their local hart paths. GPIO alternate-function wiring can route PWM output to pins [@cvwUncore].
+
+| Source | Main responsibility |
+|---|---|
+| `src/uncore/gpio_apb.sv` | Values, direction, event state, pin-function selection |
+| `src/uncore/uart_apb.sv` | APB adaptation for byte-addressed UART registers |
+| `src/uncore/uartPC16550D.sv` | Framing, divisors, FIFOs and UART events |
+| `src/uncore/spi_apb.sv` | SPI registers, FIFO interfaces and selections |
+| `src/uncore/spi_controller.sv` | Clock/edge and transaction sequencing |
+| `src/uncore/spi_fifo.sv` | SPI buffering and watermarks |
+| `src/uncore/pwm_apb.sv` | PWM counter, comparators and events |
+| `src/uncore/uncore.sv` | System wiring and conditional instantiation |
+
+GPIO_SUPPORTED, UART_SUPPORTED, SPI_SUPPORTED, SDC_SUPPORTED and PWM_SUPPORTED are configuration decisions. Base addresses, GPIO function routing and PLIC IDs must agree with firmware. A disabled block does not become available because a driver writes its usual address.
+
+### GPIO registers and implementation limits
+
+The book's representative GPIO base is 0x10060000. Important offsets in Wally include:
+
+| Offset | Register | Purpose |
+|---:|---|---|
+| `0x00` | input_val | Sampled enabled inputs |
+| `0x04` | input_en | Input monitoring enable |
+| `0x08` | output_en | Output-driver enable |
+| `0x0C` | output_val | Software output value |
+| `0x18`, `0x1C` | rise_ie, rise_ip | Rising-event enable/pending |
+| `0x20`, `0x24` | fall_ie, fall_ip | Falling-event enable/pending |
+| `0x28`, `0x2C` | high_ie, high_ip | High-level enable/pending |
+| `0x30`, `0x34` | low_ie, low_ip | Low-level enable/pending |
+| `0x38`, `0x3C` | iof_en, iof_sel | Alternate-function routing |
+| `0x40` | out_xor | Output polarity inversion |
+
+The inspected RTL implements these event paths despite an older header comment suggesting otherwise. Its pending clear branch takes precedence over event setting during that write. Pull-up/drive-strength features listed in the related device family map are not automatically implemented here. Use actual statements and backend wiring as evidence [@cvwGpio].
+
+For a GPIO-only application, configure safe output values before output enables, enable monitored inputs, clear unwanted startup events and then enable selected local/PLIC/CPU interrupt gates. With pin muxing, record which peripheral owns each pin and what reset returns it to.
+
+### A teaching APB GPIO with explicit race semantics
+
+This eight-pin module implements a rising-event GPIO subset. It uses 32-bit APB accesses, only byte strobe 0 for its eight implemented bits, synchronous active-low reset, and no inserted waits. It adds write-only output SET/CLEAR aliases at 0x44/0x48. Those aliases are teaching extensions, not registers assumed to exist in Wally.
+
+| Offset | Access | Meaning |
+|---:|---|---|
+| `0x00` | RO | Synchronized input value masked by INPUT_EN |
+| `0x04` | RW | INPUT_EN |
+| `0x08` | RW | OUTPUT_EN |
+| `0x0C` | RW | OUTPUT_VAL |
+| `0x18` | RW | Rising interrupt enable |
+| `0x1C` | Read/W1C | Rising pending; new event wins over clear |
+| `0x44` | WO | Set selected OUTPUT_VAL bits |
+| `0x48` | WO | Clear selected OUTPUT_VAL bits |
+
+Unaligned/unknown offsets and disallowed read/write directions return PSLVERR. Upper data bits are reserved; other byte strobes have no effect. The block has no falling/level event modes, debounce or alternate-function mux. PinOut and PinEnable connect separately to the top-level I/O implementation.
+
+```systemverilog
+module gpio_teaching_apb (
+  input  logic        PCLK, PRESETn, PSEL, PENABLE, PWRITE,
+  input  logic [7:0]  PADDR,
+  input  logic [31:0] PWDATA,
+  input  logic [3:0]  PSTRB,
+  output logic [31:0] PRDATA,
+  output logic       PREADY, PSLVERR,
+  input  logic [7:0]  PinIn,
+  output logic [7:0]  PinOut, PinEnable,
+  output logic       Irq
+);
+  (* ASYNC_REG = "TRUE" *) logic [7:0] Meta, Sample;
+  logic [7:0] Previous, InputEnable, OutputEnable, OutputValue;
+  logic [7:0] RiseEnable, Pending, Rise, ClearMask;
+  logic BadRead, BadWrite, WriteDone;
+  assign PREADY = 1'b1;
+  assign PSLVERR = PSEL && PENABLE &&
+                  (PWRITE ? BadWrite : BadRead);
+  assign WriteDone = PSEL && PENABLE && PWRITE && !PSLVERR;
+  assign Rise = Sample & ~Previous & InputEnable;
+  assign ClearMask = WriteDone && PADDR == 8'h1C && PSTRB[0]
+                     ? PWDATA[7:0] : 8'b0;
+  assign PinOut = OutputValue;
+  assign PinEnable = OutputEnable;
+  assign Irq = |(Pending & RiseEnable);
+
+  always_comb begin
+    PRDATA = '0;
+    BadRead = 1'b0;
+    BadWrite = 1'b0;
+    case (PADDR)
+      8'h00: begin
+        PRDATA = {24'b0, Sample & InputEnable};
+        BadWrite = 1'b1;
+      end
+      8'h04: PRDATA = {24'b0, InputEnable};
+      8'h08: PRDATA = {24'b0, OutputEnable};
+      8'h0C: PRDATA = {24'b0, OutputValue};
+      8'h18: PRDATA = {24'b0, RiseEnable};
+      8'h1C: PRDATA = {24'b0, Pending};
+      8'h44, 8'h48: BadRead = 1'b1;
+      default: begin BadRead = 1'b1; BadWrite = 1'b1; end
+    endcase
+  end
+
+  always_ff @(posedge PCLK) begin
+    if (!PRESETn) begin
+      Meta <= '0;
+      Sample <= '0;
+      Previous <= '0;
+      InputEnable <= '0;
+      OutputEnable <= '0;
+      OutputValue <= '0;
+      RiseEnable <= '0;
+      Pending <= '0;
+    end else begin
+      Meta <= PinIn;
+      Sample <= Meta;
+      Previous <= Sample;
+      Pending <= (Pending & ~ClearMask) | Rise;
+      if (WriteDone && PSTRB[0])
+        case (PADDR)
+          8'h04: InputEnable <= PWDATA[7:0];
+          8'h08: OutputEnable <= PWDATA[7:0];
+          8'h0C: OutputValue <= PWDATA[7:0];
+          8'h18: RiseEnable <= PWDATA[7:0];
+          8'h44: OutputValue <= OutputValue | PWDATA[7:0];
+          8'h48: OutputValue <= OutputValue & ~PWDATA[7:0];
+          default: begin end
+        endcase
+    end
+  end
+endmodule
+```
+
+The two sampling stages are followed by history for edge detection. InputEnable gates new event capture, while RiseEnable gates delivery of retained events. Enabling RiseEnable can therefore expose an older pending event; enabling InputEnable on an already stable synchronized high input does not itself create a rise in this teaching design.
+
+Pending has one owner and one update expression. A simultaneous clear/rise preserves the new event, including on the bit being cleared. SET/CLEAR aliases affect only selected output bits, avoiding software read-modify-write races for those operations.
+
+The ASYNC_REG attribute can help a supported FPGA flow recognize synchronizers, but physical constraints and placement still need review. Digital simulation cannot demonstrate analog metastability behavior. This module also cannot capture every arbitrarily short external pulse.
+
+### A reusable synchronous byte FIFO
+
+The following FIFO separates byte production from consumption. DEPTH must be a power of two of at least two and PTR_W must match its logarithm. Level has one extra bit so empty and full remain distinct after pointer wrap.
+
+```systemverilog
+module byte_fifo #(
+  parameter int DEPTH = 8,
+  parameter int PTR_W = $clog2(DEPTH)
+) (
+  input  logic             clk, reset,
+  input  logic             PushValid,
+  output logic             PushReady,
+  input  logic [7:0]       PushData,
+  output logic             PopValid,
+  input  logic             PopReady,
+  output logic [7:0]       PopData,
+  output logic [PTR_W:0]   Level
+);
+  logic [7:0] Storage [0:DEPTH-1];
+  logic [PTR_W-1:0] WritePointer, ReadPointer;
+  logic Push, Pop;
+  assign PushReady = !reset && Level != (PTR_W+1)'(DEPTH);
+  assign PopValid = !reset && Level != '0;
+  assign PopData = Storage[ReadPointer];
+  assign Push = PushValid && PushReady;
+  assign Pop = PopValid && PopReady;
+
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      WritePointer <= '0;
+      ReadPointer <= '0;
+      Level <= '0;
+    end else begin
+      if (Push) begin
+        Storage[WritePointer] <= PushData;
+        WritePointer <= WritePointer + 1'b1;
+      end
+      if (Pop) ReadPointer <= ReadPointer + 1'b1;
+      case ({Push, Pop})
+        2'b10: Level <= Level + 1'b1;
+        2'b01: Level <= Level - 1'b1;
+        default: begin end
+      endcase
+    end
+  end
+endmodule
+```
+
+This small FIFO uses an asynchronous array read; it is not the synchronous block-RAM wrapper from the memory chapter. It deliberately has no empty fall-through and refuses a new push when full even if a pop happens on that edge. Those choices insert bubbles at the boundaries but simplify the contract.
+
+PopData matters only when PopValid is high. While a valid head stalls, ReadPointer is unchanged and accepted pushes cannot overwrite that occupied head. Reset empties the queue without clearing every storage location.
+
+For a UART receiver producing a nonstallable completed-byte pulse, this ready/valid FIFO alone is insufficient. If no space exists, the wrapper must record overrun and implement its declared drop policy. For a software-controlled transmitter, the frontend can refuse or report an unaccepted write according to its bus/register contract.
+
+### Wally's 16550-style UART registers
+
+Wally's UART register bank is byte-addressed at the book's representative base 0x10000000. Some offsets have different meanings for reads/writes or while DLAB is set:
+
+| Offset | DLAB=0 | DLAB=1 or special meaning |
+|---:|---|---|
+| `0` | Read RBR / write THR | Divisor low byte DLL |
+| `1` | Interrupt enable IER | Divisor high byte DLM |
+| `2` | Read IIR / write FCR | Interrupt identification / FIFO control |
+| `3` | LCR | Format; DLAB is bit **7** |
+| `4` | MCR | Modem/loopback control |
+| `5` | LSR | Data ready, errors, THRE and TEMT |
+| `6` | MSR | Modem status and change indicators |
+| `7` | SCR | Scratch register |
+
+The correct 8N1 value is LCR=0x03; setting DLAB while retaining 8N1 gives 0x83. A one-bit error here can redirect an intended data write to the wrong register bank. Use the RTL and register definition rather than propagating an ambiguous binary literal [@harrisRiscvSoc; @cvwUart].
+
+The inspected UART provides framing, synchronization, FIFO and interrupt logic. THRE indicates holding/FIFO readiness, while TEMT also accounts for the shift register. Reads of status/identification/data can have side effects, so an interrupt handler must preserve and act on its observations [@cvwUart].
+
+The following polling routines use exclusive driver ownership. Initialize only after the transmitter is idle or under a controlled reset; suppress concurrent handlers during divisor programming. The divisor is calculated from the actual clock/prescale before calling the function.
+
+```c
+#include <stdint.h>
+#define UART_BASE 0x10000000u
+#define UART8(off) (*(volatile uint8_t *)(uintptr_t)(UART_BASE + (off)))
+#define MMIO32(addr) (*(volatile uint32_t *)(uintptr_t)(addr))
+
+static inline void io_fence(void) {
+  __asm__ volatile ("fence iorw, iorw" ::: "memory");
+}
+
+int uart_init_divisor(uint16_t divisor) {
+  if (divisor == 0) return -1;
+  UART8(3) = 0x03; // DLAB off
+  io_fence();
+  UART8(1) = 0; // disable local interrupts
+  io_fence();
+  UART8(3) = 0x83; // 8N1, divisor bank
+  io_fence();
+  UART8(0) = (uint8_t)divisor;
+  UART8(1) = (uint8_t)(divisor >> 8);
+  io_fence();
+  UART8(3) = 0x03;
+  io_fence();
+  UART8(2) = 0x07; // enable and clear FIFOs
+  io_fence();
+  return 0;
+}
+
+int uart_send_byte(uint8_t byte, unsigned poll_budget) {
+  while (poll_budget--) {
+    uint8_t status = UART8(5);
+    if (status & 0x20) { // THRE
+      io_fence();
+      UART8(0) = byte;
+      io_fence();
+      return 0;
+    }
+  }
+  return -1;
+}
+
+int uart_try_receive(uint8_t *byte, uint8_t *errors) {
+  uint8_t status = UART8(5);
+  *errors = status & 0x1E;
+  if (!(status & 1)) return 0;
+  io_fence();
+  *byte = UART8(0); // consumes one available byte
+  io_fence();
+  return 1;
+}
+```
+
+A poll budget counts software iterations, not elapsed time. Production recovery should use a documented deadline and distinguish timeout, format error and overflow. `errors` is a status snapshot; preserving per-byte FIFO error information needs the selected UART's semantics.
+
+For interrupts, inspect IIR, handle errors, drain available RX data into a software queue and refill TX as needed. Disable a transmit-empty interrupt when there is no software data to send, otherwise the empty condition can repeatedly request service. PLIC claim/complete wraps that device service as explained previously.
+
+### Wally SPI and a single-frame driver
+
+The inspected SPI is SiFive-style, with clock/phase controls, four selects, adjustable delays and transmit/receive FIFOs. It does not implement memory-mapped flash sequencing or dual/quad-width transfers. The SDC configuration uses a second SPI controller; it is not automatically a native four-bit SD engine [@harrisRiscvSoc; @cvwSpi].
+
+| Offset | Register | Use |
+|---:|---|---|
+| `0x00`, `0x04` | sckdiv, sckmode | Clock divisor, phase/polarity |
+| `0x10`, `0x14`, `0x18` | csid, csdef, csmode | Select target and hold/release behavior |
+| `0x28`, `0x2C` | delay0, delay1 | Select/clock and inter-frame timing |
+| `0x40` | fmt | Frame size and bit order |
+| `0x48`, `0x4C` | txdata, rxdata | TX full / RX empty in bit 31; data in low byte |
+| `0x50`, `0x54` | txmark, rxmark | FIFO watermarks |
+| `0x70`, `0x74` | ie, ip | Bit 0 TX watermark; bit 1 RX watermark |
+
+For an eight-bit MSB-first mode-0 transfer, configure the supported frame format, divider and selection before queuing data. Use 32-bit accesses. The example below assumes the receive FIFO has no stale frames and one driver owns the controller; it builds on MMIO32/io_fence above.
+
+```c
+#define SPI_BASE 0x10040000u
+#define SPI_TXDATA (SPI_BASE + 0x48u)
+#define SPI_RXDATA (SPI_BASE + 0x4Cu)
+#define FIFO_FLAG 0x80000000u
+
+int spi_transfer_byte(uint8_t tx, uint8_t *rx, unsigned poll_budget) {
+  while (poll_budget && (MMIO32(SPI_TXDATA) & FIFO_FLAG))
+    --poll_budget;
+  if (!poll_budget) return -1;
+  io_fence();
+  MMIO32(SPI_TXDATA) = tx;
+  io_fence();
+  while (poll_budget--) {
+    uint32_t result = MMIO32(SPI_RXDATA);
+    io_fence();
+    if (!(result & FIFO_FLAG)) {
+      *rx = (uint8_t)result;
+      return 0;
+    }
+  }
+  return -1;
+}
+```
+
+The successful RXDATA read already obtained and consumed the frame. A second read would select the next frame. On timeout, the queued frame may still finish later; the caller must recover controller/queue/select state before associating another response with a new command.
+
+For a multibyte device command, configure select-hold behavior, collect every returned frame, discard only the protocol's dummy responses and release select after the last required transfer. Interpret sensor or ADC fields from its own specification; receiving an eight-bit frame does not prove an ADC result is only eight bits wide.
+
+### A period-boundary PWM example
+
+This teaching PWM has a fixed period and commits a requested duty at boundaries. PERIOD must be at least two; COUNT_W must equal `$clog2(PERIOD)`. Duty has an extra bit to represent full duty. Out-of-range duty is clamped to PERIOD.
+
+```systemverilog
+module pwm_teaching #(
+  parameter int PERIOD = 1000,
+  parameter int COUNT_W = $clog2(PERIOD)
+) (
+  input  logic             clk, reset, Enable,
+  input  logic [COUNT_W:0]  Duty,
+  output logic            PWMOut
+);
+  logic [COUNT_W-1:0] Counter;
+  logic [COUNT_W:0] ActiveDuty, LimitedDuty;
+  assign LimitedDuty = Duty > (COUNT_W+1)'(PERIOD)
+                       ? (COUNT_W+1)'(PERIOD) : Duty;
+  assign PWMOut = Enable && ({1'b0, Counter} < ActiveDuty);
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      Counter <= '0;
+      ActiveDuty <= '0;
+    end else if (!Enable || Counter == COUNT_W'(PERIOD-1)) begin
+      Counter <= '0;
+      ActiveDuty <= LimitedDuty;
+    end else Counter <= Counter + 1'b1;
+  end
+endmodule
+```
+
+Program Duty for at least one disabled clock before enabling output. Midperiod changes to Duty do not affect ActiveDuty until the next boundary. Disable acts immediately through output gating and restarts the counter on the next edge; that behavior is explicit rather than silently described as glitch-free under every control change.
+
+The inspected Wally PWM supplies a wider programmable counter, scaling, four compares, additional modes and interrupt outputs. Its compare signals and GPIO function routing must be read together; the simple comparator polarity above is not a complete description of Wally's modes [@cvwPwm].
+
+### Connecting to Nexys Video
+
+The Nexys Video board provides a 100 MHz oscillator and an FT232R USB–UART bridge on J13. That UART connection is two-wire TX/RX without hardware handshake. The PC-side TXD reaches the FPGA receive input on V18; the FPGA transmit output on AA19 reaches PC-side RXD. Preserve those directions when mapping the SoC ports [@nexysVideoManual].
+
+Check the actual generated processor/peripheral clock before deriving divisors. Declare the pin standard and correct pin mapping, connect UART idle/reset behavior, and route LEDs/buttons through the selected GPIO bits. A serial terminal must use the programmed baud and framing, independent of the FPGA implementation toolchain.
+
+SPI peripherals connected through expansion headers need the board's pin/voltage assignment, common ground and device-specific timing. Verify which signals are inputs and outputs and provide required passive components. Internal pad logic and board wiring are different parts of the integration.
+
+Begin bring-up with a known LED state, a periodic hardware waveform and a short UART message. Then check UART receive and external SPI traffic. An internal loopback verifies logic but cannot prove connector routing, physical voltage or external-device compatibility. Use waveform capture for clock/select/data timing when debugging the board.
+
+## Hands-on Experiments
+
+### Experiment 1: register and GPIO contract
+
+Save the teaching modules in a local experiment directory. For GPIO, use an APB driver that separates Setup and Access and updates its scoreboard once per completion. Check reset state, legal/illegal offsets, access direction, masks and SET/CLEAR operations.
+
+| Case | Expected result |
+|---|---|
+| Reset | Output drivers disabled, enables/pending zero |
+| Setup only | No register update |
+| OUTPUT_VAL write with byte-0 strobe off | No output change |
+| SET then CLEAR | Only specified output bits affected |
+| Write INPUT_VAL or read a write-only alias | PSLVERR and no unintended update |
+| Input rises while local IRQ disabled | Pending retained if input capture enabled |
+| Enable local IRQ later | Retained pending event requests service |
+| Event coincides with W1C | New event preserved in teaching module |
+
+Change PinIn away from clock edges and wait for the defined synchronizer/history latency. Repeat with bounce-like input sequences. Count sampled events rather than claiming every external transition is captured. Compare the clear-race case with Wally's actual RTL and document the different policy.
+
+### Experiment 2: FIFO boundaries and sustained traffic
+
+Test empty and full states, pointer wrap, simultaneous push/pop and stalls. Use a reference queue that changes only on accepted transfers. In the supplied design, a full queue pops without accepting a simultaneous replacement push; an empty queue accepts a push but cannot pop it on that same edge.
+
+Randomize producer/consumer rates. Verify ordering, occupancy, stable stalled head and reset discarding queued data. For a UART-style nonstallable producer, intentionally exceed capacity and check the wrapper's declared loss/error policy rather than pretending the producer observed PushReady.
+
+Calculate arrival and service budgets for a chosen frame rate and watermark. Show separately the time before overflow, interrupt latency and time needed to drain data. A FIFO passing short tests does not prove it can survive sustained overload.
+
+### Experiment 3: UART loopback and independent timing
+
+Use the selected Wally UART or a verified UART implementation with an explicit testbench. Configure 8N1, divisor, FIFO state and optional internal loopback, then transmit 0x00, 0xFF, 0x53 and alternating-bit patterns. Verify received bytes and status, not just the TX waveform.
+
+Next drive RX from an independently timed source instead of feeding back TX generated by the same divider. Sweep positive/negative baud mismatch, back-to-back frames, a short false start and invalid stop/parity conditions where supported. A shared-clock loopback cannot measure tolerance to an external sender.
+
+Delay receive service to test overrun. Check whether old/new data is preserved and how errors are cleared. Reset midway through a frame and verify documented idle/recovery behavior. For transmit completion, distinguish THRE from TEMT before reconfiguration.
+
+### Experiment 4: SPI modes and whole commands
+
+Use a device model that samples and shifts on distinct protocol edges. Test modes 0–3, representative byte patterns, supported bit order and frame lengths. Observe idle SCK, first-bit preload, sample/shift edges and select delays.
+
+Start with single-frame loopback, then simulate a command/address/dummy/response transaction under continuous select. Verify that every transmitted frame produces one expected receive frame and that the driver consumes it once. Test a full TX FIFO, delayed RX draining and watermark interrupts.
+
+Do not assert that a passing SPI loopback proves an SD card or flash driver. Add a model of the required device command/recovery protocol before making that claim. For board tests, begin at a low SCK rate and increase it only with timing evidence.
+
+### Experiment 5: PWM and coherent updates
+
+Instantiate pwm_teaching with a short period for simulation. Verify zero, quarter, half and full duty, the exact period in clock ticks and clamping. Request a new duty halfway through a period and confirm that the current period retains its old setting.
+
+Test disable/re-enable separately, then compare with Wally's configured PWM mode and GPIO routing. On a board, measure the pin waveform and explain any polarity inversion. An LED's perceived brightness is not a precise duty/frequency measurement.
+
+### Experiment 6: an integrated event-driven application
+
+Build a small bare-metal application with a debounced button or GPIO event, a periodic CLINT deadline, an SPI device/model and UART output. Use the GPIO event to change the sampling mode, the timer to schedule sampling, and UART to report buffered results. PWM can display a selected result independently of software edge timing.
+
+Keep handlers bounded: record pending work, move small amounts of data and acknowledge sources. Perform slow formatting and device transactions in the foreground unless a measured deadline justifies another arrangement. Define a queue overflow policy and an error counter before stressing the system.
+
+At 100 samples/s with 32-byte records, the payload is 3,200 bytes/s, below a 115,200-baud 8N1 console's theoretical 11,520 bytes/s. At 1,000 samples/s the same records demand 32,000 bytes/s and cannot be sustained by that console. Buffering can absorb bursts, but it cannot repair this sustained mismatch.
+
+Exercise simultaneous button/timer/UART requests, long interrupt-masked intervals and external-device timeouts. Trace device conditions, local enable, PLIC delivery, handler actions and queue occupancy. Check that completing PLIC service does not leave a permanently active source causing an interrupt storm.
+
+### Deliverables
+
+Preserve the register map, clock/divisor calculations, pin ownership, exact Wally configuration and revision, driver assumptions, device models, traces and expected results. Separate RTL simulation, whole-SoC execution and physical board evidence. The resulting peripheral is reviewable when register semantics, external timing and software service agree under normal operation and the declared failure cases.

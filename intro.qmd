@@ -5,12 +5,14 @@ The book is organized into seven parts:
 | Part | Scope |
 | --- | --- |
 | I. Foundations | RISC-V ISA, SystemVerilog, and microarchitecture fundamentals |
-| II. SoC Architecture | Pipelines, memories, caches, buses, interrupts, and peripherals |
-| III. Open-Source RISC-V Cores | CORE-V Wally as the main case study and other architectures |
-| IV. Simulation and Verification | Verilator, cocotb, Spike, Sail, testing, and debugging |
+| II. Open-Source RISC-V Cores | CORE-V Wally as the main case study and other architectures |
+| III. Simulation and Verification | Verilator, cocotb, Spike, Sail, testing, and debugging |
+| IV. SoC Architecture | Pipelines, memories, caches, buses, interrupts, and peripherals |
 | V. FPGA Implementation | Yosys, nextpnr, timing, and SoC integration |
 | VI. ASIC Implementation | OpenROAD, LibreLane, and the RTL-to-GDSII flow |
 | VII. Advanced Topics | Performance monitoring, hardware debug, accelerators, extensions, and architectural exploration |
+
+The processor case studies and simulation tools precede SoC architecture so that readers can apply them to the memory, bus, and peripheral examples before moving on to FPGA and ASIC implementation.
 
 ## Concepts
 

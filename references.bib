@@ -2,9 +2,9 @@
   author = {Harris, David and Stine, James and Thompson, Rose and Harris, Sarah},
   title = {RISC-V System-on-Chip Design},
   publisher = {Morgan Kaufmann},
-  year = {2027},
+  year = {2026},
   isbn = {9780323994989},
-  note = {Chapter 4: HDL Design Practices; Section 4.3: Wally Style Guidelines. Publication year as shown in the supplied PDF}
+  note = {Chapters 4, 7--13 and 20 consulted in the supplied PDF. Publication year as shown in the supplied PDF}
 }
 
 @misc{skywaterPdk,
@@ -345,6 +345,174 @@
   note = {Accessed 2026-10-13}
 }
 
+@manual{armAxi4Spec,
+  author = {{Arm Limited}},
+  title = {AMBA AXI and ACE Protocol Specification},
+  year = {2020},
+  number = {IHI 0022H},
+  url = {https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/IHI0022H_amba_axi_protocol_spec.pdf},
+  note = {AXI4 and AXI4-Lite interface requirements; accessed 2026-10-13}
+}
+
+@misc{cvwEbu,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally External Bus Unit},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/ebu/ebu.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwUncore,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Uncore},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/uncore.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwAhbApb,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally AHB-to-APB Bridge},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/ahbapbbridge.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwPlic,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally APB Platform-Level Interrupt Controller},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/plic_apb.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwTrap,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Trap Logic},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/privileged/trap.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{gccRiscvInterrupt,
+  author = {{GNU Project}},
+  title = {RISC-V Function Attributes},
+  year = {2026},
+  url = {https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Function-Attributes.html},
+  note = {Interrupt handler attribute; accessed 2026-10-13}
+}
+
+@misc{cvwCache,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Configurable Instruction and Data Cache},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/cache/cache.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwCacheWay,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Cache Way: Tag, Data and Status Arrays},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/cache/cacheway.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwCacheFsm,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Cache Controller},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/cache/cachefsm.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwCacheLru,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Tree Pseudo-LRU Replacement},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/cache/cacheLRU.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwLsu,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Load/Store Unit},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/lsu/lsu.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwIfu,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally Instruction Fetch Unit},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/ifu/ifu.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwCacheBus,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally AHB Cache Interface},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/ebu/ahbcacheinterface.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{riscvZifencei,
+  author = {{RISC-V International}},
+  title = {Zifencei Extension for Instruction-Fetch Fence, Version 2.0},
+  year = {2026},
+  url = {https://docs.riscv.org/reference/isa/unpriv/zifencei.html},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{riscvCacheManagement,
+  author = {{RISC-V International}},
+  title = {CMO Extensions for Base Cache Management Operation ISA},
+  year = {2026},
+  url = {https://docs.riscv.org/reference/isa/unpriv/cmo.html},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwGpio,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally APB GPIO},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/gpio_apb.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwUart,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally PC16550D-Compatible UART},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/uartPC16550D.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwSpi,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally APB SPI Controller},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/spi_apb.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{cvwPwm,
+  author = {{CORE-V Wally Contributors}},
+  title = {CORE-V Wally APB PWM Controller},
+  year = {2026},
+  url = {https://github.com/openhwfoundation/cvw/blob/main/src/uncore/pwm_apb.sv},
+  note = {Accessed 2026-10-13}
+}
+
+@manual{nexysVideoManual,
+  author = {{Digilent}},
+  title = {Nexys Video FPGA Board Reference Manual},
+  url = {https://digilent.com/reference/_media/reference/programmable-logic/nexys-video/nexys-video_rm.pdf},
+  note = {Clock sources and USB-UART connections; accessed 2026-10-13}
+}
+
 @misc{picoRv32,
   author = {{YosysHQ}},
   title = {PicoRV32: A Size-Optimized RISC-V CPU},
@@ -374,6 +542,20 @@
   title = {CV32E40P User Manual: Introduction},
   year = {2026},
   url = {https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/cv32e40p_v1.8.0/intro.html},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{laforestHandshake,
+  author = {Charles Eric LaForest},
+  title = {Rules for Ready/Valid Handshakes and Synchronization},
+  url = {https://fpgacpu.ca/fpga/handshake.html},
+  note = {Accessed 2026-10-13}
+}
+
+@misc{laforestSkid,
+  author = {Charles Eric LaForest},
+  title = {Pipeline Skid Buffer},
+  url = {https://fpgacpu.ca/fpga/Pipeline_Skid_Buffer.html},
   note = {Accessed 2026-10-13}
 }
 

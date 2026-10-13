@@ -25,21 +25,21 @@ book:
         - chapters/01-foundations/systemverilog.qmd
         - chapters/01-foundations/microarchitecture.qmd
         - chapters/01-foundations/clocking-timing.qmd
-    - part: "II. SoC Architecture"
+    - part: "II. Open-Source RISC-V Cores"
       chapters:
-        - chapters/02-soc-architecture/pipelines.qmd
-        - chapters/02-soc-architecture/memories-caches.qmd
-        - chapters/02-soc-architecture/buses-interrupts.qmd
-        - chapters/02-soc-architecture/peripherals.qmd
-    - part: "III. Open-Source RISC-V Cores"
+        - chapters/02-risc-v-cores/core-v-wally.qmd
+        - chapters/02-risc-v-cores/other-architectures.qmd
+    - part: "III. Simulation and Verification"
       chapters:
-        - chapters/03-risc-v-cores/core-v-wally.qmd
-        - chapters/03-risc-v-cores/other-architectures.qmd
-    - part: "IV. Simulation and Verification"
+        - chapters/03-simulation-verification/verilator.qmd
+        - chapters/03-simulation-verification/spike-sail.qmd
+        - chapters/03-simulation-verification/cocotb.qmd
+    - part: "IV. SoC Architecture"
       chapters:
-        - chapters/04-simulation-verification/verilator.qmd
-        - chapters/04-simulation-verification/spike-sail.qmd
-        - chapters/04-simulation-verification/cocotb.qmd
+        - chapters/04-soc-architecture/pipelines.qmd
+        - chapters/04-soc-architecture/memories-caches.qmd
+        - chapters/04-soc-architecture/buses-interrupts.qmd
+        - chapters/04-soc-architecture/peripherals.qmd
     - part: "V. FPGA Implementation"
       chapters:
         - chapters/05-fpga-implementation/yosys.qmd
