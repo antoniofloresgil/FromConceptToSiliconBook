@@ -26,6 +26,13 @@ The C++ reference uses a wider integer and explicit modulo arithmetic. It checks
 
 ## Implementation
 
+### Download the example files
+
+- [accumulator.sv](../../examples/verilator/accumulator.sv): SystemVerilog design.
+- [sim_main.cpp](../../examples/verilator/sim_main.cpp): C++ test harness.
+
+Save both files in the same directory, keeping their filenames. If your browser displays a file as text, use **Save link as** to download it. Run the commands below locally in that directory.
+
 ### 1. Install the tools
 
 On Ubuntu or Debian, install the packaged tool and a C++ build environment:

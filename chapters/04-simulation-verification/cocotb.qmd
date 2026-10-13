@@ -26,6 +26,27 @@ Inputs are driven on the falling edge, leaving them stable before the next risin
 
 ## Implementation
 
+### Download the example files
+
+- [test_accumulator.py](../../examples/cocotb/test_accumulator.py): Python testbench.
+- [Makefile](../../examples/cocotb/Makefile): simulator build configuration.
+- [requirements.txt](../../examples/cocotb/requirements.txt): Python dependency version.
+- [accumulator.sv](../../examples/verilator/accumulator.sv): shared SystemVerilog design.
+
+Use **Save link as** if the browser displays the source. Preserve this directory layout because the Makefile refers to the RTL using a relative path:
+
+```text
+examples/
+  cocotb/
+    test_accumulator.py
+    Makefile
+    requirements.txt
+  verilator/
+    accumulator.sv
+```
+
+For standalone downloads, run the setup and test commands from `examples/cocotb/` in your downloaded directory tree.
+
 ### 1. Install Python, cocotb, and a simulator
 
 This example pins **cocotb 2.0.1** and uses Icarus Verilog. It requires Python 3.9 or later and Icarus 11 or later. In an Ubuntu/Debian environment:

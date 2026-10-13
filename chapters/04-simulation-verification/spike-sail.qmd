@@ -84,6 +84,14 @@ Passing a finite suite does not prove complete ISA correctness. A signature may 
 
 ### Common program and build
 
+Download the files and save them together in a working directory:
+
+- [check.S](../../examples/reference-models/check.S): assembly test program.
+- [link.ld](../../examples/reference-models/link.ld): linker script.
+- [expected.signature](../../examples/reference-models/expected.signature): expected results.
+
+Keep the exact filenames. If your browser displays a file as text, use **Save link as**. For a standalone download, run the build and simulation commands from your working directory instead of changing to the repository's example directory.
+
 The files in `examples/reference-models/` implement an original RV64I test shared by both examples. It performs three checks: 28 + 9 = 37; the sum of integers 1 through 6 = 21; and a signed comparison of -1 with 1 = true. Results are stored as three 64-bit signature words. Explicit checks select HTIF success or failure.
 
 The program avoids stack accesses, libraries, CSR counters, and compressed instructions. Its linker script places code at `0x80000000`, provides aligned mailbox/data regions, and selects `_start`. This isolates basic arithmetic, branches, signed comparison, loads of addresses, and stores from more complex runtime requirements.

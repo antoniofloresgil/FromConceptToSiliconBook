@@ -1,5 +1,14 @@
 project:
   type: book
+  resources:
+    - examples/verilator/accumulator.sv
+    - examples/verilator/sim_main.cpp
+    - examples/reference-models/check.S
+    - examples/reference-models/link.ld
+    - examples/reference-models/expected.signature
+    - examples/cocotb/test_accumulator.py
+    - examples/cocotb/Makefile
+    - examples/cocotb/requirements.txt
 
 book:
   site-url: https://antoniofloresgil.github.io/FromConceptToSiliconBook/
