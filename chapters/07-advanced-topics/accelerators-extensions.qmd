@@ -25,10 +25,9 @@ The right choice is driven by operand locality and latency. A single-cycle popul
 
 Compare end-to-end time rather than only arithmetic throughput:
 
-\[
+$$
 T_\text{offload} = T_\text{setup} + T_\text{transfer} + T_\text{compute} + T_\text{completion}.
-\]
-
+$$
 For a custom instruction, setup and transfer are register reads/writes but compute can lengthen the core clock or insert stalls. For MMIO, setup includes CSR/MMIO stores, transfer can dominate for small buffers, and completion can be polling or an interrupt. Establish a break-even input length by measuring both paths.
 
 The performance result should include cycles, retired instructions, cache events, transfer bytes and FPGA resource/timing change. The PMU chapter describes how to make this data repeatable. A speedup stated only as “the accelerator is faster” cannot guide a design decision.
@@ -236,10 +235,9 @@ Validate alignment, length overflow, address-range limits and response errors in
 
 For signed 16-bit samples `x` and taps `h`, one output is:
 
-\[
+$$
 y[n] = \operatorname{sat}_{16}\left(\frac{1}{2^F}\sum_{k=0}^{N-1} x[n-k]h[k]\right).
-\]
-
+$$
 Choose a Q-format and state it in the interface. For example, Q1.15 inputs/taps produce a Q2.30 product; a 40-bit or wider accumulator avoids intermediate overflow for the selected number of taps, then the hardware arithmetic-shifts by `F=15` and saturates to signed 16-bit output. Rounding must be stated: truncate, round-to-nearest, or stochastic rounding all yield different bit-exact outputs.
 
 The C reference model is the specification oracle:
@@ -433,11 +431,10 @@ This checklist prevents the common failure mode in which an RTL datapath is corr
 
 For each accelerator variant, archive baseline and accelerated RTL commits, configuration, compiler flags, input vectors, PMU setup, synthesis utilization, timing report and output hash. Compare:
 
-\[
+$$
 \text{speedup} = \frac{T_\text{software}}{T_\text{accelerated}},\qquad
 \text{efficiency} = \frac{\text{speedup}}{\text{additional LUTs or DSPs}}.
-\]
-
+$$
 Efficiency is not a universal metric, but it forces an explicit resource/performance trade-off. A design that gains 10% while consuming most remaining DSP blocks may not be the right FPGA prototype, whereas an engine that frees the CPU for control work can be valuable even if its isolated speedup is modest.
 
 ### Security and lifecycle

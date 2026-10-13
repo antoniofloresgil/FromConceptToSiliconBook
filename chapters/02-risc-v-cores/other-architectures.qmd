@@ -38,10 +38,9 @@ Before selecting a core, define a comparison sheet with the same fields for ever
 
 These axes are connected. A two-stage core can have a high clock frequency yet execute a load in several cycles. A wider out-of-order machine can retire more than one instruction per cycle but use much more logic and power. A core with a superb front end will still stall if its memory system cannot supply instructions. The useful performance quantity for a fixed program is approximately
 
-\[
+$$
 T = \frac{N_{\mathrm{inst}}\times \mathrm{CPI}}{f_{\mathrm{clock}}},
-\]
-
+$$
 where the instruction count, CPI and achievable clock frequency all depend on configuration, compiler, workload and platform. An FPGA resource comparison adds constraints: the same design may map differently to LUTs, BRAM and DSP blocks on different families.
 
 ### A map of the examples

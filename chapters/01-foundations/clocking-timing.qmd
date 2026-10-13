@@ -67,19 +67,18 @@ An asynchronous assertion can force a design promptly into a safe state, while a
 
 For a register-to-register path, a simplified setup requirement is:
 
-\[
+$$
 T_{clk} \geq T_{cq,max} + T_{comb,max} + T_{route,max} + T_{setup} + T_{uncertainty} + T_{skew}
-\]
-
+$$
 where:
 
-- \(T_{clk}\) is the clock period.
-- \(T_{cq,max}\) is maximum clock-to-Q delay of the launching register.
-- \(T_{comb,max}\) is maximum delay through combinational cells.
-- \(T_{route,max}\) is maximum delay through wires and vias.
-- \(T_{setup}\) is the capture register's setup requirement.
-- \(T_{uncertainty}\) reserves clock jitter, modeling error and margin.
-- \(T_{skew}\) captures the relative clock arrival effect for the path.
+- $T_{clk}$ is the clock period.
+- $T_{cq,max}$ is maximum clock-to-Q delay of the launching register.
+- $T_{comb,max}$ is maximum delay through combinational cells.
+- $T_{route,max}$ is maximum delay through wires and vias.
+- $T_{setup}$ is the capture register's setup requirement.
+- $T_{uncertainty}$ reserves clock jitter, modeling error and margin.
+- $T_{skew}$ captures the relative clock arrival effect for the path.
 
 Static timing analysis (STA) compares the required arrival time against the calculated data arrival time. Their difference is **setup slack**. Positive slack means the checked setup requirement is met; negative slack means the path is too slow for that constraint. The frequency target follows from the period: a 10 ns period requests 100 MHz, while 20 ns requests 50 MHz.
 
@@ -89,10 +88,9 @@ The equation is a reasoning model, not a license to add arbitrary margins until 
 
 Hold timing checks the other direction: data must not arrive at the capture register too early after a clock edge. A simplified form is:
 
-\[
+$$
 T_{cq,min} + T_{comb,min} + T_{route,min} \geq T_{hold} + T_{uncertainty} + T_{skew,hold}
-\]
-
+$$
 Hold failures are not repaired by reducing the clock frequency. They are minimum-delay failures caused by paths that are too fast relative to the clock arrival relationship. Typical repairs add delay, buffer the data path, adjust clock skew within the clock methodology, or change logic deliberately. A design can meet setup timing and still fail hold timing; both reports are required.
 
 ### Slack, corners and modes
@@ -373,6 +371,32 @@ Before sign-off, inspect at least:
 
 An unconstrained path is neither automatically safe nor automatically a failure. It is a review item: either add a real constraint, prove it is asynchronous and protect the CDC, or document a valid exception.
 
+### Timing a transaction interface
+
+A transaction channel contains forward data/valid paths and a backward capacity path. Registering data can improve its timing while leaving a long combinational `ready` chain as the critical path. Include both directions in the timing inventory.
+
+| Path | Functional obligation | Physical question |
+|---|---|---|
+| Operand register to ALU result register | Compute the selected operation correctly | Does the worst operation meet setup? |
+| FIFO occupancy to upstream ready | Advertise only available capacity | Does backward control cross too much logic? |
+| Memory address to synchronous read port | Present the accepted address on time | Which memory-port setup requirement applies? |
+| Memory result and tag to consumer | Preserve item correspondence | Are data and metadata captured under the same contract? |
+| Clock enable to register | Update only on the specified cycle | Does enable timing meet the mapped cell requirement? |
+
+The iterative arithmetic unit in the microarchitecture chapter takes several cycles, but its accumulator feedback is used at **every** work edge. It is therefore an ordinary single-cycle timing path. An operation taking 32 cycles does not justify declaring its internal adder a 32-cycle multicycle path.
+
+A real multicycle exception requires a specific launch/capture schedule and proof that intermediate capture edges cannot use changing data. Review setup and hold implications together. Prefer an explicit clock enable and a documented schedule to an exception chosen solely to remove a report violation.
+
+The SoC pipeline chapter presents buffers that change path length and storage capacity. Such a buffer can preserve transaction behavior while changing latency. Update performance expectations and interface budgets after adding it; physical timing improvement and functional cycle counts are separate results.
+
+### Carrying assumptions into implementation
+
+Maintain one timing-assumption record alongside the configuration used in simulation. Include clock source, period, reset release, interface delays, memory read latency, allowed backpressure and any clock crossing. Simulation parameters alone do not constrain implementation tools.
+
+For an FPGA, confirm that the clock pin, clock distribution and IO constraints match the actual board. For an ASIC, replace board assumptions with cell libraries, corners, clock-tree behavior and external interface budgets. A nominal period entered into a testbench remains only a simulation schedule until an implementation flow receives real constraints.
+
+When changing a configurable core, audit the paths affected by the new feature. A multiply option can change execution timing; a cache option can introduce array and comparison paths; a debug interface can create a new asynchronous boundary. Reusing an old constraint file without this review can leave new paths unconstrained.
+
 ## Hands-on Experiments
 
 ### Experiment 1: create and audit an SDC file
@@ -398,6 +422,12 @@ Instantiate `bit_synchronizer` for an asynchronous pushbutton or simulated exter
 ### Experiment 4: reset release and timing evidence
 
 Use `reset_release` in two independently clocked test domains. Assert reset asynchronously, then release it at several phases of each clock. Confirm that each local reset release is synchronous but can occur in a different cycle. Write the reset contract, CDC assumptions and timing constraints required before integrating the domains.
+
+### Experiment 5: a long operation with short timing paths
+
+Implement the microarchitecture chapter's iterative multiplier under several clock periods. Identify the accumulator feedback path and distinguish operation latency from the period available to its adder. Report synthesis estimates separately from placed-and-routed slack.
+
+Then insert one-entry elastic buffers in a communication path. Compare the forward registered path and the backward readiness path. Use the transport chapter's deeper buffer to break the latter, re-run functional tests and document its changed latency or full-state recovery behavior.
 
 ## Connection to later chapters
 

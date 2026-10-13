@@ -321,11 +321,10 @@ report_design_area
 
 Floorplanning decides the available area and geometry. `initialize_floorplan` can receive explicit die/core coordinates or compute dimensions from utilization and aspect ratio. A low utilization leaves more whitespace for buffers and routing but increases die area; a high utilization saves area but risks congestion. The official command documentation gives the conceptual calculation:
 
-\[
+$$
 A_{core} = \frac{A_{cells}}{U/100}
-\]
-
-where \(U\) is target utilization. For a small educational block, begin around 50--60%, not 80--90%.
+$$
+where $U$ is target utilization. For a small educational block, begin around 50--60%, not 80--90%.
 
 ```tcl
 initialize_floorplan \

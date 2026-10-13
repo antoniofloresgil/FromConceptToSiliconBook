@@ -16,6 +16,8 @@ The processor case studies and simulation tools precede SoC architecture so that
 
 ## Concepts
 
+The Foundations part starts with the ISA as a software-visible contract, then introduces the SystemVerilog semantics used to describe hardware. Microarchitecture connects instruction effects to datapath, control and multicycle units. Clocking and timing turn those cycle-level designs into explicit implementation obligations. Together, these chapters prepare the reader to interpret Wally before using it in simulation, SoC integration and physical implementation.
+
 Start with the architectural and hardware principles needed to understand the topic. Distinguish architectural requirements from implementation choices.
 
 ## Implementation

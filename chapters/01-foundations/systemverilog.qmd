@@ -1,4 +1,4 @@
-# SystemVerilog for Hardware Design
+# SystemVerilog for Hardware Design {#sec-systemverilog}
 
 ## Concepts
 
@@ -61,6 +61,78 @@ Dimensions before the identifier are packed; dimensions after it describe an unp
 | `{{8{Offset[7]}}, Offset[7:0]}` | Sign-extend an 8-bit slice to 16 bits |
 
 Bitwise operators (`&`, `\|`, `^`, `~`) operate on individual bits. Logical operators (`&&`, `\|\|`, `!`) evaluate truth values. A unary reduction such as `\|Word` reduces a vector to one bit. In a four-state simulator, `==` can return unknown, whereas `===` compares unknown and high-impedance values explicitly; case equality is useful in testbench checks.
+
+### Expression width and signedness are part of the circuit
+
+Binary arithmetic has finite width. Do not rely on the reader or a tool warning to guess which carry bits must survive. Extend operands explicitly when an addition requires an extra result bit:
+
+```systemverilog
+logic [15:0] Left, Right;
+logic [16:0] WideSum;
+assign WideSum = {1'b0, Left} + {1'b0, Right};
+```
+
+The extra bits express an unsigned 17-bit addition. Assigning to a narrower destination discards upper bits; that is appropriate for architectural modular arithmetic but wrong if a counter overflow must be detected. Document which behavior each block requires.
+
+Signed declarations and casts affect comparisons and arithmetic shifts. `$signed(Data)` changes interpretation without increasing width. For sign extension, replicate the sign bit or assign a deliberately signed value to an appropriately sized signed destination. Part-selects and concatenations can lose the signed interpretation expected by the author.
+
+```systemverilog
+logic [31:0] Data;
+logic [4:0] Shift;
+logic [31:0] LogicalRight, ArithmeticRight;
+assign LogicalRight    = Data >> Shift;
+assign ArithmeticRight = $signed(Data) >>> Shift;
+```
+
+For `Data = 32'h80000000` and `Shift = 1`, the results are `32'h40000000` and `32'hc0000000`. The RISC-V ALU must distinguish these operations; the register declaration alone cannot determine which instruction is executing.
+
+Use sized literals where bit width is meaningful. `'0` fills the destination with zeros, whereas `32'h0` is explicitly 32 bits. An unsized integer literal participates in expression sizing and signedness rules; avoid using a convenient unsized `1` when a parameterized bit vector requires an unambiguous width. This is especially relevant for masks and shifts near the highest bit.
+
+| Intended operation | Review question |
+|---|---|
+| Addition with carry | Are operands extended before the operation? |
+| Architectural addition | Is truncation to `XLEN` intentional? |
+| Signed comparison | Are both compared operands signed at the comparison? |
+| Arithmetic shift | Is the left operand signed before `>>>`? |
+| Parameterized mask | Can width or shift reach an invalid range? |
+| Byte extraction | Are bit index and byte-address interpretation consistent? |
+
+### Packed fields, arrays and endianness
+
+Packed dimensions describe one bit-vector representation. Unpacked dimensions describe an array of elements. These declarations have different roles:
+
+```systemverilog
+logic [31:0] Word;
+logic [31:0] Words [0:15];
+typedef struct packed {
+  logic write;
+  logic [7:0] tag;
+  logic [31:0] address;
+  logic [31:0] data;
+  logic [3:0] byte_enable;
+} request_t;
+request_t PendingRequest;
+```
+
+`Words` is an array of sixteen words. `PendingRequest` is one packed item whose declaration order determines its bit layout. A struct is useful for retaining metadata together, but the external protocol still defines the meaning of its fields.
+
+A packed vector's bit order is not a statement of memory endianness. Mapping a word to four byte addresses is an interface convention. The foundation ISA example assumes little-endian storage; byte-lane wiring and image loaders must implement that convention explicitly.
+
+Indexed part-selects such as `Data[8*lane +: 8]` select eight increasing bit positions from a base index. The width is fixed; the base may vary. Prove that the index stays in range. An out-of-range selection does not implement address wrapping or an architectural misalignment handler.
+
+### Legal parameters and elaboration
+
+`$clog2(DEPTH)` is useful for an address width, but `$clog2(1)` is zero. A range based on that result needs either a documented minimum depth or a guarded width. A FIFO supporting arbitrary depths also needs pointer wrapping; unused binary pointer encodings do not disappear merely because the array is smaller.
+
+```systemverilog
+localparam int AddressWidth = (DEPTH < 2) ? 1 : $clog2(DEPTH);
+```
+
+This avoids a zero-width address declaration. It does not make `DEPTH=0` legal or prove every pointer value maps to an element. Specify legal parameter ranges and test their boundaries.
+
+Generate conditions select hardware at elaboration. A runtime input selects behavior in existing hardware. A disabled optional unit must leave every required output with a defined driver; otherwise one configuration can appear healthy while another contains undriven control signals.
+
+For Wally, typed configuration fields, packages and compilation order are important. Record the actual frontend used by simulation and synthesis. The native Yosys `read_verilog -sv` frontend supports a subset of SystemVerilog; other frontends or preprocessing flows may be needed for the full design [@yosysDocumentation]. Do not replace a tested project frontend merely because a small example compiles with a simpler command.
 
 ### Combinational logic
 
@@ -187,8 +259,8 @@ module rv_slice #(
   logic full_q;
   logic [DATA_WIDTH-1:0] data_q;
 
-  assign in_ready = !full_q || out_ready;
-  assign out_valid = full_q;
+  assign in_ready = rst_n && (!full_q || out_ready);
+  assign out_valid = rst_n && full_q;
   assign out_data = data_q;
 
   always_ff @(posedge clk or negedge rst_n) begin
@@ -205,7 +277,87 @@ endmodule
 
 When empty, the buffer accepts input even if the consumer is stalled. When full and the consumer is ready, it can deliver the old item and capture a replacement on the same edge. When full and stalled, both registers retain their values. The resulting registered forward path has one-cycle latency and can sustain one transfer per cycle after filling.
 
-This design still has a combinational path from `out_ready` to `in_ready`; it does not isolate the backward timing path. Reset is asynchronously asserted and active low. System integration must define safe reset release and suppress transactions during reset.
+This design still has a combinational path from `out_ready` to `in_ready`; it does not isolate the backward timing path. The reset gate suppresses visible handshakes while reset is asserted. Reset is asynchronously asserted and active low; system integration must provide safe release. The transport-pipeline chapter develops deeper buffers and timing isolation.
+
+### A decoder with explicit scope and safe defaults
+
+An instruction decoder turns validated instruction fields into control intent. This complete teaching module recognizes only `ADD`, `ADDI`, `LW`, `SW`, `BEQ` and `LUI` in an uncompressed RV32 stream. It is **not a complete RV32I decoder**. Other selectors produce `legal=0` and no side-effect requests. Save it as `foundation_decode.sv`.
+
+```systemverilog
+module foundation_decode (
+  input  logic [31:0] instruction,
+  output logic legal,
+  output logic uses_rs1, uses_rs2,
+  output logic writes_rd,
+  output logic load_word, store_word, branch_equal,
+  output logic [2:0] immediate_kind
+);
+  always_comb begin
+    legal = 1'b0;
+    uses_rs1 = 1'b0;
+    uses_rs2 = 1'b0;
+    writes_rd = 1'b0;
+    load_word = 1'b0;
+    store_word = 1'b0;
+    branch_equal = 1'b0;
+    immediate_kind = 3'd0;
+    case (instruction[6:0])
+      7'b0110011: begin
+        if (instruction[14:12] == 3'b000 &&
+            instruction[31:25] == 7'b0000000) begin
+          legal = 1'b1;
+          uses_rs1 = 1'b1; uses_rs2 = 1'b1; writes_rd = 1'b1;
+        end
+      end
+      7'b0010011: begin
+        if (instruction[14:12] == 3'b000) begin
+          legal = 1'b1; uses_rs1 = 1'b1; writes_rd = 1'b1;
+        end
+      end
+      7'b0000011: begin
+        if (instruction[14:12] == 3'b010) begin
+          legal = 1'b1; uses_rs1 = 1'b1; writes_rd = 1'b1;
+          load_word = 1'b1;
+        end
+      end
+      7'b0100011: begin
+        if (instruction[14:12] == 3'b010) begin
+          legal = 1'b1; uses_rs1 = 1'b1; uses_rs2 = 1'b1;
+          store_word = 1'b1; immediate_kind = 3'd1;
+        end
+      end
+      7'b1100011: begin
+        if (instruction[14:12] == 3'b000) begin
+          legal = 1'b1; uses_rs1 = 1'b1; uses_rs2 = 1'b1;
+          branch_equal = 1'b1; immediate_kind = 3'd2;
+        end
+      end
+      7'b0110111: begin
+        legal = 1'b1; writes_rd = 1'b1; immediate_kind = 3'd3;
+      end
+      default: begin end
+    endcase
+  end
+endmodule
+```
+
+The immediate selector matches `rv32_immediate` in the ISA chapter. `writes_rd` expresses an instruction's result intent; the register file separately suppresses writes to `x0`. Loads still access memory even with destination zero. Register source fields are extracted elsewhere from fixed bit positions.
+
+These small units are not a complete processor and cannot execute the ISA chapter's whole demonstration by themselves. That program also uses instructions outside this decoder's scope, including byte loads and additional control/address operations. The full Wally configuration and simulation harness supply the complete execution path.
+
+The module says whether a recognised encoding belongs to its limited scope. It does not check memory alignment, privilege, target accessibility or all exceptions. A controller must qualify side effects with instruction validity and successful checks. It also needs an explicit path for unsupported instructions in a complete core.
+
+`case` matching is deliberately exact. Avoid `casex` to make unknown instruction bits behave like wildcards; that can hide initialization and transport faults. `unique` and `priority` express additional intent but do not replace correct defaults or legality checking.
+
+### Verification code is not datapath hardware
+
+Testbench clocks, randomized stimulus and reference models are simulation infrastructure. An `initial` block that toggles a clock with `#5` does not create a usable clock generator for FPGA or ASIC. A testbench reading an ELF does not imply that synthesized hardware contains that loader.
+
+Assertions are sampled observations of a contract. For example, a retained payload property needs an output-valid condition, its associated ready condition and a reset policy. A check on every cycle without those qualifiers can compare unspecified payload bits and report false failures.
+
+Four-state simulation can expose uninitialized inputs, while a two-state simulation flow can require explicit initialization checks. Neither style makes the verification plan unnecessary. Confirm sampling phases: driving and checking at exactly the active edge in separate procedural processes can create races.
+
+Coverage also needs intent. Executing every `case` branch is useful code coverage, but does not establish that every instruction aliasing pattern, signed boundary, invalid encoding or stalled transfer was checked. The later simulation chapters turn these requirements into executable tests.
 
 ## Hands-on Experiments
 
@@ -226,3 +378,15 @@ This design still has a combinational path from `out_ready` to `in_ready`; it do
 5. Extend the block into a FIFO and document whether a full FIFO can accept a write when a read occurs on the same edge.
 
 Record commands, tool versions, waveforms for failures, and an explicit pass/fail result.
+
+### Decoder and arithmetic integration experiment
+
+Connect `foundation_decode` to `rv32_immediate`. Check six supported instruction families and unsupported instructions with the same major opcodes, including `SUB`, non-word loads, other branch comparisons and immediate shifts. Verify no unsupported instruction requests a memory side effect.
+
+Test valid loads with `rd=x0` and confirm decode still requests a load. Connect the register file from the microarchitecture chapter and verify that register zero remains unchanged. This separates operand/result intent from actual storage updates.
+
+Create a matrix of language feature, simulator frontend and synthesis frontend for the small modules and the full Wally project. Include packages, typed configuration, packed structs, assertions and memory loading. Record observed support rather than assuming all tools accept the same source subset.
+
+### Connection to the rest of the book
+
+The ISA chapter defines instruction effects; microarchitecture assembles them into datapath/control; this chapter supplies the RTL language used to describe both. Clocking establishes physical timing obligations. Wally then provides a concrete processor, the simulation part supplies checking tools, and SoC architecture extends the same contracts to memory and peripheral traffic. FPGA and ASIC flows turn supported RTL into technology-specific implementations.

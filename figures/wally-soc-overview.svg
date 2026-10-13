@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="930" viewBox="0 0 1200 930" role="img" aria-labelledby="title desc">
+  <title id="title">From the Wally core to a complete SoC</title>
+  <desc id="desc">Editable teaching redraw informed by Figure 2.13 of RISC-V System-on-Chip Design and the CVW repository block diagram. Request paths connect IFU and LSU caches through EBU and AHB to RAM and APB peripherals. Separate interrupt paths return to privileged control. This diagram groups modules by function, not by pipeline stage.</desc>
+  <metadata>Original vector layout for From Concept to Silicon, 2026-10-14. Technical references: Harris, Stine, Thompson and Harris, RISC-V System-on-Chip Design, Figure 2.13; CVW wallyriscvTopAll.png; RTL revision 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c. Not a pixel trace or a verbatim reproduction of the textbook figure.</metadata>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+    <marker id="irq" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+    <style>text{font-family:Arial,sans-serif;fill:#172b3a;font-size:19px} .heading{font-size:27px;font-weight:bold}.label{font-weight:bold}.small{font-size:16px}.box{fill:#fff;stroke:#24577a;stroke-width:2;rx:10}.data{fill:none;stroke:#24577a;stroke-width:3;marker-end:url(#arrow)}.return{fill:none;stroke:#a34624;stroke-width:3;stroke-dasharray:8 5;marker-end:url(#irq)}</style>
+  </defs>
+  <rect width="1200" height="930" fill="#fff"/>
+  <text x="40" y="42" class="heading">Wally: core, transport and uncore</text>
+  <text x="40" y="71" class="small">Functional hierarchy of the selected rv32gc configuration; not a pipeline-stage drawing</text>
+  <rect x="35" y="95" width="1130" height="455" rx="16" fill="#eef5fa" stroke="#8baabc"/>
+  <text x="55" y="126" class="label">wallypipelinedcore</text>
+  <rect x="65" y="160" width="230" height="120" class="box"/>
+  <text x="83" y="188" class="label">IFU</text><text x="83" y="215">PC, prediction, fetch</text><text x="83" y="242">MMU / I-cache</text><text x="83" y="267" class="small">instruction context</text>
+  <rect x="365" y="160" width="315" height="120" class="box"/>
+  <text x="385" y="188" class="label">IEU / execution units</text><text x="385" y="220">Decode, register file, ALU</text><text x="385" y="248">MDU / FPU and writeback</text>
+  <rect x="750" y="160" width="370" height="120" class="box"/>
+  <text x="770" y="188" class="label">LSU</text><text x="770" y="220">Address, attributes, MMU, D-cache</text><text x="770" y="248">Page-table walk / uncached path</text>
+  <path d="M295 220H365" class="data"/><path d="M680 220H750" class="data"/>
+  <rect x="65" y="320" width="395" height="95" class="box"/>
+  <text x="85" y="350" class="label">Privileged control</text><text x="85" y="377">CSRs, traps, interrupt qualification</text><text x="85" y="400" class="small">Redirect fetch; preserve architectural state</text>
+  <rect x="535" y="320" width="585" height="95" class="box"/>
+  <text x="555" y="350" class="label">Hazard and pipeline control</text><text x="555" y="381">Hold valid work; flush younger work; arbitrate updates</text>
+  <path d="M145 320V295H180V280" class="return"/>
+  <rect x="450" y="460" width="360" height="60" class="box"/>
+  <text x="478" y="497" class="label">EBU: arbitrate IFU / LSU AHB</text>
+  <path d="M270 280V440H520V460" class="data"/><path d="M1030 280V440H740V460" class="data"/>
+  <path d="M630 520V585" class="data"/>
+  <rect x="35" y="575" width="1130" height="280" rx="16" fill="#f1f7ef" stroke="#8bac87"/>
+  <text x="55" y="607" class="label">uncore: address decode, response selection and targets</text>
+  <rect x="65" y="640" width="275" height="85" class="box"/>
+  <text x="85" y="673" class="label">AHB RAM / boot ROM</text><text x="85" y="701" class="small">Explicit image-loading contract</text>
+  <rect x="420" y="640" width="315" height="85" class="box"/>
+  <text x="445" y="675" class="label">AHB-to-APB bridge</text><text x="445" y="704" class="small">Setup / access / completion</text>
+  <path d="M630 615H200V640" class="data"/><path d="M630 615V640" class="data"/>
+  <rect x="420" y="765" width="230" height="60" class="box"/><text x="436" y="802" class="small">GPIO / UART / SPI / PWM</text>
+  <rect x="700" y="765" width="180" height="60" class="box"/><text x="723" y="802">PLIC</text>
+  <rect x="930" y="765" width="180" height="60" class="box"/><text x="955" y="802">CLINT</text>
+  <path d="M575 725V745H535V765" class="data"/><path d="M575 745H790V765" class="data"/><path d="M790 745H1020V765" class="data"/>
+  <path d="M650 795H700" class="return"/>
+  <path d="M880 795H900V430H425V415" class="return"/>
+  <path d="M1110 795H1148V560H325V415" class="return"/>
+  <text x="860" y="554" class="small">timer / software IRQ</text>
+  <text x="875" y="449" class="small">external IRQ</text>
+  <path d="M55 886H125" class="data"/><text x="140" y="892" class="small">Transaction path (responses return through the interconnect)</text>
+  <path d="M750 886H820" class="return"/><text x="836" y="892" class="small">Event / redirection path</text>
+  <text x="55" y="919" class="small">Source: teaching redraw of the organization in Harris et al., Fig. 2.13, and CVW RTL / repository diagram.</text>
+</svg>
