@@ -22,7 +22,7 @@ Pipeline registers preserve both data and its meaning. For example, a load instr
 
 ## The Simplified Wally Pipeline
 
-The following improved pipeline is reproduced from Figure 7.13 of *RISC-V System-on-Chip Design*, Chapter 7, supplied by the author as an editable SVG. It illustrates the datapath after adapting the simple pipeline to synchronous instruction and data memories.
+The following improved pipeline is reproduced from Figure 7.13 of *RISC-V System-on-Chip Design*, Chapter 7. It illustrates the datapath after adapting the simple pipeline to synchronous instruction and data memories.
 
 ![Improved pipelined RISC-V datapath with synchronous memories. Source: Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Chapter 7, Figure 7.13.](../../figures/wally-figure-7-13-editable.svg){#fig-wally-pipeline-synchronous fig-alt="Improved five-stage Wally-style pipeline with synchronous instruction and data memories"}
 
