@@ -11,8 +11,6 @@ The following tables focus on common RTL and verification constructs. Examples a
 | `inout`, `tri` | Model a resolved bidirectional connection, typically IO. | `inout tri Pin; assign Pin = Drive ? Value : 1'bz;` |
 | `logic` | Four-state type for ordinary RTL variables. Storage depends on the driver. | `logic [31:0] Result;` |
 | `bit` | Two-state type; cannot retain `x`/`z`. | `bit Passed = 0;` in a testbench |
-| `wire` | Net kind for connections driven by continuous assignments or outputs. | `wire logic Link; assign Link = Source;` |
-| `reg` | Legacy four-state procedural variable, not necessarily a physical register. | `reg Flag;` when reading older Verilog |
 | `var` | Explicitly declares variable port kind. | `input var logic [7:0] Values [0:3];` |
 | `signed`, `unsigned` | Set arithmetic signedness. | `logic signed [15:0] Delta;` |
 | `int`, `integer` | 32-bit integer types; `int` is four-state and signed by default. | `int Count; integer LegacyCount;` |

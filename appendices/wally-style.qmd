@@ -4,7 +4,7 @@ This appendix summarizes the design conventions described in Section **4.3, Wall
 
 ## Signals and pipeline stages
 
-Use `clk` and `reset` for the pervasive clock/reset names. Ordinary signals use UpperCamelCase, while constants and parameters use uppercase names separated by underscores. Declare internal signals explicitly, including single-bit signals, and normally use `logic` for RTL variables. Packed buses use descending ranges such as `[31:0]`; this indexing convention does not by itself specify memory byte endianness.
+Use `clk` and `reset` for the pervasive clock/reset names. Ordinary signals use UpperCamelCase, while constants and parameters use uppercase names separated by underscores. Declare internal signals explicitly, including single-bit signals, and use `logic` for ordinary RTL signals, following the book's Guideline 4.8. Whether a signal represents combinational logic or storage depends on its driver, not on the type declaration. Packed buses use descending ranges such as `[31:0]`; this indexing convention does not by itself specify memory byte endianness.
 
 Pipeline suffixes identify where a value belongs:
 
