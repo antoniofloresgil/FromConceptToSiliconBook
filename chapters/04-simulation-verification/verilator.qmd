@@ -2,15 +2,279 @@
 
 ## Concepts
 
-Simulation models, clocking, reset, test harnesses, and waveform-based observation.
+### What Verilator does
+
+Verilator is an open-source compiler for Verilog and SystemVerilog models. It checks RTL and translates supported constructs into C++ or SystemC. A native compiler then builds an executable that performs the simulation. The build and simulation are separate stages: editing the RTL requires rebuilding the executable.
+
+In a C++ flow, the test harness supplies inputs, clock transitions, and checks. The generated model exposes top-level ports, and `eval()` evaluates its behavior. Tracing can record waveforms for debugging. See the official [overview](https://verilator.org/guide/latest/overview.html) and [model API guide](https://verilator.org/guide/latest/connecting.html).
+
+This chapter develops an original clocked accumulator example. It follows the create–compile–run progression of the official [C++ example](https://verilator.org/guide/latest/example_cc.html), adding reset, enable, overflow checks, and a reference model. Consult the [user guide](https://verilator.org/guide/latest/index.html) for the installed version's supported constructs.
+
+### The experiment's hardware contract
+
+The accumulator uses a rising-edge clock and unsigned 16-bit operands:
+
+| Condition at the rising edge | Sum after the edge | Valid | Overflow |
+| --- | --- | --- | --- |
+| Reset or clear asserted | Zero | Zero | Zero |
+| Enable asserted | Previous sum plus operand, modulo 65536 | One | One if addition exceeds 65535 |
+| Otherwise | Previous sum retained | Zero | Zero |
+
+Reset and clear have priority over enable. Valid marks an accepted addition, not merely a nonzero stored result. Overflow is a one-cycle report for an addition; it is not a sticky flag.
+
+The C++ reference uses a wider integer and explicit modulo arithmetic. It checks every cycle, including stalls and resets, rather than treating a plausible waveform as a passing test.
 
 ## Implementation
 
-Build a Verilator harness for SystemVerilog modules and a processor configuration.
+### 1. Install the tools
+
+On Ubuntu or Debian, install the packaged tool and a C++ build environment:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y verilator build-essential
+verilator --version
+g++ --version
+make --version
+```
+
+On Windows, use Ubuntu under WSL2 for this walkthrough. From an administrator PowerShell terminal:
+
+```powershell
+wsl --install -d Ubuntu
+```
+
+Complete setup, restart if requested, and run the Linux commands inside Ubuntu. The native Windows toolchain is another option, but requires a different setup. Packaged versions may lag newer releases. The official [installation guide](https://verilator.org/guide/latest/install.html) also describes source builds:
+
+```sh
+sudo apt-get install -y git help2man perl python3 make autoconf g++ flex bison
+git clone https://github.com/verilator/verilator.git
+cd verilator
+git checkout stable
+unset VERILATOR_ROOT
+autoconf
+./configure
+make -j2
+sudo make install
+verilator --version
+git describe --tags --always
+```
+
+For reproducibility, replace `stable` with a selected release tag and record it. For package/global installations, leave `VERILATOR_ROOT` unset.
+
+### 2. Prepare a working directory
+
+The two source files are included in this book repository under `examples/verilator/`. In a Linux or WSL terminal, from the repository root:
+
+```sh
+cd examples/verilator
+ls accumulator.sv sim_main.cpp
+```
+
+For an independent exercise, create a directory with `mkdir verilator-accumulator`, enter it, and save the following two listings using the exact filenames shown. Use LF line endings.
+
+### 3. Describe the circuit: accumulator.sv
+
+```systemverilog
+module accumulator(
+  input  logic        clk, reset, Clear, Enable,
+  input  logic [15:0] Operand,
+  output logic [15:0] Sum,
+  output logic        Valid, Overflow);
+
+  logic [16:0] ExtendedSum;
+  assign ExtendedSum = {1'b0, Sum} + {1'b0, Operand};
+
+  always_ff @(posedge clk) begin
+    if (reset || Clear) begin
+      Sum      <= '0;
+      Valid    <= 1'b0;
+      Overflow <= 1'b0;
+    end else begin
+      Valid    <= Enable;
+      Overflow <= Enable && ExtendedSum[16];
+      if (Enable) Sum <= ExtendedSum[15:0];
+    end
+  end
+endmodule
+```
+
+The addition explicitly extends both operands to 17 bits, preserving the carry. Only the low 16 bits enter the sum register. The clocked process updates state with nonblocking assignments, and the default branch clears the reporting flags on a disabled cycle.
+
+### 4. Write the C++ harness: sim_main.cpp
+
+```cpp
+#include "Vaccumulator.h"
+#include "verilated.h"
+#include "verilated_vcd_c.h"
+
+#include <array>
+#include <cstdint>
+#include <iostream>
+
+struct Stimulus {
+    bool reset;
+    bool clear;
+    bool enable;
+    std::uint16_t operand;
+};
+
+int main(int argc, char** argv) {
+    VerilatedContext context;
+    context.commandArgs(argc, argv);
+    context.traceEverOn(true);
+    Vaccumulator dut{&context};
+    VerilatedVcdC trace;
+    dut.trace(&trace, 3);
+    trace.open("accumulator.vcd");
+    if (!trace.isOpen()) {
+        std::cerr << "Cannot open accumulator.vcd\n";
+        dut.final();
+        return 1;
+    }
+
+    dut.clk = 0;
+    dut.reset = 1;
+    dut.Clear = 0;
+    dut.Enable = 0;
+    dut.Operand = 0;
+
+    // Each sample has a distinct timestamp: low, rising edge, falling edge.
+    auto evaluate = [&]() {
+        dut.eval();
+        trace.dump(context.time());
+        context.timeInc(5);
+    };
+
+    const std::array<Stimulus, 14> tests{{
+        {true,  false, false,     0}, // Reset.
+        {true,  false, true,     99}, // Reset wins over enable.
+        {false, false, true,      5},
+        {false, false, true,      9},
+        {false, false, false, 12345}, // Hold sum; valid/overflow low.
+        {false, true,  true,    100}, // Clear wins over enable.
+        {false, false, true,  60000},
+        {false, false, true,  10000}, // 70000 wraps to 4464.
+        {false, false, false,     7}, // Overflow must not stay asserted.
+        {false, false, true,  65535}, // Another wrap.
+        {false, true,  false,     0},
+        {false, false, true,  65535}, // Exact maximum; no overflow.
+        {false, false, true,      1}, // Wrap to zero.
+        {true,  false, true,      3}  // Reset nonzero/overflow state.
+    }};
+
+    std::uint32_t expected_sum = 0;
+    unsigned failures = 0;
+    unsigned cycle = 0;
+    for (const auto& input : tests) {
+        dut.reset = input.reset;
+        dut.Clear = input.clear;
+        dut.Enable = input.enable;
+        dut.Operand = input.operand;
+        dut.clk = 0;
+        evaluate(); // Settle inputs before the active edge.
+
+        bool expected_valid = false;
+        bool expected_overflow = false;
+        if (input.reset || input.clear) {
+            expected_sum = 0;
+        } else if (input.enable) {
+            const std::uint32_t total = expected_sum + input.operand;
+            expected_sum = total % 65536u;
+            expected_overflow = total >= 65536u;
+            expected_valid = true;
+        }
+
+        dut.clk = 1;
+        evaluate(); // Commit the clocked updates before checking outputs.
+        if (dut.Sum != expected_sum
+            || static_cast<bool>(dut.Valid) != expected_valid
+            || static_cast<bool>(dut.Overflow) != expected_overflow) {
+            ++failures;
+            std::cerr << "FAIL cycle " << cycle
+                      << ": sum=" << dut.Sum << " expected=" << expected_sum
+                      << ", valid=" << unsigned(dut.Valid)
+                      << " expected=" << expected_valid
+                      << ", overflow=" << unsigned(dut.Overflow)
+                      << " expected=" << expected_overflow << '\n';
+        }
+
+        dut.clk = 0;
+        evaluate();
+        ++cycle;
+    }
+
+    dut.final();
+    trace.close();
+    if (failures != 0) return 1;
+    std::cout << "PASS: " << cycle << " cycles checked\n";
+    return 0;
+}
+```
+
+The generated class is `Vaccumulator`. `VerilatedContext` owns simulation context and time; the harness passes command-line arguments to it. `final()` completes model finalization. `VerilatedVcdC` records a VCD file after tracing is enabled. These APIs are described in [Connecting to Verilated Models](https://verilator.org/guide/latest/connecting.html).
+
+Each cycle has three evaluations. First, drive the inputs with the clock low and settle the combinational addition. Next, raise the clock, evaluate the state transition, and compare outputs. Finally, lower the clock and evaluate again. All samples have different timestamps.
+
+The test avoids checking old values before clocked updates are evaluated. Its reference calculation is independent of the RTL's carry extraction. A mismatch prints actual and expected values and returns a nonzero exit status. The fixed 14-cycle sequence guarantees termination; the RTL does not need `$finish`.
+
+No HDL delay controls are used, so this harness does not require `--timing`. Advancing context time alone does not toggle the clock: the assignments and `eval()` calls do that. The five-unit increments label waveform phases; they do not model gate delays or establish timing closure.
 
 ## Hands-on Experiments
 
-Run deterministic tests, capture waveforms, and reproduce a failing case.
+### 5. Compile the model and harness
 
-For each experiment, record the tool versions, design configuration, commands, inputs, expected results, and observed results.
+From the directory containing the two files:
+
+```sh
+verilator --cc --exe --build -j 2 -Wall --trace \
+  --top-module accumulator -CFLAGS "-std=c++17" \
+  sim_main.cpp accumulator.sv
+```
+
+| Option | Role in this build |
+| --- | --- |
+| `--cc` | Generate C++ model sources |
+| `--exe` | Include the supplied C++ harness in an executable build |
+| `--build` | Invoke the generated build rules |
+| `-j 2` | Limit build parallelism to two jobs |
+| `-Wall` | Enable additional warnings |
+| `--trace` | Include waveform-tracing support |
+| `--top-module accumulator` | Select the intended top module |
+| `-CFLAGS "-std=c++17"` | Select C++17 for the C++ compilation |
+
+The translation/build flow follows the official [C++ walkthrough](https://verilator.org/guide/latest/example_cc.html). Inspect warnings rather than disabling them indiscriminately. Generated sources and the executable are placed in `obj_dir/`.
+
+### 6. Run and inspect the result
+
+```sh
+./obj_dir/Vaccumulator
+echo $?
+```
+
+Expected output:
+
+```text
+PASS: 14 cycles checked
+```
+
+The exit status should be zero. This example was compiled and executed with Verilator 5.020 in a Linux container, passing all 14 checks. For example, adding 10000 to 60000 produces sum 4464 and an overflow pulse. The following disabled cycle must preserve 4464 while clearing both reporting flags. Reaching exactly 65535 must not report overflow; adding one afterward must wrap to zero.
+
+The run creates `accumulator.vcd` in the current working directory. Open it with a VCD viewer, such as GTKWave if installed:
+
+```sh
+gtkwave accumulator.vcd
+```
+
+Inspect `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, and `Overflow`. Use the waveform to explain a failed check, while retaining the automatic reference comparison as the pass criterion. Generated files are excluded by the example's local `.gitignore`.
+
+### 7. Extend the checks
+
+1. Change the RTL overflow test deliberately so that exactly 65535 reports overflow. Rebuild and confirm that the test fails.
+2. Add consecutive disabled cycles after a wrap and check that overflow never becomes sticky.
+3. Replace the fixed stimulus with a deterministic pseudo-random sequence while retaining the reference calculation and a cycle limit.
+4. Add a test that changes inputs while the clock remains low. Verify that the sum register changes only on a rising edge.
+5. Parameterize the width and update the C++ interface/reference arithmetic accordingly. Do not assume wide ports have the same generated C++ representation as this 16-bit example.
+
+Record tool versions, source revision, command, exit status, and any failing cycle. This exercise checks a small synchronous block; processor simulation adds memory models, software loading, and architectural-state checks.
 
