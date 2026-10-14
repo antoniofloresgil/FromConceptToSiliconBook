@@ -1,5 +1,7 @@
 # Peripherals and SoC Integration {#sec-peripherals}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run mmio`. The appendix states dependencies, checked requirements and guided extensions.
+
 A peripheral connects software-visible state to activity outside the processor. An LED, serial console and SPI sensor all need more than a datapath: registers, clock/reset behavior, buffering, event handling and a physical connection. The design is complete only when software can operate it and the external interface obeys its timing contract.
 
 This chapter builds on Chapter 20 of *RISC-V System-on-Chip Design*, particularly GPIO, UART and SPI. CLINT and PLIC connect these devices to the interrupt mechanisms developed in the preceding buses chapter. PWM is also studied using the inspected Wally repository, where it is an additional configurable peripheral [@harrisRiscvSoc; @cvwRepository].

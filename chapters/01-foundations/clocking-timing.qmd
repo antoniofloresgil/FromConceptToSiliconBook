@@ -1,5 +1,7 @@
 # Clocking, Reset, and Timing Constraints {#sec-clocking-timing}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run foundations`. The appendix states dependencies, checked requirements and guided extensions.
+
 ## Concepts
 
 Digital hardware is only synchronous when a timing contract makes it synchronous. SystemVerilog can describe a register with `always_ff @(posedge clk)`, but that syntax neither creates a physical clock network nor states how fast the circuit must run. The contract connects three levels of design:

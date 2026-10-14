@@ -1,5 +1,7 @@
 project:
   type: book
+  pre-render:
+    - python labs/run.py pack
   resources:
     - examples/verilator/accumulator.sv
     - examples/verilator/sim_main.cpp
@@ -9,6 +11,7 @@ project:
     - examples/cocotb/test_accumulator.py
     - examples/cocotb/Makefile
     - examples/cocotb/requirements.txt
+    - downloads/hardware-design-labs.zip
 
 book:
   site-url: https://antoniofloresgil.github.io/FromConceptToSiliconBook/
@@ -61,6 +64,7 @@ book:
   appendices:
     - appendices/wally-style.qmd
     - appendices/systemverilog-cheatsheet.qmd
+    - appendices/reproducible-labs.qmd
 
 bibliography: references.bib
 

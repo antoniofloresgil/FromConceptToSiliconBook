@@ -1,5 +1,7 @@
 # Buses and Interrupts {#sec-buses-interrupts}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run mmio`. The appendix states dependencies, checked requirements and guided extensions.
+
 A processor becomes a system when its instructions can reach memories and peripherals and peripheral events can reach software. A load from RAM and a load from a UART status register look similar in assembly, but their hardware contracts differ. A peripheral may return changing state, consume a received byte or acknowledge an event. The interconnect must preserve those meanings while devices respond at different speeds.
 
 This chapter follows two paths: an instruction's request to a device, and an interrupt's journey back to the processor. It develops APB, AHB and AXI, then uses full CORE-V Wally to connect transactions, registers and RISC-V interrupt handling. The main textbook references are Chapters 8 and 9 and Sections 20.2–20.3 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc].

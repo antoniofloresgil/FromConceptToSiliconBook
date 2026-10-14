@@ -117,7 +117,7 @@ At minimum, a synchronous digital macro needs the following:
 | Variable | Meaning | Example |
 | --- | --- | --- |
 | `DESIGN_NAME` | The synthesized top-level module | `accumulator` |
-| `VERILOG_FILES` | RTL sources, relative to the design directory | `dir::../../verilator/accumulator.sv` |
+| `VERILOG_FILES` | RTL sources, relative to the design directory | `dir::rtl/accumulator.sv` |
 | `CLOCK_PORT` | Top-level clock port | `Clk` |
 | `CLOCK_PERIOD` | Clock period in ns | `10.0` |
 | `PDK` | Manufacturing PDK, if overriding the default | `sky130A` |
@@ -137,28 +137,27 @@ This section reuses the SystemVerilog accumulator from the OpenROAD and Verilato
 
 ### Step 0: arrange the project
 
-Use this directory layout. The RTL remains in the existing Verilator example directory, avoiding two independently edited copies of the design.
+Use the laboratory package layout below. Its RTL is exported from the OpenROAD chapter and unit-tested by `python labs/run.py run synthesis`. This variant uses uppercase `Clk`/`Reset`, matching the physical-flow clock configuration; the earlier C++/cocotb example has lowercase clock/reset ports.
 
 ```text
-examples/
-├── verilator/
+labs/07-implementation/
+├── rtl/
 │   └── accumulator.sv
-└── librelane/
-    └── accumulator/
-        ├── config.yaml
-        └── pin_order.cfg
+├── config.yaml
+├── constraints.sdc
+└── tb_implementation.sv
 ```
 
 The LibreLane configuration lives beside implementation-specific inputs; it is not a replacement for the testbench. Generated `runs/` directories, GDSII, reports and PDK cache data are build products and should remain ignored by Git.
 
 ### Step 1: write the configuration
 
-Create `examples/librelane/accumulator/config.yaml`:
+Create `labs/07-implementation/config.yaml`:
 
 ```yaml
 DESIGN_NAME: accumulator
 VERILOG_FILES:
-  - dir::../../verilator/accumulator.sv
+  - dir::rtl/accumulator.sv
 
 PDK: sky130A
 STD_CELL_LIBRARY: sky130_fd_sc_hd
@@ -216,7 +215,7 @@ The syntax uses regular expressions, hence the escaped brackets for buses. Check
 From inside a Nix shell, or by adding `--dockerized` in Docker mode, run:
 
 ```bash
-cd examples/librelane/accumulator
+cd labs/07-implementation
 librelane --version
 librelane config.yaml --to Yosys.Synthesis --run-tag synth-only
 ```

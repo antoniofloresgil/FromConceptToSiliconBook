@@ -1,0 +1,20 @@
+DESIGN_NAME: accumulator
+VERILOG_FILES:
+  - dir::rtl/accumulator.sv
+
+PDK: sky130A
+STD_CELL_LIBRARY: sky130_fd_sc_hd
+
+CLOCK_PORT: Clk
+CLOCK_PERIOD: 10.0
+
+# Conservative first-pass geometry for a small standard-cell macro.
+FP_CORE_UTIL: 55
+PL_TARGET_DENSITY_PCT: expr::($FP_CORE_UTIL + 5)
+
+# Request the normal physical checks supported by the selected PDK.
+RUN_LINTER: true
+RUN_LVS: true
+RUN_MAGIC_DRC: true
+RUN_KLAYOUT_DRC: true
+RUN_MCSTA: true

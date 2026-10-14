@@ -1,5 +1,7 @@
 # Memories and Caches {#sec-memories-caches}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run memory`. The appendix states dependencies, checked requirements and guided extensions.
+
 A processor can execute an arithmetic operation quickly and still spend most of its time waiting for data. The memory system bridges the gap between a small, fast datapath and a much larger storage space. Its behavior depends on physical memories, cache organization, address translation, bus service and the instructions being executed. These layers must be understood separately before they can be integrated correctly.
 
 This chapter develops a synchronous memory contract, explains cache organization and then follows instruction and data accesses through CORE-V Wally. It builds mainly on Chapter 10 of *RISC-V System-on-Chip Design*, with pipeline memory timing from Chapter 7, memory management from Chapter 11, LSU integration from Chapter 12 and instruction-cache integration from Section 13.3.1 [@harrisRiscvSoc].

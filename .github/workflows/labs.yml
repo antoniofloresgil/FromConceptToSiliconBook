@@ -1,0 +1,39 @@
+name: Validate reproducible labs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  automatic-labs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build teaching container
+        run: docker build -f labs/Dockerfile -t from-concept-labs:ci .
+      - name: Run reference labs offline
+        run: docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026
+      - name: Confirm tests reject transaction loss
+        run: docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
+      - name: Record container identity
+        if: always()
+        run: |
+          mkdir -p labs/build
+          docker image inspect from-concept-labs:ci > labs/build/container.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: laboratory-evidence
+          path: |
+            labs/build/report.json
+            labs/build/container.json
+            labs/build/**/command-*.log
+            labs/build/cocotb/results.xml
+            labs/build/synthesis/accumulator.json
+            labs/build/synthesis/accumulator-netlist.v

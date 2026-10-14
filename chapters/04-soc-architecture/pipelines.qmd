@@ -1,5 +1,7 @@
 # Pipelines, Buffering and Backpressure {#sec-transport-pipelines}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run transport`. The appendix states dependencies, checked requirements and guided extensions.
+
 A system-on-chip contains many pipelines besides the processor's instruction pipeline. Requests travel from a client to a memory or peripheral, responses travel back, and streams move between accelerators. These paths must preserve information even when one component runs out of space or takes longer than expected. Registers shorten timing paths; buffers allow components to work concurrently; a flow-control protocol determines when ownership of a transaction changes.
 
 This chapter develops those transport mechanisms. The five-stage instruction pipeline, forwarding and instruction hazards belong to the CORE-V Wally chapter. Here, a pipeline carries transactions rather than instructions. A FIFO can preserve memory-request order without knowing anything about register dependencies, speculative execution or the RISC-V instruction set.

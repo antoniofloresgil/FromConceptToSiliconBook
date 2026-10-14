@@ -1,5 +1,7 @@
 # Microarchitecture Fundamentals {#sec-microarchitecture}
 
+Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run foundations`. The appendix states dependencies, checked requirements and guided extensions.
+
 The ISA tells a program what an instruction means. Microarchitecture turns that meaning into storage, arithmetic, selection and control. Two processors can execute the same binary correctly while using different numbers of cycles, different memory organizations and different physical resources.
 
 This chapter establishes the reasoning tools needed before studying Wally. It follows the architectural-state, datapath and control ideas in Chapters 2 and 7 of *RISC-V System-on-Chip Design*, with verification and implementation context from Chapters 5 and 6 [@harrisRiscvSoc]. It develops small reusable units and a multicycle execution plan. Detailed five-stage instruction hazards belong to the Wally chapter; elastic communication pipelines belong to the SoC architecture part.

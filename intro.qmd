@@ -27,3 +27,5 @@ Translate the principles into SystemVerilog examples and analyze real processor 
 ## Hands-on Experiments
 
 Apply the ideas through simulation, verification, synthesis, and measurement. Each experiment should specify prerequisites, tool versions, configuration, commands, inputs, expected results, and exercises so that readers can reproduce and explain the outcome.
+
+The [laboratory reproduction appendix](appendices/reproducible-labs.qmd) provides a downloadable package, a shared container and a single command to run the automatic reference labs. It also identifies guided FPGA/ASIC/Wally activities and student design exercises, with their additional tools and acceptance criteria. Each automatic run records source hashes, tool versions, seeds, commands and results.

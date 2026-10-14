@@ -181,8 +181,8 @@ A module named `clk` is not a clock until the timing model says so. The minimum 
 create_clock -name core_clk -period 10.0 [get_ports Clk]
 set_clock_uncertainty 1.0 [get_clocks core_clk]
 
-set_input_delay  1.0 -clock core_clk [get_ports {Enable Clear}]
-set_output_delay 1.0 -clock core_clk [get_ports {Valid Overflow}]
+set_input_delay  1.0 -clock core_clk [get_ports {Reset Enable Clear A* B*}]
+set_output_delay 1.0 -clock core_clk [get_ports {Sum* Valid Overflow}]
 ```
 
 In a real chip, input and output delays come from the external source, receiver, package and board budget; they are not arbitrary round numbers. Resets, asynchronous inputs, generated clocks, false paths and multi-cycle paths require equally explicit reasoning. An exception is a proof obligation: document the protocol that makes it safe.
@@ -206,7 +206,7 @@ examples/openroad/
 └── harden.tcl
 ```
 
-`accumulator.sv` may be the same tested RTL used for simulation. Do not create a separate implementation-only version of the module; any intentional difference must be reviewed and verified.
+The listing below uses `Clk` and `Reset`; the earlier simulation example uses `clk` and `reset`. The laboratory package exports this exact implementation listing as `labs/07-implementation/rtl/accumulator.sv` and tests its behavior before synthesis. Match RTL port spelling with constraints and flow configuration; do not point an uppercase-clock configuration at the earlier lowercase-clock file.
 
 ### Step 0: verify the RTL before implementation
 
