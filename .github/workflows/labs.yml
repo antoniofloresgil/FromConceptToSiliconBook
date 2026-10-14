@@ -18,14 +18,19 @@ jobs:
       - name: Build teaching container
         run: docker build -f labs/Dockerfile -t from-concept-labs:ci .
       - name: Run reference labs offline
-        run: docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026
+        # Match the runner's ownership so later host steps can write evidence.
+        run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026
       - name: Confirm tests reject transaction loss
-        run: docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
+        run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
       - name: Record container identity
         if: always()
         run: |
           mkdir -p labs/build
-          docker image inspect from-concept-labs:ci > labs/build/container.json
+          if docker image inspect from-concept-labs:ci > /dev/null 2>&1; then
+            docker image inspect from-concept-labs:ci > labs/build/container.json
+          else
+            printf '%s\n' '{"status":"unavailable","image":"from-concept-labs:ci"}' > labs/build/container.json
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

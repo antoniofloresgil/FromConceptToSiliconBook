@@ -406,6 +406,8 @@ Thresholds should be project-specific. A small educational accumulator can requi
 
 ## From the LibreLane GDSII to a tapeout review
 
+The detailed treatment of DRC/LVS, scan and memory test, pad/package integration and first-silicon bring-up is in @sec-physical-validation. Use that chapter to turn the run's reports into an explicit review record. The underlying circuit, power and technology trade-offs are explained in @sec-vlsi-design.
+
 LibreLane's GDSII is an important deliverable, but it is a macro-level physical result. A fabrication submission adds requirements outside the generic Classic flow: pad-frame or harness integration, ESD and I/O rules, package and bump/pad assignment, power integrity, test strategy, foundry-specific sign-off and the current shuttle submission checklist.
 
 Before declaring the accumulator or a larger SystemVerilog block fabrication-ready, review the following with the selected provider:

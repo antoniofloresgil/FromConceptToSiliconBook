@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="430" viewBox="0 0 1080 430" role="img" aria-labelledby="title desc">
+  <title id="title">Scan shift and functional capture</title>
+  <desc id="desc">Serial input passes through three scan registers to serial output. Combinational logic supplies functional data. Testing loads a state, captures a result and unloads it for comparison.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#477599"/></marker></defs>
+  <rect width="1080" height="430" fill="white"/>
+  <g font-family="Arial, sans-serif" fill="#162c40" text-anchor="middle">
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="32" font-size="23" font-weight="bold">Expose state for testing, retain the functional capture path</text>
+    <g fill="#edf4fb" stroke="#477599" stroke-width="2">
+      <rect x="245" y="85" width="590" height="65" rx="10"/>
+      <rect x="245" y="215" width="150" height="65" rx="8"/>
+      <rect x="465" y="215" width="150" height="65" rx="8"/>
+      <rect x="685" y="215" width="150" height="65" rx="8"/>
+    </g>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="113" font-size="21">Functional combinational logic</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="137" font-size="16">Capture inputs depend on state and primary inputs</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="320" y="242" font-size="20">Scan register</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="320" y="265" font-size="17">State 0</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="242" font-size="20">Scan register</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="265" font-size="17">State 1</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="760" y="242" font-size="20">Scan register</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="760" y="265" font-size="17">State 2</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="115" y="230" font-size="20">Scan in</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="960" y="230" font-size="20">Scan out</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="312" font-size="17">Common controls: clock, scan enable and defined reset behavior</text>
+    <g fill="#e9f5eb" stroke="#477599" stroke-width="2">
+      <rect x="80" y="348" width="265" height="60" rx="8"/>
+      <rect x="407" y="348" width="265" height="60" rx="8"/>
+      <rect x="735" y="348" width="265" height="60" rx="8"/>
+    </g>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="212" y="373" font-size="19">1. Shift state in</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="212" y="397" font-size="16">Scan enable = 1</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="373" font-size="19">2. Capture result</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="397" font-size="16">Scan enable = 0</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="867" y="373" font-size="19">3. Shift response out</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="867" y="397" font-size="16">Compare with expected bits</text>
+  </g>
+  <g fill="none" stroke="#477599" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M145 248 H245"/><path d="M395 248 H465"/><path d="M615 248 H685"/><path d="M835 248 H935"/>
+    <path d="M320 150 V215"/><path d="M540 150 V215"/><path d="M760 150 V215"/>
+    <path d="M345 378 H407"/><path d="M672 378 H735"/>
+  </g>
+</svg>

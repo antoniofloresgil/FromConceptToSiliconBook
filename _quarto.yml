@@ -50,9 +50,11 @@ book:
         - chapters/05-fpga-implementation/fpga-soc.qmd
     - part: "VI. ASIC Implementation"
       chapters:
+        - chapters/06-asic-implementation/vlsi-design.qmd
         - chapters/06-asic-implementation/rtl-to-gdsii.qmd
         - chapters/06-asic-implementation/openroad.qmd
         - chapters/06-asic-implementation/librelane.qmd
+        - chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd
     - part: "VII. Advanced Topics"
       chapters:
         - chapters/07-advanced-topics/pmu.qmd

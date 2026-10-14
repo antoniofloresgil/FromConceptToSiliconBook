@@ -6,6 +6,8 @@ Run `python labs/run.py run synthesis`. Tools: Icarus and Yosys. It tests the **
 
 ## Guided ASIC work
 
+Read the book's Digital VLSI Design Fundamentals chapter before interpreting timing/power results. The Physical Validation, DFT and Preparation for Fabrication chapter provides guided scan, memory-test and release-review exercises. These additional exercises require the stated simulators, technology libraries and physical tools; they are not automatic activities in `run all`.
+
 Install OpenROAD/ORFS or LibreLane and the chosen PDK using the book's chapters. With a configured LibreLane environment, run from this directory:
 
 ```sh

@@ -2,6 +2,8 @@
 
 ## Concepts
 
+The circuit and technology foundations for this flow are developed in @sec-vlsi-design. After the implementation chapters, @sec-physical-validation explains the evidence required for physical validation, manufacturing test and preparation for fabrication.
+
 An ASIC flow translates a verified hardware description into the geometric layers from which a foundry makes masks and wafers. The source is ordinary **SystemVerilog RTL**: modules, parameters, clock/reset contracts, assertions and a top-level interface. Unlike an FPGA implementation, it must be mapped to the transistors and interconnect layers of one specific manufacturing process.
 
 ![Open-source ASIC flow from SystemVerilog RTL to GDSII.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="Flow from SystemVerilog RTL and the PDK to LibreLane, OpenROAD, physical verification and GDSII"}

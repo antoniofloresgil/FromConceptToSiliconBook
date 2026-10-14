@@ -200,7 +200,7 @@ The example assumes a clean working directory with these files:
 ```text
 examples/openroad/
 ├── accumulator.sv
-├── synth.ys
+├── synth.tcl
 ├── constraints.sdc
 ├── config.tcl
 └── harden.tcl
@@ -251,29 +251,36 @@ This module is only a core-level block. It has no pad cells, power ports or pack
 
 Current OpenROAD releases include `sv_elaborate` and `synthesize`, which can elaborate SystemVerilog and map it into the OpenROAD database [@openroadSynthesis]. For portability across installed releases, this chapter uses Yosys as a separate synthesis step and OpenROAD directly for every physical stage. This remains a direct OpenROAD flow because no workflow orchestrator selects or hides the physical commands.
 
-Create `synth.ys`, replacing the Liberty path with the exact corner and library selected from the PDK:
+Create `synth.tcl`. This is a Tcl script executed with `yosys -c`, so `$::env(LIBERTY)` is evaluated by Tcl. Select the exact corner and library from the PDK. Mapping sequential cells requires `dfflibmap` as well as combinational mapping with `abc` [@yosysAsicCellMapping]:
 
 ```tcl
-read_verilog -sv accumulator.sv
-hierarchy -check -top accumulator
-proc; opt
-memory; opt
-techmap; opt
-abc -liberty $::env(LIBERTY)
-clean
-write_verilog -noattr results/accumulator_mapped.v
-stat -liberty $::env(LIBERTY)
+yosys read_verilog -sv accumulator.sv
+yosys hierarchy -check -top accumulator
+yosys proc
+yosys opt
+yosys memory
+yosys opt
+yosys techmap
+yosys opt
+yosys dfflibmap -liberty $::env(LIBERTY)
+yosys abc -liberty $::env(LIBERTY)
+yosys clean
+yosys write_verilog -noattr results/accumulator_mapped.v
+yosys stat -liberty $::env(LIBERTY)
 ```
 
 Run it from the example directory:
 
 ```bash
 mkdir -p results
-LIBERTY=/absolute/path/to/selected_corner.lib yosys -s synth.ys \
+set -o pipefail
+LIBERTY=/absolute/path/to/selected_corner.lib yosys -c synth.tcl \
   | tee results/yosys.log
 ```
 
-Read the statistics. If Yosys reports latches, unrecognized constructs, an unexpected top module, or zero sequential cells, stop before physical design. The resulting netlist should instantiate only cells present in both the chosen Liberty file and its matching LEF.
+Read the statistics. If Yosys reports latches, unrecognized constructs, an unexpected top module, or zero sequential cells, stop before physical design. The resulting netlist should instantiate only cells present in both the chosen Liberty file and its matching LEF. Check that no generic sequential cells remain. The `yosys` prefix also avoids confusing the synthesis `proc` command with Tcl's procedure-definition command.
+
+The corrected listing was checked with Yosys 0.60 in the local ORFS environment using `sky130_fd_sc_hd__tt_025C_1v80.lib`: the mapped design contained 147 library cells, including 18 `sky130_fd_sc_hd__dfxtp_1` flip-flops. This validates execution and sequential mapping for that environment, not placement, timing closure or sign-off. A project should also restrict mapping to its approved cell set, including any library-specific exclusions.
 
 ### Step 2: state the physical configuration
 

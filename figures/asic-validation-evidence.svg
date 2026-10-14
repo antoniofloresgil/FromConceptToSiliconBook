@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="510" viewBox="0 0 1080 510" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence from physical implementation to silicon</title>
+  <desc id="desc">A frozen implementation is checked for geometry, connectivity, timing and supply integrity; test and package information join those results in a tapeout review before silicon test.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#477599"/></marker></defs>
+  <rect width="1080" height="510" fill="white"/>
+  <g font-family="Arial, sans-serif" fill="#162c40" text-anchor="middle">
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="32" font-size="23" font-weight="bold">A layout needs several independent kinds of evidence</text>
+    <g fill="#edf4fb" stroke="#477599" stroke-width="2">
+      <rect x="360" y="60" width="360" height="60" rx="9"/>
+      <rect x="25" y="170" width="235" height="75" rx="9"/>
+      <rect x="290" y="170" width="235" height="75" rx="9"/>
+      <rect x="555" y="170" width="235" height="75" rx="9"/>
+      <rect x="820" y="170" width="235" height="75" rx="9"/>
+      <rect x="25" y="320" width="250" height="75" rx="9"/>
+      <rect x="360" y="320" width="360" height="75" rx="9" fill="#e9f5eb"/>
+      <rect x="805" y="320" width="250" height="75" rx="9"/>
+      <rect x="360" y="440" width="360" height="50" rx="9"/>
+    </g>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="85" font-size="20">Frozen release candidate</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="109" font-size="16">Layout, netlist, constraints and hashes</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="142" y="196" font-size="19">Geometry</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="142" y="224" font-size="16">DRC, antenna and density</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="407" y="196" font-size="19">Connectivity</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="407" y="224" font-size="16">LVS and macro boundaries</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="672" y="196" font-size="19">Timing</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="672" y="224" font-size="16">Required modes and corners</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="937" y="196" font-size="19">Supply integrity</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="937" y="224" font-size="16">Sources, current and voltage</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="150" y="350" font-size="19">Manufacturing test</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="150" y="378" font-size="16">Scan, memory test and patterns</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="350" font-size="21" font-weight="bold">Tapeout review</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="378" font-size="16">Provider requirements and accepted evidence</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="930" y="350" font-size="19">Chip integration</text><text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="930" y="378" font-size="16">Pads, ESD, package and board</text>
+    <text text-anchor="middle" font-family="Arial, sans-serif" fill="#162c40" x="540" y="472" font-size="19">Fabrication, bring-up and characterization</text>
+  </g>
+  <g fill="none" stroke="#477599" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M540 120 V145 H142 V170"/><path d="M540 120 V145 H407 V170"/>
+    <path d="M540 120 V145 H672 V170"/><path d="M540 120 V145 H937 V170"/>
+    <path d="M142 245 V280 H480 V320"/><path d="M407 245 V280 H520 V320"/>
+    <path d="M672 245 V280 H560 V320"/><path d="M937 245 V280 H600 V320"/>
+    <path d="M275 357 H360"/><path d="M805 357 H720"/><path d="M540 395 V440"/>
+  </g>
+</svg>

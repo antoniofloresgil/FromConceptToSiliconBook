@@ -1,5 +1,7 @@
 # Reproducing the Laboratory Package {#sec-reproducible-labs}
 
+For the guided ASIC activities, read @sec-vlsi-design before interpreting technology results and @sec-physical-validation for scan, memory-test and release-review exercises. The scan teaching model can be simulated separately; technology scan insertion, fault coverage and physical validation require the additional tools and collateral identified there.
+
 This appendix turns the book's small examples into a repeatable laboratory workflow. The package contains complete reference RTL, independent checks, assembly, driver code, flow inputs and guides. It also identifies activities that need a board, a physical-design environment or a student implementation.
 
 [Download the laboratory package](../downloads/hardware-design-labs.zip). The same files are versioned under `labs/` and `examples/` in the book repository. Extract the ZIP and run commands from its root, where `labs/run.py` is located. The chapter text in the archive records the origin of exported listings.
