@@ -1,5 +1,7 @@
 # Peripherals and SoC Integration {#sec-peripherals}
 
+The subsequent chapter, @sec-boot-stack, connects these device contracts to reset firmware, OpenSBI, the device tree, OS drivers and Linux userspace.
+
 Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run mmio`. The appendix states dependencies, checked requirements and guided extensions.
 
 A peripheral connects software-visible state to activity outside the processor. An LED, serial console and SPI sensor all need more than a datapath: registers, clock/reset behavior, buffering, event handling and a physical connection. The design is complete only when software can operate it and the external interface obeys its timing contract.
@@ -631,3 +633,32 @@ Exercise simultaneous button/timer/UART requests, long interrupt-masked interval
 ### Deliverables
 
 Preserve the register map, clock/divisor calculations, pin ownership, exact Wally configuration and revision, driver assumptions, device models, traces and expected results. Separate RTL simulation, whole-SoC execution and physical board evidence. The resulting peripheral is reviewable when register semantics, external timing and software service agree under normal operation and the declared failure cases.
+
+<!-- chapter-review:peripherals -->
+
+## Key ideas {#review-peripherals-ideas .unnumbered .unlisted}
+
+- Register side effects and external protocols belong in the device contract.
+- Drivers, interrupts and clocks must agree with the implemented peripheral.
+
+## What you should now be able to explain {#review-peripherals-explain .unnumbered .unlisted}
+
+Explain why reading a status/data register can change state and why a transmitted-byte acceptance is not physical transmission completion.
+
+## Common mistakes {#review-peripherals-mistakes .unnumbered .unlisted}
+
+Treating MMIO as ordinary RAM; copying a UART divisor or interrupt mapping from another platform.
+
+## Try it yourself {#review-peripherals-try .unnumbered .unlisted}
+
+Select a chapter peripheral and annotate one register operation, external event and acknowledgement using its existing test/driver.
+
+## Where this appears in Wally {#review-peripherals-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Compare register-facing UART logic in [src/uncore/uart_apb.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/uncore/uart_apb.sv) with timer/event routing in [src/uncore/clint_apb.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/uncore/clint_apb.sv). Match addresses and clock assumptions to the selected SoC.
+:::
+
+## Further reading {#review-peripherals-reading .unnumbered .unlisted}
+
+Continue with @sec-boot-stack and @sec-buses-interrupts. Follow the chapter sources [@harrisRiscvSoc; @cvwRepository].

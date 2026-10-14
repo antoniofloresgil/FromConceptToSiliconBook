@@ -375,3 +375,32 @@ For FPGA, use the real board fabric and compare time/resources under stated memo
 The dossier contains objectives/constraints, hypothesis, manifests, ROI/workload contract, verification, raw/derived data, rejected cases, uncertainty, frontier and selection. Connect conclusions to @sec-verification-methodology.
 
 In the supplied study, four bits/cycle reduces measured ROI cycles relative to two with identical retired work and correct results. Physical cost/timing, broader applications and energy remain separate questions. Retaining the simpler baseline after those checks is as valid as choosing the faster one when the decision follows its stated objective and evidence.
+
+<!-- chapter-review:architecture-exploration -->
+
+## Key ideas {#review-architecture-exploration-ideas .unnumbered .unlisted}
+
+- A design-space choice needs matched workloads, validated behavior and measured cost.
+- Functional models, timing models and hardware support different conclusions.
+
+## What you should now be able to explain {#review-architecture-exploration-explain .unnumbered .unlisted}
+
+Explain a controlled comparison, its region of interest and what missing evidence could overturn its apparent winner.
+
+## Common mistakes {#review-architecture-exploration-mistakes .unnumbered .unlisted}
+
+Comparing mismatched configurations; presenting illustrative Pareto data or emulator runtime as measured Wally PPA.
+
+## Try it yourself {#review-architecture-exploration-try .unnumbered .unlisted}
+
+Review one existing divider-sweep result. Identify the controlled variable, measured outputs and integration/physical limits of the conclusion.
+
+## Where this appears in Wally {#review-architecture-exploration-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Use [config/rv32gc/config.vh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/config/rv32gc/config.vh) and [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) to anchor a configuration identity. The course sweep reports actual selected builds separately from illustrative analysis.
+:::
+
+## Further reading {#review-architecture-exploration-reading .unnumbered .unlisted}
+
+Review @sec-pmu and @sec-final-review. Follow the chapter sources [@harrisRiscvSoc; @westeCmosVlsi].

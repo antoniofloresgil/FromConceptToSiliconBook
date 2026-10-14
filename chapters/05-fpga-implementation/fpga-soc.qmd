@@ -241,3 +241,32 @@ When changing the Wally core configuration, repeat the complete evidence ladder.
 7. **State limitations honestly.** In a project report distinguish: bitstream generated, configuration completed, internal-ROM software ran, DDR initialized and DDR tested. Do not collapse these milestones into “FPGA implementation works.”
 
 This case study completes the path from SystemVerilog to physical hardware while keeping the source, toolchain, constraints and observed board behavior available for review. The same structure applies to other boards, but their FPGA part, device database, pin constraints, clocking and programming method must be treated as new implementation inputs.
+
+<!-- chapter-review:fpga-soc -->
+
+## Key ideas {#review-fpga-soc-ideas .unnumbered .unlisted}
+
+- Board integration combines RTL, memory controllers, clocks, firmware and pins.
+- Each bring-up checkpoint supports a narrower claim than a complete working SoC.
+
+## What you should now be able to explain {#review-fpga-soc-explain .unnumbered .unlisted}
+
+Explain the Nexys Video boot/console path and why a DDR calibration or transaction failure is an integration-level problem.
+
+## Common mistakes {#review-fpga-soc-mistakes .unnumbered .unlisted}
+
+Claiming DDR functionality from a successful build; overlooking firmware placement or reset-domain assumptions.
+
+## Try it yourself {#review-fpga-soc-try .unnumbered .unlisted}
+
+Use the chapter checkpoint table to classify available build/board evidence and identify the first missing observation.
+
+## Where this appears in Wally {#review-fpga-soc-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Trace the board-specific connections in [fpga/src/fpgaOpenSource.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/src/fpgaOpenSource.sv) and generation choices in [fpga/generator/build-opensource.sh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/generator/build-opensource.sh). Retain the documented DDR validation limitations.
+:::
+
+## Further reading {#review-fpga-soc-reading .unnumbered .unlisted}
+
+Revisit @sec-boot-stack and the [reproduction appendix](../../appendices/reproducible-labs.qmd). Follow the chapter sources [@cvwOpenSourceFpga; @cvwLiteDram].

@@ -300,3 +300,32 @@ The simplified pipeline establishes instruction timing and hazards. The complete
 ## Verification scope of this teaching core
 
 Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt/trap/privileged machinery is deliberately omitted, so a passing teaching-core test cannot establish those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios; neither experiment is a complete architectural or microarchitectural qualification of every Wally configuration. A retirement comparator and broader feature/coverage plan remain explicit integration work.
+
+<!-- chapter-review:core-v-wally -->
+
+## Key ideas {#review-core-v-wally-ideas .unnumbered .unlisted}
+
+- Pipeline state and hazard control must preserve architectural behavior.
+- The improved teaching pipeline remains simpler than the complete configurable SoC.
+
+## What you should now be able to explain {#review-core-v-wally-explain .unnumbered .unlisted}
+
+Explain a load-use stall and a redirected fetch, including how synchronous-memory latency changes control timing.
+
+## Common mistakes {#review-core-v-wally-mistakes .unnumbered .unlisted}
+
+Treating the simplified diagram as the complete privileged core; confusing a stall with discarding an instruction.
+
+## Try it yourself {#review-core-v-wally-try .unnumbered .unlisted}
+
+Trace a load followed by a dependent add on the chapter diagram. Mark forwarding, held registers and discarded instructions for a taken branch.
+
+## Where this appears in Wally {#review-core-v-wally-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Locate fetch, integer execution and load/store integration through [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv); compare its control boundaries with [src/hazard/hazard.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/hazard/hazard.sv).
+:::
+
+## Further reading {#review-core-v-wally-reading .unnumbered .unlisted}
+
+Continue with @sec-transport-pipelines and @sec-privileged-mmu. Follow the chapter sources [@harrisRiscvSoc; @cvwBridgeConfig].

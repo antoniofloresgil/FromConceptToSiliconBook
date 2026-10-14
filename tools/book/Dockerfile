@@ -15,6 +15,18 @@ RUN curl --fail --location --retry 3 \
     && dpkg -i /tmp/quarto.deb \
     && rm /tmp/quarto.deb \
     && dpkg-query -W > /opt/book-packages.tsv
+# Quarto loads Font Awesome for callouts even when their icons are disabled.
+# Install only the versioned TeX Live archive, rather than a live font bundle.
+RUN curl --fail --location --retry 3 \
+      https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2023/tlnet-final/archive/fontawesome5.r63207.tar.xz \
+      --output /tmp/fontawesome5.tar.xz \
+    && echo '4d85aab86f679d360e7c7c812a055d9c03dd658e31bccfca4a97604497b0cc1c  /tmp/fontawesome5.tar.xz' | sha256sum --check \
+    && mkdir -p /usr/local/share/texmf \
+    && python -c "import tarfile; tarfile.open('/tmp/fontawesome5.tar.xz', 'r:xz').extractall('/usr/local/share/texmf', filter='data')" \
+    && mktexlsr /usr/local/share/texmf \
+    && kpsewhich fontawesome5.sty \
+    && printf '%s\n' 'fontawesome5 5.15.4 r63207 sha256:4d85aab86f679d360e7c7c812a055d9c03dd658e31bccfca4a97604497b0cc1c' > /opt/book-extra-tex.txt \
+    && rm /tmp/fontawesome5.tar.xz
 WORKDIR /work
 ENV TEXMFVAR=/tmp/book-texmf-var TEXMFCONFIG=/tmp/book-texmf-config XDG_CACHE_HOME=/tmp/book-cache
 CMD ["python", "tools/book/build.py"]

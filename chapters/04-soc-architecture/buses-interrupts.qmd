@@ -743,3 +743,32 @@ For the last case, let foreground code write numbered values to a counting devic
 ### Deliverables
 
 Preserve the register map, clock/reset contract, configuration manifest, bus traces, interrupt traces and scoreboard results. Mark request acceptance, side-effect execution and response acceptance separately. Report queue depth and measured bandwidth with their assumptions. A useful result connects software-visible behavior to exact hardware transactions, providing a repeatable basis for adding a peripheral, bridge or DMA engine.
+
+<!-- chapter-review:buses-interrupts -->
+
+## Key ideas {#review-buses-interrupts-ideas .unnumbered .unlisted}
+
+- Bus phases/channels define independent acceptance and response obligations.
+- Interrupt routing and software acknowledgement form a complete contract.
+
+## What you should now be able to explain {#review-buses-interrupts-explain .unnumbered .unlisted}
+
+Explain an AXI write with independent address/data arrival, then follow a peripheral event through claim, service and completion.
+
+## Common mistakes {#review-buses-interrupts-mistakes .unnumbered .unlisted}
+
+Assuming AXI address/data always arrive together; confusing a CPU trap cause with an external controller source number.
+
+## Try it yourself {#review-buses-interrupts-try .unnumbered .unlisted}
+
+Annotate an existing AXI-Lite test with each accepted phase. Check that a stalled response neither duplicates nor loses the request.
+
+## Where this appears in Wally {#review-buses-interrupts-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Wally uses its AHB/APB path in [src/uncore/ahbapbbridge.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/uncore/ahbapbbridge.sv); external events reach [src/uncore/plic_apb.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/uncore/plic_apb.sv). The course AXI adapter is an additional integration component.
+:::
+
+## Further reading {#review-buses-interrupts-reading .unnumbered .unlisted}
+
+Revisit @sec-peripherals and @sec-transport-pipelines. Follow the chapter sources [@harrisRiscvSoc; @armAxi4Spec].

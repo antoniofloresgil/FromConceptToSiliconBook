@@ -1,5 +1,7 @@
 # Hardware Debug for RISC-V {#sec-riscv-debug}
 
+The lifecycle and system-level security argument is synthesized in @sec-hardware-security, which keeps these debug mechanisms here and combines their authorization with boot, CPU and DMA protection.
+
 ## Concepts
 
 Hardware debug gives an external agent controlled access to a running RISC-V system. It can stop one or more harts, inspect and modify registers, examine memory, execute small debug programs, reset selected harts and resume execution. That capability is essential for board bring-up, firmware development, post-silicon diagnosis and laboratory teaching. It is also a privileged access path that can bypass normal software privilege and protection mechanisms, so it must be designed as both a functional and a security feature.
@@ -295,3 +297,32 @@ Use the ratified [RISC-V Debug Specification](https://docs.riscv.org/reference/d
 ### Debug verification and its trust boundary
 
 Use @sec-verification-methodology to plan debug entry/exit, halt/resume, register/memory access, reset and error cases. Check architectural effects at the specified halted/retirement boundaries rather than comparing deliberately stopped execution to a free-running reference by cycle. Verify that debug accesses and authentication/lifecycle policy cannot bypass the intended protection contract; a working debugger alone does not establish that policy. Manufacturing test access and architectural debug share observability concerns but remain different interfaces and qualification tasks.
+
+<!-- chapter-review:debug -->
+
+## Key ideas {#review-debug-ideas .unnumbered .unlisted}
+
+- Transport, Debug Module and hart Debug Mode have distinct responsibilities.
+- Debug access is authority over execution and potentially memory.
+
+## What you should now be able to explain {#review-debug-explain .unnumbered .unlisted}
+
+Explain halt/resume versus system-bus access and why lifecycle policy must cover both paths.
+
+## Common mistakes {#review-debug-mistakes .unnumbered .unlisted}
+
+Assuming debug-specification compatibility includes every optional feature; treating a JTAG connection as access authorization.
+
+## Try it yourself {#review-debug-try .unnumbered .unlisted}
+
+Use the chapter feature table to classify the referenced implementation, then list the authorization/reset obligations for your SoC.
+
+## Where this appears in Wally {#review-debug-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Use [src/wally/wallypipelinedsoc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedsoc.sv) as the proposed integration boundary. The principal debug example is NEORV32; this chapter does not establish a complete Debug 1.0 implementation in the pinned Wally platform.
+:::
+
+## Further reading {#review-debug-reading .unnumbered .unlisted}
+
+Continue with @sec-hardware-security and @sec-final-review. Follow the chapter sources [@riscvDebugSpec; @neorv32Ocd].

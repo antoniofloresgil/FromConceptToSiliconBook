@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="570" viewBox="0 0 1040 570" role="img" aria-labelledby="title desc">
+  <title id="title">RISC-V boot and software stack</title>
+  <desc id="desc">Reset reaches ROM, machine-mode firmware, an optional supervisor bootloader, the supervisor kernel and a user application. The device tree describes hardware. SBI calls return to resident firmware.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#34465d"/></marker></defs>
+  <rect width="1040" height="570" fill="white"/>
+  <g font-family="DejaVu Sans, sans-serif" fill="#182b43" text-anchor="middle">
+    <text x="520" y="38" font-size="25" font-weight="bold">From reset to a running application</text>
+    <g fill="#e4eef8" stroke="#37638c" stroke-width="2">
+      <rect x="35" y="90" width="200" height="110" rx="10"/>
+      <rect x="290" y="90" width="215" height="110" rx="10"/>
+      <rect x="565" y="90" width="200" height="110" rx="10"/>
+      <rect x="810" y="90" width="195" height="110" rx="10"/>
+      <rect x="810" y="290" width="195" height="100" rx="10" fill="#e8f3e9"/>
+      <rect x="290" y="290" width="475" height="100" rx="10" fill="#fff3d9"/>
+      <rect x="35" y="445" width="970" height="85" rx="10" fill="#f1f3f5"/>
+    </g>
+    <g font-size="19" font-weight="bold">
+      <text x="135" y="125">Reset / ROM</text><text x="397" y="125">OpenSBI</text>
+      <text x="665" y="125">Bootloader</text><text x="907" y="125">Linux kernel</text>
+      <text x="907" y="328">Init / application</text><text x="527" y="328">Device tree + image placement</text>
+      <text x="520" y="478">Hardware contract: RAM, UART, timer, interrupts, storage, DMA</text>
+    </g>
+    <g font-size="16">
+      <text x="135" y="155">M-mode</text><text x="135" y="179">Local startup / loader</text>
+      <text x="397" y="155">Resident M-mode</text><text x="397" y="179">SBI services and policy</text>
+      <text x="665" y="155">Optional S-mode U-Boot</text><text x="665" y="179">Select and load images</text>
+      <text x="907" y="155">S-mode</text><text x="907" y="179">MMU and drivers</text>
+      <text x="907" y="359">U-mode / root filesystem</text>
+      <text x="527" y="359">Addresses, hart IDs, clocks, IRQs, reserved memory</text>
+      <text x="520" y="508">QEMU virt is a software model; Wally requires a matching integrated SoC</text>
+    </g>
+    <g stroke="#34465d" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+      <path d="M235 145H290"/><path d="M505 145H565"/><path d="M765 145H810"/>
+      <path d="M907 200V290"/><path d="M527 290V240H855V200"/>
+      <path d="M907 200V245H397V200"/>
+    </g>
+    <text x="652" y="270" font-size="15">SBI ecall: S-mode service request to M-mode</text>
+    <text x="907" y="420" font-size="15">System calls: U to S</text>
+  </g>
+</svg>

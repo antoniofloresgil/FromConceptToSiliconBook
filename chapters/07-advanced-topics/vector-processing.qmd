@@ -1,0 +1,316 @@
+# RISC-V Vector Processing: From Scalar Loops to RVV {#sec-vector-processing}
+
+Before adding a custom instruction or a DMA accelerator, ask whether a standard vector implementation can execute the workload efficiently. Many signal-processing, numerical and data-transformation kernels already consist of similar operations on arrays. RVV gives those loops an architectural interface without defining a private operation for every application.
+
+This chapter introduces the ratified **V extension, version 1.0**, then follows a signed integer dot product from its arithmetic contract to complete executable assembly. It connects @sec-boot-stack, the memory chapters, performance measurement and the accelerator design choices in @sec-accelerators. The practical example uses QEMU for functional execution and deliberately makes no claim about Wally speed or FPGA cost.
+
+The reference is the vector specification [@riscvVectorSpec]. Toolchain and calling-convention details are checked separately: instruction support, C intrinsics and the ABI are related but distinct interfaces [@rvvLlvmUsage; @rvvGccIntrinsics; @rvvCallingConvention]. By the end, the reader should be able to explain vector configuration, trace a strip-mined loop, reason about inactive elements, choose arithmetic widths and propose a fair comparison with a dedicated accelerator.
+
+## Concepts
+
+### SIMD, vector execution and the scalar baseline
+
+Single-instruction, multiple-data execution applies an operation to several data elements. A fixed-width SIMD ISA commonly exposes a fixed number of elements per register operation. A compiler targeting that width must also handle the final partial group, sometimes through a separate scalar loop. Packed arithmetic on subfields of an integer register is another SIMD arrangement; it does not have RVV's separate vector state.
+
+RVV expresses a runtime element count and element format. An instruction describes work on the currently active elements; it does not reveal how many physical execution lanes the implementation contains. The same vector loop can therefore run across compatible machines with different architectural vector-register lengths.
+
+For a dot product, the scalar starting point is:
+
+```c
+int64_t dot_scalar(const int16_t *a, const int16_t *b, size_t n) {
+    int64_t sum = 0;
+    for (size_t i = 0; i < n; ++i)
+        sum += (int64_t)a[i] * (int64_t)b[i];
+    return sum;
+}
+```
+
+This loop contains independent products and a reduction dependency. Those two parts present different hardware opportunities: several multipliers can generate products concurrently, while the sum needs an accumulation strategy. A vector instruction removes scalar loop overhead but does not make the mathematical dependency disappear.
+
+Some workloads resist vectorization. Pointer chasing, short irregular lists and a branch-dependent memory access per element can spend more time discovering operands than computing. Data layout and algorithm selection remain design decisions before any ISA extension is chosen.
+
+### The architectural vocabulary
+
+Keep register capacity, active work and execution throughput separate:
+
+| Name | Meaning | Unit or example |
+|---|---|---|
+| `VLEN` | Bits in each architectural vector register | 128, 256 or 512 bits in the practice |
+| `ELEN` | Maximum supported vector element width | 64 bits in the selected model |
+| `SEW` | Selected element width for ordinary vector operands | 16-bit inputs or 32-bit products |
+| LMUL | Register grouping/fraction selected in `vtype` | `m1`, `m2`, `mf2` |
+| `VLMAX` | Maximum elements for the selected SEW/LMUL | `LMUL × VLEN / SEW` |
+| `vl` | Actual number of active elements for the next operation | Returned by a configuration instruction |
+| AVL | Application's requested element count | Usually the remaining loop length |
+| `vlenb` | Read-only register length in bytes | `VLEN / 8` |
+
+The terms describe the software-visible model [@riscvVectorSpec]. A program normally requests a format and a count through `vsetvli`; it uses the returned `vl`. It need not discover VLEN and build a private table of unrolled loops. Reading `vlenb` is useful for diagnostics and state management, but it is not the foundation of a portable data-processing loop.
+
+For VLEN = 128, SEW = 16 and LMUL = 1, VLMAX is eight. Changing SEW to 32 with the same LMUL halves the capacity to four elements. Changing both to SEW = 32 and LMUL = 2 restores capacity to eight, at the cost of grouping two registers. These calculations explain the widening example later.
+
+### Register file, grouping and effective grouping
+
+RVV has architectural registers `v0`–`v31`. Their raw payload capacity is `32 × VLEN` bits, before metadata and any implementation-specific organization. At VLEN = 256 this is 1024 bytes of architectural data per hart. It says nothing about the number of read ports, physical banks or execution pipelines.
+
+An integer LMUL groups registers into a larger operand. A group of two beginning at `v8` uses `v8` and `v9`; a group of four beginning at `v8` uses `v8`–`v11`. Group starts must obey alignment restrictions. Increasing LMUL gives more elements per instruction but fewer simultaneously available groups, potentially increasing register pressure and spills.
+
+Fractional LMUL assigns a fraction of a register's capacity to an operand. It can help organize mixed-width operations, but it does not create additional architectural register names or justify overlapping live values. Supported combinations depend on the implemented element types. The examples use integer LMUL to keep the allocation visible.
+
+Mixed-width instructions also have an **effective LMUL**, EMUL. If an operand's effective element width is twice SEW, its grouping doubles when the element count is preserved. With e16/m1 inputs, a widening 32-bit product needs an effective group of two. A widening operation at m8 would require a group of sixteen and is not a legal substitute for the same operation at m1. Register allocation must account for each operand's width, alignment and allowed overlaps.
+
+### Configuration through `vtype` and `vl`
+
+`vtype` selects SEW, LMUL and inactive-element policies. `vsetvli` takes an AVL from an integer register and writes the chosen `vl` to an integer destination:
+
+```asm
+vsetvli t0, a2, e16, m1, ta, ma
+```
+
+Here `a2` holds the remaining count, and `t0` receives the actual active count. `ta` and `ma` select tail-agnostic and mask-agnostic destination policies. The immediate form `vsetivli` is convenient for a small constant AVL; `vsetvl` provides a register-supplied configuration form. The practice uses the immediate form only to initialize or extract one reduction element.
+
+Do not hard-code `vl = min(AVL, VLMAX)` as a universal architectural rule. At AVL ≤ VLMAX, the count is AVL; at AVL ≥ 2 × VLMAX, it is VLMAX. Between those bounds, an implementation may choose a count from `ceil(AVL/2)` through VLMAX. A loop using the returned value works for all those choices. A loop advancing by an assumed maximum can skip input.
+
+Unsupported format combinations produce an invalid configuration indication (`vill`) and a zero vector length. A general runtime must discover an appropriate target or provide a fallback rather than retry forever with unchanged pointers. The checked practice fixes a model with full V, ELEN = 64 and known legal configurations. Portability here concerns VLEN within that feature contract, not execution on a core without vector instructions.
+
+### Strip mining a loop
+
+Strip mining divides the logical iteration space into chunks selected at runtime. The invariant is simple: the pointers identify the next unprocessed element and the remaining count describes all unprocessed elements. Each iteration consumes exactly the returned `vl` elements.
+
+```text
+remaining = n
+while remaining != 0:
+    vl = configure(remaining, element format)
+    process exactly vl elements
+    input pointers += vl * element_size
+    remaining -= vl
+```
+
+![Original illustration of one legal partition for a 19-element loop. The middle iteration could use a different legal `vl`; the algorithm advances by the value actually returned.](../../figures/rvv-strip-mining.svg){#fig-rvv-strip-mining width=100%}
+
+For 19 int16 elements on VLEN = 128, e16/m1, one legal partition is 8, 8 and 3. The last instruction processes three elements without a separate scalar cleanup loop. For a different VLEN or permitted middle-iteration choice, the partition changes while the arithmetic result remains the same. That is the central portability property exercised by the lab.
+
+### Masks, tails and observable results
+
+A mask is a per-element predicate. Ordinary masked instructions take their predicate from `v0`, conventionally shown as `v0.t` in assembly. A comparison can produce those bits, avoiding a scalar branch for every element. The mask's bit representation is different from an array of full-width zero/one integers.
+
+Separate three regions when reviewing an instruction: active elements selected by the mask, active elements deselected by the mask, and tail elements beyond `vl`. Destination-register policies control what can happen to inactive/tail register elements. With agnostic policies, software must not rely on their old contents or assume they become zero. Undisturbed policies preserve the applicable destination elements but can introduce data dependencies and constrain implementation choices.
+
+Memory is different. A masked store does not write a masked-off element, and tail elements do not generate stores. Selecting `ma` does not authorize clearing all unused locations in the destination array. The second lab kernel makes this observable: it copies only positive elements and checks that nonpositive destinations retain a sentinel value.
+
+```asm
+vle16.v v2, (a0)
+vmsgt.vx v0, v2, zero
+vse16.v v2, (a1), v0.t
+```
+
+This kernel loads every active input element, then masks the stores. It is not a masked-load demonstration and cannot safely point its unmasked load at invalid memory. The test also checks guards around the output range, so a tail-store defect cannot be hidden by comparing only active results.
+
+### Loads, stores and the memory system
+
+Contiguous unit-stride loads such as `vle16.v` read adjacent elements. They are a natural match for arrays and streaming caches. A 64-byte cache line holds 32 int16 values; a vector request may consume only part of that line or span several lines depending on length and alignment.
+
+Strided operations use a byte stride between elements. They are useful for traversing a field in an array of structures or a matrix column. Indexed operations derive addresses from vector-held offsets and support gather/scatter patterns. They introduce separate address-generation, ordering and bandwidth considerations; the ordered and unordered indexed instruction families have different architectural contracts.
+
+Segment operations load or store several fields associated with each element. Choosing between structure-of-arrays and array-of-structures can change the number of instructions, cache-line utilization and register pressure. A data layout that is convenient for a software interface may be expensive for both RVV and a DMA engine.
+
+| Access style | Suitable data organization | Hardware question |
+|---|---|---|
+| Unit stride | Dense independent arrays | Can contiguous bytes be delivered at the required rate? |
+| Constant stride | Regular fields/columns | How many lines or banks are touched per vector? |
+| Indexed | Indirect lookup or sparse data | How are addresses generated and faults/order tracked? |
+| Segmented | Interleaved records | Can multiple fields be supplied without excessive bank conflicts? |
+
+Vectorizing an access does not make it cache coherent with a device, remove address translation or replace MMIO ordering rules. Do not apply an ordinary array loop to side-effecting peripheral registers without a precise access contract. Fault-only-first loads provide a specialized mechanism for reducing the active count under defined conditions; they are not a general promise to ignore invalid accesses. Their use and restart behavior belong to a more advanced memory experiment than the contiguous arrays here.
+
+### Reduction and arithmetic width
+
+A reduction combines multiple elements into a scalar result held in an element of a vector register. A seed establishes the initial accumulator; the reduction result must then be extracted or used by subsequent operations. For an empty input, the routine must establish its return value explicitly rather than depend on an operation at zero `vl`.
+
+The lab's mathematical contract is:
+
+$$y = \sum_{i=0}^{n-1} a_i b_i, \qquad a_i,b_i \in [-32768,32767].$$
+
+Each signed 16-bit product fits in signed 32-bit storage, but the sum need not. For n = 1025 and all operands −32768, the result is `1025 × 2^30 = 1100585369600`, far beyond signed 32 bits. The reference and vector implementation therefore accumulate in signed 64 bits. This bound also guarantees no signed 64-bit overflow in the tested workload.
+
+`vwmul.vv` forms full signed widening products. `vwredsum.vs` widens signed source elements again during summation. A simple 32-bit `vredsum` followed by conversion to 64 bits would already have lost information if the reduction overflowed. Type widening must occur before the lossy operation.
+
+For floating-point kernels, mathematical equality does not automatically imply identical bits. An unordered reduction may reassociate additions; fused multiply-add also changes rounding relative to separate multiply and add. State whether the application requires bitwise identity, a defined ordered operation, or an error tolerance. Fixed-point saturation and rounding similarly require their own contract. The integer practice avoids those ambiguities and provides an exact oracle.
+
+## Implementation
+
+### A dot product that preserves vector length
+
+The complete [assembly kernels](../../labs/13-vector/kernels.S) use ordinary pointer/count arguments and a scalar result. First initialize element zero of `v16` as a 64-bit accumulator. Inside the loop, load e16/m1 operands, form e32 products in `v8`–`v9`, reinterpret the same element count as e32/m2, and reduce into the 64-bit accumulator:
+
+```asm
+    vsetivli zero, 1, e64, m1, ta, ma
+    vmv.s.x v16, zero
+loop:
+    vsetvli t0, a2, e16, m1, ta, ma
+    vle16.v v2, (a0)
+    vle16.v v4, (a1)
+    vwmul.vv v8, v2, v4
+    vsetvli zero, t0, e32, m2, ta, ma
+    vwredsum.vs v16, v8, v16
+    slli t1, t0, 1
+    add a0, a0, t1
+    add a1, a1, t1
+    sub a2, a2, t0
+    bnez a2, loop
+```
+
+This excerpt assumes nonzero initial count; the complete function handles zero before touching memory. After the loop it selects e64, one active element, and extracts the accumulator with `vmv.x.s` into `a0`.
+
+The configuration change preserves `LMUL/SEW = 1/16 = 2/32`. Both forms therefore have the same VLMAX, and the second request uses the exact count returned by the first. No product is discarded when the element width changes. The group begins at aligned `v8`; it does not overlap the input registers or accumulator.
+
+The reduction seed is initialized at e64 before the first iteration. Initializing only its low 32 bits and later reading it as a 64-bit seed would allow undefined upper bits into the result. On subsequent iterations the seed is the preceding 64-bit sum, so each chunk contributes once.
+
+This design emphasizes auditability. Reducing every chunk can become expensive on real hardware. An alternative can keep several vector accumulators and reduce once at the end, provided their per-lane widths cannot overflow and tail handling preserves live partial sums. For signed int16 inputs, blindly keeping 32-bit accumulators is unsafe even though every individual product fits. Optimization must preserve the arithmetic proof.
+
+### Compiler support and the ABI
+
+There are three practical entry points: compiler auto-vectorization of ordinary loops, explicit C intrinsics and assembly. Auto-vectorization is easiest to maintain but needs evidence that the compiler selected a suitable vector loop. Intrinsics expose operations while leaving register allocation to the compiler. Assembly makes the configuration and width transitions explicit, which is why it is the teaching reference here.
+
+Instruction version and intrinsic API version should not be conflated. A compiler may assemble RVV 1.0 while exposing an older intrinsic API. Current GCC documentation describes the ratified intrinsic interface, whereas the environment's exact installed compiler must be checked before copying an example that uses `riscv_vector.h` [@rvvGccIntrinsics; @rvvIntrinsicSpec]. LLVM documents its target-feature and vector support independently [@rvvLlvmUsage]. The reference uses Clang's assembler and ordinary C, avoiding a silent dependency on a particular intrinsic spelling.
+
+The practice compiles the C oracle for a scalar ISA and disables both loop and SLP vectorization. It assembles only the vector kernels/startup with V enabled, then links both sets of objects. This keeps the oracle independent of the operation under test. A reference compiled with the same optimized vector strategy could reproduce the same defect.
+
+The functions use the standard calling convention: arguments and scalar results live in integer registers; vector registers and configuration are caller-clobbered. The separate vector calling-convention variant has different preservation/argument rules and is not selected here. Code should enter and return with `vstart` zero according to the ordinary ABI contract [@rvvCallingConvention].
+
+### Enabling and preserving vector state
+
+Vector instructions require permitted architectural vector state. The bare-metal startup enables `mstatus.VS`, clears `vstart` and installs a diagnostic trap handler. Disabling interrupts and using one hart avoids a context-switch exercise; it does not solve general preemption.
+
+A Linux application depends on a vector-capable CPU, kernel support and process policy. The kernel must preserve the applicable vector registers and CSRs across scheduling and signals. The Linux vector documentation describes userspace control of vector use; a firmware banner alone does not demonstrate a usable process environment [@rvvLinuxState].
+
+The raw register payload to save grows with VLEN: 512, 1024 and 2048 bytes for VLEN 128, 256 and 512 respectively. A real scheduler also handles metadata and ownership. Consequently, a short vectorized task may save arithmetic time while increasing scheduling/state-management overhead. Measure the workload at its intended execution boundary, rather than assume the tight loop determines total latency.
+
+### What the Wally baseline provides
+
+The pinned Wally revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` constructs `MISA` in `config/shared/config-shared.vh` with the V position hardwired to zero [@cvwRepository]. The scalar configurations used by this book are therefore not targets for this RVV executable. Coverage files containing a name such as `VLEN512` do not establish an implemented vector datapath or an enabled V ISA bit.
+
+This statement concerns the inspected revision and configurations. A later branch or an external vector coprocessor requires its own source, feature and verification evidence. Enabling a parameter or advertising V in `misa` cannot replace the register file, decode, execution, memory, trap and context-state mechanisms needed by the extension.
+
+For a proposed Wally vector integration, specify at least the architectural feature subset, register organization, scalar/vector issue interface, execution lanes, LSU transaction/restart policy and exception behavior. Reuse the existing scalar core where appropriate, but treat retirement and memory ownership as architectural contracts. A queued vector request must not survive a kill or reset in a way that writes stale data.
+
+## Hands-on Experiments
+
+### Reproduce the checked functional example
+
+The [vector practice guide](../../labs/13-vector/README.md) accompanies complete startup, linker, scalar test harness and assembly sources. It reuses the optional boot container rather than adding another toolchain installation. From the repository or extracted-practice-package root:
+
+```sh
+docker build --platform linux/amd64 -f labs/12-boot/Dockerfile \
+  -t from-concept-boot:2026.10 .
+docker run --rm --platform linux/amd64 --network none \
+  --user "$(id -u):$(id -g)" --env HOME=/tmp \
+  --mount "type=bind,source=$PWD,target=/work" from-concept-boot:2026.10 \
+  python3 labs/13-vector/run.py
+```
+
+For native Windows PowerShell and Docker Desktop Linux containers:
+
+```powershell
+docker build --platform linux/amd64 -f labs/12-boot/Dockerfile `
+  -t from-concept-boot:2026.10 .
+docker run --rm --platform linux/amd64 --network none --env HOME=/tmp `
+  --mount "type=bind,source=${PWD},target=/work" from-concept-boot:2026.10 `
+  python3 labs/13-vector/run.py
+```
+
+Building needs network; the experiment runs offline. Linux/WSL UID/GID matching keeps bind-mount results owned by the invoking user. The boot environment records its available package/tool versions; archive that image for a course release. The optional vector practice is outside the nine automatic unit labs and current publication gate.
+
+The runner builds one ELF and executes it three times with ELEN = 64 and VLEN = 128, 256 and 512. The CPU parameters are checked against the selected QEMU implementation [@rvvQemuCpu]. An equivalent invocation after compilation is:
+
+```sh
+qemu-system-riscv64 -machine virt -m 128M -smp 1 -nographic -no-reboot \
+  -bios none -cpu rv64,v=true,vlen=128,elen=64,vext_spec=v1.0 \
+  -kernel labs/build/vector/vector.elf
+```
+
+This is a bare-metal M-mode experiment, not a Linux application and not the OpenSBI supervisor program from the boot chapter. QEMU's loader supplies the image; startup enables vector state. UART reports test results, and a write to QEMU's test device at `0x100000` terminates the emulator [@rvvQemuPlatform]. That device is an emulator-specific completion mechanism, not a Wally peripheral or a general RISC-V shutdown standard.
+
+The expected stable output is:
+
+```text
+VLEN_BITS=0000000000000080
+PASS signed extremes and 64-bit reduction
+PASS empty, chunk boundaries, masks and guarded stores
+RVV_PASS
+```
+
+The first value becomes hexadecimal `100` or `200` for the other two register lengths. The report under `labs/build/vector/` stores exact commands, tool versions, the single ELF hash, source hashes and separate UART logs for all lengths. A nonzero emulator exit, timeout, `FAIL` message or missing success marker fails the run.
+
+### What the tests establish
+
+The oracle checks lengths 0–257, additional boundaries through 1025, deterministic signed data, all minimum signed inputs, alternating extremes and zeros. Zero-count calls receive deliberately invalid pointers and must return without accessing them. Masked copying verifies both selected values and unchanged nonpositive destinations, plus output guards.
+
+These checks exercise strip mining, the widening reduction and masked memory writes across three VLEN values. The extremes would fail with a 32-bit accumulator. They do not establish every RVV instruction, floating-point correctness, gather fault behavior, OS context switching or all legal choices of `vl`. QEMU's observed partition is one implementation policy; the loop structure must still obey the architectural count contract.
+
+Useful student extensions are to add randomized seeds, a second reduction strategy with a proved width bound, a strided kernel and a controlled translation-fault test. Keep variants outside packaged reference files so that integrity checks continue to identify the supplied implementation.
+
+### Comparing RVV with the AXI/DMA accelerator
+
+The final project's accelerator transfers operands as 32-bit memory words and uses their signed low 16 bits, producing a signed 64-bit result. This RVV kernel uses packed, contiguous signed 16-bit inputs. Their effective arithmetic width agrees, but their memory layout and bytes transferred per operand differ. Before comparing performance, align the layout, legal lengths, overflow/saturation contract and output semantics.
+
+| Alternative | Main advantage to investigate | Cost that must be included |
+|---|---|---|
+| Scalar software | Existing small-core hardware and simple state | Instruction/control overhead and scalar memory traffic |
+| RVV software | Standard programmable array operations | Vector unit/register cost, memory bandwidth and context overhead |
+| Custom instruction | Compact interface for a focused operation | Core/toolchain change and issue/retirement constraints |
+| AXI/DMA engine | Independent streaming work and specialized datapath | Driver setup, ownership, transfers, arbitration and completion |
+
+For the int16 dot product, two input streams deliver four bytes per product. Ignoring reuse, a memory bandwidth B bytes/s bounds the input-fed product rate by B/4. More multipliers cannot exceed that bound without improving data delivery. Cache reuse, packed loads or on-chip buffering can change the effective bandwidth, but the accounting must identify that change.
+
+Separate measured kernel time from complete-job time. For an RVV routine, include call/configuration costs and the intended cache state. For DMA, include descriptor/MMIO setup, buffer synchronization, memory transfer and completion. A device may overlap work with the CPU, so report whether the metric is latency, throughput or freed CPU time.
+
+QEMU wall-clock time and emulated counters do not provide a Wally vector-unit performance model. Use QEMU to establish functional behavior; use an explicitly configured timing model or implemented RTL/hardware for a performance claim. A valid comparison names the core/vector configuration, compiler, workload, memory system, region of interest and counter validation described in @sec-architecture-exploration.
+
+### Microarchitectural choices behind the ISA
+
+VLEN, execution lanes and memory width are independent design axes. A VLEN = 256 register can be processed by a narrow lane over several cycles or by several lanes concurrently. The same ISA-visible instruction sequence can therefore have very different latency and energy.
+
+Adding lanes increases arithmetic potential but demands operand bandwidth. A three-operand multiply-accumulate can require several reads and a write per active group; banking, operand reuse and scheduling determine whether the register file can feed it. Wider registers also affect wiring, state-save traffic and implementation timing. A synthesis result for storage alone does not characterize the complete vector unit.
+
+Reductions may use a tree, iterative accumulator or hybrid organization. Trees offer parallel combination but consume routing and arithmetic resources; serialized approaches cost latency. Chaining can let a consumer begin receiving produced elements before an entire vector completes, but dependencies and exceptions still need correct tracking. LMUL changes architectural work per instruction without automatically changing those physical structures.
+
+The LSU must translate and protect addresses, honor masks, manage outstanding requests and report faults with the right architectural state. Memory instructions are especially important when vector operations cross page boundaries or a device interrupts/reset arrives during execution. Verification should cover outstanding transactions, restart/kill behavior and the difference between register results and externally visible stores.
+
+This makes RVV a genuine alternative to an accelerator, rather than free acceleration. A general vector unit amortizes hardware across many workloads; a dedicated FIR/DMA pipeline can specialize buffering and arithmetic around one contract. Neither option wins without workload and system evidence.
+
+### Design review and follow-on exercises
+
+For an FIR filter, first identify the vectorized dimension. Processing taps inside one output resembles a dot product and requires a reduction. Processing multiple outputs together can broadcast a coefficient and update independent sums, but changes input-window reuse and memory access. Sketch both layouts before choosing instructions or building a streaming engine.
+
+For defence, explain why the widening destination uses two registers, why the reduction seed is 64 bits, and why the loop advances by `t0` rather than a VLEN-derived constant. State what `ma` permits in registers and what it does not permit in memory. Describe the additional evidence needed to move the routine into Linux or an implemented Wally vector platform.
+
+Finally, produce a decision record for the same application under scalar, RVV and AXI/DMA alternatives. Include the numerical contract, input layout, memory budget, expected utilization and missing measurements. The next chapter uses that record to justify custom extensions or a dedicated accelerator when their integration cost is warranted.
+
+<!-- chapter-review:vector-processing -->
+
+## Key ideas {#review-vector-processing-ideas .unnumbered .unlisted}
+
+- Architectural vector length and physical execution width are different choices.
+- Strip mining advances by actual vl and preserves the arithmetic-width contract.
+
+## What you should now be able to explain {#review-vector-processing-explain .unnumbered .unlisted}
+
+Explain SEW/LMUL changes in the dot product and why widening must precede an overflowing reduction.
+
+## Common mistakes {#review-vector-processing-mistakes .unnumbered .unlisted}
+
+Assuming vl always equals min(AVL,VLMAX); treating QEMU host runtime as target vector-unit speed.
+
+## Try it yourself {#review-vector-processing-try .unnumbered .unlisted}
+
+Run the existing same-ELF test at three VLEN values. Explain one partial chunk and one guarded masked store from its results.
+
+## Where this appears in Wally {#review-vector-processing-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+In [config/shared/config-shared.vh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/config/shared/config-shared.vh), the inspected baseline hardwires the V position of MISA to zero. The RVV example runs in QEMU; a Wally vector unit remains an integration proposal.
+:::
+
+## Further reading {#review-vector-processing-reading .unnumbered .unlisted}
+
+Continue with @sec-accelerators and @sec-architecture-exploration. Follow the chapter sources [@riscvVectorSpec; @rvvLlvmUsage].

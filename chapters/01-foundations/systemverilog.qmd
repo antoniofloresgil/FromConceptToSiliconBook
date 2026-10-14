@@ -397,3 +397,32 @@ Create a matrix of language feature, simulator frontend and synthesis frontend f
 ### Connection to the rest of the book
 
 The ISA chapter defines instruction effects; microarchitecture assembles them into datapath/control; this chapter supplies the RTL language used to describe both. Clocking establishes physical timing obligations. Wally then provides a concrete processor, the simulation part supplies checking tools, and SoC architecture extends the same contracts to memory and peripheral traffic. FPGA and ASIC flows turn supported RTL into technology-specific implementations.
+
+<!-- chapter-review:systemverilog -->
+
+## Key ideas {#review-systemverilog-ideas .unnumbered .unlisted}
+
+- RTL describes concurrent hardware, with explicit combinational and sequential behavior.
+- Types, widths, signedness and assignment semantics affect the circuit and its verification.
+
+## What you should now be able to explain {#review-systemverilog-explain .unnumbered .unlisted}
+
+Explain why a declared variable does not determine storage, and trace old versus next values across a clock edge.
+
+## Common mistakes {#review-systemverilog-mistakes .unnumbered .unlisted}
+
+Assuming logic implies a flip-flop; leaving combinational outputs incompletely assigned or relying on implicit width conversions.
+
+## Try it yourself {#review-systemverilog-try .unnumbered .unlisted}
+
+Annotate the register and next-state logic in a supplied foundations module. Predict its output before running the existing test.
+
+## Where this appears in Wally {#review-systemverilog-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Compare the teaching style with [src/generic/flop/flopenr.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/generic/flop/flopenr.sv) and [src/ieu/controller.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ieu/controller.sv). Identify the clocked state, enables and combinational controls.
+:::
+
+## Further reading {#review-systemverilog-reading .unnumbered .unlisted}
+
+Review @sec-clocking-timing and the [Wally style appendix](../../appendices/wally-style.qmd). Follow the chapter sources [@harrisRiscvSoc; @yosysDocumentation].

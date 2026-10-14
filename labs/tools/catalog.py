@@ -57,6 +57,9 @@ LABS = {
     "dotproduct-wally": {"folder": "10-dotproduct", "mode": "external", "goal": "Boot firmware on pinned real Wally, AXI control bridge, DMA and interrupt"},
     "accelerator": {"folder": "08-integration", "mode": "exercise", "goal": "Specify and implement the FIR/accelerator extension"},
     "dse": {"folder": "11-dse", "mode": "guided", "goal": "Real Wally divider sweep and controlled performance/Pareto analysis"},
+    "boot": {"folder": "12-boot", "mode": "guided", "goal": "Explicit optional QEMU/OpenSBI handoff and Linux userspace boot"},
+    "vector": {"folder": "13-vector", "mode": "guided", "goal": "Checked explicit RVV dot product/masked stores at three VLEN values in QEMU"},
+    "security": {"folder": "14-security", "mode": "guided", "goal": "Explicit PMP, real DMA, debug admission, cache observations and bounded formal checks"},
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"

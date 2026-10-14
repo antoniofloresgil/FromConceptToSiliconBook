@@ -543,3 +543,32 @@ The official OpenROAD documentation is the command reference for the installed r
 ### A verification plan for the direct flow
 
 Before each implementation stage, apply @sec-verification-methodology to identify its inputs and acceptance reports. The direct accumulator flow needs independently checked RTL, an identified synthesized netlist, reviewed constraints and current physical reports. Its generic logical checks do not automatically establish equivalence; routed timing does not establish all foundry physical/electrical checks. Inspect top/corner/mode coverage, unconstrained paths and black-box macros, and re-run affected checks after repair. Missing checks remain explicit in the dossier defined in @sec-physical-validation.
+
+<!-- chapter-review:openroad -->
+
+## Key ideas {#review-openroad-ideas .unnumbered .unlisted}
+
+- Physical implementation must satisfy constraints across placement, clocks and routing.
+- Direct tool scripting and a maintained flow provide different levels of orchestration.
+
+## What you should now be able to explain {#review-openroad-explain .unnumbered .unlisted}
+
+Explain the accumulator checkpoints and why setup, hold and electrical-limit repairs must be rechecked together.
+
+## Common mistakes {#review-openroad-mistakes .unnumbered .unlisted}
+
+Treating a completed script as timing closure; assuming the accumulator flow supplies Wally memory macros and SoC collateral.
+
+## Try it yourself {#review-openroad-try .unnumbered .unlisted}
+
+Inspect the existing post-route accumulator report. Explain one path using its clock relation, cell arcs and route contribution.
+
+## Where this appears in Wally {#review-openroad-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Use [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) to define a proposed core boundary and [src/cache/cacheway.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/cache/cacheway.sv) to identify memory obligations. The executed physical example remains the accumulator.
+:::
+
+## Further reading {#review-openroad-reading .unnumbered .unlisted}
+
+Revisit the [VLSI fundamentals chapter](vlsi-design.qmd) and @sec-physical-validation. Follow the chapter sources [@openroadProject; @openroadApplication].

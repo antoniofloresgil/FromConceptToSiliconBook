@@ -242,3 +242,32 @@ Do not place a USB/JTAG access procedure inside a build script that is also used
 6. Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstream hash, DONE state and observed LEDs.
 
 The following chapter applies this complete flow to CORE-V Wally. It identifies what the open Nexys Video configuration implements, how LiteDRAM replaces closed Vivado MIG IP, and which hardware claims are currently supported by evidence.
+
+<!-- chapter-review:nextpnr-timing -->
+
+## Key ideas {#review-nextpnr-timing-ideas .unnumbered .unlisted}
+
+- Placement, routing and timing connect a netlist to a selected FPGA device.
+- A bitstream, successful programming and validated board behavior are distinct checkpoints.
+
+## What you should now be able to explain {#review-nextpnr-timing-explain .unnumbered .unlisted}
+
+Explain how constraints and device data affect the physical result, then distinguish temporary JTAG loading from persistent configuration.
+
+## Common mistakes {#review-nextpnr-timing-mistakes .unnumbered .unlisted}
+
+Using constraints for another board/die; treating bitstream generation as evidence that DDR or peripherals work.
+
+## Try it yourself {#review-nextpnr-timing-try .unnumbered .unlisted}
+
+Review one existing implementation report against its pin/clock constraints. List the board observations still needed before claiming a working system.
+
+## Where this appears in Wally {#review-nextpnr-timing-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Compare [fpga/constraints/opensource-NexysVideo.xdc](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/constraints/opensource-NexysVideo.xdc) with [fpga/src/fpgaOpenSource.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/src/fpgaOpenSource.sv). Their clock/pin contract links the generic physical-flow steps to this board integration.
+:::
+
+## Further reading {#review-nextpnr-timing-reading .unnumbered .unlisted}
+
+Continue with the [Wally FPGA chapter](fpga-soc.qmd) and @sec-clocking-timing. Follow the chapter sources [@nextpnrRepository; @projectXray].

@@ -396,8 +396,8 @@
   author = {{RISC-V International}},
   title = {RISC-V Vector Extension},
   year = {2026},
-  url = {https://docs.riscv.org/reference/isa/extensions/vector/_attachments/riscv-v-spec.pdf},
-  note = {Accessed 2026-10-13}
+  url = {https://docs.riscv.org/reference/isa/v20260120/unpriv/v-st-ext.html},
+  note = {Ratified V extension version 1.0; accessed 2026-10-14}
 }
 
 @misc{riscvIsaNaming,
@@ -859,6 +859,233 @@
   title = {XS-GEM5 Architecture Guide},
   url = {https://github.com/OpenXiangShan/GEM5/blob/xs-dev/ARCHITECTURE.md},
   note = {Accessed 2026-10-14}
+}
+
+@misc{bootSbiAbi,
+  author = {{RISC-V International}},
+  title = {Supervisor Binary Interface: Binary Encoding},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/binary-encoding.adoc},
+  note = {Accessed 2026-10-14; modern ecall ABI and error convention}
+}
+@misc{bootSbiBase,
+  author = {{RISC-V International}},
+  title = {SBI Base Extension},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-base.adoc},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootSbiTime,
+  author = {{RISC-V International}},
+  title = {SBI Timer Extension},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-time.adoc},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootSbiHsm,
+  author = {{RISC-V International}},
+  title = {SBI Hart State Management Extension},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-hsm.adoc},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootSbiReset,
+  author = {{RISC-V International}},
+  title = {SBI System Reset Extension},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootSbiConsole,
+  author = {{RISC-V International}},
+  title = {SBI Debug Console Extension},
+  url = {https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc},
+  note = {Accessed 2026-10-14; extension availability must be probed}
+}
+@misc{bootLinuxContract,
+  author = {Alexandre Ghiti},
+  title = {RISC-V Kernel Boot Requirements and Constraints},
+  url = {https://docs.kernel.org/arch/riscv/boot.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootDeviceTree,
+  author = {{Devicetree Specification Contributors}},
+  title = {Devicetree Specification: Device Tree Basics},
+  url = {https://devicetree-specification.readthedocs.io/en/stable/devicetree-basics.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootOpenSbiFirmware,
+  author = {{OpenSBI Contributors}},
+  title = {OpenSBI Platform Firmwares},
+  url = {https://github.com/riscv-software-src/opensbi/blob/master/docs/firmware/fw.md},
+  note = {Accessed 2026-10-14; dynamic, jump and payload firmware types}
+}
+@misc{bootQemuVirt,
+  author = {{QEMU Contributors}},
+  title = {RISC-V virt Generic Virtual Platform},
+  url = {https://www.qemu.org/docs/master/system/riscv/virt.html},
+  note = {Accessed 2026-10-14; checked experiment records the installed QEMU version}
+}
+@misc{bootUBoot,
+  author = {{U-Boot Contributors}},
+  title = {RISC-V Architecture Support},
+  url = {https://docs.u-boot.org/en/latest/arch/riscv.html},
+  note = {Accessed 2026-10-14; machine-mode and supervisor-mode configurations}
+}
+@misc{bootLinuxDma,
+  author = {{Linux Kernel Contributors}},
+  title = {Dynamic DMA Mapping Guide},
+  url = {https://www.kernel.org/doc/html/latest/core-api/dma-api-howto.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootLinuxPlatformDrivers,
+  author = {{Linux Kernel Contributors}},
+  title = {Platform Devices and Drivers},
+  url = {https://docs.kernel.org/driver-api/driver-model/platform.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootLinuxConsole,
+  author = {{Linux Kernel Contributors}},
+  title = {Linux Serial Console},
+  url = {https://docs.kernel.org/admin-guide/serial-console.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootEarlyUserspace,
+  author = {{Linux Kernel Contributors}},
+  title = {Early Userspace Support},
+  url = {https://docs.kernel.org/driver-api/early-userspace/early_userspace_support.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootInitrd,
+  author = {Werner Almesberger and Hans Lermen},
+  title = {Using the Initial RAM Disk},
+  url = {https://docs.kernel.org/admin-guide/initrd.html},
+  note = {Accessed 2026-10-14; compressed cpio images distinguished from legacy block initrd}
+}
+@misc{bootBuildroot,
+  author = {{Buildroot Contributors}},
+  title = {The Buildroot User Manual},
+  url = {https://buildroot.org/downloads/manual/manual.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{bootInterruptBindings,
+  author = {{Linux Kernel Contributors}},
+  title = {RISC-V APLIC Device Tree Binding},
+  url = {https://github.com/torvalds/linux/blob/v6.12/Documentation/devicetree/bindings/interrupt-controller/riscv,aplic.yaml},
+  note = {Linux v6.12; direct and MSI delivery require matching platform descriptions}
+}
+
+@misc{rvvLlvmUsage,
+  author = {{LLVM Contributors}},
+  title = {User Guide for the RISC-V Target},
+  url = {https://llvm.org/docs/RISCVUsage.html},
+  note = {Accessed 2026-10-14; the checked assembler is Clang 18.1.3}
+}
+@misc{rvvGccIntrinsics,
+  author = {{GCC Contributors}},
+  title = {RISC-V Vector Intrinsics},
+  url = {https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Vector-Intrinsics.html},
+  note = {Accessed 2026-10-14; API support must match the installed compiler}
+}
+@misc{rvvIntrinsicSpec,
+  author = {{RISC-V International}},
+  title = {RISC-V Vector C Intrinsic Specification},
+  url = {https://github.com/riscv-non-isa/riscv-rvv-intrinsic-doc/releases/tag/v1.0-ratified},
+  note = {Ratified API version 1.0; distinct from the architectural instruction version}
+}
+@misc{rvvCallingConvention,
+  author = {{RISC-V psABI Contributors}},
+  title = {RISC-V Calling Conventions: Vector Register Convention},
+  url = {https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-cc.adoc},
+  note = {Accessed 2026-10-14; standard convention distinguished from the vector variant}
+}
+@misc{rvvLinuxState,
+  author = {{Linux Kernel Contributors}},
+  title = {Vector Extension Support for RISC-V Linux},
+  url = {https://docs.kernel.org/arch/riscv/vector.html},
+  note = {Accessed 2026-10-14; process policy and vector context support}
+}
+@misc{rvvQemuCpu,
+  author = {{QEMU Contributors}},
+  title = {RISC-V CPU Configuration: QEMU 8.2.2},
+  url = {https://github.com/qemu/qemu/blob/v8.2.2/target/riscv/cpu.c},
+  note = {Version-matched vlen, elen and vector specification properties}
+}
+@misc{rvvQemuPlatform,
+  author = {{QEMU Contributors}},
+  title = {RISC-V virt Platform: QEMU 8.2.2},
+  url = {https://github.com/qemu/qemu/blob/v8.2.2/hw/riscv/virt.c},
+  note = {Version-matched memory map and test-device completion mechanism}
+}
+
+@misc{securityOtOverview,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {OpenTitan Security Specifications: Introduction},
+  url = {https://opentitan.org/book/doc/security/},
+  note = {Accessed 2026-10-14; reference architecture, not certification of the teaching SoC}
+}
+@misc{securityNistFirmware,
+  author = {{National Institute of Standards and Technology}},
+  title = {SP 800-193: Platform Firmware Resiliency Guidelines},
+  year = {2018},
+  url = {https://csrc.nist.gov/pubs/sp/800/193/final},
+  note = {Protection, detection and recovery; accessed 2026-10-14}
+}
+@misc{securitySmepmp,
+  author = {{RISC-V International}},
+  title = {Smepmp: PMP Enhancements for Machine-Mode Access and Execution Prevention},
+  url = {https://docs.riscv.org/reference/isa/v20260120/priv/smepmp.html},
+  note = {Extension version 1.0; accessed 2026-10-14}
+}
+@misc{securityOtBoot,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {OpenTitan Secure Boot Overview},
+  url = {https://opentitan.org/book/doc/security/specs/secure_boot/},
+  note = {High-level design overview, page status Pre-RFC; accessed 2026-10-14}
+}
+@misc{securityOtLifecycle,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {Life Cycle Controller: Theory of Operation},
+  url = {https://opentitan.org/book/hw/ip/lc_ctrl/doc/theory_of_operation.html},
+  note = {Accessed 2026-10-14; richer hardware lifecycle than the teaching admission interface}
+}
+@misc{securityOtDebug,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {SoC Debug Access Control},
+  url = {https://opentitan.org/book/hw/ip/soc_dbg_ctrl/},
+  note = {Accessed 2026-10-14}
+}
+@misc{securityOtHardware,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {Secure Hardware Design Guidelines},
+  url = {https://opentitan.org/book/doc/security/implementation_guidelines/hardware/},
+  note = {Accessed 2026-10-14; fault and leakage assumptions require implementation-specific evaluation}
+}
+@misc{securityOtKeymgr,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {Key Manager: Theory of Operation},
+  url = {https://opentitan.org/book/hw/ip/keymgr/doc/theory_of_operation.html},
+  note = {Accessed 2026-10-14}
+}
+@misc{securityOtAes,
+  author = {{lowRISC and OpenTitan Contributors}},
+  title = {AES Hardware IP: Theory of Operation},
+  url = {https://opentitan.org/book/hw/ip/aes/doc/theory_of_operation.html},
+  note = {Accessed 2026-10-14; a referenced IP does not transfer its assurance to a new integration}
+}
+@inproceedings{securityFlushReload,
+  author = {Yuval Yarom and Katrina Falkner},
+  title = {FLUSH+RELOAD: A High Resolution, Low Noise, L3 Cache Side-Channel Attack},
+  booktitle = {23rd USENIX Security Symposium},
+  year = {2014},
+  url = {https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/yarom}
+}
+@misc{securitySpectre,
+  author = {Paul Kocher and Jann Horn and Anders Fogh and Daniel Genkin and Daniel Gruss and Werner Haas and Mike Hamburg and Moritz Lipp and Stefan Mangard and Thomas Prescher and Michael Schwarz and Yuval Yarom},
+  title = {Spectre Attacks: Exploiting Speculative Execution},
+  year = {2019},
+  url = {https://spectreattack.com/spectre.pdf}
+}
+@misc{securityYosysSat,
+  author = {{YosysHQ Contributors}},
+  title = {SAT Command Implementation and Help: Yosys 0.33},
+  url = {https://github.com/YosysHQ/yosys/blob/yosys-0.33/passes/sat/sat.cc},
+  note = {Version-matched bounded proof, verify and witness options}
 }
 
 @misc{reproductionDockerRun,

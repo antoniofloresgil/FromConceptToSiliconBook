@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="580" viewBox="0 0 1000 580" role="img" aria-labelledby="title desc">
+  <title id="title">Independent SoC security paths</title>
+  <desc id="desc">CPU accesses pass through MMU and PMP. DMA and debug masters require their own access controls. Trusted boot and lifecycle policy configure the controls. PMP on the CPU path does not protect against unrelated masters.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#34465d"/></marker></defs>
+  <rect width="1000" height="580" fill="white"/>
+  <g font-family="DejaVu Sans, sans-serif" fill="#20354b" text-anchor="middle">
+    <text x="500" y="32" font-size="24" font-weight="bold">Protect every path to an asset</text>
+    <g stroke="#37638c" stroke-width="2" fill="#e4eef8">
+      <rect x="40" y="70" width="920" height="85" rx="10" fill="#fff0cf"/>
+      <rect x="40" y="220" width="250" height="70" rx="10"/>
+      <rect x="375" y="220" width="250" height="70" rx="10"/>
+      <rect x="710" y="220" width="250" height="70" rx="10"/>
+      <rect x="40" y="350" width="250" height="80" rx="10" fill="#e1efdf"/>
+      <rect x="375" y="350" width="250" height="80" rx="10" fill="#e1efdf"/>
+      <rect x="710" y="350" width="250" height="80" rx="10" fill="#e1efdf"/>
+      <rect x="40" y="485" width="920" height="65" rx="10" fill="#f1f3f5"/>
+    </g>
+    <g font-size="19" font-weight="bold">
+      <text x="500" y="104">Trusted boot, lifecycle, key ownership and security policy</text>
+      <text x="165" y="260">CPU: M / S / U</text><text x="500" y="260">DMA master</text><text x="835" y="260">Debug module / SBA</text>
+      <text x="165" y="382">MMU + PMP</text><text x="500" y="382">DMA access control</text><text x="835" y="382">Debug admission</text>
+      <text x="500" y="524">Interconnect, protected RAM, firmware storage and peripherals</text>
+    </g>
+    <g font-size="15">
+      <text x="500" y="132">Policy inputs must be trusted, reset-safe and protected from unprivileged writes</text>
+      <text x="165" y="409">CPU permissions and translation</text><text x="500" y="409">Range / identity / firewall</text><text x="835" y="409">Lifecycle / auth / bus firewall</text>
+    </g>
+    <g stroke="#34465d" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+      <path d="M165 290V350"/><path d="M500 290V350"/><path d="M835 290V350"/>
+      <path d="M165 430V485"/><path d="M500 430V485"/><path d="M835 430V485"/>
+    </g>
+    <g stroke="#8b6b26" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arrow)">
+      <path d="M165 155V200H25V390H40"/>
+      <path d="M500 155V200H350V390H375"/>
+      <path d="M835 155V200H685V390H710"/>
+    </g>
+    <text x="500" y="573" font-size="14">Original architecture proposal for teaching; these controls are not all implemented in stock Wally.</text>
+  </g>
+</svg>

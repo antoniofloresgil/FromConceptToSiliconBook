@@ -114,3 +114,32 @@ The project has five review points: specification in week 2; architecture/RTL in
 The final package contains interface/register documentation, RTL and source manifest, models, tests, formal harness/results, constraints, implementation/view evidence, security/failure analyses and reproduction instructions. Record any unavailable views and their integration consequence. Strengthening IP means making these contracts and artifacts consistent and usable by another designer; physical hardening contributes additional technology-dependent views where produced.
 
 For a small team, declare responsibilities and retain individual explanations of design and verification decisions. Every student provides evidence for RA5–RA8. Assess engineering reasoning, reproducibility and defence alongside the integrated result; code volume and tool count alone do not demonstrate learning.
+
+<!-- chapter-review:intro -->
+
+## Key ideas {#review-intro-ideas .unnumbered .unlisted}
+
+- Hardware System Design connects specification, reusable RTL and platform integration.
+- Assessed work needs an identifiable student contribution and checkable evidence.
+
+## What you should now be able to explain {#review-intro-explain .unnumbered .unlisted}
+
+Explain how RA5–RA8 map to the proposed project deliverables and how autonomous preparation supports the twelve-week schedule.
+
+## Common mistakes {#review-intro-mistakes .unnumbered .unlisted}
+
+Treating an unchanged reference run as a design contribution; postponing interface and verification decisions until the final demonstration.
+
+## Try it yourself {#review-intro-try .unnumbered .unlisted}
+
+Select one course milestone and identify its requirement, your intended contribution, expected evidence and dependency on earlier work.
+
+## Where this appears in Wally {#review-intro-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The course uses [src/wally/wallypipelinedsoc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedsoc.sv) as a processor/SoC reference, with a separate teaching accelerator platform. Keep upstream behavior and student changes identifiable.
+:::
+
+## Further reading {#review-intro-reading .unnumbered .unlisted}
+
+Use the [coursework guide](appendices/hsd-coursework.qmd) and @sec-final-review.

@@ -232,3 +232,32 @@ Create stimulus representing active arithmetic, disabled accumulation and repeat
 Select a documented Wally cache geometry and compute the required storage bits and ports. Propose compatible SRAM banks, or explicitly identify the missing macro collateral. Sketch controller placement, power access and routing channels. Explain how memory latency affects the pipeline described in @sec-core-v-wally. The deliverable is an integration plan; do not claim a hardened Wally implementation without its physical evidence.
 
 The final report should connect each physical result to a design choice, name its verification boundary, and identify the next measurement needed. These practices prepare the reader for the implementation engines in @sec-openroad and the release evidence in @sec-physical-validation.
+
+<!-- chapter-review:vlsi-design -->
+
+## Key ideas {#review-vlsi-design-ideas .unnumbered .unlisted}
+
+- Circuit and interconnect properties connect RTL choices to delay, energy and robustness.
+- Characterized technology views determine the physical interpretation.
+
+## What you should now be able to explain {#review-vlsi-design-explain .unnumbered .unlisted}
+
+Explain a cell-size/load tradeoff and why an RTL memory array needs an explicit ASIC memory implementation.
+
+## Common mistakes {#review-vlsi-design-mistakes .unnumbered .unlisted}
+
+Copying textbook process numbers into another PDK; comparing PPA for designs with different behavior.
+
+## Try it yourself {#review-vlsi-design-try .unnumbered .unlisted}
+
+Use the existing library exercise to compare two drive strengths at the same slew/load. Record the preceding-stage cost as well as delay.
+
+## Where this appears in Wally {#review-vlsi-design-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The arrays and controls in [src/cache/cacheway.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/cache/cacheway.sv) and [src/cache/cache.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/cache/cache.sv) motivate the macro-aware exercise. Mapping them into a chosen ASIC technology remains physical integration work.
+:::
+
+## Further reading {#review-vlsi-design-reading .unnumbered .unlisted}
+
+Continue with @sec-openroad and @sec-physical-validation. Follow the chapter sources [@westeCmosVlsi; @skywaterPdkDocs].

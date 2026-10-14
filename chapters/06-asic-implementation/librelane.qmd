@@ -451,3 +451,32 @@ LibreLane makes the full open ASIC stack practical for repeated work: a design c
 ### Automation and verification ownership
 
 Apply @sec-verification-methodology when accepting an automated flow result. Record which configured steps actually executed, their input identities and their checker/deck/model scope. Verify consistency among the final netlist, extraction, layout and reports. A successful orchestration command does not turn disabled equivalence, macro-internal, electrical or production-test checks into passes. Flow repairs and changed views invalidate affected downstream evidence; review the final products rather than accepting a summary copied from a prior run.
+
+<!-- chapter-review:librelane -->
+
+## Key ideas {#review-librelane-ideas .unnumbered .unlisted}
+
+- Flow automation preserves dependencies, configurations and stage reports.
+- Automation does not replace technology selection or release acceptance.
+
+## What you should now be able to explain {#review-librelane-explain .unnumbered .unlisted}
+
+Explain which accumulator steps LibreLane coordinates and how a failed report differs from a completed flow.
+
+## Common mistakes {#review-librelane-mistakes .unnumbered .unlisted}
+
+Assuming default configuration fits another PDK/design; interpreting generated artifacts as a qualified tapeout.
+
+## Try it yourself {#review-librelane-try .unnumbered .unlisted}
+
+Compare the supplied accumulator configuration with the direct-flow inputs. Identify each shared constraint and technology dependency.
+
+## Where this appears in Wally {#review-librelane-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+A future flow around [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) must resolve its configured memories and interfaces. The supplied LibreLane recipe hardens the smaller accumulator, not stock Wally.
+:::
+
+## Further reading {#review-librelane-reading .unnumbered .unlisted}
+
+Review @sec-openroad and @sec-physical-validation. Follow the chapter sources [@librelaneClassic; @librelaneInstallation].

@@ -618,3 +618,32 @@ Before inserting a stage into a SoC interface, answer these questions with edge-
 8. Which environment assumptions guarantee progress?
 
 This transport contract prepares the reader to analyze memory hierarchies, interconnects and peripheral accesses in the following chapters. Instruction pipelines add architectural dependencies and recovery requirements, developed separately in the Wally chapter.
+
+<!-- chapter-review:pipelines -->
+
+## Key ideas {#review-pipelines-ideas .unnumbered .unlisted}
+
+- Buffers separate acceptance, ownership and completion.
+- Backpressure must preserve data and transaction ordering.
+
+## What you should now be able to explain {#review-pipelines-explain .unnumbered .unlisted}
+
+Explain the difference between accepting a request and completing its side effect, including what remains owned during a stall.
+
+## Common mistakes {#review-pipelines-mistakes .unnumbered .unlisted}
+
+Counting requests before acceptance; dropping payload stability or assuming reset cancels an already committed write.
+
+## Try it yourself {#review-pipelines-try .unnumbered .unlisted}
+
+Use a transport-lab stall trace to account for every accepted request and returned response. Check the conservation equation at the end.
+
+## Where this appears in Wally {#review-pipelines-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+In [src/ebu/ahbinterface.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ebu/ahbinterface.sv) and [src/ebu/buscachefsm.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ebu/buscachefsm.sv), HREADY governs AHB progress. Map the generic acceptance/stability idea onto those phases rather than rename AHB as ready/valid.
+:::
+
+## Further reading {#review-pipelines-reading .unnumbered .unlisted}
+
+Continue with @sec-buses-interrupts and @sec-memories-caches. Follow the chapter sources [@harrisRiscvSoc; @laforestHandshake].

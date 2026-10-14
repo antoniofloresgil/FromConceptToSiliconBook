@@ -293,3 +293,31 @@ Inspect `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, and `Overf
 
 Record tool versions, source revision, command, exit status, and any failing cycle. This exercise checks a small synchronous block; processor simulation adds memory models, software loading, and architectural-state checks.
 
+<!-- chapter-review:verilator -->
+
+## Key ideas {#review-verilator-ideas .unnumbered .unlisted}
+
+- Verilator turns supported RTL into an executable simulation model.
+- The C++ harness supplies stimulus, clock progression and checking.
+
+## What you should now be able to explain {#review-verilator-explain .unnumbered .unlisted}
+
+Explain one simulation iteration, including signal updates, evaluation, sampling and the scoreboard decision.
+
+## Common mistakes {#review-verilator-mistakes .unnumbered .unlisted}
+
+Treating model generation as verification; sampling before the model reflects the intended clock edge.
+
+## Try it yourself {#review-verilator-try .unnumbered .unlisted}
+
+Run the supplied accumulator example, inspect one accepted update in its trace, and relate it to the C++ reference result.
+
+## Where this appears in Wally {#review-verilator-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Compare the chapter harness with [sim/verilator/Makefile](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/sim/verilator/Makefile) and [sim/verilator/wrapper.c](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/sim/verilator/wrapper.c). Wally requires its selected configuration and full-system inputs, not just the accumulator harness.
+:::
+
+## Further reading {#review-verilator-reading .unnumbered .unlisted}
+
+Continue with the [cocotb chapter](cocotb.qmd) and @sec-verification-methodology. Follow the chapter sources [@verificationVerilator].

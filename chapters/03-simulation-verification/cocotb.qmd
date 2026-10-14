@@ -223,3 +223,31 @@ cocotb can also use Verilator, but version compatibility matters: cocotb 2.0.1 r
 
 A useful deliverable includes the RTL revision, dependency versions, test seed, simulator command, report, and a description of checked requirements. Combine these tests with assertions and architectural checks when integrating the block into a larger SoC.
 
+<!-- chapter-review:cocotb -->
+
+## Key ideas {#review-cocotb-ideas .unnumbered .unlisted}
+
+- Python stimulus and scoreboards still need a precise RTL timing contract.
+- Transactions should be checked at acceptance/completion boundaries.
+
+## What you should now be able to explain {#review-cocotb-explain .unnumbered .unlisted}
+
+Explain why waiting for a clock event and sampling settled values are separate scheduling decisions.
+
+## Common mistakes {#review-cocotb-mistakes .unnumbered .unlisted}
+
+Using arbitrary delays instead of protocol events; confusing a timeout or missing tool with a successful test.
+
+## Try it yourself {#review-cocotb-try .unnumbered .unlisted}
+
+Run the existing accumulator test. Identify its reset sequence, accepted update and scoreboard sample, then inspect the matching simulator log.
+
+## Where this appears in Wally {#review-cocotb-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+A Wally-facing test can observe the core/SoC boundaries in [src/wally/wallypipelinedsoc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedsoc.sv). The supplied cocotb accumulator is a unit example, not a complete Wally verification environment.
+:::
+
+## Further reading {#review-cocotb-reading .unnumbered .unlisted}
+
+Use @sec-verification-methodology and the [reproduction appendix](../../appendices/reproducible-labs.qmd).

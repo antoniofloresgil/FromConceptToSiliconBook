@@ -10,6 +10,9 @@ The course connects four learning outcomes: system-level specification and platf
 - [Coursework and assessment guide](appendices/hsd-coursework.qmd): P0–P5 activities, 12-week workload, review milestones and rubrics.
 - [Executable project](appendices/executable-project.qmd) and [reference source guide](labs/10-dotproduct/README.md): arithmetic IP, AXI4-Lite control, bounded AXI4 DMA and real Wally firmware.
 - [Reproduction appendix](appendices/reproducible-labs.qmd): detailed environments, external repositories and guided physical flows.
+- [Boot and software stack](chapters/04-soc-architecture/boot-software-stack.qmd): reset to Linux, with an [optional executable QEMU/OpenSBI practice](labs/12-boot/README.md).
+- [Vector processing](chapters/07-advanced-topics/vector-processing.qmd): RVV concepts and an [executable dot-product/mask practice](labs/13-vector/README.md), before choosing custom ISA or AXI/DMA acceleration.
+- [Hardware security](chapters/07-advanced-topics/hardware-security.qmd): a system threat model and [five scoped protection experiments](labs/14-security/README.md), connecting boot, CPU isolation, DMA, debug and physical risks.
 - [Final project review](summary.qmd): expected evidence, release decisions and defence questions.
 
 Read the blocks in order: Foundations; RISC-V Cores; Simulation and Verification; SoC Architecture; FPGA Implementation; ASIC Implementation; Advanced Topics. Each technical chapter separates Concepts, Implementation and Hands-on Experiments. **Checked recipes**, **adaptation templates** and **exercises** describe different levels of completeness; simulation, synthesis and physical qualification are distinct claims.

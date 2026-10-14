@@ -55,6 +55,7 @@ book:
         - chapters/04-soc-architecture/privileged-mmu.qmd
         - chapters/04-soc-architecture/buses-interrupts.qmd
         - chapters/04-soc-architecture/peripherals.qmd
+        - chapters/04-soc-architecture/boot-software-stack.qmd
     - part: "V. FPGA Implementation"
       chapters:
         - chapters/05-fpga-implementation/yosys.qmd
@@ -71,6 +72,8 @@ book:
       chapters:
         - chapters/07-advanced-topics/pmu.qmd
         - chapters/07-advanced-topics/debug.qmd
+        - chapters/07-advanced-topics/hardware-security.qmd
+        - chapters/07-advanced-topics/vector-processing.qmd
         - chapters/07-advanced-topics/accelerators-extensions.qmd
         - chapters/07-advanced-topics/architecture-exploration.qmd
     - summary.qmd

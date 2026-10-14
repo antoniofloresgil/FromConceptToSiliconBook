@@ -638,3 +638,32 @@ Separately inject interrupts or pipeline stalls around a pending cache/bus store
 ### Deliverables and interpretation
 
 Provide the memory contract, initialization procedure, geometry calculation, effective configuration, reference traces, waveform checks and synthesis reports. State whether results are functional, cycle-level or physically implemented, and keep correctness failures alongside performance data. This connects the physical storage contract to the processor behavior that depends on it.
+
+<!-- chapter-review:memories-caches -->
+
+## Key ideas {#review-memories-caches-ideas .unnumbered .unlisted}
+
+- Latency, placement and write policy determine memory-system behavior.
+- Coherency, permissions and correct data are separate obligations.
+
+## What you should now be able to explain {#review-memories-caches-explain .unnumbered .unlisted}
+
+Explain a dirty eviction/refill and why DMA completion does not by itself guarantee a CPU sees fresh cached data.
+
+## Common mistakes {#review-memories-caches-mistakes .unnumbered .unlisted}
+
+Treating a cache miss as a translation fault; comparing hit counts while ignoring memory contents and ownership.
+
+## Try it yourself {#review-memories-caches-try .unnumbered .unlisted}
+
+Trace one dirty replacement in the existing cache model. Account for writeback data, refill contents and the final observable value.
+
+## Where this appears in Wally {#review-memories-caches-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Start with [src/cache/cache.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/cache/cache.sv) and [src/cache/cachefsm.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/cache/cachefsm.sv); identify data/control ownership before following the LSU connection.
+:::
+
+## Further reading {#review-memories-caches-reading .unnumbered .unlisted}
+
+Revisit @sec-privileged-mmu and @sec-transport-pipelines. Follow the chapter sources [@harrisRiscvSoc; @riscvZifencei].

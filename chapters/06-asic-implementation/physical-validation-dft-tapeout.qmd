@@ -257,3 +257,32 @@ Implement a small controller for the March sequence over the synchronous teachin
 ### Experiment 5: prepare a Wally prototype review
 
 Choose a single-hart, internal-memory Wally configuration. Draft a pad/clock/reset plan, identify test access independent of firmware, inventory memories and macros, and prepare a first-power-on sequence. Connect each review item to evidence or missing work. An excellent report can expose an unresolved dependency; it should not hide it behind a generated GDS filename.
+
+<!-- chapter-review:physical-validation-dft-tapeout -->
+
+## Key ideas {#review-physical-validation-dft-tapeout-ideas .unnumbered .unlisted}
+
+- Physical, structural-test and manufacturing evidence answer different questions.
+- Release quality depends on consistent views, checked reports and explicit waivers.
+
+## What you should now be able to explain {#review-physical-validation-dft-tapeout-explain .unnumbered .unlisted}
+
+Explain the distinction between DRC/LVS, timing closure, test coverage and production screening.
+
+## Common mistakes {#review-physical-validation-dft-tapeout-mistakes .unnumbered .unlisted}
+
+Calling scan insertion ATPG effectiveness; treating routed layout or first boot as complete manufacturing qualification.
+
+## Try it yourself {#review-physical-validation-dft-tapeout-try .unnumbered .unlisted}
+
+Use the existing release checklist to classify one missing view/report. State which claim it prevents you from making.
+
+## Where this appears in Wally {#review-physical-validation-dft-tapeout-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The logical core boundary in [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) is only a starting point. Wally-specific DFT, macro views and qualified physical signoff are separate integration deliverables.
+:::
+
+## Further reading {#review-physical-validation-dft-tapeout-reading .unnumbered .unlisted}
+
+Revisit @sec-hardware-security and @sec-final-review. Follow the chapter sources [@westeCmosVlsi; @klayoutDrcGuide].

@@ -1,5 +1,9 @@
 # Accelerators and ISA Extensions {#sec-accelerators}
 
+Use @sec-vector-processing to establish a standard RVV alternative before committing to custom ISA or DMA acceleration. Its checked integer example demonstrates vector-length-independent execution; selecting hardware still requires matched numerical contracts and measured system costs.
+
+The threat model and independent enforcement obligations for a bus master are synthesized in @sec-hardware-security; retain this chapter's descriptor, ownership and DMA integration mechanics when evaluating that system policy.
+
 ## Why Accelerate?
 
 An accelerator is worthwhile only when it improves the complete workload. Replacing ten arithmetic instructions by one fast hardware operation is not useful if moving operands, starting the unit, waiting for it and copying the result cost more than the saved execution. The starting point is therefore a measured software profile, a reference implementation and a clear contract for correctness.
@@ -462,3 +466,32 @@ The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-pro
 ### Verification obligations for a changed accelerator
 
 Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.
+
+<!-- chapter-review:accelerators-extensions -->
+
+## Key ideas {#review-accelerators-extensions-ideas .unnumbered .unlisted}
+
+- Acceleration must improve the complete workload under a matched contract.
+- Standard ISA, custom instructions and DMA engines have different integration costs.
+
+## What you should now be able to explain {#review-accelerators-extensions-explain .unnumbered .unlisted}
+
+Explain a job from control acceptance to memory-visible result and distinguish arithmetic width from transferred word layout.
+
+## Common mistakes {#review-accelerators-extensions-mistakes .unnumbered .unlisted}
+
+Reporting compute-only speedup as job speedup; overlooking DMA ownership, descriptor validation or interrupt completion.
+
+## Try it yourself {#review-accelerators-extensions-try .unnumbered .unlisted}
+
+Use the reference project log to follow one accepted descriptor and its transactions. Account for setup, transfer, computation and completion.
+
+## Where this appears in Wally {#review-accelerators-extensions-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The core SoC boundary is [src/wally/wallypipelinedsoc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedsoc.sv). The course AHB-to-AXI control adapter and DMA engine are additional project RTL, rather than a stock Wally accelerator.
+:::
+
+## Further reading {#review-accelerators-extensions-reading .unnumbered .unlisted}
+
+Revisit @sec-vector-processing and @sec-hardware-security. Follow the chapter sources [@riscvVectorSpec; @riscvIsaNaming].

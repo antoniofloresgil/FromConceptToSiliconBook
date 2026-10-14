@@ -218,3 +218,32 @@ Do not translate FPGA LUT counts into ASIC area or power. The value of the FPGA 
 5. Deliberately introduce an incomplete combinational assignment in an isolated exercise. Observe the latch warning, fix the RTL and record the corrected report.
 
 The next chapter takes the JSON netlist and constraints through packing, placement, routing, timing analysis, FASM/bitstream generation and physical programming.
+
+<!-- chapter-review:yosys -->
+
+## Key ideas {#review-yosys-ideas .unnumbered .unlisted}
+
+- Synthesis maps an elaborated RTL configuration into technology-specific structures.
+- A mapped netlist is an implementation checkpoint, not a timing or board result.
+
+## What you should now be able to explain {#review-yosys-explain .unnumbered .unlisted}
+
+Explain how parameters and inferred memories affect the netlist, and why behavioral correctness must survive mapping.
+
+## Common mistakes {#review-yosys-mistakes .unnumbered .unlisted}
+
+Synthesizing the wrong top/configuration; interpreting synthesis success as a validated FPGA bitstream.
+
+## Try it yourself {#review-yosys-try .unnumbered .unlisted}
+
+Inspect the existing synthesis report for the accumulator. Account for storage, arithmetic and any unexpected latch or resource inference.
+
+## Where this appears in Wally {#review-yosys-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The open Wally build starts from [fpga/generator/build-opensource.sh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/generator/build-opensource.sh) and the selected [fpga/src/fpgaOpenSource.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/src/fpgaOpenSource.sv) wrapper. Preserve generated memory/controller inputs with the synthesis configuration.
+:::
+
+## Further reading {#review-yosys-reading .unnumbered .unlisted}
+
+Continue with the [place-and-route chapter](nextpnr-timing.qmd) and @sec-clocking-timing. Follow the chapter sources [@yosysDocumentation; @yosysSynthXilinx].

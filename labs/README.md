@@ -44,6 +44,9 @@ Windows mounts use Windows access controls; do not paste POSIX `id` expressions 
 | `dotproduct-wally` | Real pinned Wally core and RV32 firmware | External clone required; polling, DMA, interrupt and cycle measurements | [10](10-dotproduct/README.md) |
 | `mmu` | Complete RV32/Sv32 assembly test | Separate Spike run and guided Wally translation/fault trace | [09](09-privileged-mmu/README.md) |
 | `dse` | Real Wally divider sweep; illustrative analysis | Checked explicit script with external clone; outside `run all` | [11](11-dse/README.md) |
+| `boot` | QEMU/OpenSBI supervisor ELF and Linux PID 1 source | Explicit optional boot container; Wally porting is guided, outside `run all` | [12](12-boot/README.md) |
+| `vector` | RVV dot product and masked stores | Checked explicit QEMU script, one ELF at VLEN 128/256/512; no timing claim, outside `run all` | [13](13-vector/README.md) |
+| `security` | PMP, real DMA, debug guard, cache-channel model and formal property | Explicit two-environment practice; scope/assumptions recorded, outside `run all` | [14](14-security/README.md) |
 
 ## Commands
 

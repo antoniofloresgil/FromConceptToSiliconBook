@@ -368,3 +368,31 @@ Before opening the full pipeline, identify instruction inputs, register-file por
 
 Keep a record of source revision, configuration, reset/memory assumptions, expected effects and measured results. This establishes the basis for later verification, FPGA synthesis, ASIC implementation and architectural exploration.
 
+<!-- chapter-review:microarchitecture -->
+
+## Key ideas {#review-microarchitecture-ideas .unnumbered .unlisted}
+
+- Datapaths and control jointly implement an architectural operation.
+- Latency, throughput and resource sharing answer different design questions.
+
+## What you should now be able to explain {#review-microarchitecture-explain .unnumbered .unlisted}
+
+Explain the iterative product state transitions and distinguish an operation latency from the clock period of its feedback path.
+
+## Common mistakes {#review-microarchitecture-mistakes .unnumbered .unlisted}
+
+Equating fewer cycles with a faster implementation; adding a pipeline register without preserving dependencies or interface behavior.
+
+## Try it yourself {#review-microarchitecture-try .unnumbered .unlisted}
+
+Trace one iterative multiplication from acceptance to completion. Count updates and identify the critical feedback operation using the supplied waveform.
+
+## Where this appears in Wally {#review-microarchitecture-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Inspect the integer datapath in [src/ieu/ieu.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ieu/ieu.sv) and pipeline control in [src/hazard/hazard.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/hazard/hazard.sv). Relate their responsibilities to the smaller teaching modules.
+:::
+
+## Further reading {#review-microarchitecture-reading .unnumbered .unlisted}
+
+Continue with @sec-core-v-wally and @sec-clocking-timing. Follow the chapter sources [@harrisRiscvSoc].

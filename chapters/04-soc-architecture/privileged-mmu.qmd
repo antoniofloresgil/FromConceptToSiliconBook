@@ -1,5 +1,7 @@
 # Privileged Architecture and the MMU {#sec-privileged-mmu}
 
+Use @sec-hardware-security for the system threat model and composition of CPU isolation with independent DMA/debug access controls; the architectural PMP/MMU mechanisms remain developed in this chapter.
+
 ## Concepts
 
 The simplified processor in @sec-core-v-wally executes instructions without the privileged machinery of a complete Wally core. The buses chapter introduces machine-mode interrupts, while the memory chapter introduces translation and protection where they interact with caches. This chapter completes the connection: who may execute an operation, how virtual addresses become physical addresses, and how a rejected operation transfers control to privileged software.
@@ -284,3 +286,32 @@ Use the pinned full `rv32gc` configuration with the matching established harness
 Trace `SATP_REGW`, `PrivilegeModeW`, `Translate`, ITLB/DTLB miss/write signals, `WalkerState`, `HPTWReadAdr`, `SelHPTW`, `HPTWStall`, memory acceptance/completion and trap state. Identify the two table reads, the resumed data access and the denied store. Add waits on the physical memory path and show that the faulting store never updates the shared data page.
 
 The report must separate the checked Spike architectural behavior from newly collected Wally RTL evidence. A correct address calculation, a reference-model pass and a precise cycle-level implementation are three related milestones. Together they explain the privileged foundation needed before studying operating-system boot or application-level isolation.
+
+<!-- chapter-review:privileged-mmu -->
+
+## Key ideas {#review-privileged-mmu-ideas .unnumbered .unlisted}
+
+- Privilege, translation and physical protection compose at an access boundary.
+- A denied access needs precise fault evidence and no forbidden side effect.
+
+## What you should now be able to explain {#review-privileged-mmu-explain .unnumbered .unlisted}
+
+Explain a page fault versus an access fault, and why a permissive PTE cannot override PMP denial.
+
+## Common mistakes {#review-privileged-mmu-mistakes .unnumbered .unlisted}
+
+Assuming CPU PMP constrains every bus master; treating the example handler as a complete security monitor.
+
+## Try it yourself {#review-privileged-mmu-try .unnumbered .unlisted}
+
+Use the supplied Sv32 test to calculate one translated address and its faulting counterpart. Compare the expected cause and final signature.
+
+## Where this appears in Wally {#review-privileged-mmu-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Follow physical permission checking in [src/mmu/pmpchecker.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/mmu/pmpchecker.sv) and CSR policy in [src/privileged/csrm.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/privileged/csrm.sv). Preserve the selected core configuration when interpreting faults.
+:::
+
+## Further reading {#review-privileged-mmu-reading .unnumbered .unlisted}
+
+Continue with @sec-boot-stack and @sec-hardware-security. Follow the chapter sources [@harrisRiscvSoc; @riscvPrivilegedSpec].

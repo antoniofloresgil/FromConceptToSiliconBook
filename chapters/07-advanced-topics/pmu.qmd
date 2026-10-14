@@ -268,3 +268,32 @@ The result is a PMU that is useful at both stages: rich internal evidence during
 ### Verify events separately from architectural correctness
 
 The performance methodology in @sec-verification-methodology requires defined event semantics, counter width/overflow, inhibition, privilege access and measurement boundaries. Use a short workload with independently predictable events, including stalls/flushes, and check whether speculative work or retired work is counted. Match configuration and start/stop windows when comparing variants. Spike/Sail numerical agreement does not establish Wally cycle/cache/predictor counts, and simulation-only observation does not prove that synthesized hardware exposes the same PMU interface.
+
+<!-- chapter-review:pmu -->
+
+## Key ideas {#review-pmu-ideas .unnumbered .unlisted}
+
+- Performance counters need specified events, control policy and validated measurements.
+- Simulation observation and synthesized counter accessibility are separate evidence.
+
+## What you should now be able to explain {#review-pmu-explain .unnumbered .unlisted}
+
+Explain one counted event, its observation/retirement point and the region of interest used for comparison.
+
+## Common mistakes {#review-pmu-mistakes .unnumbered .unlisted}
+
+Assuming every visible simulation counter survives synthesis; interpreting an unvalidated event count as a bottleneck explanation.
+
+## Try it yourself {#review-pmu-try .unnumbered .unlisted}
+
+Select a short chapter workload and predict its retired-instruction/event count before comparing the available observations.
+
+## Where this appears in Wally {#review-pmu-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Inspect counter CSR implementation in [src/privileged/csrc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/privileged/csrc.sv) and the selected [config/rv32gc/config.vh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/config/rv32gc/config.vh). Verify the build/selector behavior before claiming FPGA visibility.
+:::
+
+## Further reading {#review-pmu-reading .unnumbered .unlisted}
+
+Continue with @sec-architecture-exploration and @sec-verification-methodology. Follow the chapter sources [@riscvPrivilegedSpec; @riscvSscofpmf].

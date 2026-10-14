@@ -89,3 +89,32 @@ Repeat after changing only the clock period or the target utilization. Compare a
 For a real shuttle submission, begin with the currently published rules, schedule and pre-check process of the chosen provider. Verify licensing for all included IP, especially SRAM macros, pad cells and third-party RTL. Integrate the provider's required top-level harness and pad ring, run the prescribed pre-checks in a clean environment, and submit only the exact deliverables requested for that shuttle.
 
 After acceptance, the work continues: package selection, test board, firmware, measurement plan, production test and a plan for errata. Fabrication validates the physical implementation; it does not validate the product requirements. Keeping RTL, testbenches, flow inputs and silicon measurements together makes that learning cycle useful for the next revision.
+
+<!-- chapter-review:rtl-to-gdsii -->
+
+## Key ideas {#review-rtl-to-gdsii-ideas .unnumbered .unlisted}
+
+- RTL-to-GDSII is a chain of representations with explicit validation boundaries.
+- A manufacturable release needs more than a final layout file.
+
+## What you should now be able to explain {#review-rtl-to-gdsii-explain .unnumbered .unlisted}
+
+Explain which inputs each physical stage consumes and what checks justify handing its outputs to the next stage.
+
+## Common mistakes {#review-rtl-to-gdsii-mistakes .unnumbered .unlisted}
+
+Equating open PDK availability with automatic fabrication access; calling an unqualified GDS file manufacturing-ready.
+
+## Try it yourself {#review-rtl-to-gdsii-try .unnumbered .unlisted}
+
+Follow the chapter flow diagram for the accumulator and pair each output with its acceptance report and missing release collateral.
+
+## Where this appears in Wally {#review-rtl-to-gdsii-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The configured [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) defines a possible RTL input boundary. The chapter flow does not supply a hardened complete Wally chip or manufacturing qualification.
+:::
+
+## Further reading {#review-rtl-to-gdsii-reading .unnumbered .unlisted}
+
+Review @sec-librelane and @sec-physical-validation. Follow the chapter sources [@skywaterPdk; @googleSkywaterMpw].

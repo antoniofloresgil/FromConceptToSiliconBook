@@ -330,3 +330,31 @@ Use the reference-model chapter's harness to run the demonstration. Compare fina
 
 Matching one signature is useful evidence, not exhaustive ISA verification. Add tests for operand aliasing, `rd=x0`, sign boundaries, taken/untaken branches and instruction legality. Carry the resulting instruction/effect table into the microarchitecture chapter and the later Wally study.
 
+<!-- chapter-review:risc-v-isa -->
+
+## Key ideas {#review-risc-v-isa-ideas .unnumbered .unlisted}
+
+- The ISA specifies observable behavior; the microarchitecture chooses how to deliver it.
+- Operand interpretation, immediate encoding and the ABI belong to distinct contracts.
+
+## What you should now be able to explain {#review-risc-v-isa-explain .unnumbered .unlisted}
+
+Explain one instruction from encoding to architectural result, and distinguish an ISA requirement from a calling-convention rule.
+
+## Common mistakes {#review-risc-v-isa-mistakes .unnumbered .unlisted}
+
+Confusing signed interpretation with stored bits; treating every RISC-V core as having the same extensions and platform services.
+
+## Try it yourself {#review-risc-v-isa-try .unnumbered .unlisted}
+
+Decode one load and one branch from the chapter. Check their immediates with the supplied ISA examples and annotate the expected register/PC changes.
+
+## Where this appears in Wally {#review-risc-v-isa-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Follow decoded controls in [src/ieu/controller.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ieu/controller.sv) and their use in [src/ieu/ieu.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/ieu/ieu.sv). Compare the selected extension configuration with the instruction you traced.
+:::
+
+## Further reading {#review-risc-v-isa-reading .unnumbered .unlisted}
+
+Continue with @sec-microarchitecture and @sec-privileged-mmu. Follow the chapter sources [@harrisRiscvSoc; @riscvUnprivilegedSpec].

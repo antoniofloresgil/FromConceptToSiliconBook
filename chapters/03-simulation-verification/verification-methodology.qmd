@@ -212,3 +212,32 @@ python labs/verification/evidence.py \
 In PowerShell, put the command on one line or use its backtick continuation. The tool maps the supplied plan to actual runner records, verifies source/artifact hashes and writes scoped requirement statuses. It leaves physical, equivalence and manufacturing obligations unexecuted. A missing/stale required record fails the command; it cannot create new verification evidence by relabelling an unrun check. Its report-level mapping does not replace measured functional coverage.
 
 For P4/P5, add separately produced equivalence or physical records to a reviewed plan/evidence package; do not edit generated statuses to invent passes. Submit a summary of completed, failed and unresolved obligations, one reproducible failure or counterexample, and the proposed release decision. Explain what evidence would change that decision.
+
+<!-- chapter-review:verification-methodology -->
+
+## Key ideas {#review-verification-methodology-ideas .unnumbered .unlisted}
+
+- Requirements determine checkers, observations and acceptance evidence.
+- Functional, formal, implementation and physical results have distinct scopes.
+
+## What you should now be able to explain {#review-verification-methodology-explain .unnumbered .unlisted}
+
+Explain what an independent oracle checks, how assumptions limit a proof, and why positive witnesses help detect vacuity.
+
+## Common mistakes {#review-verification-methodology-mistakes .unnumbered .unlisted}
+
+Reporting tool completion as requirement coverage; weakening a checker until an incorrect design passes.
+
+## Try it yourself {#review-verification-methodology-try .unnumbered .unlisted}
+
+Select one project requirement and follow it through the existing verification plan, checker, report and unresolved integration obligations.
+
+## Where this appears in Wally {#review-verification-methodology-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+The core boundary in [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) anchors architectural/system observations. The course accelerator harness supplies additional checks; its coverage is not stock Wally qualification.
+:::
+
+## Further reading {#review-verification-methodology-reading .unnumbered .unlisted}
+
+Use @sec-final-review and the [executable project appendix](../../appendices/executable-project.qmd). Follow the chapter sources [@harrisRiscvSoc; @westeCmosVlsi].

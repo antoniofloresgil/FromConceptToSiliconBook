@@ -202,3 +202,31 @@ Change one expected sum or comparison deliberately and confirm that the program 
 
 Finally, run the program on a configured RTL core and compare the defined signature. Preserve the executable, disassembly, configuration, model revisions, exit statuses, and logs. This turns a pair of simulator demonstrations into a reproducible architectural check while leaving pipeline timing and physical implementation to their appropriate verification flows.
 
+<!-- chapter-review:spike-sail -->
+
+## Key ideas {#review-spike-sail-ideas .unnumbered .unlisted}
+
+- An ISA reference checks architectural behavior rather than RTL cycle timing.
+- Model version, ISA configuration and execution environment must agree.
+
+## What you should now be able to explain {#review-spike-sail-explain .unnumbered .unlisted}
+
+Explain the signature comparison boundary and what a reference-model pass cannot establish about caches, timing or FPGA behavior.
+
+## Common mistakes {#review-spike-sail-mistakes .unnumbered .unlisted}
+
+Comparing incompatible ISA/platform configurations; interpreting simulator execution time as target processor performance.
+
+## Try it yourself {#review-spike-sail-try .unnumbered .unlisted}
+
+Follow the supplied signature example from ELF loading to final comparison. Name the first architectural observation you would compare with RTL.
+
+## Where this appears in Wally {#review-spike-sail-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Use [config/rv32gc/config.vh](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/config/rv32gc/config.vh) to select matching ISA features and [src/wally/wallypipelinedcore.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedcore.sv) to locate the RTL core boundary. Reference agreement does not verify every internal event.
+:::
+
+## Further reading {#review-spike-sail-reading .unnumbered .unlisted}
+
+Revisit @sec-privileged-mmu and @sec-verification-methodology. Follow the chapter sources [@harrisRiscvSoc].

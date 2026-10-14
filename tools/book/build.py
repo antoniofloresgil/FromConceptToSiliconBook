@@ -101,6 +101,8 @@ def main():
                                   for p in sorted(output.rglob('*')) if p.is_file()}}
         packages = Path('/opt/book-packages.tsv')
         manifest['packages'] = packages.read_text() if packages.exists() else 'not-recorded'
+        extra_tex = Path('/opt/book-extra-tex.txt')
+        manifest['extra_tex_packages'] = extra_tex.read_text() if extra_tex.exists() else 'not-recorded'
         (output / 'build-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
         # Keep the previous release intact on a render/validation failure.
         release = ROOT / '_book' / 'release'

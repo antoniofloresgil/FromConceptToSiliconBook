@@ -438,3 +438,32 @@ The SystemVerilog chapter defines clocked RTL semantics; this chapter supplies t
 ### Verification of clock and reset contracts
 
 Apply the domain and timing methodology in @sec-verification-methodology. Maintain a clock/reset/crossing inventory, separate CDC structure from protocol correctness, and identify independent reset sequencing as an RDC obligation. Vary clock phases/ratios in digital tests, check pulse capture and reset release, and review synchronization placement and timing constraints. Those tests do not measure analog metastability or MTBF. Static timing needs actual min/max paths, generated clocks, exceptions and operating corners; an illustrative period is an input requirement rather than an achieved frequency.
+
+<!-- chapter-review:clocking-timing -->
+
+## Key ideas {#review-clocking-timing-ideas .unnumbered .unlisted}
+
+- A clock/reset contract is part of the hardware interface.
+- Digital behavior, CDC correctness and routed timing require different evidence.
+
+## What you should now be able to explain {#review-clocking-timing-explain .unnumbered .unlisted}
+
+Explain setup versus hold, clock enables versus generated clocks, and why reset release is reviewed per clock domain.
+
+## Common mistakes {#review-clocking-timing-mistakes .unnumbered .unlisted}
+
+Using a timing exception to hide an unexplained path; assuming simulation tests measure metastability or achieved frequency.
+
+## Try it yourself {#review-clocking-timing-try .unnumbered .unlisted}
+
+Review the existing accumulator constraints at two periods. Identify each clock and explain every unconstrained endpoint before comparing slack.
+
+## Where this appears in Wally {#review-clocking-timing-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Compare the board clock/reset wiring in [fpga/src/fpgaOpenSource.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/fpga/src/fpgaOpenSource.sv) with the reusable [src/generic/flop/synchronizer.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/generic/flop/synchronizer.sv). Preserve the selected wrapper and domain assumptions.
+:::
+
+## Further reading {#review-clocking-timing-reading .unnumbered .unlisted}
+
+Revisit the [FPGA timing chapter](../05-fpga-implementation/nextpnr-timing.qmd) and @sec-openroad. Follow the chapter sources [@openroadApplication].

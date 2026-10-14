@@ -149,3 +149,32 @@ Finish with a requirement-level closure table. Use PASS only when the named chec
 A release decision should state the intended consumer and supported boundary. For example, a simulation-qualified uncached single-clock accelerator can be useful and reusable while still needing clock-domain analysis, physical timing/DFT views or cached-system integration. Those obligations define the next engineering step. They should remain visible rather than disappearing behind a green CI badge.
 
 The final achievement is the ability to connect a specification to RTL, observe its behavior in a real processor platform, challenge the implementation with independent checks and explain the limits of the resulting IP package. That evidence is what makes the design transferable to another engineer and provides a defensible starting point for further implementation.
+
+<!-- chapter-review:summary -->
+
+## Key ideas {#review-summary-ideas .unnumbered .unlisted}
+
+- A reusable release states what was demonstrated and what remains unresolved.
+- Defence connects each design decision to requirements, evidence and limitations.
+
+## What you should now be able to explain {#review-summary-explain .unnumbered .unlisted}
+
+Explain one complete project job and justify the claims supported by your own implementation and reports.
+
+## Common mistakes {#review-summary-mistakes .unnumbered .unlisted}
+
+Combining unit, system and physical results into an undifferentiated PASS; hiding missing evidence behind a successful reference run.
+
+## Try it yourself {#review-summary-try .unnumbered .unlisted}
+
+Rehearse the existing demonstration with one allowed job and one rejected request. Trace each claim back to its recorded source/configuration.
+
+## Where this appears in Wally {#review-summary-wally .unnumbered .unlisted}
+
+::: {.callout-note title="Wally Connection" icon=false}
+Start the system explanation at [src/wally/wallypipelinedsoc.sv](https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/wally/wallypipelinedsoc.sv), then follow the course bridge and accelerator. Separate processor behavior, project additions and board/physical evidence.
+:::
+
+## Further reading {#review-summary-reading .unnumbered .unlisted}
+
+Revisit @sec-verification-methodology and the [executable project appendix](appendices/executable-project.qmd).
