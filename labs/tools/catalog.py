@@ -60,3 +60,4 @@ LABS = {
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"
+WALLY_REPOSITORY = "antoniofloresgil/cvw"

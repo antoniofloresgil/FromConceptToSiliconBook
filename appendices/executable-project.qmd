@@ -1,5 +1,7 @@
 # Executable Cross-Course Project: AXI/DMA Accelerator {#sec-executable-project}
 
+**Recipe status:** standalone and pinned Wally reference runs are checked in the stated environment. Physical/PLIC/coherence extensions are adaptation work or exercises.
+
 The project in @sec-hsd-coursework now has a runnable reference platform under `labs/10-dotproduct/`. It connects the fundamentals, simulation, SoC integration and implementation blocks around a signed dot-product IP. The standalone suite exercises the accelerator; the integration suite boots firmware on the actual pinned Wally RTL. Both use the same arithmetic, control registers and DMA engine.
 
 Download the [laboratory package](../downloads/hardware-design-labs.zip) for the complete files, or work in the book repository. The archive includes the project README, manifest, RTL, firmware, models, properties and tests. Wally is an explicitly acquired external dependency. Run every command below from the extracted package or repository root.
@@ -8,18 +10,7 @@ Download the [laboratory package](../downloads/hardware-design-labs.zip) for the
 
 The job computes an exact signed 64-bit dot product over 1–256 operand pairs. Each signed 16-bit sample occupies the low half of a 32-bit word. There are no packing, rounding or saturation conventions to infer. The destination is two little-endian words. The numerical and register contract is defined in @sec-hsd-coursework and implemented in the project README.
 
-```{mermaid}
-flowchart TD
-  FW[RV32 firmware: buffers, descriptor, reference check] --> CPU[Real Wally core: caches disabled]
-  CPU -->|AHB control access| BR[AHB-to-AXI4-Lite adapter]
-  BR -->|Independent AW/W and retained responses| CTRL[Registers and descriptor validation]
-  CTRL -->|Latched valid job| DMA[Single-outstanding AXI4 DMA engine]
-  DMA -->|Signed operands| MAC[16-bit multiply, 64-bit accumulation]
-  MAC -->|Two result words| DMA
-  DMA <-->|AXI4 single-beat reads/writes| RAM[Shared simulation RAM]
-  CPU <-->|AHB program and data accesses| RAM
-  CTRL -->|Level interrupt| CPU
-```
+![Executable accelerator platform. Original vector diagram for this book; the CPU control path, DMA memory path and completion interrupt are distinct.](../figures/executable-project.svg){#fig-executable-project fig-alt="RV32 firmware runs on Wally; AHB control accesses cross an AXI-Lite bridge to the accelerator; the AXI DMA engine and CPU share RAM, and the accelerator reports a level interrupt"}
 
 The arithmetic module `dotproduct_mac.sv` has no bus policy. `dotproduct_engine.sv` sequences reads, accumulation and result writes. `dotproduct_axi.sv` owns the AXI4-Lite endpoint, validates descriptors, locks active configuration and reports completion. `ahb_to_axil.sv` belongs to the CPU integration platform. Those boundaries make protocol and numerical changes separately reviewable.
 
@@ -32,7 +23,7 @@ The baseline is intentionally single-clock and single-outstanding. Each pair req
 Build the container described in @sec-reproducible-labs, then run:
 
 ```bash
-docker run --rm --network none \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
   --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
 ```
@@ -40,7 +31,7 @@ docker run --rm --network none \
 In PowerShell:
 
 ```powershell
-docker run --rm --network none `
+docker run --rm --network none --env HOME=/tmp `
   --mount "type=bind,source=${PWD},target=/work" `
   from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
 ```
@@ -56,14 +47,16 @@ Inspect `labs/build/report.json` and the numbered command logs in `labs/build/do
 Acquire Wally before the offline run:
 
 ```bash
-git clone https://github.com/openhwgroup/cvw.git ../cvw
-docker run --rm --network none --env WALLY_ROOT=/cvw \
+git clone https://github.com/antoniofloresgil/cvw.git ../cvw
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --env WALLY_ROOT=/cvw --env LAB_BUILD_DIR=/work/labs/build/wally-platform \
   --mount "type=bind,source=$PWD,target=/work" \
   --mount "type=bind,source=$(cd ../cvw && pwd),target=/cvw,readonly" \
   from-concept-labs:2026.10 python labs/run.py run dotproduct-wally
 ```
 
 The project README gives the equivalent PowerShell command with an absolute clone path. The runner exports revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` into its build directory; the supplied clone's checked-out branch is unchanged. License/source headers and a file-hash identity record accompany the export. No behavioral CPU substitute is used.
+
+The recipe keeps system artifacts under `labs/build/wally-platform/dotproduct-wally/` and writes `labs/build/wally-platform/report.json`, preserving `labs/build/report.json` for the unit evidence collector.
 
 The runner compiles `firmware/start.S`, `main.c` and `link.ld` with Clang/LLD for RV32IM/Zicsr. A checked ELF32 loader creates the memory image. Verilator then compiles `wallypipelinedcore`, the adapter, the IP and the shared-memory fixture. `dotproduct-wally` is an explicit external entry because a downloaded lab ZIP does not contain a Wally clone.
 
@@ -91,7 +84,7 @@ Formal control checks use a 20-cycle bound with symbolic inputs. The engine is c
 Run the deliberate defect checks separately:
 
 ```bash
-docker run --rm --network none \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
   --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
 ```

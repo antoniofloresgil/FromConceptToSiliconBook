@@ -10,4 +10,8 @@ Technical chapters develop their topics through three levels:
 2. **Implementation** connects those foundations to SystemVerilog examples and real designs, especially CORE-V Wally.
 3. **Hands-on Experiments** provides a plan for reproducible simulation, verification, synthesis, or performance experiments.
 
-The chapters develop reusable RTL, SoC interfaces, verification, FPGA implementation, ASIC implementation, and selected advanced topics. Other chapters remain outlines for further development. Experiment instructions state their prerequisites; rendering the book does not run the hardware toolchains.
+The chapters develop reusable RTL, SoC interfaces, verification, FPGA implementation, ASIC implementation, and selected advanced topics. The [final project review](summary.qmd) brings those topics together through expected evidence and individual defence questions. Experiment instructions state their prerequisites; rendering the book does not run the hardware toolchains.
+
+The [repository README](https://github.com/antoniofloresgil/FromConceptToSiliconBook#download-and-prepare-the-environment) explains downloading the source, preparing the environment, building HTML/PDF and running the reference practices. Detailed and guided recipes are collected in @sec-reproducible-labs.
+
+Original text and original illustrations are licensed under CC BY-SA 4.0; original software and executable code listings use MIT. The [licensing scope](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/LICENSE.md) and [third-party notices](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/NOTICE.md) identify exceptions, including the Harris Figure 7.13 asset. License texts and notices accompany the practice download.

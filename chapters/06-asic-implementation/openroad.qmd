@@ -78,6 +78,8 @@ Do not treat this as a one-way conveyor belt. A failed endpoint after routing ma
 
 ## Installing OpenROAD
 
+**Recipe status: adaptation template.** Choose and record the external OpenROAD/ORFS version, PDK and libraries first. Tool discovery and the mapped synthesis result described below were checked; the complete direct physical flow is not a supplied qualified run.
+
 The project currently recommends, in order, prebuilt binaries, Docker images, source builds using Bazel, and only then the legacy CMake build. CMake is deprecated for new installations. The following choices separate a quick learning environment from a development environment [@openroadInstall].
 
 ### Recommended environments
@@ -102,14 +104,14 @@ The `-no_init` option prevents a personal `~/.openroad` Tcl file from silently c
 Containers are particularly useful for a book exercise because the host needs only Docker and the sources remain mounted in a known directory. OpenROAD documents Docker as a supported installation route and recommends allocating adequate CPU and memory to the virtual machine [@openroadInstall]. A minimal pattern is:
 
 ```bash
-docker run --rm -it \
-  -v "$PWD":/work \
+docker run --rm --user "$(id -u):$(id -g)" --env HOME=/tmp \
+  --mount "type=bind,source=$PWD,target=/work" \
   -w /work \
-  <openroad-image> \
+  "$OPENROAD_IMAGE" \
   openroad -version
 ```
 
-Replace `<openroad-image>` with the current image named by the project's release documentation. Do not blindly use an old image copied from a tutorial: command availability and bundled PDK collateral evolve. On Windows PowerShell, mount the current directory with an absolute path if the shell does not expand `$PWD` as expected; in WSL2, run the same command from the Linux shell.
+Set `OPENROAD_IMAGE` to the selected image/digest and review its entry point/PATH before using this **adaptation template**. It assumes a Bash shell and an image compatible with a numeric host user. For the inspected ORFS image, source `/OpenROAD-flow-scripts/env.sh` before calling OpenROAD. Windows PowerShell requires its own mount form; use the Linux UID recipe from WSL for a Linux checkout.
 
 ### Option C: build from source with Bazel
 
@@ -193,9 +195,9 @@ Before placement, timing uses cell arcs plus estimated interconnect. After routi
 
 ## A complete direct example: hardening a SystemVerilog accumulator
 
-This worked example uses the `accumulator` module introduced in the Verilator chapter. It has a clock, reset, enable, clear, two 16-bit inputs, a 16-bit registered sum and two status outputs. It is intentionally small enough to inspect in the GUI, but it exercises sequential logic, arithmetic, control and a clock tree.
+This example uses the **implementation variant** of `accumulator`: `Clk`/`Reset`, two operands `A`/`B`, and registered/status outputs. The Verilator/cocotb variant instead has `clk`/`reset` and one `Operand`. They share a design pattern, not an interchangeable interface or testbench.
 
-The example assumes a clean working directory with these files:
+**Recipe status: adaptation template.** Create a separate workspace with the files below from the chapter listings and your selected technology inputs. `examples/openroad/` is an illustrative workspace name, not a bundled directory containing completed flow scripts:
 
 ```text
 examples/openroad/
@@ -210,7 +212,7 @@ The listing below uses `Clk` and `Reset`; the earlier simulation example uses `c
 
 ### Step 0: verify the RTL before implementation
 
-Run the unit or cocotb testbench first. Physical implementation cannot reveal that an overflow bit or reset priority has the wrong specification. Then lint/elaborate the design and ensure it has one intended top module. For this example the top module is `accumulator` and the primary clock input is `Clk`.
+From the book/package root, run the **checked** `python labs/run.py run synthesis` recipe in the teaching environment. It uses `labs/07-implementation/tb_implementation.sv` against the two-operand RTL and checks elaboration before generic synthesis. The earlier cocotb Makefile tests the one-operand simulation variant; it is not a test for this physical-flow source without adaptation. Physical implementation does not replace that functional check.
 
 The following RTL is a compact version of the example:
 

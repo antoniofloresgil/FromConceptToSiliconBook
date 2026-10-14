@@ -3,6 +3,11 @@ project:
   pre-render:
     - python labs/run.py pack
   resources:
+    - README.md
+    - LICENSE.md
+    - NOTICE.md
+    - LICENSES/CC-BY-SA-4.0.txt
+    - LICENSES/MIT.txt
     - examples/verilator/accumulator.sv
     - examples/verilator/sim_main.cpp
     - examples/reference-models/check.S
@@ -17,11 +22,13 @@ project:
     - downloads/hardware-design-labs.zip
 
 book:
+  output-file: From-Concept-to-Silicon
+  downloads: [pdf]
   site-url: https://antoniofloresgil.github.io/FromConceptToSiliconBook/
   title: "From Concept to Silicon"
   subtitle: "A Hands-On Guide to Open-Source SoC Design Using RISC-V"
   author: "Antonio Flores Gil"
-  date: "12/10/2026"
+  date: "2026-10-12"
   chapters:
     - index.qmd
     - intro.qmd
@@ -84,6 +91,7 @@ format:
       - brand
   pdf:
     documentclass: scrreprt
+    latex-auto-install: false
 
 
 

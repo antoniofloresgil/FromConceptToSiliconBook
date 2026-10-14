@@ -44,6 +44,9 @@ The methodology in @sec-verification-methodology adds physical programming, osci
 
 ## Implementation
 
+**Recipe status: adaptation template.** The board workflow depends on the external pinned Wally checkout, toolchain/database, USB permissions and actual Nexys Video. The book's RTL simulation fixtures do not execute physical programming or qualify DDR3 bring-up. Board observations and unresolved integration tasks remain exercises with explicit evidence.
+
+
 ### Repository and board target
 
 Obtain exactly the branch used in this chapter:

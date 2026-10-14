@@ -1,5 +1,7 @@
 # Executable HSD project: Wally-controlled AXI/DMA dot product
 
+**Recipe status:** the supplied reference runs are checked in the recorded teaching environment. External clone paths must be set for your machine; Linux/WSL writable mounts use the host UID/GID, while native PowerShell uses Windows access controls. Student/physical extensions require separate implementation and evidence.
+
 Run from the book/package root. This reference is a complete starting platform
 for P1–P5 and the final project, not the expected extent of student changes.
 The [coursework contract](../../appendices/hsd-coursework.qmd) remains the
@@ -10,14 +12,14 @@ connects the code, experiments and evidence.
 
 ```sh
 docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
-docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
 ```
 
 PowerShell:
 
 ```powershell
-docker run --rm --network none `
+docker run --rm --network none --env HOME=/tmp `
   --mount "type=bind,source=${PWD},target=/work" `
   from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
 ```
@@ -40,9 +42,9 @@ python labs/run.py run dotproduct --rtl-dir labs/work/dotproduct/rtl --seed 2027
 Obtain Wally once, before offline execution:
 
 ```sh
-git clone https://github.com/openhwgroup/cvw.git ../cvw
+git clone https://github.com/antoniofloresgil/cvw.git ../cvw
 git -C ../cvw cat-file -e 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c^{commit}
-docker run --rm --network none --env WALLY_ROOT=/cvw \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --env WALLY_ROOT=/cvw --env LAB_BUILD_DIR=/work/labs/build/wally-platform \
   --mount "type=bind,source=$PWD,target=/work" \
   --mount "type=bind,source=$(cd ../cvw && pwd),target=/cvw,readonly" \
   from-concept-labs:2026.10 python labs/run.py run dotproduct-wally
@@ -51,7 +53,7 @@ docker run --rm --network none --env WALLY_ROOT=/cvw \
 For PowerShell, use the actual absolute location of the clone:
 
 ```powershell
-docker run --rm --network none --env WALLY_ROOT=/cvw `
+docker run --rm --network none --env HOME=/tmp --env WALLY_ROOT=/cvw --env LAB_BUILD_DIR=/work/labs/build/wally-platform `
   --mount "type=bind,source=${PWD},target=/work" `
   --mount "type=bind,source=D:\Repos\cvw,target=/cvw,readonly" `
   from-concept-labs:2026.10 python labs/run.py run dotproduct-wally
@@ -60,16 +62,18 @@ docker run --rm --network none --env WALLY_ROOT=/cvw `
 For a native Linux installation of the same tools:
 
 ```sh
-WALLY_ROOT=../cvw python labs/run.py run dotproduct-wally
+WALLY_ROOT=../cvw LAB_BUILD_DIR=labs/build/wally-platform python labs/run.py run dotproduct-wally
 ```
 
-The runner exports the pinned revision, preserves its license and source
+This commit belongs to `antoniofloresgil/cvw`, a fork of `openhwgroup/cvw`;
+fetch it from that fork, not from the upstream repository. The runner exports
+the pinned revision, preserves its license and source
 headers, records file hashes, compiles RV32IM/Zicsr firmware with Clang/LLD,
 loads its ELF segments into simulated RAM, and compiles the **real**
 `wallypipelinedcore` with Verilator. It does not modify or check out the supplied
 clone. No FPGA board, vendor tools, privileged Docker access or PDK is required.
 
-The external entry is explicit and excluded from `run all`, since the archive
+The recipe places system artifacts under `labs/build/wally-platform/dotproduct-wally/` and its report at `labs/build/wally-platform/report.json`, preserving the unit report. The external entry is explicit and excluded from `run all`, since the archive
 does not bundle a complete Wally checkout. A missing clone/object/tool, timeout
 or firmware failure is a failure; there is no behavioral CPU fallback.
 
@@ -176,7 +180,7 @@ correctness, all lengths, fairness or full AXI compliance. Simulation supplies
 the long-job arithmetic and end-to-end evidence.
 
 ```sh
-docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
 ```
 

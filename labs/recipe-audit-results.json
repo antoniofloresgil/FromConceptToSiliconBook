@@ -1,0 +1,42 @@
+{
+  "verified_on": "2026-10-14",
+  "image_tag": "from-concept-labs:2026.10",
+  "image_id": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "filesystem_scope": "Docker-managed Linux volume on a Windows host; native Windows ACLs were not tested as POSIX ownership",
+  "uid": 1000,
+  "gid": 1000,
+  "home": "/tmp",
+  "offline": true,
+  "automatic_labs": {
+    "foundations": "pass",
+    "memory": "pass",
+    "transport": "pass",
+    "mmio": "pass",
+    "verilator": "pass",
+    "cocotb": "pass",
+    "isa": "pass",
+    "synthesis": "pass",
+    "dotproduct": "pass"
+  },
+  "ownership_checks": {
+    "old_root_owned_output": "expected PermissionError reproduced",
+    "scoped_repair": "pass",
+    "same_uid_append": "pass",
+    "generated_build_files_owned_by_uid": "pass"
+  },
+  "static_audit": {
+    "documented_docker_invocations": 23,
+    "local_links": 83,
+    "rtl_interfaces": 2,
+    "regression_tests": 9,
+    "status": "pass"
+  },
+  "audit_source_sha256": {
+    "labs/recipe-contracts.json": "9401f319da2a704a89f44e232b6450c4ef027df7110a3151fe2808f4c81d52c8",
+    "labs/tools/check_recipes.py": "0a29d0ba7553aaaa07da3179bc6cd3889f95666524f432d4f2891703e8cfa65d",
+    "labs/tools/test_recipes.py": "8f7d8cf5132a9c0a6f3824c09939732f39e521527ba9a8c3d9d86440cdd9a524",
+    "labs/tools/check_container_ownership.py": "f1b689c68081c06fbf325579921e9a17732dc46a330549dc899779c2f9959de7"
+  },
+  "raw_report": "labs/build/recipe-audit-artifacts/report.json",
+  "artifact_note": "Copied from the controlled Linux volume; original report artifact paths refer to labs/build inside that test filesystem"
+}

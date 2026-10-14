@@ -84,9 +84,13 @@ The smoke test exercises the installed tools and a supported open PDK. It is the
 Docker isolates LibreLane and its tools from the host. It is a good choice on Windows with Docker Desktop, on macOS, or when a team wants the same runtime image. Install a supported Docker version, Python 3.10 or newer with `pip` and `tkinter`, then install the LibreLane launcher:
 
 ```bash
-python3 -m pip install --upgrade librelane
-python3 -m librelane --dockerized --smoke-test
+python3 -m venv labs/work/librelane-env/.venv
+. labs/work/librelane-env/.venv/bin/activate
+python -m pip install "librelane==${LIBRELANE_VERSION:?Set a selected LibreLane version}"
+python -m librelane --dockerized --smoke-test
 ```
+
+Run this **installation template** from the book root in a fresh shell, set `LIBRELANE_VERSION` to the chosen compatible release, and supply the stated host prerequisites. The separate virtual environment avoids global/package-managed Python installation and does not alter the cocotb environment. Record the resolved launcher/image/PDK identities and inspect smoke-run output ownership before accepting the environment.
 
 Most commands in this mode insert `--dockerized` directly after `librelane`:
 
@@ -110,6 +114,8 @@ For the examples in this chapter, select `sky130A` and the high-density standard
 
 ## The LibreLane design contract
 
+**Recipe status: adaptation template.** Resolve a LibreLane version, tool image and supported PDK before the commands below. `labs/07-implementation/config.yaml` and its referenced RTL/clock are checked for consistency and generic synthesis; the complete PDK-specific flow has not been executed by the automatic package.
+
 Each design directory contains a configuration file named `config.json`, `config.yaml`, `config.yml` or `config.tcl`. YAML and JSON are recommended: they are simpler, safer and easier to review than Tcl. Paths expressed with `dir::` are resolved relative to the design directory, which makes the configuration portable after cloning [@librelaneConfiguration].
 
 At minimum, a synchronous digital macro needs the following:
@@ -127,13 +133,13 @@ Variables can be scoped to a PDK or standard-cell library. That is useful when t
 
 ### The effective configuration is the specification of a run
 
-The user configuration is deliberately small. LibreLane combines it with flow defaults, PDK defaults, cell-library defaults and command-line overrides, validates types and paths, and writes a final resolved configuration. Preserve that `resolved.json` with the reports. Two runs that use the same `config.yaml` may still be different if the PDK, LibreLane version or inherited defaults differ.
+The user configuration is deliberately small. LibreLane combines flow/PDK/library defaults and overrides, validates them and writes effective run configuration/state. Preserve those files using the names emitted by the selected release (the run tree below illustrates `config.json`). Do not assume every release writes a file named `resolved.json`. Identical user YAML does not imply identical tools, PDK or defaults.
 
 Avoid silently relying on the latest PDK. For coursework and a book example, pin a known LibreLane release and PDK version in the project notes. For a real program, place those versions in CI and require a deliberate review for upgrades.
 
 ## Complete example: hardening the accumulator through LibreLane
 
-This section reuses the SystemVerilog accumulator from the OpenROAD and Verilator chapters. Its behavior has already been checked in simulation. The LibreLane run answers a different question: can that same registered arithmetic block be mapped, placed, clocked, routed and checked using a selected standard-cell technology?
+This section reuses the OpenROAD **two-operand implementation accumulator**, checked by `tb_implementation.sv`. It is distinct from the one-operand Verilator/cocotb example. The guided flow asks whether this identified implementation RTL can be mapped, placed, clocked, routed and checked in the chosen technology.
 
 ### Step 0: arrange the project
 

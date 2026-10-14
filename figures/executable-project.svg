@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="790" viewBox="0 0 1100 790" role="img" aria-labelledby="title desc">
+<title id="title">Executable Wally accelerator platform</title>
+<desc id="desc">Wally controls a signed dot-product accelerator through AHB and AXI-Lite. DMA and Wally access shared RAM; a level interrupt returns to Wally.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#24445b"/></marker></defs>
+<rect width="1100" height="790" fill="white"/>
+<g fill="#eef5fb" stroke="#24445b" stroke-width="2">
+<rect x="250" y="25" width="540" height="65" rx="10"/>
+<rect x="280" y="145" width="480" height="65" rx="10"/>
+<rect x="280" y="295" width="480" height="65" rx="10"/>
+<rect x="280" y="435" width="480" height="65" rx="10"/>
+<rect x="280" y="585" width="480" height="65" rx="10"/>
+<rect x="280" y="705" width="480" height="65" rx="10"/>
+<rect x="840" y="330" width="230" height="100" rx="10" fill="#edf7ec"/>
+</g>
+<g font-family="DejaVu Sans, sans-serif" font-size="21" text-anchor="middle" fill="#17344a">
+<text x="520" y="52">RV32 firmware</text><text x="520" y="78" font-size="17">Buffers, descriptor and reference check</text>
+<text x="520" y="174">Real Wally core</text><text x="520" y="198" font-size="17">Caches disabled</text>
+<text x="520" y="334">AHB-to-AXI4-Lite adapter</text>
+<text x="520" y="474">Registers and descriptor validation</text>
+<text x="520" y="613">AXI4 DMA engine</text><text x="520" y="638" font-size="17">One outstanding single-beat transaction</text>
+<text x="520" y="734">Signed dot-product MAC</text><text x="520" y="759" font-size="17">16-bit multiply, 64-bit accumulation</text>
+<text x="955" y="371">Shared simulation</text><text x="955" y="398">RAM</text>
+</g>
+<g fill="none" stroke="#24445b" stroke-width="2.5" marker-end="url(#arrow)">
+<path d="M520 90V145"/><path d="M520 210V295"/><path d="M520 360V435"/><path d="M520 500V585"/>
+<path d="M440 650V705"/><path d="M600 705V650"/>
+<path d="M760 178H955V330" marker-start="url(#arrow)"/>
+<path d="M760 615H955V430" marker-start="url(#arrow)"/>
+<path d="M280 467H130V178H280"/>
+</g>
+<g font-family="DejaVu Sans, sans-serif" font-size="17" fill="#17344a" text-anchor="middle">
+<text x="520" y="258">AHB control accesses</text>
+<text x="520" y="393">Independent AW/W;</text><text x="520" y="416">retained responses</text>
+<text x="520" y="550">Latched valid job</text>
+<text x="370" y="680">Operands</text><text x="683" y="680">Result words</text>
+<text x="897" y="244">AHB program</text><text x="897" y="267">and data</text>
+<text x="919" y="518">AXI4 reads</text><text x="919" y="541">and writes</text>
+<text x="95" y="327" transform="rotate(-90 95 327)">Level completion interrupt</text>
+</g>
+</svg>

@@ -1,40 +1,69 @@
-name: Publish Quarto book
+name: Publish validated Quarto book
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: github-pages
+  group: book-release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+  validate:
+    uses: ./.github/workflows/labs.yml
+  build:
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build pinned publishing environment
+        run: docker build --platform linux/amd64 -f tools/book/Dockerfile -t from-concept-book:2026.10 .
+      - name: Check stale-output rejection and failed-build preservation
+        run: >-
+          docker run --rm --platform linux/amd64 --network none
+          --user "$(id -u):$(id -g)" --env HOME=/tmp
+          --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+          python tools/book/test_build.py
+      - name: Render and validate HTML, PDF and figures offline
+        run: |
+          image_id=$(docker image inspect --format '{{.Id}}' from-concept-book:2026.10)
+          docker run --rm --platform linux/amd64 --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --env BOOK_REVISION="$GITHUB_SHA" --env BOOK_IMAGE_ID="$image_id" \
+            --env BOOK_VALIDATION_RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: book-pdf-and-build-identity
+          if-no-files-found: error
+          path: |
+            _book/release/From-Concept-to-Silicon.pdf
+            _book/release/build-manifest.json
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: _book/release
+  deploy:
+    needs: [validate, build]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/configure-pages@v5
-
-      - uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Render HTML book
-        run: quarto render --to html
-
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: _book
-
-      - name: Deploy to GitHub Pages
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Deploy validated release to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

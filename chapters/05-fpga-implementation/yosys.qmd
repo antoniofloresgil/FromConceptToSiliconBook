@@ -73,6 +73,9 @@ The synthesis boundary in @sec-verification-methodology distinguishes clean elab
 
 ## Implementation
 
+**Recipe status:** the generic teaching-module synthesis is checked through `python labs/run.py run synthesis`. The pinned XC7 toolchain/platform commands are **adaptation templates** requiring the external repository/databases; this chapter does not qualify a complete board build. Standalone designs that are not supplied are **exercises**.
+
+
 ### Installing the open toolchain
 
 For an XC7 target, install a coherent toolchain rather than unrelated package versions: Yosys (with the SystemVerilog frontend used by the project), `nextpnr-xilinx`, Project X-Ray database/tools and a programmer such as `openFPGALoader`. The CVW branch used here provides an installation script that pins these dependencies and creates chip databases for `xc7a100t` and `xc7a200t` [@cvwOpenSourceFpga]. The general Yosys project also publishes OSS CAD Suite binaries and source build instructions [@yosysRepository].
@@ -83,6 +86,8 @@ On Linux, clone the selected CVW branch, install its documented toolchain and lo
 git clone --branch opensource-fpga-bitstream \
   https://github.com/antoniofloresgil/cvw.git
 cd cvw
+git checkout 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c
+git submodule update --init --recursive
 ./bin/wally-tool-chain-install.sh
 source setup.sh
 ```
@@ -123,7 +128,7 @@ The cell-library reads describe vendor primitives to Yosys; they do not call a v
 
 ### A small standalone synthesis experiment
 
-Start with a verified module before building the full SoC. The following script demonstrates the shape of an XC7 synthesis run; a real board build needs its own top-level ports and XDC file.
+**Exercise:** create and verify `counter.sv` with a matching `counter` top before using this script; that source is not bundled here. The script shows an XC7 run shape. A real board build also needs its own ports/XDC.
 
 ```tcl
 # counter.ys

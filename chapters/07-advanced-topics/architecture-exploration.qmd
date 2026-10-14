@@ -176,10 +176,12 @@ The ROI includes operand accesses, arithmetic, loop control and volatile result 
 
 ### Reproduce the experiment
 
+**Checked recipe:** the pinned RTL divider sweep and illustrative Python analysis. Cache/predictor/board extensions are exercises or adaptation templates. The later gem5 shell sketch requires a separately prepared environment/script and is not an executed package recipe.
+
 Use the container in @sec-reproducible-labs and acquire Wally as in @sec-executable-project. From the repository/package root:
 
 ```bash
-docker run --rm --network none --env WALLY_ROOT=/cvw \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --env WALLY_ROOT=/cvw \
   --mount "type=bind,source=$PWD,target=/work" \
   --mount "type=bind,source=$(cd ../cvw && pwd),target=/cvw,readonly" \
   from-concept-labs:2026.10 python labs/11-dse/run_wally.py --seed 2026
@@ -188,7 +190,7 @@ docker run --rm --network none --env WALLY_ROOT=/cvw \
 PowerShell uses the actual absolute clone location:
 
 ```powershell
-docker run --rm --network none --env WALLY_ROOT=/cvw `
+docker run --rm --network none --env HOME=/tmp --env WALLY_ROOT=/cvw `
   --mount "type=bind,source=${PWD},target=/work" `
   --mount "type=bind,source=D:\Repos\cvw,target=/cvw,readonly" `
   from-concept-labs:2026.10 python labs/11-dse/run_wally.py --seed 2026

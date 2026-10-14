@@ -1,9 +1,7 @@
 name: Validate reproducible labs
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -14,23 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Audit reproducible recipe contracts
+        run: |
+          python labs/tools/check_recipes.py
+          python labs/tools/test_recipes.py
+      - name: Acquire pinned Wally source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: antoniofloresgil/cvw
+          ref: 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c
+          path: labs/build/wally-source
+          persist-credentials: false
       - name: Build teaching container
         run: docker build -f labs/Dockerfile -t from-concept-labs:ci .
       - name: Run reference labs offline
         # Match the runner's ownership so later host steps can write evidence.
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026
+      - name: Verify container output ownership and host write access
+        run: |
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/check_container_ownership.py --write
+          python labs/tools/check_container_ownership.py
       - name: Confirm tests reject transaction loss
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
       - name: Confirm project tests reject arithmetic and completion defects
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
-      - name: Acquire pinned Wally source
-        uses: actions/checkout@v6
-        with:
-          repository: openhwgroup/cvw
-          ref: 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c
-          path: labs/build/wally-source
-          persist-credentials: false
       - name: Run real Wally accelerator firmware offline
         run: >-
           docker run --rm --network none --user "$(id -u):$(id -g)"
@@ -64,7 +70,7 @@ jobs:
         run: |
           python labs/verification/test_evidence.py
           python labs/verification/evidence.py --unit-report labs/build/report.json --system-report labs/build/wally-platform/report.json --output labs/build/verification-evidence.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: laboratory-evidence

@@ -31,6 +31,9 @@ The C++ scoreboard below is a unit-level numerical/control checker under the con
 
 ## Implementation
 
+**Recipe status:** the supplied one-operand RTL/C++ build and 14-cycle check are a **checked recipe** (Verilator 5.020 baseline). Installation/source-build choices are **adaptation templates**; width/random-stimulus changes are **exercises**. Keep the stated example working directory, or use the root-level `verilator` lab entry.
+
+
 ### Download the example files
 
 - [accumulator.sv](../../examples/verilator/accumulator.sv): SystemVerilog design.

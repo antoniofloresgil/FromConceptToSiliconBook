@@ -126,9 +126,13 @@ These are hexadecimal words: `25` means decimal 37 and `15` means decimal 21. Th
 
 ### Example 1: run and debug with Spike
 
+**Checked recipe:** RV64I signature run with Spike 1.1.1-dev and the stated toolchain. Use the example working directory; stop on a failed run rather than accepting an older signature.
+
 With Spike available in `PATH`, run the batch test and compare its signature:
 
-```sh
+```bash
+set -euo pipefail
+rm -f -- spike.sig
 timeout 20s spike --isa=rv64i \
   +signature=spike.sig +signature-granularity=8 check.elf
 diff -i expected.signature spike.sig
@@ -156,9 +160,13 @@ The `until` condition stops when the loop's result reaches hexadecimal 15. At th
 
 ### Example 2: run and trace with Sail
 
+**Adaptation template:** the modern `sail_riscv_sim` command was not executed in the recorded environment. The older RV64 executable recipe below was checked; use only the CLI/options supported by the selected installation.
+
 For the `sail_riscv_sim` interface used in the supplied edition, inspect help and save its default configuration before running:
 
-```sh
+```bash
+set -euo pipefail
+rm -f -- sail.sig
 sail_riscv_sim --help
 sail_riscv_sim --print-default-config > sail-default.json
 timeout 20s sail_riscv_sim --config sail-default.json \
@@ -173,7 +181,9 @@ Read `sail.log` around the arithmetic, loop exit, signature stores, and completi
 
 An older Sail installation with a separate RV64 executable uses this equivalent command:
 
-```sh
+```bash
+set -euo pipefail
+rm -f -- sail.sig
 timeout 20s riscv_sim_RV64 --no-trace \
   --test-signature sail.sig --signature-granularity 8 check.elf
 diff -i expected.signature sail.sig

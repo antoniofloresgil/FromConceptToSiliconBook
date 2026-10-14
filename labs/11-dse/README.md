@@ -1,5 +1,7 @@
 # Architectural exploration: real RTL and controlled analysis
 
+**Recipe status:** the supplied reference runs are checked in the recorded teaching environment. External clone paths must be set for your machine; Linux/WSL writable mounts use the host UID/GID, while native PowerShell uses Windows access controls. Student/physical extensions require separate implementation and evidence.
+
 Read [the DSE chapter](../../chapters/07-advanced-topics/architecture-exploration.qmd).
 Two activities deliberately produce different types of evidence.
 
@@ -8,7 +10,7 @@ Two activities deliberately produce different types of evidence.
 Run in the existing teaching container with a separately acquired Wally clone:
 
 ```sh
-docker run --rm --network none --env WALLY_ROOT=/cvw \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --env WALLY_ROOT=/cvw \
   --mount "type=bind,source=$PWD,target=/work" \
   --mount "type=bind,source=$(cd ../cvw && pwd),target=/cvw,readonly" \
   from-concept-labs:2026.10 python labs/11-dse/run_wally.py --seed 2026
@@ -17,7 +19,7 @@ docker run --rm --network none --env WALLY_ROOT=/cvw \
 PowerShell (replace the clone location when needed):
 
 ```powershell
-docker run --rm --network none --env WALLY_ROOT=/cvw `
+docker run --rm --network none --env HOME=/tmp --env WALLY_ROOT=/cvw `
   --mount "type=bind,source=${PWD},target=/work" `
   --mount "type=bind,source=D:\Repos\cvw,target=/cvw,readonly" `
   from-concept-labs:2026.10 python labs/11-dse/run_wally.py --seed 2026
@@ -29,7 +31,9 @@ Missing tools, incorrect results and timeouts fail; there is no fake-core fallba
 Use `--bits 2` for a single smoke configuration or `--bits 1 2 4` for the full sweep.
 
 The script reuses the pinned-source exporter and ELF loader from the executable
-project. Revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` is exported with license
+project. Acquire the clone from `https://github.com/antoniofloresgil/cvw.git`:
+the pinned commit is in that fork, not in upstream `openhwgroup/cvw`.
+Revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` is exported with license
 and source hashes. The supplied clone's branch remains unchanged.
 `tb_wally_dse.sv` derives rv32imc with caches, internal memories and prediction
 disabled, external 64 KiB zero-wait AHB RAM and `COUNTERS=3`. Only

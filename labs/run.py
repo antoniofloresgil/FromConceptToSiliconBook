@@ -282,6 +282,8 @@ def pack():
     paths += list((ROOT / "appendices").glob("*.qmd"))
     paths += list((ROOT / "figures").glob("*.svg"))
     paths += [ROOT / "references.bib", ROOT / ".dockerignore", ROOT / ".gitattributes"]
+    paths += [ROOT / "LICENSE.md", ROOT / "NOTICE.md", ROOT / "summary.qmd"]
+    paths += sorted((ROOT / "LICENSES").glob("*.txt"))
     hashes = {path.relative_to(ROOT).as_posix(): digest(path) for path in sorted(paths, key=lambda path: path.relative_to(ROOT).as_posix())}
     with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
         for name in hashes:

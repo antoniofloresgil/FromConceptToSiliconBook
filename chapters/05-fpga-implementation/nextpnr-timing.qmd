@@ -59,6 +59,9 @@ Use @sec-verification-methodology to review clocks, I/O constraints, routed reso
 
 ## Implementation
 
+**Recipe status: adaptation template.** Provide the pinned XC7 tools/database, generated netlist, constraints and firmware described by the selected Wally snapshot. Routing/bitstream commands require those external inputs; success is not evidence of board operation. Timing-budget modifications are exercises with their own reports.
+
+
 ### nextpnr-xilinx and Project X-Ray
 
 `nextpnr-xilinx` reads the Yosys JSON netlist, XDC constraints and a chip database for the FPGA die. Project X-Ray supplies the reverse-engineered database and bitstream tooling for Xilinx 7-series [@projectXray]. The tool produces three important implementation artifacts:

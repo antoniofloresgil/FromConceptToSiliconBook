@@ -31,6 +31,9 @@ Apply @sec-verification-methodology by separating the task that drives a request
 
 ## Implementation
 
+**Recipe status:** the supplied accumulator test is a **checked recipe** with cocotb 2.0.1 and Icarus 12.0. Its standalone Python minimum is 3.9; the laboratory runner requires 3.10+. Other simulator/install choices are **adaptation templates**. Preserve the example tree and run Make from `examples/cocotb/` with its environment active.
+
+
 ### Download the example files
 
 - [test_accumulator.py](../../examples/cocotb/test_accumulator.py): Python testbench.
@@ -65,7 +68,7 @@ On Windows, run the walkthrough in Ubuntu under WSL2 or a Linux container. The o
 
 From the repository root:
 
-```sh
+```bash
 cd examples/cocotb
 python3 -m venv .venv
 source .venv/bin/activate

@@ -1,0 +1,38 @@
+{
+  "image_tag": "from-concept-labs:2026.10",
+  "ci_image_tag": "from-concept-labs:ci",
+  "working_directory": "repository-or-extracted-package-root",
+  "container_workdir": "/work",
+  "runner_python_min": "3.10",
+  "cocotb_version": "2.0.1",
+  "wally_revision": "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c",
+  "wally_repository": "antoniofloresgil/cvw",
+  "automatic_labs": ["foundations", "memory", "transport", "mmio", "verilator", "cocotb", "isa", "synthesis", "dotproduct"],
+  "outputs": {
+    "unit_report": "labs/build/report.json",
+    "wally_build_dir": "/work/labs/build/wally-platform",
+    "wally_report": "labs/build/wally-platform/report.json",
+    "dse_local_results": "labs/build/dse/results.json",
+    "dse_ci_build_dir": "/work/labs/build/dse-platform"
+  },
+  "interfaces": [
+    {
+      "rtl": "examples/verilator/accumulator.sv",
+      "top": "accumulator",
+      "clock": "clk",
+      "ports": ["clk", "reset", "Clear", "Enable", "Operand", "Sum", "Valid", "Overflow"],
+      "tests": ["examples/verilator/sim_main.cpp", "examples/cocotb/test_accumulator.py"],
+      "boundary": "checked one-operand simulation variant"
+    },
+    {
+      "rtl": "labs/07-implementation/rtl/accumulator.sv",
+      "top": "accumulator",
+      "clock": "Clk",
+      "ports": ["Clk", "Reset", "Enable", "Clear", "A", "B", "Sum", "Valid", "Overflow"],
+      "tests": ["labs/07-implementation/tb_implementation.sv"],
+      "config": "labs/07-implementation/config.yaml",
+      "constraints": "labs/07-implementation/constraints.sdc",
+      "boundary": "checked unit/generic synthesis; physical implementation requires adaptation"
+    }
+  ]
+}

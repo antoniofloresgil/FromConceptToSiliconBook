@@ -2,14 +2,32 @@
 
 Run commands from the repository root. The book's [reproduction appendix](../appendices/reproducible-labs.qmd) explains containers, native tools and external repositories.
 
+Original code uses MIT; educational prose and original figures use CC BY-SA 4.0. See the [licensing scope](../LICENSE.md) and [third-party notices](../NOTICE.md), both included with the practice download. The [final project review](../summary.qmd) provides release-evidence and defence guidance.
+
 The [HSD coursework guide](../appendices/hsd-coursework.qmd) defines the 12-week, 6 ECTS course's P0–P5 activities, autonomous workload, deliverables and rubrics. Students reuse these references while developing a Wally-controlled AXI/DMA dot-product accelerator. The executable reference in `10-dotproduct/` supplies the AXI/DMA IP, bounded formal checks and a real Wally firmware platform. The guide distinguishes that reference from assessed student work.
 
 ```sh
 docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
-docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" from-concept-labs:2026.10
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:2026.10
 ```
 
-In PowerShell, use `${PWD}` as the mount source. The default container command runs all nine automatic labs. Building needs network access; their execution needs none. The container does not program a board or download a PDK.
+This **checked recipe** starts in the repository/extracted-package root on Linux or WSL. UID/GID options keep newly generated bind-mount files owned by the invoking host user; `HOME=/tmp` supplies a writable container home. CI uses the same ownership policy.
+
+For native Windows PowerShell with Docker Desktop and a Windows checkout:
+
+```powershell
+docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
+docker run --rm --network none --env HOME=/tmp `
+  --mount "type=bind,source=${PWD},target=/work" from-concept-labs:2026.10
+```
+
+Windows mounts use Windows access controls; do not paste POSIX `id` expressions into PowerShell. For a WSL/Linux checkout, use the Linux recipe in that shell. The default command runs all nine automatic labs. Building needs network; reference execution is offline. Existing root-owned Linux output needs a scoped repair first, as explained in the [appendix](../appendices/reproducible-labs.qmd).
+
+## Recipe status and shared contracts
+
+**Checked recipe** means the stated command/runtime and boundary were exercised in the recorded environment. **Adaptation template** needs external paths, versions, technology or hardware inputs. **Exercise** needs student implementation or new evidence. A checked parser/netlist step does not qualify a whole physical flow.
+
+[Recipe contracts](recipe-contracts.json) identify image, ports, runner minimum and output namespaces. Use `python labs/tools/check_recipes.py` for static Docker/path/version/interface coherence, then `python labs/run.py check` for listing consistency. Neither executes hardware simulation or checks live upstream compatibility. `labs/recipe-audit-results.json` records the controlled Linux-volume ownership reproduction, matched UID/GID run and subsequent write check.
 
 | ID | Material | Verification boundary | Guide |
 |---|---|---|---|
@@ -21,10 +39,11 @@ In PowerShell, use `${PWD}` as the mount source. The default container command r
 | `isa` | Assembly and linker script | ELF/signature check in a program-specific oracle | [06](06-isa/README.md) |
 | `synthesis` | Implementation accumulator and all teaching RTL | Behavioral test, elaboration, no latches and generic synthesis | [07](07-implementation/README.md) |
 | `fpga`, `asic` | Board/PDK-dependent flows | Guided integration, separate tools and acceptance criteria | [07](07-implementation/README.md) |
-| `wally`, `accelerator` | Full-SoC observations and design exercise | Guided full-system work; exercise implementation by the student | [08](08-integration/README.md) |
+| `wally`, `accelerator` | Full-SoC observations and design exercise | Adaptation template / student exercise | [08](08-integration/README.md) |
 | `dotproduct` | Complete signed AXI/DMA IP | Every legal length, protocol/error/security tests, reuse, synthesis and bounded formal checks | [10](10-dotproduct/README.md) |
 | `dotproduct-wally` | Real pinned Wally core and RV32 firmware | External clone required; polling, DMA, interrupt and cycle measurements | [10](10-dotproduct/README.md) |
 | `mmu` | Complete RV32/Sv32 assembly test | Separate Spike run and guided Wally translation/fault trace | [09](09-privileged-mmu/README.md) |
+| `dse` | Real Wally divider sweep; illustrative analysis | Checked explicit script with external clone; outside `run all` | [11](11-dse/README.md) |
 
 ## Commands
 
@@ -40,6 +59,8 @@ python labs/run.py pack
 `run all` includes only automatic labs. Missing tools, assertions, compiler errors and timeouts fail the run with a nonzero exit code. Guided labs are listed explicitly; requesting them through `run` reports their guide instead of pretending that a board/PDK test passed.
 
 `labs/build/report.json` records actual per-lab seeds, tool versions, source hashes, commands, logs, result and artifact hashes. The existing C++/cocotb examples retain their fixed seed 2026; `--seed` controls the new randomized tests. Compile and simulation logs are in `labs/build/<id>/`. Report paths refer to the environment in which the run occurred.
+
+Preserve the unit report: the Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/wally-platform`, producing `labs/build/wally-platform/report.json`. The collector consumes both reports. DSE writes separate results; CI additionally places its builds under `dse-platform/`.
 
 `labs/validated-environment.json` records the tested baseline. Run `python labs/tools/verify_harness.py` to confirm that a deliberately broken FIFO fails the tests; its expected failure evidence stays under `labs/build/fault-injection/`, preserving the reference report.
 

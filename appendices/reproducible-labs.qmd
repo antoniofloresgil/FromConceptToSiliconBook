@@ -17,6 +17,18 @@ cd FromConceptToSiliconBook
 
 ## Select an activity and its verification boundary
 
+### Recipe status, shell and working directory
+
+| Status | Meaning | Examples |
+| --- | --- | --- |
+| **Checked recipe** | Executed with recorded tools/inputs and stated scope | Automatic labs; real Wally accelerator/divider runs; older Sail signature test |
+| **Adaptation template** | Review external versions, paths, technology or API options first | Physical Tcl, board programming, modern Sail command, gem5 sketch |
+| **Exercise** | Implement/extend a design or check and produce new evidence | New accelerator features and full-SoC scenarios |
+
+Source export, synthesis, tool discovery and full physical qualification are different boundaries. A block inherits its section's stated scope, not an automatic claim of execution.
+
+Start at the repository/extracted-package root unless stated otherwise. `cd` changes the directory for subsequent commands. Bash/WSL uses `\` for continuation; PowerShell uses a backtick. Prompts, output listings and angle-bracket placeholders are not shell commands. Paths and HDL ports are case-sensitive on Linux.
+
 | Entry point | Scope | Automatic evidence |
 |---|---|---|
 | `foundations` | ISA fields, decoder, ALU, register file, iterative arithmetic and basic RTL | Vector comparisons, state/latency and reset tests |
@@ -32,6 +44,7 @@ cd FromConceptToSiliconBook
 | `dotproduct` | Complete AXI/DMA signed dot-product IP | All lengths, errors/security/reuse, synthesis and bounded properties |
 | `dotproduct-wally` | Real Wally, AHB adapter and firmware | Explicit external entry: polling, interrupt handler and result/cycle checks |
 | `mmu` | Sv32 aliases, S-mode and a delegated store page fault | Separate Spike test with expected signature; guided Wally trace |
+| `dse` | Controlled actual Wally divider sweep and illustrative Pareto analysis | Checked explicit script with external clone; outside `run all` |
 
 `run all` executes the nine automatic entries. It does not silently count a missing board, PDK or unfinished accelerator as a pass. An automatic result proves the tested boundary, rather than every requirement of the corresponding subsystem.
 
@@ -49,16 +62,16 @@ With Docker installed and its Linux-container engine running, use these commands
 
 ```bash
 docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
-docker run --rm --network none \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
   --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10
 ```
 
-PowerShell uses its own interpolation syntax:
+The preceding **checked Linux/WSL runtime recipe** uses the host UID/GID for writable mounts, matching Actions, and a writable `HOME=/tmp` [@reproductionDockerRun]. Dependency installation belongs to image building, not offline execution. The PowerShell recipe below targets Docker Desktop and a Windows checkout with Windows access controls. For a Linux/WSL checkout, use the Linux recipe; POSIX `id` expressions are not a PowerShell UID mapping. PowerShell uses its own interpolation syntax:
 
 ```powershell
 docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
-docker run --rm --network none `
+docker run --rm --network none --env HOME=/tmp `
   --mount "type=bind,source=${PWD},target=/work" `
   from-concept-labs:2026.10
 ```
@@ -68,9 +81,9 @@ The build downloads dependencies. The automatic execution uses `--network none`,
 To inspect the environment or run one practice, override its default command:
 
 ```bash
-docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/run.py doctor
-docker run --rm --network none --mount "type=bind,source=$PWD,target=/work" \
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" \
   from-concept-labs:2026.10 python labs/run.py run transport --seed 2027
 ```
 
@@ -79,6 +92,21 @@ Use the PowerShell mount form above on Windows. Python-only `list`, `check` and 
 The cocotb baseline explicitly chooses Icarus. cocotb 2.0.1 supports Icarus 11.0 or later, while its Verilator backend needs 5.036 or later; the standalone C++ Verilator example has a different compatibility boundary [@cocotbLabSupport]. Do not infer that a working standalone Verilator installation can necessarily host this cocotb version.
 
 ## Native Linux execution
+
+### Existing Linux build files owned by root
+
+The new `--user` options prevent new root-owned files but do not repair old output. From the project root, inspect the specific build directory. If it contains results from an earlier root container, repair only that directory:
+
+```bash
+ls -ld labs/build
+sudo chown -R --no-dereference "$(id -u):$(id -g)" -- labs/build
+```
+
+This is a **conditional repair**, requiring permission to change ownership and this project's existing `labs/build/`. Do not substitute the whole repository or a system directory. Rerun the corrected recipe and check that the host user can append to a generated result. Global permissive modes are unnecessary.
+
+### Native installation template
+
+**Adaptation template:** distribution packages depend on the repository date. Record actual versions after installation. The runner needs Python 3.10+, even though the standalone cocotb test has a lower Python minimum.
 
 The container is the shared coursework baseline. Native installations can use the same Python entry point if all required programs are on PATH. On Ubuntu 24.04, install the simulation/synthesis dependencies and a virtual environment:
 
@@ -95,6 +123,20 @@ python labs/run.py run all
 The Python development package supplies the shared library cocotb embeds. If `find_libpython` cannot find that library, fix the installation before running the simulator. The native package versions need not match an earlier container build. Include the resulting environment report in comparisons. Do not use an unrelated local development image as evidence of a reproducible student environment unless its recipe and identity are also available.
 
 ## Sources, seeds and result records
+
+### Shared interfaces and versions
+
+| Material | Exact interface/source | Checked boundary |
+| --- | --- | --- |
+| C++/cocotb accumulator | `examples/verilator/accumulator.sv`: `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, `Overflow` | One-operand simulation; C++ and Python tests |
+| Physical-flow accumulator | `labs/07-implementation/rtl/accumulator.sv`: `Clk`, `Reset`, `Clear`, `Enable`, `A`, `B`, `Sum`, `Valid`, `Overflow` | Dedicated unit test/generic synthesis; physical flow requires technology inputs |
+| Laboratory runner | Python 3.10+, `labs/run.py`, repository/package root | Native Python-only commands; hardware runs with the stated tools |
+| cocotb standalone test | cocotb 2.0.1, Python 3.9+, Icarus 11+; checked Icarus 12.0 | Its Makefile defaults to Icarus and shared one-operand RTL |
+| Standalone Verilator | Checked 5.020 for C++ and Wally fixtures | Does not meet cocotb 2.0.1's separate Verilator-backend minimum |
+
+Both designs use the top name `accumulator`, but their ports and operand contracts differ. The physical YAML/SDC uses `Clk` and references the implementation RTL. Running the earlier cocotb test only checks its own source. See `labs/recipe-contracts.json` and run `python labs/tools/check_recipes.py` for static case/path/port/version checks. It also checks Linux Docker flags and Wally's report namespace; it does not execute external tools or validate a new technology.
+
+Local unit runs write `labs/build/report.json`. The Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/wally-platform` so the system report is `labs/build/wally-platform/report.json`; native Linux sets the equivalent path `labs/build/wally-platform`. Preserve both for the evidence collector. DSE writes `labs/build/dse/results.json` locally; CI uses its separate `dse-platform/` namespace.
 
 Before simulation, the runner checks that exported reference files match their chapter listings. `labs/tools/catalog.py` records the source chapter, language and listing selector. The existing Verilator/cocotb examples are checked too. A changed printed listing cannot silently leave an old reference file in the package.
 
@@ -128,7 +170,7 @@ docker image inspect from-concept-labs:2026.10 --format '{{.Id}}'
 docker save -o labs/build/from-concept-labs.tar from-concept-labs:2026.10
 ```
 
-Create `labs/build/` first if no run has created it. Another machine can use `docker load -i from-concept-labs.tar`. The TAR is a large build artifact and stays outside version control. Running the same saved image removes dependency resolution from later practical sessions; rebuilding a mutable package repository can produce another image even with the same local tag.
+Create `labs/build/` first if no run has created it. Another machine can use `docker load -i labs/build/from-concept-labs.tar`. The TAR is a large build artifact and stays outside version control. Running the same saved image removes dependency resolution from later practical sessions; rebuilding a mutable package repository can produce another image even with the same local tag.
 
 The ZIP contains `SHA256SUMS.json`; `check` also verifies those checksums when running an extracted package, and `pack` prints the ZIP's SHA-256. Packaging excludes reports, virtual environments, caches, simulator output and student work. Quarto's pre-render step generates the ZIP and publishes it as a book resource; it does not execute hardware tests while rendering.
 
@@ -153,21 +195,21 @@ git submodule update --init --recursive
 git rev-parse HEAD
 ```
 
-Obtain toolchains, chip databases and board support using that revision's instructions and the FPGA chapters. The small simulation container does not include the full Wally toolchain, nextpnr-Xilinx database, DDR controller environment or a firmware loader. Keep the build script, selected parameters, images and constraint files alongside the revision.
+Obtain toolchains, chip databases and board support using that revision's instructions and the FPGA chapters. The small container includes the Clang/LLD and ELF-loading helpers used by its checked virtual-platform recipes; it does not include the complete Wally board/cross toolchain, nextpnr-Xilinx databases, DDR controller environment or a physical board firmware loader. Keep the build script, selected parameters, images and constraint files alongside the revision.
 
 Use on-chip-memory firmware for the first board milestone. At the documented branch snapshot, DDR3 service initialization is an additional unresolved bring-up activity. A generated bitstream is not evidence that every external-memory path works.
 
-For ASIC work, use the separately installed ORFS environment [@orfsLabContainers]. A local `openroad/orfs:latest` was inspected while preparing the package. Its working directory contains `env.sh`, which puts the installed OpenROAD and Yosys binaries on PATH. A checked tool-discovery command is:
+**Adaptation template (checked tool discovery only):** for ASIC work, use the separately installed ORFS environment [@orfsLabContainers]. A local `openroad/orfs:latest` was inspected while preparing the package. Its `/OpenROAD-flow-scripts/env.sh` puts the installed OpenROAD and Yosys binaries on PATH. A checked tool-discovery command is:
 
 ```bash
-docker run --rm --network none openroad/orfs:latest \
-  bash -lc 'source env.sh; openroad -version'
+docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp openroad/orfs:latest \
+  bash -lc 'source /OpenROAD-flow-scripts/env.sh; openroad -version'
 docker image inspect openroad/orfs:latest --format '{{json .RepoDigests}}'
 ```
 
 Obtain the image separately if it is not installed. `latest` is not a reproducibility identifier: record its digest and the ORFS/platform revisions. The inspected image digest was `fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699`; it identifies that image, not a tested hardening result. Follow the OpenROAD chapter for direct Tcl and ORFS variants with the appropriate platform inputs.
 
-LibreLane documents a Nix-based setup and its supported operating environments [@librelaneLabSetup]. This is a separate environment from the supplied lab Docker image. In that environment, use `labs/07-implementation/config.yaml`, whose `VERILOG_FILES` resolves to the accompanying uppercase-`Clk` implementation RTL. Supply the chosen PDK root and preserve the resolved flow configuration.
+**Adaptation template:** LibreLane documents a Nix-based setup and its supported operating environments [@librelaneLabSetup]. This is a separate environment from the supplied lab Docker image. In that environment, use `labs/07-implementation/config.yaml`, whose `VERILOG_FILES` resolves to the accompanying uppercase-`Clk` implementation RTL. Supply the chosen PDK root and preserve the resolved flow configuration.
 
 LibreLane also documents a Dockerized CLI setup [@librelaneLabDocker]. After installing a selected LibreLane version in its own Python environment and configuring Docker, its documented smoke-test command is:
 
@@ -193,3 +235,50 @@ Use @sec-verification-methodology for the requirement-driven hierarchy from RTL 
 ## Reproduce the architectural-exploration study
 
 The controlled real Wally divider study in @sec-architecture-exploration is supplied under `labs/11-dse/`. Run its script with the same pinned clone and teaching container as the accelerator platform. It shares one binary/input set across divider configurations and records actual cycle/instruction results. The Python-only Pareto exercise uses explicitly illustrative data and cannot be presented as a board measurement. gem5/XS-GEM5 installations, compatible research workloads and calibration remain separate dependencies.
+
+## Reproduce publication of the complete book {#sec-reproducible-publication}
+
+The publishing environment is separate from the hardware teaching container. Work from the **full Git repository root**, not the laboratory ZIP: the ZIP intentionally omits the Quarto project configuration and publishing workflow. Docker Desktop must use Linux containers. No native Quarto, TeX installation or `rsvg-convert` installation is required on Windows.
+
+Build the Linux/amd64 environment on Linux, WSL or PowerShell:
+
+```bash
+docker build --platform linux/amd64 -f tools/book/Dockerfile -t from-concept-book:2026.10 .
+```
+
+The Dockerfile fixes the Ubuntu base digest and Quarto to **1.10.19**, checking the downloaded Debian package's SHA-256. `tools/book/ubuntu-packages.lock` fixes all 134 additional Ubuntu packages, including dependencies, by filename, version and SHA-256. The lock was resolved from authenticated Ubuntu metadata on 14 October 2026. It includes LuaLaTeX, the required LaTeX packages, fonts, Python and `rsvg-convert`. A small fetcher image is also fixed by digest. Parallel downloads use the recorded archive URLs and verify every package before installation; archived versions can fall back to the dated Ubuntu snapshot. Building the environment does not resolve newer package versions. The initial environment build needs network access. There are no package installations during rendering; missing dependencies fail the build instead of silently selecting newer packages. The original SVG diagrams, including the executable-project diagram, require no browser download.
+
+Render on Linux or WSL with the host user's identity:
+
+```bash
+image_id=$(docker image inspect --format '{{.Id}}' from-concept-book:2026.10)
+docker run --rm --platform linux/amd64 --network none \
+  --user "$(id -u):$(id -g)" --env HOME=/tmp \
+  --env BOOK_IMAGE_ID="$image_id" \
+  --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+```
+
+On Windows, use PowerShell and the Windows bind mount's access controls:
+
+```powershell
+$imageId = docker image inspect --format '{{.Id}}' from-concept-book:2026.10
+docker run --rm --platform linux/amd64 --network none --env HOME=/tmp `
+  --env "BOOK_IMAGE_ID=$imageId" `
+  --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+```
+
+The common entry point, `tools/book/build.py`, copies source inputs to an isolated temporary directory and renders all configured formats. Previously rendered HTML, LaTeX intermediates and old PDFs are excluded. It checks every chapter and appendix HTML output, the complete PDF, the laboratory ZIP and the HTML PDF download link before replacing `_book/release`. A failed render keeps the previous release. Existing files directly in `_book` are unaffected.
+
+The results are `_book/release/index.html`, `_book/release/From-Concept-to-Silicon.pdf` and `_book/release/downloads/hardware-design-labs.zip`. The HTML sidebar exposes the PDF download. `build-manifest.json` records the Git revision, whether tracked local sources were modified, the image identity, installed package versions, tool versions, source hashes and output hashes. Local edits are useful for previews but do not constitute a validated published revision. Reproducibility here means rebuilding the recorded source with the recorded environment; identical PDF bytes are not promised, because metadata and renderer timestamps can differ. Preserve the image with `docker save` when archiving a course release.
+
+### Publication gate and failure handling
+
+`publish.yml` calls `labs.yml` as a reusable workflow using the same repository commit. Publication follows this dependency chain:
+
+1. **Validate:** recipe contracts, automatic labs, negative tests, pinned Wally accelerator firmware, real Wally divider exploration and verification evidence must succeed.
+2. **Build:** the offline environment produces and checks HTML, PDF and figures from that revision. Actions retains the PDF and build manifest as a downloadable artifact.
+3. **Deploy:** only a successful build and validation on `main` can upload the complete release to GitHub Pages. Pull requests run validation and construction without deploying. Manual publication also requires validation; it does not bypass the gate.
+
+Select **GitHub Actions** as the repository's Pages source. If a check fails, inspect the failed job and its laboratory evidence or render log; fix the source and rerun the workflow. Do not publish an old output directory to conceal the failure. The Docker build may take several minutes on a fresh runner because it installs the PDF toolchain. The publication gate checks the supplied executable experiments, not completion of every guided FPGA, ASIC or manufacturing exercise.
+
+The workflow mechanism and book download settings follow the [GitHub reusable-workflow documentation](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) and [Quarto book-output documentation](https://quarto.org/docs/books/book-output.html). SVG conversion follows [Quarto's PDF guidance](https://quarto.org/docs/output-formats/pdf-basics).
