@@ -434,3 +434,7 @@ Then insert one-entry elastic buffers in a communication path. Compare the forwa
 ## Connection to later chapters
 
 The SystemVerilog chapter defines clocked RTL semantics; this chapter supplies the system-level timing contract. The cocotb and Verilator chapters verify the edge behavior in simulation. The FPGA timing chapter applies constraints to a selected board and device. The OpenROAD chapter develops SDC, STA, CTS and post-route timing in an ASIC context, while LibreLane packages those activities into a reproducible flow. Carry the same clock/reset table and constraint-review discipline through all of them.
+
+### Verification of clock and reset contracts
+
+Apply the domain and timing methodology in @sec-verification-methodology. Maintain a clock/reset/crossing inventory, separate CDC structure from protocol correctness, and identify independent reset sequencing as an RDC obligation. Vary clock phases/ratios in digital tests, check pulse capture and reset release, and review synchronization placement and timing constraints. Those tests do not measure analog metastability or MTBF. Static timing needs actual min/max paths, generated clocks, exceptions and operating corners; an illustrative period is an input requirement rather than an achieved frequency.

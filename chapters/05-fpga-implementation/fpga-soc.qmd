@@ -37,6 +37,11 @@ Treat the following claims differently:
 
 The documented branch builds and programs a full open bitstream on Nexys Video and reports timing at 40 MHz. At the stated snapshot, DDR3 hardware bring-up remains unresolved: the LiteDRAM service CPU does not yet execute its initialization firmware, so `init_done` and `init_error` stay low. This is valuable engineering information, not a failure to conceal. The book distinguishes a generated bitstream from a validated external-memory system [@cvwLiteDram].
 
+### Board validation is an additional integration level
+
+The methodology in @sec-verification-methodology adds physical programming, oscillator/reset, I/O, memory-controller and firmware checks after RTL and routed-design checks. Record board revision, bitstream hash, clock/voltage conditions and the expected observable result. Begin with a small known-good interface before a full workload, then test timeouts and recovery. The Wally AXI/DMA simulation fixture supplies useful functional tests but does not contain this chapter's real board fabric or establish DDR3 calibration/timing. FPGA operation also does not qualify an ASIC's layout or fabrication test.
+
+
 ## Implementation
 
 ### Repository and board target

@@ -343,7 +343,7 @@ A level request remains active until its condition is removed. An edge detector 
 
 ### Machine-mode architectural state
 
-The examples use one hart in M-mode with nested interrupts disabled. Supervisor delegation and OS scheduling are beyond this initial integration.
+The examples use one hart in M-mode with nested interrupts disabled. @sec-privileged-mmu develops supervisor delegation and exception handling; OS scheduling is beyond this initial integration.
 
 | CSR/field | Role |
 |---|---|
@@ -362,6 +362,11 @@ Hardware records cause/PC, updates privilege and enables, and redirects executio
 Direct `mtvec` sends all traps to one base. Vectored mode uses cause-derived offsets for interrupts while exceptions still enter at the base. The examples use direct mode. A `wfi` loop must recheck its work condition; waiting does not replace a correct event/enable contract.
 
 For a pipeline, a precise trap must avoid unintended younger effects and duplicate older operations. An MMIO store already accepted by a device may be irreversible. Bus ownership and trap control must therefore agree about when an instruction can be interrupted or resumed.
+
+### Bus and interrupt verification at two boundaries
+
+Apply @sec-verification-methodology first to each endpoint/adapter, then to the assembled address map and interrupt route. Independently monitor channel acceptance, retained payloads, IDs/order, byte strobes, error responses and outstanding capacity. Exercise AW/W arrival orders, full-range address decoding, burst boundaries where supported and reset with pending traffic. For interrupts, separate source-level assertion/acknowledgement from controller priority, masking, claim/complete and CPU trap entry/return. The executable project's direct `MExtInt` test does not establish PLIC behavior or bus arbitration in a complete SoC.
+
 
 ## Implementation
 

@@ -264,3 +264,7 @@ If numbers differ, first check that the two builds use the same cache, branch-pr
 7. Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR reads explicitly.
 
 The result is a PMU that is useful at both stages: rich internal evidence during Wally simulation and a smaller, architecturally documented measurement service on actual FPGA hardware.
+
+### Verify events separately from architectural correctness
+
+The performance methodology in @sec-verification-methodology requires defined event semantics, counter width/overflow, inhibition, privilege access and measurement boundaries. Use a short workload with independently predictable events, including stalls/flushes, and check whether speculative work or retired work is counted. Match configuration and start/stop windows when comparing variants. Spike/Sail numerical agreement does not establish Wally cycle/cache/predictor counts, and simulation-only observation does not prove that synthesized hardware exposes the same PMU interface.

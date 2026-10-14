@@ -423,3 +423,7 @@ Construct a paper model of a four-instruction window for BOOM or XiangShan. Assi
 Select a real objective—UART controller, DSP-oriented embedded SoC or Linux-capable prototype. Build a one-page requirements table and a two-page evidence summary for two plausible cores. Include a valid software test, achieved implementation metrics if available, integration effort and unresolved risks. Conclude with a justified selection and name the measurement that could most readily overturn it.
 
 Across all experiments, preserve the exact configuration, tool versions, commands, input images, expected outputs and observed results. This turns a survey of architectures into a repeatable engineering comparison.
+
+## Comparing verification maturity across cores
+
+Use @sec-verification-methodology to compare evidence as well as architecture. Identify the exact generated/elaborated configuration, available unit/ISA/system regressions, retirement comparison, coverage and physical validation. An open source tree or a booting operating system does not by itself establish equivalent qualification across cores. Chisel generation adds a representation boundary: preserve generator inputs and emitted RTL identity, then check the resulting hardware contract. Out-of-order cores require commit-aligned checking, wrong-path side-effect suppression, dependency recovery and ordered memory effects; the reduced Wally project's single-outstanding DMA tests do not cover those mechanisms.

@@ -1,0 +1,222 @@
+# Hardware System Design Coursework {#sec-hsd-coursework}
+
+This appendix translates the 12-week HSD itinerary into practical activities, observable evidence and per-deliverable rubrics. It implements RA5–RA8 and the course contents stated in the Introduction. Activity durations, review dates and scoring criteria are teaching proposals; final course-mark weights and reassessment rules belong to the approved assessment guide.
+
+## Activities and workload
+
+The semester uses one project backbone: a reusable AXI/DMA accelerator in a Wally-based virtual platform. Practices develop parts of the same deliverable. Reference examples establish the environment; assessed work adds a student-defined implementation, check, property, integration or analysis. Preserve the identity of reference and student sources.
+
+| Activity | Prerequisites | Supervised / autonomous / total hours | Outcome evidence |
+| --- | --- | --- | --- |
+| P0: diagnostic and reproduction | Basic digital logic and source editing | 1 / 3 / 4 | Readiness and a reference run |
+| P1: specification and reusable arithmetic RTL | P0; Foundations reading | 2 / 10 / 12 | RA5, RA6 |
+| P2: independent verification | P1 contract | 2 / 12 / 14 | RA8 |
+| P3: AXI control and DMA integration | P1/P2; bus and ownership contracts | 2 / 12 / 14 | RA5, RA6, RA8 |
+| P4: formal verification and security | P2/P3; provisioned formal environment | 4 / 12 / 16 | RA7, RA8 |
+| P5: implementation and strengthened IP | Stable RTL/tests; synthesis/VLSI reading | 2 / 12 / 14 | RA6, RA7 |
+| Project integration, reviews and defence | Progressive use of P1–P5 | 5 / 31 / 36 | RA5–RA8 |
+| **Total practical/project work** | | **18 / 92 / 110** | |
+
+Add 18 supervised lecture/seminar hours and 22 autonomous preparation/reading hours: the planning total is 150 hours, with 36 supervised and 114 autonomous. The average over 12 weeks is 12.5 hours. Practice estimates include debugging and writing evidence. Project hours cover additional integration, measurement and packaging, without counting the same practical submission twice.
+
+Before each review, students submit a compact decision record: what changed, which requirement it addresses, the evidence obtained, remaining questions and the next experiment. A review focuses on those questions and the student's reasoning. Teams can divide implementation work, but every member must explain evidence for all four learning outcomes.
+
+## Evidence and rubric levels
+
+Connect each requirement to its implementation, check and result. A useful matrix has columns for requirement ID, design mechanism, test/property, artifact and verification scope. Record source/configuration hashes, tool identities and actual seeds. Distinguish simulation, bounded checking, proof under stated assumptions, synthesis and physical implementation.
+
+Use these common performance levels for each rubric dimension. Its score is the achieved level divided by four, multiplied by the dimension's maximum points. Half-levels can be used if the teaching guide permits them.
+
+| Level | Interpretation |
+| --- | --- |
+| 0 | Required evidence is missing, unusable or contradicts the claim |
+| 1 | Partial work with major contract, correctness or reproducibility gaps |
+| 2 | Adequate result within the agreed scope; important limits identified |
+| 3 | Correct repeatable result with justified decisions and clear explanation |
+| 4 | Strong independent analysis, adversarial checks and supported boundary-case handling |
+
+The 100-point rubrics rate each deliverable; they are not the course's final assessment percentages. Keep failed and incomplete requirements visible. A timeout, unknown formal result or missing physical check must not be relabelled as passed to obtain a complete-looking report.
+
+## P0: diagnostic and reproducibility
+
+Run `labs/run.py list`, `doctor` and `check`, then selected `foundations` and `verilator` or `cocotb` reference activities. Explain one width/signedness case and a reset or handshake waveform. Submit environment/source identities, a reference result and a short preparation plan.
+
+This is a formative readiness check with no proposed numerical mark. The instructor assigns focused reinforcement and resolves environment access before later activities depend on it. Passing unchanged references does not demonstrate implementation of the final accelerator.
+
+## P1: specification and reusable arithmetic RTL
+
+Specify and implement the dot-product datapath described below. Define signed sample interpretation, accumulation width, reset, input/output ownership, legal parameters and result validity. Separate the arithmetic unit from bus-specific control so it can be reused through another wrapper.
+
+Deliver requirements, an interface/state diagram, RTL, source manifest and basic directed checks. Demonstrate two legal configurations, such as different maximum vector lengths or processing schedules, while preserving the numerical contract.
+
+| Rubric dimension | Points |
+| --- | ---: |
+| Complete numerical/interface requirements | 25 |
+| Correct arithmetic, widths, state and reset | 30 |
+| Reusable contract and supported configurations | 25 |
+| Reproduction and design explanation | 20 |
+| **Total** | **100** |
+
+## P2: independent tests and failure diagnosis
+
+Develop an independent dot-product oracle and a requirement-driven testbench. Include zero, extrema, mixed signs, one element, maximum length, invalid descriptors and applicable stalls. Add reproducible random vectors after directed tests are understood. Compare complete results and status, not only a done pulse.
+
+Introduce one defect in a separate variant and show that unchanged checking detects it. Minimize the failing sequence and preserve a regression after repair. Submit the model/tests, requirement-result matrix and one explained failing/passing comparison. State coverage limits.
+
+| Rubric dimension | Points |
+| --- | ---: |
+| Test plan and independent oracle | 30 |
+| Boundaries, reset/error cases and assertions | 25 |
+| Detected defect, minimized case and regression | 25 |
+| Repeatability and evidence interpretation | 20 |
+| **Total** | **100** |
+
+## P3: AXI control and DMA integration
+
+Implement the AXI4-Lite register interface and the bounded AXI4 DMA engine. Reuse arithmetic from P1 and checking from P2. Use the provisioned bus/memory harness before involving processor firmware. Exercise independent AW/W arrivals, delayed R/B responses and backpressure. Separate request acceptance, memory effects and completion.
+
+Deliver module/platform diagrams, register/address contracts, RTL, a memory scoreboard, transaction traces and a second configuration or wrapper. Test that an invalid descriptor issues no DMA request, that responses are consumed correctly, and that DONE follows successful result writes.
+
+| Rubric dimension | Points |
+| --- | ---: |
+| Control/data interface and integrated behavior | 30 |
+| AXI ownership, retained payload and completion semantics | 30 |
+| Demonstrated reuse and descriptor boundaries | 20 |
+| Integration tests and explanation | 20 |
+| **Total** | **100** |
+
+The `transport` and `mmio` references provide reusable concepts and tested starting units. Their passing unit tests do not certify the new AXI master or its full-system integration.
+
+## P4: formal verification and security evaluation
+
+Formal verification and security evaluation are required by RA8. Use a small selected part of the accelerator with an instructor-provisioned formal environment, solver and starter harness. SymbiYosys distinguishes bounded checking, proof and cover tasks; select and report the corresponding scope [@hsdFormalTasks]. The dot-product reference now includes Yosys SAT bounded checks in the small container, with a reachable DONE witness and an early-completion counterexample. Its stated bounds do not establish an unbounded proof; SymbiYosys/solver extensions still require separately provisioned tools. See @sec-executable-project.
+
+Complete at least two meaningful properties: for example, stable AXI request payload while stalled, no DMA request for an invalid descriptor, or DONE only after successful result completion. Separate environment assumptions from design obligations and define initial/reset state. For bounded checking, report the bound; for an unbounded proof, report the model and assumptions. Use reachability/cover evidence to show that the interesting traffic is permitted. An environment that assumes away every request gives little useful evidence.
+
+Define assets and trust boundaries, with an adversary able to supply descriptors through the control interface but unable to alter the trusted DMA window. Evaluate at least two denied cases plus an allowed control case: an address outside the window, a wrapping range, an overlapping result buffer or a configuration write while busy. Check both status and absence of unauthorized memory effects.
+
+Submit the threat model, properties, harness/configuration, completed results, reachability evidence, a deliberately failing variant/counterexample and its repaired regression. Record limits on reset-data confidentiality and any system protection outside the IP's responsibility.
+
+| Rubric dimension | Points |
+| --- | ---: |
+| Meaningful properties and sound assumptions/reset model | 25 |
+| Completed formal results and reachability evidence | 25 |
+| Assets, trust boundaries and enforceable policy | 20 |
+| Adversarial tests and repaired regression | 20 |
+| Reproduction and limitations | 10 |
+| **Total** | **100** |
+
+Before P4, the instructor validates the supplied bounded harness and reporting convention. `run all` executes the stated bounded checks; it does not prove the accelerator correct for unbounded traces or all configurations. Add assumptions, witnesses and remaining obligations to the common verification plan in @sec-verification-methodology.
+
+## P5: implementation, analysis and IP strengthening
+
+Synthesize the stable IP and review storage, arithmetic mapping, clocks, reset and constraints. Interpret timing/resource results. Use provisioned physical tools or clearly identified instructor-provided reports to assess technology views, corners and physical-check coverage. Identify test controllability/observability, scan or memory-test needs, and test-mode clock/reset interactions.
+
+Analyze reliability through backpressure, errors, reset sequencing and partial result writes. Explain any CDC mechanism if clocks differ. Digital stimulus alone does not quantify metastability reliability. Submit the view/constraint inventory, implementation reports, DFT/manufacturability/reliability review and reproduction instructions. Mark views as produced, provided, required but missing, or not applicable with rationale.
+
+| Rubric dimension | Points |
+| --- | ---: |
+| Implementation/constraint evidence and interpretation | 25 |
+| Testability and manufacturing-check analysis | 25 |
+| Reliability/error behavior and mitigations | 20 |
+| Consistent IP views, models and documentation | 30 |
+| **Total** | **100** |
+
+RA7 requires a supported analysis. Physical board access and fabrication are extension milestones; distinguish student-generated results, supplied evidence and proposals.
+
+## Final project: a Wally-controlled AXI/DMA accelerator
+
+### Required algorithm and reusable structure
+
+Implement
+
+$$
+r=\sum_{i=0}^{N-1}a_i b_i,\qquad 1\leq N\leq256.
+$$
+
+The baseline has `MAX_LENGTH=256`. Reuse variants may select a smaller positive maximum, with legal jobs satisfying `1 <= LENGTH <= MAX_LENGTH <= 256`. Each operand occupies a 32-bit memory word; its low 16 bits encode a signed two's-complement sample and its upper bits are ignored. Use an exact signed 64-bit accumulator/result. With this length limit, even 256 products of the maximum-magnitude input values fit in the accumulator. There is no rounding, saturation or fixed-point rescaling in the required contract.
+
+Store the result as two 32-bit words, low word first, in the little-endian shared memory. Define arithmetic, register handling and DMA as separate modules with documented internal interfaces. Support a configurable maximum length and trusted address-window bounds. Those bounds must not be writable through the untrusted descriptor interface.
+
+A simple independent software model interprets the low 16 bits explicitly, accumulates the products in a sufficiently wide type and compares both result words. Reuse the same dataset for software and hardware measurements. A FIR engine, packed samples, vector output or alternative numerical format is an extension with a new checked contract.
+
+### Platform provided before teaching
+
+Wally's EBU uses AHB in the reading configuration of this book. The course platform must therefore provide an AHB-to-AXI4-Lite path for CPU control, and a shared-memory connection for CPU and AXI4 DMA access. The adapter, interconnect and memory architecture are explicit platform inputs; do not assume that renaming AHB signals creates a valid AXI interface.
+
+The executable reference in @sec-executable-project supplies a working single-hart virtual platform, boot/driver scaffold, accelerator address slot, DMA window, bus/memory model and coordinated reset contract. The explicit `dotproduct-wally` entry uses pinned real Wally RTL and demonstrates polling and machine-external interrupt completion. Instructors validate that platform for the cohort before teaching; a full uncore/PLIC, physical arbitration and cached integration remain extensions.
+
+The required baseline uses uncached shared buffers or a documented D-cache-disabled configuration. This avoids introducing an unimplemented coherence mechanism into the first prototype. CPU PMP does not automatically constrain a separate DMA master; the IP's range checks and platform access policy must protect its transactions. Cached buffers and OS-controlled DMA are extensions that add ownership and maintenance requirements.
+
+### Control plane: AXI4-Lite
+
+Use a 32-bit AXI4-Lite slave with independent read/write channels, byte strobes and retained responses. The CPU programs a descriptor, starts the job, observes status and acknowledges completion. Proposed register offsets within the assigned peripheral slot are:
+
+| Offset | Register | Access/contract |
+| --- | --- | --- |
+| `0x00` | CTRL | START and interrupt-enable control |
+| `0x04` | STATUS | Read-only BUSY, DONE, ERROR and IRQ_PENDING |
+| `0x08` | SRC_A | First operand-array byte address |
+| `0x0c` | SRC_B | Second operand-array byte address |
+| `0x10` | DST | Eight-byte result destination |
+| `0x14` | LENGTH | Number of operand pairs |
+| `0x18` | ERROR_CODE | Read-only descriptor/read/write error classification |
+| `0x1c` | IRQ_ACK | Write-one-to-clear pending interrupt |
+
+Latch the descriptor on an accepted START. Validate it before issuing traffic. While busy, reject descriptor writes and further START commands with a defined slave-error response and unchanged active configuration. Status reads remain available. Document byte masks and invalid/read-only register handling.
+
+An accepted new START clears the previous completion/error/pending state. DONE is set only after both result writes have received successful responses. An error terminates the job with an error code and no DONE success claim. IRQ_PENDING is raised on terminal completion/error when enabled; acknowledgement clears the pending indication. Polling is the first integration milestone, followed by the platform's documented interrupt input/PLIC route.
+
+### Data plane: a bounded AXI4 DMA master
+
+The required master uses 32-bit data, a fixed ID and single-beat INCR transactions: length zero, beat size four bytes, and the proper read/write end-of-transfer signaling. Keep at most one DMA transaction outstanding in this baseline. Issue reads for A and B, accumulate the pair, then advance; write the two result words after all pairs have completed.
+
+Single-beat transactions are valid AXI4 operations and allow the course to focus on ownership, independent channels, error handling and integration. Bursts and concurrent requests are performance extensions. A burst extension must add boundary, response-capacity, ID/order and final-beat checks rather than only increase a length field.
+
+Require source addresses aligned to four bytes and destination aligned to eight. Validate complete source ranges of `4*N` bytes and a destination range of eight bytes against the trusted window. Use widened arithmetic to detect wraparound. Reject zero/excessive lengths, bad alignment, invalid ranges and a destination overlapping either source range before sending AR/AW traffic. The two read-only source ranges may overlap.
+
+Hold request payloads while stalled and consume every accepted response exactly once. Handle non-OKAY read/write responses, stop new work on error and drain any already accepted transaction. Define coordinated reset with the platform. Already applied memory writes persist; resetting interface state cannot undo them.
+
+The two result writes are not an atomic 64-bit store. A fault/reset can leave a partial result. Software accepts the result only after observing successful completion under the stated memory/ordering contract. This is a reliability and verification requirement, not merely a status-bit convention.
+
+### Required integration evidence and measurements
+
+The CPU prepares buffers, programs the descriptor, starts the accelerator, waits through polling, and compares the result with software. A second test uses the documented interrupt path. Keep firmware ISA/ABI, memory attributes, bus addresses and driver ordering in the platform record.
+
+Measure end-to-end latency for selected lengths, including setup, DMA and completion handling. Compare with software on the same Wally configuration and dataset. Report bus traffic, cycles and synthesis resources; distinguish a simulated clock from achieved physical timing. An explained lack of speedup is a valid result, especially for small jobs or a conservative single-transaction DMA engine.
+
+## Project reviews, deliverables and rubric
+
+| Review | Week | Evidence and decision |
+| --- | ---: | --- |
+| Specification | 2 | Numerical/interface contract, assets and feasible implementation scope |
+| Architecture/RTL | 5 | Module boundaries, reusable parameters, AXI/DMA path and initial integration |
+| Verification/security | 7 | Tests, completed formal checks, threat model and remaining gaps |
+| Release candidate | 10 | Stable configuration, implementation/DFT/reliability review and view inventory |
+| Final demonstration/defence | 12 | Reproducible Wally-controlled accelerator and individual RA5–RA8 evidence |
+
+An IP release contains requirements and interface/register documentation, RTL/manifests, reference/integration models, tests, formal harness/configuration/results, constraints, generated/provided views, security/failure reviews and an evidence index. Record missing views explicitly. Preserve origin and licensing information for reused components and identify environment/source hashes for reproduction. Large results can be immutable CI/release artifacts referenced from the package.
+
+| Project rubric dimension | Points |
+| --- | ---: |
+| Specification and demonstrated Wally/platform integration — RA5 | 20 |
+| Reusable architecture, parameters and pattern decisions — RA6 | 20 |
+| Tests and completed formal evidence — RA8 | 20 |
+| Testability, manufacturability and reliability analysis — RA7 | 15 |
+| Security policy, evaluations and justified strengthening — RA7/RA8 | 15 |
+| Consistent package, reproduction and individual defence | 10 |
+| **Total** | **100** |
+
+The acceptance review requires correct arithmetic, CPU control, functioning bounded DMA, an interrupt completion case, demonstrated reuse, completed formal verification within stated scope, security evaluations and the RA7/IP-package review. Failed or incomplete requirements remain explicit and follow the approved assessment rules.
+
+Teams submit a contribution matrix. Each student explains a system transaction, a reuse decision, a formal/security result and an implementation/failure risk. Version history supports attribution; it is not a measure of understanding by itself.
+
+## Verification plan and closure across P1–P5
+
+Use @sec-verification-methodology as the shared process. P1 establishes observable requirement IDs and an independent model; P2 adds acceptance-based scoreboards, directed/random tests and coverage obligations; P3 adds firmware, protocol-adapter and interrupt evidence; P4 states formal bounds/assumptions, antecedent witnesses, counterexamples and the threat model; P5 distinguishes equivalence, timing, physical and manufacturing-test obligations. Preserve each changed configuration's evidence instead of inheriting a baseline PASS.
+
+The plan and evidence collector under `labs/verification/` keep applicable results and gaps explicit. It rejects stale source/artifact identities, failed command records and missing required checker completions. Its requirement mapping is not a measured functional cross-coverage database. Final review explains unresolved results, justified exclusions and the checked representation/operating scope of every implementation claim. Student-produced, instructor-provided and proposed physical evidence remain separately identified.
+
+## Optional architectural-exploration extension
+
+Use @sec-architecture-exploration and `labs/11-dse/` to extend a stable project with a controlled design choice. Establish the common binary/input/ROI and verified baseline before optimizing, and distinguish the real divider-cycle results from the illustrative physical trade-off. Additional FPGA or simulator research is an extension to the 12-week budget; the required verification/security and IP-release obligations remain in scope.

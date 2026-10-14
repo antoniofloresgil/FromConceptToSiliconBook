@@ -22,6 +22,35 @@ jobs:
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026
       - name: Confirm tests reject transaction loss
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
+      - name: Confirm project tests reject arithmetic and completion defects
+        run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
+      - name: Acquire pinned Wally source
+        uses: actions/checkout@v6
+        with:
+          repository: openhwgroup/cvw
+          ref: 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c
+          path: labs/build/wally-source
+          persist-credentials: false
+      - name: Run real Wally accelerator firmware offline
+        run: >-
+          docker run --rm --network none --user "$(id -u):$(id -g)"
+          --env HOME=/tmp --env WALLY_ROOT=/cvw
+          --env LAB_BUILD_DIR=/work/labs/build/wally-platform
+          --mount "type=bind,source=$PWD,target=/work"
+          --mount "type=bind,source=$PWD/labs/build/wally-source,target=/cvw,readonly"
+          from-concept-labs:ci python labs/run.py run dotproduct-wally
+      - name: Validate DSE analysis contracts
+        run: |
+          python labs/11-dse/test_analysis.py
+          python labs/11-dse/analyse.py labs/11-dse/illustrative.csv --output-dir labs/build/dse-analysis
+      - name: Run real Wally divider exploration offline
+        run: >-
+          docker run --rm --network none --user "$(id -u):$(id -g)"
+          --env HOME=/tmp --env WALLY_ROOT=/cvw
+          --env LAB_BUILD_DIR=/work/labs/build/dse-platform
+          --mount "type=bind,source=$PWD,target=/work"
+          --mount "type=bind,source=$PWD/labs/build/wally-source,target=/cvw,readonly"
+          from-concept-labs:ci python labs/11-dse/run_wally.py --seed 2026
       - name: Record container identity
         if: always()
         run: |
@@ -31,6 +60,10 @@ jobs:
           else
             printf '%s\n' '{"status":"unavailable","image":"from-concept-labs:ci"}' > labs/build/container.json
           fi
+      - name: Check evidence freshness and requirement scope
+        run: |
+          python labs/verification/test_evidence.py
+          python labs/verification/evidence.py --unit-report labs/build/report.json --system-report labs/build/wally-platform/report.json --output labs/build/verification-evidence.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -38,7 +71,24 @@ jobs:
           path: |
             labs/build/report.json
             labs/build/container.json
+            labs/build/verification-evidence.json
             labs/build/**/command-*.log
             labs/build/cocotb/results.xml
             labs/build/synthesis/accumulator.json
             labs/build/synthesis/accumulator-netlist.v
+            labs/build/dotproduct/dotproduct.json
+            labs/build/dotproduct/*.log
+            labs/build/dotproduct/done-witness.vcd
+            labs/build/dotproduct-negative/negative-results.json
+            labs/build/dotproduct-negative/**/*.log
+            labs/build/dotproduct-negative/**/engine-counterexample.vcd
+            labs/build/wally-platform/report.json
+            labs/build/wally-platform/dotproduct-wally/vendor/source-identity.json
+            labs/build/wally-platform/dotproduct-wally/firmware.elf
+            labs/build/dse-platform/dse/results.json
+            labs/build/dse-platform/dse/results.csv
+            labs/build/dse-platform/dse/vectors.json
+            labs/build/dse-platform/dse/vendor/source-identity.json
+            labs/build/dse-platform/dse/firmware.elf
+            labs/build/dse-analysis/summary.json
+            labs/build/dse-analysis/pareto.svg

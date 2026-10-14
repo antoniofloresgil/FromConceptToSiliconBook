@@ -67,6 +67,8 @@ A stall holds selected pipeline registers and prevents side effects from being d
 
 ## What the Simplified Version Omits
 
+The privileged state, Sv32 translation and precise page faults omitted here are developed in @sec-privileged-mmu. Its executable example requires a full core/reference model with the selected privileged capabilities.
+
 The full CORE-V Wally project contains many optional and privileged capabilities. This pedagogical core excludes them intentionally:
 
 - **Interrupts and traps:** no asynchronous interrupt sampling, trap vector, `mepc`/`mcause` state or return instruction.
@@ -294,3 +296,7 @@ The repository's declared RTL license is Solderpad Hardware License 2.1, with th
 Each report should include the RTL revision, selected configuration, loader/firmware convention, minimal disassembly, annotated waveforms and pass/fail criteria. These are integration exercises; reading the diagrams alone does not validate a board or operating-system configuration.
 
 The simplified pipeline establishes instruction timing and hazards. The complete-SoC view adds memory ownership, device effects and privileged redirection. The following chapters develop these contracts with simulation tools and detailed subsystem implementations.
+
+## Verification scope of this teaching core
+
+Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt/trap/privileged machinery is deliberately omitted, so a passing teaching-core test cannot establish those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios; neither experiment is a complete architectural or microarchitectural qualification of every Wally configuration. A retirement comparator and broader feature/coverage plan remain explicit integration work.

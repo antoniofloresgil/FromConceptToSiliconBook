@@ -183,6 +183,44 @@ def run_lab(name, session):
         cases = ET.parse(result).getroot().findall(".//testcase")
         if not cases or any(case.find("failure") is not None or case.find("error") is not None or case.find("skipped") is not None for case in cases):
             raise RuntimeError("cocotb produced no successful complete test suite")
+    elif name == "dotproduct":
+        session.execute([sys.executable, folder / "vectors.py", session.directory, session.seed])
+        for maximum in (256, 16):
+            session.execute(["iverilog", "-g2012", "-I", folder, "-s", "tb_dotproduct",
+                             f"-DTEST_MAX_LENGTH={maximum}", "-o", session.directory / "dotproduct.vvp",
+                             *rtl("10-dotproduct", session), folder / "axi_ram_model.sv", folder / "tb_dotproduct.sv"])
+            session.execute(["vvp", session.directory / "dotproduct.vvp", f"+SEED={session.seed}"])
+        session.execute(["iverilog", "-g2012", "-I", folder, "-s", "tb_bridge",
+                         "-o", session.directory / "bridge.vvp", *rtl("10-dotproduct", session),
+                         folder / "axi_ram_model.sv", folder / "tb_bridge.sv"])
+        session.execute(["vvp", session.directory / "bridge.vvp"])
+        files = " ".join('"'+p.as_posix()+'"' for p in rtl("10-dotproduct", session))
+        session.execute(["yosys", "-Q", "-T", "-p", f'read_verilog -sv {files}; synth -top dotproduct_axi; check -assert; select -assert-none t:$dlatch; stat; write_json dotproduct.json'])
+        session.execute([sys.executable, folder / "formal/check.py", session.directory,
+                         session.override or folder / "rtl"], timeout=600)
+    elif name == "dotproduct-wally":
+        wally = os.environ.get("WALLY_ROOT")
+        if not wally:
+            raise RuntimeError("Set WALLY_ROOT to a clone containing the pinned Wally revision; see labs/10-dotproduct/README.md")
+        vendor = session.directory / "vendor"
+        session.execute([sys.executable, folder / "prepare_wally.py", "export", wally, vendor])
+        firmware = folder / "firmware"
+        elf = session.directory / "firmware.elf"
+        session.execute(["clang", "--target=riscv32", "-march=rv32im_zicsr", "-mabi=ilp32",
+                         "-O2", "-ffreestanding", "-fno-builtin", "-fno-stack-protector",
+                         "-msmall-data-limit=0", "-Wall", "-Wextra", "-Werror", "-nostdlib",
+                         "-fuse-ld=lld", "-Wl,--no-relax", "-Wl,-T,"+str(firmware / "link.ld"),
+                         firmware / "start.S", firmware / "main.c", "-o", elf])
+        session.execute([sys.executable, folder / "prepare_wally.py", "hex", elf, session.directory / "firmware.hex"])
+        package = vendor / "src/cvw.sv"
+        sources = [package, *[p for p in sorted((vendor / "src").rglob("*.sv")) if p != package]]
+        objects = session.directory / "obj_dir"
+        session.execute(["verilator", "--binary", "--timing", "-j", "2", "-Wno-fatal",
+                         "--top-module", "tb_wally_dotproduct", "--Mdir", objects,
+                         "-I"+str(vendor / "config/rv32imc"), "-I"+str(vendor / "config/shared"),
+                         "-I"+str(folder), *sources, *rtl("10-dotproduct", session),
+                         folder / "axi_ram_model.sv", folder / "tb_wally_dotproduct.sv"], timeout=600)
+        session.execute([objects / "Vtb_wally_dotproduct", f"+SEED={session.seed}"], timeout=300)
     elif name == "synthesis":
         session.sv("tb_implementation", [*rtl("07-implementation", session), folder / "tb_implementation.sv"])
         for source in [*rtl("01-foundations"), *rtl("02-memory"), *rtl("03-transport"), *rtl("04-mmio"), *rtl("07-implementation", session)]:
@@ -238,7 +276,7 @@ def pack():
         for path in (ROOT / base).rglob("*"):
             if not path.is_file() or path.is_symlink() or any(part in {"build", "work", "__pycache__", "sim_build", "obj_dir", ".venv", "runs"} for part in path.relative_to(ROOT).parts):
                 continue
-            if path.suffix in {".vcd", ".fst", ".pyc", ".html", ".pdf", ".o"}:
+            if path.name == "results.xml" or path.suffix in {".vcd", ".fst", ".pyc", ".html", ".pdf", ".o", ".elf", ".dump", ".sig", ".log", ".vvp"}:
                 continue
             paths.append(path)
     paths += list((ROOT / "appendices").glob("*.qmd"))
@@ -276,7 +314,7 @@ def main():
     elif args.command == "pack":
         pack()
     elif args.command == "run":
-        if args.rtl_dir and args.lab not in {"foundations", "memory", "transport", "mmio", "synthesis"}:
+        if args.rtl_dir and args.lab not in {"foundations", "memory", "transport", "mmio", "synthesis", "dotproduct", "dotproduct-wally"}:
             parser.error("--rtl-dir requires one specific RTL unit lab, not 'all'")
         names = [name for name, lab in LABS.items() if lab["mode"] == "automatic"] if args.lab == "all" else [args.lab]
         return run(names, args.seed, args.rtl_dir.resolve() if args.rtl_dir else None)

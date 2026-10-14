@@ -1,31 +1,116 @@
 # Introduction {.unnumbered}
 
-The book is organized into seven parts:
+This book supports **Hardware System Design (HSD)**, a compulsory 6 ECTS master's course taught in the first semester over **12 teaching weeks**. Its central activity is the design of reusable hardware IP: starting from a system specification, implementing RTL and integrating it into a platform, then evaluating and strengthening the resulting deliverable.
 
-| Part | Scope |
+CORE-V Wally is the main processor case study. The smaller RTL examples provide manageable designs for problem-based learning and project work in virtual environments. Lectures and design clinics connect those examples to engineering decisions about interfaces, reusable patterns, verification, testability, manufacturability, security and reliability. Students prepare selected material independently and bring their design decisions and failures to the supervised sessions.
+
+The course identity, contents, duration and RA5–RA8 below come from the supplied course information. The workload allocation, weekly activities and rubrics are a **proposed teaching implementation**. They can be aligned with the approved assessment and contact-hour rules while retaining the 12-week itinerary and its emphasis on student autonomy.
+
+## Learning outcomes and observable evidence
+
+The supplied learning outcomes are translated into English below, retaining their RA codes:
+
+| Code | Learning outcome from the course specification |
 | --- | --- |
-| I. Foundations | RISC-V ISA, SystemVerilog, and microarchitecture fundamentals |
-| II. Open-Source RISC-V Cores | CORE-V Wally as the main case study and other architectures |
-| III. Simulation and Verification | Verilator, cocotb, Spike, Sail, testing, and debugging |
-| IV. SoC Architecture | Pipelines, memories, caches, buses, interrupts, and peripherals |
-| V. FPGA Implementation | Yosys, nextpnr, timing, and SoC integration |
-| VI. ASIC Implementation | Digital VLSI fundamentals, OpenROAD, LibreLane, physical validation, DFT and fabrication preparation |
-| VII. Advanced Topics | Performance monitoring, hardware debug, accelerators, extensions, and architectural exploration |
+| RA5 | Design hardware at system level, from specifications to RTL and platform integration. |
+| RA6 | Implement reusable IP architectures and hardware design patterns. |
+| RA7 | Analyze testability, manufacturability, security and reliability in hardware designs. |
+| RA8 | Perform testing, formal verification and security evaluations of IP deliverables. |
 
-The processor case studies and simulation tools precede SoC architecture so that readers can apply them to the memory, bus, and peripheral examples before moving on to FPGA and ASIC implementation.
+Each outcome needs an observable student contribution. Executing unchanged reference examples establishes environment readiness; assessed work includes a justified design, modification, analysis or verification contribution.
 
-## Concepts
+| Outcome | Evidence expected by the end of the course |
+| --- | --- |
+| RA5 | System specification, architecture/interface diagram, synthesizable RTL and a working platform integration with traced requirements |
+| RA6 | Parameterized reusable IP, explicit timing/reset/protocol contracts, and a second configuration or integration wrapper |
+| RA7 | Supported reviews of test access, physical feasibility, trust boundaries and failure behavior, identifying assumptions and unresolved risks |
+| RA8 | Directed/random tests, completed formal verification with explicit assumptions and scope, and security evaluations tied to a threat model |
 
-The Foundations part starts with the ISA as a software-visible contract, then introduces the SystemVerilog semantics used to describe hardware. Microarchitecture connects instruction effects to datapath, control and multicycle units. Clocking and timing turn those cycle-level designs into explicit implementation obligations. Together, these chapters prepare the reader to interpret Wally before using it in simulation, SoC integration and physical implementation.
+The supplied course contents, translated into English, are:
 
-Start with the architectural and hardware principles needed to understand the topic. Distinguish architectural requirements from implementation choices.
+1. System-level design and integration, from specifications to RTL and platform integration.
+2. Hardware design patterns and reusable IP architectures.
+3. Design for testability, manufacturability, security and reliability.
+4. Testing, formal verification and security considerations.
+5. Strengthening IP designs and deliverables, including views, models and documentation.
 
-## Implementation
+These areas become connected tasks in the final IP package.
 
-Translate the principles into SystemVerilog examples and analyze real processor designs. Use CORE-V Wally as the main reference and compare other implementations where useful.
+## Entry requirements and independent preparation
 
-## Hands-on Experiments
+Students should be familiar with combinational/sequential logic, finite-state machines, basic processor organization, C and simple assembly. They should be able to edit sources and read a compiler or simulation error. Advanced privileged architecture and FPGA/ASIC implementation are developed through the course material.
 
-Apply the ideas through simulation, verification, synthesis, and measurement. Each experiment should specify prerequisites, tool versions, configuration, commands, inputs, expected results, and exercises so that readers can reproduce and explain the outcome.
+P0 diagnoses differing prior experience and identifies focused reinforcement in Foundations. Git, shell commands, Python and the container workflow are introduced as working skills before assessed tasks depend on them. The instructor prepares a saved shared environment, its version record and reference results before the course starts. The [reproduction appendix](appendices/reproducible-labs.qmd) explains the supplied environment and additional tools.
 
-The [laboratory reproduction appendix](appendices/reproducible-labs.qmd) provides a downloadable package, a shared container and a single command to run the automatic reference labs. It also identifies guided FPGA/ASIC/Wally activities and student design exercises, with their additional tools and acceptance criteria. Each automatic run records source hashes, tool versions, seeds, commands and results.
+Autonomous work has a visible structure: selected preparation, one requirement-driven artifact or experiment, and a short decision/failure record for the next review. Students choose and justify implementations within the agreed contract, use the reference tests to establish a baseline, and extend their evidence independently. Supervised time concentrates on concepts, design reviews, counterexamples and unresolved integration questions.
+
+## Use the book as a selected course route
+
+The seven parts form a reference library. The weekly itinerary selects sections that support the current design problem; it does not assign every chapter and experiment within 12 weeks.
+
+| Part | Required course use | Extension reading/work |
+| --- | --- | --- |
+| I. Foundations | RTL semantics, state/control, timing/reset contracts and design trade-offs | Additional arithmetic and circuit exercises |
+| II. Open-Source RISC-V Cores | Wally hierarchy/interface tracing and configurable-IP reasoning | Detailed comparisons of all alternative and out-of-order cores |
+| III. Simulation and Verification | Independent models, testbenches, assertions, reproducible failures and verification scope | Additional simulators and large system regressions |
+| IV. SoC Architecture | Buffering, ready/valid, memory/MMIO contracts, integration and basic protection | Full Sv32/Sv39 studies and operating-system integration |
+| V. FPGA Implementation | Synthesis, constraints and interpretation of mapping/timing evidence | Nexys Video programming and DDR3 bring-up |
+| VI. ASIC Implementation | VLSI/PPA, views, physical-flow stages, DRC/LVS, DFT and reliability/manufacturing review | Complete PDK-specific hardening and fabrication submission |
+| VII. Advanced Topics | Selected debug/security, measurement and IP-extension decisions | Full PMU redesign, DMA acceleration and broad exploration |
+
+The common methodology in @sec-verification-methodology connects requirement plans, independent checks, coverage, formal scope and release evidence across every design level.
+
+Formal verification and security evaluation are **required** by RA8 and are applied to a small understandable IP. The nine automatic labs supply simulation/synthesis starting points and bounded formal checks for the dot-product IP. The executable project in @sec-executable-project also provides the Wally firmware platform; unbounded formal extensions require an explicitly provisioned environment. The [coursework appendix](appendices/hsd-coursework.qmd) specifies its required evidence.
+
+Platform integration can be demonstrated in a simulated bus/memory/peripheral harness. Physical FPGA programming and fabricated silicon are extension milestones. Students still distinguish functional integration, synthesis, routing and fabrication evidence in the required analysis.
+
+## The 12-week itinerary
+
+Weeks are relative teaching weeks. Selected reading precedes the session, practical work continues autonomously, and project reviews recur throughout the course. The average workload is 12.5 hours per week under the planning budget below.
+
+| Week | Focus and selected reading | Autonomous work and supervised checkpoint | Outcomes |
+| --- | --- | --- | --- |
+| 1 | Course scope, environment, essential ISA/RTL and system contracts | P0 diagnostic; begin P1 requirements and select project context | Readiness; RA5, RA6 |
+| 2 | SystemVerilog, parameters, state/control and reset | P1 RTL/parameter contract; project specification review | RA5, RA6 |
+| 3 | Wally hierarchy and independent verification; Verilator/cocotb | P2 directed/random tests, minimized failure and requirement matrix | RA5, RA8 |
+| 4 | Transport pipelines, queues and memory timing contracts | Complete P2; P3 reusable pattern and stalled-request tests | RA6, RA8 |
+| 5 | MMIO, platform integration and observable side effects | P3 end-to-end scenario; project architecture/RTL review | RA5, RA6, RA8 |
+| 6 | Formal properties, assumptions, reset and counterexamples | P4 formal harness, completed checks and reachability analysis | RA8 |
+| 7 | Privilege/protection, debug access and trust boundaries | P4 security evaluations; project verification/security review | RA7, RA8 |
+| 8 | Clock/reset/CDC, Yosys and constraints | P5 synthesis, failure-path review and implementation budget | RA5, RA7 |
+| 9 | VLSI/PPA, physical views and OpenROAD/LibreLane reports | P5 manufacturability, view consistency and physical interpretation | RA6, RA7 |
+| 10 | DFT, reliability and physical validation | Complete P5; project release-candidate review | RA6, RA7, RA8 |
+| 11 | Reuse, regression and strengthened IP documentation | Second configuration/integration; autonomous fixes and reproduction clinic | RA5–RA8 |
+| 12 | Engineering demonstration and defence | Final IP package, peer review and individual defence | RA5–RA8 |
+
+Project work starts in week 1. Weeks 11–12 consolidate the agreed IP and its evidence. If additional prerequisite reinforcement is needed, narrow an extension or the project feature set while preserving formal verification, security evaluation and the RA7 review.
+
+## Workload with greater student autonomy
+
+The planning model uses **150 hours**, calculated as 6 credits at an assumed 25 hours per credit. The final institutional credit-hour/contact-hour allocation governs the teaching guide. Within this proposal, **36 hours are supervised and 114 hours are autonomous**, giving an average of three supervised and 9.5 autonomous hours per week. Autonomous work represents 76% of the planned workload.
+
+| Work category | Supervised hours | Autonomous hours | Total |
+| --- | ---: | ---: | ---: |
+| Lectures and concept seminars | 18 | 0 | 18 |
+| Focused reading and preparation | 0 | 22 | 22 |
+| Practices P0–P5 | 13 | 61 | 74 |
+| Project, reviews and defence | 5 | 31 | 36 |
+| **Total** | **36** | **114** | **150** |
+
+Supervised work can use the virtual teaching environment. Practice/project estimates include design, debugging, analysis and preparation of evidence. Reuse practice artifacts in the project; its hours cover the additional integration, verification, review and packaging work rather than charging twice for the same submission.
+
+The [coursework appendix](appendices/hsd-coursework.qmd) defines prerequisites, durations, deliverables and per-activity rubrics. These scores support consistent review; their contribution to the final course mark follows the approved assessment rules. P0 is a formative diagnostic with no proposed numerical mark.
+
+## A reusable IP project as the course backbone
+
+The final project is a **reusable accelerator IP with AXI control and DMA**, integrated into a Wally-based virtual platform. The required algorithm is a bounded signed dot product. AXI4-Lite provides the control/status interface; an AXI4 master reads operands and writes the result through DMA. Start with one outstanding single-beat operation. Bursts, overlapping requests and more elaborate algorithms are extensions.
+
+Wally's EBU uses AHB in the configuration studied in this book. The instructor-provisioned platform therefore needs a documented AHB-to-AXI control adapter and a shared-memory path accessible to both Wally and the DMA master. Those platform components, the boot/driver scaffold, memory map and reset contract are established before the project begins. Students design and validate the accelerator rather than having to debug an unfinished platform within the 12-week budget.
+
+P1 develops the arithmetic/IP contract, P2 its checking model, P3 AXI/DMA integration, P4 formal and security evidence, and P5 implementation/view analysis. The project hours cover the additional software integration, measurements, reuse and release work. The [coursework appendix](appendices/hsd-coursework.qmd) fixes the algorithm, interfaces, milestones and rubric.
+
+The project has five review points: specification in week 2; architecture/RTL in week 5; verification/security in week 7; release candidate in week 10; and final demonstration/defence in week 12. Each review resolves a small set of engineering questions and assigns the next autonomous work.
+
+The final package contains interface/register documentation, RTL and source manifest, models, tests, formal harness/results, constraints, implementation/view evidence, security/failure analyses and reproduction instructions. Record any unavailable views and their integration consequence. Strengthening IP means making these contracts and artifacts consistent and usable by another designer; physical hardening contributes additional technology-dependent views where produced.
+
+For a small team, declare responsibilities and retain individual explanations of design and verification decisions. Every student provides evidence for RA5–RA8. Assess engineering reasoning, reproducibility and defence alongside the integrated result; code volume and tool count alone do not demonstrate learning.

@@ -258,7 +258,12 @@ $$
 
 The limit is per-way capacity, not necessarily total cache capacity. A 4 KiB, two-way cache has 2 KiB per way and fits a 4 KiB page-offset budget. Exceeding that geometry needs additional handling for aliasing/indexing; changing cache parameters beyond the implemented address slices is not a safe exploration point.
 
-`sfence.vma` synchronizes translation-related state; it is not a substitute for instruction synchronization or ordinary dirty-data cleaning. This chapter uses only the MMU ideas needed to understand the cache path, leaving complete paging and privileged-software design to a dedicated treatment.
+`sfence.vma` synchronizes translation-related state; it is not a substitute for instruction synchronization or ordinary dirty-data cleaning. This chapter introduces the MMU ideas needed to understand the cache path. @sec-privileged-mmu develops M/S/U modes, delegation, Sv32 page tables, protection and precise faults, with a complete executable supervisor example.
+
+### Memory and cache verification obligations
+
+Use @sec-verification-methodology to separate architectural data correctness from internal cache policy and performance. A byte-addressed independent memory oracle tracks committed writes and expected loads. Exercise line/set boundaries, masks, dirty eviction, refill errors, invalidation and backpressure; check writeback contents, not just hit/miss counts. Model uninitialized contents and reset persistence explicitly. For DMA integration, specify ownership/coherence or uncached buffers, then test visibility after completion. A functional cache model does not verify synchronous SRAM timing, CDC or a physical memory controller.
+
 
 ## Implementation
 

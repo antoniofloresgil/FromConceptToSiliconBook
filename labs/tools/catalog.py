@@ -52,7 +52,11 @@ LABS = {
     "fpga": {"folder": "07-implementation", "mode": "guided", "goal": "Pinned Wally/Nexys Video build and physical programming"},
     "asic": {"folder": "07-implementation", "mode": "guided", "goal": "Direct OpenROAD / LibreLane with a separately installed PDK"},
     "wally": {"folder": "08-integration", "mode": "guided", "goal": "Cache/MMIO/interrupt observations in the complete SoC"},
+    "mmu": {"folder": "09-privileged-mmu", "mode": "guided", "goal": "RV32/Sv32 reference test, delegated store fault and Wally walker observations"},
+    "dotproduct": {"folder": "10-dotproduct", "mode": "automatic", "goal": "AXI/DMA signed dot product: arithmetic, bus errors, security window and reuse"},
+    "dotproduct-wally": {"folder": "10-dotproduct", "mode": "external", "goal": "Boot firmware on pinned real Wally, AXI control bridge, DMA and interrupt"},
     "accelerator": {"folder": "08-integration", "mode": "exercise", "goal": "Specify and implement the FIR/accelerator extension"},
+    "dse": {"folder": "11-dse", "mode": "guided", "goal": "Real Wally divider sweep and controlled performance/Pareto analysis"},
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"

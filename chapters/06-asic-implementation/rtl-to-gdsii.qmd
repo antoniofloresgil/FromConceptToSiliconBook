@@ -35,6 +35,11 @@ Google also funded an open-source multi-project-wafer (MPW) initiative with SkyW
 
 Fabrication remains accessible through commercial or institutional routes. In an MPW shuttle, several designs share a wafer and mask cost, making prototypes much cheaper than a dedicated run. SkyWater publishes MPW services and asks prospective customers to discuss the project and current schedule before submitting a design [@skywaterMpw]. A designer must obtain the current foundry or shuttle requirements, complete their pre-checks, deliver the requested GDSII and collateral, then plan packaging, board bring-up and silicon test. The public SKY130 PDK supports learning and prototyping; it does not replace a fabrication agreement or the foundry's acceptance review.
 
+### Verification gates between representations
+
+Use the hierarchy and evidence plan in @sec-verification-methodology alongside the process flow. Identify the RTL reference before synthesis, require an explicit equivalence result when claiming behavioral preservation, and repeat affected checks after scan insertion or ECOs. At physical release, require current geometry/connectivity, extraction, timing and electrical evidence tied to the checked layout/netlist/views. Stream-out success and a GDS file are deliverables, not a complete release argument. Manufacturing test and silicon characterization have separate plans and acceptance criteria.
+
+
 ## Implementation
 
 ### Inputs and reproducibility

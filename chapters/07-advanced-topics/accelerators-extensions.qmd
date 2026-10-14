@@ -454,3 +454,11 @@ Do not attach an experimental engine directly to trusted memory in a system with
 7. Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
 
 The reusable outcome is not only a filter. It is a disciplined template for deciding whether a computation belongs in software, a standard extension, a custom instruction or a DMA-capable peripheral, and for proving that the resulting hardware improves the complete system.
+
+## Executable cross-course reference
+
+The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-project supplies a complementary reference to the accelerator designs in this chapter. It includes independent numerical checks, an AHB-to-AXI4-Lite CPU adapter, bounded DMA, real RV32 firmware, interrupt completion, formal witnesses and defect checks. Use its measured single-beat baseline before evaluating burst, concurrency or numerical-format extensions.
+
+### Verification obligations for a changed accelerator
+
+Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.

@@ -24,6 +24,11 @@ Reset and clear have priority over enable. Valid marks an accepted addition, not
 
 The C++ reference uses a wider integer and explicit modulo arithmetic. It checks every cycle, including stalls and resets, rather than treating a plausible waveform as a passing test.
 
+### The simulator's place in the verification plan
+
+The C++ scoreboard below is a unit-level numerical/control checker under the contract in @sec-verification-methodology. Preserve its automatic comparisons, timeout and failing exit status when adding traces or random traffic. Treat warnings individually; a build that allows warnings is not a clean-lint result. Record initialization/X-handling and assertion options. Waveforms help explain the first failure, while a PASS covers the tested scenarios. Code coverage, when instrumented and collected for the installed version, does not replace contract-defined functional bins or an independent oracle [@verificationVerilator].
+
+
 ## Implementation
 
 ### Download the example files

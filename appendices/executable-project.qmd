@@ -1,0 +1,113 @@
+# Executable Cross-Course Project: AXI/DMA Accelerator {#sec-executable-project}
+
+The project in @sec-hsd-coursework now has a runnable reference platform under `labs/10-dotproduct/`. It connects the fundamentals, simulation, SoC integration and implementation blocks around a signed dot-product IP. The standalone suite exercises the accelerator; the integration suite boots firmware on the actual pinned Wally RTL. Both use the same arithmetic, control registers and DMA engine.
+
+Download the [laboratory package](../downloads/hardware-design-labs.zip) for the complete files, or work in the book repository. The archive includes the project README, manifest, RTL, firmware, models, properties and tests. Wally is an explicitly acquired external dependency. Run every command below from the extracted package or repository root.
+
+## From specification to the executable architecture
+
+The job computes an exact signed 64-bit dot product over 1–256 operand pairs. Each signed 16-bit sample occupies the low half of a 32-bit word. There are no packing, rounding or saturation conventions to infer. The destination is two little-endian words. The numerical and register contract is defined in @sec-hsd-coursework and implemented in the project README.
+
+```{mermaid}
+flowchart TD
+  FW[RV32 firmware: buffers, descriptor, reference check] --> CPU[Real Wally core: caches disabled]
+  CPU -->|AHB control access| BR[AHB-to-AXI4-Lite adapter]
+  BR -->|Independent AW/W and retained responses| CTRL[Registers and descriptor validation]
+  CTRL -->|Latched valid job| DMA[Single-outstanding AXI4 DMA engine]
+  DMA -->|Signed operands| MAC[16-bit multiply, 64-bit accumulation]
+  MAC -->|Two result words| DMA
+  DMA <-->|AXI4 single-beat reads/writes| RAM[Shared simulation RAM]
+  CPU <-->|AHB program and data accesses| RAM
+  CTRL -->|Level interrupt| CPU
+```
+
+The arithmetic module `dotproduct_mac.sv` has no bus policy. `dotproduct_engine.sv` sequences reads, accumulation and result writes. `dotproduct_axi.sv` owns the AXI4-Lite endpoint, validates descriptors, locks active configuration and reports completion. `ahb_to_axil.sv` belongs to the CPU integration platform. Those boundaries make protocol and numerical changes separately reviewable.
+
+The CPU interface is AHB, so the adapter preserves its address and data phases instead of treating signals as AXI names. It stalls the CPU until the AXI response is available and supports aligned 32-bit control transfers. DMA uses a separate AXI4 interface. AXI4-Lite controls a job; it does not transfer the job's operand arrays.
+
+The baseline is intentionally single-clock and single-outstanding. Each pair requires two reads; each complete job requires two writes. This makes the conservation check concrete: `2*N` reads, two writes, and DONE only after both successful write responses. Burst and concurrency extensions must replace that contract with explicit ordering and capacity checks.
+
+## First run: the IP boundary
+
+Build the container described in @sec-reproducible-labs, then run:
+
+```bash
+docker run --rm --network none \
+  --mount "type=bind,source=$PWD,target=/work" \
+  from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
+```
+
+In PowerShell:
+
+```powershell
+docker run --rm --network none `
+  --mount "type=bind,source=${PWD},target=/work" `
+  from-concept-labs:2026.10 python labs/run.py run dotproduct --seed 2026
+```
+
+This entry is part of the nine automatic entries in `run all`. It generates an independent Python oracle, runs every length from 1 through 256, repeats with `MAX_LENGTH=16`, checks rejected descriptors and error/reset behavior, synthesizes the IP and executes bounded formal checks. A tool error, assertion, timeout or bad result produces a nonzero exit code.
+
+The random seed controls the data and independent memory wait states. The RAM model deliberately allows AW and W to be accepted at different times. The control test also sends AW first and W first, exercises byte strobes and stalls response consumption. Changing a seed is useful, but directed boundary tests remain required.
+
+Inspect `labs/build/report.json` and the numbered command logs in `labs/build/dotproduct/`. `dotproduct.json` contains the generic synthesized netlist. The logs distinguish vector generation, simulation, synthesis and formal checking; a simulation PASS is not a timing result.
+
+## Second run: real Wally, firmware and interrupts
+
+Acquire Wally before the offline run:
+
+```bash
+git clone https://github.com/openhwgroup/cvw.git ../cvw
+docker run --rm --network none --env WALLY_ROOT=/cvw \
+  --mount "type=bind,source=$PWD,target=/work" \
+  --mount "type=bind,source=$(cd ../cvw && pwd),target=/cvw,readonly" \
+  from-concept-labs:2026.10 python labs/run.py run dotproduct-wally
+```
+
+The project README gives the equivalent PowerShell command with an absolute clone path. The runner exports revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` into its build directory; the supplied clone's checked-out branch is unchanged. License/source headers and a file-hash identity record accompany the export. No behavioral CPU substitute is used.
+
+The runner compiles `firmware/start.S`, `main.c` and `link.ld` with Clang/LLD for RV32IM/Zicsr. A checked ELF32 loader creates the memory image. Verilator then compiles `wallypipelinedcore`, the adapter, the IP and the shared-memory fixture. `dotproduct-wally` is an explicit external entry because a downloaded lab ZIP does not contain a Wally clone.
+
+The derived `rv32imc` configuration disables caches and internal instruction/data memories, enables 64 KiB external RAM and retains cycle counters. CPU code, stack and simulation mailboxes are outside the trusted DMA window `[0x80008000, 0x8000c000)`. The IP control slot is `0x10060000`. This replaces the configured GPIO slot in a fixture that instantiates the core without Wally's complete uncore.
+
+Firmware initializes buffers, computes an independent C result, programs the descriptor and polls completion for lengths 1, 8, 32, 128 and 256. It compares both result words after the required ordering fence. A second job enables an interrupt: the IP drives `MExtInt`, Wally enters the machine trap handler, the handler acknowledges the IP and returns with `mret`. The firmware also rejects a zero-length descriptor.
+
+The direct interrupt connection is a single-source teaching route. It does not demonstrate PLIC configuration. The shared array allows CPU and DMA access in the simulator; software transfers buffer ownership and avoids conflicting accesses. A physical memory arbiter, coherent caches and an OS DMA driver require additional integration and tests.
+
+## Evidence rather than a single PASS message
+
+| Requirement | Executable evidence | Remaining boundary |
+| --- | --- | --- |
+| Exact arithmetic | Python vectors for every length, signed extremes, noisy upper bits, wide sums; firmware comparison | No alternative numerical formats |
+| CPU control | Real Wally firmware through AHB-to-AXI4-Lite | Aligned word accesses; no full uncore/OS |
+| DMA | Address/attribute checks, transaction counts and seeded backpressure | Single beat, fixed ID, one outstanding transaction |
+| Security policy | Alignment, length, full-range, wrap and destination-overlap rejection before traffic | Trusted static window; no complete SoC isolation policy |
+| Error/reliability behavior | Read/write fault injection, reset/restart, interrupt ACK | No rollback, atomic result store or stuck-target watchdog |
+| Reuse | Complete suite at maximum lengths 256 and 16 | New windows/platforms require matching models and firmware |
+| Formal reasoning | Bounded RTL assertions and a reachable completion witness | No unbounded proof or AXI certification |
+| IP strengthening | Manifest, model, firmware, constraints, generic netlist and hashes | No technology physical views or inserted scan |
+
+Formal control checks use a 20-cycle bound with symbolic inputs. The engine is checked separately for 24 cycles with a fixed valid one-pair descriptor. A SAT witness reaches DONE, avoiding a completion property that only passes because completion was unreachable. The property set checks retained payloads, active descriptor stability, bounded DMA addresses and terminal-write ordering. State the bound and assumptions when presenting these results; simulation covers long jobs and firmware integration.
+
+Run the deliberate defect checks separately:
+
+```bash
+docker run --rm --network none \
+  --mount "type=bind,source=$PWD,target=/work" \
+  from-concept-labs:2026.10 python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
+```
+
+The checker must reject unsigned multiplication and premature DONE. The premature-DONE version must also produce a formal counterexample. These copies remain under ignored build directories and never overwrite reference RTL. Explain the failing transaction or cycle in the counterexample, rather than submitting only the solver's exit status.
+
+## A project that grows across P1–P5
+
+Use the working reference to remove environment uncertainty, then require student changes and reasoning. P1 fixes the specification and independent numerical checks. P2 develops reusable boundaries and protocol ownership. P3 integrates the CPU driver, interrupts and measurements. P4 adds meaningful formal/security work. P5 evaluates implementation, failure behavior and the IP release inventory.
+
+The firmware prints software and accelerator end-to-end cycle counts for the same dataset. Accelerator timing includes register setup, DMA, polling and result access. Compare those counts before proposing bursts or pipelining. The memory model's CPU/DMA latency assumptions strongly influence the result; these measurements are not an FPGA frequency or a silicon throughput claim.
+
+`constraints.sdc` supplies an illustrative clock and interface budget. Yosys checks elaboration, unintended latches and a generic netlist. For a physical extension, choose a real FPGA or ASIC technology, review clocks/reset/interface budgets and produce corresponding implementation evidence. RA7 also requires justified DFT, manufacturability and reliability analysis: accumulator/protocol observability, scan/reset interactions, memory test, partial writes and failure containment all remain relevant.
+
+Submitting the unchanged reference is not the final assessed project. Students should specify and demonstrate a defensible extension, preserve regression tests, add evidence for its new contract, and identify every produced, supplied and missing IP view. The existing coursework rubric and individual defence apply.
+
+## Verification plan and evidence collection
+
+Use @sec-verification-methodology for the requirement-driven hierarchy from RTL to physical release and production test. The package includes `labs/verification/project-plan.json`, a reusable plan template and an evidence collector. After the standalone and real Wally runs, generate `verification-evidence.json` using the commands in that chapter. Current source/artifact identities and expected checker completions are checked; equivalence, measured cross coverage, timing, physical and manufacturing obligations remain visible where unexecuted. This dossier complements the runner report rather than turning a simulation PASS into a physical qualification.

@@ -52,6 +52,11 @@ For a same-clock register-to-register path, the available time is the period aft
 
 Timing closure does not prove functional correctness, CDC safety or DDR calibration. Conversely, an RTL simulation with correct behavior says nothing about delay through an actual FPGA. Require both forms of evidence.
 
+### Routed FPGA verification and timing closure
+
+Use @sec-verification-methodology to review clocks, I/O constraints, routed resources and all applicable timing paths. Check setup and hold, generated clocks, unconstrained endpoints and justified exceptions. Tie the timing report to the actual routed design and emitted bitstream. A completed place-and-route command is not a guarantee that the selected clock target was met. Configuration changes, debug instrumentation and routing seeds can change results; preserve their identities and repeat the affected checks rather than reusing a stale frequency claim.
+
+
 ## Implementation
 
 ### nextpnr-xilinx and Project X-Ray

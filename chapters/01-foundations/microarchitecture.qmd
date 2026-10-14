@@ -159,6 +159,11 @@ Maintain a configuration record with source revision, elaboration parameters, me
 
 For functional comparison, observe retired architectural effects. For performance, observe elapsed cycles and well-defined events. Simulation-only testbench counters are not automatically software-readable PMU hardware. The performance-monitoring chapter develops this distinction for Wally.
 
+### Verify behavior independently of the chosen structure
+
+The plan in @sec-verification-methodology separates numerical correctness from latency, initiation interval, state retention and handshake obligations. Use the same independent arithmetic oracle for alternative datapaths, but compare at their specified completion events rather than forcing equal cycle timing. Check minimum/maximum signed operands, overflow conventions, reset/enable overlap and repeated operations. Review whether a multicycle unit may accept another request while active. Performance comparisons require matching workloads and a measured transaction/cycle window.
+
+
 ## Implementation
 
 ### A complete RV32 arithmetic unit

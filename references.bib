@@ -1,3 +1,10 @@
+@misc{hsdFormalTasks,
+  author = {{YosysHQ}},
+  title = {SymbiYosys: Reference for the SBY File Format},
+  url = {https://symbiyosys.readthedocs.io/en/latest/reference.html},
+  note = {Accessed 2026-10-14; reference for formal task modes and reporting scope in the proposed HSD coursework}
+}
+
 @book{westeCmosVlsi,
   author = {Weste, Neil H. E. and Harris, David Money},
   title = {CMOS VLSI Design: A Circuits and Systems Perspective},
@@ -56,7 +63,7 @@
   publisher = {Morgan Kaufmann},
   year = {2026},
   isbn = {9780323994989},
-  note = {Chapters 2--13 and 20 consulted in the supplied PDF. Publication year as shown in the supplied PDF}
+  note = {Chapters 2--13, 20 and 21 consulted in the supplied PDF. Publication year as shown in the supplied PDF}
 }
 
 @misc{skywaterPdk,
@@ -331,6 +338,34 @@
   year = {2026},
   url = {https://github.com/antoniofloresgil/cvw/blob/opensource-fpga-bitstream/docs/fpga-opensource-litedram.md},
   note = {Accessed 2026-10-13}
+}
+
+@misc{riscvMachineMmu,
+  author = {{RISC-V International}},
+  title = {Machine-Level ISA, Version 1.13},
+  url = {https://docs.riscv.org/reference/isa/v20260120/priv/machine.html},
+  note = {Accessed 2026-10-14; normative reference for machine policy, delegation and effective privilege}
+}
+
+@misc{riscvSupervisorMmu,
+  author = {{RISC-V International}},
+  title = {Supervisor-Level ISA, Version 1.13},
+  url = {https://docs.riscv.org/reference/isa/v20260120/priv/supervisor.html},
+  note = {Accessed 2026-10-14; normative reference for supervisor translation and permissions}
+}
+
+@misc{cvwMmuBaseline,
+  author = {{CORE-V Wally Contributors}},
+  title = {Wally RV32GC Configuration and Memory Management Unit},
+  url = {https://github.com/antoniofloresgil/cvw/tree/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/mmu},
+  note = {Local git objects inspected at revision 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c, including config/rv32gc/config.vh, mmu.sv and tlb/tlbcontrol.sv. Accessed 2026-10-14}
+}
+
+@misc{cvwHptwBaseline,
+  author = {{CORE-V Wally Contributors}},
+  title = {Wally Hardware Page Table Walker},
+  url = {https://github.com/antoniofloresgil/cvw/blob/3b30ba6b6519bd2c26c1437e6d61f632a35cef6c/src/mmu/hptw.sv},
+  note = {Local source inspected at the pinned revision. Accessed 2026-10-14}
 }
 
 @misc{riscvPrivilegedSpec,
@@ -767,3 +802,61 @@
 }
 
 
+
+@misc{verificationVerilator,
+  author = {{Verilator Contributors}},
+  title = {Simulating: Coverage Analysis and Runtime Options},
+  url = {https://verilator.org/guide/latest/simulating.html},
+  note = {Accessed 2026-10-14. Features must be checked against the installed version; the teaching baseline uses 5.020}
+}
+
+@misc{verificationCocotbTiming,
+  author = {{cocotb Contributors}},
+  title = {The Timing Model},
+  url = {https://docs.cocotb.org/en/v2.0.1/timing_model.html},
+  note = {Version 2.0.1, accessed 2026-10-14}
+}
+
+@misc{verificationYosysEquiv,
+  author = {{YosysHQ}},
+  title = {Equivalence Checking: Command Reference},
+  url = {https://yosyshq.readthedocs.io/projects/yosys/en/stable/cmd/index_passes_equiv.html},
+  note = {Accessed 2026-10-14; installed-version help determines available options}
+}
+
+@misc{dseGem5Cpu,
+  author = {{gem5 Contributors}},
+  title = {gem5 CPU Models},
+  url = {https://www.gem5.org/documentation/general_docs/cpu_models/},
+  note = {Accessed 2026-10-14}
+}
+@misc{dseGem5Build,
+  author = {{gem5 Contributors}},
+  title = {Building gem5},
+  url = {https://www.gem5.org/documentation/general_docs/building},
+  note = {Accessed 2026-10-14; match dependencies to the chosen simulator revision}
+}
+@misc{dseGem5Tutorial,
+  author = {{gem5 Contributors}},
+  title = {Hello World Tutorial: gem5 Standard Library},
+  url = {https://www.gem5.org/documentation/gem5-stdlib/hello-world-tutorial},
+  note = {Accessed 2026-10-14}
+}
+@misc{dseGem5Stats,
+  author = {{gem5 Contributors}},
+  title = {Understanding gem5 Statistics and Output},
+  url = {https://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/},
+  note = {Accessed 2026-10-14}
+}
+@misc{dseXsGem5,
+  author = {{XiangShan Contributors}},
+  title = {XS-GEM5: XiangShan-Calibrated RISC-V Performance Simulator},
+  url = {https://github.com/OpenXiangShan/GEM5},
+  note = {Accessed 2026-10-14; repository workflow and calibration claims are configuration-specific}
+}
+@misc{dseXsGem5Architecture,
+  author = {{XiangShan Contributors}},
+  title = {XS-GEM5 Architecture Guide},
+  url = {https://github.com/OpenXiangShan/GEM5/blob/xs-dev/ARCHITECTURE.md},
+  note = {Accessed 2026-10-14}
+}

@@ -1,0 +1,13 @@
+candidate,workload,cycles,frequency_mhz,frequency_basis,lut,bram,dsp,status,timing_status,target,binary_sha256,input_sha256,roi,origin
+base,compute,10000,50,achieved,18000,40,8,pass,pass,illustrative-artix7,example-compute,example-input,whole-kernel,illustrative
+base,memory,30000,50,achieved,18000,40,8,pass,pass,illustrative-artix7,example-memory,example-input,whole-kernel,illustrative
+base,branch,20000,50,achieved,18000,40,8,pass,pass,illustrative-artix7,example-branch,example-input,whole-kernel,illustrative
+small-cache,compute,10000,48,achieved,23000,60,8,pass,pass,illustrative-artix7,example-compute,example-input,whole-kernel,illustrative
+small-cache,memory,15000,48,achieved,23000,60,8,pass,pass,illustrative-artix7,example-memory,example-input,whole-kernel,illustrative
+small-cache,branch,16000,48,achieved,23000,60,8,pass,pass,illustrative-artix7,example-branch,example-input,whole-kernel,illustrative
+large-cache,compute,10000,35,achieved,33000,100,8,pass,pass,illustrative-artix7,example-compute,example-input,whole-kernel,illustrative
+large-cache,memory,12000,35,achieved,33000,100,8,pass,pass,illustrative-artix7,example-memory,example-input,whole-kernel,illustrative
+large-cache,branch,15000,35,achieved,33000,100,8,pass,pass,illustrative-artix7,example-branch,example-input,whole-kernel,illustrative
+too-large,compute,9000,40,achieved,55000,160,8,pass,pass,illustrative-artix7,example-compute,example-input,whole-kernel,illustrative
+too-large,memory,11000,40,achieved,55000,160,8,pass,pass,illustrative-artix7,example-memory,example-input,whole-kernel,illustrative
+too-large,branch,14000,40,achieved,55000,160,8,pass,pass,illustrative-artix7,example-branch,example-input,whole-kernel,illustrative

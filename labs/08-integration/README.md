@@ -1,6 +1,6 @@
 # 08 — Wally observations and an accelerator exercise
 
-These guided activities require the separately obtained Wally project and its matching build/harness. They are not included in the eight automatic unit labs.
+These guided activities require the separately obtained Wally project and its matching build/harness. They are not included in the nine automatic entries. For the executable AXI/DMA accelerator platform and real Wally firmware test, use [the dot-product project](../10-dotproduct/README.md).
 
 Pin revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` in the fork documented in the appendix. Follow the complete-SoC section of `core-v-wally.qmd`: a cold/warm RAM load, an exactly-once GPIO write and timer entry/return. Use its `rv32gc` reading configuration for cache observations; do not assume that it is the reduced Nexys Video configuration.
 

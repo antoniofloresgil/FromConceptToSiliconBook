@@ -8,6 +8,9 @@ project:
     - examples/reference-models/check.S
     - examples/reference-models/link.ld
     - examples/reference-models/expected.signature
+    - examples/privileged-mmu/sv32.S
+    - examples/privileged-mmu/link.ld
+    - examples/privileged-mmu/expected.signature
     - examples/cocotb/test_accumulator.py
     - examples/cocotb/Makefile
     - examples/cocotb/requirements.txt
@@ -34,6 +37,7 @@ book:
         - chapters/02-risc-v-cores/other-architectures.qmd
     - part: "III. Simulation and Verification"
       chapters:
+        - chapters/03-simulation-verification/verification-methodology.qmd
         - chapters/03-simulation-verification/verilator.qmd
         - chapters/03-simulation-verification/spike-sail.qmd
         - chapters/03-simulation-verification/cocotb.qmd
@@ -41,6 +45,7 @@ book:
       chapters:
         - chapters/04-soc-architecture/pipelines.qmd
         - chapters/04-soc-architecture/memories-caches.qmd
+        - chapters/04-soc-architecture/privileged-mmu.qmd
         - chapters/04-soc-architecture/buses-interrupts.qmd
         - chapters/04-soc-architecture/peripherals.qmd
     - part: "V. FPGA Implementation"
@@ -67,6 +72,8 @@ book:
     - appendices/wally-style.qmd
     - appendices/systemverilog-cheatsheet.qmd
     - appendices/reproducible-labs.qmd
+    - appendices/hsd-coursework.qmd
+    - appendices/executable-project.qmd
 
 bibliography: references.bib
 

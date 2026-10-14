@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "project": "hsd-dotproduct-axi-1.0.0",
+  "sources": {
+    "unit": [
+      "labs/run.py",
+      "labs/tools/catalog.py",
+      "labs/10-dotproduct/rtl/ahb_to_axil.sv",
+      "labs/10-dotproduct/rtl/dotproduct_axi.sv",
+      "labs/10-dotproduct/rtl/dotproduct_engine.sv",
+      "labs/10-dotproduct/rtl/dotproduct_mac.sv",
+      "labs/10-dotproduct/axi_connections.svh",
+      "labs/10-dotproduct/axi_ram_model.sv",
+      "labs/10-dotproduct/vectors.py",
+      "labs/10-dotproduct/tb_dotproduct.sv",
+      "labs/10-dotproduct/tb_bridge.sv",
+      "labs/10-dotproduct/formal/check.py"
+    ],
+    "system": [
+      "labs/run.py",
+      "labs/tools/catalog.py",
+      "labs/10-dotproduct/rtl/ahb_to_axil.sv",
+      "labs/10-dotproduct/rtl/dotproduct_axi.sv",
+      "labs/10-dotproduct/rtl/dotproduct_engine.sv",
+      "labs/10-dotproduct/rtl/dotproduct_mac.sv",
+      "labs/10-dotproduct/axi_connections.svh",
+      "labs/10-dotproduct/axi_ram_model.sv",
+      "labs/10-dotproduct/prepare_wally.py",
+      "labs/10-dotproduct/tb_wally_dotproduct.sv",
+      "labs/10-dotproduct/firmware/main.c",
+      "labs/10-dotproduct/firmware/start.S",
+      "labs/10-dotproduct/firmware/link.ld"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "DP-NUM",
+      "requirement": "Exact signed 64-bit dot product of low 16-bit samples; upper bits ignored",
+      "level": "rtl-unit",
+      "scope": "MAX_LENGTH=256 and 16; seeded Python oracle and both result words",
+      "coverage": "Every length in each configuration; signed edges, noisy upper bits and aliased-source wide sum",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-CTRL",
+      "requirement": "Independent AW/W, byte strobes and retained AXI4-Lite responses",
+      "level": "rtl-interface",
+      "scope": "Single buffered write/read response; synchronous reset",
+      "coverage": "Directed AW-first/W-first, masks, response stalls, readback and read-only access rejection",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-POLICY",
+      "requirement": "Invalid descriptors are rejected before DMA traffic",
+      "level": "rtl-security",
+      "scope": "Trusted fixed DMA window; no CPU PMP inheritance or whole-SoC isolation claim",
+      "coverage": "Zero/excess length, alignment, lower/upper range, wrap and destination overlap with transaction-count checks",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-ERROR",
+      "requirement": "Read/write errors terminate with ERROR rather than DONE",
+      "level": "rtl-reliability",
+      "scope": "Single-beat compliant target; partial writes are not rolled back",
+      "coverage": "Injected first-read and second-write errors; status/error code checked",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-RESET",
+      "requirement": "Coordinated reset clears protocol state and allows restart",
+      "level": "rtl-reliability",
+      "scope": "All fixture participants reset together; memory persists",
+      "coverage": "Directed mid-job reset and polling restart, not independently reset domain recovery",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-REUSE",
+      "requirement": "Support smaller legal maximum length without changing the interface",
+      "level": "rtl-reuse",
+      "scope": "Same DMA window, MAX_LENGTH=16",
+      "coverage": "Every length 1..16 and excessive length rejection",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS dotproduct: 256 lengths",
+          "PASS dotproduct: 16 lengths"
+        ]
+      }
+    },
+    {
+      "id": "DP-BRIDGE",
+      "requirement": "AHB adapter captures data phase and reports two-cycle errors",
+      "level": "subsystem-interface",
+      "scope": "Aligned word accesses, AHB-Lite control adapter",
+      "coverage": "Poisoned address-phase data, register readback, illegal accesses and recovery",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS AHB bridge: following data phase, reads, two-cycle errors and recovery"
+        ]
+      }
+    },
+    {
+      "id": "DP-FORMAL",
+      "requirement": "Retained payloads, descriptor stability, bounded DMA range and DONE ordering",
+      "level": "rtl-formal",
+      "scope": "Control MAX_LENGTH=16 bound=20; engine valid fixed N=1 bound=24; initial reset and zero initialization",
+      "coverage": "Bounded assertions plus an engine DONE witness; no full-control reachability or unbounded claim",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "PASS bounded control checks: 20 cycles",
+          "PASS bounded engine checks: 24 cycles; reachable DONE witness saved"
+        ]
+      }
+    },
+    {
+      "id": "DP-SYNTH",
+      "requirement": "Elaborate and synthesize the IP without unintended latches",
+      "level": "logical-implementation",
+      "scope": "Yosys generic cells; no technology timing or equivalence claim",
+      "coverage": "Hierarchy, check -assert, no $dlatch selection and emitted JSON netlist",
+      "required_reference": true,
+      "evidence": {
+        "report": "unit",
+        "lab": "dotproduct",
+        "markers": [
+          "Executing JSON backend."
+        ]
+      }
+    },
+    {
+      "id": "DP-SYSTEM",
+      "requirement": "Real Wally firmware launches jobs and compares both result words",
+      "level": "soc-firmware",
+      "scope": "Pinned rv32imc-derived uncached 64 KiB fixture; no retirement comparator",
+      "coverage": "Polling N=1,8,32,128,256; invalid descriptor; mailbox and cycle metrics",
+      "required_reference": true,
+      "evidence": {
+        "report": "system",
+        "lab": "dotproduct-wally",
+        "markers": [
+          "PASS real Wally: five polling jobs, IRQ handler, invalid descriptor"
+        ]
+      }
+    },
+    {
+      "id": "DP-IRQ",
+      "requirement": "Machine-external interrupt handler acknowledges accelerator completion",
+      "level": "soc-interrupt",
+      "scope": "Direct single-source MExtInt route, not PLIC qualification",
+      "coverage": "Firmware interrupt job, count/status/result check and mret",
+      "required_reference": true,
+      "evidence": {
+        "report": "system",
+        "lab": "dotproduct-wally",
+        "markers": [
+          "PASS real Wally: five polling jobs, IRQ handler, invalid descriptor"
+        ]
+      }
+    },
+    {
+      "id": "DP-COVERAGE",
+      "requirement": "Export measured functional bins and reviewed crosses",
+      "level": "coverage",
+      "scope": "Current test descriptions and counts are not a complete coverage database",
+      "coverage": "Outcome x IRQ enable; AW/W order x stalls; rejected class x no traffic",
+      "status": "not_run",
+      "rationale": "Baseline does not collect a machine-readable functional cross-coverage database"
+    },
+    {
+      "id": "DP-EQUIV",
+      "requirement": "Prove RTL-to-transformed-netlist equivalence",
+      "level": "logical-equivalence",
+      "scope": "Identified reset relation, parameters, cells/macros and outputs",
+      "coverage": "All applicable comparison points/partitions with unresolved points reported",
+      "status": "not_run",
+      "rationale": "Generic synthesis exists, but no equivalence flow has been executed"
+    },
+    {
+      "id": "DP-CDC",
+      "requirement": "Validate introduced clock/reset domain crossings",
+      "level": "cdc-rdc",
+      "scope": "Only the provided single-clock, coordinated-reset fixture",
+      "coverage": "Crossing inventory and review if integration introduces another domain",
+      "status": "not_applicable",
+      "rationale": "The baseline IP/adapter/RAM fixture has one clock and coordinated reset; this does not exclude CDC elsewhere in a larger SoC"
+    },
+    {
+      "id": "DP-TIMING",
+      "requirement": "Meet constrained setup/hold and electrical budgets",
+      "level": "static-timing",
+      "scope": "Actual target technology, clocks, modes, corners and exceptions",
+      "coverage": "Unconstrained paths, setup/hold, reset/gating checks and interface timing",
+      "status": "not_run",
+      "rationale": "Illustrative SDC is supplied; no target STA result has been produced"
+    },
+    {
+      "id": "DP-FPGA",
+      "requirement": "Qualify the implemented FPGA platform",
+      "level": "fpga-board",
+      "scope": "Actual board revision, bitstream hash, clock and operating conditions",
+      "coverage": "Routed timing/resource review, programming and on-board interface/memory tests",
+      "status": "not_run",
+      "rationale": "This project has not been placed/routed or run on a physical board"
+    },
+    {
+      "id": "DP-PHYSICAL",
+      "requirement": "Validate ASIC layout, extraction and operating corners",
+      "level": "asic-physical",
+      "scope": "Qualified PDK/cell/macro views and final GDS/netlist identity",
+      "coverage": "DRC/LVS, antenna/density/ERC, extraction, timing and power-integrity scope",
+      "status": "not_run",
+      "rationale": "No project-specific ASIC physical results have been produced"
+    },
+    {
+      "id": "DP-DFT",
+      "requirement": "Validate scan/memory-test insertion and fault detection",
+      "level": "manufacturing-design",
+      "scope": "Declared fault model, test mode, clock/reset and macro coverage",
+      "coverage": "Scan ordering, ATPG/fault simulation, memory-test coverage and excluded faults",
+      "status": "not_run",
+      "rationale": "DFT review material is supplied, but no inserted scan or ATPG result exists"
+    },
+    {
+      "id": "DP-SILICON",
+      "requirement": "Validate first silicon across intended operating conditions",
+      "level": "silicon-validation",
+      "scope": "Device/package/board revision and voltage/temperature/frequency",
+      "coverage": "Bring-up, characterization, system workload and measured margins",
+      "status": "not_run",
+      "rationale": "No fabricated devices exist for this reference project"
+    },
+    {
+      "id": "DP-PRODUCTION",
+      "requirement": "Screen individual fabricated devices",
+      "level": "production-test",
+      "scope": "Tester program, limits, fault models, device identity and binning",
+      "coverage": "Wafer/package electrical and fault tests, coverage and test cost",
+      "status": "not_run",
+      "rationale": "No production test program or physical test evidence exists"
+    }
+  ]
+}

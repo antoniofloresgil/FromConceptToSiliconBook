@@ -66,6 +66,11 @@ An FPGA implementation benefits from expressing intent in RTL.
 
 BRAM, DSP and clock resources are limited physical blocks. A design that synthesizes successfully can still fail later because it uses too many of one resource, because an inferred RAM no longer matches the required read behavior, or because a high-fanout reset/control signal has poor routing. Resource reports are therefore a design-review input, not a success badge.
 
+### Logical implementation acceptance
+
+The synthesis boundary in @sec-verification-methodology distinguishes clean elaboration, inferred storage, resource mapping and equivalence. Compile legal parameter/wrapper variants and review technology primitive/memory inference. Keep the reference RTL and mapped netlist identities with the synthesis configuration. A netlist and resource report are not an RTL-equivalence proof; add an explicit comparison flow with correct cell/memory models and reset/state correspondence when making that claim. Changed arithmetic mapping or retiming also needs the appropriate numerical/latency contract.
+
+
 ## Implementation
 
 ### Installing the open toolchain

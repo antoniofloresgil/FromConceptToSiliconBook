@@ -24,6 +24,11 @@ A rising-edge event indicates that the clock changed; in an event-driven simulat
 
 Inputs are driven on the falling edge, leaving them stable before the next rising edge. After checking in the read-only phase, the test waits for the next falling edge before writing again. This avoids attempts to modify signals in a phase that forbids writes. These rules follow the [cocotb timing model](https://docs.cocotb.org/en/v2.0.1/timing_model.html).
 
+### Drivers, monitors and evidence
+
+Apply @sec-verification-methodology by separating the task that drives a request from the monitor that observes its actual acceptance and the scoreboard that checks completion. Model from the written contract rather than copying RTL branches. Preserve the existing edge/read-only sampling discipline, then add bounded stalls, reset/error scenarios and requirement-defined coverage. Python assertions and a nonzero test result are functional evidence; a generated XML file alone does not establish that tests ran without skips. Record seed, simulator, cocotb version and configuration with each result.
+
+
 ## Implementation
 
 ### Download the example files

@@ -1,0 +1,286 @@
+# Privileged Architecture and the MMU {#sec-privileged-mmu}
+
+## Concepts
+
+The simplified processor in @sec-core-v-wally executes instructions without the privileged machinery of a complete Wally core. The buses chapter introduces machine-mode interrupts, while the memory chapter introduces translation and protection where they interact with caches. This chapter completes the connection: who may execute an operation, how virtual addresses become physical addresses, and how a rejected operation transfers control to privileged software.
+
+The main reading is Harris et al., *RISC-V System-on-Chip Design*, Chapters 8 and 11, with Chapter 12 for integration into the LSU [@harrisRiscvSoc]. The architectural reference is the RISC-V privileged specification; the examples select its ordinary single-stage supervisor translation model, without hypervisor translation [@riscvPrivilegedSpec]. Wally implementation observations refer to revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c`, matching the full-SoC reading baseline elsewhere in this book.
+
+After the chapter, the reader should be able to trace an M-to-S transition, determine a trap's destination, decode an Sv32 PTE, calculate a two-level translation, distinguish page faults from physical access faults, and explain a Wally TLB miss without confusing it with a cache miss. The practical example exercises a successful load/store and a deliberately denied store on Spike; the final exercise follows the same behavior in Wally RTL.
+
+### Privilege is architectural state
+
+Privilege modes separate trusted platform control, operating-system control and application execution. M-mode is the mandatory machine mode. Implementations may also provide S-mode and U-mode. A small embedded core can omit S-mode and virtual memory. An ISA string describing integer or floating-point instructions does not by itself specify these platform capabilities.
+
+| Mode | Encoding | Typical responsibility | Important boundary |
+| --- | --- | --- | --- |
+| M | `11` | Firmware, platform initialization, PMP and trap policy | Establishes the environment for lower modes |
+| S | `01` | Kernel, page tables, process management and supervisor traps | Operates under machine policy and physical protection |
+| U | `00` | Applications | Cannot directly perform privileged control operations |
+
+The encoding `10` is reserved in this model. Debug Mode, discussed in @sec-riscv-debug, has its own entry and behavior; it is not an extra ordinary execution mode in this table. The current privilege is hardware state that changes through reset, traps and return instructions. Jumping to an address containing kernel code does not itself change privilege.
+
+A CSR instruction is also subject to access rules. Some CSR addresses are read-only, and some require a minimum privilege. Unsupported accesses can raise an illegal-instruction exception. Writable fields may be WARL: software should not assume every bit pattern written is supported. Read back important setup state when adapting a program to another implementation.
+
+### Entering and leaving a privileged context
+
+Machine software can prepare `mepc` and `mstatus.MPP`, then execute `mret` to enter an intended lower mode. This is an architectural return operation that restores the selected PC, privilege and interrupt-enable state. It differs from `ret`, which follows the ordinary calling convention. A supervisor trap handler uses `sepc`, `sstatus.SPP` and `sret` for the corresponding return.
+
+Trap entry records architectural information and redirects execution, but does not automatically save every integer register or create a software stack frame. Handler software must preserve the state it needs. A real kernel also needs a defined stack-switch policy and protection against faults during trap handling. In the practice below, interrupts and nesting are disabled and the tiny assembly handlers have an explicitly limited register-clobber contract.
+
+An `ecall` requests service from the execution environment. Its synchronous exception code depends on the source mode: 8 from U, 9 from S and 11 from M. The destination handler depends on delegation. An OS system call and an SBI call can therefore both use `ecall` while crossing different trust boundaries. A page fault is another synchronous trap, not a request arriving from the PLIC.
+
+### Machine and supervisor trap state
+
+| Machine state | Supervisor counterpart | Purpose |
+| --- | --- | --- |
+| `mtvec` | `stvec` | Handler base and supported vector mode |
+| `mepc` | `sepc` | PC associated with the trap |
+| `mcause` | `scause` | Interrupt flag and cause code |
+| `mtval` | `stval` | Additional trap information, where defined |
+| `mstatus.MPP/MPIE/MIE` | `sstatus.SPP/SPIE/SIE` | Saved privilege and interrupt state |
+| `mscratch` | `sscratch` | Software scratch state for entry conventions |
+
+The cause CSR's highest bit distinguishes interrupts from synchronous exceptions. Cause 15 with that bit clear is a store/AMO page fault. It is not interrupt number 15. Trap-value information is cause-specific; software should not interpret every `tval` value as a memory address.
+
+For an access-related page fault in the demonstration, the handler verifies `scause`, the faulting virtual address in `stval`, and the address of the known store in `sepc`. This checks a precise exception: the denied instruction must not update memory and younger execution must not continue as though it succeeded. Earlier accepted MMIO effects cannot simply be replayed, connecting privileged control to @sec-transport-pipelines.
+
+### Delegation chooses the handler
+
+`medeleg` controls supported synchronous exceptions delegated from M to S; `mideleg` controls supported interrupt classes. For synchronous exceptions, the bit position corresponds to the exception cause. Delegation routes traps originating in S or U to the supervisor handler where supported. It does not transfer a trap taken in M-mode down to S-mode [@riscvMachineMmu].
+
+For example, setting `medeleg[15]` allows an S-mode store page fault to enter S-mode. The processor updates supervisor trap state and enters `stvec`. Clearing the bit routes that exception to M-mode instead, using machine trap state. Read back the register to determine whether the implementation accepts the delegation.
+
+Delegation is not an interrupt enable. An interrupt additionally depends on the applicable pending and enable state and the current privilege. Use the CLINT/PLIC discussion in @sec-buses-interrupts for its origin and acknowledgement protocol. The current experiment delegates only the store page fault; its final S-mode `ecall` remains a machine-handled event.
+
+### Translation, protection and memory attributes
+
+A virtual address is the address in a process's memory-access contract. A physical address identifies a location in the system memory map. Software supplies page-table policy, while hardware performs translation and the required access checks. An address space can map two virtual pages to the same physical page, or give two processes different physical storage at the same virtual address.
+
+Demand paging is one use of this mechanism, but virtual memory does not require a disk or swapping. A small experimental kernel can use static resident mappings. Conversely, an unmapped address is not automatically a disk page waiting to be loaded: it can represent a protection error or an invalid pointer.
+
+Keep three mechanisms distinct:
+
+| Mechanism | Describes | Example |
+| --- | --- | --- |
+| PTE permissions | Virtual mapping's allowed accesses and mode | Read-only application page |
+| PMP | Permission for a physical region under machine policy | Denying supervisor access to firmware storage |
+| PMA | Physical region's attributes and supported operations | Uncached, non-idempotent MMIO |
+
+A writable PTE cannot override a physical PMP denial. A PMP-granted region does not override a read-only PTE when translation applies. A virtual mapping of MMIO must still respect physical attributes and side effects. A translation result is therefore an intermediate result, not a promise that the physical transaction is legal.
+
+### `satp` and effective privilege
+
+`satp` names the supervisor translation mode, address-space identifier and physical page number of the root table. In Sv32, its fields are MODE at bit 31, a nine-bit architectural ASID field at bits 30:22, and the root PPN at bits 21:0. Implementations can support fewer ASID bits. MODE=0 is Bare; MODE=1 selects Sv32 when implemented.
+
+Ordinary M-mode instruction fetch and data accesses bypass supervisor translation. Writing `satp` while staying in M-mode therefore does not prove that the MMU works. The example writes it in M-mode, then enters S-mode before accessing the virtual aliases.
+
+`mstatus.MPRV` changes the effective privilege of explicit loads/stores to the mode in MPP, allowing firmware to access lower-mode memory under the corresponding rules. It does not similarly translate machine instruction fetch. Clear it for the baseline so the demonstration's machine handler accesses its physical state normally. `mstatus.TVM` can restrict supervisor management of translation state; a platform using that restriction needs an appropriate service/trap policy.
+
+### Sv32 address and PTE fields
+
+Sv32 divides a 32-bit virtual address into ten-bit VPN[1], ten-bit VPN[0] and twelve-bit page offset. A table has 1,024 four-byte entries and occupies one aligned 4 KiB page. The physical page number has 22 bits, allowing an architectural physical-address width of 34 bits even though XLEN is 32 [@harrisRiscvSoc, Chapter 11]. The implemented memory map can be much smaller.
+
+| Virtual field | Bits | Role |
+| --- | --- | --- |
+| VPN[1] | 31:22 | Root-table index |
+| VPN[0] | 21:12 | Next-table index for a 4 KiB page |
+| Offset | 11:0 | Untranslated byte offset |
+
+An Sv32 PTE stores PPN at bits 31:10, software-reserved RSW at bits 9:8, and D/A/G/U/X/W/R/V at bits 7:0:
+
+| Bit | Meaning | Consequence |
+| --- | --- | --- |
+| V | Valid | Zero rejects the entry |
+| R | Read | Allows reads subject to the other checks |
+| W | Write | Requires a valid permission encoding; W=1 with R=0 is reserved |
+| X | Execute | Allows instruction fetch subject to privilege |
+| U | User mapping | Controls user/supervisor eligibility |
+| G | Global | Affects ASID matching and invalidation scope |
+| A | Accessed | Records or requires handling of page use |
+| D | Dirty | Records or requires handling of writes |
+
+A valid entry with R=W=X=0 points to another table. A leaf has an executable or readable mapping with legal permissions. A non-leaf must also respect reserved-bit rules; in this baseline its U/A/D fields are zero. PTE RSW bits are for software and must not be interpreted as hardware access permission.
+
+### Perform a two-level walk
+
+For a 4 KiB mapping, calculate the root-entry address as
+
+$$
+PTE_1=(satp.PPN\ll12)+4\,VPN[1].
+$$
+
+Read and validate that entry. If it is a non-leaf, its PPN identifies the next table. Calculate
+
+$$
+PTE_0=(PTE_1.PPN\ll12)+4\,VPN[0].
+$$
+
+After validating the leaf and permissions, form the physical address from the leaf PPN and original twelve-bit offset. The page-table reads themselves are physical memory operations, subject to the appropriate physical checks. A permission failure while reading a table is not the same event as finding a leaf that denies the original access.
+
+The worked example uses root table `0x80010000`, second-level table `0x80011000` and data page `0x80012000`. For VA `0x40000120`, VPN[1]=256, VPN[0]=0 and offset=`0x120`. The root entry is at `0x80010400`; its next-table pointer leads to the leaf at `0x80011000`. Translation produces PA `0x80012120`.
+
+| Location | PTE value | Interpretation |
+| --- | --- | --- |
+| Root[256], `0x80010400` | `0x20004401` | Pointer to table `0x80011000` |
+| Leaf[0], `0x80011000` | `0x200048c7` | Data page `0x80012000`, R/W, A/D set, U=0 |
+| Leaf[1], `0x80011004` | `0x20004843` | Same physical page, read-only, A set, U=0 |
+| Root[512], `0x80010800` | `0x200000cf` | Identity-mapped 4 MiB region for supervisor code/data |
+
+The second alias at `0x40001000` has a different virtual page but the same physical data. A store through it must fault. The writable identity mapping is convenient for trusted teaching firmware; it means this demonstration is not an isolation design for hostile supervisor software.
+
+### Superpages and Sv39
+
+An Sv32 leaf at the root level maps a 4 MiB superpage. Its physical PPN[0] must be zero so the physical base has the required alignment. The translation takes the low page-number portion from the virtual address. An improperly aligned root leaf causes a page fault, not a silently rounded physical address.
+
+Sv39 uses three nine-bit VPN fields, a twelve-bit offset and eight-byte PTEs. Its ordinary leaf sizes are 4 KiB, 2 MiB and 1 GiB. Valid virtual addresses have bits 63:39 equal to bit 38; a noncanonical address is not simply truncated. These differences change table depth, PTE accesses and alignment checks. The practical code here is RV32/Sv32; moving it to RV64 requires a different page-table construction, not only a compiler flag change.
+
+### Permissions: U, SUM and MXR
+
+User execution and data access require an eligible user mapping. Supervisor data access to user pages additionally depends on SUM; supervisor instruction fetch does not gain permission to execute a user page merely because SUM is set. MXR permits executable mappings to satisfy a load's read eligibility where applicable, but does not grant write permission or bypass privilege checks [@riscvSupervisorMmu].
+
+In the baseline, both aliases have U=0, and the program runs in S-mode with SUM=MXR=0. This isolates the R/W permission check from user-page access policy. Later exercises deliberately vary U, SUM and MXR one at a time so the cause of a denial remains understandable.
+
+### Accessed and dirty state
+
+A records page use; D records modification. They are PTE state, not the cache-line dirty bits discussed in @sec-memories-caches. A clean cache line can belong to a PTE with D=1, and eviction of that line does not reset the PTE's D flag.
+
+The architecture supports fault-based A/D handling and hardware updates under the applicable extension/configuration. Wally's `SVADU_SUPPORTED` and runtime `ENVCFG_ADUE` are relevant to its hardware-update path. The baseline presets A on readable pages and A/D on writable pages, so it does not depend on runtime A/D update support. Clearing A or D is a separate experiment whose expected behavior must name the chosen scheme.
+
+A hardware PTE update must be coordinated with competing modification of the entry. A naive independent byte store to the A bit is not a complete architectural implementation. Fault-based software similarly needs to distinguish a missing A/D flag from a real permission denial before deciding to repair and retry.
+
+### TLBs, fences and cache interaction
+
+A TLB caches translations and permission information. A TLB miss can cause a hardware walk without any software trap. The page-table reads can hit the D-cache, and the translated data access can independently hit or miss in that cache. Measure these events separately.
+
+Changing a PTE in memory does not automatically invalidate every cached translation. `sfence.vma` synchronizes relevant page-table updates with subsequent local translation use. It is neither a dirty-data cache clean nor an instruction-cache synchronization operation. A `satp` write does not replace the required translation synchronization [@harrisRiscvSoc, Chapter 11].
+
+The demonstration uses ASID zero and `sfence.vma zero, zero` for conservative local invalidation, including global entries. Larger systems can use narrower scopes and ASIDs. Multiple harts require coordinated remote translation invalidation and acknowledgement; a local fence is not a broadcast shootdown. A permission-revocation exercise should not assume a deterministic stale result before fencing, because implementations may retain or discard translations differently.
+
+### Page faults, access faults and precise recovery
+
+| Original operation | Page-fault code | Access-fault code |
+| --- | --- | --- |
+| Instruction fetch | 12 | 1 |
+| Load | 13 | 5 |
+| Store/AMO | 15 | 7 |
+
+A page fault can result from an invalid entry, denied virtual permissions, misaligned superpage or A/D handling. A physical access fault can arise from PMA/PMP or a failing physical transaction, including one needed to read a PTE. The reported operation remains the original instruction/load/store context rather than exposing every walker read as an application load.
+
+Recovering software has several choices: repair a mapping and retry the faulting instruction, emulate an operation where legal, reject a request, or terminate the affected process. Retrying normally leaves the saved PC at the faulting instruction. The example instead skips one deliberately denied, known four-byte store after validating its identity. That is a test convention, not a general page-fault handler. Blindly adding four fails for compressed instructions and can hide a real fault.
+
+### PMP policy before supervisor execution
+
+PMP entries can describe TOR or naturally aligned regions, subject to the implementation. In the ordinary baseline without enhanced PMP extensions, lower modes can be denied unmatched accesses when PMP entries are implemented, while M-mode normally bypasses unlocked permission restrictions. Locked entries and MPRV change the relevant conditions [@harrisRiscvSoc, Chapter 11].
+
+The experiment installs an unlocked TOR region from zero to `0x80400000`, with R/W/X allowed. `pmpaddr0=0x20100000` supplies the upper bound divided by four; `pmpcfg0=0x0f` selects TOR and those permissions. This permits the test's tables, code and data. A production policy should grant only needed regions and separately handle MMIO, firmware and test interfaces.
+
+Translation state and PMP policy both belong in a configuration record. Testing only PTE permissions while leaving all lower-mode physical accesses denied would produce access faults before the intended example can execute.
+
+### Architectural checking of protection and faults
+
+The plan in @sec-verification-methodology applies at the fault boundary as well as normal retirement. Check cause, fault address, saved PC, privilege/delegation and return behavior, and ensure that a faulting store produces no forbidden memory side effect. Add permission/page-boundary cases and TLB invalidation scenarios with matching reference-model configuration. The supplied Spike signature establishes its stated architectural scenario; it is not an executed Wally page-table-walker regression or a complete PMP/MMU security proof. Keep those integration obligations distinct.
+
+
+## Implementation
+
+### Follow the Wally RTL
+
+Use `git show` against the pinned revision rather than relying on whatever files are currently checked out. This also separates the `rv32gc` reading configuration from a reduced FPGA configuration that may omit supervisor facilities.
+
+| Source | What to inspect |
+| --- | --- |
+| `config/rv32gc/config.vh` | S/U support, Sv32, TLB sizes, PMP count and A/D support |
+| `src/privileged/privileged.sv`, `csr.sv`, `trap.sv` | Current mode, CSR state, delegation and trap destination |
+| `src/mmu/mmu.sv` | Translation selection, physical address and PMA/PMP fault combination |
+| `src/mmu/tlb/tlb.sv`, `tlbcontrol.sv` | Matching, permission checks, misses and A/D handling |
+| `src/mmu/hptw.sv` | Shared walker, table addresses, ownership and completion |
+| `src/ifu/ifu.sv`, `src/lsu/lsu.sv` | Instruction/data requests, stalls and precise side effects |
+
+At this revision, `rv32gc` has `S_SUPPORTED=1`, `SV32_SUPPORTED=1`, `SVADU_SUPPORTED=1` and 16 PMP entries. These are elaboration choices, not a claim that the board configuration exposes the same features [@cvwMmuBaseline].
+
+The MMU receives the effective privilege, `SATP_REGW`, status controls, request type and virtual/physical address. In `tlbcontrol.sv`, `Translate` combines a non-Bare mode, a non-M effective privilege and the absence of `DisableTranslation`. Walker accesses and relevant physical maintenance paths disable recursive translation but still need physical checking.
+
+### A data miss through the hardware walker
+
+For an S-mode load with an absent DTLB entry, follow the miss/update request to `hptw.sv`. The walker chooses the original data address and begins at the root level for Sv32. Its state names include `L1_ADR`, `L1_RD`, `L0_ADR`, `L0_RD`, `LEAF`, `UPDATE_PTE`, `FAULT` and `IDLE`; an ordinary two-level walk uses the address/read states before completing a leaf.
+
+For RV32, `HPTWReadAdr` combines the current table PPN, ten-bit VPN index and two low zero bits. The walker uses the LSU memory path, so each PTE read can wait for cache/bus completion. `DCacheBusStallM` controls progress. `SelHPTW` identifies walker ownership, while `HPTWStall` prevents ordinary pipeline progress during that ownership. The completed PTE and page type are supplied to the appropriate TLB through `DTLBWriteM` or `ITLBWriteF` [@cvwHptwBaseline].
+
+The pinned implementation records pending instruction/data walk requests and serves the data request first. It defers an instruction walk while an LSU operation is already in flight. This prevents a shared walker from abandoning or replaying a non-idempotent access. Trace `MemAccessInFlightM`, `MemAccessDoneM` and `HPTWFlushW` alongside the FSM rather than inferring correctness from the state names alone.
+
+On resumption, permission checking and the physical memory access remain necessary. A TLB hit can report a page fault when the cached permissions deny the current operation. A successful walker fill is therefore not proof that a store is allowed. The cache path must also preserve the selected set/address around walker activity, linking this mechanism to the memory chapter's stalled-request contract.
+
+### Build and run the complete Sv32 example
+
+Download [sv32.S](../../examples/privileged-mmu/sv32.S), [link.ld](../../examples/privileged-mmu/link.ld) and [expected.signature](../../examples/privileged-mmu/expected.signature), or use their directory in the repository. The assembly provides M-mode setup, page tables, S-mode work, both trap handlers and HTIF completion. It does not need a C runtime or stack.
+
+In Linux, WSL or a configured RISC-V toolchain environment:
+
+```bash
+set -e
+cd examples/privileged-mmu
+riscv64-unknown-elf-gcc -march=rv32i_zicsr -mabi=ilp32 \
+  -nostdlib -nostartfiles -mcmodel=medany -Wl,--no-relax \
+  -T link.ld -o sv32.elf sv32.S
+riscv64-unknown-elf-readelf -h sv32.elf
+riscv64-unknown-elf-objdump -d sv32.elf > sv32.dump
+rm -f spike.sig
+timeout 20s spike --isa=rv32i_zicsr --priv=msu -m64 \
+  +signature=spike.sig +signature-granularity=4 sv32.elf
+diff -i expected.signature spike.sig
+```
+
+The compiler executable's `riscv64` prefix does not make this an RV64 program: `-march` and `-mabi` select the RV32 target. Check ELF32 and entry `0x80000000`. The `.option norvc` directive keeps all instructions uncompressed, which is necessary for the known-store skip. The linker fixes the table/data addresses used by the worked calculation.
+
+The example was compiled with GCC 13.2.0 and passed on Spike 1.1.1-dev with the command above. That is an architectural functional result, not a cycle-level validation of Wally's walker, caches or stalls. The supplied small lab container does not include Spike; obtain the separate toolchain described in the reference-model chapter and record its identity.
+
+### Read the execution as a privilege journey
+
+M-mode clears interrupts, installs handlers, permits physical access through PMP and initializes two aligned tables. Root[512] identity-maps supervisor code and data. Root[256] connects the two virtual aliases to a second-level table. The program writes `satp=0x80080010`, checks the supported value, fences translations, prepares MPP=S and enters `supervisor_start` with `mret`.
+
+S-mode loads `0x11223344` through `0x40000000`, then writes `0x55667788` through that writable alias. A store of `0xdeadbeef` through `0x40001000` is denied. The supervisor handler checks cause 15, the virtual fault address and the exact store PC, records its observation, advances past that one store and returns with `sret`.
+
+S-mode then reads the read-only alias. It must still return `0x55667788`: the denied store must not have reached physical data. A final S-mode `ecall` enters M-mode because cause 9 was not delegated. The machine handler reports HTIF success only for that expected path. Any unexpected handler entry or failed assertion reports failure.
+
+| Signature word | Expected hexadecimal value | Observed requirement |
+| --- | --- | --- |
+| 0 | `11223344` | Valid translated read |
+| 1 | `55667788` | Writable alias update survived; denied store had no effect |
+| 2 | `0000000f` | Store page fault entered supervisor handler |
+| 3 | `40001000` | Trap value identifies the virtual alias |
+| 4 | `00000001` | Expected fault location checked and handler completed |
+
+Both the process exit and signature comparison must pass. A nonzero simulator result, timeout or stale signature is a failure. The HTIF mailboxes are a simulator convention; porting this test to Wally requires its documented loader and termination interface.
+
+## Hands-on Experiments
+
+### Experiment 1: calculate before executing
+
+Decode all four PTE values in the worked table. Compute the translations of `0x40000120` and `0x40001120`, then classify S-mode load/store/fetch permissions. Verify the expected signature using the complete program. Deliver your address calculation, disassembly and simulator/tool identities.
+
+### Experiment 2: prove that the checks detect a change
+
+In a separate variant, make Leaf[1] writable with A/D set. The formerly denied store succeeds, so the reference test must fail because no supervisor fault was recorded. Do not edit the expected signature to conceal that failure. Retain the failure output and explain which requirement the mutation removed.
+
+Then remove `medeleg[15]` in another variant. Update the test contract deliberately to observe cause 15 in M-mode rather than S-mode. The baseline machine handler should reject the unexpected event until the variant has a corresponding handler and expected results.
+
+### Experiment 3: revoke and restore a mapping
+
+Warm a translation, modify its PTE permissions, execute the appropriate local `sfence.vma`, then perform the formerly allowed access. Verify a precise fault. Restore the mapping, fence again and retry through a handler designed for repair rather than skip. Explain why `sepc` handling differs from the baseline's deliberate denial.
+
+### Experiment 4: effective privilege and physical denial
+
+Use an explicit MPRV/MPP=S data-access variant to demonstrate supervisor translation while instructions still fetch in M-mode. Separately restrict PMP so the page-table memory is inaccessible. Check an access fault associated with the original operation, rather than assuming every translation failure produces a page fault. Keep these variants independent so each has one changed cause.
+
+### Experiment 5: user permissions and A/D
+
+Construct a separate U-mode payload and an S-mode handler with appropriate supervisor-only mappings. Vary U, SUM and MXR and record load/store/fetch outcomes. In another variant, clear A or D and choose fault-based handling or the supported hardware-update path explicitly. Do not expect the baseline result without configuring the corresponding state.
+
+### Experiment 6: trace full Wally
+
+Use the pinned full `rv32gc` configuration with the matching established harness. Load the ELF/data in its physical RAM and adapt completion to the harness's supported convention. Verify its reset/entry path, PMP/CSR support and memory range before running; copying a Spike invocation is not sufficient.
+
+Trace `SATP_REGW`, `PrivilegeModeW`, `Translate`, ITLB/DTLB miss/write signals, `WalkerState`, `HPTWReadAdr`, `SelHPTW`, `HPTWStall`, memory acceptance/completion and trap state. Identify the two table reads, the resumed data access and the denied store. Add waits on the physical memory path and show that the faulting store never updates the shared data page.
+
+The report must separate the checked Spike architectural behavior from newly collected Wally RTL evidence. A correct address calculation, a reference-model pass and a precise cycle-level implementation are three related milestones. Together they explain the privileged foundation needed before studying operating-system boot or application-level isolation.

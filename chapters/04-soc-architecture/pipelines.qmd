@@ -248,6 +248,11 @@ Do not translate a processor branch flush into indiscriminate deletion of bus tr
 
 Ready/valid here assumes a shared clock. For different clocks, use an asynchronous FIFO or another verified crossing scheme. Synchronizing data bits individually can corrupt an item; synchronizing `valid` and `ready` separately does not preserve the handshake.
 
+### Verify acceptance, conservation and ordering
+
+The transport methodology in @sec-verification-methodology observes accepted requests and consumed responses. Track outstanding work with an independent queue, check payload retention during stalls, and assert the applicable ordering/ID rules. Cross queue occupancy with simultaneous push/pop, downstream stalls and reset. Reset can cancel protocol state under the contract while already committed memory writes remain. Unit FIFO correctness does not establish the correctness of the assembled arbiter, memory adapter or recovery policy; add an end-to-end transaction scoreboard at that boundary.
+
+
 ## Implementation
 
 ### A FIFO without a backward readiness chain

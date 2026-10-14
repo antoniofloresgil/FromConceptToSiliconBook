@@ -54,6 +54,11 @@ The `instret` CSR counts retired instructions, while `cycle` represents a cycle 
 
 The book also reports that the Sail model was substantially slower than Spike in its test-generation environment. Treat that as context for choosing interactive versus reference workloads, not a portable benchmark. Host machine, model version, tracing, extensions, and workload all affect runtime.
 
+### From reference execution to differential verification
+
+The examples here run architectural models; they do not wire a retirement comparator into the Wally testbench. For that next step, follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
+
+
 ## Implementation
 
 ### Configure equivalent environments

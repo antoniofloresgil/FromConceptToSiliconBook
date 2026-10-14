@@ -205,6 +205,11 @@ SPI flash and SD cards also need protocol software. A byte-oriented SPI port doe
 
 These boundaries help select an IP block: start from the required external protocol, then list register, interrupt, DMA, clock, reset and physical requirements. License notices and exact revisions belong with any reused implementation. The teaching modules below are separate examples; inspect Wally's own source headers when reusing its RTL.
 
+### Peripheral verification includes the driver and external interface
+
+Following @sec-verification-methodology, test register semantics, side effects and protocol behavior separately. Check W1C/event coincidence, masks, FIFO overflow/underflow, response errors and interrupt clearing. Drive meaningful external serial/timer stimuli; a loopback can conceal two mutually compensating protocol defects. Firmware adds volatile accesses, ordering and timeout/recovery obligations. Compare at defined transfer/sample events and retain a minimized boundary-case regression. Real pin electrical behavior and board clock accuracy remain physical-platform checks.
+
+
 ## Implementation
 
 ### Wally's APB peripheral organization

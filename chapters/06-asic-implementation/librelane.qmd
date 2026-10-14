@@ -441,3 +441,7 @@ Use the same RTL, 10 ns target and SKY130 library in the direct OpenROAD exercis
 ## Closing perspective
 
 LibreLane makes the full open ASIC stack practical for repeated work: a design configuration chooses the intent, a PDK supplies technology facts, and the flow records how the tools transform SystemVerilog into physical views. Use the convenience to make evidence easier to review, not to conceal engineering choices. Before any fabrication submission, apply the current rules and acceptance process of the selected foundry or MPW programme in addition to the local LibreLane reports.
+
+### Automation and verification ownership
+
+Apply @sec-verification-methodology when accepting an automated flow result. Record which configured steps actually executed, their input identities and their checker/deck/model scope. Verify consistency among the final netlist, extraction, layout and reports. A successful orchestration command does not turn disabled equivalence, macro-internal, electrical or production-test checks into passes. Flow repairs and changed views invalidate affected downstream evidence; review the final products rather than accepting a summary copied from a prior run.

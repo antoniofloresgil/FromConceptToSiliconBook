@@ -158,6 +158,11 @@ Macro placement is a floorplan decision. Leave routing access around pins, reser
 
 Hierarchical design hardens blocks independently and integrates their abstracts at a higher level. A hardened block needs a timing model and an interface budget, not just a rectangle and GDS. Constraints assumed when hardening the block must agree with the surrounding implementation. This is the next step beyond the accumulator: a Wally core plus SRAMs, buses and peripherals needs budgets between blocks and validation at the assembled level.
 
+### Verification across circuit and digital representations
+
+Use @sec-verification-methodology to connect cell/circuit characterization to the digital hierarchy. Check that cell Boolean behavior, pin polarity, timing arcs, reset and power views agree with the intended circuit. Custom circuits require appropriate transient/DC and PVT scenarios with the technology models; standard-cell integration relies on identified characterized views and their permitted use. RTL arithmetic tests do not validate transistor noise margins or lifetime reliability. Record model/corner identity and carry the resulting interface assumptions into STA and physical review.
+
+
 ## Implementation
 
 ### Read one technology cell before running a flow

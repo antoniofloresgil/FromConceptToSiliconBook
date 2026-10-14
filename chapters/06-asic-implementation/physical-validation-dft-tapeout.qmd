@@ -63,6 +63,11 @@ Automation should parse the expected checker products and reject missing, incomp
 
 For every check, preserve the input hash, tool version, deck version, scope, status and report path. Use distinct statuses such as passed, failed, not run and not applicable. A waiver records a reviewed exception with its reason and the required acceptance authority. Waivers should not silently carry forward to a changed instance or layout.
 
+### Link physical acceptance to the complete verification plan
+
+The common hierarchy in @sec-verification-methodology makes this chapter's reports downstream evidence for identified requirements. Preserve the upstream functional/equivalence claims and explicitly mark any missing technology checks. Keep functional coverage, structural coverage and manufacturing fault coverage separate, with their models and denominators. Scan ordering alone is not ATPG effectiveness, first-silicon boot is not production screening, and router DRC is not the entire qualified layout rule set. Release review combines the applicable results and scoped waivers rather than replacing them with a single flow exit code.
+
+
 ## Implementation
 
 ### Build a validation record for the accumulator
