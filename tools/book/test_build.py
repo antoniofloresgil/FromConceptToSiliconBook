@@ -39,7 +39,7 @@ class ReleaseSafety(unittest.TestCase):
         self.assert_previous_survives()
 
     def test_old_pdf_cannot_hide_missing_new_pdf(self):
-        def html_only(args, cwd, check):
+        def html_only(args, cwd, check, env):
             self.assertFalse((cwd / 'index.html').exists())
             self.assertFalse((cwd / 'From-Concept-to-Silicon.pdf').exists())
             output = cwd / '_book'

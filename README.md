@@ -27,7 +27,7 @@ git rev-parse HEAD
 docker version
 ```
 
-Record the commit for your submission. To reproduce an archived course release, check out the exact commit assigned by the instructor. A GitHub source ZIP can build the book but cannot provide Git revision metadata; the smaller laboratory ZIP is a practice package and intentionally omits the complete book project.
+Record the commit for your submission. To reproduce an archived course release, check out the exact commit assigned by the instructor. A GitHub source ZIP can build the book but cannot provide Git revision metadata. The smaller laboratory ZIP contains only practices, executable examples, guides, licenses and integrity/provenance manifests: it omits chapter/appendix text, book figures, bibliography and publishing tools. Its root README explains standalone execution; read the HTML/PDF book separately.
 
 Two separate Linux/amd64 environments are provided. Building images requires network access, several gigabytes of available storage and several minutes on a fresh machine. The reference runs and book rendering below execute without network access. Native Quarto, LaTeX, `rsvg-convert`, HDL simulators and Python are not required when using these containers. An optional native Python 3.10+ installation supports authoring utilities; it does not replace the hardware toolchain.
 

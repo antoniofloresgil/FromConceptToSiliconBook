@@ -73,7 +73,9 @@ def main():
         for svg in sorted((source / 'figures').glob('*.svg')):
             subprocess.run(['rsvg-convert', '--format', 'pdf', '--output',
                             str(converted / (svg.stem + '.pdf')), str(svg)], check=True)
-        subprocess.run(['quarto', 'render', '--to', 'all'], cwd=source, check=True)
+        render_env = {**os.environ, 'BOOK_REVISION': revision,
+                      'BOOK_SOURCE_DIRTY': str(dirty).lower() if dirty is not None else 'unknown'}
+        subprocess.run(['quarto', 'render', '--to', 'all'], cwd=source, env=render_env, check=True)
         output = source / '_book'
         # Archive the vector figure conversions alongside the HTML originals.
         (output / 'figures').mkdir(exist_ok=True)

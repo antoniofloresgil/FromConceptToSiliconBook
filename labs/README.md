@@ -68,7 +68,9 @@ Preserve the unit report: the Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/
 
 Reference RTL/models in the original unit labs are complete listings exported from the chapters. The dot-product project supplies native complete source files and a separate manifest. `labs/tools/catalog.py` records each origin. `check` detects drift; `sync` is an authoring operation that regenerates exported files after reviewing a chapter change. It overwrites those reference files, so keep student variants in `labs/work/` or a separate Git branch.
 
-The archive produced by `pack` includes labs, existing examples, chapter text for provenance and SHA-256 checksums. Build products are excluded. Extract the archive and use the same commands from its root. Changes to source produce a different checksum.
+The archive produced by `pack` includes labs, standalone examples, a package quick-start README, licenses and checksum/provenance manifests. Chapter text, appendices, textbook figures, bibliography and publishing tools are excluded. Links to omitted book documents point to the published HTML book in the extracted guides. Obtain the complete book PDF separately from the HTML sidebar.
+
+In the full repository, `check` verifies reference code against chapter listings. In an extracted ZIP, it verifies `SHA256SUMS.json` and the 29 listing origins in `LAB-PROVENANCE.json`, which record chapter/file hashes, selectors, repository revision and preview status. Chapter/code equality is checked before the archive is produced, not reconstructed from a checksum. `sync` and `pack` require the full repository. Changing packaged reference files fails integrity checks; student variants remain under `labs/work/`.
 
 For a student variant, copy one lab's complete `rtl/` directory to `labs/work/<name>/rtl/`, edit it and run, for example, `python labs/run.py run transport --rtl-dir labs/work/transport/rtl`. The runner retains the reference tests and records the variant's hashes. The existing reference sources remain synchronized with the chapters.
 

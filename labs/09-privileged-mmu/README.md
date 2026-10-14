@@ -1,6 +1,6 @@
 # 09 — Privileged architecture and MMU
 
-Read `chapters/04-soc-architecture/privileged-mmu.qmd`. Use the complete assembly, linker script and expected signature in `examples/privileged-mmu/`.
+Read [the privileged-memory chapter](../../chapters/04-soc-architecture/privileged-mmu.qmd). Use the complete assembly, linker script and expected signature in `examples/privileged-mmu/`.
 
 This guided activity has two verification boundaries:
 

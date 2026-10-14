@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from tools.catalog import LABS, SOURCES
+from tools.package import EXAMPLES, MANIFEST, build_package, check_package
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD = Path(os.environ.get("LAB_BUILD_DIR", ROOT / "labs" / "build")).resolve()
@@ -42,6 +43,11 @@ def source_text(item):
 
 
 def sync(write=False):
+    if (ROOT / MANIFEST).exists() and not (ROOT / 'chapters').exists():
+        if write:
+            raise RuntimeError('sync requires the full book repository; downloaded reference files are immutable')
+        check_package(ROOT, SOURCES)
+        return
     for item in SOURCES:
         path = ROOT / item["file"]
         expected = source_text(item)
@@ -51,14 +57,9 @@ def sync(write=False):
         elif not path.exists() or path.read_text(encoding="utf-8") != expected:
             raise RuntimeError(f"Chapter/listing mismatch: {item['file']}. Review the edit before using 'sync'.")
     # Existing runnable simulation examples also remain aligned with their chapters.
-    for chapter, language, start, file in [
-        ("chapters/03-simulation-verification/verilator.qmd", "systemverilog", "module accumulator", "examples/verilator/accumulator.sv"),
-        ("chapters/03-simulation-verification/verilator.qmd", "cpp", '#include "Vaccumulator.h"', "examples/verilator/sim_main.cpp"),
-        ("chapters/03-simulation-verification/cocotb.qmd", "python", "import random", "examples/cocotb/test_accumulator.py"),
-    ]:
-        item = {"chapter": chapter, "language": language, "starts": [start]}
-        if source_text(item).strip() != (ROOT / file).read_text(encoding="utf-8").strip():
-            raise RuntimeError(f"Existing example differs from chapter: {file}")
+    for item in EXAMPLES:
+        if source_text(item).strip() != (ROOT / item['file']).read_text(encoding="utf-8").strip():
+            raise RuntimeError(f"Existing example differs from chapter: {item['file']}")
     print(f"PASS source provenance: {len(SOURCES)} exported files and 3 existing examples")
 
 
@@ -74,6 +75,10 @@ def check_archive_sources():
 
 def tool_info():
     result = {"python": sys.version.split()[0], "platform": platform.platform()}
+    if (ROOT / MANIFEST).exists():
+        provenance = json.loads((ROOT / MANIFEST).read_text(encoding='utf-8'))
+        result['practice_package_source'] = provenance['source']
+        result['practice_provenance_sha256'] = digest(ROOT / MANIFEST)
     for tool, flag in [("iverilog", "-V"), ("vvp", "-V"), ("verilator", "--version"),
                        ("yosys", "-V"), ("clang", "--version"), ("ld.lld", "--version"),
                        ("make", "--version"), ("g++", "--version")]:
@@ -108,7 +113,7 @@ class Session:
     def execute(self, args, cwd=None, timeout=300):
         args = [str(arg) for arg in args]
         if not shutil.which(args[0]) and not Path(args[0]).is_file():
-            raise RuntimeError(f"Missing tool: {args[0]}. See appendices/reproducible-labs.qmd.")
+            raise RuntimeError(f"Missing tool: {args[0]}. See labs/README.md and the online reproduction appendix.")
         log = self.directory / f"command-{len(self.commands)+1:02d}.log"
         started = time.monotonic()
         entry = {"argv": args, "cwd": str(cwd or self.directory), "log": str(log.relative_to(ROOT))}
@@ -268,33 +273,10 @@ def run(names, seed, override=None):
 
 
 def pack():
+    if not (ROOT / 'chapters').is_dir():
+        raise RuntimeError('pack requires the full book repository')
     sync()
-    destination = ROOT / "downloads" / "hardware-design-labs.zip"
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    paths = []
-    for base in ("labs", "examples", "chapters"):
-        for path in (ROOT / base).rglob("*"):
-            if not path.is_file() or path.is_symlink() or any(part in {"build", "work", "__pycache__", "sim_build", "obj_dir", ".venv", "runs"} for part in path.relative_to(ROOT).parts):
-                continue
-            if path.name == "results.xml" or path.suffix in {".vcd", ".fst", ".pyc", ".html", ".pdf", ".o", ".elf", ".dump", ".sig", ".log", ".vvp"}:
-                continue
-            paths.append(path)
-    paths += list((ROOT / "appendices").glob("*.qmd"))
-    paths += list((ROOT / "figures").glob("*.svg"))
-    paths += [ROOT / "references.bib", ROOT / ".dockerignore", ROOT / ".gitattributes"]
-    paths += [ROOT / "LICENSE.md", ROOT / "NOTICE.md", ROOT / "summary.qmd"]
-    paths += sorted((ROOT / "LICENSES").glob("*.txt"))
-    hashes = {path.relative_to(ROOT).as_posix(): digest(path) for path in sorted(paths, key=lambda path: path.relative_to(ROOT).as_posix())}
-    with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
-        for name in hashes:
-            info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
-            info.create_system = 3
-            info.compress_type = zipfile.ZIP_DEFLATED
-            info.external_attr = 0o100644 << 16
-            archive.writestr(info, (ROOT / name).read_bytes())
-        info = zipfile.ZipInfo("SHA256SUMS.json", date_time=(2026, 1, 1, 0, 0, 0))
-        archive.writestr(info, json.dumps(hashes, indent=2)+"\n")
-    print(f"Package: {destination} sha256={digest(destination)}")
+    build_package(ROOT, SOURCES)
 
 
 def main():

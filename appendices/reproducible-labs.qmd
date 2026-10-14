@@ -6,7 +6,7 @@ This appendix turns the book's small examples into a repeatable laboratory workf
 
 For the 12-week Hardware System Design course, @sec-hsd-coursework maps reference activities to assessed practices, autonomous work, deliverables and rubrics. It defines an AXI/DMA accelerator controlled by Wally as the project backbone. The executable reference in @sec-executable-project supplies the AXI/DMA IP, bounded formal checks and Wally firmware platform. The Wally clone is an explicit external dependency.
 
-[Download the laboratory package](../downloads/hardware-design-labs.zip). The same files are versioned under `labs/` and `examples/` in the book repository. Extract the ZIP and run commands from its root, where `labs/run.py` is located. The chapter text in the archive records the origin of exported listings.
+[Download the laboratory package](../downloads/hardware-design-labs.zip). The executable files are versioned under `labs/` and `examples/` in the book repository. Extract the ZIP and run commands from its root, where `labs/run.py` is located. Its quick-start README and lab guides accompany the code, tests, firmware, flow inputs and licenses. The book's chapters, appendices, illustrations and bibliography are excluded; read HTML or download the complete PDF separately. `LAB-PROVENANCE.json` records the chapter origins, listing selectors and chapter/code fingerprints without copying the chapter text.
 
 Alternatively, obtain the repository:
 
@@ -138,7 +138,7 @@ Both designs use the top name `accumulator`, but their ports and operand contrac
 
 Local unit runs write `labs/build/report.json`. The Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/wally-platform` so the system report is `labs/build/wally-platform/report.json`; native Linux sets the equivalent path `labs/build/wally-platform`. Preserve both for the evidence collector. DSE writes `labs/build/dse/results.json` locally; CI uses its separate `dse-platform/` namespace.
 
-Before simulation, the runner checks that exported reference files match their chapter listings. `labs/tools/catalog.py` records the source chapter, language and listing selector. The existing Verilator/cocotb examples are checked too. A changed printed listing cannot silently leave an old reference file in the package.
+In the full repository, the runner checks that exported reference files match their chapter listings before simulation and packaging. `labs/tools/catalog.py` records the source chapter, language and listing selector; the existing Verilator/cocotb examples are checked too. In an extracted practice ZIP, the runner instead checks package integrity and listing identities against `LAB-PROVENANCE.json`. Chapter/code equality was checked when the archive was produced. The manifest identifies the originating source revision and any tracked local preview edits; its hashes detect accidental drift rather than signing the archive. Authoring commands `sync` and `pack` require the full repository.
 
 ```bash
 python labs/run.py check
