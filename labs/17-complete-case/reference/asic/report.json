@@ -1,0 +1,133 @@
+{
+  "stage": "asic",
+  "status": "completed",
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "profile": {
+    "scope": "accelerator block; no pads or complete SoC",
+    "technology": "Nangate45 typical",
+    "target_util_pct": 45,
+    "period_ns": 10.0,
+    "clock_uncertainty_ns": 0.1,
+    "input_max_ns": 2.0,
+    "input_min_ns": 0.2,
+    "output_max_ns": 2.0,
+    "output_min_ns": 0.0,
+    "output_load_ff": 5.0,
+    "global_activity": 0.1,
+    "activity_source": "vectorless model, not firmware workload activity",
+    "image_digest": "openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699"
+  },
+  "commands": [
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/work/labs/10-dotproduct/rtl/dotproduct_mac.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_engine.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_axi.sv\"; hierarchy -top dotproduct_axi; chparam -set MAX_LENGTH 256 dotproduct_axi; chparam -set DMA_BASE 32'h80008000 dotproduct_axi; chparam -set DMA_LIMIT 33'h8000c000 dotproduct_axi; synth -top dotproduct_axi -flatten; dfflibmap -liberty /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; abc -liberty /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z; read_liberty -lib /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; clean; check -assert; write_verilog -noattr -noexpr mapped.v"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/17-complete-case/asic.tcl"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/complete-case-asic-final/asic",
+        "-rm",
+        "/work/labs/17-complete-case/streamout.py"
+      ],
+      "log": "command-03.log",
+      "exit_code": 0
+    }
+  ],
+  "image": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "tools": {
+    "yosys": "Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)",
+    "openroad": "24Q3-11382-g61879bec53"
+  },
+  "recipe_sha256": {
+    "asic.sdc": "36de66ee6bcf4541463a557eef0f070b38a07b3edc7a87eea1ec4dcbdfe599e9",
+    "asic.tcl": "69b73ac19c847d2da682f1f30f4a9a277ed0702c52e2e537f7ff724fbb11c453",
+    "run.py": "b7c5001d8887a23c622785c01d76cab0978c3ac63e439ab77bf55df61f7fa12f",
+    "streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c"
+  },
+  "technology_sha256": {
+    "lib/NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1",
+    "lef/NangateOpenCellLibrary.tech.lef": "834a79295054cd4209178d1bade67c353863c47bb4b3c22ee38b862b7cec37f2",
+    "lef/NangateOpenCellLibrary.macro.mod.lef": "a43aea339f12a57a63497783e508ba16f3da2dc056d3247dec7d99707c2dedef",
+    "rcx_patterns.rules": "2f65fafbe2c704b378563c53a680b93cef080c2799997019d43df7d1e5a563e9",
+    "gds/NangateOpenCellLibrary.gds": "7fdbd7f4e46283fdd9b9a369e1cae1a7f6f742c8e75cfe943c17f451626fe8e8"
+  },
+  "artifacts": {
+    "command-01.log": "341f218277b7996e71e6f2aa714517ad5a767d29e1fa3fd5aeaa275462f20b9e",
+    "command-02.log": "0360aa45cc82e0c0e53f5643a6aad9bc9e128f16ceb6eabe667c733ab70308c9",
+    "command-03.log": "81ed457a105b0db6bc0fb3aedf5a0a11ff4a384f6bab63a023317ac8ce48221c",
+    "cts-area.rpt": "10e5b9ba8bb69734033f161a25c8fb042f3d268355cc0671b4489fde0e2ce27a",
+    "cts-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cts-hold.rpt": "3241d979ac854a2833f174de05e148bd99442b03800e92443e320404f8fdccf9",
+    "cts-limits.rpt": "19c28380c7dc09099a04a5292cb2c988eba98be845c24314dcf9828baed9e97e",
+    "cts-metrics.json": "bd6c55cbd2b2d737a6f95fb7808d8afb1ee8ac97726ac75472050e6529e7b57f",
+    "cts-setup.rpt": "06a65052dcfca5666df760331fca4c32a42e9aba40988867ef390ee823739709",
+    "cts-tree.rpt": "c7a3023b823bdad4768183acdb68dd4f46c17d27cbc83d9d3692c1cd69dff1ef",
+    "cts.odb": "aa38d107bdf885552d6599591082535baa497748420dea27894c69ae3ed1a744",
+    "cts.sdc": "e9228f63c058f566ee55122739c3ddd5fce301ad2fffe5ffc02053de4d582cb5",
+    "dotproduct_axi.gds": "d81ad548a81d84d23bfb58bb4f37f27ec99dec3e29f84b99d583305d736f80cb",
+    "gds-readback.json": "071539cff9952b09d04fe37279d1e61ce3c86b4507f20889b77ff6fff5ae2000",
+    "global-area.rpt": "10e5b9ba8bb69734033f161a25c8fb042f3d268355cc0671b4489fde0e2ce27a",
+    "global-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "global-hold.rpt": "43c29bfde617cb43a611cd0a584113bcafd39936ea3409e89d0fff82d6d69fa8",
+    "global-limits.rpt": "1cdded336f567e524872630591ec82bb6108ee2a24f80257b88842881b967f77",
+    "global-metrics.json": "0dcaa3d4c85fda23ffde55a90f11ac9ee39b8dd54bd8e0c10e300e220645cf1e",
+    "global-setup.rpt": "0a4dad99f3b56fcb2b6792ab46b9b6eaff29fcdced58c8b7628c55fd533b747d",
+    "global.odb": "a0f353145753b22d807e1595da1b8d1d26abdc5623272afb3b8c1e4cd4090288",
+    "global.sdc": "5901429ab6f8077fbedc4eef1649ffc362a801abf829c918ac9301429266c2a4",
+    "mapped.v": "cea30e3d984f825a68279e2fced7a8c2ea9f01eb84ea373f530388a1c970ef09",
+    "placed-area.rpt": "68ae6c8c33889db399292d6188567d6da468c2732442052b927a8ad138d2c468",
+    "placed-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "placed-hold.rpt": "cde1250d10e218958b42efc5b0f4c9cab95c3e10591739c5e6d59a1463abd343",
+    "placed-limits.rpt": "21416f9b3a72ed575c93b394e5284f12bb285b216ed064ac35d46bc5a399b311",
+    "placed-metrics.json": "c37168ac63612a3d8dc8ac2d066daa24e581f1bdafc72b2d8694eab8b789f342",
+    "placed-setup.rpt": "7b67875c6987f259337eb9b1b7b82753d7987b41f8fb202288dcbe9bf771840b",
+    "placed.odb": "12b4c738e5164fdddd610d839c5d3fff9b096d0aaefa62214717a5265d5f73df",
+    "placed.sdc": "c7664cc2d9b1ebe4759f032548c25cc0d4405717ffedc76fc754eb1cc53b5995",
+    "power.rpt": "db79356b5b3b89bca6105b6632100061462f8b6cc9da4f431322db1b8ef26352",
+    "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "route.guide": "89935527c3623ebbd43564df4f2af21bbbda57b4dda6daf61a3176e57ba140eb",
+    "routed-area.rpt": "10e5b9ba8bb69734033f161a25c8fb042f3d268355cc0671b4489fde0e2ce27a",
+    "routed-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "routed-hold.rpt": "32adfca711666acfb2dfdb9d08aba354a88a46625426e79a631b86085b4b445b",
+    "routed-limits.rpt": "3991c3bbeec44e39b49dff60f2920e180e00990af4879f80d339fbd4ed29790e",
+    "routed-metrics.json": "f7b3583473c967e01c6aeaf6a2488742f42aae563cd8807fa901922816aefba8",
+    "routed-setup.rpt": "a92e55c5c173a35bd4d34de6db77451fbea208e4e04769dd856840face527a48",
+    "routed.def": "be13d516726cbb3e0e3c6e211962cdec9c65f147b4e376359b0122edf75caa7d",
+    "routed.odb": "05c9414c73b0bed1c2c0ecf650710775dd3469305efccd841f8595839f278278",
+    "routed.sdc": "c3258794c69a387508cf4bba9c14db12c504c2be6a0ff4a49852020e2152932f",
+    "routed.spef": "a9801bc82eb8f46fb3656f1b323de580ac2288b4b47c5c5df0111c2a9ca91607",
+    "routed.v": "0c4d8c3d43ded9278348cbf4584dfe4d0026f2d6cbb6e4533e58f0b6bdd611d2"
+  }
+}

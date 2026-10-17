@@ -49,7 +49,7 @@ LABS = {
     "cocotb": {"folder": "05-verification", "mode": "automatic", "goal": "Existing Python accumulator scoreboard using Icarus"},
     "isa": {"folder": "06-isa", "mode": "automatic", "goal": "Compile RV32I ELF and check the three-word signature"},
     "synthesis": {"folder": "07-implementation", "mode": "automatic", "goal": "Yosys elaboration, no unintended latches and generic netlist"},
-    "fpga": {"folder": "07-implementation", "mode": "guided", "goal": "Pinned Wally/Nexys Video build and physical programming"},
+    "fpga": {"folder": "07-implementation", "mode": "guided", "goal": "Pinned Wally/Nexys Video build; board programming or simulation/report alternative"},
     "asic": {"folder": "07-implementation", "mode": "guided", "goal": "Direct OpenROAD / LibreLane with a separately installed PDK"},
     "wally": {"folder": "08-integration", "mode": "guided", "goal": "Cache/MMIO/interrupt observations in the complete SoC"},
     "mmu": {"folder": "09-privileged-mmu", "mode": "guided", "goal": "RV32/Sv32 reference test, delegated store fault and Wally walker observations"},
@@ -60,6 +60,10 @@ LABS = {
     "boot": {"folder": "12-boot", "mode": "guided", "goal": "Explicit optional QEMU/OpenSBI handoff and Linux userspace boot"},
     "vector": {"folder": "13-vector", "mode": "guided", "goal": "Checked explicit RVV dot product/masked stores at three VLEN values in QEMU"},
     "security": {"folder": "14-security", "mode": "guided", "goal": "Explicit PMP, real DMA, debug admission, cache observations and bounded formal checks"},
+    "formal": {"folder": "15-formal", "mode": "guided", "goal": "Explicit FIFO BMC, induction/equivalence, reachability, counterexample and repair regression"},
+    "physical-study": {"folder": "16-openroad-study", "mode": "guided", "goal": "Measured direct OpenROAD accumulator clock/utilization sweep, extracted timing and GUI captures"},
+    "complete-case": {"folder": "17-complete-case", "mode": "guided", "goal": "One locked dot-product release across formal/tests, real Wally, ECP5/Nexys Video PnR and ASIC GDSII with joined results"},
+    "linux-accelerator": {"folder": "18-linux-accelerator", "mode": "guided", "goal": "Linux/QEMU MMIO driver, reserved DMA pool, IRQ/polling and userspace; advanced real Wally RV64 RTL Linux platform"},
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"

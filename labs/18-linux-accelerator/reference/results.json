@@ -1,0 +1,158 @@
+{
+  "qemu": "pass",
+  "qemu_metrics": [
+    {
+      "mode": "irq",
+      "length": 1,
+      "software_ns": 118400,
+      "end_to_end_ns": 2715900,
+      "kernel_ns": 2108000
+    },
+    {
+      "mode": "irq",
+      "length": 8,
+      "software_ns": 12500,
+      "end_to_end_ns": 505000,
+      "kernel_ns": 459800
+    },
+    {
+      "mode": "irq",
+      "length": 32,
+      "software_ns": 1600,
+      "end_to_end_ns": 793200,
+      "kernel_ns": 759100
+    },
+    {
+      "mode": "irq",
+      "length": 128,
+      "software_ns": 36600,
+      "end_to_end_ns": 764400,
+      "kernel_ns": 728400
+    },
+    {
+      "mode": "irq",
+      "length": 256,
+      "software_ns": 4000,
+      "end_to_end_ns": 384300,
+      "kernel_ns": 353600
+    },
+    {
+      "mode": "poll",
+      "length": 1,
+      "software_ns": 1500,
+      "end_to_end_ns": 420300,
+      "kernel_ns": 379000
+    },
+    {
+      "mode": "poll",
+      "length": 8,
+      "software_ns": 1100,
+      "end_to_end_ns": 557100,
+      "kernel_ns": 523900
+    },
+    {
+      "mode": "poll",
+      "length": 32,
+      "software_ns": 1400,
+      "end_to_end_ns": 528700,
+      "kernel_ns": 490600
+    },
+    {
+      "mode": "poll",
+      "length": 128,
+      "software_ns": 4000,
+      "end_to_end_ns": 470800,
+      "kernel_ns": 424700
+    },
+    {
+      "mode": "poll",
+      "length": 256,
+      "software_ns": 3200,
+      "end_to_end_ns": 2267500,
+      "kernel_ns": 2225700
+    }
+  ],
+  "wally": "pass",
+  "measurement_scope": "emulator/software overhead with a fixed 10000 ns virtual device delay; not a physical accelerator speedup",
+  "manifest_sha256": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633",
+  "wally_stages": {
+    "prepare": "pass",
+    "compile": "pass",
+    "run": "pass",
+    "smoke": "pass"
+  },
+  "wally_cycles": 99362109,
+  "wally_metrics": [
+    {
+      "mode": "irq",
+      "length": 1,
+      "software_ns": 3030,
+      "end_to_end_ns": 93700,
+      "kernel_ns": 39230
+    },
+    {
+      "mode": "irq",
+      "length": 8,
+      "software_ns": 3590,
+      "end_to_end_ns": 95390,
+      "kernel_ns": 37210
+    },
+    {
+      "mode": "irq",
+      "length": 32,
+      "software_ns": 7710,
+      "end_to_end_ns": 89640,
+      "kernel_ns": 33110
+    },
+    {
+      "mode": "irq",
+      "length": 128,
+      "software_ns": 24610,
+      "end_to_end_ns": 145780,
+      "kernel_ns": 72890
+    },
+    {
+      "mode": "irq",
+      "length": 256,
+      "software_ns": 47000,
+      "end_to_end_ns": 165780,
+      "kernel_ns": 73170
+    },
+    {
+      "mode": "poll",
+      "length": 1,
+      "software_ns": 2180,
+      "end_to_end_ns": 60310,
+      "kernel_ns": 4730
+    },
+    {
+      "mode": "poll",
+      "length": 8,
+      "software_ns": 3250,
+      "end_to_end_ns": 55420,
+      "kernel_ns": 4530
+    },
+    {
+      "mode": "poll",
+      "length": 32,
+      "software_ns": 7690,
+      "end_to_end_ns": 59040,
+      "kernel_ns": 4610
+    },
+    {
+      "mode": "poll",
+      "length": 128,
+      "software_ns": 24570,
+      "end_to_end_ns": 158590,
+      "kernel_ns": 85450
+    },
+    {
+      "mode": "poll",
+      "length": 256,
+      "software_ns": 46730,
+      "end_to_end_ns": 176050,
+      "kernel_ns": 83280
+    }
+  ],
+  "wally_measurement_scope": "CPU/RTL simulation with a 100 MHz timebase, D-cache enabled, an uncached PMA DMA pool and behavioral shared RAM; not implemented FPGA/DDR timing. wally_cycles covers reset, firmware, kernel boot and the complete userspace regression."
+}

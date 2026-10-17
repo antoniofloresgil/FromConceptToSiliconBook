@@ -4,6 +4,8 @@ This download contains executable practices and their guides, not the book sourc
 
 Extract the ZIP and run every command from this directory, which contains `labs/run.py`. Install Docker; Windows users need Docker Desktop in Linux-container mode. Building needs network access. Reference execution is offline. No native HDL tools, Quarto, LaTeX or Python installation is required for these container commands.
 
+You can complete the online course without a physical FPGA. Follow [the alternative activity and evidence map](labs/NO-FPGA.md), included in this download. Board programming remains an additional activity; the alternative uses RTL/architectural simulation, synthesis and implementation-report analysis, with physical qualification gaps recorded explicitly.
+
 Build the teaching environment (PowerShell or Linux/WSL):
 
 ```sh
@@ -41,6 +43,14 @@ The [boot practice](labs/12-boot/README.md) uses a separate optional QEMU/OpenSB
 The [vector practice](labs/13-vector/README.md) reuses that environment for a bare-metal RVV integer dot product and masked stores. The same executable is checked at three register lengths; emulator runtime is not a hardware performance measurement.
 
 The [security practice](labs/14-security/README.md) combines a QEMU PMP probe with the real DMA reference, a teaching debug gate, a synthetic cache observation and a bounded formal property. Follow its two-environment guide and retain the limits of each claim.
+
+The [formal FIFO practice](labs/15-formal/README.md) uses the standard teaching image for BMC, induction/equivalence, useful-traffic and vacuity checks, a real counterexample and repair/regression. Run its explicit script; it is separate from the nine automatic entries and requires no physical board or extra solver installation.
+
+The [OpenROAD physical study](labs/16-openroad-study/README.md) uses a separate digest-pinned ORFS image for an accumulator period/utilization sweep. Its supplied CSV/JSON and raw timing/failure reports can be analysed without running the tools. Actual placement, CTS, routing and critical-path captures appear in the book; its scripts can regenerate them. No fabrication or FPGA board is needed, and the recorded failures remain explicit.
+
+The [complete case](labs/17-complete-case/README.md) follows one locked dot-product RTL release through independent tests/bounded formal checks, real Wally firmware, ECP5 FPGA placement/routing and a Nangate45 ASIC block through GDSII. Its shared manifest, scripts and compact dossier include actual cycle/resource/area/timing, a clearly scoped ASIC power estimate and visual-generation recipes. The book contains the physical visuals. The complete SoC remains a simulation boundary; board/foundry, timing and power gaps remain explicit.
+
+The [Linux continuation](labs/18-linux-accelerator/README.md) supplies a QEMU device, Device Tree, built-in kernel driver, reserved DMA pool, IRQ/polling, userspace reference tests and fault injection. Its separate advanced route boots the same software bundle on real Wally RV64 RTL with the original accelerator. The Linux profile changes the DMA aperture and CPU/interrupt configuration; earlier physical metrics do not transfer. Preserved execution status and emulator timing limitations accompany the recipes.
 
 `LAB-PROVENANCE.json` records the source repository/commit, preview status, source chapters, listing selectors and file/chapter SHA-256 identities. `SHA256SUMS.json` checks package integrity before reference execution. These checks detect changed/missing files; the archive is not a cryptographically signed release. The full repository checks chapter/code equality before packaging. You do not need chapter files to run the downloaded practices.
 

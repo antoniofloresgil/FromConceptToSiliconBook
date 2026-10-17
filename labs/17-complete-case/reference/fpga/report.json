@@ -1,0 +1,85 @@
+{
+  "stage": "fpga",
+  "status": "completed",
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "profile": {
+    "scope": "accelerator out-of-context; no board IO or complete SoC",
+    "family": "ECP5",
+    "device": "LFE5U-25F",
+    "package": "CABGA381",
+    "speed_grade": 6,
+    "requested_mhz": 100,
+    "seed": 2026,
+    "suite_release": "2026-10-14",
+    "suite_archive_sha256": "a6ccc6b96b2d985336a1061c78b2fd2bdd73e0f68690da17db88e00457881a11"
+  },
+  "commands": [
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/work/labs/10-dotproduct/rtl/dotproduct_mac.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_engine.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_axi.sv\"; hierarchy -top dotproduct_axi; chparam -set MAX_LENGTH 256 dotproduct_axi; chparam -set DMA_BASE 32'h80008000 dotproduct_axi; chparam -set DMA_LIMIT 33'h8000c000 dotproduct_axi; synth_ecp5 -top dotproduct_axi -json mapped.json"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "nextpnr-ecp5",
+        "--25k",
+        "--package",
+        "CABGA381",
+        "--speed",
+        "6",
+        "--out-of-context",
+        "--json",
+        "mapped.json",
+        "--write",
+        "routed.json",
+        "--report",
+        "timing.json",
+        "--freq",
+        "100.0",
+        "--timing-allow-fail",
+        "--placed-svg",
+        "placed.svg",
+        "--seed",
+        "2026"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    }
+  ],
+  "image": "sha256:983c748b55c757be86de6d3f217f8a9f7016251bf20d95e22ff2f91dc23bfc9c",
+  "tools": {
+    "yosys": "Yosys 0.70+16 (git sha1 3bb533450, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "nextpnr": "\"nextpnr-ecp5\" -- Next Generation Place and Route (Version nextpnr-0.11.1-63-g44a6c739)"
+  },
+  "recipe_sha256": {
+    "asic.sdc": "36de66ee6bcf4541463a557eef0f070b38a07b3edc7a87eea1ec4dcbdfe599e9",
+    "asic.tcl": "69b73ac19c847d2da682f1f30f4a9a277ed0702c52e2e537f7ff724fbb11c453",
+    "run.py": "a993698bc7302dc27fdd1325cd5e45886aa2c72d1851e976b3b5852b3b0bac1e",
+    "streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c"
+  },
+  "artifacts": {
+    "command-01.log": "8f022e07f8b6b7c0cf43e4f27503cb420a63fceb01180eddb28712a5bb5c3448",
+    "command-02.log": "17ad9bf916bb96e303f135ceb79d55a65131a2afbb241b77a938f574f155c9f8",
+    "mapped.json": "f93ae91cb7814773f666441027ba911adba6ca6f73a3eb55382ad639e8ab6eae",
+    "placed.svg": "bafe5a5e80edc780ae08fca35497d80aeea80d33a5d0de37e56488798441c021",
+    "routed.json": "c9ebdbb6b4c024f07699d1e7d81e4155ceebda98033d2a49d8eec1994180b373",
+    "timing.json": "d3c3035a48dbd341f214b9618b0353b5a113a158dcfe87b1ab9ae0390bdf3a8c"
+  }
+}

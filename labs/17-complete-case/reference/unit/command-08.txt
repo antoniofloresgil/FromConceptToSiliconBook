@@ -1,0 +1,1801 @@
+
+-- Running command `read_verilog -sv "/work/labs/10-dotproduct/rtl/ahb_to_axil.sv" "/work/labs/10-dotproduct/rtl/dotproduct_axi.sv" "/work/labs/10-dotproduct/rtl/dotproduct_engine.sv" "/work/labs/10-dotproduct/rtl/dotproduct_mac.sv"; synth -top dotproduct_axi; check -assert; select -assert-none t:$dlatch; stat; write_json dotproduct.json' --
+
+1. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/ahb_to_axil.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/ahb_to_axil.sv' to AST representation.
+Generating RTLIL representation for module `\ahb_to_axil'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_axi.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_engine.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_mac.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+5. Executing SYNTH pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removing unused module `\ahb_to_axil'.
+Removed 1 unused modules.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260 in module dotproduct_engine.
+Marked 27 switch rules as full_case in process $proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91 in module dotproduct_axi.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 20 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~51 debug messages>
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\high_word[0:0]
+     4/10: $0\accumulator[63:0]
+     5/10: $0\operand_a[15:0]
+     6/10: $0\index[31:0]
+     7/10: $0\error_code[31:0]
+     8/10: $0\w_sent[0:0]
+     9/10: $0\aw_sent[0:0]
+    10/10: $0\state[2:0]
+Creating decoders for process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+     1/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:24]$235
+     2/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[23:16]$234
+     3/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[15:8]$233
+     4/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[7:0]$232
+     5/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$227 [31:24]
+     6/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$227 [23:16]
+     7/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$227 [15:8]
+     8/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$227 [7:0]
+     9/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask[3:0]$230
+    10/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value[31:0]$229
+    11/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value[31:0]$228
+    12/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b[31:0]$231
+    13/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:24]$226
+    14/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[23:16]$225
+    15/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[15:8]$224
+    16/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[7:0]$223
+    17/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$218 [31:24]
+    18/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$218 [23:16]
+    19/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$218 [15:8]
+    20/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$218 [7:0]
+    21/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask[3:0]$221
+    22/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value[31:0]$220
+    23/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value[31:0]$219
+    24/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b[31:0]$222
+    25/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:24]$217
+    26/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[23:16]$216
+    27/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[15:8]$215
+    28/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[7:0]$214
+    29/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$209 [31:24]
+    30/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$209 [23:16]
+    31/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$209 [15:8]
+    32/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$209 [7:0]
+    33/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask[3:0]$212
+    34/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value[31:0]$211
+    35/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value[31:0]$210
+    36/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b[31:0]$213
+    37/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:24]$208
+    38/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[23:16]$207
+    39/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[15:8]$206
+    40/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[7:0]$205
+    41/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$200 [31:24]
+    42/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$200 [23:16]
+    43/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$200 [15:8]
+    44/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$200 [7:0]
+    45/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask[3:0]$203
+    46/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value[31:0]$202
+    47/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value[31:0]$201
+    48/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b[31:0]$204
+    49/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b[31:0]$199
+    50/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask[3:0]$198
+    51/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value[31:0]$197
+    52/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value[31:0]$196
+    53/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$195
+    54/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b[31:0]$194
+    55/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask[3:0]$193
+    56/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value[31:0]$192
+    57/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value[31:0]$191
+    58/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$190
+    59/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b[31:0]$189
+    60/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask[3:0]$188
+    61/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value[31:0]$187
+    62/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value[31:0]$186
+    63/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$185
+    64/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b[31:0]$184
+    65/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask[3:0]$183
+    66/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value[31:0]$182
+    67/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value[31:0]$181
+    68/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$180
+    69/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b[31:0]$179
+    70/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask[3:0]$178
+    71/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value[31:0]$177
+    72/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value[31:0]$176
+    73/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$175
+    74/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b[31:0]$174
+    75/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask[3:0]$173
+    76/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value[31:0]$172
+    77/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value[31:0]$171
+    78/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$170
+    79/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b[31:0]$169
+    80/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask[3:0]$168
+    81/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value[31:0]$167
+    82/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value[31:0]$166
+    83/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$165
+    84/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b[31:0]$164
+    85/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask[3:0]$163
+    86/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value[31:0]$162
+    87/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value[31:0]$161
+    88/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$160
+    89/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b[31:0]$158
+    90/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask[3:0]$157
+    91/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value[31:0]$156
+    92/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value[31:0]$155
+    93/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$154
+    94/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b[31:0]$153
+    95/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask[3:0]$152
+    96/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value[31:0]$151
+    97/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value[31:0]$150
+    98/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$149
+    99/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b[31:0]$148
+   100/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask[3:0]$147
+   101/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value[31:0]$146
+   102/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value[31:0]$145
+   103/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$144
+   104/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b[31:0]$143
+   105/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask[3:0]$142
+   106/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value[31:0]$141
+   107/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value[31:0]$140
+   108/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$139
+   109/153: $0\launch[0:0]
+   110/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b[31:0]$131
+   111/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask[3:0]$130
+   112/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value[31:0]$129
+   113/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value[31:0]$128
+   114/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result[31:0]$127
+   115/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b[31:0]$126
+   116/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask[3:0]$125
+   117/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value[31:0]$124
+   118/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value[31:0]$123
+   119/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result[31:0]$122
+   120/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b[31:0]$121
+   121/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask[3:0]$120
+   122/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value[31:0]$119
+   123/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value[31:0]$118
+   124/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result[31:0]$117
+   125/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b[31:0]$116
+   126/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask[3:0]$115
+   127/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value[31:0]$114
+   128/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value[31:0]$113
+   129/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result[31:0]$112
+   130/153: $0\write_strobe[3:0]
+   131/153: $0\write_data[31:0]
+   132/153: $0\write_addr[4:0]
+   133/153: $0\w_full[0:0]
+   134/153: $0\aw_full[0:0]
+   135/153: $0\error_code[31:0]
+   136/153: $0\enable_irq[0:0]
+   137/153: $0\pending[0:0]
+   138/153: $0\error[0:0]
+   139/153: $0\done[0:0]
+   140/153: $0\busy[0:0]
+   141/153: $0\active_n[31:0]
+   142/153: $0\active_dst[31:0]
+   143/153: $0\active_b[31:0]
+   144/153: $0\active_a[31:0]
+   145/153: $0\length[31:0]
+   146/153: $0\dst[31:0]
+   147/153: $0\src_b[31:0]
+   148/153: $0\src_a[31:0]
+   149/153: $0\s_rvalid[0:0]
+   150/153: $0\s_rresp[1:0]
+   151/153: $0\s_rdata[31:0]
+   152/153: $0\s_bvalid[0:0]
+   153/153: $0\s_bresp[1:0]
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2508' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2509' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2510' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2511' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2512' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2513' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2514' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2515' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2516' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+  created $dff cell `$procdff$2517' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bresp' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2518' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bvalid' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2519' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rdata' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2520' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rresp' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2521' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rvalid' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2522' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_a' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2523' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2524' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\dst' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2525' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\length' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2526' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_a' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2527' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2528' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_dst' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2529' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_n' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2530' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\busy' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2531' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\done' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2532' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2533' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\pending' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2534' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\enable_irq' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2535' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\launch' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2536' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error_code' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2537' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\aw_full' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2538' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\w_full' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2539' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_addr' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2540' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_data' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2541' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_strobe' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2542' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2543' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2544' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2545' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2546' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$34.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2547' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2548' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2549' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2550' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2551' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$35.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2552' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2553' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2554' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2555' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2556' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$36.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2557' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2558' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2559' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2560' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2561' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$37.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+  created $dff cell `$procdff$2562' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$260'.
+Found and cleaned up 36 empty switches in `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+Removing empty process `dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$91'.
+Cleaned up 51 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+<suppressed ~9 debug messages>
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+Optimizing module dotproduct_mac.
+
+5.3. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_mac.
+
+5.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 432 unused cells and 1203 unused wires.
+<suppressed ~451 debug messages>
+
+5.5. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Checking module dotproduct_engine...
+Checking module dotproduct_mac...
+Found and reported 0 problems.
+
+5.6. Executing OPT pass (performing simple optimizations).
+
+5.6.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.6.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~123 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~129 debug messages>
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 84 cells.
+
+5.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$2239: \busy -> 1'1
+      Replacing known input bits on port A of cell $procmux$2236: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2234: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2232: \busy -> 1'0
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$1153.
+    dead port 2/2 on $mux $procmux$1155.
+    dead port 1/2 on $mux $procmux$1158.
+    dead port 2/2 on $mux $procmux$1160.
+    dead port 1/2 on $mux $procmux$1163.
+    dead port 1/2 on $mux $procmux$1175.
+    dead port 2/2 on $mux $procmux$1177.
+    dead port 1/2 on $mux $procmux$1180.
+    dead port 2/2 on $mux $procmux$1182.
+    dead port 1/2 on $mux $procmux$1185.
+    dead port 1/2 on $mux $procmux$1197.
+    dead port 2/2 on $mux $procmux$1199.
+    dead port 1/2 on $mux $procmux$1202.
+    dead port 2/2 on $mux $procmux$1204.
+    dead port 1/2 on $mux $procmux$1207.
+    dead port 1/2 on $mux $procmux$1219.
+    dead port 2/2 on $mux $procmux$1221.
+    dead port 1/2 on $mux $procmux$1224.
+    dead port 2/2 on $mux $procmux$1226.
+    dead port 1/2 on $mux $procmux$1229.
+    dead port 1/2 on $mux $procmux$502.
+    dead port 2/2 on $mux $procmux$504.
+    dead port 1/2 on $mux $procmux$507.
+    dead port 2/2 on $mux $procmux$509.
+    dead port 1/2 on $mux $procmux$512.
+    dead port 1/2 on $mux $procmux$521.
+    dead port 2/2 on $mux $procmux$523.
+    dead port 1/2 on $mux $procmux$526.
+    dead port 2/2 on $mux $procmux$528.
+    dead port 1/2 on $mux $procmux$531.
+    dead port 1/2 on $mux $procmux$540.
+    dead port 2/2 on $mux $procmux$542.
+    dead port 1/2 on $mux $procmux$545.
+    dead port 2/2 on $mux $procmux$547.
+    dead port 1/2 on $mux $procmux$550.
+    dead port 1/2 on $mux $procmux$559.
+    dead port 2/2 on $mux $procmux$561.
+    dead port 1/2 on $mux $procmux$564.
+    dead port 2/2 on $mux $procmux$566.
+    dead port 1/2 on $mux $procmux$569.
+    dead port 1/2 on $mux $procmux$707.
+    dead port 2/2 on $mux $procmux$709.
+    dead port 1/2 on $mux $procmux$712.
+    dead port 2/2 on $mux $procmux$714.
+    dead port 1/2 on $mux $procmux$717.
+    dead port 1/2 on $mux $procmux$727.
+    dead port 2/2 on $mux $procmux$729.
+    dead port 1/2 on $mux $procmux$732.
+    dead port 2/2 on $mux $procmux$734.
+    dead port 1/2 on $mux $procmux$737.
+    dead port 1/2 on $mux $procmux$747.
+    dead port 2/2 on $mux $procmux$749.
+    dead port 1/2 on $mux $procmux$752.
+    dead port 2/2 on $mux $procmux$754.
+    dead port 1/2 on $mux $procmux$757.
+    dead port 1/2 on $mux $procmux$767.
+    dead port 2/2 on $mux $procmux$769.
+    dead port 1/2 on $mux $procmux$772.
+    dead port 2/2 on $mux $procmux$774.
+    dead port 1/2 on $mux $procmux$777.
+    dead port 1/2 on $mux $procmux$924.
+    dead port 2/2 on $mux $procmux$926.
+    dead port 1/2 on $mux $procmux$929.
+    dead port 2/2 on $mux $procmux$931.
+    dead port 1/2 on $mux $procmux$934.
+    dead port 1/2 on $mux $procmux$945.
+    dead port 2/2 on $mux $procmux$947.
+    dead port 1/2 on $mux $procmux$950.
+    dead port 2/2 on $mux $procmux$952.
+    dead port 1/2 on $mux $procmux$955.
+    dead port 1/2 on $mux $procmux$966.
+    dead port 2/2 on $mux $procmux$968.
+    dead port 1/2 on $mux $procmux$971.
+    dead port 2/2 on $mux $procmux$973.
+    dead port 1/2 on $mux $procmux$976.
+    dead port 1/2 on $mux $procmux$987.
+    dead port 2/2 on $mux $procmux$989.
+    dead port 1/2 on $mux $procmux$992.
+    dead port 2/2 on $mux $procmux$994.
+    dead port 1/2 on $mux $procmux$997.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$307: \high_word -> 1'1
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 80 multiplexer ports.
+<suppressed ~40 debug messages>
+
+5.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$2439: $auto$opt_reduce.cc:134:opt_pmux$2564
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 2 changes.
+
+5.6.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~21 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 7 cells.
+
+5.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 164 unused wires.
+<suppressed ~2 debug messages>
+
+5.6.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.6.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.6.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~41 debug messages>
+
+5.6.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$2478: { $auto$opt_reduce.cc:134:opt_pmux$2566 $procmux$2147_CMP }
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 1 changes.
+
+5.6.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.6.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.6.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.6.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.6.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.6.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~41 debug messages>
+
+5.6.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.6.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.6.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.6.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.6.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.6.23. Finished OPT passes. (There is nothing left to do.)
+
+5.7. Executing FSM pass (extract and optimize FSM).
+
+5.7.1. Executing FSM_DETECT pass (finding FSMs in design).
+Not marking dotproduct_axi.s_bresp as FSM state register:
+    Register is connected to module port.
+    Users of register don't seem to benefit from recoding.
+Not marking dotproduct_axi.s_rresp as FSM state register:
+    Register is connected to module port.
+    Users of register don't seem to benefit from recoding.
+Not marking dotproduct_engine.error_code as FSM state register:
+    Register is connected to module port.
+    Users of register don't seem to benefit from recoding.
+Not marking dotproduct_engine.state as FSM state register:
+    Users of register don't seem to benefit from recoding.
+
+5.7.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+5.7.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+5.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.7.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+5.7.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+5.7.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+5.7.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+5.8. Executing OPT pass (performing simple optimizations).
+
+5.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~41 debug messages>
+
+5.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$2542 ($dff) from module dotproduct_axi (D = $procmux$2060_Y, Q = \write_strobe, rval = 4'0000).
+Adding EN signal on $auto$ff.cc:266:slice$2567 ($sdff) from module dotproduct_axi (D = \s_wstrb, Q = \write_strobe).
+Adding SRST signal on $procdff$2541 ($dff) from module dotproduct_axi (D = $procmux$2065_Y, Q = \write_data, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2569 ($sdff) from module dotproduct_axi (D = \s_wdata, Q = \write_data).
+Adding SRST signal on $procdff$2540 ($dff) from module dotproduct_axi (D = $procmux$2070_Y, Q = \write_addr, rval = 5'00000).
+Adding EN signal on $auto$ff.cc:266:slice$2571 ($sdff) from module dotproduct_axi (D = \s_awaddr, Q = \write_addr).
+Adding SRST signal on $procdff$2539 ($dff) from module dotproduct_axi (D = $procmux$2075_Y, Q = \w_full, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2573 ($sdff) from module dotproduct_axi (D = 1'1, Q = \w_full).
+Adding SRST signal on $procdff$2538 ($dff) from module dotproduct_axi (D = $procmux$2083_Y, Q = \aw_full, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2577 ($sdff) from module dotproduct_axi (D = 1'1, Q = \aw_full).
+Adding SRST signal on $procdff$2537 ($dff) from module dotproduct_axi (D = $procmux$2115_Y, Q = \error_code, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2581 ($sdff) from module dotproduct_axi (D = $procmux$2115_Y, Q = \error_code).
+Adding SRST signal on $procdff$2536 ($dff) from module dotproduct_axi (D = $procmux$1985_Y, Q = \launch, rval = 1'0).
+Adding SRST signal on $procdff$2535 ($dff) from module dotproduct_axi (D = $procmux$2137_Y, Q = \enable_irq, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2604 ($sdff) from module dotproduct_axi (D = \write_data [1], Q = \enable_irq).
+Adding SRST signal on $procdff$2534 ($dff) from module dotproduct_axi (D = $procmux$2164_Y, Q = \pending, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2612 ($sdff) from module dotproduct_axi (D = $procmux$2164_Y, Q = \pending).
+Adding SRST signal on $procdff$2533 ($dff) from module dotproduct_axi (D = $procmux$2193_Y, Q = \error, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2630 ($sdff) from module dotproduct_axi (D = $procmux$2193_Y, Q = \error).
+Adding SRST signal on $procdff$2532 ($dff) from module dotproduct_axi (D = $procmux$2219_Y, Q = \done, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2646 ($sdff) from module dotproduct_axi (D = $procmux$2219_Y, Q = \done).
+Adding SRST signal on $procdff$2531 ($dff) from module dotproduct_axi (D = $procmux$2246_Y, Q = \busy, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2662 ($sdff) from module dotproduct_axi (D = $procmux$2239_Y, Q = \busy).
+Adding SRST signal on $procdff$2530 ($dff) from module dotproduct_axi (D = $procmux$2275_Y, Q = \active_n, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2670 ($sdff) from module dotproduct_axi (D = \length, Q = \active_n).
+Adding SRST signal on $procdff$2529 ($dff) from module dotproduct_axi (D = $procmux$2302_Y, Q = \active_dst, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2678 ($sdff) from module dotproduct_axi (D = \dst, Q = \active_dst).
+Adding SRST signal on $procdff$2528 ($dff) from module dotproduct_axi (D = $procmux$2329_Y, Q = \active_b, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2686 ($sdff) from module dotproduct_axi (D = \src_b, Q = \active_b).
+Adding SRST signal on $procdff$2527 ($dff) from module dotproduct_axi (D = $procmux$2356_Y, Q = \active_a, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2694 ($sdff) from module dotproduct_axi (D = \src_a, Q = \active_a).
+Adding SRST signal on $procdff$2526 ($dff) from module dotproduct_axi (D = $procmux$2372_Y, Q = \length, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2702 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \length [7:0]).
+Adding EN signal on $auto$ff.cc:266:slice$2702 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \length [15:8]).
+Adding EN signal on $auto$ff.cc:266:slice$2702 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \length [23:16]).
+Adding EN signal on $auto$ff.cc:266:slice$2702 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \length [31:24]).
+Adding SRST signal on $procdff$2525 ($dff) from module dotproduct_axi (D = $procmux$2389_Y, Q = \dst, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2731 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \dst [7:0]).
+Adding EN signal on $auto$ff.cc:266:slice$2731 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \dst [15:8]).
+Adding EN signal on $auto$ff.cc:266:slice$2731 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \dst [23:16]).
+Adding EN signal on $auto$ff.cc:266:slice$2731 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \dst [31:24]).
+Adding SRST signal on $procdff$2524 ($dff) from module dotproduct_axi (D = $procmux$2407_Y, Q = \src_b, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2760 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \src_b [7:0]).
+Adding EN signal on $auto$ff.cc:266:slice$2760 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \src_b [15:8]).
+Adding EN signal on $auto$ff.cc:266:slice$2760 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \src_b [23:16]).
+Adding EN signal on $auto$ff.cc:266:slice$2760 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \src_b [31:24]).
+Adding SRST signal on $procdff$2523 ($dff) from module dotproduct_axi (D = $procmux$2426_Y, Q = \src_a, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2789 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \src_a [7:0]).
+Adding EN signal on $auto$ff.cc:266:slice$2789 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \src_a [15:8]).
+Adding EN signal on $auto$ff.cc:266:slice$2789 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \src_a [23:16]).
+Adding EN signal on $auto$ff.cc:266:slice$2789 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \src_a [31:24]).
+Adding SRST signal on $procdff$2522 ($dff) from module dotproduct_axi (D = $procmux$2433_Y, Q = \s_rvalid, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2818 ($sdff) from module dotproduct_axi (D = $procmux$2433_Y, Q = \s_rvalid).
+Adding SRST signal on $procdff$2521 ($dff) from module dotproduct_axi (D = $procmux$2448_Y, Q = \s_rresp, rval = 2'00).
+Adding EN signal on $auto$ff.cc:266:slice$2822 ($sdff) from module dotproduct_axi (D = $procmux$2439_Y, Q = \s_rresp).
+Adding SRST signal on $procdff$2520 ($dff) from module dotproduct_axi (D = $procmux$2463_Y, Q = \s_rdata, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2824 ($sdff) from module dotproduct_axi (D = $procmux$2455_Y, Q = \s_rdata).
+Adding SRST signal on $procdff$2519 ($dff) from module dotproduct_axi (D = $procmux$2471_Y, Q = \s_bvalid, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2826 ($sdff) from module dotproduct_axi (D = $procmux$2471_Y, Q = \s_bvalid).
+Adding SRST signal on $procdff$2518 ($dff) from module dotproduct_axi (D = $procmux$2503_Y, Q = \s_bresp, rval = 2'00).
+Adding EN signal on $auto$ff.cc:266:slice$2830 ($sdff) from module dotproduct_axi (D = $procmux$2501_Y, Q = \s_bresp).
+Adding SRST signal on $procdff$2517 ($dff) from module dotproduct_engine (D = $procmux$314_Y, Q = \high_word, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2832 ($sdff) from module dotproduct_engine (D = $procmux$314_Y, Q = \high_word).
+Adding SRST signal on $procdff$2516 ($dff) from module dotproduct_engine (D = $procmux$333_Y, Q = \accumulator, rval = 64'0000000000000000000000000000000000000000000000000000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$2844 ($sdff) from module dotproduct_engine (D = $procmux$333_Y, Q = \accumulator).
+Adding SRST signal on $procdff$2515 ($dff) from module dotproduct_engine (D = $procmux$352_Y, Q = \operand_a, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$2858 ($sdff) from module dotproduct_engine (D = \rdata [15:0], Q = \operand_a).
+Adding SRST signal on $procdff$2514 ($dff) from module dotproduct_engine (D = $procmux$371_Y, Q = \index, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2864 ($sdff) from module dotproduct_engine (D = $procmux$371_Y, Q = \index).
+Adding SRST signal on $procdff$2513 ($dff) from module dotproduct_engine (D = $procmux$280_Y, Q = \failed, rval = 1'0).
+Adding SRST signal on $procdff$2512 ($dff) from module dotproduct_engine (D = $procmux$385_Y, Q = \error_code, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$2881 ($sdff) from module dotproduct_engine (D = $procmux$385_Y, Q = \error_code).
+Adding SRST signal on $procdff$2511 ($dff) from module dotproduct_engine (D = $procmux$293_Y, Q = \done, rval = 1'0).
+Adding SRST signal on $procdff$2510 ($dff) from module dotproduct_engine (D = $procmux$408_Y, Q = \w_sent, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2904 ($sdff) from module dotproduct_engine (D = $procmux$408_Y, Q = \w_sent).
+Adding SRST signal on $procdff$2509 ($dff) from module dotproduct_engine (D = $procmux$437_Y, Q = \aw_sent, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$2926 ($sdff) from module dotproduct_engine (D = $procmux$437_Y, Q = \aw_sent).
+Adding SRST signal on $procdff$2508 ($dff) from module dotproduct_engine (D = $procmux$466_Y, Q = \state, rval = 3'000).
+Adding EN signal on $auto$ff.cc:266:slice$2948 ($sdff) from module dotproduct_engine (D = $procmux$466_Y, Q = \state).
+
+5.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 125 unused cells and 125 unused wires.
+<suppressed ~127 debug messages>
+
+5.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~6 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~6 debug messages>
+Optimizing module dotproduct_mac.
+
+5.8.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.8.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~25 debug messages>
+
+5.8.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.8.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~192 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~99 debug messages>
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 97 cells.
+
+5.8.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.8.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 97 unused wires.
+<suppressed ~2 debug messages>
+
+5.8.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.8.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.8.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~28 debug messages>
+
+5.8.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.8.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.8.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.8.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.8.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.8.23. Finished OPT passes. (There is nothing left to do.)
+
+5.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$39 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$41 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$42 ($add).
+Removed top 29 bits (of 33) from port B of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$42 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$43 ($ge).
+Removed top 23 bits (of 32) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$44 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$58 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$60 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$62 ($le).
+Removed top 3 bits (of 4) from port B of cell dotproduct_axi.$auto$opt_dff.cc:195:make_patterns_logic$2592 ($ne).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$auto$opt_dff.cc:195:make_patterns_logic$2594 ($ne).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$1156_CMP0 ($eq).
+Removed top 4 bits (of 5) from port B of cell dotproduct_axi.$auto$opt_dff.cc:195:make_patterns_logic$2625 ($ne).
+Removed top 31 bits (of 32) from mux cell dotproduct_axi.$procmux$2099 ($mux).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2403_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2444_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2445_CMP0 ($eq).
+Removed top 2 bits (of 5) from port B of cell dotproduct_axi.$procmux$2446_CMP0 ($eq).
+Removed top 31 bits (of 32) from wire dotproduct_axi.$procmux$2099_Y.
+Removed top 3 bits (of 5) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2911 ($ne).
+Removed top 2 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$240 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$241 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$247 ($eq).
+Removed top 29 bits (of 32) from mux cell dotproduct_engine.$ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$250 ($mux).
+Removed top 29 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$251 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$265 ($add).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2894 ($ne).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2888 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2837 ($ne).
+Removed top 1 bits (of 4) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2921 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2961 ($ne).
+Removed top 1 bits (of 4) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2851 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_engine.$auto$opt_dff.cc:195:make_patterns_logic$2849 ($ne).
+Removed top 29 bits (of 32) from wire dotproduct_engine.$ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$250_Y.
+
+5.10. Executing PEEPOPT pass (run peephole optimizers).
+
+5.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~2 debug messages>
+
+5.12. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module dotproduct_axi:
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$39 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$41 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$42 ($add).
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$42.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$41.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$39.
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$43 ($ge): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$52 ($ge): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$54 ($ge): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$56 ($ge): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$44 ($le): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$58 ($le): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$60 ($le): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$62 ($le): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$70 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$71 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$75 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$76 ($lt): new $alu
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$76: $auto$alumacc.cc:485:replace_alu$2978
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$75: $auto$alumacc.cc:485:replace_alu$2983
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$71: $auto$alumacc.cc:485:replace_alu$2988
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$70: $auto$alumacc.cc:485:replace_alu$2993
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$62: $auto$alumacc.cc:485:replace_alu$2998
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$60: $auto$alumacc.cc:485:replace_alu$3011
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$58: $auto$alumacc.cc:485:replace_alu$3024
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$44: $auto$alumacc.cc:485:replace_alu$3037
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$56: $auto$alumacc.cc:485:replace_alu$3050
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$54: $auto$alumacc.cc:485:replace_alu$3063
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$52: $auto$alumacc.cc:485:replace_alu$3076
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$43: $auto$alumacc.cc:485:replace_alu$3089
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$39: $auto$alumacc.cc:485:replace_alu$3098
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$41: $auto$alumacc.cc:485:replace_alu$3101
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$42: $auto$alumacc.cc:485:replace_alu$3104
+  created 15 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module dotproduct_engine:
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$246 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$251 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$265 ($add).
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$265.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$251.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$246.
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$246: $auto$alumacc.cc:485:replace_alu$3107
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$251: $auto$alumacc.cc:485:replace_alu$3110
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$265: $auto$alumacc.cc:485:replace_alu$3113
+  created 3 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module dotproduct_mac:
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$273 ($add).
+  creating $macc model for $mul$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:8$272 ($mul).
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$273.
+  creating $macc cell for $mul$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:8$272: $auto$alumacc.cc:365:replace_macc$3116
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$273: $auto$alumacc.cc:485:replace_alu$3117
+  created 1 $alu and 1 $macc cells.
+
+5.13. Executing SHARE pass (SAT-based resource sharing).
+
+5.14. Executing OPT pass (performing simple optimizations).
+
+5.14.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.14.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.14.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~28 debug messages>
+
+5.14.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.14.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 1 cells.
+
+5.14.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.14.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 13 unused wires.
+<suppressed ~1 debug messages>
+
+5.14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.14.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.14.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~29 debug messages>
+
+5.14.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.14.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.14.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.14.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.14.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.14.16. Finished OPT passes. (There is nothing left to do.)
+
+5.15. Executing MEMORY pass.
+
+5.15.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+5.15.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+5.15.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+5.15.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+5.15.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+5.15.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.15.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+5.15.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+5.15.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.15.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.17. Executing OPT pass (performing simple optimizations).
+
+5.17.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~43 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~43 debug messages>
+Optimizing module dotproduct_mac.
+
+5.17.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 1 cells.
+
+5.17.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.17.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 1 unused cells and 110 unused wires.
+<suppressed ~3 debug messages>
+
+5.17.5. Finished fast OPT passes.
+
+5.18. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+5.19. Executing OPT pass (performing simple optimizations).
+
+5.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~1 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~1 debug messages>
+Optimizing module dotproduct_mac.
+
+5.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.19.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~17 debug messages>
+
+5.19.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $mux cell $procmux$2439:
+      Old ports: A=2'10, B=2'00, Y=$procmux$2439_Y
+      New ports: A=1'1, B=1'0, Y=$procmux$2439_Y [1]
+      New connections: $procmux$2439_Y [0] = 1'0
+    Consolidated identical input bits for $mux cell $procmux$2481:
+      Old ports: A=2'00, B=2'10, Y=$procmux$2481_Y
+      New ports: A=1'0, B=1'1, Y=$procmux$2481_Y [1]
+      New connections: $procmux$2481_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $pmux cell $procmux$2478:
+      Old ports: A=2'10, B={ $procmux$2481_Y 2'00 }, Y=$procmux$2478_Y
+      New ports: A=1'1, B={ $procmux$2481_Y [1] 1'0 }, Y=$procmux$2478_Y [1]
+      New connections: $procmux$2478_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $mux cell $procmux$2501:
+      Old ports: A=$procmux$2478_Y, B=2'10, Y=$procmux$2501_Y
+      New ports: A=$procmux$2478_Y [1], B=1'1, Y=$procmux$2501_Y [1]
+      New connections: $procmux$2501_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+    Consolidated identical input bits for $pmux cell $procmux$385:
+      Old ports: A=0, B=64'0000000000000000000000000000001000000000000000000000000000000011, Y=$procmux$385_Y
+      New ports: A=2'00, B=4'1011, Y=$procmux$385_Y [1:0]
+      New connections: $procmux$385_Y [31:2] = 30'000000000000000000000000000000
+    New ctrl vector for $pmux cell $procmux$408: $eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:31$253_Y
+    Consolidated identical input bits for $mux cell $procmux$459:
+      Old ports: A=3'101, B=3'000, Y=$procmux$459_Y
+      New ports: A=1'1, B=1'0, Y=$procmux$459_Y [0]
+      New connections: $procmux$459_Y [2:1] = { $procmux$459_Y [0] 1'0 }
+    Consolidated identical input bits for $mux cell $procmux$472:
+      Old ports: A=3'001, B=3'101, Y=$procmux$472_Y
+      New ports: A=1'0, B=1'1, Y=$procmux$472_Y [2]
+      New connections: $procmux$472_Y [1:0] = 2'01
+    Consolidated identical input bits for $mux cell $ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$250:
+      Old ports: A=3'000, B=3'100, Y=$auto$wreduce.cc:461:run$2965 [2:0]
+      New ports: A=1'0, B=1'1, Y=$auto$wreduce.cc:461:run$2965 [2]
+      New connections: $auto$wreduce.cc:461:run$2965 [1:0] = 2'00
+  Optimizing cells in module \dotproduct_engine.
+    Consolidated identical input bits for $mux cell $procmux$462:
+      Old ports: A=$procmux$459_Y, B=3'000, Y=$procmux$462_Y
+      New ports: A=$procmux$459_Y [0], B=1'0, Y=$procmux$462_Y [0]
+      New connections: $procmux$462_Y [2:1] = { $procmux$462_Y [0] 1'0 }
+    Consolidated identical input bits for $mux cell $procmux$475:
+      Old ports: A=$procmux$472_Y, B=3'011, Y=$procmux$475_Y
+      New ports: A={ $procmux$472_Y [2] 1'0 }, B=2'01, Y=$procmux$475_Y [2:1]
+      New connections: $procmux$475_Y [0] = 1'1
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 11 changes.
+
+5.19.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.19.6. Executing OPT_SHARE pass.
+
+5.19.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.19.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+5.19.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~3 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~5 debug messages>
+Optimizing module dotproduct_mac.
+
+5.19.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.19.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~14 debug messages>
+
+5.19.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.19.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.19.14. Executing OPT_SHARE pass.
+
+5.19.15. Executing OPT_DFF pass (perform DFF optimizations).
+Setting constant 0-bit at position 0 on $auto$ff.cc:266:slice$2823 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 0 on $auto$ff.cc:266:slice$2831 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 2 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 3 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 4 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 5 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 6 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 7 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 8 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 9 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 10 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 11 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 12 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 13 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 14 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 15 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 16 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 17 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 18 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 19 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 20 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 21 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 22 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 23 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 24 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 25 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 26 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 27 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 28 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 29 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 30 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+Setting constant 0-bit at position 31 on $auto$ff.cc:266:slice$2882 ($sdffe) from module dotproduct_engine.
+
+5.19.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 4 unused wires.
+<suppressed ~2 debug messages>
+
+5.19.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.19.18. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.19.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \dotproduct_mac..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~14 debug messages>
+
+5.19.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_mac.
+Performed a total of 0 changes.
+
+5.19.21. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Finding identical cells in module `\dotproduct_engine'.
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 0 cells.
+
+5.19.22. Executing OPT_SHARE pass.
+
+5.19.23. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.19.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+
+5.19.25. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+Optimizing module dotproduct_engine.
+Optimizing module dotproduct_mac.
+
+5.19.26. Finished OPT passes. (There is nothing left to do.)
+
+5.20. Executing TECHMAP pass (map to technology primitives).
+
+5.20.1. Executing Verilog-2005 frontend: /usr/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/usr/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `\$__div_mod_u'.
+Generating RTLIL representation for module `\$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `\$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_pmux'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Successfully finished Verilog frontend.
+
+5.20.2. Continuing TECHMAP pass.
+Using extmapper maccmap for cells of type $macc.
+  add \a * \b (16x16 bits, signed)
+Using template $paramod$039520c137afc9cd69dd56c3fb11a4e1fbe5f664\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $not.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100000 for cells of type $fa.
+Using template $paramod$fbc7873bff55778c0b3173955b7e4bce1d9d6834\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000001000000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000100000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $ne.
+Using extmapper simplemap for cells of type $reduce_or.
+Using template $paramod$c5c783b17ab1d780abfad8cfe6563a0a7b47a3b0\_90_pmux for cells of type $pmux.
+Using extmapper simplemap for cells of type $logic_not.
+Using template $paramod$403d07c18de10cda2ac652a859c56aea81aaf9b5\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $logic_or.
+Using template $paramod$44a13d10af618e7fbe7b9aad2f6151ffcee1e2fa\_90_alu for cells of type $alu.
+Using template $paramod$6a42b6fefed750f8a1c58eab59479d960557103c\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $logic_and.
+Using template $paramod$521ce43182eecb9f60c72393a788160d2c356bf5\_90_pmux for cells of type $pmux.
+Using template $paramod$57f63e8a3282e053be0430389b09fa050ac7dca0\_90_pmux for cells of type $pmux.
+Using extmapper simplemap for cells of type $sdffe.
+Using extmapper simplemap for cells of type $sdff.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000011110 for cells of type $lcu.
+Using template $paramod$33932025bf4abd97855bed7b134b5a5105ed1f1b\_90_alu for cells of type $alu.
+Using template $paramod$08eec5a6921d570f658f0ddff79a3d6fd06b1ec1\_90_alu for cells of type $alu.
+Using template $paramod$3bb72ad0665cdca279bbc49ed6a39f403f16497f\_90_alu for cells of type $alu.
+Using template $paramod$4598135cf15630e609dba0dc434804e375ac5643\_90_alu for cells of type $alu.
+Using template $paramod$403d74038787d91c0514bba9bf1032f6fa919203\_90_alu for cells of type $alu.
+Using template $paramod$789c344356a154d2afc7b832b41d1067dbc946ba\_90_alu for cells of type $alu.
+Using template $paramod$49f1dc3dcd6d2c748486fe94c6744a34a19bbafe\_90_pmux for cells of type $pmux.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000011111 for cells of type $lcu.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000010001 for cells of type $lcu.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000100001 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~4549 debug messages>
+
+5.21. Executing OPT pass (performing simple optimizations).
+
+5.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~1758 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~519 debug messages>
+Optimizing module dotproduct_mac.
+<suppressed ~952 debug messages>
+
+5.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~1542 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~231 debug messages>
+Finding identical cells in module `\dotproduct_mac'.
+<suppressed ~1557 debug messages>
+Removed a total of 1110 cells.
+
+5.21.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.21.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 929 unused cells and 2138 unused wires.
+<suppressed ~932 debug messages>
+
+5.21.5. Finished fast OPT passes.
+
+5.22. Executing ABC pass (technology mapping using ABC).
+
+5.22.1. Extracting gate netlist of module `\dotproduct_axi' to `<abc-temp-dir>/input.blif'..
+Extracted 2339 gates and 2578 wires to a netlist network with 237 inputs and 108 outputs.
+
+5.22.1.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+5.22.1.2. Re-integrating ABC results.
+ABC RESULTS:              XNOR cells:       82
+ABC RESULTS:               XOR cells:      188
+ABC RESULTS:               NOR cells:      105
+ABC RESULTS:               NOT cells:       67
+ABC RESULTS:               AND cells:       42
+ABC RESULTS:              NAND cells:      194
+ABC RESULTS:            ANDNOT cells:      955
+ABC RESULTS:             ORNOT cells:       85
+ABC RESULTS:               MUX cells:        6
+ABC RESULTS:                OR cells:      362
+ABC RESULTS:        internal signals:     2233
+ABC RESULTS:           input signals:      237
+ABC RESULTS:          output signals:      108
+Removing temp directory.
+
+5.22.2. Extracting gate netlist of module `\dotproduct_engine' to `<abc-temp-dir>/input.blif'..
+Extracted 732 gates and 1037 wires to a netlist network with 304 inputs and 212 outputs.
+
+5.22.2.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+5.22.2.2. Re-integrating ABC results.
+ABC RESULTS:             ORNOT cells:       25
+ABC RESULTS:               NOT cells:       78
+ABC RESULTS:               MUX cells:       69
+ABC RESULTS:              XNOR cells:       41
+ABC RESULTS:               NOR cells:       49
+ABC RESULTS:              NAND cells:       36
+ABC RESULTS:                OR cells:      137
+ABC RESULTS:            ANDNOT cells:      216
+ABC RESULTS:               AND cells:       19
+ABC RESULTS:               XOR cells:      111
+ABC RESULTS:        internal signals:      521
+ABC RESULTS:           input signals:      304
+ABC RESULTS:          output signals:      212
+Removing temp directory.
+
+5.22.3. Extracting gate netlist of module `\dotproduct_mac' to `<abc-temp-dir>/input.blif'..
+Extracted 2277 gates and 2373 wires to a netlist network with 96 inputs and 64 outputs.
+
+5.22.3.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+5.22.3.2. Re-integrating ABC results.
+ABC RESULTS:              NAND cells:      109
+ABC RESULTS:               AND cells:      189
+ABC RESULTS:               NOT cells:       37
+ABC RESULTS:              XNOR cells:      127
+ABC RESULTS:                OR cells:      326
+ABC RESULTS:             ORNOT cells:       73
+ABC RESULTS:               NOR cells:      131
+ABC RESULTS:            ANDNOT cells:      701
+ABC RESULTS:               XOR cells:      605
+ABC RESULTS:        internal signals:     2213
+ABC RESULTS:           input signals:       96
+ABC RESULTS:          output signals:       64
+Removing temp directory.
+
+5.23. Executing OPT pass (performing simple optimizations).
+
+5.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~2 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~1 debug messages>
+Optimizing module dotproduct_mac.
+
+5.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~54 debug messages>
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\dotproduct_mac'.
+Removed a total of 19 cells.
+
+5.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Finding unused cells or wires in module \dotproduct_engine..
+Finding unused cells or wires in module \dotproduct_mac..
+Removed 0 unused cells and 2536 unused wires.
+<suppressed ~5 debug messages>
+
+5.23.5. Finished fast OPT passes.
+
+5.24. Executing HIERARCHY pass (managing design hierarchy).
+
+5.24.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+5.24.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removed 0 unused modules.
+
+5.25. Printing statistics.
+
+=== dotproduct_axi ===
+
+   Number of wires:               2118
+   Number of wire bits:           2845
+   Number of public wires:          84
+   Number of public wire bits:     780
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               2442
+     $_ANDNOT_                     955
+     $_AND_                         42
+     $_MUX_                          6
+     $_NAND_                       194
+     $_NOR_                         90
+     $_NOT_                         67
+     $_ORNOT_                       85
+     $_OR_                         359
+     $_SDFFE_PP0P_                 372
+     $_SDFF_PP0_                     1
+     $_XNOR_                        82
+     $_XOR_                        188
+     dotproduct_engine               1
+
+=== dotproduct_engine ===
+
+   Number of wires:                714
+   Number of wire bits:           1189
+   Number of public wires:          36
+   Number of public wire bits:     491
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                903
+     $_ANDNOT_                     215
+     $_AND_                         19
+     $_MUX_                         69
+     $_NAND_                        36
+     $_NOR_                         49
+     $_NOT_                         78
+     $_ORNOT_                       25
+     $_OR_                         137
+     $_SDFFE_PP0P_                 120
+     $_SDFF_PP0_                     2
+     $_XNOR_                        41
+     $_XOR_                        111
+     dotproduct_mac                  1
+
+=== dotproduct_mac ===
+
+   Number of wires:               2238
+   Number of wire bits:           2394
+   Number of public wires:           4
+   Number of public wire bits:     160
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               2298
+     $_ANDNOT_                     701
+     $_AND_                        189
+     $_NAND_                       109
+     $_NOR_                        131
+     $_NOT_                         37
+     $_ORNOT_                       73
+     $_OR_                         326
+     $_XNOR_                       127
+     $_XOR_                        605
+
+=== design hierarchy ===
+
+   dotproduct_axi                    1
+     dotproduct_engine               1
+       dotproduct_mac                1
+
+   Number of wires:               5070
+   Number of wire bits:           6428
+   Number of public wires:         124
+   Number of public wire bits:    1431
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               5641
+     $_ANDNOT_                    1871
+     $_AND_                        250
+     $_MUX_                         75
+     $_NAND_                       339
+     $_NOR_                        270
+     $_NOT_                        182
+     $_ORNOT_                      183
+     $_OR_                         822
+     $_SDFFE_PP0P_                 492
+     $_SDFF_PP0_                     3
+     $_XNOR_                       250
+     $_XOR_                        904
+
+5.26. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Checking module dotproduct_engine...
+Checking module dotproduct_mac...
+Found and reported 0 problems.
+
+6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Checking module dotproduct_engine...
+Checking module dotproduct_mac...
+Found and reported 0 problems.
+
+7. Printing statistics.
+
+=== dotproduct_axi ===
+
+   Number of wires:               2118
+   Number of wire bits:           2845
+   Number of public wires:          84
+   Number of public wire bits:     780
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               2442
+     $_ANDNOT_                     955
+     $_AND_                         42
+     $_MUX_                          6
+     $_NAND_                       194
+     $_NOR_                         90
+     $_NOT_                         67
+     $_ORNOT_                       85
+     $_OR_                         359
+     $_SDFFE_PP0P_                 372
+     $_SDFF_PP0_                     1
+     $_XNOR_                        82
+     $_XOR_                        188
+     dotproduct_engine               1
+
+=== dotproduct_engine ===
+
+   Number of wires:                714
+   Number of wire bits:           1189
+   Number of public wires:          36
+   Number of public wire bits:     491
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                903
+     $_ANDNOT_                     215
+     $_AND_                         19
+     $_MUX_                         69
+     $_NAND_                        36
+     $_NOR_                         49
+     $_NOT_                         78
+     $_ORNOT_                       25
+     $_OR_                         137
+     $_SDFFE_PP0P_                 120
+     $_SDFF_PP0_                     2
+     $_XNOR_                        41
+     $_XOR_                        111
+     dotproduct_mac                  1
+
+=== dotproduct_mac ===
+
+   Number of wires:               2238
+   Number of wire bits:           2394
+   Number of public wires:           4
+   Number of public wire bits:     160
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               2298
+     $_ANDNOT_                     701
+     $_AND_                        189
+     $_NAND_                       109
+     $_NOR_                        131
+     $_NOT_                         37
+     $_ORNOT_                       73
+     $_OR_                         326
+     $_XNOR_                       127
+     $_XOR_                        605
+
+=== design hierarchy ===
+
+   dotproduct_axi                    1
+     dotproduct_engine               1
+       dotproduct_mac                1
+
+   Number of wires:               5070
+   Number of wire bits:           6428
+   Number of public wires:         124
+   Number of public wire bits:    1431
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               5641
+     $_ANDNOT_                    1871
+     $_AND_                        250
+     $_MUX_                         75
+     $_NAND_                       339
+     $_NOR_                        270
+     $_NOT_                        182
+     $_ORNOT_                      183
+     $_OR_                         822
+     $_SDFFE_PP0P_                 492
+     $_SDFF_PP0_                     3
+     $_XNOR_                       250
+     $_XOR_                        904
+
+8. Executing JSON backend.

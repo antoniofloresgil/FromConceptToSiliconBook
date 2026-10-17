@@ -1,0 +1,11 @@
+{
+  "unsigned": {
+    "simulation": "expected failure",
+    "message": "FATAL: /work/labs/10-dotproduct/tb_dotproduct.sv:105: Arithmetic/status mismatch N=          1 result=000000003fff8000 expected=ffffffffc0008000\n       Time: 1240  Scope: tb_dotproduct"
+  },
+  "early-done": {
+    "simulation": "expected failure",
+    "message": "FATAL: /work/labs/10-dotproduct/tb_dotproduct.sv:22: Premature DONE\n       Time: 1065  Scope: tb_dotproduct",
+    "formal": "expected failure with counterexample"
+  }
+}

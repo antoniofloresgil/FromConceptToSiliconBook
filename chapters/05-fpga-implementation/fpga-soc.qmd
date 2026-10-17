@@ -46,6 +46,8 @@ The methodology in @sec-verification-methodology adds physical programming, osci
 
 **Recipe status: adaptation template.** The board workflow depends on the external pinned Wally checkout, toolchain/database, USB permissions and actual Nexys Video. The book's RTL simulation fixtures do not execute physical programming or qualify DDR3 bring-up. Board observations and unresolved integration tasks remain exercises with explicit evidence.
 
+**Online route without a board:** keep this implementation as the physical case study and follow the alternatives after the experiments below. Build/route/bitstream steps need the external tools and device data, but no connected FPGA. The checked real-Wally platform in @sec-executable-project supplies the functional firmware milestone; it has simulated RAM, a different reset vector/memory configuration and a direct interrupt route. It does not reproduce this board wrapper or simulate a `.bit`. [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board) defines the report-analysis fallback when implementation resources are unavailable.
+
 
 ### Repository and board target
 
@@ -239,6 +241,20 @@ When changing the Wally core configuration, repeat the complete evidence ladder.
 5. **Use LED telemetry.** Record the five state indicators through power-on. Form one hypothesis from the first unexpected LED and design a one-change experiment.
 6. **Timing discipline.** Compare the 40 MHz report with an attempted 50 MHz run. Identify the critical path and decide whether a pipeline change, architecture change or lower target is justified.
 7. **State limitations honestly.** In a project report distinguish: bitstream generated, configuration completed, internal-ROM software ran, DDR initialized and DDR tested. Do not collapse these milestones into “FPGA implementation works.”
+
+### Alternatives without a board
+
+| Experiment | Alternative activity and deliverable |
+| --- | --- |
+| 1: bitstream | Rebuild without programming and compare artifact identities. If the flow cannot be run, audit the instructor's build/firmware/constraint/report bundle and explain which steps were provided |
+| 2: wrapper | Write a self-checking GPIO/reset bench and annotate output transitions; audit the port/XDC mapping. Electrical pin behavior remains untested |
+| 3: Wally boot | For the board image, adapt a matching SoC bench and UART decoder to check its banner. For the supplied checked starting point, run `dotproduct-wally` and explain ELF loading, reset vector, firmware mailbox/result and IRQ return; identify the different memory/observation contract |
+| 4: bridge | Keep the isolated RTL bridge exercise with a memory model, stalls, byte masks and in-flight reset. Record accepted/completed effects and error recovery; a model does not establish PHY calibration |
+| 5: telemetry | Drive ready/error/reset conditions in a wrapper bench and check corresponding logical indicators. Diagnose a held-low `init_done` condition. State any clock/controller abstractions explicitly |
+| 6: timing | Compare your 40/50 MHz implementation reports or supplied reports for the same design. Explain the critical path, slack and unresolved clocks; generic Yosys resources supply no achieved MHz |
+| 7: limits | Submit a checkpoint matrix for simulation, synthesis, route, bitstream, programming, internal-memory execution and DDR. Identify fixture results, supplied evidence and physical checks still unexecuted |
+
+The wrapper/UART/bridge benches are student adaptations; the package does not supply a complete Nexys Video simulation. If primitive simulation models are unavailable, test the generic logic separately and list primitive/clock/IO qualification as unresolved. In particular, the checked accelerator fixture does not validate the AHB-to-Wishbone DDR bridge. Use its runnable core/IP path for the project demonstration while retaining the bridge exercise's own scope. The [common alternative guide](../../labs/NO-FPGA.md) defines equivalent coursework evidence and instructor-provided report requirements.
 
 This case study completes the path from SystemVerilog to physical hardware while keeping the source, toolchain, constraints and observed board behavior available for review. The same structure applies to other boards, but their FPGA part, device database, pin constraints, clocking and programming method must be treated as new implementation inputs.
 

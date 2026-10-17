@@ -1,0 +1,117 @@
+{
+  "status": "failed",
+  "profile": {
+    "schema_version": 1,
+    "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "board": "Digilent Nexys Video Rev. A",
+    "part": "xc7a200tsbg484-1",
+    "requested_mhz": 100,
+    "seed": 2026,
+    "scope": "same accelerator plus serial boundary fixture; no Wally, DDR or physical programming",
+    "nextpnr_repository": "https://github.com/gatecat/nextpnr-xilinx",
+    "nextpnr_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+    "mapping": "synth_xilinx -arch xc7 -abc9; DSP enabled",
+    "inputs": {
+      "nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+      "nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+      "nexys-port-map.json": "83b52300ea873ccfa0270c2b253d6d15b96335ae66fef2d963c3c72c3bb03b3e",
+      "tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda"
+    }
+  },
+  "profile_sha256": "982d7b932a09b6d71b1d05f9504752dc809a26b3e578eddc9fcaca881df83e36",
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "image": "sha256:feee399041d85147c83ee58f3b2c5cfec02bda85b23853e9a6eb0ca7ac9b6ec8",
+  "recipe_sha256": "5318f40ea15d7f4cb8e8e0d188556a4a942a9aeea622993e74d470e172045c39",
+  "commands": [
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_nexys",
+        "-o",
+        "fixture-test",
+        "/work/labs/10-dotproduct/rtl/dotproduct_mac.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_engine.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_axi.sv",
+        "/work/labs/17-complete-case/nexys_video.sv",
+        "/work/labs/17-complete-case/tb_nexys.sv"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "fixture-test"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/work/labs/10-dotproduct/rtl/dotproduct_mac.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_engine.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_axi.sv\" \"/work/labs/17-complete-case/nexys_video.sv\"; synth_xilinx -top nexys_video_case -arch xc7 -abc9; flatten; delete t:$scopeinfo; write_json mapped.json"
+      ],
+      "log": "command-03.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "nextpnr-xilinx",
+        "--chipdb",
+        "/opt/xc7a200t.bin",
+        "--xdc",
+        "/work/labs/17-complete-case/nexys-video.xdc",
+        "--json",
+        "mapped.json",
+        "--top",
+        "nexys_video_case",
+        "--freq",
+        "100",
+        "--seed",
+        "2026",
+        "--timing-allow-fail",
+        "--write",
+        "routed.json",
+        "--report",
+        "timing.json",
+        "--fasm",
+        "nexys.fasm"
+      ],
+      "log": "command-04.log",
+      "exit_code": 255
+    }
+  ],
+  "tools": {
+    "yosys": "Yosys 0.70+16 (git sha1 3bb533450, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "nextpnr": "\"nextpnr-xilinx\" -- Next Generation Place and Route (Version 8f178fc6)"
+  },
+  "nextpnr_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+  "database_revision": "0a0addedd73e7e4139d52a6d8db4258763e0f1f3",
+  "chipdb_sha256": "cdd8436aea474d58a413656930ae6736f19e1fab6346e9397a73760796c7da66",
+  "error": "Failed command: /work/labs/build/complete-case-nexys-final/command-04.log",
+  "artifacts": {
+    "command-01.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-02.log": "5592470903099c2d0a97c4b84d06069d4fdf864bc37a2fe75576ec4671c0e68b",
+    "command-03.log": "99bf39de6806a1f5a0f05e0badb23a2c6f41fb3c650504c9299b348881e1de28",
+    "command-04.log": "ca8c1d09e9225867b1ddcfdc3533a3d3715a01818a87a4bd21b1baa47e934a16",
+    "fixture-test": "5562cb816505ea9398f9634ee278af3e247c5e1eba721930ea650829c5732825",
+    "mapped.json": "b67111df412b5913c2dd19518e8e6fd07dc66450ba09badfe1327b9e1c03c290",
+    "synthesis-resources.json": "33c3b27e5f5d41d85cff5721e98695a3201ee1201bd373c3b5b977e7db5388ff"
+  }
+}

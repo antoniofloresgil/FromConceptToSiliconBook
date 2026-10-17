@@ -9,6 +9,7 @@ The course connects four learning outcomes: system-level specification and platf
 - [Read the published HTML book](https://antoniofloresgil.github.io/FromConceptToSiliconBook/). The sidebar offers the complete PDF when a validated release has been published.
 - [Coursework and assessment guide](appendices/hsd-coursework.qmd): P0–P5 activities, 12-week workload, review milestones and rubrics.
 - [Executable project](appendices/executable-project.qmd) and [reference source guide](labs/10-dotproduct/README.md): arithmetic IP, AXI4-Lite control, bounded AXI4 DMA and real Wally firmware.
+- [Complete case study](appendices/complete-case-study.qmd): the same locked RTL through verification, Wally simulation, FPGA placement and routing, and ASIC GDSII, with measured results and physical views.
 - [Reproduction appendix](appendices/reproducible-labs.qmd): detailed environments, external repositories and guided physical flows.
 - [Boot and software stack](chapters/04-soc-architecture/boot-software-stack.qmd): reset to Linux, with an [optional executable QEMU/OpenSBI practice](labs/12-boot/README.md).
 - [Vector processing](chapters/07-advanced-topics/vector-processing.qmd): RVV concepts and an [executable dot-product/mask practice](labs/13-vector/README.md), before choosing custom ISA or AXI/DMA acceleration.

@@ -263,6 +263,8 @@ If numbers differ, first check that the two builds use the same cache, branch-pr
 6. Run the same microbenchmark five times on the FPGA, report min/median/max and explain any spread.
 7. Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR reads explicitly.
 
+Without a physical FPGA, keep experiments 1–4 and 7 in RTL simulation with self-checking counter/event tests. For experiment 5, run device implementation without programming or analyse instructor-provided baseline/PMU reports as in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board); your generic synthesis result is separate evidence. Replace experiment 6 with five repeat runs of the same RTL workload/configuration and recorded seeds/reset/ROI conditions. Report cycle/event min/median/max and explain deterministic equality or modelled wait-state variation. This tests the measurement procedure, not board jitter, achieved frequency or power. The checked divider study in [Lab 11](../../labs/11-dse/README.md) supplies a runnable real-Wally CSR/ROI starting point; a five-counter profile and UART transport remain student implementation work. Submit the counter checks, repeated results and missing physical-correlation plan under the same coursework rubric.
+
 The result is a PMU that is useful at both stages: rich internal evidence during Wally simulation and a smaller, architecturally documented measurement service on actual FPGA hardware.
 
 ### Verify events separately from architectural correctness

@@ -234,12 +234,24 @@ Do not place a USB/JTAG access procedure inside a build script that is also used
 
 ## Hands-on Experiments
 
+@sec-complete-case supplies a complementary executed accelerator example using nextpnr's ECP5 backend, a common RTL/configuration manifest and a final placement map. Its 100 MHz target fails at an estimated 86.99 MHz after routing. Inspect its actual timing report and source boundary before comparing it with the board-oriented XC7 workflow here; no Nexys Video or complete-SoC result is implied.
+
+Students without a board follow the alternatives below and the deliverables in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). The physical experiments remain available for students with hardware. No experiment requires buying a board to complete the assessed course.
+
 1. Build the Nexys Video configuration and identify the generated JSON, routed JSON, report, FASM, frames and bitstream files.
 2. Request 50 MHz instead of 40 MHz without changing RTL. Compare the timing reports and explain why a failing 50 MHz report must not be ignored merely because the 40 MHz configuration runs.
 3. Add an LED heartbeat generated from the synchronized system clock. Program SRAM and confirm it after every reset before debugging the processor.
 4. Disconnect or rename one XDC port in a copy of the exercise. Observe the implementation error/warning, restore the constraint and verify that the pin name matches the top-level port exactly.
 5. Program only SRAM, power-cycle the board and confirm that the configuration vanishes. Then, after following the board-specific procedure, compare this with a deliberately programmed flash image.
 6. Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstream hash, DONE state and observed LEDs.
+
+### Alternatives without a board
+
+For experiments 1, 2 and 4, run the implementation tools without connecting hardware: bitstream generation, clock-target comparison and XDC diagnostics are build operations. If tools/databases or compute are unavailable, analyse the instructor-provided baseline/variant reports and failed-constraint example, retaining their source/target/constraint identities. Identify the critical path, margin, unconstrained paths and cause of the failure; propose the next corrective run. Complete your own generic synthesis as well.
+
+For experiment 3, implement a self-checking heartbeat RTL bench with reset assertion/release and a documented simulation divider parameter. Check toggle counts and intervals, preserve a waveform and review logical-port-to-XDC mapping. Restore the intended hardware divider in the synthesis configuration. This is an exercise to implement, not an existing checked heartbeat test.
+
+For experiment 5, submit the expected SRAM/flash power-cycle sequence and explain configuration retention separately from application reset. A digital reset bench cannot establish flash persistence. For experiment 6, produce a bring-up plan with expected DONE/UART/LED observations, recorded build hashes and the first diagnostic action for each missing checkpoint. Mark physical observations as `not_run`; use the real-Wally firmware result from @sec-executable-project for the executable software milestone, identifying its different fixture. Submit the report analysis, waveform/checker, constraint audit and remaining physical tests under the same coursework rubric.
 
 The following chapter applies this complete flow to CORE-V Wally. It identifies what the open Nexys Video configuration implements, how LiteDRAM replaces closed Vivado MIG IP, and which hardware claims are currently supported by evidence.
 
@@ -271,3 +283,5 @@ Compare [fpga/constraints/opensource-NexysVideo.xdc](https://github.com/antoniof
 ## Further reading {#review-nextpnr-timing-reading .unnumbered .unlisted}
 
 Continue with the [Wally FPGA chapter](fpga-soc.qmd) and @sec-clocking-timing. Follow the chapter sources [@nextpnrRepository; @projectXray].
+
+For a completed `xc7a200tsbg484-1` implementation of the book's accelerator, inspect @sec-nexys-complete-case: actual pin assignments, placement, routed timing, the rejected DSP-enabled attempt and the measured 85.42 MHz `-nodsp` result. Its serial fixture is separate from the full Wally/DDR board platform.

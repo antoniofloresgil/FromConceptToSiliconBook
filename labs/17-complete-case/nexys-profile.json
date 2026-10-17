@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "board": "Digilent Nexys Video Rev. A",
+  "part": "xc7a200tsbg484-1",
+  "requested_mhz": 100,
+  "seed": 2026,
+  "scope": "same accelerator plus serial boundary fixture; no Wally, DDR or physical programming",
+  "nextpnr_repository": "https://github.com/gatecat/nextpnr-xilinx",
+  "nextpnr_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+  "mapping": "synth_xilinx -arch xc7 -abc9 -nodsp; multiplier in LUT/carry logic, matching Wally board recipe",
+  "inputs": {
+    "nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+    "nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+    "nexys-port-map.json": "83b52300ea873ccfa0270c2b253d6d15b96335ae66fef2d963c3c72c3bb03b3e",
+    "tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda"
+  }
+}

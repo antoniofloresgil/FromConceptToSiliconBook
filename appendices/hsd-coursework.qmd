@@ -6,6 +6,18 @@ This appendix translates the 12-week HSD itinerary into practical activities, ob
 
 The semester uses one project backbone: a reusable AXI/DMA accelerator in a Wally-based virtual platform. Practices develop parts of the same deliverable. Reference examples establish the environment; assessed work adds a student-defined implementation, check, property, integration or analysis. Preserve the identity of reference and student sources.
 
+@sec-complete-case and [Lab 17](../labs/17-complete-case/README.md) provide the common thread across P1–P5: one content-locked IP/configuration manifest, functional/formal/firmware evidence, both physical IP flows and a joined engineering decision. Reuse this dossier within the existing practical/project hours; running large physical tools is optional when the identified reports are supplied for analysis. Full-Wally physical integration and fabrication are extensions, not new 6 ECTS requirements.
+
+The Linux/driver continuation in @sec-linux-accelerator and [Lab 18](../labs/18-linux-accelerator/README.md) can supply a prepared P4/P5 software-integration exercise. Keep student changes small and use its recorded model/driver/error evidence; rebuilding the emulator or running Linux on Wally RTL remains advanced autonomous work, not an extra compulsory activity.
+
+### Access for online students
+
+No student needs to purchase an FPGA to complete P0–P5 or the final project. The [route without a board](../labs/NO-FPGA.md) maps all eighteen reference labs to activities, evidence and limits. The physical FPGA activities remain available as extensions. Both routes have the same rubric opportunities: assess the requirement, independent checks, analysis and explanation, rather than ownership of hardware.
+
+P0–P4 use the existing simulation, architectural-model and formal environments. P3 and the final demonstration execute firmware on real Wally RTL in the virtual platform. For P5, students synthesize their own RTL and review constraints, then either run the separate technology tools without connecting a board or analyse instructor-provided implementation reports. Before P5, the instructor supplies baseline/variant reports, source/target/tool/constraint provenance and a failing timing or constraint case if students cannot run that flow. The bundle requirements and physical-observation replacements are in the alternative guide. Physical tools and full-Wally harness adaptations remain explicit dependencies; simulation access alone does not supply them.
+
+Submit simulated transactions/result comparisons and polling/interrupt evidence in place of live board observations, plus a bring-up plan covering programming, clock/reset, IO and memory checkpoints. Identify student-produced, supplied and proposed evidence. Keep physical programming, DDR calibration and other unexecuted qualifications visible as `not_run`; their exclusion from the assessed route does not make them passed. Supplied reports describe their identified design and cannot establish timing closure for modified student RTL.
+
 | Activity | Prerequisites | Supervised / autonomous / total hours | Outcome evidence |
 | --- | --- | --- | --- |
 | P0: diagnostic and reproduction | Basic digital logic and source editing | 1 / 3 / 4 | Readiness and a reference run |
@@ -89,6 +101,8 @@ The `transport` and `mmio` references provide reusable concepts and tested start
 
 ## P4: formal verification and security evaluation
 
+Use @sec-formal-verification and [Lab 15](../labs/15-formal/README.md) as the concrete preparation within P4's existing hours. The supplied container runs FIFO BMC, induction and sequential equivalence, useful-traffic/vacuity controls, a real defect counterexample and repaired/faulty simulation regressions. Explain one completed result and its assumptions, then apply the method to a small selected part of your accelerator under the obligations below. Full-processor formal verification remains an advanced extension and is not a general requirement of this 6 ECTS course.
+
 Formal verification and security evaluation are required by RA8. Use a small selected part of the accelerator with an instructor-provisioned formal environment, solver and starter harness. SymbiYosys distinguishes bounded checking, proof and cover tasks; select and report the corresponding scope [@hsdFormalTasks]. The dot-product reference now includes Yosys SAT bounded checks in the small container, with a reachable DONE witness and an early-completion counterexample. Its stated bounds do not establish an unbounded proof; SymbiYosys/solver extensions still require separately provisioned tools. See @sec-executable-project.
 
 Complete at least two meaningful properties: for example, stable AXI request payload while stalled, no DMA request for an invalid descriptor, or DONE only after successful result completion. Separate environment assumptions from design obligations and define initial/reset state. For bounded checking, report the bound; for an unbounded proof, report the model and assumptions. Use reachability/cover evidence to show that the interesting traffic is permitted. An environment that assumes away every request gives little useful evidence.
@@ -110,7 +124,11 @@ Before P4, the instructor validates the supplied bounded harness and reporting c
 
 ## P5: implementation, analysis and IP strengthening
 
+The measured accumulator study in @sec-openroad-study and [Lab 16](../labs/16-openroad-study/README.md) supplies a concrete report bundle for this analysis: a fixed-netlist clock/utilization sweep, actual placement/CTS/routing/path captures, pre/post-route setup changes, hold/electrical failures and infeasible floorplans. Students can reproduce the separate OpenROAD environment or analyse the identified reference reports within P5's existing hours. Explain their applicability limits for student-modified IP and propose a verified follow-up; no fabricated device is required.
+
 Synthesize the stable IP and review storage, arithmetic mapping, clocks, reset and constraints. Interpret timing/resource results. Use provisioned physical tools or clearly identified instructor-provided reports to assess technology views, corners and physical-check coverage. Identify test controllability/observability, scan or memory-test needs, and test-mode clock/reset interactions.
+
+Without a board, follow [Lab 07's implementation alternative](../labs/07-implementation/README.md#without-a-physical-board). Submit your netlist/resource analysis, clock/reset/IO constraint inventory, baseline/variant timing-report comparison, diagnosis of a failed constraint or timing case, virtual-platform regression and remaining physical-check plan. Device place-and-route and `.bit` generation, where tools are available, require no connected FPGA. If using provided reports, explain their applicability and limits for your student design. These artifacts address the same dimensions below; live programming is not an additional acceptance requirement.
 
 Analyze reliability through backpressure, errors, reset sequencing and partial result writes. Explain any CDC mechanism if clocks differ. Digital stimulus alone does not quantify metastability reliability. Submit the view/constraint inventory, implementation reports, DFT/manufacturability/reliability review and reproduction instructions. Mark views as produced, provided, required but missing, or not applicable with rationale.
 
@@ -208,6 +226,8 @@ An IP release contains requirements and interface/register documentation, RTL/ma
 | **Total** | **100** |
 
 The acceptance review requires correct arithmetic, CPU control, functioning bounded DMA, an interrupt completion case, demonstrated reuse, completed formal verification within stated scope, security evaluations and the RA7/IP-package review. Failed or incomplete requirements remain explicit and follow the approved assessment rules.
+
+The live final demonstration may run entirely in the documented Wally simulation platform. Use the same dataset for software and accelerator comparisons, retain firmware/result/interrupt logs and label measured cycles with the simulated memory configuration. Present the P5 report analysis and board bring-up plan alongside them. A successful physical board demonstration is an extension and is not needed to achieve the highest rubric level for the agreed virtual-platform scope.
 
 Teams submit a contribution matrix. Each student explains a system transaction, a reuse decision, a formal/security result and an implementation/failure risk. Version history supports attribution; it is not a measure of understanding by itself.
 

@@ -4,6 +4,8 @@ Run commands from the repository root. The book's [reproduction appendix](../app
 
 Original code uses MIT; educational prose and original figures use CC BY-SA 4.0. See the [licensing scope](../LICENSE.md) and [third-party notices](../NOTICE.md), both included with the practice download. The [final project review](../summary.qmd) provides release-evidence and defence guidance.
 
+**No physical FPGA is required to complete the online course.** The [route without a board](NO-FPGA.md) maps all eighteen labs to executable activities and deliverables, including replacements for programming, LEDs/UART, DDR and measurements. Physical-board activities remain available. Implementation tools/databases are separate dependencies even when no board is connected; instructor-provided report analysis covers unavailable physical-flow resources under the same coursework rubric.
+
 The [HSD coursework guide](../appendices/hsd-coursework.qmd) defines the 12-week, 6 ECTS course's P0–P5 activities, autonomous workload, deliverables and rubrics. Students reuse these references while developing a Wally-controlled AXI/DMA dot-product accelerator. The executable reference in `10-dotproduct/` supplies the AXI/DMA IP, bounded formal checks and a real Wally firmware platform. The guide distinguishes that reference from assessed student work.
 
 ```sh
@@ -47,6 +49,10 @@ Windows mounts use Windows access controls; do not paste POSIX `id` expressions 
 | `boot` | QEMU/OpenSBI supervisor ELF and Linux PID 1 source | Explicit optional boot container; Wally porting is guided, outside `run all` | [12](12-boot/README.md) |
 | `vector` | RVV dot product and masked stores | Checked explicit QEMU script, one ELF at VLEN 128/256/512; no timing claim, outside `run all` | [13](13-vector/README.md) |
 | `security` | PMP, real DMA, debug guard, cache-channel model and formal property | Explicit two-environment practice; scope/assumptions recorded, outside `run all` | [14](14-security/README.md) |
+| `formal` | Two-entry ring and shift FIFOs | Explicit Yosys BMC/induction/equivalence, traffic/vacuity witnesses, defect and repair/regression; outside `run all` | [15](15-formal/README.md) |
+| `physical-study` | Accumulator on Nangate45 | Eleven real direct OpenROAD cases, extracted timing, seven GUI captures and preserved placement failures; separate image, outside `run all` | [16](16-openroad-study/README.md) |
+| `complete-case` | Same maximum-256 dot-product IP | Common manifest joins tests/formal/Wally with ECP5/Nexys Video PnR and Nangate45 GDSII, metrics and physical visuals; explicit, outside `run all` | [17](17-complete-case/README.md) |
+| `linux-accelerator` | Real Linux driver and the dot-product contract | QEMU model, DT, reserved DMA pool, IRQ/poll and userspace; advanced real Wally RV64 RTL Linux route | [18](18-linux-accelerator/README.md) |
 
 ## Commands
 

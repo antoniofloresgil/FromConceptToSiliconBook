@@ -1,0 +1,237 @@
+{
+  "release": "dotproduct-256-2026.10",
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "functional": {
+    "unit": "pass",
+    "system": "pass",
+    "formal": "bounded only",
+    "negative_controls": {
+      "unsigned": {
+        "simulation": "expected failure",
+        "message": "FATAL: /work/labs/10-dotproduct/tb_dotproduct.sv:105: Arithmetic/status mismatch N=          1 result=000000003fff8000 expected=ffffffffc0008000\n       Time: 1240  Scope: tb_dotproduct"
+      },
+      "early-done": {
+        "simulation": "expected failure",
+        "message": "FATAL: /work/labs/10-dotproduct/tb_dotproduct.sv:22: Premature DONE\n       Time: 1065  Scope: tb_dotproduct",
+        "formal": "expected failure with counterexample"
+      }
+    },
+    "wally_revision": "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c",
+    "cycles": [
+      {
+        "length": 1,
+        "software_cycles": 90,
+        "accelerator_cycles": 114,
+        "cycle_speedup": 0.7894736842105263
+      },
+      {
+        "length": 8,
+        "software_cycles": 664,
+        "accelerator_cycles": 195,
+        "cycle_speedup": 3.405128205128205
+      },
+      {
+        "length": 32,
+        "software_cycles": 2632,
+        "accelerator_cycles": 384,
+        "cycle_speedup": 6.854166666666667
+      },
+      {
+        "length": 128,
+        "software_cycles": 10504,
+        "accelerator_cycles": 1275,
+        "cycle_speedup": 8.23843137254902
+      },
+      {
+        "length": 256,
+        "software_cycles": 21000,
+        "accelerator_cycles": 2490,
+        "cycle_speedup": 8.433734939759036
+      }
+    ]
+  },
+  "fpga": {
+    "scope": "accelerator out-of-context; no board IO or complete SoC",
+    "tool_versions": {
+      "yosys": "Yosys 0.70+16 (git sha1 3bb533450, Release, Clang /usr/bin/clang++ 21.1.8)",
+      "nextpnr": "\"nextpnr-ecp5\" -- Next Generation Place and Route (Version nextpnr-0.11.1-63-g44a6c739)"
+    },
+    "resources": {
+      "ALU54B": {
+        "available": 14,
+        "used": 0
+      },
+      "CLKDIVF": {
+        "available": 4,
+        "used": 0
+      },
+      "DCCA": {
+        "available": 56,
+        "used": 0
+      },
+      "DCSC": {
+        "available": 2,
+        "used": 0
+      },
+      "DCUA": {
+        "available": 1,
+        "used": 0
+      },
+      "DDRDLL": {
+        "available": 4,
+        "used": 0
+      },
+      "DLLDELD": {
+        "available": 8,
+        "used": 0
+      },
+      "DP16KD": {
+        "available": 56,
+        "used": 0
+      },
+      "DQSBUFM": {
+        "available": 8,
+        "used": 0
+      },
+      "DTR": {
+        "available": 1,
+        "used": 0
+      },
+      "ECLKBRIDGECS": {
+        "available": 2,
+        "used": 0
+      },
+      "ECLKSYNCB": {
+        "available": 10,
+        "used": 0
+      },
+      "EHXPLLL": {
+        "available": 2,
+        "used": 0
+      },
+      "EXTREFB": {
+        "available": 1,
+        "used": 0
+      },
+      "GSR": {
+        "available": 1,
+        "used": 0
+      },
+      "IOLOGIC": {
+        "available": 128,
+        "used": 0
+      },
+      "JTAGG": {
+        "available": 1,
+        "used": 0
+      },
+      "MULT18X18D": {
+        "available": 28,
+        "used": 1
+      },
+      "OSCG": {
+        "available": 1,
+        "used": 0
+      },
+      "PCSCLKDIV": {
+        "available": 2,
+        "used": 0
+      },
+      "SEDGA": {
+        "available": 1,
+        "used": 0
+      },
+      "SIOLOGIC": {
+        "available": 69,
+        "used": 0
+      },
+      "TRELLIS_COMB": {
+        "available": 24288,
+        "used": 1092
+      },
+      "TRELLIS_ECLKBUF": {
+        "available": 8,
+        "used": 0
+      },
+      "TRELLIS_FF": {
+        "available": 24288,
+        "used": 469
+      },
+      "TRELLIS_IO": {
+        "available": 197,
+        "used": 0
+      },
+      "TRELLIS_RAMW": {
+        "available": 3036,
+        "used": 0
+      },
+      "USRMCLK": {
+        "available": 1,
+        "used": 0
+      }
+    },
+    "fmax_mhz": 86.99434661865234,
+    "requested_mhz": 100,
+    "setup_target_met": false,
+    "power_w": null,
+    "power_status": "not_estimated: no characterized FPGA power model/estimator in this flow",
+    "programming": "not_run; out-of-context IP has no board IO or programmable bitstream"
+  },
+  "asic": {
+    "scope": "accelerator block; no pads or complete SoC",
+    "tool_versions": {
+      "yosys": "Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)",
+      "openroad": "24Q3-11382-g61879bec53"
+    },
+    "cell_area_um2": 7355.0,
+    "core_area_um2": 15743.21,
+    "setup_slack_ns": 4.04594103005829,
+    "hold_slack_ns": -0.033552536698700675,
+    "setup_derived_limit_mhz": 167.95265297981925,
+    "setup_limit_scope": "fixed-budget, single-corner STA estimate; hold/electrical failures prevent validation as an operating Fmax",
+    "electrical_violations": true,
+    "router_drc_report_empty": true,
+    "power_w": {
+      "internal": 0.000442,
+      "switching": 0.000256,
+      "leakage": 0.000159,
+      "total": 0.000857
+    },
+    "power_model": "vectorless model, not firmware workload activity",
+    "power_clock_mhz": 100.0,
+    "power_activity_command": "set_power_activity -global -activity 0.1",
+    "gds_sha256": "d81ad548a81d84d23bfb58bb4f37f27ec99dec3e29f84b99d583305d736f80cb",
+    "gds_readback": {
+      "top": "dotproduct_axi",
+      "cells": 47,
+      "dbu_um": 0.0001,
+      "bbox_um": [
+        0.0,
+        0.0,
+        136.5,
+        136.5
+      ],
+      "empty_cells": [],
+      "validation": "readback and nonempty cell geometry; no DRC/LVS claim"
+    }
+  },
+  "unclosed": [
+    "complete-SoC physical implementation",
+    "FPGA board IO/programming",
+    "RTL-to-mapped-netlist equivalence",
+    "ASIC hold/electrical closure",
+    "foundry DRC/LVS and multi-corner signoff",
+    "workload-annotated power and measured energy"
+  ]
+}

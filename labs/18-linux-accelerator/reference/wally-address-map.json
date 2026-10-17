@@ -1,0 +1,76 @@
+{
+  "status": "pass",
+  "config_sha256": "2c857e4d5dd9a4f435ae326de516d6b48c05e13857f55616d170c69bd6a4295c",
+  "scope": "Pinned RV64gc map with the declared Linux RAM override; GPIO preserved; dedicated MMIO page",
+  "base": 268959744,
+  "aperture_bytes": 32,
+  "page_bytes": 4096,
+  "regions": [
+    {
+      "name": "DTIM",
+      "base": 2147483648,
+      "size": 8388608,
+      "enabled": false
+    },
+    {
+      "name": "IROM",
+      "base": 2147483648,
+      "size": 8388608,
+      "enabled": false
+    },
+    {
+      "name": "BOOTROM",
+      "base": 4096,
+      "size": 4096,
+      "enabled": true
+    },
+    {
+      "name": "UNCORE_RAM",
+      "base": 2147483648,
+      "size": 268435456,
+      "enabled": true
+    },
+    {
+      "name": "CLINT",
+      "base": 33554432,
+      "size": 65536,
+      "enabled": true
+    },
+    {
+      "name": "GPIO",
+      "base": 268828672,
+      "size": 256,
+      "enabled": true
+    },
+    {
+      "name": "UART",
+      "base": 268435456,
+      "size": 8,
+      "enabled": true
+    },
+    {
+      "name": "PLIC",
+      "base": 201326592,
+      "size": 67108864,
+      "enabled": true
+    },
+    {
+      "name": "SDC",
+      "base": 77824,
+      "size": 4096,
+      "enabled": false
+    },
+    {
+      "name": "SPI",
+      "base": 268697600,
+      "size": 4096,
+      "enabled": true
+    },
+    {
+      "name": "PWM",
+      "base": 268566528,
+      "size": 256,
+      "enabled": true
+    }
+  ]
+}

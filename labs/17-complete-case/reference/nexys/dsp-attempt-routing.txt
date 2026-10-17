@@ -1,0 +1,176 @@
+Info: Packing constants..
+Info: Inserting IO buffers..
+Info:     IO port 'scan_tick' driven by IBUF '$iopadmap$nexys_video_case.scan_tick'
+Info:     IO port 'scan_out' driven by OBUF '$iopadmap$nexys_video_case.scan_out'
+Info:     IO port 'scan_data' driven by IBUF '$iopadmap$nexys_video_case.scan_data'
+Info:     IO port 'resetn' driven by IBUF '$iopadmap$nexys_video_case.resetn'
+Info:     IO port 'clk100' driven by IBUF '$iopadmap$nexys_video_case.clk100'
+Info:     IO port 'capture' driven by IBUF '$iopadmap$nexys_video_case.capture'
+Info:     IO port 'apply' driven by IBUF '$iopadmap$nexys_video_case.apply'
+Info:     Constraining 'scan_tick' to site 'IOB_X0Y200'
+Info:     Tile 'LIOB33_SING_X0Y200'
+Info:     Constraining 'scan_out' to site 'IOB_X0Y70'
+Info:     Tile 'LIOB33_X0Y69'
+Info:     Constraining 'scan_data' to site 'IOB_X0Y206'
+Info:     Tile 'LIOB33_X0Y205'
+Info:     Constraining 'resetn' to site 'IOB_X1Y175'
+Info:     Tile 'RIOB33_X105Y175'
+Info:     Constraining 'clk100' to site 'IOB_X1Y124'
+Info:     Tile 'RIOB33_X105Y123'
+Info:     Constraining 'capture' to site 'IOB_X0Y201'
+Info:     Tile 'LIOB33_X0Y201'
+Info:     Constraining 'apply' to site 'IOB_X0Y202'
+Info:     Tile 'LIOB33_X0Y201'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.scan_tick'
+Info: Generating output buffer for '$iopadmap$nexys_video_case.scan_out'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.scan_data'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.resetn'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.clk100'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.capture'
+Info: Generating input buffer for '$iopadmap$nexys_video_case.apply'
+Info:     Created 7 PAD cells from:
+Info:              7x PAD
+Info: Preparing clocking...
+Info: Packing constants..
+Info: Packing PLLs...
+Info: Packing global buffers...
+Info:     Constrained BUFGCTRL 'clock_buffer' to bel 'BUFGCTRL_X0Y0/BUFGCTRL' based on dedicated routing
+Info: Packing MUX[789]s..
+Info: Packing carries..
+Info:    Grouped 368 MUXCYs and 368 XORCYs into 21 chains.
+Info:    Blasted 0 non-chain MUXCYs and 0 non-chain XORCYs to soft logic
+Info: Packing LUTs..
+Info:     Created 1487 SLICE_LUTX cells from:
+Info:            590x LUT1
+Info:            319x LUT2
+Info:             81x LUT3
+Info:            240x LUT4
+Info:            163x LUT5
+Info:             94x LUT6
+Info: Packing DRAM..
+Info:    Transformed 0 tied-low DRAM address inputs to be tied-high
+Info: Packing BRAM..
+Info: Packing DSPs..
+Info:     Created 1 DSP48E1_DSP48E1 cells from:
+Info:              1x DSP48E1
+Info: Packing flipflops..
+Info:     Created 916 SLICE_FFX cells from:
+Info:            916x FDRE
+Info: Constrained 381 LUTFF pairs.
+
+Info: Annotating ports with timing budgets for target frequency 100.00 MHz
+Info: Checksum: 0xe90fcc83
+
+Info: Device utilisation:
+Info: 	          SLICE_LUTX:  1487/269200     0%
+Info: 	           SLICE_FFX:   916/269200     0%
+Info: 	              CARRY4:    94/33650     0%
+Info: 	          PSEUDO_GND:     1/69165     0%
+Info: 	          PSEUDO_VCC:     1/69165     0%
+Info: 	               HARD0:     0/ 3960     0%
+Info: 	   RAMB18E1_RAMB18E1:     0/  730     0%
+Info: 	   FIFO18E1_FIFO18E1:     0/  365     0%
+Info: 	RAMBFIFO36E1_RAMBFIFO36E1:     0/  365     0%
+Info: 	   RAMB36E1_RAMB36E1:     0/  365     0%
+Info: 	     DSP48E1_DSP48E1:     1/  740     0%
+Info: 	                 PAD:     7/ 1460     0%
+Info: 	       IOB33M_OUTBUF:     0/  240     0%
+Info: 	       IOB33S_OUTBUF:     0/  240     0%
+Info: 	        IOB33_OUTBUF:     1/  500     0%
+Info: 	     IOB33M_INBUF_EN:     0/  240     0%
+Info: 	     IOB33S_INBUF_EN:     0/  240     0%
+Info: 	      IOB33_INBUF_EN:     6/  500     1%
+Info: 	IOB33M_TERM_OVERRIDE:     0/  240     0%
+Info: 	IOB33S_TERM_OVERRIDE:     0/  240     0%
+Info: 	 IOB33_TERM_OVERRIDE:     0/  500     0%
+Info: 	       PULL_OR_KEEP1:     0/  980     0%
+Info: 	   IDELAYE2_IDELAYE2:     0/  500     0%
+Info: 	        OLOGICE3_TFF:     0/  500     0%
+Info: 	      OLOGICE3_OUTFF:     0/  500     0%
+Info: 	       OLOGICE3_MISR:     0/  500     0%
+Info: 	 OSERDESE2_OSERDESE2:     0/  500     0%
+Info: 	        ILOGICE3_IFF:     0/  500     0%
+Info: 	ILOGICE3_ZHOLD_DELAY:     0/  500     0%
+Info: 	 ISERDESE2_ISERDESE2:     0/  500     0%
+Info: 	         BUFIO_BUFIO:     0/   40     0%
+Info: 	IDELAYCTRL_IDELAYCTRL:     0/   10     0%
+Info: 	            BUFGCTRL:     1/   32     3%
+Info: 	           BUFG_BUFG:     0/   32     0%
+Info: 	            INVERTER:     0/  240     0%
+Info: 	        OLOGICE2_TFF:     0/  500     0%
+Info: 	      OLOGICE2_OUTFF:     0/  500     0%
+Info: 	 PLLE2_ADV_PLLE2_ADV:     0/   10     0%
+Info: 	           SELMUX2_1:     0/102950     0%
+Info: 	       BUFHCE_BUFHCE:     0/  120     0%
+Info: 	              BUFFER:     0/  480     0%
+Info: 	        ILOGICE2_IFF:     0/  500     0%
+Info: 	       OLOGICE2_MISR:     0/  500     0%
+
+Info: Placed 15 cells based on constraints.
+Info: Creating initial analytic placement for 1306 cells, random placement wirelen = 524645.
+Info:     at initial placer iter 0, wirelen = 3392
+Info:     at initial placer iter 1, wirelen = 2843
+Info:     at initial placer iter 2, wirelen = 2791
+Info:     at initial placer iter 3, wirelen = 2797
+Info: Running main analytical placer, max placement attempts per cell = 790653.
+Info:     at iteration #1, type ALL: wirelen solved = 2745, spread = 33925, legal = 35291; time = 0.11s
+Info:     at iteration #2, type ALL: wirelen solved = 3744, spread = 24341, legal = 26101; time = 0.08s
+Info:     at iteration #3, type ALL: wirelen solved = 4401, spread = 22855, legal = 24714; time = 0.07s
+Info:     at iteration #4, type ALL: wirelen solved = 5791, spread = 20267, legal = 22023; time = 0.07s
+Info:     at iteration #5, type ALL: wirelen solved = 6561, spread = 19989, legal = 22007; time = 0.07s
+Info:     at iteration #6, type ALL: wirelen solved = 8174, spread = 18863, legal = 20852; time = 0.07s
+Info:     at iteration #7, type ALL: wirelen solved = 8666, spread = 22464, legal = 24622; time = 0.06s
+Info:     at iteration #8, type ALL: wirelen solved = 10640, spread = 19365, legal = 21735; time = 0.07s
+Info:     at iteration #9, type ALL: wirelen solved = 10620, spread = 17884, legal = 20257; time = 0.08s
+Info:     at iteration #10, type ALL: wirelen solved = 11409, spread = 22292, legal = 23719; time = 0.07s
+Info:     at iteration #11, type ALL: wirelen solved = 12742, spread = 18532, legal = 19946; time = 0.07s
+Info:     at iteration #12, type ALL: wirelen solved = 12543, spread = 21613, legal = 22867; time = 0.07s
+Info:     at iteration #13, type ALL: wirelen solved = 13763, spread = 21003, legal = 23321; time = 0.08s
+Info:     at iteration #14, type ALL: wirelen solved = 14292, spread = 21838, legal = 22568; time = 0.09s
+Info:     at iteration #15, type ALL: wirelen solved = 14990, spread = 24318, legal = 26396; time = 0.07s
+Info:     at iteration #16, type ALL: wirelen solved = 14873, spread = 24285, legal = 27443; time = 0.07s
+Info: HeAP Placer Time: 2.33s
+Info:   of which solving equations: 0.67s
+Info:   of which spreading cells: 0.31s
+Info:   of which strict legalisation: 0.26s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 303, wirelen = 19946
+Info:   at iteration #5: temp = 0.000000, timing cost = 241, wirelen = 18374
+Info:   at iteration #5: temp = 0.000000, timing cost = 234, wirelen = 18395 
+Info: SA placement time 0.48s
+
+Info: Max frequency for clock 'clk': 71.77 MHz (FAIL at 100.00 MHz)
+
+Info: Slack histogram:
+Info:  legend: * represents 11 endpoint(s)
+Info:          + represents [1,11) endpoint(s)
+Info: [ -3933,  -3253) |********+
+Info: [ -3253,  -2573) |**+
+Info: [ -2573,  -1893) |+
+Info: [ -1893,  -1213) |+
+Info: [ -1213,   -533) |+
+Info: [  -533,    147) |+
+Info: [   147,    827) |*+
+Info: [   827,   1507) |***+
+Info: [  1507,   2187) |*+
+Info: [  2187,   2867) |*+
+Info: [  2867,   3547) |*+
+Info: [  3547,   4227) |*+
+Info: [  4227,   4907) |*+
+Info: [  4907,   5587) |***+
+Info: [  5587,   6267) |*******************+
+Info: [  6267,   6947) |************************************************************ 
+Info: [  6947,   7627) |************************************************************ 
+Info: [  7627,   8307) |*******************+
+Info: [  8307,   8987) |*****************+
+Info: [  8987,   9667) |**************************+
+Info: Checksum: 0x81d8e39a
+Info: Running post-placement legalisation...
+Info: Routing global clocks...
+Info:     routing clock 'clk'
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+ERROR: Failed to route arc 58.0 of net '$PACKER_GND_NET', from NULL_X0Y260/PSEUDO_GND_WIRE_GLBL to SITEWIRE/DSP48_X0Y84/MULTSIGNIN.
+0 warnings, 1 error

@@ -1,0 +1,105 @@
+[
+  {
+    "case": "u55-p0.91",
+    "stage": "placed",
+    "command": [
+      "openroad",
+      "-gui",
+      "-no_init",
+      "-exit",
+      "/work/labs/16-openroad-study/images.tcl"
+    ],
+    "inputs": {
+      "/work/labs/build/openroad-study-final/u55-p0.91/placed.odb": "326a867904194a43dfb98f74aa0789b5764b61456160136f2ee74f41bcdab32a",
+      "/work/labs/build/openroad-study-final/u55-p0.91/placed.sdc": "d7ee02eeec3a84d1c8a1e97f1327d005683a8857ab4e1cddd28a1b7f12350b48",
+      "/work/labs/16-openroad-study/images.tcl": "f3a65d80f0b3d8526114ad4e0355ed3df29be1e25fd5ec9f33dac1b6e3c2eff7"
+    },
+    "images": {
+      "u55-p0.91/placed.png": "b8602adcbb206dd8dd7f11c68f9f0575d472f399e84813b21299341847e4f61a"
+    },
+    "log_sha256": "2a407110839daa8757ae1643242670bdd5b87b3f9124811f3377dffe7a0909d8"
+  },
+  {
+    "case": "u55-p0.91",
+    "stage": "cts",
+    "command": [
+      "openroad",
+      "-gui",
+      "-no_init",
+      "-exit",
+      "/work/labs/16-openroad-study/images.tcl"
+    ],
+    "inputs": {
+      "/work/labs/build/openroad-study-final/u55-p0.91/cts.odb": "041250873656f65a0d19c18e7d856278ca07282c380f273e6acd8e64f4f1cbb5",
+      "/work/labs/build/openroad-study-final/u55-p0.91/cts.sdc": "b3612e313dfef366fc0405ca913fc22801b26b768d81b7afa1582d14306b8a39",
+      "/work/labs/16-openroad-study/images.tcl": "f3a65d80f0b3d8526114ad4e0355ed3df29be1e25fd5ec9f33dac1b6e3c2eff7"
+    },
+    "images": {
+      "u55-p0.91/cts.png": "154a317ca5da35ac0b18c7d22808702b8b590cba99b67e1970fcc25085842f59",
+      "u55-p0.91/clocktree.png": "8d7d442f9b5f8235e7b3b1ad031da93332df83f52da42fa85cfd0c02644d8bb0"
+    },
+    "log_sha256": "2a407110839daa8757ae1643242670bdd5b87b3f9124811f3377dffe7a0909d8"
+  },
+  {
+    "case": "u55-p0.91",
+    "stage": "routed",
+    "command": [
+      "openroad",
+      "-gui",
+      "-no_init",
+      "-exit",
+      "/work/labs/16-openroad-study/images.tcl"
+    ],
+    "inputs": {
+      "/work/labs/build/openroad-study-final/u55-p0.91/routed.odb": "2c321500e3d562d73d91ec924cd1ed183bc43f9ca559564e0cc636fb529db246",
+      "/work/labs/build/openroad-study-final/u55-p0.91/routed.sdc": "271f4e56edb99c97db67d2d419d4a66debf0e8f8b8e6d99bdbbc90d2ea6b988f",
+      "/work/labs/16-openroad-study/images.tcl": "f3a65d80f0b3d8526114ad4e0355ed3df29be1e25fd5ec9f33dac1b6e3c2eff7",
+      "/work/labs/build/openroad-study-final/u55-p0.91/routed.spef": "ea826a5cbe56abebcd6970f3206fa5e10c1322728bd3336a28ad98775125b9da"
+    },
+    "images": {
+      "u55-p0.91/routed.png": "ec83299e5f1823c941188357318140feb93dddcfdde2928c632f41c58e577c6a",
+      "u55-p0.91/critical-path.png": "5cd35b62aac4b7d43b1b1bdfd35cf02aef3e4462db9e4dab9ed49c5683220f79"
+    },
+    "log_sha256": "2a407110839daa8757ae1643242670bdd5b87b3f9124811f3377dffe7a0909d8"
+  },
+  {
+    "case": "u45-p1.00",
+    "stage": "placed",
+    "command": [
+      "openroad",
+      "-gui",
+      "-no_init",
+      "-exit",
+      "/work/labs/16-openroad-study/images.tcl"
+    ],
+    "inputs": {
+      "/work/labs/build/openroad-study-final/u45-p1.00/placed.odb": "65298cd63d31b4c1321fa9cd60a9b687b00a50260570dbef691c752571558169",
+      "/work/labs/build/openroad-study-final/u45-p1.00/placed.sdc": "e79f736cbce57b1480d8176ef053d439e8c57ca292a8911c0fdf532b5a794a1f",
+      "/work/labs/16-openroad-study/images.tcl": "f3a65d80f0b3d8526114ad4e0355ed3df29be1e25fd5ec9f33dac1b6e3c2eff7"
+    },
+    "images": {
+      "u45-p1.00/placed.png": "8d181e4aa5f837c571ef167d0d1fc33329943ea75e47831bd6468d6eb6aeba80"
+    },
+    "log_sha256": "2a407110839daa8757ae1643242670bdd5b87b3f9124811f3377dffe7a0909d8"
+  },
+  {
+    "case": "u65-p1.00",
+    "stage": "placed",
+    "command": [
+      "openroad",
+      "-gui",
+      "-no_init",
+      "-exit",
+      "/work/labs/16-openroad-study/images.tcl"
+    ],
+    "inputs": {
+      "/work/labs/build/openroad-study-final/u65-p1.00/placed.odb": "be4382aaafaf867b5298396be9f9fb2c143c2f87b1555a2f2f2528f739f29813",
+      "/work/labs/build/openroad-study-final/u65-p1.00/placed.sdc": "8d8653b553a1c499404e304ecb705820416e2dcaf5dec750f80a0723940259ab",
+      "/work/labs/16-openroad-study/images.tcl": "f3a65d80f0b3d8526114ad4e0355ed3df29be1e25fd5ec9f33dac1b6e3c2eff7"
+    },
+    "images": {
+      "u65-p1.00/placed.png": "034e0dfb7ed39854fe82dc21fc492e6a8a5918e1c4e70796aaecf991eaf5ac82"
+    },
+    "log_sha256": "2a407110839daa8757ae1643242670bdd5b87b3f9124811f3377dffe7a0909d8"
+  }
+]

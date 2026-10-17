@@ -239,7 +239,7 @@
       "scope": "Actual target technology, clocks, modes, corners and exceptions",
       "coverage": "Unconstrained paths, setup/hold, reset/gating checks and interface timing",
       "status": "not_run",
-      "rationale": "Illustrative SDC is supplied; no target STA result has been produced"
+      "rationale": "The separate complete-case dossier records actual extracted IP timing with hold/electrical failures; this reference collector does not close target STA qualification"
     },
     {
       "id": "DP-FPGA",
@@ -248,7 +248,7 @@
       "scope": "Actual board revision, bitstream hash, clock and operating conditions",
       "coverage": "Routed timing/resource review, programming and on-board interface/memory tests",
       "status": "not_run",
-      "rationale": "This project has not been placed/routed or run on a physical board"
+      "rationale": "The complete-case dossier supplies accelerator-only ECP5 out-of-context PnR; actual board/full-platform qualification remains unexecuted"
     },
     {
       "id": "DP-PHYSICAL",
@@ -257,7 +257,7 @@
       "scope": "Qualified PDK/cell/macro views and final GDS/netlist identity",
       "coverage": "DRC/LVS, antenna/density/ERC, extraction, timing and power-integrity scope",
       "status": "not_run",
-      "rationale": "No project-specific ASIC physical results have been produced"
+      "rationale": "The complete-case dossier supplies Nangate45 IP extraction and GDSII readback; qualified layout checks and foundry multi-corner physical acceptance remain unexecuted"
     },
     {
       "id": "DP-DFT",

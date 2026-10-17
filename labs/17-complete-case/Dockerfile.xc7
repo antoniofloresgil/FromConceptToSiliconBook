@@ -1,0 +1,26 @@
+# Build Dockerfile.fpga first: this adds Wally's pinned XC7 implementation tools.
+ARG FPGA_BASE=from-concept-case-fpga:2026.10
+FROM ${FPGA_BASE}
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git build-essential cmake libboost-filesystem-dev libboost-program-options-dev \
+    libboost-iostreams-dev libboost-system-dev libeigen3-dev python3-pip python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+RUN git clone https://github.com/gatecat/nextpnr-xilinx.git /opt/nextpnr-xilinx \
+    && cd /opt/nextpnr-xilinx \
+    && git checkout 8f178fc6a6d4dfbc57bef66c3ccff34d558047d5 \
+    && git submodule update --init --depth 1 xilinx/external/nextpnr-xilinx-meta xilinx/external/prjxray-db
+RUN /usr/bin/python3 -m venv /opt/xray-python \
+    && /opt/xray-python/bin/pip install https://github.com/f4pga/prjxray/archive/c9f02d8576042325425824647ab5555b1bc77833.tar.gz
+RUN apt-get update && apt-get install -y --no-install-recommends libboost-thread-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN cd /opt/nextpnr-xilinx \
+    && cmake -S . -B build -DARCH=xilinx -DBUILD_GUI=OFF -DBUILD_PYTHON=OFF \
+       -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-include cstdint" \
+    && cmake --build build --parallel 2
+RUN cd /opt/nextpnr-xilinx \
+    && /opt/xray-python/bin/python xilinx/python/bbaexport.py \
+       --device xc7a200tsbg484-1 --bba /tmp/xc7a200t.bba \
+    && build/bba/bbasm --l /tmp/xc7a200t.bba /opt/xc7a200t.bin \
+    && rm /tmp/xc7a200t.bba
+ENV PATH="/opt/nextpnr-xilinx/build:/opt/xray-python/bin:${PATH}"

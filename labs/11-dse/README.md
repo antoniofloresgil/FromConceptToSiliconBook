@@ -85,8 +85,16 @@ give each workload equal log weight, not production workload prevalence.
 Explain the measured divider result before adding a cache/predictor sweep.
 Establish an independent workload and ROI, confirm actual elaborated parameters,
 validate event counters, then change one factor. Integrate selected candidates
-into the real FPGA fabric, run implementation and board tests, and replace
-illustrative rows with provenance-backed physical records. gem5 and XS-GEM5 are
+into the real FPGA fabric, run implementation and board tests when a board is
+available, and replace illustrative rows with provenance-backed physical records.
+Without a board, extend the real-RTL sweep with an independently checked workload,
+preserve the common binary/input/ROI contract and explain cycle changes. Run
+device implementation without programming, or analyse instructor-provided reports
+as in [Lab 07](../07-implementation/README.md#without-a-physical-board). Keep
+student cycle results, supplied device results and illustrative CSV data separate;
+do not combine mismatched designs into a measured physical Pareto claim. Submit
+the controlled comparison, failure analysis and remaining physical measurements.
+gem5 and XS-GEM5 are
 additional research environments; this package does not ship or claim an
 executed gem5/Wally performance-equivalence model.
 

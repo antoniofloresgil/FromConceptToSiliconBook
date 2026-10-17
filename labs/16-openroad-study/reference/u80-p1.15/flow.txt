@@ -1,0 +1,42 @@
+OpenROAD 24Q3-11382-g61879bec53 
+Features included (+) or not (-): +GPU +GUI +Python
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ORD-0030] Using 2 thread(s).
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/nangate45/lef/NangateOpenCellLibrary.tech.lef, created 22 layers, 27 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/nangate45/lef/NangateOpenCellLibrary.macro.mod.lef, created 135 library cells
+[WARNING IFP-0028] Core area lower left (3.000, 3.000) snapped to (3.040, 4.200).
+[INFO IFP-0001] Added 12 rows of 99 site FreePDK45_38x28_10R_NP_162NW_34O.
+Found 0 macro blocks.
+Using 2 tracks default min distance between IO pins.
+[INFO PPL-0001] Number of available slots 164
+[INFO PPL-0002] Number of I/O             54
+[INFO PPL-0003] Number of I/O w/sink      54
+[INFO PPL-0004] Number of I/O w/o sink    0
+[INFO PPL-0005] Slots per section         200
+[INFO PPL-0008] Successfully assigned pins to sections.
+[INFO PPL-0012] I/O nets HPWL: 934.87 um.
+[INFO PDN-0001] Inserting grid: grid
+[INFO GPL-0005] Execute conjugate gradient initial placement.
+[INFO GPL-0002] DBU: 2000
+[INFO GPL-0003] SiteSize: (  0.190  1.400 ) um
+[INFO GPL-0004] CoreBBox: (  3.040  4.200 ) ( 21.850 21.000 ) um
+[INFO GPL-0032] Initializing region: Top-level
+[INFO GPL-0006] Number of instances:               195
+[INFO GPL-0007] Movable instances:                 195
+[INFO GPL-0008] Fixed instances:                     0
+[INFO GPL-0009] Dummy instances:                     0
+[INFO GPL-0010] Number of nets:                    249
+[INFO GPL-0011] Number of pins:                    739
+[INFO GPL-0012] Die BBox:  (  0.000  0.000 ) ( 25.035 25.035 ) um
+[INFO GPL-0013] Core BBox: (  3.040  4.200 ) ( 21.850 21.000 ) um
+[INFO GPL-0016] Core area:                     316.008 um^2
+[INFO GPL-0014] Region name: top-level.
+[INFO GPL-0015] Region area:                   316.008 um^2
+[INFO GPL-0017] Fixed instances area:            0.000 um^2
+[INFO GPL-0018] Movable instances area:        324.886 um^2
+[INFO GPL-0019] Utilization:                   102.809 %
+[INFO GPL-0020] Standard cells area:           324.886 um^2
+[INFO GPL-0021] Large instances area:            0.000 um^2
+[ERROR GPL-0301] Utilization 102.809 % exceeds 100%.
+Error: flow.tcl, 45 GPL-0301

@@ -116,6 +116,8 @@ An address window prevents some unauthorized accesses, but does not authenticate
 
 Linux's DMA API distinguishes CPU addresses and device addresses and supplies synchronization/mapping rules [@bootLinuxDma]. Permission and coherency remain separate. A permitted DMA write can still be invisible to a CPU reading a stale cache line; a coherent write can still be unauthorized. Completion, cleanup and reset must preserve both contracts.
 
+The executable Linux continuation in @sec-linux-accelerator makes this boundary concrete: a reserved pool, returned DMA-address validation, a root-only ioctl interface and quarantine after an unconfirmed timeout. Its QEMU negative controls test software error handling; the advanced Wally route adds the real accelerator/PLIC integration. Neither replaces the independent RTL aperture proof or establishes a secure-boot chain.
+
 ### Debug lifecycle and service access
 
 Debug authority can stop software, examine state or issue system-bus transactions. The debug chapter explains the RISC-V mechanisms. The security policy must cover all relevant effects, rather than only the JTAG transport or a halt-request bit. Disabling hart halt while allowing SBA can leave memory fully exposed.
@@ -372,6 +374,8 @@ The script repeats for all sixteen synthetic secrets and saves the observation v
 This result is a useful multi-execution observation, not a physical constant-time qualification. Another cache organization, scheduler, speculative path, data-dependent unit or power measurement could expose a different channel. For a Wally extension, first establish a validated timing/PMU observation path, then collect repeated traces with a documented platform and noise model. Keep that physical/RTL measurement separate from the deterministic model output.
 
 ### Experiment 5: formal verification of a security property
+
+Use @sec-formal-verification for the complete assertion/assumption/cover, BMC/induction and counterexample/repair workflow before interpreting this security-specific bounded result. Its FIFO proof and witnesses are separate evidence; they do not upgrade the debug guard's bound or establish a full secure-processor proof.
 
 The digital script invokes Yosys SAT on the teaching debug guard with symbolic request, lifecycle and authentication inputs. Reset is asserted in the first step; initialized state and the bounded time horizon are recorded. The checked requirement is that unauthorized or locked operation never produces halt/bus grants within the modelled trace.
 

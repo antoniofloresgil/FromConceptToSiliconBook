@@ -1,0 +1,833 @@
+{
+  "schema_version": 1,
+  "tools": {
+    "yosys": "Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)",
+    "openroad": "24Q3-11382-g61879bec53"
+  },
+  "image": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "inputs": {
+    "/work/labs/07-implementation/rtl/accumulator.sv": "3bfa6fb5409eb74d972e9ea6a4c0ddd35aecdb372a03dcf6bee23e0a8951d0a6",
+    "/work/labs/16-openroad-study/flow.tcl": "023dd357a3b137297908cd7ff89376f167c959a63d1490f91f05f44655b9a4e7",
+    "/work/labs/16-openroad-study/constraints.sdc": "293d9adce629041dbd5b0bc8dd24929c41f4f0563b6866b6154dff74651e8e95",
+    "/work/labs/16-openroad-study/run.py": "4d2b9585e3f0813d6b9696685993a4483f23d0f9e7ccae3ec2a2a11e80bc1736",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/lef/NangateOpenCellLibrary.tech.lef": "834a79295054cd4209178d1bade67c353863c47bb4b3c22ee38b862b7cec37f2",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/lef/NangateOpenCellLibrary.macro.mod.lef": "a43aea339f12a57a63497783e508ba16f3da2dc056d3247dec7d99707c2dedef",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/setRC.tcl": "831490c7054e00e0ebeebc29595a8f2acd831112ef303ed308123cb433a507d7",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/make_tracks.tcl": "8f8fbff8d8e0dfd232307058f6766973742e36f8f27bd1c717ea001e142cba99",
+    "/OpenROAD-flow-scripts/flow/platforms/nangate45/rcx_patterns.rules": "2f65fafbe2c704b378563c53a680b93cef080c2799997019d43df7d1e5a563e9",
+    "/OpenROAD-flow-scripts/flow/designs/nangate45/gcd/grid_strategy-M1-M4-M7.tcl": "ce05092076f0494e3ec382d48ac1af19f34818a03c7fa06f19d76327da16917e"
+  },
+  "netlist_sha256": "5fccbe79c04a22cfc6f6b86c2fd459bc147ddefee1c048182272d03086b519f5",
+  "cases": [
+    {
+      "name": "u45-p0.85",
+      "period_ns": 0.85,
+      "target_util_pct": 45,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u45-p0.85",
+        "STUDY_PERIOD": "0.85",
+        "STUDY_UTIL": "45",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": -0.11721662861007068,
+          "hold_wns": 0.015883274312025304,
+          "core_area": 601.426
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": -0.049198757571582465,
+          "hold_wns": -0.05055312214707369,
+          "core_area": 601.426
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": -0.06860906481582121,
+          "hold_wns": -0.0510764466012131,
+          "core_area": 601.426
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": -0.05571193664090246,
+          "hold_wns": -0.05062949855443407,
+          "core_area": 601.426
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 13.83,
+      "artifacts": {
+        "cts-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "4dc0163a8fe79749ba1d688aa738f677406dd7c8bda04f82ddec7697750de8da",
+        "cts-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "cts-metrics.txt": "5cdef70bdf78a3fadce00dc56b77951b487ea836d7fc6cbca36192ddc565e8d7",
+        "cts-setup.rpt": "ce945cee8f0a104fa6208f725a7c97a60209eea85b4bdee612acc036f531821e",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "bfd4e3158d47bebf415c6532064ceed02a34c1b8ce84bca8f25523cd64978055",
+        "cts.sdc": "0c70d4feef795230ba613f4d3cee41d86bcbec0cf3df67e98c91fc7335622c0f",
+        "flow.log": "45cee8be938d0fc2fb1cda01f08d0e14898efad6b847f9d0d4ca77e0ff983ef5",
+        "global-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "18d97b5522ea377c0004d5b0b964ab727d6fc60a112d3d6e9e9f186e7e4c08fb",
+        "global-limits.rpt": "6889dc6e1ce4bf400828d0be3d5edbffa7cd56395d3dc131ed87f828f22920e1",
+        "global-metrics.txt": "126a37e5a111006555a470311a77c81d8510f183d9e71ac705491497808bbef5",
+        "global-setup.rpt": "d5ca3768be8aa288830ddb33036a5fdc4c5bf7fb61a6ba0b31a7da17f1c5b1ac",
+        "global.odb": "82b8e1ed37cb7799e0b5b5208a0aeb8bed41588751e11dc021b1e19e725e8fff",
+        "global.sdc": "0c70d4feef795230ba613f4d3cee41d86bcbec0cf3df67e98c91fc7335622c0f",
+        "placed-area.rpt": "790156f5dc699c1a17e64c0b043ea5c5aa08359756139c3c26fb44dba8798835",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "61ecc8cef7b35b13accf934da77670ba71d1bb53181e22c7ee4a221644d4328d",
+        "placed-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "placed-metrics.txt": "7d8518957d9bde69ed004c15090dfc34686ef7acbf337b825bcd2f02b5463ccf",
+        "placed-setup.rpt": "973eda64c5b0e9cfdb30cdcb35c63ab353e4134a7237bdef77f11b65ca91b2e5",
+        "placed.odb": "65298cd63d31b4c1321fa9cd60a9b687b00a50260570dbef691c752571558169",
+        "placed.sdc": "9012bdee11d01df72e9259ba7f9ba55effb8f1845373c2835c081902d1c3bf3f",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "d3fd30305b6bbc55abb197267d5ff8ef2f0a33cb66c0b7d4058812c486d44647",
+        "routed-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "d036fc8e4c26378c5a6fde23d28be1f91fa1cb99e8c6e585361bd3825fd1354d",
+        "routed-limits.rpt": "966d7848b640b8fddfad2ba26f544229a5c71e504f58834b5d8a4865519ff60f",
+        "routed-metrics.txt": "7a15bb93987382dd92ceba95f8b3ae352840770a216c4589f7e358603db783df",
+        "routed-setup.rpt": "ca20a47e99997ca561d4f088654e6d0a2150293a2dc2f36a5e819387f51936c9",
+        "routed.def": "8529b96999b1f8e350dd4514b1cecbcab968f8785c8ebc4be1a535c5c773e823",
+        "routed.odb": "b117d28948a4d5d464dfc7eb6925f72c6a1237078d1f2da75592db88315dee30",
+        "routed.sdc": "0a670c6bfad2a6424609dde13410def67990a236a09360209509a3da0ce975cc",
+        "routed.spef": "bcd10f2ab6eacd18993e879beb2b55f8cb8ed3a885f177021b8f9387cb88547f",
+        "routed.v": "d1ddb2e67fdf437a53397bc54091e0dc255ceabc5da24af77cb9ec4d5b03be14"
+      }
+    },
+    {
+      "name": "u45-p1.00",
+      "period_ns": 1.0,
+      "target_util_pct": 45,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u45-p1.00",
+        "STUDY_PERIOD": "1.0",
+        "STUDY_UTIL": "45",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": 0.032783388043275165,
+          "hold_wns": 0.015883274312025304,
+          "core_area": 601.426
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.10080131459291618,
+          "hold_wns": -0.05055312214707369,
+          "core_area": 601.426
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": 0.08139089632637182,
+          "hold_wns": -0.0510764466012131,
+          "core_area": 601.426
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": 0.09428813552359618,
+          "hold_wns": -0.05062949855443407,
+          "core_area": 601.426
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 13.79,
+      "artifacts": {
+        "cts-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "4dc0163a8fe79749ba1d688aa738f677406dd7c8bda04f82ddec7697750de8da",
+        "cts-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "cts-metrics.txt": "85abd190415018294ab18be8672d47ad87b69cb6f508a57a56079f50a8e24b49",
+        "cts-setup.rpt": "0a35685667739372ee007a2b187253de2213c966e1a13249e8a85aa3a837cb1d",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "bfd4e3158d47bebf415c6532064ceed02a34c1b8ce84bca8f25523cd64978055",
+        "cts.sdc": "3545315c59a0db425af2aa40888143adf25831bc5e58b95c817373a35fa15bcb",
+        "flow.log": "c07debae40ecf98e38297b961dcb64778b6f660d5fd021f8f0c026869cbc2021",
+        "global-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "18d97b5522ea377c0004d5b0b964ab727d6fc60a112d3d6e9e9f186e7e4c08fb",
+        "global-limits.rpt": "6889dc6e1ce4bf400828d0be3d5edbffa7cd56395d3dc131ed87f828f22920e1",
+        "global-metrics.txt": "86b8ad3ee1004c903ae6c23f690df2180c15b05822da80f08d91bf21c37de1f4",
+        "global-setup.rpt": "adc5d90cb632699ac371567572d9cc196a16fef0d951b4af11cacaac0922e05e",
+        "global.odb": "82b8e1ed37cb7799e0b5b5208a0aeb8bed41588751e11dc021b1e19e725e8fff",
+        "global.sdc": "3545315c59a0db425af2aa40888143adf25831bc5e58b95c817373a35fa15bcb",
+        "placed-area.rpt": "790156f5dc699c1a17e64c0b043ea5c5aa08359756139c3c26fb44dba8798835",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "61ecc8cef7b35b13accf934da77670ba71d1bb53181e22c7ee4a221644d4328d",
+        "placed-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "placed-metrics.txt": "19fc398a9c308f86592dba4a21524d4a2c641c495a363221b24f9957050e08b0",
+        "placed-setup.rpt": "b14d8683595c6ba62c682810beb3f40f827d67c7ea64baf73e36131674249e42",
+        "placed.odb": "65298cd63d31b4c1321fa9cd60a9b687b00a50260570dbef691c752571558169",
+        "placed.sdc": "e79f736cbce57b1480d8176ef053d439e8c57ca292a8911c0fdf532b5a794a1f",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "d3fd30305b6bbc55abb197267d5ff8ef2f0a33cb66c0b7d4058812c486d44647",
+        "routed-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "d036fc8e4c26378c5a6fde23d28be1f91fa1cb99e8c6e585361bd3825fd1354d",
+        "routed-limits.rpt": "966d7848b640b8fddfad2ba26f544229a5c71e504f58834b5d8a4865519ff60f",
+        "routed-metrics.txt": "42e3fcd11317d2c8151cd4364987e9d9d5fef5477eb9d41c695068a02e4aeaeb",
+        "routed-setup.rpt": "b1fd208aece254cc50b330ac59516ca94af4db71c258d8928ce7e09084499f43",
+        "routed.def": "8529b96999b1f8e350dd4514b1cecbcab968f8785c8ebc4be1a535c5c773e823",
+        "routed.odb": "b117d28948a4d5d464dfc7eb6925f72c6a1237078d1f2da75592db88315dee30",
+        "routed.sdc": "925ac17e6761e21b9c3fd31b8a77874243cf73ef1cb24b427377c3a98c930c10",
+        "routed.spef": "bcd10f2ab6eacd18993e879beb2b55f8cb8ed3a885f177021b8f9387cb88547f",
+        "routed.v": "d1ddb2e67fdf437a53397bc54091e0dc255ceabc5da24af77cb9ec4d5b03be14"
+      }
+    },
+    {
+      "name": "u45-p1.15",
+      "period_ns": 1.15,
+      "target_util_pct": 45,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u45-p1.15",
+        "STUDY_PERIOD": "1.15",
+        "STUDY_UTIL": "45",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": 0.182783404696621,
+          "hold_wns": 0.015883274312025304,
+          "core_area": 601.426
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.250801331246262,
+          "hold_wns": -0.05055312214707369,
+          "core_area": 601.426
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": 0.23139091297971767,
+          "hold_wns": -0.0510764466012131,
+          "core_area": 601.426
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": 0.24428815217694202,
+          "hold_wns": -0.05062949855443407,
+          "core_area": 601.426
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 13.37,
+      "artifacts": {
+        "cts-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "4dc0163a8fe79749ba1d688aa738f677406dd7c8bda04f82ddec7697750de8da",
+        "cts-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "cts-metrics.txt": "9fc9fe17ba4720feb58705c1adf53f56a5d8a2caa46c1ee270cb7605a12bc04d",
+        "cts-setup.rpt": "f23403098e18ed6a62e87365d8031e99639a39bcc55e7858a4f0905639e7f75f",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "bfd4e3158d47bebf415c6532064ceed02a34c1b8ce84bca8f25523cd64978055",
+        "cts.sdc": "eee34df5d137f50d780a2bbf822a16b0327cab583c742887da5789429b29b017",
+        "flow.log": "ce73ee135239e83e7d98826fb6625b4a028f2477254aaf2f23e4a67bf9abd3af",
+        "global-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "18d97b5522ea377c0004d5b0b964ab727d6fc60a112d3d6e9e9f186e7e4c08fb",
+        "global-limits.rpt": "6889dc6e1ce4bf400828d0be3d5edbffa7cd56395d3dc131ed87f828f22920e1",
+        "global-metrics.txt": "f39982149ca01705d40f12c51904080a129ea513f4aff1b76f1440062e10ec3a",
+        "global-setup.rpt": "4710198eb00d758dd76882a0ed215a475eed3e89d6f91714fd74d3a65c9c6838",
+        "global.odb": "82b8e1ed37cb7799e0b5b5208a0aeb8bed41588751e11dc021b1e19e725e8fff",
+        "global.sdc": "eee34df5d137f50d780a2bbf822a16b0327cab583c742887da5789429b29b017",
+        "placed-area.rpt": "790156f5dc699c1a17e64c0b043ea5c5aa08359756139c3c26fb44dba8798835",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "61ecc8cef7b35b13accf934da77670ba71d1bb53181e22c7ee4a221644d4328d",
+        "placed-limits.rpt": "b8842318fe2270667358b08f831a2d0f438c065fe8dda01d65f50a4c50ba087d",
+        "placed-metrics.txt": "c4cbf808ed05c177c6c0a313ba0c6c5a893237af0acf18c2c6c751355ec51e73",
+        "placed-setup.rpt": "616ab9411022876c0aa6a9d04150f55dad9b8cd8f921d18e4906742d8bd4d1c1",
+        "placed.odb": "65298cd63d31b4c1321fa9cd60a9b687b00a50260570dbef691c752571558169",
+        "placed.sdc": "9a122cd484d689e1b71f5a9fd9f8a674a74d9e40fd167c9ec979cb5a6feca41a",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "d3fd30305b6bbc55abb197267d5ff8ef2f0a33cb66c0b7d4058812c486d44647",
+        "routed-area.rpt": "4eab13c0966fc0813013f6c42227bd6bd1d445130d5fc9278783264c57b0c58a",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "d036fc8e4c26378c5a6fde23d28be1f91fa1cb99e8c6e585361bd3825fd1354d",
+        "routed-limits.rpt": "966d7848b640b8fddfad2ba26f544229a5c71e504f58834b5d8a4865519ff60f",
+        "routed-metrics.txt": "b322c2af2ed3402e58aa2639ab042ee310854dd44cb695a73786d4cf3b951595",
+        "routed-setup.rpt": "8ca91bc8df3c344a9c475b00e2eaa424ce7a0ee392bbe3cd2c773867fe502f7b",
+        "routed.def": "8529b96999b1f8e350dd4514b1cecbcab968f8785c8ebc4be1a535c5c773e823",
+        "routed.odb": "b117d28948a4d5d464dfc7eb6925f72c6a1237078d1f2da75592db88315dee30",
+        "routed.sdc": "ae9c1bccad9eea99f0ab27ceac65836a10a2fb5398092dcd8c01436e70e55e64",
+        "routed.spef": "db0c5ee883fcd7d0666188ff634283277a8bd8340fb3f3a82901c8656789b515",
+        "routed.v": "d1ddb2e67fdf437a53397bc54091e0dc255ceabc5da24af77cb9ec4d5b03be14"
+      }
+    },
+    {
+      "name": "u65-p0.85",
+      "period_ns": 0.85,
+      "target_util_pct": 65,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u65-p0.85",
+        "STUDY_PERIOD": "0.85",
+        "STUDY_UTIL": "65",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": -0.12131240799720312,
+          "hold_wns": 0.01553080798203748,
+          "core_area": 409.64
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": -0.05466077745145855,
+          "hold_wns": -0.04948249242078475,
+          "core_area": 409.64
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": -0.07375195107824307,
+          "hold_wns": -0.049235211051737615,
+          "core_area": 409.64
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": -0.062050755179273824,
+          "hold_wns": -0.04926087455156703,
+          "core_area": 409.64
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 32.14,
+      "artifacts": {
+        "cts-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "5d2e0b6ec17d688127b0a192a25f29e3ef9a6610d950e59b72eaab036912a718",
+        "cts-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "cts-metrics.txt": "2a7d0b2b991784aa4a6c3353b94b15258b5ebc9c582a112e36beccf992c364b1",
+        "cts-setup.rpt": "a5d7e2e6d0ecfd030f1b391b8bfdfe7e4163e59eaa70637952a9bdd601790f9d",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "b6b9c2982e16fb841f88a4ed467205241c431f90d2f87fc0ae9dda6d42e2af81",
+        "cts.sdc": "7c9299e285f25ecab2fe4abc987e948b479957492b22b85393920d0b5f69e64b",
+        "flow.log": "2e1f2f3d1132f5be76ca3fb39786f038095e7521d61ce6e5fbe09a93a63dd4b9",
+        "global-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "4c565e0824426eb4c5d9b9df1820b35cacb12200919f66affb93ae51e9094b5a",
+        "global-limits.rpt": "d4c26b4ddcde2e5f923f4bfe6e58708fa23cd872b8ff915ba665253104210d19",
+        "global-metrics.txt": "c62cd3dc977241aef9d4c60ca8162d9641dcc2d278f191e5fb1f0c149844025c",
+        "global-setup.rpt": "dae92e85b3452e60270c5edc4ac80b4ea92c15e671033b894f42c5f2277e963f",
+        "global.odb": "ed5f9f1087b1f72813b224cc09dd6ecca4e9ae59da9718e38ef2b15e221e2799",
+        "global.sdc": "7c9299e285f25ecab2fe4abc987e948b479957492b22b85393920d0b5f69e64b",
+        "placed-area.rpt": "8359b9c4687b80ffb473f196154aa6d5b5744dc1e53ce41bcfb15308ca293f38",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "949afb24d8491776145dbb8a872d0d48a72b2265544737c2d1f2473a948dadcd",
+        "placed-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "placed-metrics.txt": "5e0dde0c4f8636d9a3c84820c4a6cdd0b38d4034b10ddbe361fb656c54f10e34",
+        "placed-setup.rpt": "9c185ddb0da1e5895d25f7ec2917283c5655f7f6ac38027db5d0379cdcb7807a",
+        "placed.odb": "be4382aaafaf867b5298396be9f9fb2c143c2f87b1555a2f2f2528f739f29813",
+        "placed.sdc": "65461faeeba5bc4cf2919e7e20f8c549361e5a73941e4f839f8be59c0fc1a65b",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "fb5f0c5b7c05684c9404b71366834547455703f0ad4074aa0ef1a709a7d0146a",
+        "routed-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "c013590bad34253eaf8bb90e73151285f2633c6003434f980b9afa76456235e1",
+        "routed-limits.rpt": "c05a0f7c9291e6bd10423f109aab1eab9c2b6e553b6f4b8142fdf0a1b809d9e5",
+        "routed-metrics.txt": "2dc56da6590b3146d2902c52b82aa56d18ee09192c5eb8171af13be12a7c4178",
+        "routed-setup.rpt": "b22d1be5b9c63a08329cea374477c4a89ad2533d7348c6e0bb2fcc0c64d3be3c",
+        "routed.def": "9809582fb550a557bd178060f1498a7bbaac18f3c9c50f7064ec5e055eac0b77",
+        "routed.odb": "50466829c27757567de60345a6aad39181cd70252bfdde9a6d1f3e1d51354281",
+        "routed.sdc": "439f86958890171a972d1d0a21647fbce1c06303106c228c762926be9020b420",
+        "routed.spef": "418ab76f5827adadf25e4f08ffb15806e7668609c1bababd775330306e5f005e",
+        "routed.v": "724ec0e60e4ebbfb1ce14e9307e72dcbb055a3061ca4e7e62e3a97955cde926b"
+      }
+    },
+    {
+      "name": "u65-p1.00",
+      "period_ns": 1.0,
+      "target_util_pct": 65,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u65-p1.00",
+        "STUDY_PERIOD": "1.0",
+        "STUDY_UTIL": "65",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": 0.028687553144989913,
+          "hold_wns": 0.01553080798203748,
+          "core_area": 409.64
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.09533923920188729,
+          "hold_wns": -0.04948249242078475,
+          "core_area": 409.64
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": 0.07624806557510276,
+          "hold_wns": -0.049235211051737615,
+          "core_area": 409.64
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": 0.08794937249637762,
+          "hold_wns": -0.04926087455156703,
+          "core_area": 409.64
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 33.14,
+      "artifacts": {
+        "cts-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "5d2e0b6ec17d688127b0a192a25f29e3ef9a6610d950e59b72eaab036912a718",
+        "cts-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "cts-metrics.txt": "67b2598228c41ba1545df5f6e5945975938f96b0dccd22e81df2c11f4f75d74d",
+        "cts-setup.rpt": "2bd94314744dda16242a3607c3e1194a49066d3371f90e1e10ee9beab36292d0",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "b6b9c2982e16fb841f88a4ed467205241c431f90d2f87fc0ae9dda6d42e2af81",
+        "cts.sdc": "c0b43f2c8ae1a0f49e54fb3b89b151ece2b2c4cfd6d5c84e02a042d319c7197b",
+        "flow.log": "c7991bbdfbcf5ae1dc979ed931d4a4faaa1627ca2d9e640c0c659898e27ab59d",
+        "global-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "4c565e0824426eb4c5d9b9df1820b35cacb12200919f66affb93ae51e9094b5a",
+        "global-limits.rpt": "d4c26b4ddcde2e5f923f4bfe6e58708fa23cd872b8ff915ba665253104210d19",
+        "global-metrics.txt": "9a2a5381e0d64031901005ea53c91e2854a97c2b828b6827a5dbbe273effc2eb",
+        "global-setup.rpt": "2dfd73617afac9c3d31832b86da86f6f0883c28142ca245516d7af9e21e114f4",
+        "global.odb": "ed5f9f1087b1f72813b224cc09dd6ecca4e9ae59da9718e38ef2b15e221e2799",
+        "global.sdc": "c0b43f2c8ae1a0f49e54fb3b89b151ece2b2c4cfd6d5c84e02a042d319c7197b",
+        "placed-area.rpt": "8359b9c4687b80ffb473f196154aa6d5b5744dc1e53ce41bcfb15308ca293f38",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "949afb24d8491776145dbb8a872d0d48a72b2265544737c2d1f2473a948dadcd",
+        "placed-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "placed-metrics.txt": "b876cc7c111b17d98067569a7a2dd366292a7644a40c1457474f3fadf88264d8",
+        "placed-setup.rpt": "44afd6741af3e9923a44769b2e7714e302d96e3ccf974f95033858bd4f76951f",
+        "placed.odb": "be4382aaafaf867b5298396be9f9fb2c143c2f87b1555a2f2f2528f739f29813",
+        "placed.sdc": "8d8653b553a1c499404e304ecb705820416e2dcaf5dec750f80a0723940259ab",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "fb5f0c5b7c05684c9404b71366834547455703f0ad4074aa0ef1a709a7d0146a",
+        "routed-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "c013590bad34253eaf8bb90e73151285f2633c6003434f980b9afa76456235e1",
+        "routed-limits.rpt": "c05a0f7c9291e6bd10423f109aab1eab9c2b6e553b6f4b8142fdf0a1b809d9e5",
+        "routed-metrics.txt": "1085e161dd47b8510977c46566f6574efcd5b951829d40466362db72178cd0b4",
+        "routed-setup.rpt": "f9c6b6ba39a0306772ff369aafa46aac446c0af4fe5c9c276b13891ad92eedd9",
+        "routed.def": "9809582fb550a557bd178060f1498a7bbaac18f3c9c50f7064ec5e055eac0b77",
+        "routed.odb": "50466829c27757567de60345a6aad39181cd70252bfdde9a6d1f3e1d51354281",
+        "routed.sdc": "0c525853d558d5f3ffca15a617f96845317f7d4d3331c8e9d981c1a10a282cd0",
+        "routed.spef": "742ba16142f3c9cba495e516febbdcc1edb2f94fc5675912e9ccfc065edf5aa3",
+        "routed.v": "724ec0e60e4ebbfb1ce14e9307e72dcbb055a3061ca4e7e62e3a97955cde926b"
+      }
+    },
+    {
+      "name": "u65-p1.15",
+      "period_ns": 1.15,
+      "target_util_pct": 65,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u65-p1.15",
+        "STUDY_PERIOD": "1.15",
+        "STUDY_UTIL": "65",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": 0.17868756979833575,
+          "hold_wns": 0.01553080798203748,
+          "core_area": 409.64
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.24533925585523314,
+          "hold_wns": -0.04948249242078475,
+          "core_area": 409.64
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": 0.2262480822284486,
+          "hold_wns": -0.049235211051737615,
+          "core_area": 409.64
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": 0.23794938914972347,
+          "hold_wns": -0.04926087455156703,
+          "core_area": 409.64
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 32.54,
+      "artifacts": {
+        "cts-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "5d2e0b6ec17d688127b0a192a25f29e3ef9a6610d950e59b72eaab036912a718",
+        "cts-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "cts-metrics.txt": "1ddbc4c77023805a3eea112a9dd8fe939102ecfa5e5fd1137ecdf33c4415cc41",
+        "cts-setup.rpt": "dc25be62270dcd9fb323fe4a93ce570e944605ab516ce907e5f37e531b84b0d0",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "b6b9c2982e16fb841f88a4ed467205241c431f90d2f87fc0ae9dda6d42e2af81",
+        "cts.sdc": "6bb8fe0f0d0829878dc972c9e2b172680c1a8c668ac5a3863fc5ce8a3f366b74",
+        "flow.log": "1306ab55b47d09e0b529162e4832349d0569ee2ce3a840b66019983582eaeaf3",
+        "global-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "4c565e0824426eb4c5d9b9df1820b35cacb12200919f66affb93ae51e9094b5a",
+        "global-limits.rpt": "d4c26b4ddcde2e5f923f4bfe6e58708fa23cd872b8ff915ba665253104210d19",
+        "global-metrics.txt": "23c7d0af6ad1e2ad1734ffd3b855882ac707645e65e90a98dc963cdfb786cddc",
+        "global-setup.rpt": "5f517913feee1da260314abd8be114c41625ebda1c66f1f6f790155d2b39dacd",
+        "global.odb": "ed5f9f1087b1f72813b224cc09dd6ecca4e9ae59da9718e38ef2b15e221e2799",
+        "global.sdc": "6bb8fe0f0d0829878dc972c9e2b172680c1a8c668ac5a3863fc5ce8a3f366b74",
+        "placed-area.rpt": "8359b9c4687b80ffb473f196154aa6d5b5744dc1e53ce41bcfb15308ca293f38",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "949afb24d8491776145dbb8a872d0d48a72b2265544737c2d1f2473a948dadcd",
+        "placed-limits.rpt": "7de979795640ae0f0090632d28822237f0670d6fda4e44e46226d182c1b67bee",
+        "placed-metrics.txt": "9a238993838f89ad947d0ba0df9b74c15675a9e2fc0cd98acbbca406d67e97a3",
+        "placed-setup.rpt": "31df471fa7b7881c5b71265fbd1f96ed05f52832d6b1f460a3b2114ffad91c48",
+        "placed.odb": "be4382aaafaf867b5298396be9f9fb2c143c2f87b1555a2f2f2528f739f29813",
+        "placed.sdc": "6ea939e3dcb49c89de66f37e2640e0f761c34e72c03e16daecad4e56a5a055ca",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "fb5f0c5b7c05684c9404b71366834547455703f0ad4074aa0ef1a709a7d0146a",
+        "routed-area.rpt": "8f14969dbe514ee88b6645e07eacee5574452bacab3ff43b2539ae6996c9495d",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "c013590bad34253eaf8bb90e73151285f2633c6003434f980b9afa76456235e1",
+        "routed-limits.rpt": "c05a0f7c9291e6bd10423f109aab1eab9c2b6e553b6f4b8142fdf0a1b809d9e5",
+        "routed-metrics.txt": "e39ca9a68b121386e48ce0386c096c226017ef55005f6a7f45bec5af86b35099",
+        "routed-setup.rpt": "864123b2ea527ef67d32e2f7bc1576285b693df4107e78c38e5e79c6886096b5",
+        "routed.def": "9809582fb550a557bd178060f1498a7bbaac18f3c9c50f7064ec5e055eac0b77",
+        "routed.odb": "50466829c27757567de60345a6aad39181cd70252bfdde9a6d1f3e1d51354281",
+        "routed.sdc": "e1394b9375ed98725c7ca7eca6de42c5a913d367de2e3aca7201f39d44a3523a",
+        "routed.spef": "5d19267258201e36c878f9dc2582f25ea1d5563e214a157e17765b26e45ac781",
+        "routed.v": "724ec0e60e4ebbfb1ce14e9307e72dcbb055a3061ca4e7e62e3a97955cde926b"
+      }
+    },
+    {
+      "name": "u80-p0.85",
+      "period_ns": 0.85,
+      "target_util_pct": 80,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u80-p0.85",
+        "STUDY_PERIOD": "0.85",
+        "STUDY_UTIL": "80",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "failed",
+      "error": "Command failed (1); inspect /work/labs/build/openroad-study-final/u80-p0.85/flow.log",
+      "elapsed_s": 0.37,
+      "artifacts": {
+        "flow.log": "07b4583a8514fb93149d8df1bff3f87413acd0be8b8600ccadcc0efa6fe62f61"
+      }
+    },
+    {
+      "name": "u80-p1.00",
+      "period_ns": 1.0,
+      "target_util_pct": 80,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u80-p1.00",
+        "STUDY_PERIOD": "1.0",
+        "STUDY_UTIL": "80",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "failed",
+      "error": "Command failed (1); inspect /work/labs/build/openroad-study-final/u80-p1.00/flow.log",
+      "elapsed_s": 0.37,
+      "artifacts": {
+        "flow.log": "07b4583a8514fb93149d8df1bff3f87413acd0be8b8600ccadcc0efa6fe62f61"
+      }
+    },
+    {
+      "name": "u80-p1.15",
+      "period_ns": 1.15,
+      "target_util_pct": 80,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u80-p1.15",
+        "STUDY_PERIOD": "1.15",
+        "STUDY_UTIL": "80",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "failed",
+      "error": "Command failed (1); inspect /work/labs/build/openroad-study-final/u80-p1.15/flow.log",
+      "elapsed_s": 0.37,
+      "artifacts": {
+        "flow.log": "07b4583a8514fb93149d8df1bff3f87413acd0be8b8600ccadcc0efa6fe62f61"
+      }
+    },
+    {
+      "name": "u55-p0.91",
+      "period_ns": 0.91,
+      "target_util_pct": 55,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u55-p0.91",
+        "STUDY_PERIOD": "0.91",
+        "STUDY_UTIL": "55",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": -0.059359518980317855,
+          "hold_wns": 0.016230479225561686,
+          "core_area": 478.8
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.006166567431229176,
+          "hold_wns": -0.0487387470566599,
+          "core_area": 478.8
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": -0.016040391691135057,
+          "hold_wns": -0.05054905248568395,
+          "core_area": 478.8
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": -0.0014626633651593575,
+          "hold_wns": -0.048102617001134315,
+          "core_area": 478.8
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 36.0,
+      "artifacts": {
+        "cts-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "525e911301177901cc22fd92269a175aa53b3aa6933ddaf6f41e8e39518f8420",
+        "cts-limits.rpt": "594bf2b87bee933b87ca42adb6fb911d525564170b1de57412f183aa052634e2",
+        "cts-metrics.txt": "601f5982dbb32bf83973dab6b6f1799bd79c18be0c5e9b6af0c2298e60d36f26",
+        "cts-setup.rpt": "ee6553f551d0ac92c092a049b1d198b578b05d4303e3984d331d11ee50ae685c",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "041250873656f65a0d19c18e7d856278ca07282c380f273e6acd8e64f4f1cbb5",
+        "cts.sdc": "b3612e313dfef366fc0405ca913fc22801b26b768d81b7afa1582d14306b8a39",
+        "flow.log": "66b04511db33f676dfed2b92e94393ad3ca13a1bc1b8e35df706f0a41e666ee7",
+        "global-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "7358043c1ad650155de0a28a87d4e88ab934295a3b4bfb63e482d218734ea307",
+        "global-limits.rpt": "9bc2dd43a1ddb8ec031cd37e1f7747afad4702e1aa6391f737b18b465222c1e9",
+        "global-metrics.txt": "266afb53d880c84b59c1ae1772fa683244cd6c181b8693b29d00a697cb4a2eea",
+        "global-setup.rpt": "04e7095d4efa332452ac33de3351ea9ba9dd61a324229a0c6aeb98a1ed1e19f6",
+        "global.odb": "1949a6b54ac3c437e19a4f286750b79b4c8de6f27cddaa1bb3e2136cfde7bdd2",
+        "global.sdc": "b3612e313dfef366fc0405ca913fc22801b26b768d81b7afa1582d14306b8a39",
+        "placed-area.rpt": "312b01eb23a06e71b651c803f2bfdcd10422aaab586cb444e95cb2e0ec47be43",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "fde19f9e8b4af432617b1ce87247cd8352ea08736cd6a8fa203154c75b8cb2ed",
+        "placed-limits.rpt": "594bf2b87bee933b87ca42adb6fb911d525564170b1de57412f183aa052634e2",
+        "placed-metrics.txt": "d6d6469f57b83e49f429f8e1d65b81d85114a9dc7ded6c324ef1e990cfea985d",
+        "placed-setup.rpt": "380021ba2d63d74981cbff53dceda65701283c4f8de5b938af6d243973aeb2a0",
+        "placed.odb": "326a867904194a43dfb98f74aa0789b5764b61456160136f2ee74f41bcdab32a",
+        "placed.sdc": "d7ee02eeec3a84d1c8a1e97f1327d005683a8857ab4e1cddd28a1b7f12350b48",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "93753231b4fbc8dd6d0aa9b01a55d5da5f47da753029d41637e7703aa93e1338",
+        "routed-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "5ecaa5a39d97469a0019b41556cfdc4d9d07125ecd54c1a7a8c338e15944f140",
+        "routed-limits.rpt": "d1f948f0f793bfde38aa0d684d80e51d6585c82a73eba88987135e77cf5bb420",
+        "routed-metrics.txt": "ef119f96d7766bedf0e05bb851ebab4723918ded7d038262688d2cd73ffc108e",
+        "routed-setup.rpt": "d3c9b713439a3af1f5fec66e7479282861c36dc2fa9d88bf590ec92e301c3669",
+        "routed.def": "34eb103262a8a77b8c31c96d7184fb71a6d11326a108ed433e516ad3a36b7f4f",
+        "routed.odb": "2c321500e3d562d73d91ec924cd1ed183bc43f9ca559564e0cc636fb529db246",
+        "routed.sdc": "271f4e56edb99c97db67d2d419d4a66debf0e8f8b8e6d99bdbbc90d2ea6b988f",
+        "routed.spef": "ea826a5cbe56abebcd6970f3206fa5e10c1322728bd3336a28ad98775125b9da",
+        "routed.v": "a3b7a31c5a62175b4ed5372d53cd61e663e47f8fa59da52bea56ade65cd78d17"
+      }
+    },
+    {
+      "name": "u55-p1.00",
+      "period_ns": 1.0,
+      "target_util_pct": 55,
+      "command": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/16-openroad-study/flow.tcl"
+      ],
+      "environment": {
+        "STUDY_IMAGE_ID": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+        "STUDY_OUT": "/work/labs/build/openroad-study-final/u55-p1.00",
+        "STUDY_PERIOD": "1.0",
+        "STUDY_UTIL": "55",
+        "STUDY_NETLIST": "/work/labs/build/openroad-study-final/mapped.v",
+        "STUDY_SDC": "/work/labs/16-openroad-study/constraints.sdc"
+      },
+      "status": "completed",
+      "stages": {
+        "placed": {
+          "model": "placement_estimate_ideal_clock",
+          "setup_wns": 0.030640491011689648,
+          "hold_wns": 0.016230479225561686,
+          "core_area": 478.8
+        },
+        "cts": {
+          "model": "placement_estimate_propagated_clock",
+          "setup_wns": 0.09616657742323668,
+          "hold_wns": -0.0487387470566599,
+          "core_area": 478.8
+        },
+        "global": {
+          "model": "global_route_estimate_propagated_clock",
+          "setup_wns": 0.07395961830087244,
+          "hold_wns": -0.05054905248568395,
+          "core_area": 478.8
+        },
+        "routed": {
+          "model": "openrcx_extracted_propagated_clock",
+          "setup_wns": 0.08853740213800095,
+          "hold_wns": -0.048102617001134315,
+          "core_area": 478.8
+        }
+      },
+      "router_drc_report_bytes": 0,
+      "elapsed_s": 34.76,
+      "artifacts": {
+        "cts-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "cts-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cts-hold.rpt": "525e911301177901cc22fd92269a175aa53b3aa6933ddaf6f41e8e39518f8420",
+        "cts-limits.rpt": "594bf2b87bee933b87ca42adb6fb911d525564170b1de57412f183aa052634e2",
+        "cts-metrics.txt": "47c66d155ee978caab160c61272644d0825a44a866f463d523a3b2af5c377ec2",
+        "cts-setup.rpt": "69c6d63190801245f36103204f63343bfe6a8e95df12e09a4e4b75134c55d2f7",
+        "cts-tree.rpt": "5e65a91647391ad54357e8ff839fc20b70522454af4225b67c57e440d0f575b4",
+        "cts.odb": "041250873656f65a0d19c18e7d856278ca07282c380f273e6acd8e64f4f1cbb5",
+        "cts.sdc": "cb1ad88d71bbd25c20513490e5fc89ebc80b5024b539897f35f60452ae7a5025",
+        "flow.log": "57dad031337cc5c6e910dc53187cd1e9431c7061f9e322c3503654f232118440",
+        "global-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "global-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "global-hold.rpt": "7358043c1ad650155de0a28a87d4e88ab934295a3b4bfb63e482d218734ea307",
+        "global-limits.rpt": "9bc2dd43a1ddb8ec031cd37e1f7747afad4702e1aa6391f737b18b465222c1e9",
+        "global-metrics.txt": "b3b58feea97f6066b0769e7a585a3471ca05dab88f853fc56833578917001780",
+        "global-setup.rpt": "df1a828afc24fcf89e0317dcec6bbd23182d9bf90bdb77e02b2ec0c531933b98",
+        "global.odb": "1949a6b54ac3c437e19a4f286750b79b4c8de6f27cddaa1bb3e2136cfde7bdd2",
+        "global.sdc": "8bb265e3692d2b9245b295df94b10377fb3b00d0b9d53bd7ab21cbd95ffca0a8",
+        "placed-area.rpt": "312b01eb23a06e71b651c803f2bfdcd10422aaab586cb444e95cb2e0ec47be43",
+        "placed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "placed-hold.rpt": "fde19f9e8b4af432617b1ce87247cd8352ea08736cd6a8fa203154c75b8cb2ed",
+        "placed-limits.rpt": "594bf2b87bee933b87ca42adb6fb911d525564170b1de57412f183aa052634e2",
+        "placed-metrics.txt": "c74a715879cc6dc0099133e04b4e505ecc27faa8702cadc8d33be70ce246b33a",
+        "placed-setup.rpt": "3457e47d934744ed811e659289c893e51dce1c1d91f201c7ad4a7097c4e82ade",
+        "placed.odb": "326a867904194a43dfb98f74aa0789b5764b61456160136f2ee74f41bcdab32a",
+        "placed.sdc": "a6e161a8ae803f958df1bffffd016fe6f8fa5cfd5e1f416840cdb2680b00ced7",
+        "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "route.guide": "93753231b4fbc8dd6d0aa9b01a55d5da5f47da753029d41637e7703aa93e1338",
+        "routed-area.rpt": "f6bfd6f114bd7d22053748fa2eba7167242afe52608c7aa627708cb1c274ce49",
+        "routed-checks.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "routed-hold.rpt": "5ecaa5a39d97469a0019b41556cfdc4d9d07125ecd54c1a7a8c338e15944f140",
+        "routed-limits.rpt": "d1f948f0f793bfde38aa0d684d80e51d6585c82a73eba88987135e77cf5bb420",
+        "routed-metrics.txt": "4e5b27a444dddcf5d44ea203cf8d9b4af14d7a101ca2e7fb30411fe8c31fed83",
+        "routed-setup.rpt": "3bcd5bdfe6daa32261af3823ff59f801461afa0902d03c57457ba3d34591b157",
+        "routed.def": "34eb103262a8a77b8c31c96d7184fb71a6d11326a108ed433e516ad3a36b7f4f",
+        "routed.odb": "2c321500e3d562d73d91ec924cd1ed183bc43f9ca559564e0cc636fb529db246",
+        "routed.sdc": "81b2f4d8218cf347ddcf88e1a1ea981cce95588e47ad24290524ba09aaa15c0a",
+        "routed.spef": "decebebff2755da0d506c2f1575abf2c94d067c6177af1c2135dc602ee8f3311",
+        "routed.v": "a3b7a31c5a62175b4ed5372d53cd61e663e47f8fa59da52bea56ade65cd78d17"
+      }
+    }
+  ]
+}

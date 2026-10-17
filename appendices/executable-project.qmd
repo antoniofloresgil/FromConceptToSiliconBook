@@ -1,8 +1,12 @@
 # Executable Cross-Course Project: AXI/DMA Accelerator {#sec-executable-project}
 
-**Recipe status:** standalone and pinned Wally reference runs are checked in the stated environment. Physical/PLIC/coherence extensions are adaptation work or exercises.
+**Recipe status:** standalone and pinned Wally reference runs are checked in the stated environment. @sec-complete-case continues this same IP through a locked ECP5 out-of-context implementation and Nangate45 ASIC block through GDSII, with actual timing/resource/power-model reports. Complete-SoC physical integration, PLIC and coherence remain extensions.
 
 The project in @sec-hsd-coursework now has a runnable reference platform under `labs/10-dotproduct/`. It connects the fundamentals, simulation, SoC integration and implementation blocks around a signed dot-product IP. The standalone suite exercises the accelerator; the integration suite boots firmware on the actual pinned Wally RTL. Both use the same arithmetic, control registers and DMA engine.
+
+Use this appendix as the executable quick start and @sec-complete-case as the full engineering narrative. The latter uses a common manifest/source lock across these tests and both physical targets, extracts actual firmware-cycle and implementation results, shows the physical implementations, and explains why functional success does not close FPGA frequency or ASIC hold/electrical obligations.
+
+This is the executable final-project route for students without an FPGA. Its firmware result/mailbox, polling, DMA checks and interrupt handler replace a live board demonstration within the virtual-platform scope. For implementation work follow [Lab 07's alternative](../labs/07-implementation/README.md#without-a-physical-board), using your own synthesis and generated or instructor-provided physical-report analysis. The [activity map](../labs/NO-FPGA.md) identifies all replacements and remaining board checks. The fixture does not execute a `.bit` or validate the Nexys Video wrapper/DDR3; physical deployment remains an additional route.
 
 Download the [laboratory package](../downloads/hardware-design-labs.zip) for the complete files, or work in the book repository. The archive includes the project README, manifest, RTL, firmware, models, properties and tests. Wally is an explicitly acquired external dependency. Run every command below from the extracted package or repository root.
 
@@ -77,7 +81,7 @@ The direct interrupt connection is a single-source teaching route. It does not d
 | Error/reliability behavior | Read/write fault injection, reset/restart, interrupt ACK | No rollback, atomic result store or stuck-target watchdog |
 | Reuse | Complete suite at maximum lengths 256 and 16 | New windows/platforms require matching models and firmware |
 | Formal reasoning | Bounded RTL assertions and a reachable completion witness | No unbounded proof or AXI certification |
-| IP strengthening | Manifest, model, firmware, constraints, generic netlist and hashes | No technology physical views or inserted scan |
+| IP strengthening | Manifest, model, firmware, constraints, generic netlist and hashes; separate locked physical dossier in @sec-complete-case | No inserted scan or complete-SoC physical qualification |
 
 Formal control checks use a 20-cycle bound with symbolic inputs. The engine is checked separately for 24 cycles with a fixed valid one-pair descriptor. A SAT witness reaches DONE, avoiding a completion property that only passes because completion was unreachable. The property set checks retained payloads, active descriptor stability, bounded DMA addresses and terminal-write ordering. State the bound and assumptions when presenting these results; simulation covers long jobs and firmware integration.
 

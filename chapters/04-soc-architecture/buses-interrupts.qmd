@@ -1,5 +1,7 @@
 # Buses and Interrupts {#sec-buses-interrupts}
 
+For an executable software endpoint, follow @sec-linux-accelerator: Device Tree discovery, MMIO, PLIC completion, a kernel IRQ handler, DMA ownership and an ioctl application. The QEMU model checks the software contract; the advanced Wally route exposes the actual RTL control/interrupt path.
+
 Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run mmio`. The appendix states dependencies, checked requirements and guided extensions.
 
 A processor becomes a system when its instructions can reach memories and peripherals and peripheral events can reach software. A load from RAM and a load from a UART status register look similar in assembly, but their hardware contracts differ. A peripheral may return changing state, consume a received byte or acknowledge an event. The interconnect must preserve those meanings while devices respond at different speeds.

@@ -1,0 +1,46 @@
+/dts-v1/;
+/ {
+    #address-cells = <2>; #size-cells = <2>;
+    compatible = "hsd,wally-linux"; model = "HSD Wally RV64 RTL Linux simulation";
+    chosen { stdout-path = "/soc/uart@10000000";
+        bootargs = "console=ttyS0,6250000 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable";
+        linux,initrd-start = <0 0x84000000>; linux,initrd-end = <0 0x84200000>;
+    };
+    memory@80000000 { device_type = "memory"; reg = <0 0x80000000 0 0x10000000>; };
+    reserved-memory {
+        #address-cells = <2>; #size-cells = <2>; ranges;
+        pool: dma-pool@88000000 { compatible = "shared-dma-pool";
+            reg = <0 0x88000000 0 0x4000>; no-map;
+        };
+    };
+    cpus {
+        #address-cells = <1>; #size-cells = <0>; timebase-frequency = <100000000>;
+        cpu@0 { device_type = "cpu"; reg = <0>; status = "okay";
+            compatible = "riscv"; riscv,isa = "rv64imafdc_zicsr_zifencei";
+            mmu-type = "riscv,sv39";
+            cpu_intc: interrupt-controller { #interrupt-cells = <1>;
+                interrupt-controller; compatible = "riscv,cpu-intc";
+            };
+        };
+    };
+    soc {
+        #address-cells = <2>; #size-cells = <2>; compatible = "simple-bus"; ranges;
+        uart@10000000 { compatible = "ns16550a"; reg = <0 0x10000000 0 0x100>;
+            clock-frequency = <100000000>; current-speed = <6250000>;
+            interrupt-parent = <&plic>; interrupts = <10>;
+        };
+        clint@2000000 { compatible = "riscv,clint0"; reg = <0 0x02000000 0 0x10000>;
+            interrupts-extended = <&cpu_intc 3 &cpu_intc 7>;
+        };
+        plic: interrupt-controller@c000000 { compatible = "riscv,plic0";
+            reg = <0 0x0c000000 0 0x04000000>;
+            #interrupt-cells = <1>; #address-cells = <0>; interrupt-controller;
+            riscv,ndev = <32>; interrupts-extended = <&cpu_intc 11 &cpu_intc 9>;
+        };
+        dotproduct@10080000 { compatible = "hsd,dotproduct-v1";
+            reg = <0 0x10080000 0 0x20>; interrupt-parent = <&plic>; interrupts = <20>;
+            memory-region = <&pool>;
+            /* No dma-coherent claim: the pool is explicitly uncached by the PMA override. */
+        };
+    };
+};

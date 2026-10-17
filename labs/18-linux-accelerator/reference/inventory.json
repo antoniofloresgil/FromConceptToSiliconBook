@@ -1,0 +1,43 @@
+{
+  "manifest_sha256": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633",
+  "recipes": {
+    "boot-smoke.S": "ef9f4801ad74d277c5cdc5ebcfa1e089a1f393fccd6b5ad56603f031087636d3",
+    "boot-wally.S": "991948d3969106bdf07a7ed2cca67041306628d594854e70eb7a4ac25a9c4ad8",
+    "collect.py": "b6b03c0661676e150da9da9a1ee12b902d85ebb0e29a1317764111cbd1c4e1a2",
+    "Dockerfile": "2b700e73b1063ed1afe30eaaceb8fba2a7b51a72bfb8fc35dd9b6f71d503fbdb",
+    "Dockerfile.wally": "114062befb3432bb2dec58580851eb15c9b19f354312a617909081aa41f2bb40",
+    "dotproduct-driver.c": "7df70145b9a7ddcf92b894fc4361cf9965a9e0edb326ab7a80b8e38289bc9c09",
+    "dotproduct-uapi.h": "915ca4f5f5df69580d1064b1fc5aa0292ce2841b3da66cfe72290992f4138c21",
+    "hsd-dotproduct.c": "a6397a55fdb0713e17df45c458a33c80f1c3c93a1d4b8fa770ef045803a1818a",
+    "hsd-dotproduct.h": "203ff322613388be7befe7f56fd01a8b280ebed2e7c879684f44d21972a50cc9",
+    "linux-app.c": "d6592f00313366458c084f52717c98d7affad8913af375c71123abf731c18551",
+    "manifest.json": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633",
+    "model_test.py": "9d29852223bd78e4d5eff0b1c5500d6a771dba87be1e9cbd1f0d2d41bddbc2c4",
+    "platform_map.py": "2efa4cb97a4d8d0a754a1509abb811301502d8ff7c94ba7202e408c28089eb32",
+    "prepare.py": "9b9bbed61f25660b4e64c88eab47921411d298a3945c3502e571db0ca90e65ce",
+    "run.py": "f6fb9b9ce605a99a50511fb8117e1f9cee17b567e11b34fd0c7b71deea0fb1a2",
+    "tb_wally_linux.sv": "4888fab87e505a910cbbd65ad36078288e48d30212ddb4afdd8b0dab508f90be",
+    "test_platform_map.py": "fcc64689135455e92a0ee6c7d1b5b58aa3af564413bca6f1bc731d1c76a7045f",
+    "verify_reference.py": "eeca0be4fa02d527a41d244cdd975af90ca0f8b2e7aa38a6e2604c69df385824",
+    "wally-dpi.cpp": "db37cbc50a982eb3cd1caf30bb84dce874d9514e65751c969724555daaf9c873",
+    "wally-linux.dts": "8c48e0e81453cfef67099162670fc55a6365baf821996e9d51d781629ffde0c9",
+    "wally.py": "4c18d2c13df05e31840bd0cbaac6e4704a820fe08b6c60f0c54054e38867e818"
+  },
+  "files": {
+    "dma-error.txt": "986d440d466f43fa2c8e0d9323b38503e587924e9ddb960663c5e8d052288540",
+    "migration-report.json": "8cb15b6633f6a9c8e2e286b7f28e5dfbfbc61161ef0cadad9e3b3fc1727e6983",
+    "model-report.json": "bb2cef3472fa7a63784d421c3c2c1468844091e57a060ca2a90ca7b8114749be",
+    "model.txt": "03904a82eb20dbc5d3313f9bdf3efa12df0f6c916f21ed934b5aa8a5a51324f5",
+    "normal.txt": "9a1c8aa5131daf34147ff981817898109ff565cb71e0de66a1de159bf914d8fb",
+    "qemu-report.json": "0d64376691f801a112aebfc2ce84df670d5f598db96e5980a7fed0501fc93985",
+    "results.json": "29d0ca558f81ca4984a296586b0c06819154a2aba19a50f323128f3b72f68a5a",
+    "timeout.txt": "2437cd5de661e946f127acfcde4b6cf418a61a0741bb8cfc972138bffa81dff6",
+    "virt.dts": "04daa2cf04e57b7cc58d78df0aecee5908b46a3c0a3ffa56f64ae1fe4818a0e7",
+    "wally-address-map.json": "09714e441d6a0a3b6c4034a45f96e75a4bf7d3f9327d1c6a18b525fa62eeea93",
+    "wally-progress.txt": "68e43e86b4456c7c986976c185eae823ce41949549b2b1a27f2c514034003519",
+    "wally-report.json": "c1278a6c3b8b0e138cb562061328796d1ca88718d1521d59aaa1301394170b7b",
+    "wally-smoke.txt": "4feffd09f3a0b14f1f882837c40ea7c6abd2470f35b1e438ddce7846195716b6",
+    "wally-uart.txt": "13639975c7e33dd861a0d7a95ba4e943ceffc4580f49bd223bc7693123c4f342",
+    "wally-wally-linux.dts": "ffbd5c99dbb191a514e5180b75a1dd3d6018c8836d9fdc91b1b38e5484922321"
+  }
+}

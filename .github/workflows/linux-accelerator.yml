@@ -1,0 +1,62 @@
+name: Linux accelerator integration (optional)
+
+on:
+  workflow_dispatch:
+    inputs:
+      wally:
+        description: Also compile and boot advanced Wally RTL
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  linux-accelerator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build Linux/QEMU environment
+        run: |
+          python labs/18-linux-accelerator/test_platform_map.py
+          docker build -f labs/12-boot/Dockerfile -t from-concept-boot:2026.10 .
+          docker build -f labs/18-linux-accelerator/Dockerfile -t from-concept-linux-accelerator:2026.10 .
+      - name: Run Linux driver, DMA, IRQ and fault tests offline
+        run: >-
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp
+          --env CASE_IMAGE_ID="$(docker image inspect --format '{{.Id}}' from-concept-linux-accelerator:2026.10)"
+          --mount "type=bind,source=$PWD,target=/work" from-concept-linux-accelerator:2026.10
+          python3 labs/18-linux-accelerator/run.py --output-dir labs/build/linux-accelerator-run
+      - name: Acquire pinned advanced RTL
+        if: inputs.wally
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          repository: antoniofloresgil/cvw
+          ref: 3b30ba6b6519bd2c26c1437e6d61f632a35cef6c
+          path: labs/build/wally-source
+          persist-credentials: false
+      - name: Build advanced RTL environment
+        if: inputs.wally
+        run: |
+          docker build -f labs/Dockerfile -t from-concept-labs:2026.10 .
+          docker build -f labs/18-linux-accelerator/Dockerfile.wally -t from-concept-linux-wally:2026.10 .
+      - name: Prepare, compile and boot real Wally offline
+        if: inputs.wally
+        run: |
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --env WALLY_ROOT=/cvw --env CASE_IMAGE_ID="$(docker image inspect --format '{{.Id}}' from-concept-linux-wally:2026.10)" --mount "type=bind,source=$PWD,target=/work" --mount "type=bind,source=$PWD/labs/build/wally-source,target=/cvw,readonly" from-concept-linux-wally:2026.10 python3 labs/18-linux-accelerator/wally.py prepare --bundle labs/build/linux-accelerator-run/bundle
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-linux-wally:2026.10 python3 labs/18-linux-accelerator/wally.py compile
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-linux-wally:2026.10 python3 labs/18-linux-accelerator/wally.py run --seconds 3600 --cycles 500000000
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: linux-accelerator-evidence
+          path: |
+            labs/build/linux-accelerator-run/report.json
+            labs/build/linux-accelerator-run/*.txt
+            labs/build/linux-accelerator-run/*.dts
+            labs/build/linux-accelerator-run/model/
+            labs/build/linux-wally/report.json
+            labs/build/linux-wally/address-map.json
+            labs/build/linux-wally/*.txt
+            labs/build/linux-wally/*.dts

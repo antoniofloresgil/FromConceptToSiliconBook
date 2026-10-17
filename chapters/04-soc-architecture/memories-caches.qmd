@@ -1,5 +1,7 @@
 # Memories and Caches {#sec-memories-caches}
 
+The Linux integration in @sec-linux-accelerator makes DMA ownership concrete: a reserved pool, DMA addresses, coherent allocation, ordering barriers and timeout quarantine. Its advanced Wally profile starts with D-cache disabled; enabling it requires a new verified cache/DMA contract.
+
 Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run memory`. The appendix states dependencies, checked requirements and guided extensions.
 
 A processor can execute an arithmetic operation quickly and still spend most of its time waiting for data. The memory system bridges the gap between a small, fast datapath and a much larger storage space. Its behavior depends on physical memories, cache organization, address translation, bus service and the instructions being executed. These layers must be understood separately before they can be integrated correctly.

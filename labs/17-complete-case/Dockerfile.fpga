@@ -1,0 +1,11 @@
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    python3 ca-certificates curl && rm -rf /var/lib/apt/lists/*
+RUN curl --fail --location --retry 3 \
+    https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-10-14/oss-cad-suite-linux-x64-20261014.tgz \
+    -o /tmp/oss-cad-suite.tgz && \
+    echo 'a6ccc6b96b2d985336a1061c78b2fd2bdd73e0f68690da17db88e00457881a11  /tmp/oss-cad-suite.tgz' | sha256sum -c - && \
+    tar -xzf /tmp/oss-cad-suite.tgz -C /opt && rm /tmp/oss-cad-suite.tgz
+ENV PATH="/opt/oss-cad-suite/bin:${PATH}" PYTHONDONTWRITEBYTECODE=1
+WORKDIR /work
+CMD ["python3", "labs/17-complete-case/run.py", "fpga"]

@@ -1,0 +1,281 @@
+{
+  "input_bits": 101,
+  "output_bits": 206,
+  "ports": {
+    "s_awaddr": {
+      "direction": "input",
+      "lsb": 0,
+      "width": 5
+    },
+    "s_awvalid": {
+      "direction": "input",
+      "lsb": 5,
+      "width": 1
+    },
+    "s_wdata": {
+      "direction": "input",
+      "lsb": 6,
+      "width": 32
+    },
+    "s_wstrb": {
+      "direction": "input",
+      "lsb": 38,
+      "width": 4
+    },
+    "s_wvalid": {
+      "direction": "input",
+      "lsb": 42,
+      "width": 1
+    },
+    "s_bready": {
+      "direction": "input",
+      "lsb": 43,
+      "width": 1
+    },
+    "s_araddr": {
+      "direction": "input",
+      "lsb": 44,
+      "width": 5
+    },
+    "s_arvalid": {
+      "direction": "input",
+      "lsb": 49,
+      "width": 1
+    },
+    "s_rready": {
+      "direction": "input",
+      "lsb": 50,
+      "width": 1
+    },
+    "m_arready": {
+      "direction": "input",
+      "lsb": 51,
+      "width": 1
+    },
+    "m_rdata": {
+      "direction": "input",
+      "lsb": 52,
+      "width": 32
+    },
+    "m_rresp": {
+      "direction": "input",
+      "lsb": 84,
+      "width": 2
+    },
+    "m_rid": {
+      "direction": "input",
+      "lsb": 86,
+      "width": 4
+    },
+    "m_rvalid": {
+      "direction": "input",
+      "lsb": 90,
+      "width": 1
+    },
+    "m_rlast": {
+      "direction": "input",
+      "lsb": 91,
+      "width": 1
+    },
+    "m_awready": {
+      "direction": "input",
+      "lsb": 92,
+      "width": 1
+    },
+    "m_wready": {
+      "direction": "input",
+      "lsb": 93,
+      "width": 1
+    },
+    "m_bresp": {
+      "direction": "input",
+      "lsb": 94,
+      "width": 2
+    },
+    "m_bid": {
+      "direction": "input",
+      "lsb": 96,
+      "width": 4
+    },
+    "m_bvalid": {
+      "direction": "input",
+      "lsb": 100,
+      "width": 1
+    },
+    "s_awready": {
+      "direction": "output",
+      "lsb": 0,
+      "width": 1
+    },
+    "s_wready": {
+      "direction": "output",
+      "lsb": 1,
+      "width": 1
+    },
+    "s_bresp": {
+      "direction": "output",
+      "lsb": 2,
+      "width": 2
+    },
+    "s_bvalid": {
+      "direction": "output",
+      "lsb": 4,
+      "width": 1
+    },
+    "s_arready": {
+      "direction": "output",
+      "lsb": 5,
+      "width": 1
+    },
+    "s_rdata": {
+      "direction": "output",
+      "lsb": 6,
+      "width": 32
+    },
+    "s_rresp": {
+      "direction": "output",
+      "lsb": 38,
+      "width": 2
+    },
+    "s_rvalid": {
+      "direction": "output",
+      "lsb": 40,
+      "width": 1
+    },
+    "irq": {
+      "direction": "output",
+      "lsb": 41,
+      "width": 1
+    },
+    "m_araddr": {
+      "direction": "output",
+      "lsb": 42,
+      "width": 32
+    },
+    "m_arvalid": {
+      "direction": "output",
+      "lsb": 74,
+      "width": 1
+    },
+    "m_arid": {
+      "direction": "output",
+      "lsb": 75,
+      "width": 4
+    },
+    "m_arlen": {
+      "direction": "output",
+      "lsb": 79,
+      "width": 8
+    },
+    "m_arsize": {
+      "direction": "output",
+      "lsb": 87,
+      "width": 3
+    },
+    "m_arburst": {
+      "direction": "output",
+      "lsb": 90,
+      "width": 2
+    },
+    "m_arlock": {
+      "direction": "output",
+      "lsb": 92,
+      "width": 1
+    },
+    "m_arcache": {
+      "direction": "output",
+      "lsb": 93,
+      "width": 4
+    },
+    "m_arqos": {
+      "direction": "output",
+      "lsb": 97,
+      "width": 4
+    },
+    "m_arprot": {
+      "direction": "output",
+      "lsb": 101,
+      "width": 3
+    },
+    "m_rready": {
+      "direction": "output",
+      "lsb": 104,
+      "width": 1
+    },
+    "m_awaddr": {
+      "direction": "output",
+      "lsb": 105,
+      "width": 32
+    },
+    "m_awvalid": {
+      "direction": "output",
+      "lsb": 137,
+      "width": 1
+    },
+    "m_awid": {
+      "direction": "output",
+      "lsb": 138,
+      "width": 4
+    },
+    "m_awlen": {
+      "direction": "output",
+      "lsb": 142,
+      "width": 8
+    },
+    "m_awsize": {
+      "direction": "output",
+      "lsb": 150,
+      "width": 3
+    },
+    "m_awburst": {
+      "direction": "output",
+      "lsb": 153,
+      "width": 2
+    },
+    "m_awlock": {
+      "direction": "output",
+      "lsb": 155,
+      "width": 1
+    },
+    "m_awcache": {
+      "direction": "output",
+      "lsb": 156,
+      "width": 4
+    },
+    "m_awqos": {
+      "direction": "output",
+      "lsb": 160,
+      "width": 4
+    },
+    "m_awprot": {
+      "direction": "output",
+      "lsb": 164,
+      "width": 3
+    },
+    "m_wdata": {
+      "direction": "output",
+      "lsb": 167,
+      "width": 32
+    },
+    "m_wstrb": {
+      "direction": "output",
+      "lsb": 199,
+      "width": 4
+    },
+    "m_wvalid": {
+      "direction": "output",
+      "lsb": 203,
+      "width": 1
+    },
+    "m_wlast": {
+      "direction": "output",
+      "lsb": 204,
+      "width": 1
+    },
+    "m_bready": {
+      "direction": "output",
+      "lsb": 205,
+      "width": 1
+    }
+  }
+}

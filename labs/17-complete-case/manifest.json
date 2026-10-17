@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "release": "dotproduct-256-2026.10",
+  "component": "dotproduct_axi",
+  "component_rtl": [
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv"
+  ],
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "firmware_sha256": {
+    "labs/10-dotproduct/firmware/main.c": "757394bb95269488693b9d7c01c2258675d4e3cadd15f0a4785ec8a31262a955",
+    "labs/10-dotproduct/firmware/start.S": "1fc8673150b233a14c29249cfba526c262660b3cd4c4e419fa561696da6ef67e",
+    "labs/10-dotproduct/firmware/link.ld": "7945b9c71c8596dcb5f7a222aa03a84dcfdab101420cf0895a5232fb15a78f69"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "clock_period_ns": 10.0,
+  "seed": 2026,
+  "platform": {
+    "repository": "https://github.com/antoniofloresgil/cvw",
+    "revision": "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c",
+    "configuration": "rv32imc-derived, caches/IROM/DTIM disabled, 64 KiB simulated shared RAM, direct MExtInt",
+    "control_base": "0x10060000",
+    "reset_vector": "0x80000000"
+  },
+  "profiles": {
+    "unit": {
+      "maximum_lengths": [
+        256,
+        16
+      ],
+      "oracle": "independent Python signed-integer model"
+    },
+    "formal": {
+      "control_maximum_length": 16,
+      "control_bound": 20,
+      "engine_length": 1,
+      "engine_bound": 24,
+      "scope": "bounded, no induction/equivalence claim"
+    },
+    "fpga": {
+      "scope": "accelerator out-of-context; no board IO or complete SoC",
+      "family": "ECP5",
+      "device": "LFE5U-25F",
+      "package": "CABGA381",
+      "speed_grade": 6,
+      "requested_mhz": 100,
+      "seed": 2026,
+      "suite_release": "2026-10-14",
+      "suite_archive_sha256": "a6ccc6b96b2d985336a1061c78b2fd2bdd73e0f68690da17db88e00457881a11"
+    },
+    "asic": {
+      "scope": "accelerator block; no pads or complete SoC",
+      "technology": "Nangate45 typical",
+      "target_util_pct": 45,
+      "period_ns": 10.0,
+      "clock_uncertainty_ns": 0.1,
+      "input_max_ns": 2.0,
+      "input_min_ns": 0.2,
+      "output_max_ns": 2.0,
+      "output_min_ns": 0.0,
+      "output_load_ff": 5.0,
+      "global_activity": 0.1,
+      "activity_source": "vectorless model, not firmware workload activity",
+      "image_digest": "openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699"
+    }
+  }
+}

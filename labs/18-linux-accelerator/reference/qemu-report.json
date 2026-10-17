@@ -1,0 +1,285 @@
+{
+  "status": "pass",
+  "scope": "QEMU virt RV64 software-visible device model; no RTL timing/performance claim",
+  "manifest": {
+    "schema_version": 1,
+    "rtl_release": "dotproduct-256-2026.10",
+    "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "rtl_sha256": {
+      "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+      "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+      "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+      "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+    },
+    "qemu_version": "8.2.2",
+    "qemu_archive_sha256": "847346c1b82c1a54b2c38f6edbd85549edeb17430b7d4d3da12620e2962bc4f3",
+    "linux_version": "6.12",
+    "linux_archive_sha256": "b1a2562be56e42afb3f8489d4c2a7ac472ac23098f1ef1c1e40da601f54625eb",
+    "profile": {
+      "MAX_LENGTH": 256,
+      "MMIO_BASE": "0x10080000",
+      "DMA_BASE": "0x88000000",
+      "DMA_LIMIT_exclusive": "0x88004000",
+      "irq": 20,
+      "ram_base": "0x80000000",
+      "ram_bytes": 268435456,
+      "model_delay_ns": 10000,
+      "common_kernel_args": [
+        "pty.legacy_count=0",
+        "initcall_blacklist=plist_test,debug_vm_pgtable"
+      ],
+      "MMIO_BYTES": 32
+    },
+    "wally_profile": {
+      "gpio": true,
+      "mmu": "sv39",
+      "dcache": true,
+      "dma_memory_type": "PMA override: uncached for the trusted 16 KiB DMA pool",
+      "mmio_memory_type": "PMA override: uncached, non-idempotent, no atomics or instruction fetch",
+      "clock_hz": 100000000,
+      "uart_prescale": 0,
+      "console_baud": 6250000
+    },
+    "differences": "Same RTL bytes; new Linux trusted DMA window, RV64 OS, PLIC IRQ. Original bare-metal/physical result parameters do not transfer. QEMU models software behavior, not RTL or AXI timing. Linux MMIO uses a free Wally page at 0x10080000; upstream GPIO at 0x10060000 stays enabled."
+  },
+  "manifest_sha256": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633",
+  "image": "sha256:d2de2d3848e7f61dc99c3d39aee96f3d4cb0b40ef2a4d0a90517d59c69b25f84",
+  "sources": {
+    "hsd-dotproduct.c": "a6397a55fdb0713e17df45c458a33c80f1c3c93a1d4b8fa770ef045803a1818a",
+    "hsd-dotproduct.h": "203ff322613388be7befe7f56fd01a8b280ebed2e7c879684f44d21972a50cc9",
+    "dotproduct-driver.c": "7df70145b9a7ddcf92b894fc4361cf9965a9e0edb326ab7a80b8e38289bc9c09",
+    "dotproduct-uapi.h": "915ca4f5f5df69580d1064b1fc5aa0292ce2841b3da66cfe72290992f4138c21",
+    "linux-app.c": "d6592f00313366458c084f52717c98d7affad8913af375c71123abf731c18551",
+    "prepare.py": "9b9bbed61f25660b4e64c88eab47921411d298a3945c3502e571db0ca90e65ce"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/work/labs/18-linux-accelerator/model_test.py",
+        "/work/labs/build/linux-accelerator-relocated/model"
+      ],
+      "log": "model-test.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/hsd/rootfs.cpio",
+        "-machine",
+        "dumpdtb=/work/labs/build/linux-accelerator-relocated/virt.dtb"
+      ],
+      "log": "dumpdtb.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "dtc",
+        "-I",
+        "dtb",
+        "-O",
+        "dts",
+        "-o",
+        "/work/labs/build/linux-accelerator-relocated/virt.dts",
+        "/work/labs/build/linux-accelerator-relocated/virt.dtb"
+      ],
+      "log": "dtc.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/hsd/rootfs.cpio",
+        "-append",
+        "console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable hsd.test=normal"
+      ],
+      "log": "normal.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/hsd/rootfs.cpio",
+        "-global",
+        "hsd-dotproduct.dma-error=on",
+        "-append",
+        "console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable hsd.test=dma-error"
+      ],
+      "log": "dma-error.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "1",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/hsd/rootfs.cpio",
+        "-global",
+        "hsd-dotproduct.drop-irq=on",
+        "-append",
+        "console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable hsd.test=timeout"
+      ],
+      "log": "timeout.txt",
+      "exit_code": 0
+    }
+  ],
+  "runs": {
+    "normal": {
+      "status": "pass",
+      "marker": "HSD_LINUX_ACCEL_PASS"
+    },
+    "dma-error": {
+      "status": "pass",
+      "marker": "HSD_DMA_ERROR_PASS"
+    },
+    "timeout": {
+      "status": "pass",
+      "marker": "HSD_TIMEOUT_QUARANTINE_PASS"
+    }
+  },
+  "qemu": "QEMU emulator version 8.2.2",
+  "metrics": [
+    {
+      "mode": "irq",
+      "length": 1,
+      "software_ns": 118400,
+      "end_to_end_ns": 2715900,
+      "kernel_ns": 2108000
+    },
+    {
+      "mode": "irq",
+      "length": 8,
+      "software_ns": 12500,
+      "end_to_end_ns": 505000,
+      "kernel_ns": 459800
+    },
+    {
+      "mode": "irq",
+      "length": 32,
+      "software_ns": 1600,
+      "end_to_end_ns": 793200,
+      "kernel_ns": 759100
+    },
+    {
+      "mode": "irq",
+      "length": 128,
+      "software_ns": 36600,
+      "end_to_end_ns": 764400,
+      "kernel_ns": 728400
+    },
+    {
+      "mode": "irq",
+      "length": 256,
+      "software_ns": 4000,
+      "end_to_end_ns": 384300,
+      "kernel_ns": 353600
+    },
+    {
+      "mode": "poll",
+      "length": 1,
+      "software_ns": 1500,
+      "end_to_end_ns": 420300,
+      "kernel_ns": 379000
+    },
+    {
+      "mode": "poll",
+      "length": 8,
+      "software_ns": 1100,
+      "end_to_end_ns": 557100,
+      "kernel_ns": 523900
+    },
+    {
+      "mode": "poll",
+      "length": 32,
+      "software_ns": 1400,
+      "end_to_end_ns": 528700,
+      "kernel_ns": 490600
+    },
+    {
+      "mode": "poll",
+      "length": 128,
+      "software_ns": 4000,
+      "end_to_end_ns": 470800,
+      "kernel_ns": 424700
+    },
+    {
+      "mode": "poll",
+      "length": 256,
+      "software_ns": 3200,
+      "end_to_end_ns": 2267500,
+      "kernel_ns": 2225700
+    }
+  ],
+  "timing_interpretation": "emulator/software overhead with a fixed 10000 ns virtual device delay; not a physical accelerator speedup",
+  "bundle": {
+    "fw_dynamic.bin": "c9550c7dedc56fbc186c080d3005747260b24335b5f285ba359ce85540b79606",
+    "Image": "a1fd6b0cf8b10f71421f0d2c734cacdad69d52b2e335724f7eaa310364e5520c",
+    "kernel.config": "41887a41ee67f09b21a7adefbdeaae2d287438a49fbed50ae0d44785c383774e",
+    "rootfs.cpio": "42981be8413ebaeb0632e7eb129bcfb9dadeab4669cf7906d81dae38706f5094"
+  },
+  "artifacts": {
+    "dma-error.txt": "986d440d466f43fa2c8e0d9323b38503e587924e9ddb960663c5e8d052288540",
+    "dtc.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dumpdtb.txt": "d6b9e9fbcfd02acf3f86323b21533ed26fd6d2f55b69b056ae761feca8284cc3",
+    "model-test.txt": "c5181381ee56f6094f2896072f90c8e1e8bd32e24895c0bf97cfb8e496338af5",
+    "normal.txt": "9a1c8aa5131daf34147ff981817898109ff565cb71e0de66a1de159bf914d8fb",
+    "timeout.txt": "2437cd5de661e946f127acfcde4b6cf418a61a0741bb8cfc972138bffa81dff6",
+    "virt.dtb": "d841a5feab163b0e91f917e637cf79d87ab33069b5a78a44aa84bbe65dec1039",
+    "virt.dts": "04daa2cf04e57b7cc58d78df0aecee5908b46a3c0a3ffa56f64ae1fe4818a0e7",
+    "bundle/fw_dynamic.bin": "c9550c7dedc56fbc186c080d3005747260b24335b5f285ba359ce85540b79606",
+    "bundle/Image": "a1fd6b0cf8b10f71421f0d2c734cacdad69d52b2e335724f7eaa310364e5520c",
+    "bundle/kernel.config": "41887a41ee67f09b21a7adefbdeaae2d287438a49fbed50ae0d44785c383774e",
+    "bundle/rootfs.cpio": "42981be8413ebaeb0632e7eb129bcfb9dadeab4669cf7906d81dae38706f5094",
+    "model/model.txt": "03904a82eb20dbc5d3313f9bdf3efa12df0f6c916f21ed934b5aa8a5a51324f5"
+  }
+}

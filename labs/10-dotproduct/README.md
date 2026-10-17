@@ -190,6 +190,10 @@ build copies. `negative-results.json` records expected failures separately.
 
 ## Measurements and implementation boundary
 
+The [complete case](../17-complete-case/README.md) now continues these same source-locked modules through an ECP5 out-of-context FPGA implementation and a Nangate45 ASIC block through GDSII. Its shared manifest/dossier reports actual firmware cycles, resource/area/timing, vectorless ASIC power and physical visuals. Those separate block results do not establish a complete physically implemented Wally SoC, timing closure or board qualification. Keep this guide's ordinary generic-synthesis report separate from the physical case.
+
+This virtual platform is the executable final-project route for students without an FPGA. Run both the standalone and real-Wally entries, retain their separate reports, and demonstrate your assessed changes with independent checks. Replace physical programming/LED/UART observations with the checked firmware result/mailbox and interrupt evidence in this fixture. For P5 use [Lab 07's alternative](../07-implementation/README.md#without-a-physical-board) and [the common deliverables](../NO-FPGA.md); a board is not required for the same rubric opportunities. Board deployment remains an extension requiring a real memory fabric, wrapper, constraints and fresh validation.
+
 `firmware/main.c` compares polling jobs at N=1,8,32,128,256 against a C reference,
 then runs an interrupt job and a descriptor rejection. The simulator prints
 software cycles and accelerator end-to-end cycles including register setup,
@@ -220,8 +224,9 @@ PMP does not automatically constrain DMA.
    setup, compute and completion separately.
 4. P4: add a meaningful bounded property and witness, strengthen the threat model
    and demonstrate a counterexample before repairing the defect.
-5. P5: run a chosen technology flow, justify timing/DFT/reliability conclusions
-   and mark each IP view as produced, supplied or missing.
+5. P5: run a chosen technology flow or analyse the instructor-provided physical
+   reports alongside your own generic synthesis; justify timing/DFT/reliability
+   conclusions and mark each IP view as produced, supplied or missing.
 
 Students must make and defend a specified change. Running the supplied reference
 alone does not demonstrate the final project's individual learning outcomes.

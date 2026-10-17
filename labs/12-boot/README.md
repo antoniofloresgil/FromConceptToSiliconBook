@@ -1,5 +1,7 @@
 # Boot and software-stack practice
 
+Continue with [Lab 18](../18-linux-accelerator/README.md) for Linux device discovery, an actual kernel driver, DMA/IRQ and userspace dot-product tests, plus a separate advanced Wally RV64 RTL Linux platform. Its reports distinguish model execution, RTL preparation/compilation and actual RTL boot.
+
 See [Booting a RISC-V SoC](../../chapters/04-soc-architecture/boot-software-stack.qmd) for the reset/firmware/kernel contract and Linux boot. Run from the repository or extracted-practice-package root.
 
 ## Checked recipe: OpenSBI supervisor handoff

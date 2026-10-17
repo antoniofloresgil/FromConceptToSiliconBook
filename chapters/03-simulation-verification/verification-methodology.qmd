@@ -64,6 +64,10 @@ The expected model needs its own small tests. Check negative times positive, min
 
 ## Implementation
 
+For a complete local progression from assertions and assumptions to BMC, induction, useful-traffic witnesses, a real counterexample, repair/regression and sequential equivalence, use @sec-formal-verification. Its two-entry FIFO is an executable preparation exercise for P4. The broader hierarchy and project obligations below remain separate: proving that FIFO does not close accelerator equivalence or whole-core correctness.
+
+@sec-complete-case applies this hierarchy to the same dot-product RTL through Wally firmware and both physical targets. Its common manifest and collector prevent mixing source revisions or stale stage artifacts; its actual results also show why successful tests, positive setup, layout stream-out and product acceptance are separate conclusions.
+
 ### Level 1: static analysis, elaboration and RTL semantics
 
 Run inexpensive checks early. Elaborate each supported configuration, inspect port/assignment widths and signedness, find unintended storage or combinational loops, and review undriven/unused signals. Compile both the module and its actual wrapper. A legal parameter value that changes a bus width can expose a connection bug absent from the default configuration.

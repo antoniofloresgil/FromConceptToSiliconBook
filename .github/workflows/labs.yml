@@ -18,6 +18,12 @@ jobs:
           python labs/tools/check_recipes.py
           python labs/tools/test_recipes.py
           python labs/tools/test_package.py
+          python labs/16-openroad-study/verify_reference.py
+          python labs/17-complete-case/verify_reference.py
+          python labs/17-complete-case/verify_nexys.py
+          python labs/17-complete-case/test_collection.py
+          python labs/18-linux-accelerator/verify_reference.py
+          python labs/18-linux-accelerator/test_platform_map.py
       - name: Acquire pinned Wally source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -38,6 +44,8 @@ jobs:
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/verify_harness.py
       - name: Confirm project tests reject arithmetic and completion defects
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
+      - name: Verify formal FIFO proofs, witnesses and defect regressions
+        run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/15-formal/run.py
       - name: Run real Wally accelerator firmware offline
         run: >-
           docker run --rm --network none --user "$(id -u):$(id -g)"
@@ -79,6 +87,9 @@ jobs:
             labs/build/report.json
             labs/build/container.json
             labs/build/verification-evidence.json
+            labs/build/formal/report.json
+            labs/build/formal/*.log
+            labs/build/formal/*.vcd
             labs/build/**/command-*.log
             labs/build/cocotb/results.xml
             labs/build/synthesis/accumulator.json

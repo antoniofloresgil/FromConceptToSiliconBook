@@ -1,5 +1,7 @@
 # Accelerators and ISA Extensions {#sec-accelerators}
 
+The Linux continuation in @sec-linux-accelerator and [Lab 18](../../labs/18-linux-accelerator/README.md) connects the dot-product register contract to a kernel driver, DMA pool, IRQ/polling and a userspace application. Keep its QEMU software timings separate from RTL cycles and physical implementation frequency.
+
 Use @sec-vector-processing to establish a standard RVV alternative before committing to custom ISA or DMA acceleration. Its checked integer example demonstrates vector-length-independent execution; selecting hardware still requires matched numerical contracts and measured system costs.
 
 The threat model and independent enforcement obligations for a bus master are synthesized in @sec-hardware-security; retain this chapter's descriptor, ownership and DMA integration mechanics when evaluating that system policy.
@@ -457,9 +459,13 @@ Do not attach an experimental engine directly to trusted memory in a system with
 6. Synthesize for Nexys Video. Compare DSP, LUT, BRAM, frequency and PMU measurements with the software baseline.
 7. Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
 
+Without an FPGA, experiments 1–5 and 7 remain RTL/firmware simulation activities with the stated harness adaptations. For experiment 6, synthesize and, if the XC7 environment is available, place-and-route without programming. Compare simulated software/accelerator cycles separately from device timing/resources. If that flow is unavailable, submit your generic synthesis analysis plus the instructor-provided report comparison from [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). Do not attribute a supplied design's timing or resource counts to your FIR. Use @sec-executable-project for a checked real-Wally accelerator starting point and identify the additional FIR implementation/integration work.
+
 The reusable outcome is not only a filter. It is a disciplined template for deciding whether a computation belongs in software, a standard extension, a custom instruction or a DMA-capable peripheral, and for proving that the resulting hardware improves the complete system.
 
 ## Executable cross-course reference
+
+@sec-complete-case extends this reference into the book-wide engineering narrative: one RTL/configuration lock links its tests and real-Wally measurements to ECP5 placement/routing and Nangate45 ASIC GDSII. Read its actual resource/area, frequency, modeled-power and acceptance results before choosing a performance extension. The physically implemented boundary is the accelerator IP; full-SoC and workload-energy claims remain separate work.
 
 The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-project supplies a complementary reference to the accelerator designs in this chapter. It includes independent numerical checks, an AHB-to-AXI4-Lite CPU adapter, bounded DMA, real RV32 firmware, interrupt completion, formal witnesses and defect checks. Use its measured single-beat baseline before evaluating burst, concurrency or numerical-format extensions.
 

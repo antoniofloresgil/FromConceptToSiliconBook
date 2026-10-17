@@ -1,0 +1,7 @@
+ARG LAB_BASE=from-concept-labs:2026.10
+FROM ${LAB_BASE}
+USER root
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    device-tree-compiler && rm -rf /var/lib/apt/lists/*
+WORKDIR /work
+CMD ["python3", "labs/18-linux-accelerator/wally.py", "prepare"]

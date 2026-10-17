@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "rtl_release": "dotproduct-256-2026.10",
+  "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "qemu_version": "8.2.2",
+  "qemu_archive_sha256": "847346c1b82c1a54b2c38f6edbd85549edeb17430b7d4d3da12620e2962bc4f3",
+  "linux_version": "6.12",
+  "linux_archive_sha256": "b1a2562be56e42afb3f8489d4c2a7ac472ac23098f1ef1c1e40da601f54625eb",
+  "profile": {
+    "MAX_LENGTH": 256,
+    "MMIO_BASE": "0x10080000",
+    "DMA_BASE": "0x88000000",
+    "DMA_LIMIT_exclusive": "0x88004000",
+    "irq": 20,
+    "ram_base": "0x80000000",
+    "ram_bytes": 268435456,
+    "model_delay_ns": 10000,
+    "common_kernel_args": [
+      "pty.legacy_count=0",
+      "initcall_blacklist=plist_test,debug_vm_pgtable"
+    ],
+    "MMIO_BYTES": 32
+  },
+  "wally_profile": {
+    "gpio": true,
+    "mmu": "sv39",
+    "dcache": true,
+    "dma_memory_type": "PMA override: uncached for the trusted 16 KiB DMA pool",
+    "mmio_memory_type": "PMA override: uncached, non-idempotent, no atomics or instruction fetch",
+    "clock_hz": 100000000,
+    "uart_prescale": 0,
+    "console_baud": 6250000
+  },
+  "differences": "Same RTL bytes; new Linux trusted DMA window, RV64 OS, PLIC IRQ. Original bare-metal/physical result parameters do not transfer. QEMU models software behavior, not RTL or AXI timing. Linux MMIO uses a free Wally page at 0x10080000; upstream GPIO at 0x10060000 stays enabled."
+}

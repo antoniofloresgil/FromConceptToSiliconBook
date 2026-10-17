@@ -370,6 +370,8 @@ Choose a family; specify legal factors, working set, active hardware path, cold/
 
 For FPGA, use the real board fabric and compare time/resources under stated memory/clock conditions. For gem5, prepare compatible workloads, calibrate mechanism tests and validate held-out configurations. Explain discrepancies rather than relabelling generic output as Wally evidence.
 
+Without a board, confirm the candidate with an independent workload in real-Wally RTL simulation and preserve the binary/input/ROI contract. Run device implementation without programming when tools are available; otherwise analyse the instructor-provided baseline/variant timing/resources reports under [Lab 07's alternative](../../labs/07-implementation/README.md#without-a-physical-board). Report cycle effects separately from supplied physical data, list board validation as unexecuted and identify what missing frequency/memory/energy evidence could reverse the decision. This completes the online exercise within its declared scope; a measured board Pareto claim still needs actual physical evidence.
+
 ### Submit a decision, not only plots
 
 The dossier contains objectives/constraints, hypothesis, manifests, ROI/workload contract, verification, raw/derived data, rejected cases, uncertainty, frontier and selection. Connect conclusions to @sec-verification-methodology.

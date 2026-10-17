@@ -60,7 +60,7 @@ The seven parts form a reference library. The weekly itinerary selects sections 
 
 The common methodology in @sec-verification-methodology connects requirement plans, independent checks, coverage, formal scope and release evidence across every design level.
 
-Formal verification and security evaluation are **required** by RA8 and are applied to a small understandable IP. The nine automatic labs supply simulation/synthesis starting points and bounded formal checks for the dot-product IP. The executable project in @sec-executable-project also provides the Wally firmware platform; unbounded formal extensions require an explicitly provisioned environment. The [coursework appendix](appendices/hsd-coursework.qmd) specifies its required evidence.
+Formal verification and security evaluation are **required** by RA8 and are applied to a small understandable IP. The dedicated chapter @sec-formal-verification develops an executable FIFO example through BMC, induction, counterexample/repair, vacuity detection and equivalence using the existing container. The nine automatic labs supply simulation/synthesis starting points and bounded formal checks for the dot-product IP. The executable project in @sec-executable-project also provides the Wally firmware platform. Larger formal flows need their own environment and assumptions; full-processor proofs remain advanced extensions. The [coursework appendix](appendices/hsd-coursework.qmd) specifies its required evidence within the existing hours.
 
 Platform integration can be demonstrated in a simulated bus/memory/peripheral harness. Physical FPGA programming and fabricated silicon are extension milestones. Students still distinguish functional integration, synthesis, routing and fabrication evidence in the required analysis.
 
@@ -99,11 +99,15 @@ The planning model uses **150 hours**, calculated as 6 credits at an assumed 25 
 
 Supervised work can use the virtual teaching environment. Practice/project estimates include design, debugging, analysis and preparation of evidence. Reuse practice artifacts in the project; its hours cover the additional integration, verification, review and packaging work rather than charging twice for the same submission.
 
+The online course requires no physical FPGA purchase. All assessed practices and the final demonstration have a route through simulation, synthesis and implementation-report analysis, with the same rubric opportunities. Physical-board experiments remain available as extensions. The [activity map without a board](labs/NO-FPGA.md) and @sec-hsd-coursework define replacement evidence and the instructor's report-provisioning responsibilities.
+
 The [coursework appendix](appendices/hsd-coursework.qmd) defines prerequisites, durations, deliverables and per-activity rubrics. These scores support consistent review; their contribution to the final course mark follows the approved assessment rules. P0 is a formative diagnostic with no proposed numerical mark.
 
 ## A reusable IP project as the course backbone
 
 The final project is a **reusable accelerator IP with AXI control and DMA**, integrated into a Wally-based virtual platform. The required algorithm is a bounded signed dot product. AXI4-Lite provides the control/status interface; an AXI4 master reads operands and writes the result through DMA. Start with one outstanding single-beat operation. Bursts, overlapping requests and more elaborate algorithms are extensions.
+
+@sec-complete-case follows the same source-locked component across the whole book: specification/model, RTL, independent tests and bounded formal checks, real Wally firmware/interrupts, an ECP5 placed/routed IP and a Nangate45 ASIC block streamed to GDSII. Its joined evidence includes cycle measurements, resource/area/timing, an explicit power model and actual physical visuals. The complete SoC is simulated; the physically implemented boundary is the accelerator, with qualification gaps retained. This is the course's common engineering thread, rather than a requirement to fabricate or buy hardware.
 
 Wally's EBU uses AHB in the configuration studied in this book. The instructor-provisioned platform therefore needs a documented AHB-to-AXI control adapter and a shared-memory path accessible to both Wally and the DMA master. Those platform components, the boot/driver scaffold, memory map and reset contract are established before the project begins. Students design and validate the accelerator rather than having to debug an unfinished platform within the 12-week budget.
 

@@ -315,9 +315,108 @@ If no Linux output appears, verify the firmware handoff and kernel console confi
 
 Keep each diagnostic tied to the last confirmed transition. Rebuilding the whole stack before preserving a failure log destroys useful evidence and can introduce a second defect.
 
-As an extension, replace the tiny root filesystem with a Buildroot-generated one, add the accelerator driver and run a userspace test using its device interface. The QEMU model does not contain the course accelerator by default; either add a model or run the integration on the actual Wally platform. An absent device is not corrected by adding a DT node alone.
+### Experiment 3: Linux, a driver and the accelerator {#sec-linux-accelerator}
+
+[Lab 18](../../labs/18-linux-accelerator/README.md) closes the software path with a separately built QEMU device, a real Linux platform driver and a userspace regression. It also supplies the advanced Wally RTL route described below. The two environments share the numerical/register contract and driver/application sources; their reports retain separate execution status. The supplied QEMU model is an addition to the emulator, not a device present in stock `virt`.
+
+The path is **OpenSBI → Linux → Device Tree binding → `/dev/dotproduct` → ioctl → DMA → IRQ or polling → checked userspace result**. The main experiment uses the minimal initramfs from the previous section. Buildroot can package the same sources later; it is not necessary to introduce a full distribution to exercise the driver.
+
+In this minimal image the application also serves as PID 1: it mounts `/dev`, `/proc` and `/sys`, runs the regression and requests shutdown. When moving to Buildroot, let its init system own mounts and shutdown, and split out the benchmark/ioctl portion as an ordinary application.
+
+| Boundary | Concrete implementation |
+| --- | --- |
+| Device identity | `compatible = "hsd,dotproduct-v1"`, MMIO `0x10080000–0x1008001f`, PLIC source 20 |
+| Numerical work | Signed low 16 bits of each 32-bit operand; exact signed 64-bit sum; lengths 1–256 |
+| Kernel discovery | A built-in `platform_driver` matches the DT node and maps its register aperture |
+| DMA ownership | A 16 KiB reserved pool `[0x88000000,0x88004000)` belongs to the accelerator |
+| Driver allocation | DMA API, 32-bit mask, returned-address validation and one 4 KiB coherent buffer |
+| User boundary | Fixed-width ioctl structure; arrays copied through the kernel, no user physical pointers |
+| Completion | IRQ acknowledgement/completion or bounded polling; DONE follows both result writes |
+| Failure | Invalid arguments, device DMA error, suppressed IRQ, timeout and quarantine |
+
+This is a **new Linux platform profile**. The tiny bare-metal DMA window lies near resident firmware and is not reused. The manifest locks the same accelerator RTL revision while declaring the changed DMA parameters, RV64 OS and PLIC route. The measured physical implementation and bare-metal cycle ratios in @sec-complete-case remain observations of their original profiles.
+
+PLIC source 20 is a hardware interrupt ID. The driver's log prints the Linux IRQ number returned by `platform_get_irq()`; IRQ-domain allocation can give it a different value, such as 13 in the preserved QEMU run. Compare the DT source, domain mapping and driver binding before diagnosing a mismatch.
+
+#### Buffers, barriers and ownership
+
+The DT describes a `shared-dma-pool` with `no-map` and associates it through `memory-region`. The driver calls `of_reserved_mem_device_init()`, sets a 32-bit DMA mask and allocates using `dma_alloc_coherent()`. It verifies that the returned DMA address stays inside the trusted window before any launch. A 32-bit mask alone would not constrain allocations to a 16 KiB aperture. CPU virtual addresses, userspace pointers and DMA addresses are different interfaces, even when this particular model uses identity-mapped RAM [@bootLinuxDma].
+
+The allocated page holds A, B and the two-word result at nonoverlapping offsets. `dma_wmb()` orders data stores before the launch, and `dma_rmb()` orders result consumption after completion. Coherent allocation addresses visibility; ordering remains an explicit obligation. The application supplies arrays through a fixed-width ioctl, and the driver supplies their DMA addresses. It does not allow a process to select arbitrary physical destinations.
+
+One mutex serializes jobs. An IRQ handler verifies the pending bit, acknowledges the IP and completes the waiting request. A polling flag exercises the same numerical/ownership contract using bounded reads. The root-only device node and lack of user MMIO mapping make the exposed interface small enough to audit.
+
+The IP has no software abort/reset register. Consequently, after a timeout the driver **retains the DMA buffers and quarantines the device until reboot**. Returning those pages to an allocator while DMA might still be active would create a memory-corruption risk. This teaching driver is built in and suppresses unbind; unload, hot removal and a production reset/recovery path are not implemented. A terminal, acknowledged DMA error is different from an unconfirmed timeout.
+
+#### Tests and measured intervals
+
+The runner checks the model directly with QEMU's qtest interface before booting Linux. A signed-extreme case checks ignored upper bits, the 64-bit result, asynchronous busy/DONE and acknowledgement. Six invalid descriptors check zero/excessive length, alignment, bounds, overlap and address wrap; the model must record zero DMA for each rejection. These are model tests; RTL address/protocol tests retain their own evidence.
+
+The normal Linux application executes lengths 1, 8, 32, 128 and 256 using both IRQ and polling. An independent C integer reference checks every result. It also requires argument/ioctl/user-copy rejection. Two extra Linux boots inject a DMA error and suppress the interrupt, respectively. The latter must cause a timeout and reject a subsequent request through quarantine. Source/firmware/kernel/DTB/initramfs hashes and actual logs are retained, rather than counting a boot banner as accelerator success.
+
+The timing table separates userspace software calculation, end-to-end ioctl and the interval inside the driver. In QEMU, the model schedules completion after a declared **10,000 virtual ns**, independently of vector length. Those measurements expose copies, system calls, scheduling and modeled completion; they are not a physical accelerator speedup or Wally cycle count. Replacing that timer constant with a guessed hardware latency would not validate the guess. A calibrated performance model or real implementation needs separate evidence.
+
+`kernel_ns` starts immediately before the control-register launch, after filling the DMA buffer and programming the descriptors. It ends after waiting for completion and reading status, error and result, before `copy_to_user()`. The end-to-end ioctl also includes the argument copies, DMA preparation and return path. The driver interval therefore includes completion/software overhead; it is not the MAC's execution time alone.
+
+The preserved author run completed all three Linux boots and seven direct model checks. The following are **single QEMU observations in microseconds**, not statistical benchmarks. The full ten rows, raw logs, software/model hashes and configuration are in the [reference report](../../labs/18-linux-accelerator/reference/qemu-report.json).
+
+| Length | Software, IRQ run (µs) | IRQ ioctl (µs) | IRQ driver interval (µs) | Poll ioctl (µs) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 118.4 | 2715.9 | 2108.0 | 420.3 |
+| 8 | 12.5 | 505.0 | 459.8 | 557.1 |
+| 32 | 1.6 | 793.2 | 759.1 | 528.7 |
+| 128 | 36.6 | 764.4 | 728.4 | 470.8 |
+| 256 | 4.0 | 384.3 | 353.6 | 2267.5 |
+
+The irregular software column is useful evidence of emulator translation, warm-up and host scheduling effects. Increasing N does not yield a smooth timing curve in this short run. Ask students which intervals include copies and system calls, why a 10 µs modeled device delay does not imply a 10 µs ioctl, and what repeated measurements and hardware evidence would be needed before selecting an implementation.
+
+The fixed-size ioctl copies both complete operand arrays even for N = 1. The driver then copies the active elements into its DMA allocation. Improving only the MAC cannot remove these interface costs. A revised ABI or batching policy is a separate optimization that needs its own ownership, bounds and performance tests.
+
+#### Reproduce and interpret the result
+
+Follow Lab 18's Linux/WSL or PowerShell commands. Its separate Dockerfile verifies QEMU 8.2.2 and Linux 6.12 archive hashes, builds the added device and built-in driver, and packages a static PID 1/application. Compilation/acquisition needs network and more resources than the tiny supervisor exercise; subsequent tests run offline. The ordinary nine automatic laboratories remain unchanged.
+
+The model implements software-visible word MMIO and data movement, not RTL or individual AXI channel timing. In particular, busy descriptor writes are ignored by the model; it does not expose an AXI SLVERR response to the guest. Its flat shared-RAM platform justifies `dma-coherent` for that model only. Migration, SMP, IOMMU behavior, byte-sized MMIO and full AXI protocol equivalence are outside the claim.
+
+For P4/P5, distribute the prepared model/environment and ask students to complete one small driver change, explain a failure and interpret the measurements. Rebuilding QEMU, Linux and an RTL Linux platform is not an additional compulsory workload in the 6 ECTS course.
 
 ### Porting the boot contract to Wally
+
+Lab 18 includes an executable **advanced** route: `wally.py prepare`, `compile`, then `run`. It instantiates the real pinned RV64 `wallypipelinedsoc`, the original accelerator RTL and the AHB control adapter. A lane selector connects the 64-bit CPU bus to 32-bit register accesses. Guarded patches in a private exported source copy add accelerator source 20 through the existing PLIC and an uncached PMA policy for the DMA pool; the external Wally checkout remains unchanged.
+
+Its reset ROM at `0x1000` supplies the OpenSBI dynamic-firmware arguments. OpenSBI, the same kernel and initramfs, and a Wally-specific DTB are loaded at explicitly separated addresses. The real CLINT provides the 100 MHz simulation timebase. D-cache is enabled for ordinary RAM, while the PMA checker explicitly excludes the trusted 16 KiB DMA pool from caching. The pool is page/cache-line aligned and has `no-map` in DT; the driver's allocation uses that reserved pool. Barriers still order launch and completed-result reads. The RTL platform makes no `dma-coherent` claim, and the fixture does not provide a snooping interconnect.
+
+Address-map review exposed a concrete integration defect: the upstream GPIO occupies `0x10060000–0x100600ff`. An earlier accelerator mapping at that address allowed two peripherals to answer one request. The accelerator's DMA result was correct, yet software received stale register values through the combined response. The Linux profile now places the accelerator at `0x10080000–0x1008001f` in both QEMU and Wally, preserving the native GPIO. Preparation checks that the entire 4 KiB page is free against the pinned Wally configuration and declared RAM override, preserving an auditable [address map](../../labs/18-linux-accelerator/reference/wally-address-map.json). A one-hot assertion checks every active AHB transfer. The earlier bare-metal and physical dossiers retain their recorded profiles. A correct arithmetic unit does not establish a correct SoC connection.
+
+The runner first executes a short CPU/MMIO/DMA ROM regression on the same compiled RTL. It writes and reads the native GPIO output-value register with output enables held at zero, checks both accelerator register lanes, descriptor readback, DONE/error and the signed-extreme DMA result, then verifies that GPIO state is intact. Its `WALLY_MMIO_SMOKE_PASS` marker belongs to that preflight. Linux then starts in a separate reset run with the actual firmware/kernel/rootfs and requires its own completion markers. This catches a broken control connection before paying for a full RTL Linux boot; GPIO register isolation does not qualify a Linux GPIO driver or external pins.
+
+The control aperture needs its own device attributes too. The original external-memory region is cacheable; mapping registers there without a PMA override could retain descriptors or status in cache. This profile makes the 32-byte MMIO range uncached and non-idempotent and rejects instruction fetch and atomics there. DMA-buffer attributes and register attributes are separate decisions.
+
+The simulation console uses 6,250,000 baud with a 100 MHz UART input (divisor 1), consistently described to firmware and Linux. This reduces serial waiting in RTL simulation; it is not a Nexys Video serial or frequency qualification.
+
+The profile also disables the upstream RV64 configuration's optional Sv48/Sv57 modes and recomputes its derived VPN width, matching the DT's `riscv,sv39`. Keep the RTL parameter overrides and hardware description together; a firmware/kernel probe may otherwise select a translation mode beyond the one the DT declares.
+
+Both environments use the manifest's `pty.legacy_count=0` kernel argument. The shared kernel retains support for 256 legacy PTYs; creating their unused device nodes adds substantial CPU work during RTL boot. Changing a boot argument is still a configuration change: record it in both environments rather than silently comparing different startup workloads.
+
+The same manifest also supplies `initcall_blacklist=plist_test,debug_vm_pgtable`, omitting two boot-time kernel debug self-tests retained by the pinned configuration. This is an accelerator-integration workload, not a qualification of those kernel tests. The model, driver, arithmetic, interrupt, polling and error-path tests remain enabled. Their completion must still be observed before claiming success.
+
+CPU and accelerator access a shared behavioral RAM array through separate simulated ports. This is a functional integration fixture, not a synthesized memory arbiter or DDR subsystem. The observer obtains UART characters from accepted writes of the real CPU. Preparation and successful Verilator compilation do not count as Linux execution: the run stage requires OpenSBI, Linux, driver, userspace-result and final RTL markers. A wall-clock/cycle timeout preserves the last checkpoint and fails the test. Keep the generated advanced report's actual status when describing reproduction.
+
+The advanced run uses the normal application, including IRQ, polling and invalid-argument checks. The extra DMA-error and suppressed-IRQ boots are QEMU model experiments; qualifying the RTL platform's fault recovery requires separate fault injection and evidence.
+
+The preserved advanced run completed the short ROM preflight, booted OpenSBI/Linux, bound the driver and passed all ten numerical cases plus the userspace argument checks. The final RTL marker occurred at **99,362,109 cycles from reset**. This count includes firmware, kernel startup and the whole application; it is not accelerator launch latency. The [Linux UART log](../../labs/18-linux-accelerator/reference/wally-uart.txt), [preflight log](../../labs/18-linux-accelerator/reference/wally-smoke.txt), [advanced report](../../labs/18-linux-accelerator/reference/wally-report.json) and [combined results](../../labs/18-linux-accelerator/reference/results.json) retain the actual evidence and identical software-bundle identities.
+
+These are single **Wally CPU/RTL simulation observations in microseconds**, using the declared 100 MHz timebase:
+
+| Length | Software, IRQ run (µs) | IRQ ioctl (µs) | IRQ driver interval (µs) | Poll ioctl (µs) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 3.03 | 93.70 | 39.23 | 60.31 |
+| 8 | 3.59 | 95.39 | 37.21 | 55.42 |
+| 32 | 7.71 | 89.64 | 33.11 | 59.04 |
+| 128 | 24.61 | 145.78 | 72.89 | 158.59 |
+| 256 | 47.00 | 165.78 | 73.17 | 176.05 |
+
+The fixture's behavioral second RAM port supplies DMA without a synthesized arbiter or DDR timing. These intervals describe this simulated system. They cannot establish a physical-board speedup, a qualified 100 MHz implementation or energy per operation. Compare copies, cold/warm cache effects and interrupt/polling overhead before proposing a change to the accelerator.
 
 Wally is configurable. A Linux-oriented build requires the selected privilege/translation support and instruction features, sufficient RAM, a timer and interrupt path, a console and appropriate memory permissions. An RV32 bare-metal accelerator configuration is not automatically an RV64 Linux configuration. Begin from the pinned source and the actual integrated platform used in the earlier chapters.
 
@@ -365,7 +464,7 @@ Assuming QEMU virt binaries boot Wally unchanged; treating an image checksum as 
 
 ## Try it yourself {#review-boot-software-stack-try .unnumbered .unlisted}
 
-Review the existing Linux UART log. Identify firmware, kernel and PID 1 checkpoints and link them to their recorded image/configuration identities.
+Review the Linux UART logs. Identify firmware, kernel, driver and PID 1 checkpoints and link them to their recorded image/configuration identities. Explain why the timeout test retains DMA buffers and why QEMU timing cannot establish a physical speedup. For the advanced extension, compare the Wally-specific DT and RTL checkpoints with the QEMU report. Explain why correct DMA arithmetic does not establish correct MMIO responses, and why a memory barrier cannot repair overlapping peripheral address decodes.
 
 ## Where this appears in Wally {#review-boot-software-stack-wally .unnumbered .unlisted}
 

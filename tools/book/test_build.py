@@ -50,30 +50,5 @@ class ReleaseSafety(unittest.TestCase):
                 builder.main()
         self.assert_previous_survives()
 
-    def test_transient_windows_directory_lock_is_retried(self):
-        incoming = self.root / 'incoming'
-        incoming.mkdir()
-        (incoming / 'data.txt').write_text('Checked artifact')
-        destination = self.root / 'ready'
-        real_rename = builder.os.rename
-        attempts = []
-        def temporarily_locked(source, target):
-            attempts.append(source)
-            if len(attempts) < 3:
-                raise PermissionError('Temporary bind-mount directory lock')
-            return real_rename(source, target)
-        with patch.object(builder.os, 'rename', side_effect=temporarily_locked), \
-             patch.object(builder.time, 'sleep'):
-            builder.settle_rename(incoming, destination)
-        self.assertEqual(len(attempts), 3)
-        self.assertEqual((destination / 'data.txt').read_text(), 'Checked artifact')
-
-    def test_permanent_directory_lock_is_not_hidden(self):
-        with patch.object(builder.os, 'rename', side_effect=PermissionError('Permanent lock')), \
-             patch.object(builder.time, 'sleep'):
-            with self.assertRaises(PermissionError):
-                builder.settle_rename(self.root / 'incoming', self.root / 'ready')
-
-
 if __name__ == '__main__':
     unittest.main()

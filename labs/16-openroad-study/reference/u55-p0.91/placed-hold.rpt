@@ -1,0 +1,150 @@
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _374_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000 ^ input external delay
+    32   59.14817    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02168    0.00137    0.02137 ^ _220_/B2 (AOI21_X1)
+     1    1.32644    0.00710    0.01659    0.03796 v _220_/ZN (AOI21_X1)
+                     0.00710    0.00001    0.03798 v _374_/D (DFF_X1)
+                                           0.03798   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000   clock uncertainty
+                                0.00000    0.02000   clock reconvergence pessimism
+                                           0.02000 ^ _374_/CK (DFF_X1)
+                                0.00175    0.02175   library hold time
+                                           0.02175   data required time
+-----------------------------------------------------------------------------------------
+                                           0.02175   data required time
+                                          -0.03798   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.01623   slack (MET)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _373_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000 ^ input external delay
+    32   59.14817    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02216    0.00177    0.02177 ^ _210_/B2 (AOI21_X1)
+     1    1.18615    0.00641    0.01628    0.03805 v _210_/ZN (AOI21_X1)
+                     0.00641    0.00001    0.03805 v _373_/D (DFF_X1)
+                                           0.03805   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000   clock uncertainty
+                                0.00000    0.02000   clock reconvergence pessimism
+                                           0.02000 ^ _373_/CK (DFF_X1)
+                                0.00171    0.02171   library hold time
+                                           0.02171   data required time
+-----------------------------------------------------------------------------------------
+                                           0.02171   data required time
+                                          -0.03805   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.01635   slack (MET)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _375_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000 ^ input external delay
+    32   59.14817    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02266    0.00218    0.02218 ^ _232_/B2 (AOI21_X1)
+     1    1.24200    0.00703    0.01650    0.03868 v _232_/ZN (AOI21_X1)
+                     0.00703    0.00001    0.03868 v _375_/D (DFF_X1)
+                                           0.03868   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000   clock uncertainty
+                                0.00000    0.02000   clock reconvergence pessimism
+                                           0.02000 ^ _375_/CK (DFF_X1)
+                                0.00174    0.02174   library hold time
+                                           0.02174   data required time
+-----------------------------------------------------------------------------------------
+                                           0.02174   data required time
+                                          -0.03868   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.01694   slack (MET)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _387_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000 ^ input external delay
+    32   59.14817    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02267    0.00219    0.02219 ^ _367_/B2 (AOI21_X1)
+     1    1.23805    0.00703    0.01649    0.03868 v _367_/ZN (AOI21_X1)
+                     0.00703    0.00001    0.03869 v _387_/D (DFF_X1)
+                                           0.03869   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000   clock uncertainty
+                                0.00000    0.02000   clock reconvergence pessimism
+                                           0.02000 ^ _387_/CK (DFF_X1)
+                                0.00174    0.02174   library hold time
+                                           0.02174   data required time
+-----------------------------------------------------------------------------------------
+                                           0.02174   data required time
+                                          -0.03869   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.01694   slack (MET)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _376_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000 ^ input external delay
+    32   59.14817    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02274    0.00224    0.02224 ^ _242_/B2 (AOI21_X1)
+     1    1.22516    0.00702    0.01646    0.03870 v _242_/ZN (AOI21_X1)
+                     0.00702    0.00001    0.03871 v _376_/D (DFF_X1)
+                                           0.03871   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.02000    0.02000   clock uncertainty
+                                0.00000    0.02000   clock reconvergence pessimism
+                                           0.02000 ^ _376_/CK (DFF_X1)
+                                0.00174    0.02174   library hold time
+                                           0.02174   data required time
+-----------------------------------------------------------------------------------------
+                                           0.02174   data required time
+                                          -0.03871   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.01697   slack (MET)
+
+

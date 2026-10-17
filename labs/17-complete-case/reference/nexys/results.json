@@ -1,0 +1,230 @@
+{
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "profile_sha256": "dbf32333b677f8628fb72566a7d9f89c50892e5fd63d6568d31e4d21d7779662",
+  "part": "xc7a200tsbg484-1",
+  "scope": "same accelerator plus serial boundary fixture; no Wally, DDR or physical programming",
+  "resources": {
+    "BUFFER": {
+      "available": 480,
+      "used": 0
+    },
+    "BUFGCTRL": {
+      "available": 32,
+      "used": 1
+    },
+    "BUFG_BUFG": {
+      "available": 32,
+      "used": 0
+    },
+    "BUFHCE_BUFHCE": {
+      "available": 120,
+      "used": 0
+    },
+    "BUFIO_BUFIO": {
+      "available": 40,
+      "used": 0
+    },
+    "CARRY4": {
+      "available": 33650,
+      "used": 102
+    },
+    "DSP48E1_DSP48E1": {
+      "available": 740,
+      "used": 0
+    },
+    "FIFO18E1_FIFO18E1": {
+      "available": 365,
+      "used": 0
+    },
+    "HARD0": {
+      "available": 3960,
+      "used": 0
+    },
+    "IDELAYCTRL_IDELAYCTRL": {
+      "available": 10,
+      "used": 0
+    },
+    "IDELAYE2_IDELAYE2": {
+      "available": 500,
+      "used": 0
+    },
+    "ILOGICE2_IFF": {
+      "available": 500,
+      "used": 0
+    },
+    "ILOGICE3_IFF": {
+      "available": 500,
+      "used": 0
+    },
+    "ILOGICE3_ZHOLD_DELAY": {
+      "available": 500,
+      "used": 0
+    },
+    "INVERTER": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33M_INBUF_EN": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33M_OUTBUF": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33M_TERM_OVERRIDE": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33S_INBUF_EN": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33S_OUTBUF": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33S_TERM_OVERRIDE": {
+      "available": 240,
+      "used": 0
+    },
+    "IOB33_INBUF_EN": {
+      "available": 500,
+      "used": 6
+    },
+    "IOB33_OUTBUF": {
+      "available": 500,
+      "used": 1
+    },
+    "IOB33_TERM_OVERRIDE": {
+      "available": 500,
+      "used": 0
+    },
+    "ISERDESE2_ISERDESE2": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE2_MISR": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE2_OUTFF": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE2_TFF": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE3_MISR": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE3_OUTFF": {
+      "available": 500,
+      "used": 0
+    },
+    "OLOGICE3_TFF": {
+      "available": 500,
+      "used": 0
+    },
+    "OSERDESE2_OSERDESE2": {
+      "available": 500,
+      "used": 0
+    },
+    "PAD": {
+      "available": 1460,
+      "used": 7
+    },
+    "PLLE2_ADV_PLLE2_ADV": {
+      "available": 10,
+      "used": 0
+    },
+    "PSEUDO_GND": {
+      "available": 69165,
+      "used": 1
+    },
+    "PSEUDO_VCC": {
+      "available": 69165,
+      "used": 1
+    },
+    "PULL_OR_KEEP1": {
+      "available": 980,
+      "used": 0
+    },
+    "RAMB18E1_RAMB18E1": {
+      "available": 730,
+      "used": 0
+    },
+    "RAMB36E1_RAMB36E1": {
+      "available": 365,
+      "used": 0
+    },
+    "RAMBFIFO36E1_RAMBFIFO36E1": {
+      "available": 365,
+      "used": 0
+    },
+    "SELMUX2_1": {
+      "available": 102950,
+      "used": 0
+    },
+    "SLICE_FFX": {
+      "available": 269200,
+      "used": 916
+    },
+    "SLICE_LUTX": {
+      "available": 269200,
+      "used": 2148
+    }
+  },
+  "synthesis_resources": {
+    "accelerator": {
+      "LUT4": 120,
+      "LUT5": 360,
+      "LUT2": 461,
+      "LUT6": 174,
+      "LUT3": 199,
+      "INV": 7,
+      "CARRY4": 100,
+      "FDRE": 495
+    },
+    "fixture": {
+      "LUT2": 2,
+      "INV": 1,
+      "LUT4": 206,
+      "FDRE": 421,
+      "LUT6": 1,
+      "IBUF": 6,
+      "OBUF": 1,
+      "BUFG": 1
+    }
+  },
+  "fmax_mhz": 85.41898345947266,
+  "requested_mhz": 100,
+  "setup_target_met": false,
+  "power_w": null,
+  "power_status": "not_estimated: no characterized FPGA power estimator in this flow",
+  "board_programming": "not_run",
+  "bitstream": "FASM generated; binary .bit conversion not executed",
+  "timing_scope": "experimental nextpnr-Xilinx model; no vendor STA/CDC or board validation",
+  "packed_lut_types": {
+    "LUT1": 625,
+    "LUT5": 360,
+    "LUT4": 326,
+    "LUT2": 463,
+    "LUT3": 199,
+    "LUT6": 175
+  },
+  "mapped_totals": {
+    "accelerator": {
+      "lut_primitives": 1314,
+      "ff_primitives": 495,
+      "carry4_primitives": 100
+    },
+    "fixture": {
+      "lut_primitives": 209,
+      "ff_primitives": 421,
+      "carry4_primitives": 0
+    }
+  }
+}

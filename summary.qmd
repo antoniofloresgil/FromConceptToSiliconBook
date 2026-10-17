@@ -4,6 +4,10 @@ The final outcome of Hardware System Design is a reusable IP release whose claim
 
 Use this chapter at the final demonstration and individual defence. The detailed specification and proposed assessment rubric remain in @sec-hsd-coursework; the executable reference is explained in @sec-executable-project. The questions below assess reasoning about the student's own changes. Running the supplied reference unchanged establishes environment readiness rather than an independent design contribution.
 
+Use @sec-complete-case to rehearse a complete evidence review. It joins one locked dot-product RTL release to numerical/formal checks, real Wally firmware, FPGA placement/routing and ASIC GDSII, with actual results and physical visuals. Explain why its functional baseline is accepted while the 100 MHz FPGA and timing-qualified ASIC releases remain unaccepted. Its power and frequency estimates retain their block/model boundaries; no complete-SoC physical or energy claim is inherited.
+
+Students without an FPGA can complete the demonstration with the real-Wally RTL platform: show their firmware-controlled accelerator, polling/interrupt completion, result checks and cycle comparison. Present their synthesis/constraint analysis and generated or instructor-provided implementation-report review for P5, together with the remaining board bring-up plan. Use the [alternative evidence map](labs/NO-FPGA.md). Both routes have the same rubric opportunities; programming, physical IO and DDR validation stay unexecuted where no hardware was available.
+
 ## Concepts: what has actually been demonstrated?
 
 ### Follow one job across the complete system

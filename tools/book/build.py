@@ -6,8 +6,8 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-import time
 from pypdf import PdfReader
+from publish import publish_release
 
 ROOT = Path(__file__).resolve().parents[2]
 EXCLUDED = {'.git', '_book', '.quarto', '.quarto-check', '.vscode', 'downloads',
@@ -21,19 +21,6 @@ def digest(path):
 
 def command(args, cwd=ROOT):
     return subprocess.check_output(args, cwd=cwd, text=True, stderr=subprocess.STDOUT).strip()
-
-
-def settle_rename(source, destination):
-    # Windows bind mounts can retain directory handles briefly after a large
-    # copy. Retry only permission errors; never hide a permanently failed move.
-    for attempt in range(20):
-        try:
-            source.rename(destination)
-            return
-        except PermissionError:
-            if attempt == 19:
-                raise
-            time.sleep(0.5)
 
 
 def main():
@@ -104,16 +91,8 @@ def main():
         extra_tex = Path('/opt/book-extra-tex.txt')
         manifest['extra_tex_packages'] = extra_tex.read_text() if extra_tex.exists() else 'not-recorded'
         (output / 'build-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
-        # Keep the previous release intact on a render/validation failure.
-        release = ROOT / '_book' / 'release'
-        incoming = ROOT / '_book' / 'release-incoming'
-        incoming.parent.mkdir(parents=True, exist_ok=True)
-        if incoming.exists():
-            shutil.rmtree(incoming)
-        shutil.copytree(output, incoming)
-        if release.exists():
-            shutil.rmtree(release)
-        settle_rename(incoming, release)
+        # Preserve previous/open PDFs, including Windows file-sharing locks.
+        release = publish_release(output, ROOT / '_book')
         print(f'Validated release: {release}; {len(pdf.pages)} PDF pages; revision {revision}')
 
 

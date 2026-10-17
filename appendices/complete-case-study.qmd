@@ -1,0 +1,238 @@
+# Complete Case Study: From RTL Specification to an Implemented SoC {#sec-complete-case}
+
+This case follows one component from its numerical specification to an executable Wally system and physical implementations in two technologies, including two FPGA targets. The component is the book's AXI/DMA signed dot-product accelerator. Its RTL is not replaced by the accumulator used to introduce implementation tools. The same source bytes and baseline parameters are used for independent checking, Wally firmware integration, FPGA placement/routing and ASIC layout generation.
+
+The implementation boundary matters. **The complete Wally system is exercised in RTL simulation; the accelerator IP is physically implemented as a block.** ECP5 uses an out-of-context implementation, Nexys Video adds a serial boundary fixture and real board pin constraints, and ASIC produces a core block without pads. No result is a physically qualified complete Wally SoC. This is a reproducible engineering case with actual implementation results and explicit remaining obligations, not a claim of a manufactured chip or a board-running SoC.
+
+The runnable project walkthrough in @sec-executable-project explains the firmware platform. This appendix makes it the book's common thread: every stage names its configuration, inputs, observed result and next decision. [Lab 17](../labs/17-complete-case/README.md) supplies the common manifest, stage runners, result collector, report bundle and visualization scripts. Students can reproduce the tools or analyse the supplied evidence without an FPGA or fabricated ASIC.
+
+## One release identity across the journey
+
+The [common manifest](../labs/17-complete-case/manifest.json) identifies release `dotproduct-256-2026.10`. It records individual SHA-256 identities for the three IP RTL modules, the AHB control adapter and the firmware. This content-addressed RTL revision is the common identity even when different tools flatten hierarchy or assign different gate names. The report collector rejects a mismatched source, manifest, seed, failed stage command or modified recorded artifact.
+
+| Shared item | Baseline contract |
+| --- | --- |
+| Physical IP top | `dotproduct_axi` |
+| Arithmetic / sequencing / control | `dotproduct_mac`, `dotproduct_engine`, `dotproduct_axi` |
+| Legal baseline maximum | `MAX_LENGTH=256` |
+| Trusted DMA window | `[0x80008000, 0x8000c000)` |
+| Clock and reset | Single clock; active-high synchronous coordinated reset |
+| Requested implementation period | 10 ns / 100 MHz |
+| Reproduction seed | 2026 |
+| Wally dependency | Fork `antoniofloresgil/cvw`, revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` |
+| Firmware control slot | `0x10060000` |
+
+The manifest also records **declared stage differences**. The reuse simulation exercises maximum lengths 256 and 16. Bounded control checking uses maximum 16 with a 20-cycle bound; the engine proof uses one pair and a 24-cycle bound. Those checks use the same RTL revision, but they do not prove every baseline job unboundedly. FPGA and ASIC both implement maximum 256. The physical targets and I/O assumptions necessarily differ and are separate named profiles; a shared manifest does not pretend that two technologies have the same constraints or cost units.
+
+The manifest fixes the design and its interpretation. Each tool report separately records command lines, image/tool identity, recipe hashes and output hashes. A changed RTL file requires a new release and new evidence. Editing a manifest hash to match a changed file does not transfer the old proof or implementation result: the old stage's manifest fingerprint then no longer matches.
+
+## The book itinerary for this component
+
+| Stage | Concepts reused from the book | Concrete evidence in this case |
+| --- | --- | --- |
+| Specification/model | Width, signedness, interfaces and IP requirements | Exact integer oracle and register/DMA contract |
+| RTL | State, arithmetic, reset and ready/valid ownership | Three reusable SystemVerilog modules |
+| Independent verification | Scoreboards, accepted transactions and formal scope | All-length tests, error/security/reset checks, bounded assertions, DONE witness and rejected mutations |
+| Wally integration | AHB/AXI, memory ownership, interrupts and firmware | Real Wally executes polling and interrupt firmware and checks result words |
+| FPGA | Technology mapping, dedicated arithmetic and timing | ECP5 and Nexys Video mapping/routing reports, actual placement maps and explicit boundary costs |
+| ASIC | Views, floorplan, CTS, routing, extraction and stream-out | Nangate45 routed block, extracted STA, power model, GDSII readback and GUI exports |
+| Engineering decision | Controlled comparison, reproducibility and IP release | Joined result dossier, limitations and an acceptance decision |
+
+Read the relevant chapters at each boundary rather than attempting every extension within the 6 ECTS course. P1–P4 establish the IP, checks and firmware. P5 uses the physical reports and release analysis within its existing workload. Complete-core formal refinement, physical integration of Wally and memories, board bring-up and fabrication remain extensions.
+
+## Stage 1: specification and an independent reference model
+
+The job computes
+
+$$
+r=\sum_{i=0}^{N-1} a_i b_i,\qquad 1\le N\le256.
+$$
+
+Each operand occupies one 32-bit memory word. Its low 16 bits represent a signed two's-complement integer; the upper 16 bits are ignored. Products and the accumulated result are exact within a signed 64-bit result. There is no rounding, saturation or fixed-point scaling. The output is two little-endian words, low word first, at an eight-byte-aligned destination.
+
+The independent Python generator explicitly decodes the signed low half-word and accumulates with unrestricted integers. Firmware uses a separate C derivation and compares both result words. Neither checker should copy the RTL's state sequencing or obtain its expected result from the hardware multiplier being evaluated. Signed extrema, noisy upper bits and a sum exceeding 32 bits make the numerical requirements observable.
+
+The control contract includes more than the equation. A trusted static window bounds every source/result range. Validation rejects zero/excessive length, bad alignment, address wrap and destination/source overlap before any DMA request. The sources may overlap each other because both are read-only. DONE means both result writes received successful responses; reset or a write error can leave a partial result, which software must not accept as successful.
+
+An architectural decision follows immediately: the two 32-bit writes are not atomic. The software-visible status/result protocol is part of correctness, not an optional optimization around a multiplier.
+
+## Stage 2: SystemVerilog RTL and reusable boundaries
+
+The arithmetic module computes a signed 16-by-16 product and adds its sign-extended value to a 64-bit accumulator. The engine sequences two reads per pair and two final writes. The AXI wrapper owns independent control channels, latches accepted descriptors and enforces the trusted range. The AHB-to-AXI4-Lite adapter is a platform component, outside the physical IP boundary used for the area figures below.
+
+This separation exposes different engineering questions. Does the multiplier interpret the sign bit correctly? Does the engine use an accepted response exactly once? Does the wrapper prevent a configuration write from changing a running job? Does the bridge capture AHB's following data phase? Giving each question its own observation point reduces the chance that one full-system PASS hides a local defect.
+
+The first baseline keeps one DMA operation outstanding and uses single-beat 32-bit AXI transfers. This is intentionally conservative. A job consumes exactly `2*N` accepted operand reads and two accepted result writes. Adding bursts changes response capacity, error draining and ordering obligations; it is a new checked design configuration rather than a free performance switch.
+
+## Stage 3: independent tests, bounded formal checks and counterexamples
+
+The recorded standalone run passes every legal length at maximum 256 and repeats at maximum 16. Directed tests exercise signs and wide accumulation, independent AW/W arrivals, byte strobes, response stalls, busy rejection, invalid descriptors, interrupt acknowledgement, read/write faults and reset/restart. Seeded memory waits vary legal response timing, while a memory scoreboard checks actual effects.
+
+The bounded tasks constrain initial reset and retain explicit environment/design obligations. Control checks run for 20 cycles and engine checks for 24 cycles. A reachable DONE witness demonstrates that the engine completion case is admitted. These are bounded results; they do not inherit the FIFO's separate induction/equivalence result from @sec-formal-verification.
+
+The [negative-control results](../labs/17-complete-case/reference/negative-results.json) record two deliberately faulty copies of the same reference IP. An unsigned multiplier is rejected by numerical checking. Premature DONE is rejected by simulation and produces a formal counterexample. The copies live only under ignored build directories. The reference RTL remains unchanged, and the repaired baseline retains its passing results.
+
+This closes the stated numerical/protocol test obligations, not all verification. The dossier still lists project-specific RTL-to-mapped-netlist equivalence, broader functional coverage and an unbounded protocol proof as unexecuted. Source identity is necessary for a meaningful claim, but is not itself a correctness proof for a synthesis transformation.
+
+## Stage 4: real Wally SoC integration
+
+The same IP and its control adapter are instantiated beside the real pinned `wallypipelinedcore`. Clang/LLD build the RV32IM/Zicsr firmware, an ELF loader initializes simulated memory, and Verilator executes the actual processor RTL. There is no behavioral CPU replacement. The platform in @fig-executable-project separates CPU control, DMA traffic and completion interrupts.
+
+The derived Wally configuration disables caches and internal instruction/data memories and uses 64 KiB of shared simulated RAM. Code, stack and result-mailbox bookkeeping are outside the trusted DMA buffer window. Firmware transfers buffer ownership with the documented fences, launches work and validates both result words. A direct single-source `MExtInt` route exercises the real trap handler, IP acknowledgement and `mret`; it is not a PLIC demonstration.
+
+The following results were extracted from the completed firmware run with the manifest seed. Both alternatives use the same input dataset and numerical contract.
+
+| N | Software cycles | Accelerator end-to-end cycles | Cycle speedup |
+| ---: | ---: | ---: | ---: |
+| 1 | 90 | 114 | 0.79× |
+| 8 | 664 | 195 | 3.41× |
+| 32 | 2632 | 384 | 6.85× |
+| 128 | 10504 | 1275 | 8.24× |
+| 256 | 21000 | 2490 | 8.43× |
+
+The [machine-readable cycle table](../labs/17-complete-case/reference/cycles.csv) preserves the exact values. The complete firmware run reaches its PASS mailbox after 53,153 simulated cycles, including initialization, all polling jobs, an interrupt job and invalid-descriptor handling. That total is not a latency measurement for one dot product.
+
+The accelerator wins on longer jobs and loses on the single-pair case because setup/completion overhead matters. Its reported interval includes register setup, DMA, polling and result access. The CPU memory is zero-wait in this fixture while DMA has modeled waits; the shared array is not a synthesized arbitration fabric. These are measurements in the documented cycle model, not board throughput or whole-chip energy.
+
+Do not multiply the 8.43× cycle ratio by a physical IP clock number to claim a measured SoC speedup. The complete processor, memories, interconnect and clock distribution have not been physically implemented together in either result below.
+
+## Stage 5: FPGA mapping, placement, routing and frequency
+
+The FPGA route uses the same maximum-256 IP with Yosys `synth_ecp5` and nextpnr for an ECP5 `LFE5U-25F`, package `CABGA381`, speed grade 6. The dedicated multiplier maps into one DSP. The official OSS CAD Suite release dated 14 October 2026 is downloaded by a supplied Dockerfile with a checked archive SHA-256 [@caseOssSuite]. The report identifies Yosys `0.70+16` and nextpnr `0.11.1-63-g44a6c739`; these are different technology tools from the ASIC mapping environment.
+
+The IP is routed **out of context**: no board I/O buffers, package pin assignments or complete SoC are present. The mode also omits the normal board clock-distribution context. nextpnr produces a post-route JSON and timing/resource report, not a programmable board bitstream. The broad AXI ports remain a block interface. This avoids disguising an arbitrary pin mapping as a Nexys Video deployment and lets students without hardware study a real routed implementation [@caseNextpnr].
+
+| Resource/result | Extracted FPGA result |
+| --- | ---: |
+| `TRELLIS_COMB` units | 1,092 / 24,288 (4.50%) |
+| `TRELLIS_FF` registers | 469 / 24,288 (1.93%) |
+| `MULT18X18D` blocks | 1 / 28 |
+| `DP16KD` block RAM | 0 / 56 |
+| Requested clock | 100 MHz |
+| Post-route estimated Fmax | **86.99 MHz** |
+| 100 MHz setup target | **Failed** |
+| FPGA power | Not estimated by the supplied tool flow |
+
+`TRELLIS_COMB` is the backend's LUT/carry resource accounting, not a square-micrometre area. Zero BRAM does not mean that the complete workload needs no memory: operand/result RAM belongs to the integration platform, outside this IP implementation. The [actual timing/utilization JSON](../labs/17-complete-case/reference/fpga/timing.json) retains the full reported resource categories and critical paths.
+
+The runner explicitly allows a timing failure so that the routed design and reports are retained. It records tool completion separately from `setup_target_met=false`. That option must not become permission to accept an unmet architectural clock. An initial engineering response is to examine the critical path and evaluate a lower target with margin or an RTL change, then repeat the relevant integration checks.
+
+![Actual occupied ECP5 BEL coordinates extracted from the final nextpnr routed JSON. Blue intensity counts combinational and register BELs sharing a coordinate; the red diamond marks the DSP BEL anchor. The view is the occupied coordinate window, not a drawing of the complete FPGA or routed wires.](../figures/complete-case-fpga.png){#fig-complete-case-fpga fig-alt="Actual post-route ECP5 placement map of the manifest-locked dot-product accelerator" width=100%}
+
+`fpga_plot.py` derives this spatial map from `NEXTPNR_BEL` attributes and checks every plotted resource has a placement. It preserves the source JSON hash, plot-script hash, resource counts and Matplotlib version. The tool's raw placement SVG is also generated during reproduction. The image demonstrates actual implementation placement without claiming to show physical transistor dimensions or a board's electrical connections.
+
+### Nexys Video: the same IP on the book's Artix-7 {#sec-nexys-complete-case}
+
+The additional [Nexys Video profile](../labs/17-complete-case/nexys-profile.json) selects the board's actual `xc7a200tsbg484-1` rather than translating ECP5 counts into Artix-7 numbers. It binds the unchanged common RTL/firmware manifest to a separate wrapper, pin constraints and implementation recipe. Wally's pinned nextpnr-Xilinx revision is `8f178fc6a6d4dfbc57bef66c3ccff34d558047d5`; its chip database is generated specifically for this part. Yosys maps with `synth_xilinx -arch xc7 -abc9 -nodsp`, matching the Wally board recipe. The multiplier therefore uses LUT/carry logic.
+
+This legacy XC7 backend automatically inserts physical IO buffers and does not offer the ECP5 out-of-context switch. Exposing every AXI signal as an arbitrary package pin would not describe a Nexys Video integration. The supplied `nexys_video.sv` therefore keeps the entire accelerator behind a **serial boundary fixture**: 101 input bits are shifted in and applied as an atomic snapshot; 206 output bits can be captured and shifted out. The fixture adds input/output registers, synchronized controls and a BUFG. Its separate simulation checks serial transfer, actual AXI register write/read, capture/shift and reset. The fixture is not an automatic AXI master, shared RAM or Wally firmware system.
+
+Seven physical IOs use the board's actual pin/voltage assignments: R4 for the 100 MHz oscillator, G4 for active-low reset, E22/F21/G21/G22 for four switches and T14 for LED0. Switches supply data, shift tick, apply and capture; LED0 displays the current output bit. The [XDC](../labs/17-complete-case/nexys-video.xdc) follows Digilent's master constraints [@caseNexysXdc]. Input data/controls need a stable synchronization interval; switch bounce is not filtered, and physical interaction has not been validated. The IP continues clocking between snapshots, so this fixture must not be mistaken for a cycle-accurate memory responder or a complete accelerator demo application.
+
+The [completed Nexys dossier](../labs/17-complete-case/reference/nexys/results.json) contains the following measured results. The timing/resource result belongs to **accelerator plus fixture**. The synthesis report separates their mapped primitives by hierarchy before flattening.
+
+| Nexys Video result | Extracted value |
+| --- | ---: |
+| Accelerator mapped LUT2–LUT6 primitives | 1,314 |
+| Accelerator mapped FF / CARRY4 primitives | 495 / 100 |
+| Additional fixture mapped LUT / FF primitives | 209 / 421 |
+| Complete post-pack `SLICE_LUTX` / `SLICE_FFX` counts | 2,148 / 916 |
+| Complete post-pack CARRY4 / DSP / BRAM | 102 / 0 / 0 |
+| Physical IOs / global clock buffers | 7 / 1 |
+| Requested clock | 100 MHz |
+| Post-route estimated Fmax | **85.42 MHz** |
+| 100 MHz target | **Failed** |
+| Power | Not estimated |
+
+The backend's `SLICE_LUTX` count is not interchangeable with a vendor LUT6 utilization figure. Its packed design contains 625 `LUT1` cells in addition to the 1,523 mapped LUT2–LUT6 primitives; packing introduces inversion/feed-through logic. Its capacity list also enumerates alternative BELs. Use the actual reported resource categories, not an inferred percentage against a mismatched capacity. A direct LUT-area comparison against the bare ECP5 IP would also mix implementation boundaries.
+
+Likewise, the two FPGA Fmax figures compare different mappings and boundaries: ECP5 uses a DSP and no board fixture, whereas this XC7 run uses LUT arithmetic and includes the fixture. They do not establish an intrinsic speed ranking between the FPGA families.
+
+![Actual Nexys Video Artix-7 placement after routing, including the serial boundary fixture. Site locations are translated through the pinned Project X-Ray tile grid; the right panel crops the dense logic region. The image shows placed resources, not routed wires or a physically observed board.](../figures/complete-case-nexys.png){#fig-complete-case-nexys fig-alt="Actual post-route placement of the dot-product accelerator and serial fixture on the Nexys Video XC7A200T" width=100%}
+
+The [routing/timing log](../labs/17-complete-case/reference/nexys/command-04.txt) reports a path from registered `operand_a` through the LUT multiplier and the long 64-bit carry chain to a `next_sum` capture register. Its rounded breakdown is 4.3 ns logic plus 7.4 ns routing, approximately 11.7 ns total. The clock target therefore fails even though the design occupies only a small part of the device. Inspect the carry-chain column in the placement map and the per-net path report before proposing a pipelined product/add operation. That change would also require revisiting engine state, latency and reset/error regressions under a new release.
+
+An initial DSP-enabled run failed during routing of the DSP's constant `MULTSIGNIN` connection. Its [preserved failure log](../labs/17-complete-case/reference/nexys/dsp-attempt-routing.txt) is evidence of a compatibility limitation of this tool/configuration, not evidence that the board lacks DSPs. The completed run uses `-nodsp`, as does the documented Wally board build. The original RTL remains unchanged.
+
+nextpnr writes routed JSON, timing/utilization JSON and FASM. Binary `.bit` conversion and physical programming are unexecuted. The experiment does not validate vendor STA, CDC, board switching behavior or electrical operation at 100 MHz. In particular, the direct 100 MHz board clock must not be used to present this timing-failing result as a working deployment. A lower-clock candidate needs an actual clock-generation change and fresh implementation evidence, not merely a smaller `--freq` argument. FPGA power remains unestimated.
+
+The complete Wally-on-Nexys integration remains a separate extension: it requires the AHB control adapter, an arbitrated shared-memory/DMA fabric, wrapper/reset integration and firmware placement. Neither an ECP5 block report nor the serial fixture proves that full-SoC board integration.
+
+## Stage 6: ASIC mapping through GDSII
+
+The ASIC route maps the identical IP source and parameters to Nangate45 typical cells using Yosys 0.60, then invokes direct OpenROAD Tcl in the recorded ORFS image. This is the same physical-design engine family used in @sec-openroad-study, but the implemented netlist here is the full accelerator IP, not the introductory accumulator.
+
+The manifest profile requests a 10 ns clock and 45% core utilization. Its SDC states 100 ps uncertainty, 2 ns maximum / 0.2 ns minimum input delays, 2 ns maximum / 0 ns minimum output delays, 50 ps input transition and 5 fF output loads. Mapping uses actual tie cells; the physical flow creates rows and pins, a power grid, placement, a clock tree, global routing and detailed routing. OpenRCX extracts parasitics, which are written to SPEF and imported before final STA and power analysis.
+
+KLayout then reads the routed DEF with the matching LEF/layer mapping, merges the actual standard-cell GDS shapes and writes `dotproduct_axi.gds`. The stream-out script rejects empty unresolved cells and reopens the GDS to check the expected top-level hierarchy. This establishes a generated/readable layout with resolved cell geometry. It does not perform foundry DRC/LVS or prove that the layout implements the intended logic.
+
+![Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator.](../figures/complete-case-asic.png){#fig-complete-case-asic fig-alt="Actual routed Nangate45 physical implementation of the same dot-product accelerator" width=85%}
+
+![Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions.](../figures/complete-case-asic-critical.png){#fig-complete-case-critical fig-alt="Critical path highlighted in the actual OpenROAD dot-product implementation" width=85%}
+
+![Actual clock-tree topology from the routed accelerator. This clock network belongs to the accelerator block and does not include Wally or a chip-level clock tree.](../figures/complete-case-clocktree.png){#fig-complete-case-clocktree fig-alt="Clock-tree viewer export for the physically implemented dot-product IP" width=95%}
+
+| Geometry/timing result | Extracted ASIC result |
+| --- | ---: |
+| Standard-cell area reported by OpenROAD | **7,355 µm²** |
+| Core area | **15,743.21 µm²** |
+| GDS bounding box | 136.5 × 136.5 µm |
+| Requested clock | 100 MHz |
+| Extracted setup slack | **+4.04594 ns** |
+| Extracted hold slack | **−0.03355 ns** |
+| Setup-only limiting-period estimate | 5.95406 ns / approximately **167.95 MHz** |
+| Electrical checks | Slew/capacitance violations remain |
+| Detailed-router DRC report | Empty final report for that router's checks |
+| Full physical qualification | Open |
+
+The setup-only limit is `1000 / (10 − 4.04594)` MHz under the unchanged block budgets, single timing corner and extracted geometry. It is **not a validated operating Fmax**: hold is negative, electrical limits are violated, and neither multi-corner nor complete-SoC timing has closed. Large slew violations also limit confidence in a timing extrapolation outside characterized operating conditions. A positive setup number alone does not make this an accepted implementation.
+
+The [setup report](../labs/17-complete-case/reference/asic/routed-setup.rpt), [hold report](../labs/17-complete-case/reference/asic/routed-hold.rpt), [electrical report](../labs/17-complete-case/reference/asic/routed-limits.rpt) and [GDS readback record](../labs/17-complete-case/reference/asic/gds-readback.json) provide the evidence behind the table. The GDS contains a block boundary, not pads, package or complete SoC geometry. It uses a teaching/reference technology rather than a fabrication qualification.
+
+## Power estimates and the meaning of consumption
+
+The [ASIC power report](../labs/17-complete-case/reference/asic/power.rpt) is generated at the requested 100 MHz with `set_power_activity -global -activity 0.1`. It uses the Liberty power models, propagated clock and post-route parasitics. Activity is vectorless; no VCD/SAIF from the Wally job has been annotated. The figures are estimates for this block/model, not a current measurement or whole-system power budget.
+
+| Power component | ASIC estimate at 100 MHz |
+| --- | ---: |
+| Internal cell power | 0.442 mW |
+| Net switching power | 0.256 mW |
+| Leakage | 0.159 mW |
+| Total | **0.857 mW** |
+| Clock-group contribution, included in total | approximately 0.223 mW / 26.1% |
+
+The clock contribution is already part of the total and must not be added twice. The power estimate is evaluated at 100 MHz, not at the setup-derived 167.95 MHz limit. No energy-per-dot-product claim follows from multiplying this vectorless block power by the virtual SoC cycle counts: those observations have different activity, memory and implementation boundaries.
+
+The supplied FPGA flow has no characterized device power estimator. Its result therefore records `power_w=null` and an explicit reason. A complete FPGA consumption experiment needs the chosen device/voltage/temperature, clock networks, I/O loads and measured or annotated switching activity with a suitable estimator or board measurement. Do not infer FPGA watts from LUT counts or copy the ASIC power figure into that column.
+
+## The joined result and engineering decision
+
+The [joined dossier](../labs/17-complete-case/reference/results.json) connects all four stages to the common release. Its result collector checks actual source/artifact identities and expected checker completions before extracting metrics. The accompanying [inventory](../labs/17-complete-case/reference/inventory.json) records preserved-report and figure hashes. Large routed JSON/ODB/SPEF/GDS files are generated by reproduction and identified by their report hashes; they are not silently reconstructed from the compact report bundle.
+
+| Acceptance question | Decision supported by this release |
+| --- | --- |
+| Does the specified arithmetic/control/DMA work within the tested scope? | Yes: independent tests, bounded checks, negative controls and real-Wally result checks pass |
+| Is acceleration always beneficial? | No: N=1 loses; the measured longer-job cycle ratios improve within the stated fixture |
+| Do the FPGA implementations meet the requested 100 MHz? | No: ECP5 reports 86.99 MHz; Nexys Video plus fixture reports 85.42 MHz |
+| Is the ASIC block routed and streamable to GDSII? | Yes, with resolved cell geometry/readback; physical qualification remains open |
+| Is ASIC timing closed? | No: positive setup coexists with negative hold and electrical violations |
+| Is power known for both technologies? | ASIC has a vectorless estimate; FPGA consumption remains unestimated |
+| Has a complete Wally SoC been physically qualified? | No; integration here is executable RTL simulation |
+
+A defensible decision is to retain the functional IP as a verified baseline while declining a 100 MHz FPGA release and a timing-qualified ASIC release. For FPGA, inspect the critical path and compare an explicitly constrained lower-clock candidate against an RTL change. For ASIC, repair electrical fanout/slew and hold before treating a setup-frequency extrapolation as a usable clock. Every repair needs fresh correctness and physical evidence.
+
+The workload data suggest a separate architectural experiment: reduce per-job setup or DMA transaction overhead for short vectors. Bursts/concurrency may improve long jobs but add protocol/error obligations. A faster multiplier alone may not address the observed software-visible bottleneck. A power decision needs workload-derived switching and a full-system boundary before claiming energy savings.
+
+None of those proposed changes is presented as an executed repair in this release. Preserve the baseline, change one independent factor, state the expected benefit and regression risk, then measure the new candidate under a new manifest. This is the connection from specification to implementation: the result is a reviewable engineering decision, including an explicit decision not to accept an implementation with open requirements.
+
+## Reproduction and student deliverables
+
+The Linux continuation in @sec-linux-accelerator and [Lab 18](../labs/18-linux-accelerator/README.md) adds a QEMU device model, Device Tree, kernel driver, reserved DMA pool, IRQ/polling and userspace tests, plus a separate advanced real-Wally RV64 RTL platform. It retains this accelerator's source revision but declares a new Linux DMA window and CPU/interrupt profile. Both Linux environments map the accelerator at `0x10080000`, preserving Wally's native GPIO at `0x10060000`; the firmware slot in the historical profile above remains part of its recorded configuration. Its emulator timings and RTL boot evidence do not replace the bare-metal or physical results in this appendix.
+
+Follow [Lab 17](../labs/17-complete-case/README.md) for Linux/WSL and PowerShell commands. It uses the existing unit-lab image for tests/Wally, a SHA-checked OSS CAD Suite image for FPGA, the recorded ORFS image for ASIC, and optional Matplotlib for regenerating the placement map. Building/acquiring environments needs network; stage execution is offline. The Wally clone must contain the pinned fork revision. Each stage keeps a separate namespace and refuses to overwrite existing physical results.
+
+The complete case remains outside the nine automatic `run all` entries. CI checks the preserved common-release dossier without rerunning large physical tools on every book build. The existing executable lab/firmware tests remain separate validation obligations. Reproducing a routed block is not a substitute for explaining its contract and failures.
+
+For the final defence, submit the common manifest, requirement-to-evidence map, independent checks and one interpreted counterexample; reconstruct a CPU control transaction, a DMA response and interrupt return; present the two implementation visuals and the area/resource, timing and power tables; finally justify the release decision and the next experiment. Mark every value by design boundary, model, corner and actual execution status. The same evidence-based assessment is available without buying hardware.
+
+The remaining product work includes a synthesized memory/arbitration fabric, full Wally physical integration, board I/O/clock/reset validation, project-specific equivalence, ASIC hold/electrical repair, manufacturing/foundry checks and workload-calibrated energy measurements. Those limits do not weaken the case study: they identify exactly which conclusions its evidence supports and what the next designer must still establish.

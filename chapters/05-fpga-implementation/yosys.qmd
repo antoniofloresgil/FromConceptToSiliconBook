@@ -211,6 +211,10 @@ Do not translate FPGA LUT counts into ASIC area or power. The value of the FPGA 
 
 ## Hands-on Experiments
 
+For the book-wide component rather than the small introductory examples, use @sec-complete-case. It maps the same tested dot-product RTL to ECP5 and, in @sec-nexys-complete-case, to the actual Nexys Video Artix-7 with a serial boundary fixture. The Nexys report separates accelerator and fixture mapping costs and explains the executed `-nodsp` choice. Both targets have real placement/routing and explicit timing failures; their counts do not describe the complete Wally platform.
+
+These synthesis experiments do not require a connected FPGA. The complete Nexys Video build still needs the separate XC7 tools, databases and generated inputs. If these resources are unavailable, run `python labs/run.py run synthesis` and the student RTL comparison in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board), then analyse the instructor's device-synthesis reports. Submit your own generic netlist/storage/arithmetic analysis and identify which BRAM/DSP/LUT observations come from the supplied target reports. Follow the [common alternative guide](../../labs/NO-FPGA.md) for evidence and assessment boundaries.
+
 1. Run `make FLOW=opensource nexysvideo` from `fpga/generator` after loading the CVW environment. Save `opensource-nexysvideo/synthesis.log` and note tool versions.
 2. Change only a benign Wally configuration option or a small GPIO width. Rebuild and compare resources; explain every large difference.
 3. Remove a reset assignment in a controlled test module. Inspect whether the mapping now uses resetless flip-flops and explain why this may help density but complicate deterministic bring-up.

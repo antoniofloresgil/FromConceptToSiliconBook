@@ -1,0 +1,175 @@
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _374_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (propagated)
+                                0.02000    0.02000 ^ input external delay
+    32   60.77380    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02260    0.00213    0.02213 ^ _220_/B2 (AOI21_X1)
+     1    1.25688    0.00704    0.01653    0.03866 v _220_/ZN (AOI21_X1)
+                     0.00704    0.00003    0.03869 v _374_/D (DFF_X1)
+                                           0.03869   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1    3.14564    0.00000    0.00000    0.00000 ^ Clk (in)
+                     0.00010    0.00008    0.00008 ^ clkbuf_0_Clk/A (CLKBUF_X3)
+     2    3.93003    0.00768    0.02553    0.02561 ^ clkbuf_0_Clk/Z (CLKBUF_X3)
+                     0.00768    0.00013    0.02574 ^ clkbuf_1_0__f_Clk/A (CLKBUF_X3)
+     9   11.79319    0.01273    0.03622    0.06196 ^ clkbuf_1_0__f_Clk/Z (CLKBUF_X3)
+                     0.01273    0.00049    0.06244 ^ _374_/CK (DFF_X1)
+                                0.02000    0.08244   clock uncertainty
+                                0.00000    0.08244   clock reconvergence pessimism
+                                0.00435    0.08679   library hold time
+                                           0.08679   data required time
+-----------------------------------------------------------------------------------------
+                                           0.08679   data required time
+                                          -0.03869   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.04810   slack (VIOLATED)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _373_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (propagated)
+                                0.02000    0.02000 ^ input external delay
+    32   60.77380    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02347    0.00284    0.02284 ^ _210_/B2 (AOI21_X1)
+     1    1.16758    0.00637    0.01640    0.03924 v _210_/ZN (AOI21_X1)
+                     0.00637    0.00002    0.03926 v _373_/D (DFF_X1)
+                                           0.03926   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1    3.14564    0.00000    0.00000    0.00000 ^ Clk (in)
+                     0.00010    0.00008    0.00008 ^ clkbuf_0_Clk/A (CLKBUF_X3)
+     2    3.93003    0.00768    0.02553    0.02561 ^ clkbuf_0_Clk/Z (CLKBUF_X3)
+                     0.00768    0.00013    0.02574 ^ clkbuf_1_0__f_Clk/A (CLKBUF_X3)
+     9   11.79319    0.01273    0.03622    0.06196 ^ clkbuf_1_0__f_Clk/Z (CLKBUF_X3)
+                     0.01273    0.00046    0.06242 ^ _373_/CK (DFF_X1)
+                                0.02000    0.08242   clock uncertainty
+                                0.00000    0.08242   clock reconvergence pessimism
+                                0.00432    0.08674   library hold time
+                                           0.08674   data required time
+-----------------------------------------------------------------------------------------
+                                           0.08674   data required time
+                                          -0.03926   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.04748   slack (VIOLATED)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _387_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (propagated)
+                                0.02000    0.02000 ^ input external delay
+    32   60.77380    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02410    0.00336    0.02336 ^ _367_/B2 (AOI21_X1)
+     1    1.19259    0.00699    0.01655    0.03991 v _367_/ZN (AOI21_X1)
+                     0.00699    0.00002    0.03993 v _387_/D (DFF_X1)
+                                           0.03993   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1    3.14564    0.00000    0.00000    0.00000 ^ Clk (in)
+                     0.00010    0.00008    0.00008 ^ clkbuf_0_Clk/A (CLKBUF_X3)
+     2    3.93003    0.00768    0.02553    0.02561 ^ clkbuf_0_Clk/Z (CLKBUF_X3)
+                     0.00768    0.00012    0.02574 ^ clkbuf_1_1__f_Clk/A (CLKBUF_X3)
+     9   11.97336    0.01285    0.03642    0.06216 ^ clkbuf_1_1__f_Clk/Z (CLKBUF_X3)
+                     0.01285    0.00043    0.06259 ^ _387_/CK (DFF_X1)
+                                0.02000    0.08259   clock uncertainty
+                                0.00000    0.08259   clock reconvergence pessimism
+                                0.00437    0.08696   library hold time
+                                           0.08696   data required time
+-----------------------------------------------------------------------------------------
+                                           0.08696   data required time
+                                          -0.03993   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.04704   slack (VIOLATED)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _375_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (propagated)
+                                0.02000    0.02000 ^ input external delay
+    32   60.77380    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02384    0.00314    0.02314 ^ _232_/B2 (AOI21_X1)
+     1    1.19142    0.00699    0.01652    0.03966 v _232_/ZN (AOI21_X1)
+                     0.00699    0.00002    0.03968 v _375_/D (DFF_X1)
+                                           0.03968   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1    3.14564    0.00000    0.00000    0.00000 ^ Clk (in)
+                     0.00010    0.00008    0.00008 ^ clkbuf_0_Clk/A (CLKBUF_X3)
+     2    3.93003    0.00768    0.02553    0.02561 ^ clkbuf_0_Clk/Z (CLKBUF_X3)
+                     0.00768    0.00013    0.02574 ^ clkbuf_1_0__f_Clk/A (CLKBUF_X3)
+     9   11.79319    0.01273    0.03622    0.06196 ^ clkbuf_1_0__f_Clk/Z (CLKBUF_X3)
+                     0.01273    0.00030    0.06226 ^ _375_/CK (DFF_X1)
+                                0.02000    0.08226   clock uncertainty
+                                0.00000    0.08226   clock reconvergence pessimism
+                                0.00435    0.08660   library hold time
+                                           0.08660   data required time
+-----------------------------------------------------------------------------------------
+                                           0.08660   data required time
+                                          -0.03968   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.04693   slack (VIOLATED)
+
+
+Startpoint: Enable (input port clocked by core_clk)
+Endpoint: _376_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (propagated)
+                                0.02000    0.02000 ^ input external delay
+    32   60.77380    0.02000    0.00000    0.02000 ^ Enable (in)
+                     0.02401    0.00328    0.02328 ^ _242_/B2 (AOI21_X1)
+     1    1.17851    0.00697    0.01650    0.03978 v _242_/ZN (AOI21_X1)
+                     0.00697    0.00002    0.03980 v _376_/D (DFF_X1)
+                                           0.03980   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1    3.14564    0.00000    0.00000    0.00000 ^ Clk (in)
+                     0.00010    0.00008    0.00008 ^ clkbuf_0_Clk/A (CLKBUF_X3)
+     2    3.93003    0.00768    0.02553    0.02561 ^ clkbuf_0_Clk/Z (CLKBUF_X3)
+                     0.00768    0.00013    0.02574 ^ clkbuf_1_0__f_Clk/A (CLKBUF_X3)
+     9   11.79319    0.01273    0.03622    0.06196 ^ clkbuf_1_0__f_Clk/Z (CLKBUF_X3)
+                     0.01273    0.00038    0.06234 ^ _376_/CK (DFF_X1)
+                                0.02000    0.08234   clock uncertainty
+                                0.00000    0.08234   clock reconvergence pessimism
+                                0.00435    0.08669   library hold time
+                                           0.08669   data required time
+-----------------------------------------------------------------------------------------
+                                           0.08669   data required time
+                                          -0.03980   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.04689   slack (VIOLATED)
+
+

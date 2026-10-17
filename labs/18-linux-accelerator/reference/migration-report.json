@@ -1,0 +1,392 @@
+{
+  "status": "pass",
+  "baseline_before_relocation": {
+    "report": "labs\\build\\address-migration-baseline-v2\\report.json",
+    "sha256": "46ea4a7010ed74855193b42adbe513e66b783f70911e20f76dee0a55269f1412",
+    "steps": [
+      {
+        "name": "recipes",
+        "argv": [
+          "python3",
+          "labs/tools/check_recipes.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "recipe-tests",
+        "argv": [
+          "python3",
+          "labs/tools/test_recipes.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "package-tests",
+        "argv": [
+          "python3",
+          "labs/tools/test_package.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "physical-reference",
+        "argv": [
+          "python3",
+          "labs/16-openroad-study/verify_reference.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "case-reference",
+        "argv": [
+          "python3",
+          "labs/17-complete-case/verify_reference.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "nexys-reference",
+        "argv": [
+          "python3",
+          "labs/17-complete-case/verify_nexys.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "case-collector-tests",
+        "argv": [
+          "python3",
+          "labs/17-complete-case/test_collection.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "linux-reference",
+        "argv": [
+          "python3",
+          "labs/18-linux-accelerator/verify_reference.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "dse-analysis-tests",
+        "argv": [
+          "python3",
+          "labs/11-dse/test_analysis.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "evidence-tests",
+        "argv": [
+          "python3",
+          "labs/verification/test_evidence.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "unit",
+        "argv": [
+          "python3",
+          "labs/run.py",
+          "run",
+          "all",
+          "--seed",
+          "2026"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "transaction-loss",
+        "argv": [
+          "python3",
+          "labs/tools/verify_harness.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "arithmetic-completion-defects",
+        "argv": [
+          "python3",
+          "labs/10-dotproduct/verify_negative.py",
+          "/work/labs/build/address-migration-baseline-v2/negative"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "formal",
+        "argv": [
+          "python3",
+          "labs/15-formal/run.py"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "wally",
+        "argv": [
+          "python3",
+          "labs/run.py",
+          "run",
+          "dotproduct-wally"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "dse",
+        "argv": [
+          "python3",
+          "labs/11-dse/run_wally.py",
+          "--seed",
+          "2026"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "project-evidence",
+        "argv": [
+          "python3",
+          "labs/verification/evidence.py",
+          "--unit-report",
+          "/work/labs/build/address-migration-baseline-v2/unit/report.json",
+          "--system-report",
+          "/work/labs/build/address-migration-baseline-v2/wally/report.json",
+          "--output",
+          "/work/labs/build/address-migration-baseline-v2/verification-evidence.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "linux-rtl-freshness",
+        "argv": [
+          "python3",
+          "labs/18-linux-accelerator/collect.py",
+          "--qemu",
+          "labs/build/linux-accelerator-gpio-fixed/report.json",
+          "--wally",
+          "labs/build/linux-wally-gpio-fixed/report.json"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "additional_checks": {
+      "qemu_repeat": "labs/build/address-migration-linux-before/report.json",
+      "book_regressions": 7
+    }
+  },
+  "relocated_validation": {
+    "report": "labs\\build\\address-migration-after\\report.json",
+    "sha256": "546d32c8a5d0fcb88543538d88eb6800ba7433e122ffc56652193e340ae57bdc",
+    "steps": [
+      {
+        "name": "qemu",
+        "argv": [
+          "docker",
+          "run",
+          "--rm",
+          "--network",
+          "none",
+          "--env",
+          "HOME=/tmp",
+          "--env",
+          "CASE_IMAGE_ID=sha256:d2de2d3848e7f61dc99c3d39aee96f3d4cb0b40ef2a4d0a90517d59c69b25f84",
+          "--mount",
+          "type=bind,source=D:\\Repos\\FromConceptToSiliconBook,target=/work",
+          "from-concept-linux-accelerator:2026.10",
+          "python3",
+          "labs/18-linux-accelerator/run.py",
+          "--output-dir",
+          "labs/build/linux-accelerator-relocated"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "prepare",
+        "argv": [
+          "docker",
+          "run",
+          "--rm",
+          "--network",
+          "none",
+          "--env",
+          "HOME=/tmp",
+          "--env",
+          "CASE_IMAGE_ID=sha256:cc2cab9d0195a49b773fbec0e2b67395e94a1ffffa237d1b7de432a83324600d",
+          "--mount",
+          "type=bind,source=D:\\Repos\\FromConceptToSiliconBook,target=/work",
+          "--env",
+          "WALLY_ROOT=/cvw",
+          "--mount",
+          "type=bind,source=D:\\Repos\\cvw,target=/cvw,readonly",
+          "from-concept-linux-wally:2026.10",
+          "python3",
+          "labs/18-linux-accelerator/wally.py",
+          "prepare",
+          "--bundle",
+          "labs/build/linux-accelerator-relocated/bundle",
+          "--output-dir",
+          "labs/build/linux-wally-relocated"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "compile",
+        "argv": [
+          "docker",
+          "run",
+          "--rm",
+          "--network",
+          "none",
+          "--env",
+          "HOME=/tmp",
+          "--env",
+          "CASE_IMAGE_ID=sha256:cc2cab9d0195a49b773fbec0e2b67395e94a1ffffa237d1b7de432a83324600d",
+          "--mount",
+          "type=bind,source=D:\\Repos\\FromConceptToSiliconBook,target=/work",
+          "from-concept-linux-wally:2026.10",
+          "python3",
+          "labs/18-linux-accelerator/wally.py",
+          "compile",
+          "--output-dir",
+          "labs/build/linux-wally-relocated"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "wally",
+        "argv": [
+          "docker",
+          "run",
+          "--rm",
+          "--network",
+          "none",
+          "--env",
+          "HOME=/tmp",
+          "--env",
+          "CASE_IMAGE_ID=sha256:cc2cab9d0195a49b773fbec0e2b67395e94a1ffffa237d1b7de432a83324600d",
+          "--mount",
+          "type=bind,source=D:\\Repos\\FromConceptToSiliconBook,target=/work",
+          "from-concept-linux-wally:2026.10",
+          "python3",
+          "labs/18-linux-accelerator/wally.py",
+          "run",
+          "--output-dir",
+          "labs/build/linux-wally-relocated",
+          "--seconds",
+          "3600",
+          "--cycles",
+          "500000000"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "change": {
+    "old_mmio": "0x10060000",
+    "new_mmio": "0x10080000",
+    "register_bytes": 32,
+    "gpio_preserved": true
+  },
+  "native_map_regression": {
+    "status": "pass",
+    "native_map_sha256": "2c857e4d5dd9a4f435ae326de516d6b48c05e13857f55616d170c69bd6a4295c",
+    "old_address_rejected": "MMIO overlaps Wally GPIO",
+    "relocated_page": {
+      "status": "pass",
+      "config_sha256": "2c857e4d5dd9a4f435ae326de516d6b48c05e13857f55616d170c69bd6a4295c",
+      "scope": "Pinned RV64gc map with the declared Linux RAM override; GPIO preserved; dedicated MMIO page",
+      "base": 268959744,
+      "aperture_bytes": 32,
+      "page_bytes": 4096,
+      "regions": [
+        {
+          "name": "DTIM",
+          "base": 2147483648,
+          "size": 8388608,
+          "enabled": false
+        },
+        {
+          "name": "IROM",
+          "base": 2147483648,
+          "size": 8388608,
+          "enabled": false
+        },
+        {
+          "name": "BOOTROM",
+          "base": 4096,
+          "size": 4096,
+          "enabled": true
+        },
+        {
+          "name": "UNCORE_RAM",
+          "base": 2147483648,
+          "size": 268435456,
+          "enabled": true
+        },
+        {
+          "name": "CLINT",
+          "base": 33554432,
+          "size": 65536,
+          "enabled": true
+        },
+        {
+          "name": "GPIO",
+          "base": 268828672,
+          "size": 256,
+          "enabled": true
+        },
+        {
+          "name": "UART",
+          "base": 268435456,
+          "size": 8,
+          "enabled": true
+        },
+        {
+          "name": "PLIC",
+          "base": 201326592,
+          "size": 67108864,
+          "enabled": true
+        },
+        {
+          "name": "SDC",
+          "base": 77824,
+          "size": 4096,
+          "enabled": false
+        },
+        {
+          "name": "SPI",
+          "base": 268697600,
+          "size": 4096,
+          "enabled": true
+        },
+        {
+          "name": "PWM",
+          "base": 268566528,
+          "size": 256,
+          "enabled": true
+        }
+      ]
+    },
+    "source_agreement": "pass"
+  },
+  "scope_audit": {
+    "status": "pass",
+    "unchanged_software_and_environment": {
+      "Dockerfile": "2b700e73b1063ed1afe30eaaceb8fba2a7b51a72bfb8fc35dd9b6f71d503fbdb",
+      "Dockerfile.wally": "114062befb3432bb2dec58580851eb15c9b19f354312a617909081aa41f2bb40",
+      "dotproduct-driver.c": "7df70145b9a7ddcf92b894fc4361cf9965a9e0edb326ab7a80b8e38289bc9c09",
+      "dotproduct-uapi.h": "915ca4f5f5df69580d1064b1fc5aa0292ce2841b3da66cfe72290992f4138c21",
+      "linux-app.c": "d6592f00313366458c084f52717c98d7affad8913af375c71123abf731c18551",
+      "prepare.py": "9b9bbed61f25660b4e64c88eab47921411d298a3945c3502e571db0ca90e65ce",
+      "boot-wally.S": "991948d3969106bdf07a7ed2cca67041306628d594854e70eb7a4ac25a9c4ad8",
+      "wally-dpi.cpp": "db37cbc50a982eb3cd1caf30bb84dce874d9514e65751c969724555daaf9c873",
+      "hsd-dotproduct.h": "203ff322613388be7befe7f56fd01a8b280ebed2e7c879684f44d21972a50cc9"
+    },
+    "unchanged_rtl": {
+      "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+      "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+      "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+      "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+    },
+    "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0"
+  }
+}

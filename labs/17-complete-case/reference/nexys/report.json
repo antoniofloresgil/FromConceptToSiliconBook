@@ -1,0 +1,120 @@
+{
+  "status": "completed",
+  "profile": {
+    "schema_version": 1,
+    "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "board": "Digilent Nexys Video Rev. A",
+    "part": "xc7a200tsbg484-1",
+    "requested_mhz": 100,
+    "seed": 2026,
+    "scope": "same accelerator plus serial boundary fixture; no Wally, DDR or physical programming",
+    "nextpnr_repository": "https://github.com/gatecat/nextpnr-xilinx",
+    "nextpnr_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+    "mapping": "synth_xilinx -arch xc7 -abc9 -nodsp; multiplier in LUT/carry logic, matching Wally board recipe",
+    "inputs": {
+      "nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+      "nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+      "nexys-port-map.json": "83b52300ea873ccfa0270c2b253d6d15b96335ae66fef2d963c3c72c3bb03b3e",
+      "tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda"
+    }
+  },
+  "profile_sha256": "dbf32333b677f8628fb72566a7d9f89c50892e5fd63d6568d31e4d21d7779662",
+  "manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "rtl_sha256": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/10-dotproduct/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e"
+  },
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "image": "sha256:feee399041d85147c83ee58f3b2c5cfec02bda85b23853e9a6eb0ca7ac9b6ec8",
+  "recipe_sha256": "d43bebf0e165b02b30b85374efa9aad7078a17cdfd055bb3e5495deec80bf3d2",
+  "commands": [
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_nexys",
+        "-o",
+        "fixture-test",
+        "/work/labs/10-dotproduct/rtl/dotproduct_mac.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_engine.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_axi.sv",
+        "/work/labs/17-complete-case/nexys_video.sv",
+        "/work/labs/17-complete-case/tb_nexys.sv"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "fixture-test"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/work/labs/10-dotproduct/rtl/dotproduct_mac.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_engine.sv\" \"/work/labs/10-dotproduct/rtl/dotproduct_axi.sv\" \"/work/labs/17-complete-case/nexys_video.sv\"; synth_xilinx -top nexys_video_case -arch xc7 -abc9 -nodsp; flatten; delete t:$scopeinfo; write_json mapped.json"
+      ],
+      "log": "command-03.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "nextpnr-xilinx",
+        "--chipdb",
+        "/opt/xc7a200t.bin",
+        "--xdc",
+        "/work/labs/17-complete-case/nexys-video.xdc",
+        "--json",
+        "mapped.json",
+        "--top",
+        "nexys_video_case",
+        "--freq",
+        "100",
+        "--seed",
+        "2026",
+        "--timing-allow-fail",
+        "--write",
+        "routed.json",
+        "--report",
+        "timing.json",
+        "--fasm",
+        "nexys.fasm"
+      ],
+      "log": "command-04.log",
+      "exit_code": 0
+    }
+  ],
+  "tools": {
+    "yosys": "Yosys 0.70+16 (git sha1 3bb533450, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "nextpnr": "\"nextpnr-xilinx\" -- Next Generation Place and Route (Version 8f178fc6)"
+  },
+  "nextpnr_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+  "database_revision": "0a0addedd73e7e4139d52a6d8db4258763e0f1f3",
+  "chipdb_sha256": "cdd8436aea474d58a413656930ae6736f19e1fab6346e9397a73760796c7da66",
+  "artifacts": {
+    "command-01.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-02.log": "5592470903099c2d0a97c4b84d06069d4fdf864bc37a2fe75576ec4671c0e68b",
+    "command-03.log": "86a60fca32766f9ba6848054236b5e554eb11830fc35694dc17c52ea3c759cc2",
+    "command-04.log": "1feabb66ca0c4e7041367c2d8fb57fa38854ed953fb3f2b7e3b76bcea3dda61d",
+    "fixture-test": "828283b89a7e80e52c3b891e42cf84818df2e44b84ad79ee27f960929072dd10",
+    "mapped.json": "8564709e0d80347ef2820f9b73cabd44aca6b1511f47993cb52c0647a06657d0",
+    "nexys.fasm": "90b1811ffe5880d4d2c2233a369ec18c1232b4cfa32c2c34ef739c410d0431e5",
+    "routed.json": "c6819b41a9c15cdbdc2fc812a693d71e54b98994522335dae8a0b0381ff3c0de",
+    "site-coordinates.json": "1be38f638223cf64130da95c5fda41abb7c8fddfd07c09dd6e3ebcd544267254",
+    "synthesis-resources.json": "7d972679810952898bfe35bcd415af9aeecc0face7fb35af4f05568e5b845879",
+    "timing.json": "c1d2716fc342b8f35b113ca5d0285d9fbe4c048cb5409eaf1e2dc837f78040f1"
+  }
+}
