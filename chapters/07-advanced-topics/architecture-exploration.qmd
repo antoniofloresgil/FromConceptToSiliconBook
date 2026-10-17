@@ -178,6 +178,8 @@ The ROI includes operand accesses, arithmetic, loop control and volatile result 
 
 ### Reproduce the experiment
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-divider-reproduction .learning-activity}
+
 **Checked recipe:** the pinned RTL divider sweep and illustrative Python analysis. Cache/predictor/board extensions are exercises or adaptation templates. The later gem5 shell sketch requires a separately prepared environment/script and is not an executed package recipe.
 
 Use the container in @sec-reproducible-labs and acquire Wally as in @sec-executable-project. From the repository/package root:
@@ -358,17 +360,25 @@ A master's extension can reproduce a reduced model/RTL comparison, vary a mechan
 
 ### Experiment 1: reproduce and challenge the divider result
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-01 .learning-activity}
+
 Run all three configurations. Check binary/vector identities and retired counts; explain why ROI time is not divider-only latency. Repeat with another seed, preserving both campaigns. Add a divide-light workload, estimate exposure and test whether the original gain predicts its behavior.
 
 ### Experiment 2: analyse the trade-off honestly
+
+[Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-02 .learning-activity}
 
 Use illustrative data to explain cycle/time reversal, budget rejection and compute regression. Add a per-workload deadline to the selection policy. Explain why a Pareto point or mean cannot decide acceptance alone. Change a binary identity or mark frequency requested and show rejection.
 
 ### Experiment 3: define a cache/predictor campaign
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-03 .learning-activity}
+
 Choose a family; specify legal factors, working set, active hardware path, cold/warm state and events. Verify a mechanism baseline before sweeping. Preserve failing/unimplemented cases and reasons. Do not inherit uncached DMA correctness for a cached platform without ownership checks.
 
 ### Experiment 4: confirm a candidate
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-04 .learning-activity}
 
 For FPGA, use the real board fabric and compare time/resources under stated memory/clock conditions. For gem5, prepare compatible workloads, calibrate mechanism tests and validate held-out configurations. Explain discrepancies rather than relabelling generic output as Wally evidence.
 
@@ -396,6 +406,8 @@ Explain a controlled comparison, its region of interest and what missing evidenc
 Comparing mismatched configurations; presenting illustrative Pareto data or emulator runtime as measured Wally PPA.
 
 ## Try it yourself {#review-architecture-exploration-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-review .learning-activity}
 
 Review one existing divider-sweep result. Identify the controlled variable, measured outputs and integration/physical limits of the conclusion.
 

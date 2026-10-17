@@ -194,17 +194,25 @@ Use separate result statuses: **pass**, **fail**, **not_run**, **unknown** and *
 
 ### Experiment 1: write and challenge the plan
 
+[Core · P2 · C0](../../learning-paths.qmd#sec-path-labels){#act-verification-methodology-01 .learning-activity}
+
 Copy `labs/verification/project-plan.json` into a student work area. Add one requirement for the proposed extension, its assumptions, observation point, checker and measured coverage obligation. Have another student derive expected behavior independently. Find one ambiguous requirement and resolve it before changing RTL. Use the plan template when the final project uses a different IP.
 
 ### Experiment 2: demonstrate checker sensitivity and explain a witness
+
+[Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-verification-methodology-02 .learning-activity}
 
 Run `dotproduct`, then the separate deliberate-defect script documented in @sec-executable-project. Explain the first arithmetic mismatch and the early-DONE counterexample. Inspect `done-witness.vcd` and list the read/write response events preceding DONE. State which proof antecedents have witnesses and which remain a reachability task. Extend one property without adding an assumption that removes its failing trace.
 
 ### Experiment 3: compare evidence at different boundaries
 
+[Core option · P5 · C2](../../learning-paths.qmd#sec-path-labels){#act-verification-methodology-03 .learning-activity}
+
 Run `dotproduct-wally` with the pinned clone. Select one polling job and the interrupt job. Explain the CPU/bus/DMA ownership sequence and source of the expected result. Compare the firmware result checker with a hypothetical retirement comparator: which faults can each observe? List two SoC scenarios excluded by the teaching fixture and design a test for each.
 
 ### Experiment 4: assemble an honest evidence dossier
+
+[Core · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-verification-methodology-04 .learning-activity}
 
 After generating the test reports, run:
 
@@ -235,6 +243,8 @@ Explain what an independent oracle checks, how assumptions limit a proof, and wh
 Reporting tool completion as requirement coverage; weakening a checker until an incorrect design passes.
 
 ## Try it yourself {#review-verification-methodology-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-verification-methodology-review .learning-activity}
 
 Select one project requirement and follow it through the existing verification plan, checker, report and unresolved integration obligations.
 

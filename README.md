@@ -1,12 +1,13 @@
 # From Concept to Silicon
 
-An English-language guide to open-source hardware system design, from reusable SystemVerilog RTL and RISC-V architecture to verification, FPGA implementation and ASIC implementation. **CORE-V Wally** is the main processor case study. The material supports **Hardware System Design (HSD)**, a compulsory 6 ECTS master's course organized over 12 weeks with substantial autonomous work.
+An English-language reference for open-source hardware system design, from reusable SystemVerilog RTL and RISC-V architecture to verification, FPGA implementation and ASIC implementation. **CORE-V Wally** is the main processor case study. Students, instructors and independent engineers can follow the Foundations, Complete SoC or ASIC Design route.
 
-The course connects four learning outcomes: system-level specification and platform integration (RA5), reusable IP architectures and design patterns (RA6), testability/manufacturability/security/reliability analysis (RA7), and testing/formal verification/security evaluation (RA8). Its final project is a Wally-controlled AXI/DMA dot-product accelerator. The supplied implementation is a reference platform; assessed student work must add identifiable design and verification contributions.
+The [learning-path guide](learning-paths.qmd) distinguishes the bounded Core Learning Path from Advanced Reference activities and labels experiments by role and compute cost. The separate [Hardware System Design adoption](appendices/hsd-coursework.qmd) preserves its 6 ECTS, twelve-week schedule, RA5–RA8 outcomes and assessment proposals. A Wally-controlled AXI/DMA dot-product accelerator connects the reference material across routes.
 
 ## Read and navigate
 
 - [Read the published HTML book](https://antoniofloresgil.github.io/FromConceptToSiliconBook/). The sidebar offers the complete PDF when a validated release has been published.
+- [Choose a route and experiment budget](learning-paths.qmd): technical routes, Core/Advanced selection and compute classes C0–C3.
 - [Coursework and assessment guide](appendices/hsd-coursework.qmd): P0–P5 activities, 12-week workload, review milestones and rubrics.
 - [Executable project](appendices/executable-project.qmd) and [reference source guide](labs/10-dotproduct/README.md): arithmetic IP, AXI4-Lite control, bounded AXI4 DMA and real Wally firmware.
 - [Complete case study](appendices/complete-case-study.qmd): the same locked RTL through verification, Wally simulation, FPGA placement and routing, and ASIC GDSII, with measured results and physical views.
@@ -106,7 +107,7 @@ FPGA boards, device databases, PDKs, OpenROAD/LibreLane installations and Spike/
 
 | Path | Role |
 | --- | --- |
-| `_quarto.yml`, `index.qmd`, `intro.qmd`, `summary.qmd` | Book structure, course context and final review |
+| `_quarto.yml`, `index.qmd`, `intro.qmd`, `learning-paths.qmd`, `summary.qmd` | Book structure, technical routes, experiment budgets and final review |
 | `chapters/`, `appendices/`, `references.bib` | Teaching text, coursework, technical appendices and bibliography |
 | `figures/`, `examples/` | Vector illustrations and standalone chapter examples |
 | `labs/` | Runnable references, tests, formal harnesses, firmware and evidence tools |

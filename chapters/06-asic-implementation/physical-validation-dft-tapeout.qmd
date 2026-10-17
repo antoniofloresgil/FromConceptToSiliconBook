@@ -240,21 +240,31 @@ Archive die/package identity, board revision, instrument settings, firmware hash
 
 ### Experiment 1: a validation dossier
 
+[Core · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-01 .learning-activity}
+
 Use one guided accumulator physical run and assemble the check table above. Include the top identity and file hashes. Mark a missing check as not run. Select one actual marker or failing path, document its cause, repair its input and show the new result. Deliver both candidates so the change is reviewable.
 
 ### Experiment 2: verify scan ordering
+
+[Core · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-02 .learning-activity}
 
 Simulate `scan_state_demo` with the load/capture/unload sequence. Add tests for reset, consecutive captures and changing scan mode only while the clock is inactive. Inject a stuck-at response bit in a separate faulty model and show which pattern detects it. This verifies a teaching protocol and fault example; it is not an ATPG coverage certificate.
 
 ### Experiment 3: evaluate a scan-enabled physical variant
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-03 .learning-activity}
+
 If the installed OpenROAD/library combination supports the required cells, use the documented insertion sequence on a separate accumulator variant. Record chain lengths, test ports, added area and both functional/test timing. Compare with the baseline. If scan replacement is unsupported, report the missing cell or tool capability and retain the architectural plan.
 
 ### Experiment 4: memory-test ownership
 
+[Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-04 .learning-activity}
+
 Implement a small controller for the March sequence over the synchronous teaching memory. Include expected read latency and prohibit simultaneous functional ownership. In a separate memory model, inject one stuck cell and one transition failure. Record detection and failing address, then explain which additional backgrounds or fault models remain untested.
 
 ### Experiment 5: prepare a Wally prototype review
+
+[Core option · P5 · C0](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-05 .learning-activity}
 
 Choose a single-hart, internal-memory Wally configuration. Draft a pad/clock/reset plan, identify test access independent of firmware, inventory memories and macros, and prepare a first-power-on sequence. Connect each review item to evidence or missing work. An excellent report can expose an unresolved dependency; it should not hide it behind a generated GDS filename.
 
@@ -274,6 +284,8 @@ Explain the distinction between DRC/LVS, timing closure, test coverage and produ
 Calling scan insertion ATPG effectiveness; treating routed layout or first boot as complete manufacturing qualification.
 
 ## Try it yourself {#review-physical-validation-dft-tapeout-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-review .learning-activity}
 
 Use the existing release checklist to classify one missing view/report. State which claim it prevents you from making.
 

@@ -259,9 +259,13 @@ Both the process exit and signature comparison must pass. A nonzero simulator re
 
 ### Experiment 1: calculate before executing
 
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-01 .learning-activity}
+
 Decode all four PTE values in the worked table. Compute the translations of `0x40000120` and `0x40001120`, then classify S-mode load/store/fetch permissions. Verify the expected signature using the complete program. Deliver your address calculation, disassembly and simulator/tool identities.
 
 ### Experiment 2: prove that the checks detect a change
+
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-02 .learning-activity}
 
 In a separate variant, make Leaf[1] writable with A/D set. The formerly denied store succeeds, so the reference test must fail because no supervisor fault was recorded. Do not edit the expected signature to conceal that failure. Retain the failure output and explain which requirement the mutation removed.
 
@@ -269,17 +273,25 @@ Then remove `medeleg[15]` in another variant. Update the test contract deliberat
 
 ### Experiment 3: revoke and restore a mapping
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-03 .learning-activity}
+
 Warm a translation, modify its PTE permissions, execute the appropriate local `sfence.vma`, then perform the formerly allowed access. Verify a precise fault. Restore the mapping, fence again and retry through a handler designed for repair rather than skip. Explain why `sepc` handling differs from the baseline's deliberate denial.
 
 ### Experiment 4: effective privilege and physical denial
+
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-04 .learning-activity}
 
 Use an explicit MPRV/MPP=S data-access variant to demonstrate supervisor translation while instructions still fetch in M-mode. Separately restrict PMP so the page-table memory is inaccessible. Check an access fault associated with the original operation, rather than assuming every translation failure produces a page fault. Keep these variants independent so each has one changed cause.
 
 ### Experiment 5: user permissions and A/D
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-05 .learning-activity}
+
 Construct a separate U-mode payload and an S-mode handler with appropriate supervisor-only mappings. Vary U, SUM and MXR and record load/store/fetch outcomes. In another variant, clear A or D and choose fault-based handling or the supported hardware-update path explicitly. Do not expect the baseline result without configuring the corresponding state.
 
 ### Experiment 6: trace full Wally
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-06 .learning-activity}
 
 Use the pinned full `rv32gc` configuration with the matching established harness. Load the ELF/data in its physical RAM and adapt completion to the harness's supported convention. Verify its reset/entry path, PMP/CSR support and memory range before running; copying a Spike invocation is not sufficient.
 
@@ -303,6 +315,8 @@ Explain a page fault versus an access fault, and why a permissive PTE cannot ove
 Assuming CPU PMP constrains every bus master; treating the example handler as a complete security monitor.
 
 ## Try it yourself {#review-privileged-mmu-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-privileged-mmu-review .learning-activity}
 
 Use the supplied Sv32 test to calculate one translated address and its faulting counterpart. Compare the expected cause and final signature.
 

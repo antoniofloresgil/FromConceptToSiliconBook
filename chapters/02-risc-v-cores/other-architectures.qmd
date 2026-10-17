@@ -114,6 +114,8 @@ The distinction between a **core** and a **secure SoC** is especially important 
 
 ### Experiment: memory wait states
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-other-memory-waits .learning-activity}
+
 Run the same RV32I loop with a one-cycle instruction/data memory and then with a fixed additional wait. Record cycles, retired instructions and throughput. The question is not which core has the shorter pipeline; it is how much of each program's time is exposed to the memory response. For a valid comparison, make both test systems use equivalent memory timing and count setup/boot separately.
 
 ## CV32E40P: An Embedded Four-Stage Pipeline
@@ -317,6 +319,8 @@ Use the lowest shared ISA subset when the objective is to compare core execution
 
 ### A controlled RV32 experiment
 
+[Advanced · C2 run / C3 build](../../learning-paths.qmd#sec-path-labels){#act-other-rv32 .learning-activity}
+
 Define a tiny software suite with no system-call dependency: an integer reduction over a fixed array, a branch-heavy search, a pointer chain and a copy loop. Compile all for the same RV32I ABI and optimization level. Provide the same initialization, memory image and terminating memory-mapped register to each SoC wrapper.
 
 For every core, log: source revision, parameter set, compiler, linker script, memory latency, reset vector, program hash, cycles, retired instructions (if available), reported terminal result and halt reason. If a core lacks a standard architectural counter, use a wrapper cycle timer with a common start/stop signal; identify this different method in the report. Verify that all runs compute the same result before comparing performance.
@@ -410,21 +414,31 @@ License and provenance also matter for reuse. Record the exact repository and li
 
 ### Experiment 1: compact versus pipelined
 
+[Advanced · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-01 .learning-activity}
+
 Build one PicoRV32 configuration and one RV32 Wally teaching/full configuration that share a supported ISA subset. Run a dependency chain and a branch-heavy loop from equal-latency memory. Draw a cycle timeline for five instructions. Explain which cycles are instruction overlap, memory wait, data hazard and branch recovery. Verify the same final registers and memory.
 
 ### Experiment 2: two versus four stages
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-02 .learning-activity}
 
 Read the [Ibex pipeline documentation](https://ibex-core.readthedocs.io/en/latest/03_reference/pipeline_details.html) and [CV32E40P pipeline documentation](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/cv32e40p_v1.8.0/pipeline.html). For a load-use pair and a taken branch, predict the stage/control response before looking at traces. State which part of the prediction depends on memory latency or configuration.
 
 ### Experiment 3: issue, completion and commit
 
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-03 .learning-activity}
+
 Using the [CVA6 issue-stage documentation](https://docs.openhwgroup.org/projects/cva6-user-manual/03_cva6_design/issue_stage.html), trace a slow load followed by an independent integer add. Record issue order, return order and commit order. Explain why seeing an add result before a load result does not imply general out-of-order issue.
 
 ### Experiment 4: rename and recovery
 
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-04 .learning-activity}
+
 Construct a paper model of a four-instruction window for BOOM or XiangShan. Assign architectural and physical destination registers, mark ready operands, and simulate a branch misprediction. List which operations executed, which retired and which results must be discarded. Then find the corresponding rename, issue and reorder structures in the project's official design documentation.
 
 ### Experiment 5: decision report
+
+[Advanced · C0 review / C2 run](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-05 .learning-activity}
 
 Select a real objective—UART controller, DSP-oriented embedded SoC or Linux-capable prototype. Build a one-page requirements table and a two-page evidence summary for two plausible cores. Include a valid software test, achieved implementation metrics if available, integration effort and unresolved risks. Conclude with a justified selection and name the measurement that could most readily overturn it.
 
@@ -450,6 +464,8 @@ Explain why an independent result completing early does not alone establish out-
 Ranking cores by unmatched headline frequency; assuming an open repository or Linux boot establishes comparable verification maturity.
 
 ## Try it yourself {#review-other-architectures-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-review .learning-activity}
 
 Use the chapter comparison template for Wally and one alternative. Identify the missing measurement most likely to change your choice.
 

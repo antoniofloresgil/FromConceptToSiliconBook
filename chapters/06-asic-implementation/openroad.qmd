@@ -467,6 +467,8 @@ Producing GDSII requires a stream-out path that combines the routed design with 
 
 ## Measured study: frequency, utilization and the cost of wires {#sec-openroad-study}
 
+[Core · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-physical-study-review .learning-activity}
+
 The scripts and recorded reports in [Lab 16](../../labs/16-openroad-study/README.md) turn the preceding decisions into an executed experiment. They use the same 16-bit accumulator, one common Nangate45 mapped netlist, a fixed typical Liberty view, and direct OpenROAD Tcl. The ORFS image supplies the binaries and matching technology files; its Make-based flow does not orchestrate these runs. Nangate45 is an open teaching/reference technology, not a fabrication offer.
 
 The recorded container digest is `openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699`. It contains OpenROAD `24Q3-11382-g61879bec53` and Yosys 0.60. The [reference manifest](../../labs/16-openroad-study/reference/manifest.json) records input, technology, extraction-rule, report and image hashes. The image contains no usable ORFS Git metadata, so the record uses its immutable image identity and individual technology-file hashes rather than inventing a source revision.
@@ -587,6 +589,8 @@ A pipeline is a proposed architectural modification here, not an already measure
 The study therefore diagnoses the physical behavior without promising an unexecuted fix. To complete a repair exercise, rerun simulation/equivalence as applicable, map the revised RTL, retain a new source/netlist identity, and repeat placement through extracted timing. Do not change the reference reports or mix the old geometry with the new RTL.
 
 ### Reproduce, inspect and submit
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-reproduction .learning-activity}
 
 The [Lab 16 guide](../../labs/16-openroad-study/README.md) gives digest-pinned Linux/WSL and PowerShell recipes, the small baseline option, the complete sweep, image export and report summarization. It needs the separate ORFS image, not the unit-lab container. The script refuses a nonempty output directory; select a new one for a new campaign. The full sweep exits nonzero when the deliberately tight 80% cases fail, while retaining their status and logs in `study.json`. A failed tool stage is never converted into a routed PASS.
 
@@ -712,19 +716,27 @@ After the accumulator study, follow @sec-complete-case to implement the same dot
 
 ### Experiment 1: run and inspect the baseline
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-01 .learning-activity}
+
 Set the four technology paths and legal cell names, synthesize the accumulator, and execute `harden.tcl`. Preserve every log and checkpoint. In the GUI, identify the clock input, a register, a clock buffer and the power rails. Relate the longest timing path to RTL arithmetic or control rather than merely copying the path report.
 
 For a checked starting point, run the digest-pinned Nangate45 `--probe` recipe in [Lab 16](../../labs/16-openroad-study/README.md). If tools are unavailable, use its preserved reports and actual GUI captures for the analysis questions in @sec-openroad-study. The technology-neutral `harden.tcl` listing remains an adaptation exercise.
 
 ### Experiment 2: utilization sweep
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-02 .learning-activity}
+
 Repeat with 45%, 55% and 65% target utilization. Keep the clock, PDK, cells and RTL unchanged. Record core dimensions, placed-cell count, estimated total wire length, congestion, setup/hold slack and detailed-route DRCs. Explain why lower utilization can improve routability yet increase area and wire length.
 
 ### Experiment 3: timing sweep
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-03 .learning-activity}
+
 Return to the baseline floorplan and reduce the clock period in 1 ns steps. Identify the first failing endpoint. Compare its cell delay and wire delay before and after CTS/routing. Decide whether the educational accumulator should be pipelined, assigned a slower architectural clock, or optimized physically. State the evidence for the decision.
 
 ### Experiment 4: reproducible handoff
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-04 .learning-activity}
 
 Make a `README` for the run containing the OpenROAD version, host/container identity, PDK commit, library/corner, RTL commit, complete SDC, command line, configuration variables and a report summary. A peer should be able to reproduce the same `DEF` and explain any remaining differences caused by tool nondeterminism or environment changes.
 
@@ -752,6 +764,8 @@ Explain the accumulator checkpoints and why setup, hold and electrical-limit rep
 Treating a completed script as timing closure; assuming the accumulator flow supplies Wally memory macros and SoC collateral.
 
 ## Try it yourself {#review-openroad-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-openroad-review .learning-activity}
 
 Inspect the existing post-route accumulator report. Explain one path using its clock relation, cell arcs and route contribution.
 

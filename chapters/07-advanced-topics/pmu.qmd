@@ -255,13 +255,13 @@ If numbers differ, first check that the two builds use the same cache, branch-pr
 
 ### Hands-on experiments
 
-1. Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache events around a CoreMark or Embench region. Compute CPI and annotate the event definitions.
-2. Build an RV32 program that reads `mcycle` using the high-low-high sequence. Force a low-half wrap in simulation and verify that a naïve low/high read can fail.
-3. Define a five-counter FPGA PMU profile and write its event-ID table before changing RTL.
-4. Implement one selector, one counter and one UART report first. Verify reset, inhibit and one selected event in simulation.
-5. Synthesize the PMU-enabled configuration for Nexys Video. Compare LUTs, flip-flops, maximum frequency and critical path with the baseline.
-6. Run the same microbenchmark five times on the FPGA, report min/median/max and explain any spread.
-7. Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR reads explicitly.
+1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-01 .learning-activity} — Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache events around a CoreMark or Embench region. Compute CPI and annotate the event definitions.
+2. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-02 .learning-activity} — Build an RV32 program that reads `mcycle` using the high-low-high sequence. Force a low-half wrap in simulation and verify that a naïve low/high read can fail.
+3. [Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-pmu-03 .learning-activity} — Define a five-counter FPGA PMU profile and write its event-ID table before changing RTL.
+4. [Advanced · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-pmu-04 .learning-activity} — Implement one selector, one counter and one UART report first. Verify reset, inhibit and one selected event in simulation.
+5. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-pmu-05 .learning-activity} — Synthesize the PMU-enabled configuration for Nexys Video. Compare LUTs, flip-flops, maximum frequency and critical path with the baseline.
+6. [Advanced · C2 · board optional](../../learning-paths.qmd#sec-path-labels){#act-pmu-06 .learning-activity} — Run the same microbenchmark five times on the FPGA, report min/median/max and explain any spread.
+7. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-07 .learning-activity} — Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR reads explicitly.
 
 Without a physical FPGA, keep experiments 1–4 and 7 in RTL simulation with self-checking counter/event tests. For experiment 5, run device implementation without programming or analyse instructor-provided baseline/PMU reports as in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board); your generic synthesis result is separate evidence. Replace experiment 6 with five repeat runs of the same RTL workload/configuration and recorded seeds/reset/ROI conditions. Report cycle/event min/median/max and explain deterministic equality or modelled wait-state variation. This tests the measurement procedure, not board jitter, achieved frequency or power. The checked divider study in [Lab 11](../../labs/11-dse/README.md) supplies a runnable real-Wally CSR/ROI starting point; a five-counter profile and UART transport remain student implementation work. Submit the counter checks, repeated results and missing physical-correlation plan under the same coursework rubric.
 
@@ -287,6 +287,8 @@ Explain one counted event, its observation/retirement point and the region of in
 Assuming every visible simulation counter survives synthesis; interpreting an unvalidated event count as a bottleneck explanation.
 
 ## Try it yourself {#review-pmu-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-pmu-review .learning-activity}
 
 Select a short chapter workload and predict its retired-instruction/event count before comparing the available observations.
 

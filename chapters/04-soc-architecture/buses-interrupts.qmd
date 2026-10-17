@@ -673,6 +673,8 @@ An asynchronous interrupt normally resumes interrupted execution; it should not 
 
 ### Experiment 1: verify the register bank
 
+[Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-01 .learning-activity}
+
 Save the module as `event_axil.sv` in a local experiment directory. Use a testbench with independent channel drivers, synchronous event injection and a scoreboard. Test device behavior before adding a processor so firmware cannot hide register-contract errors.
 
 | Step | Operation | Expected result |
@@ -691,6 +693,8 @@ For step 8 align the event with internal commit, not merely AW acceptance. Commi
 
 ### Experiment 2: independent channels and response stalls
 
+[Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-02 .learning-activity}
+
 Run AW-before-W, W-before-AW and simultaneous arrival with distinct payloads. A driver may release VALID after acceptance; the endpoint must retain accepted data. Insert randomized gaps and hold BREADY low while checking that the register update occurs once and response status remains stable.
 
 On reads, accept AR, stall RREADY and modify the underlying device state while R waits. RDATA/RRESP must remain the captured snapshot. A later read sees subsequent changes. Model same-edge read/write behavior in the scoreboard rather than allowing whichever value happens to arrive.
@@ -708,6 +712,8 @@ A watchdog detects lack of progress, but liveness needs environmental assumption
 
 ### Experiment 3: APB and AHB phase tracing
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-03 .learning-activity}
+
 Draw an APB read with zero and two extra waits. Then follow a Wally access through AHB and the bridge, observing address, transfer type, delayed selection, write data, HREADY, PSEL, PENABLE and PREADY. Identify acceptance and completion separately at both interfaces.
 
 Make one memory responder wait while the next address names another region. Check that the previous destination still owns data/completion. A deliberately incorrect live-address mux should fail this case, explaining the purpose of delayed selection.
@@ -715,6 +721,8 @@ Make one memory responder wait while the next address names another region. Chec
 Use a counting APB responder to test exactly-once writes under waits. Do not just force PREADY low while leaving a device that updates on every Access cycle: that creates a broken responder rather than a valid stalled transaction.
 
 ### Experiment 4: AXI4 bursts and outstanding depth
+
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-04 .learning-activity}
 
 Use a verified AXI4 memory component or memory model for a four-beat INCR test. The Lite endpoint above cannot accept that burst directly. Check addresses, byte lanes, LAST, response counts and payload stability under per-beat stalls.
 
@@ -730,6 +738,8 @@ Then compare outstanding depths using a declared memory latency. Count accepted 
 Keep width, clock and memory behavior fixed. A model accepting requests into an unlimited queue overstates the benefit of depth. Preserve failed points and protocol errors rather than reporting only maximum throughput.
 
 ### Experiment 5: timer and external interrupts on Wally
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-05 .learning-activity}
 
 Select full Wally with M-mode support, CLINT, PLIC and GPIO. Record the commit, ISA/ABI, configuration, simulator, addresses, source IDs and context mapping. Use that revision's startup/linker layout and documented simulation commands.
 
@@ -770,6 +780,8 @@ Explain an AXI write with independent address/data arrival, then follow a periph
 Assuming AXI address/data always arrive together; confusing a CPU trap cause with an external controller source number.
 
 ## Try it yourself {#review-buses-interrupts-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-buses-interrupts-review .learning-activity}
 
 Annotate an existing AXI-Lite test with each accepted phase. Check that a stalled response neither duplicates nor loses the request.
 

@@ -42,6 +42,8 @@ Read the relevant chapters at each boundary rather than attempting every extensi
 
 ## Stage 1: specification and an independent reference model
 
+[Core · P1 · C1](../learning-paths.qmd#sec-path-labels){#act-case-specification .learning-activity}
+
 The job computes
 
 $$
@@ -58,6 +60,8 @@ An architectural decision follows immediately: the two 32-bit writes are not ato
 
 ## Stage 2: SystemVerilog RTL and reusable boundaries
 
+[Core · P1 · C1](../learning-paths.qmd#sec-path-labels){#act-case-rtl .learning-activity}
+
 The arithmetic module computes a signed 16-by-16 product and adds its sign-extended value to a 64-bit accumulator. The engine sequences two reads per pair and two final writes. The AXI wrapper owns independent control channels, latches accepted descriptors and enforces the trusted range. The AHB-to-AXI4-Lite adapter is a platform component, outside the physical IP boundary used for the area figures below.
 
 This separation exposes different engineering questions. Does the multiplier interpret the sign bit correctly? Does the engine use an accepted response exactly once? Does the wrapper prevent a configuration write from changing a running job? Does the bridge capture AHB's following data phase? Giving each question its own observation point reduces the chance that one full-system PASS hides a local defect.
@@ -65,6 +69,8 @@ This separation exposes different engineering questions. Does the multiplier int
 The first baseline keeps one DMA operation outstanding and uses single-beat 32-bit AXI transfers. This is intentionally conservative. A job consumes exactly `2*N` accepted operand reads and two accepted result writes. Adding bursts changes response capacity, error draining and ordering obligations; it is a new checked design configuration rather than a free performance switch.
 
 ## Stage 3: independent tests, bounded formal checks and counterexamples
+
+[Core · P4 · C1](../learning-paths.qmd#sec-path-labels){#act-case-verification .learning-activity}
 
 The recorded standalone run passes every legal length at maximum 256 and repeats at maximum 16. Directed tests exercise signs and wide accumulation, independent AW/W arrivals, byte strobes, response stalls, busy rejection, invalid descriptors, interrupt acknowledgement, read/write faults and reset/restart. Seeded memory waits vary legal response timing, while a memory scoreboard checks actual effects.
 
@@ -75,6 +81,8 @@ The [negative-control results](../labs/17-complete-case/reference/negative-resul
 This closes the stated numerical/protocol test obligations, not all verification. The dossier still lists project-specific RTL-to-mapped-netlist equivalence, broader functional coverage and an unbounded protocol proof as unexecuted. Source identity is necessary for a meaningful claim, but is not itself a correctness proof for a synthesis transformation.
 
 ## Stage 4: real Wally SoC integration
+
+[Core · P3 · C2](../learning-paths.qmd#sec-path-labels){#act-case-wally .learning-activity}
 
 The same IP and its control adapter are instantiated beside the real pinned `wallypipelinedcore`. Clang/LLD build the RV32IM/Zicsr firmware, an ELF loader initializes simulated memory, and Verilator executes the actual processor RTL. There is no behavioral CPU replacement. The platform in @fig-executable-project separates CPU control, DMA traffic and completion interrupts.
 
@@ -97,6 +105,8 @@ The accelerator wins on longer jobs and loses on the single-pair case because se
 Do not multiply the 8.43× cycle ratio by a physical IP clock number to claim a measured SoC speedup. The complete processor, memories, interconnect and clock distribution have not been physically implemented together in either result below.
 
 ## Stage 5: FPGA mapping, placement, routing and frequency
+
+[Core · P5 · C0 review / C3 rerun](../learning-paths.qmd#sec-path-labels){#act-case-fpga .learning-activity}
 
 The FPGA route uses the same maximum-256 IP with Yosys `synth_ecp5` and nextpnr for an ECP5 `LFE5U-25F`, package `CABGA381`, speed grade 6. The dedicated multiplier maps into one DSP. The official OSS CAD Suite release dated 14 October 2026 is downloaded by a supplied Dockerfile with a checked archive SHA-256 [@caseOssSuite]. The report identifies Yosys `0.70+16` and nextpnr `0.11.1-63-g44a6c739`; these are different technology tools from the ASIC mapping environment.
 
@@ -159,6 +169,8 @@ nextpnr writes routed JSON, timing/utilization JSON and FASM. Binary `.bit` conv
 The complete Wally-on-Nexys integration remains a separate extension: it requires the AHB control adapter, an arbitrated shared-memory/DMA fabric, wrapper/reset integration and firmware placement. Neither an ECP5 block report nor the serial fixture proves that full-SoC board integration.
 
 ## Stage 6: ASIC mapping through GDSII
+
+[Core · P5 · C0 review / C3 rerun](../learning-paths.qmd#sec-path-labels){#act-case-asic .learning-activity}
 
 The ASIC route maps the identical IP source and parameters to Nangate45 typical cells using Yosys 0.60, then invokes direct OpenROAD Tcl in the recorded ORFS image. This is the same physical-design engine family used in @sec-openroad-study, but the implemented netlist here is the full accelerator IP, not the introductory accumulator.
 
@@ -226,6 +238,8 @@ The workload data suggest a separate architectural experiment: reduce per-job se
 Those findings describe the original release. The continuation below executes repairs under a separate manifest, preserving the original dossier and its failed acceptance decisions. This is the connection from specification to implementation: the result is a reviewable engineering decision, including an explicit decision not to accept a candidate with open requirements.
 
 ## From Timing Violations to a Qualified Implementation {#sec-complete-closure}
+
+[Advanced · C0 review / C3 rerun](../learning-paths.qmd#sec-path-labels){#act-case-closure .learning-activity}
 
 The continuation uses the same dot-product specification, maximum length, DMA window, seed and target boundaries. [Lab 21](../labs/21-physical-closure/README.md) supplies a [new manifest](../labs/21-physical-closure/manifest.json), executable recipes, independent regressions and a [collected comparison](../labs/21-physical-closure/reference/results.json). The original Lab 17 reports remain unchanged. The process developed in @sec-physical-closure now leads to an accepted ASIC candidate within a stated block-level scope, rather than ending with a list of proposed repairs.
 
@@ -322,6 +336,8 @@ The repaired netlist must also pass the [mapped/routed functional equivalence ch
 For assessment, explain the causal path from one baseline failure to one chosen repair. Compare the contemporaneous ASIC baseline, slow and repaired reports with their common mapped-netlist hash. Explain why the extra product register helps Nexys yet does not close ECP5, and state an application-latency test that could change the choice between 75 MHz original RTL and 100 MHz modified RTL. Finally list precisely which checks would still be required before deployment on a board or fabrication of a complete SoC. A useful release decision includes its accepted scope, measured costs and open obligations.
 
 ## Actual GDS DRC/LVS and power/body finishing {#sec-layout-verification}
+
+[Advanced · C0 review / C3 rerun](../learning-paths.qmd#sec-path-labels){#act-case-drc-lvs .learning-activity}
 
 The previous section's timing/electrical gate was deliberately narrower than physical signoff. [Lab 22](../labs/22-layout-verification/README.md) now executes the next checks on that same GDS. The existing Wally development environment contains FreePDK45/Nangate45 under its OpenROAD-flow-scripts checkout. Its standard-cell GDS has the same SHA-256 as the library used by this case study. The continuation retains the digest-pinned ORFS image and records its precise DRC, CDL, LEF, Liberty, GDS and extraction-rule identities instead of mixing technology revisions.
 

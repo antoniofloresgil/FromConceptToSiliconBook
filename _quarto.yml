@@ -1,6 +1,7 @@
 project:
   type: book
   pre-render:
+    - python tools/book/learning_paths.py --check --export downloads/learning-activities.csv
     - python labs/run.py pack
   resources:
     - README.md
@@ -21,6 +22,7 @@ project:
     - examples/cocotb/Makefile
     - examples/cocotb/requirements.txt
     - downloads/hardware-design-labs.zip
+    - downloads/learning-activities.csv
 
 book:
   output-file: From-Concept-to-Silicon
@@ -33,6 +35,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - learning-paths.qmd
     - part: "I. Foundations"
       chapters:
         - chapters/01-foundations/risc-v-isa.qmd
@@ -108,6 +111,7 @@ format:
           \RedeclareSectionCommands[tocdynindent=true]{section,subsection,subsubsection}
     filters:
       - tools/book/part-titles.lua
+      - tools/book/activity-labels.lua
 
 
 

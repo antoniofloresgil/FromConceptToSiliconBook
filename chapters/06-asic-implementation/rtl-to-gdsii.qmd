@@ -72,6 +72,8 @@ The handoff package normally contains the final GDSII, netlist, constraints, rep
 
 ### Experiment: harden a small SystemVerilog block
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-rtl-to-gdsii-01 .learning-activity}
+
 Choose a synchronous block already covered by tests, such as the accumulator used in the Verilator chapter. Give it one explicit clock, one reset convention and registered outputs. Create a LibreLane configuration that names the top module and the RTL sources, chooses a supported PDK/library, sets a deliberately conservative clock period, and supplies realistic input/output timing assumptions.
 
 Run the flow and keep its run directory outside version control. Then answer the following from the reports:
@@ -106,6 +108,8 @@ Explain which inputs each physical stage consumes and what checks justify handin
 Equating open PDK availability with automatic fabrication access; calling an unqualified GDS file manufacturing-ready.
 
 ## Try it yourself {#review-rtl-to-gdsii-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-rtl-to-gdsii-review .learning-activity}
 
 Follow the chapter flow diagram for the accumulator and pair each output with its acceptance report and missing release collateral.
 

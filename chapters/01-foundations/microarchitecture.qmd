@@ -332,11 +332,15 @@ The simulation chapters provide tools for these checks. The later synthesis and 
 
 ### Experiment 1: derive an effect table
 
+[Preparation · P1 · C0](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-01 .learning-activity}
+
 Use the ISA chapter's sum program. For each real instruction, record its source operands, immediate, candidate result, memory effect and next PC. Mark which architectural state remains unchanged. Compare the effect table with a proposed controller table before writing a CPU.
 
 Add an unsupported encoding to the specification and decide how a complete design reports it. Avoid assigning it convenient ordinary-instruction controls. This review is particularly useful when adding custom instructions later.
 
 ### Experiment 2: ALU boundary tests
+
+[Core option · P1 · C1](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-02 .learning-activity}
 
 Test every supported selector, all invalid selectors, and operand boundaries zero, one, maximum unsigned value, minimum signed value and maximum signed value. Include `0x7fffffff - 0xffffffff`: a subtraction-sign shortcut does not implement signed comparison correctly there.
 
@@ -344,11 +348,15 @@ Randomize operands with a reference model using explicit 32-bit masking, signed 
 
 ### Experiment 3: register-file collisions
 
+[Core option · P1 · C1](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-03 .learning-activity}
+
 Initialize registers 1 through 31, read both ports and attempt writes to zero. Verify equal read/write-address bypass before an edge, the stored result after the edge, and absence of writes while reset is asserted. Test both read ports independently and with the same address.
 
 Synthesize for a selected FPGA and inspect whether the array becomes registers, distributed storage or another structure. Explain the mapping using port and read-timing requirements. No target-independent HDL declaration guarantees a desired memory primitive.
 
 ### Experiment 4: iterative arithmetic under backpressure
+
+[Core · P1 · C1](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-04 .learning-activity}
 
 Test `WIDTH` values one, eight and 32. Include zero products, maximum operands and cases that depend on the final multiplier bit. For width eight, exhaustively test all 65536 input pairs if simulation time permits; for width 32, use boundary and randomized cases.
 
@@ -358,11 +366,15 @@ Record request acceptance, result production and result acceptance separately. C
 
 ### Experiment 5: change scheduling without changing results
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-05 .learning-activity}
+
 Compare the iterative multiplier with a registered combinational multiply. Use equal operands and widths, equivalent reset/response contracts, and the same output checker. Specify whether the alternative accepts every cycle or remains single-outstanding.
 
 Collect synthesis resource counts and, using the later implementation workflow, timing results. Do not compare one design's RTL operator count with another's routed area. Explain the interaction between latency, initiation interval, frequency and switching.
 
 ### Experiment 6: prepare to read Wally
+
+[Preparation · P0 · C0](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-06 .learning-activity}
 
 Before opening the full pipeline, identify instruction inputs, register-file ports, ALU control, immediate generation and side-effect enables. Trace one arithmetic instruction and one store at the architectural boundary. Then read the Wally chapter's pipeline treatment and ask which additional context must survive between its stages.
 
@@ -384,6 +396,8 @@ Explain the iterative product state transitions and distinguish an operation lat
 Equating fewer cycles with a faster implementation; adding a pipeline register without preserving dependencies or interface behavior.
 
 ## Try it yourself {#review-microarchitecture-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-microarchitecture-review .learning-activity}
 
 Trace one iterative multiplication from acceptance to completion. Count updates and identify the critical feedback operation using the supplied waveform.
 

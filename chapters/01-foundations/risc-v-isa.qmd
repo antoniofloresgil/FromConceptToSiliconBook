@@ -304,11 +304,15 @@ Once the state transition is clear, the implementation may take one cycle or sev
 
 ### Experiment 1: reconstruct immediate values
 
+[Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-01 .learning-activity}
+
 Test the immediate generator with positive and negative I/S values, the minimum and maximum B/J offsets, U-format high-bit values and unsupported selectors. Construct encoded fields from known immediates in the testbench, then compare against the original values. This tests independent encoding/decoding rather than duplicating the same concatenation in both implementation and checker.
 
 Choose branch offsets including -4, 2, 4 and 4094. Explain why reconstructing 2 is correct even though branching to a two-byte-aligned address is unsupported in a pure four-byte-aligned stream. Keep immediate formation and target legality as separate tests.
 
 ### Experiment 2: inspect the linked program
+
+[Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-02 .learning-activity}
 
 Build the demonstration and identify every real instruction corresponding to `la`. Decode one `addi`, one `lw`, one `sw` and the backward `bne` manually. Confirm the linked branch target, section addresses and signature symbol. Store the disassembly and compiler version in the report.
 
@@ -316,15 +320,21 @@ Change one constant in the data array, compute a new signature by hand and repea
 
 ### Experiment 3: observe signedness and zero-register behavior
 
+[Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-03 .learning-activity}
+
 Run directed sequences using `0xffffffff`, `0x80000000`, zero and one. Compare signed/unsigned comparisons and arithmetic/logical shifts. Attempt writes to `x0` using arithmetic and verify reads remain zero. Explain why a load into `x0` still requires memory-access checks.
 
 ### Experiment 4: distinguish configuration failures
+
+[Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-04 .learning-activity}
 
 Compile a small routine that multiplies two runtime operands with RV32I and with RV32IM. Inspect whether the generated code calls a helper or uses a multiplication instruction; do not use a constant expression the compiler folds away. Run only on configurations that implement the generated instructions and provide any called runtime helpers.
 
 Enable compressed instructions in a supported configuration and inspect changed instruction addresses. An uncompressed teaching decoder is not a valid target for that new binary. Write an explicit compatibility table of ISA, ABI, memory map and completion convention.
 
 ### Experiment 5: compare models at architectural boundaries
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-05 .learning-activity}
 
 Use the reference-model chapter's harness to run the demonstration. Compare final signature words and a trace of PC, destination register and committed value. Then use the same executable on a matching RTL configuration. Record whether each comparison includes memory side effects, traps and devices.
 
@@ -346,6 +356,8 @@ Explain one instruction from encoding to architectural result, and distinguish a
 Confusing signed interpretation with stored bits; treating every RISC-V core as having the same extensions and platform services.
 
 ## Try it yourself {#review-risc-v-isa-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-review .learning-activity}
 
 Decode one load and one branch from the chapter. Check their immediates with the supplied ISA examples and annotate the expected register/PC changes.
 

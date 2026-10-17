@@ -272,21 +272,31 @@ Their access paths can overlap, and each must respect the security lifecycle. A 
 
 ### Experiment 1: capability inventory
 
+[Core option · P4 · C0](../../learning-paths.qmd#sec-path-labels){#act-debug-01 .learning-activity}
+
 Choose a target core and DM. Create a table that names the debug-specification version, hart XLEN, DTM transport, DM data width, debug ROM location, implemented abstract commands, program-buffer size, SBA widths, trigger types/count and authentication/lock policy. Mark every entry as verified from RTL/documentation, tested in simulation, or not implemented.
 
 ### Experiment 2: halt, inspect and resume
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-debug-02 .learning-activity}
 
 With an OpenOCD-compatible JTAG transport or a simulation DMI driver, run the seven-step control sequence above. Check that `dpc` captures the expected PC, `dcsr` identifies an external halt, a GPR read returns the expected architectural value, and `resumereq` resumes from the intended instruction. Repeat while the core is in reset/unavailable state and verify the documented result.
 
 ### Experiment 3: breakpoint and trigger behavior
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-debug-03 .learning-activity}
+
 Place a software `ebreak` in a test program and observe the ordinary exception path with the relevant `dcsr` ebreak bit disabled. Configure the supported debug behavior, repeat, and compare `dpc`, cause and PC redirect. If the core implements an address trigger, program a hardware breakpoint and verify that it enters Debug Mode without modifying instruction memory.
 
 ### Experiment 4: system-bus access and policy
 
+[Core option · P4 · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-debug-04 .learning-activity}
+
 Use SBA to read/write ordinary RAM, then test an unaligned access, an unsupported size and an address intentionally denied by the interconnect/firewall. Confirm the expected data or `sberror` result. Repeat while a hart has cached or recently written the same region; document the coherence mechanism or demonstrate why the observation is not coherent.
 
 ### Experiment 5: debug lock verification
+
+[Core option · P4 · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-debug-05 .learning-activity}
 
 Model development and production lifecycle states. In production, attempt JTAG DMI access, halt request, abstract register access and SBA reads of a protected memory. Verify that the implementation rejects every forbidden route and that warm reset does not accidentally re-enable it. Record the threat model and what physical attacks the RTL test does not cover.
 
@@ -314,6 +324,8 @@ Explain halt/resume versus system-bus access and why lifecycle policy must cover
 Assuming debug-specification compatibility includes every optional feature; treating a JTAG connection as access authorization.
 
 ## Try it yourself {#review-debug-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-debug-review .learning-activity}
 
 Use the chapter feature table to classify the referenced implementation, then list the authorization/reset obligations for your SoC.
 

@@ -284,18 +284,18 @@ The repository's declared RTL license is Solderpad Hardware License 2.1, with th
 
 ## Hands-on Experiments
 
-1. Run a five-instruction dependency chain and annotate which forwarding path supplies each operand.
-2. Change the data-memory model from combinational to synchronous. Observe the failing load-use sequence, then add the required stall/control alignment.
-3. Measure the clock period of a single-cycle datapath and the maximum frequency of the pipelined datapath after FPGA synthesis. Distinguish latency from throughput.
-4. Add a simple branch predictor only after branch flush behavior is fully verified; use the PMU counters to measure branch and misprediction effects.
+1. [Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-01 .learning-activity} — Run a five-instruction dependency chain and annotate which forwarding path supplies each operand.
+2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-02 .learning-activity} — Change the data-memory model from combinational to synchronous. Observe the failing load-use sequence, then add the required stall/control alignment.
+3. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-03 .learning-activity} — Measure the clock period of a single-cycle datapath and the maximum frequency of the pipelined datapath after FPGA synthesis. Distinguish latency from throughput.
+4. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-04 .learning-activity} — Add a simple branch predictor only after branch flush behavior is fully verified; use the PMU counters to measure branch and misprediction effects.
 
 ### Full-SoC integration experiments
 
-1. **Configuration audit.** Compare the pinned `rv32i` and `rv32gc` fields. Explain which paths disappear, which ISA/compiler options change and why cache parameters in a disabled cache do not imply a physically instantiated cache. List reset PC and image-loading assumptions.
-2. **Cold versus warm RAM load.** Place a known word at `0x80002000`. Observe a cold miss and a later hit without relying on a fixed cycle count. Check the refill geometry, `x5` result and dependence handling. Record how IFU traffic affects bus service.
-3. **Exactly-once GPIO write.** Configure output enable, write output value and correlate the completed APB transfer with register/pin state. Introduce wait states where the harness supports them. Verify that one architectural store does not become several device transfers.
-4. **Timer interrupt and resumption.** Use an established trap-entry wrapper, a foreground signature loop and a handler that advances the deadline. Compare pending-with-enables-clear against enabled service. Record entry cause, return PC and preservation of foreground state; separately measure handler latency.
-5. **PLIC contrast.** Enable one documented device source, then two. Verify claim IDs, device service and completion rather than identifying sources only from `mcause`. Explain the differences from the CLINT timer exercise.
+1. [Core · P3 · C0](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-05 .learning-activity} — **Configuration audit.** Compare the pinned `rv32i` and `rv32gc` fields. Explain which paths disappear, which ISA/compiler options change and why cache parameters in a disabled cache do not imply a physically instantiated cache. List reset PC and image-loading assumptions.
+2. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-06 .learning-activity} — **Cold versus warm RAM load.** Place a known word at `0x80002000`. Observe a cold miss and a later hit without relying on a fixed cycle count. Check the refill geometry, `x5` result and dependence handling. Record how IFU traffic affects bus service.
+3. [Core option · P3 · C2](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-07 .learning-activity} — **Exactly-once GPIO write.** Configure output enable, write output value and correlate the completed APB transfer with register/pin state. Introduce wait states where the harness supports them. Verify that one architectural store does not become several device transfers.
+4. [Core option · P3 · C2](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-08 .learning-activity} — **Timer interrupt and resumption.** Use an established trap-entry wrapper, a foreground signature loop and a handler that advances the deadline. Compare pending-with-enables-clear against enabled service. Record entry cause, return PC and preservation of foreground state; separately measure handler latency.
+5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-09 .learning-activity} — **PLIC contrast.** Enable one documented device source, then two. Verify claim IDs, device service and completion rather than identifying sources only from `mcause`. Explain the differences from the CLINT timer exercise.
 
 Each report should include the RTL revision, selected configuration, loader/firmware convention, minimal disassembly, annotated waveforms and pass/fail criteria. These are integration exercises; reading the diagrams alone does not validate a board or operating-system configuration.
 
@@ -321,6 +321,8 @@ Explain a load-use stall and a redirected fetch, including how synchronous-memor
 Treating the simplified diagram as the complete privileged core; confusing a stall with discarding an instruction.
 
 ## Try it yourself {#review-core-v-wally-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-review .learning-activity}
 
 Trace a load followed by a dependent add on the chapter diagram. Mark forwarding, held registers and discarded instructions for a taken branch.
 

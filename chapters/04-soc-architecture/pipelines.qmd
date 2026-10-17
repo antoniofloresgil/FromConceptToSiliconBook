@@ -523,6 +523,8 @@ Hold reset through active edges and deassert away from them. Write every RAM wor
 
 ### Experiment 1: FIFO conservation and ordering
 
+[Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-01 .learning-activity}
+
 Test the FIFO independently at depths two, three and eight; three exercises non-power-of-two wraparound. Send numbered words and randomly pause the receiver. A stalled sender retains its word rather than generating a new number every cycle.
 
 Maintain a reference queue. Append on input handshake; compare with and remove the oldest entry on output handshake. Accepted inputs minus outputs must remain between zero and depth.
@@ -533,6 +535,8 @@ Explain the full-state recovery bubble. Then build a variant accepting full-plus
 
 ### Experiment 2: End-to-end memory correspondence
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-02 .learning-activity}
+
 Maintain a reference word array and expected-response queue. At every accepted client request, apply byte-enabled writes to the model or read its expected value, then append `{write, id, expected_data}`. This acceptance-order prediction matches the ordered hardware service.
 
 At each external response handshake, compare all fields against the oldest expected entry. Writes expect zero response data, including writes with no byte enables. Randomize addresses, masks, source gaps and receiver pauses. Keep tags unique while outstanding, or track their generations explicitly.
@@ -541,6 +545,8 @@ Check retained outputs during stalled cycles too: changing a waiting response vi
 
 ### Experiment 3: Response-path backpressure
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-03 .learning-activity}
+
 Set both depths to two. Stop the consumer longer than the path's capacity while the source keeps offering requests. Track handshakes and internal occupancies.
 
 The response FIFO fills, the service retains one result, the request FIFO fills and source readiness drops. Maximum external outstanding count is five. The source retains its next unaccepted item throughout the stop.
@@ -548,6 +554,8 @@ The response FIFO fills, the service retains one result, the request FIFO fills 
 Resume consumption and drain all work. Responses appear once and in order. Apply a timeout only while the environment permits progress; a timeout during deliberately indefinite backpressure is not evidence of an internal deadlock.
 
 ### Experiment 4: Measure latency and throughput
+
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-04 .learning-activity}
 
 Timestamp request and response handshakes. Separately measure production latency if internal signals are visible. Report a distribution and maximum as well as mean latency.
 
@@ -568,6 +576,8 @@ Include drain time or identify a steady-state window. During filling, input rate
 
 ### Experiment 5: Reset and persistent side effects
 
+[Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-05 .learning-activity}
+
 Reset an occupied FIFO and confirm that old items disappear. Next reset the subsystem after a write executes but before its acknowledgement reaches the client. Issue a fresh read after reset.
 
 RAM preserves the applied write while its old acknowledgement can disappear. Missing acknowledgement therefore does not prove that a write never occurred. Retrying a device command after cancellation can repeat its side effect.
@@ -577,6 +587,8 @@ Repeat with a write only queued before reset, not yet accepted by the service. I
 A production integration needs a reset policy across clients, transport and targets. Compare draining before reset, resetting a whole domain, and tracking old responses by epoch. Do not assume peripheral actions are reversible.
 
 ### Experiment 6: Build a pipelined target
+
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-06 .learning-activity}
 
 Replace the serial engine with a fixed-latency read pipeline. Start read-only, with known contents. Carry a tag through each stage and reserve completion space for every accepted read.
 
@@ -635,6 +647,8 @@ Explain the difference between accepting a request and completing its side effec
 Counting requests before acceptance; dropping payload stability or assuming reset cancels an already committed write.
 
 ## Try it yourself {#review-pipelines-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-pipelines-review .learning-activity}
 
 Use a transport-lab stall trace to account for every accepted request and returned response. Check the conservation equation at the end.
 

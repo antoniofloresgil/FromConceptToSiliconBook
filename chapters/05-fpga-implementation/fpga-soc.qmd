@@ -238,13 +238,13 @@ When changing the Wally core configuration, repeat the complete evidence ladder.
 
 ## Hands-on Experiments
 
-1. **Reproduce the bitstream.** Build the branch unchanged, archive the output directory and compare its bitstream hash across two clean builds with the same tool/database versions.
-2. **Prove the board wrapper.** Start from a GPIO/LED-only configuration and verify pin mapping before adding the processor. Check the reset polarity with an LED or UART message.
-3. **Prove Wally boot.** Use a firmware image that writes a recognizable UART string from IROM. Verify it in simulation and then on the board with the same image hash.
-4. **Audit the bridge.** Create reads/writes to the DDR window in an isolated testbench. Include byte strobes, back-pressure and reset while a transaction is outstanding.
-5. **Use LED telemetry.** Record the five state indicators through power-on. Form one hypothesis from the first unexpected LED and design a one-change experiment.
-6. **Timing discipline.** Compare the 40 MHz report with an attempted 50 MHz run. Identify the critical path and decide whether a pipeline change, architecture change or lower target is justified.
-7. **State limitations honestly.** In a project report distinguish: bitstream generated, configuration completed, internal-ROM software ran, DDR initialized and DDR tested. Do not collapse these milestones into “FPGA implementation works.”
+1. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-01 .learning-activity} — **Reproduce the bitstream.** Build the branch unchanged, archive the output directory and compare its bitstream hash across two clean builds with the same tool/database versions.
+2. [Advanced · C3 · board](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-02 .learning-activity} — **Prove the board wrapper.** Start from a GPIO/LED-only configuration and verify pin mapping before adding the processor. Check the reset polarity with an LED or UART message.
+3. [Advanced · C2 run / C3 build · board](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-03 .learning-activity} — **Prove Wally boot.** Use a firmware image that writes a recognizable UART string from IROM. Verify it in simulation and then on the board with the same image hash.
+4. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-04 .learning-activity} — **Audit the bridge.** Create reads/writes to the DDR window in an isolated testbench. Include byte strobes, back-pressure and reset while a transaction is outstanding.
+5. [Advanced · C0 · board](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-05 .learning-activity} — **Use LED telemetry.** Record the five state indicators through power-on. Form one hypothesis from the first unexpected LED and design a one-change experiment.
+6. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-06 .learning-activity} — **Timing discipline.** Compare the 40 MHz report with an attempted 50 MHz run. Identify the critical path and decide whether a pipeline change, architecture change or lower target is justified.
+7. [Core · P5 · C0](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-07 .learning-activity} — **State limitations honestly.** In a project report distinguish: bitstream generated, configuration completed, internal-ROM software ran, DDR initialized and DDR tested. Do not collapse these milestones into “FPGA implementation works.”
 
 ### Alternatives without a board
 
@@ -278,6 +278,8 @@ Explain the Nexys Video boot/console path and why a DDR calibration or transacti
 Claiming DDR functionality from a successful build; overlooking firmware placement or reset-domain assumptions.
 
 ## Try it yourself {#review-fpga-soc-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-review .learning-activity}
 
 Use the chapter checkpoint table to classify available build/board evidence and identify the first missing observation.
 

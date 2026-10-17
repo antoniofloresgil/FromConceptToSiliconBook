@@ -286,6 +286,8 @@ The first command opens the OpenROAD database for physical inspection; the secon
 
 ### Step 6: compare a controlled experiment
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-controlled .learning-activity}
+
 Make a second configuration, `config-8ns.yaml`, identical except for:
 
 ```yaml
@@ -432,17 +434,25 @@ For a book-wide IP example, use the common source/configuration manifest in @sec
 
 ### Experiment 1: validate the baseline
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-01 .learning-activity}
+
 Run the accumulator at 10 ns. Make a one-page report containing the resolved PDK/library, cell and core area, worst setup/hold slack, count of route DRC markers, DRC/LVS result and final GDSII location. Inspect the OpenROAD view and identify the clock network and each grouped set of pins.
 
 ### Experiment 2: sweep placement density
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-02 .learning-activity}
 
 Copy the baseline YAML into two variants with `FP_CORE_UTIL` values of 45 and 65. Keep RTL, PDK, cell library and period unchanged. Use a derived placement density only where the values stay feasible. Compare area, wire length, buffer insertion, congestion, timing and DRC. Explain which result offers the best engineering trade-off rather than choosing the smallest core mechanically.
 
 ### Experiment 3: make the run suitable for CI
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-03 .learning-activity}
+
 Add a CI job that enters the pinned LibreLane environment, runs synthesis on each merge request and preserves the resolved configuration and selected reports as artifacts. Run the full hardening flow on protected branches or scheduled jobs if it is too expensive for every change. Define thresholds for unacceptable new setup/hold violations and document how a PDK or tool upgrade is reviewed.
 
 ### Experiment 4: compare direct and managed implementation
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-04 .learning-activity}
 
 Use the same RTL, 10 ns target and SKY130 library in the direct OpenROAD exercise and in LibreLane. Compare the visible inputs and outputs. Identify which Tcl choices LibreLane has taken from the PDK/default flow, and which design choices remain your responsibility. The expected lesson is not identical files or numbers; it is an understanding of why a reproducible managed flow is valuable after the underlying physical stages are understood.
 
@@ -470,6 +480,8 @@ Explain which accumulator steps LibreLane coordinates and how a failed report di
 Assuming default configuration fits another PDK/design; interpreting generated artifacts as a qualified tapeout.
 
 ## Try it yourself {#review-librelane-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-librelane-review .learning-activity}
 
 Compare the supplied accumulator configuration with the direct-flow inputs. Identify each shared constraint and technology dependency.
 

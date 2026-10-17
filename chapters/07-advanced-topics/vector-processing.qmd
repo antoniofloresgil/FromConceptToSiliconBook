@@ -201,6 +201,8 @@ For a proposed Wally vector integration, specify at least the architectural feat
 
 ### Reproduce the checked functional example
 
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-rvv-example .learning-activity}
+
 The [vector practice guide](../../labs/13-vector/README.md) accompanies complete startup, linker, scalar test harness and assembly sources. It reuses the optional boot container rather than adding another toolchain installation. From the repository or extracted-practice-package root:
 
 ```sh
@@ -255,6 +257,8 @@ Useful student extensions are to add randomized seeds, a second reduction strate
 
 ### Comparing RVV with the AXI/DMA accelerator
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-rvv-comparison .learning-activity}
+
 The final project's accelerator transfers operands as 32-bit memory words and uses their signed low 16 bits, producing a signed 64-bit result. This RVV kernel uses packed, contiguous signed 16-bit inputs. Their effective arithmetic width agrees, but their memory layout and bytes transferred per operand differ. Before comparing performance, align the layout, legal lengths, overflow/saturation contract and output semantics.
 
 | Alternative | Main advantage to investigate | Cost that must be included |
@@ -284,6 +288,8 @@ This makes RVV a genuine alternative to an accelerator, rather than free acceler
 
 ### Design review and follow-on exercises
 
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-rvv-review-design .learning-activity}
+
 For an FIR filter, first identify the vectorized dimension. Processing taps inside one output resembles a dot product and requires a reduction. Processing multiple outputs together can broadcast a coefficient and update independent sums, but changes input-window reuse and memory access. Sketch both layouts before choosing instructions or building a streaming engine.
 
 For defence, explain why the widening destination uses two registers, why the reduction seed is 64 bits, and why the loop advances by `t0` rather than a VLEN-derived constant. State what `ma` permits in registers and what it does not permit in memory. Describe the additional evidence needed to move the routine into Linux or an implemented Wally vector platform.
@@ -306,6 +312,8 @@ Explain SEW/LMUL changes in the dot product and why widening must precede an ove
 Assuming vl always equals min(AVL,VLMAX); treating QEMU host runtime as target vector-unit speed.
 
 ## Try it yourself {#review-vector-processing-try .unnumbered .unlisted}
+
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-vector-processing-review .learning-activity}
 
 Run the existing same-ELF test at three VLEN values. Explain one partial chunk and one guarded masked store from its results.
 

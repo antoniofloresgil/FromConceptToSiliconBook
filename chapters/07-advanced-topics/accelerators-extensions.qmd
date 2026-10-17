@@ -451,13 +451,13 @@ Do not attach an experimental engine directly to trusted memory in a system with
 
 ## Hands-on Experiments
 
-1. Profile a scalar FIR in Wally simulation. Record cycles, instructions, cache events and the input size at which the kernel dominates.
-2. Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit. Verify impulses, random inputs and saturation cases.
-3. Add only the MMIO register block and a no-DMA local-memory mode. Verify start, busy, done, error and reset before connecting a bus master.
-4. Add the single-outstanding-request DMA adapter. Randomize memory latency and inject read/write errors.
-5. Integrate the peripheral into a Wally configuration at a documented address and route its interrupt. Run the driver in simulation.
-6. Synthesize for Nexys Video. Compare DSP, LUT, BRAM, frequency and PMU measurements with the software baseline.
-7. Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
+1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-01 .learning-activity} — Profile a scalar FIR in Wally simulation. Record cycles, instructions, cache events and the input size at which the kernel dominates.
+2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-02 .learning-activity} — Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit. Verify impulses, random inputs and saturation cases.
+3. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-03 .learning-activity} — Add only the MMIO register block and a no-DMA local-memory mode. Verify start, busy, done, error and reset before connecting a bus master.
+4. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-04 .learning-activity} — Add the single-outstanding-request DMA adapter. Randomize memory latency and inject read/write errors.
+5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-05 .learning-activity} — Integrate the peripheral into a Wally configuration at a documented address and route its interrupt. Run the driver in simulation.
+6. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-06 .learning-activity} — Synthesize for Nexys Video. Compare DSP, LUT, BRAM, frequency and PMU measurements with the software baseline.
+7. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-07 .learning-activity} — Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
 
 Without an FPGA, experiments 1–5 and 7 remain RTL/firmware simulation activities with the stated harness adaptations. For experiment 6, synthesize and, if the XC7 environment is available, place-and-route without programming. Compare simulated software/accelerator cycles separately from device timing/resources. If that flow is unavailable, submit your generic synthesis analysis plus the instructor-provided report comparison from [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). Do not attribute a supplied design's timing or resource counts to your FIR. Use @sec-executable-project for a checked real-Wally accelerator starting point and identify the additional FIR implementation/integration work.
 
@@ -495,6 +495,8 @@ Explain a job from control acceptance to memory-visible result and distinguish a
 Reporting compute-only speedup as job speedup; overlooking DMA ownership, descriptor validation or interrupt completion.
 
 ## Try it yourself {#review-accelerators-extensions-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-review .learning-activity}
 
 Use the reference project log to follow one accepted descriptor and its transactions. Account for setup, transfer, computation and completion.
 

@@ -285,6 +285,8 @@ Use conservation checks as well as performance totals. Accepted jobs should equa
 
 ### Experiment A: two Linux CPUs and the existing DMA accelerator
 
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-multicore-integration-01 .learning-activity}
+
 [Lab 20](../../labs/20-multicore/README.md) builds a small additional initramfs on the existing Linux/QEMU accelerator image. It does not modify the preserved single-hart driver, device model, accelerator RTL or Wally profile. The emulator starts with two CPUs, 256 MiB RAM and the accelerator at `0x10080000`; the trusted DMA pool remains at `0x88000000`. QEMU is the executable software platform in this experiment [@multicoreQemu].
 
 The application checks that Linux has two CPUs online. A producer process is pinned to logical CPU 0 and a worker to logical CPU 1; each checks its actual CPU during work. They share an allocation containing request/completion epochs and a job. Release/acquire publication protects the payload and prevents reuse before acknowledgement. The worker alternates interrupt and polling requests over 64 jobs, using lengths 1, 8, 32, 128 and 256. The producer computes expected values independently before handing over each job.
@@ -305,6 +307,8 @@ Inspect the [execution report](../../labs/20-multicore/reference/report.json), [
 
 ### Experiment B: produce stale-data and ordering witnesses
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-multicore-integration-02 .learning-activity}
+
 The same practice runs finite models of the failure scenarios from this chapter. Follow a dirty input from hart 0 to a non-snooping DMA, then apply an order-only fence and observe that the backing value remains old. Try a local-only clean on the non-owner. Apply the model's domain-wide clean and confirm the repaired input. For results, preload an old cached value, perform the DMA write, and compare consumption before and after invalidation.
 
 Next reproduce a result/control false-sharing overwrite. The counterexample is about whole-line writeback and conflicting ownership, not arithmetic. Move the independently owned control state into a separate modeled line and repeat. Document what real target information would be needed to choose the actual allocation boundaries and maintenance operations.
@@ -312,6 +316,8 @@ Next reproduce a result/control false-sharing overwrite. The counterexample is a
 The visibility-event enumerator examines four cases: neither publication edge, release only, acquire only, and both. Read the retained [model witnesses](../../labs/20-multicore/reference/models.json), identify the stale outcome in each insufficient case and explain the observation-point assumptions. Then inspect the dependency graph and arbitration examples. Their repaired cases establish their stated finite abstractions, not a complete coherence protocol, NoC routing proof or hardware performance result.
 
 ### Experiment C: integrate or study a coherent RTL subsystem
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-multicore-integration-03 .learning-activity}
 
 This is the larger advanced route. Start from a processor subsystem that already supports the required coherent clients, or extend a small two-client cache subsystem with an explicit home and memory interface. Reusing the book's Wally core does not supply those components automatically. A second core instance needs a new shared fabric, probe/ownership contract and system-management path; retain the original single-hart platform as its own reference.
 
@@ -344,6 +350,8 @@ Trace a job from a dirty producer line to device-visible operands, accepted comp
 Treating fences as cache writeback; declaring DMA coherent in metadata without a coherent path; protecting a singleton engine with per-hart locks; interpreting a watchdog as a deadlock proof; attributing QEMU timings to a physical multicore fabric.
 
 ## Try it yourself {#review-multicore-integration-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-multicore-integration-review .learning-activity}
 
 Choose one failed model trace and identify the smallest contract change that repairs it. Explain which real hardware/software implementation would be needed to make that change valid on the selected target.
 

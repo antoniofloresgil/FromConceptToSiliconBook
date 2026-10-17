@@ -194,6 +194,8 @@ It selects the HDL source, top module, Python test module, and simulator. The ti
 
 ### 5. Run the test
 
+[Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-baseline .learning-activity}
+
 With the virtual environment active, from `examples/cocotb/`:
 
 ```sh
@@ -215,11 +217,11 @@ cocotb can also use Verilator, but version compatibility matters: cocotb 2.0.1 r
 
 ### 6. Extend verification
 
-1. Deliberately make overflow sticky in the RTL. Rerun the test and confirm a disabled cycle detects the error.
-2. Add consecutive reset and clear cases while enable is active, documenting their priority.
-3. Add directed vectors that produce exactly 65535, 65536, and the maximum possible sum of two operands.
-4. Change the local seed and record it with any failure; retain a minimized directed case for the regression.
-5. Split stimulus driving and output monitoring into concurrent tasks. Preserve the falling-edge drive and settled-output sampling rules.
+1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-01 .learning-activity} — Deliberately make overflow sticky in the RTL. Rerun the test and confirm a disabled cycle detects the error.
+2. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-02 .learning-activity} — Add consecutive reset and clear cases while enable is active, documenting their priority.
+3. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-03 .learning-activity} — Add directed vectors that produce exactly 65535, 65536, and the maximum possible sum of two operands.
+4. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-04 .learning-activity} — Change the local seed and record it with any failure; retain a minimized directed case for the regression.
+5. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-05 .learning-activity} — Split stimulus driving and output monitoring into concurrent tasks. Preserve the falling-edge drive and settled-output sampling rules.
 
 A useful deliverable includes the RTL revision, dependency versions, test seed, simulator command, report, and a description of checked requirements. Combine these tests with assertions and architectural checks when integrating the block into a larger SoC.
 
@@ -239,6 +241,8 @@ Explain why waiting for a clock event and sampling settled values are separate s
 Using arbitrary delays instead of protocol events; confusing a timeout or missing tool with a successful test.
 
 ## Try it yourself {#review-cocotb-try .unnumbered .unlisted}
+
+[Preparation · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-review .learning-activity}
 
 Run the existing accumulator test. Identify its reset sequence, accepted update and scoreboard sample, then inspect the matching simulator log.
 

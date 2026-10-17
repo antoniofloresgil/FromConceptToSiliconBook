@@ -386,6 +386,8 @@ CIRCT is compiler infrastructure based on MLIR. Its FIRRTL dialect represents th
 
 ### A small executable comparison
 
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-generator-comparison .learning-activity}
+
 [Lab 19](../../labs/19-hardware-generators/README.md) generates an unsigned accumulator with Chisel 6.5.0 and `firtool` 1.62.0, a documented version pairing. It retains the early `.fir`, lowered MLIR and emitted `.sv`. The key arithmetic operation is `sum +& Operand`, which preserves the carry bit; truncating the sum and observing carry are separate decisions. Width is an elaboration parameter, not a runtime register.
 
 The contract is synchronous active-high reset, then clear priority, enabled modular accumulation, a one-cycle `Valid` indication and a non-sticky carry indication. Tests check generated RTL and directly written parameterized SystemVerilog independently against a Python integer reference at widths 8, 16 and 32. At width 16, they also instantiate the unchanged accumulator from the Verilator chapter. Directed boundaries and seeded random traffic include reset during activity, clear together with enable, disabled cycles and overflow.
@@ -406,13 +408,15 @@ The practice records generic synthesis statistics for both descriptions. They ar
 
 ### Fundamentals exercises
 
-1. Draw the hardware implied by `word_select`, then test both select values and boundary payloads.
-2. Simulate `sample_pipeline` with distinct samples. Check reset priority, disabled cycles, and the two successive register captures. Compare blocking and nonblocking versions as an intentionally incorrect experiment.
-3. Test `request_control` against a transition table, including start while busy and reset while active.
-4. Describe a small RAM with synchronous read and byte writes. Define the collision policy before writing a scoreboard; inspect whether the target tool infers memory or registers.
-5. Elaborate two widths and one disabled optional feature. Confirm interface stability and absence of undriven outputs.
+1. [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-01 .learning-activity} — Draw the hardware implied by `word_select`, then test both select values and boundary payloads.
+2. [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-02 .learning-activity} — Simulate `sample_pipeline` with distinct samples. Check reset priority, disabled cycles, and the two successive register captures. Compare blocking and nonblocking versions as an intentionally incorrect experiment.
+3. [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-03 .learning-activity} — Test `request_control` against a transition table, including start while busy and reset while active.
+4. [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-04 .learning-activity} — Describe a small RAM with synchronous read and byte writes. Define the collision policy before writing a scoreboard; inspect whether the target tool infers memory or registers.
+5. [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-05 .learning-activity} — Elaborate two widths and one disabled optional feature. Confirm interface stability and absence of undriven outputs.
 
 ### Ready/valid experiment
+
+[Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-06 .learning-activity}
 
 1. Save the listing as `rv_slice.sv` and lint it with `verilator --lint-only -Wall rv_slice.sv`.
 2. Simulate reset, one transfer, several stalled cycles, and simultaneous output consumption/input replacement.
@@ -423,6 +427,8 @@ The practice records generic synthesis statistics for both descriptions. They ar
 Record commands, tool versions, waveforms for failures, and an explicit pass/fail result.
 
 ### Decoder and arithmetic integration experiment
+
+[Core option · P1 · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-07 .learning-activity}
 
 Connect `foundation_decode` to `rv32_immediate`. Check six supported instruction families and unsupported instructions with the same major opcodes, including `SUB`, non-word loads, other branch comparisons and immediate shifts. Verify no unsupported instruction requests a memory side effect.
 
@@ -450,6 +456,8 @@ Explain why a declared variable does not determine storage, and trace old versus
 Assuming logic implies a flip-flop; leaving combinational outputs incompletely assigned or relying on implicit width conversions.
 
 ## Try it yourself {#review-systemverilog-try .unnumbered .unlisted}
+
+[Preparation · C1](../../learning-paths.qmd#sec-path-labels){#act-systemverilog-review .learning-activity}
 
 Annotate the register and next-state logic in a supplied foundations module. Predict its output before running the existing test.
 

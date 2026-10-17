@@ -239,6 +239,8 @@ No HDL delay controls are used, so this harness does not require `--timing`. Adv
 
 ### 5. Compile the model and harness
 
+[Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-baseline .learning-activity}
+
 From the directory containing the two files:
 
 ```sh
@@ -285,11 +287,11 @@ Inspect `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, and `Overf
 
 ### 7. Extend the checks
 
-1. Change the RTL overflow test deliberately so that exactly 65535 reports overflow. Rebuild and confirm that the test fails.
-2. Add consecutive disabled cycles after a wrap and check that overflow never becomes sticky.
-3. Replace the fixed stimulus with a deterministic pseudo-random sequence while retaining the reference calculation and a cycle limit.
-4. Add a test that changes inputs while the clock remains low. Verify that the sum register changes only on a rising edge.
-5. Parameterize the width and update the C++ interface/reference arithmetic accordingly. Do not assume wide ports have the same generated C++ representation as this 16-bit example.
+1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-01 .learning-activity} — Change the RTL overflow test deliberately so that exactly 65535 reports overflow. Rebuild and confirm that the test fails.
+2. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-02 .learning-activity} — Add consecutive disabled cycles after a wrap and check that overflow never becomes sticky.
+3. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-03 .learning-activity} — Replace the fixed stimulus with a deterministic pseudo-random sequence while retaining the reference calculation and a cycle limit.
+4. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-04 .learning-activity} — Add a test that changes inputs while the clock remains low. Verify that the sum register changes only on a rising edge.
+5. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-05 .learning-activity} — Parameterize the width and update the C++ interface/reference arithmetic accordingly. Do not assume wide ports have the same generated C++ representation as this 16-bit example.
 
 Record tool versions, source revision, command, exit status, and any failing cycle. This exercise checks a small synchronous block; processor simulation adds memory models, software loading, and architectural-state checks.
 
@@ -309,6 +311,8 @@ Explain one simulation iteration, including signal updates, evaluation, sampling
 Treating model generation as verification; sampling before the model reflects the intended clock edge.
 
 ## Try it yourself {#review-verilator-try .unnumbered .unlisted}
+
+[Preparation · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-review .learning-activity}
 
 Run the supplied accumulator example, inspect one accepted update in its trace, and relate it to the C++ reference result.
 

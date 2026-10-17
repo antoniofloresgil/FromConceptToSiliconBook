@@ -342,6 +342,8 @@ Each clock domain needs its own release synchronizer. The design must tolerate t
 
 ## A complete asynchronous FIFO {#sec-async-fifo}
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-async-fifo .learning-activity}
+
 The single-bit synchronizer above cannot preserve a changing word. If a binary value changes from `0111` to `1000`, independent bit synchronizers can present a mixture that the source never produced. Adding stages to every bit reduces propagation risk without establishing word ownership. A streaming link needs storage plus a protocol that tells the receiving domain which complete words it may consume.
 
 [Lab 24](../../labs/24-async-fifo/README.md) provides an executable, power-of-two asynchronous FIFO using registered Gray pointers and synchronized local flag comparisons, the established FIFO Style #1 approach [@cdcCummings2002]. The RTL is original teaching code with local ready/valid interfaces and a common reset contract. Its independent clocks are not replaced by clock enables in the experiment.
@@ -513,6 +515,8 @@ When changing a configurable core, audit the paths affected by the new feature. 
 
 ### Experiment 1: create and audit an SDC file
 
+[Core · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-01 .learning-activity}
+
 Create `constraints.sdc` for the accumulator at 10 ns. Include one clock, uncertainty and interface delays. Run the relevant FPGA or ASIC timing tool and answer:
 
 1. Is `clk` recognized as a clock with the intended period?
@@ -525,17 +529,25 @@ Repeat at 8 ns and 12 ns. Record period, frequency, worst setup slack, worst hol
 
 ### Experiment 2: distinguish enable from clock
 
+[Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-02 .learning-activity}
+
 Implement the `Tick` generator with a slow `Tick` enable. Keep all registers clocked by `clk_sys`, and update a counter only when `Tick` is high. Then make an intentionally incorrect version that uses a fabric-generated `Tick` as a clock. Compare the required constraints, inferred clock domains and implementation warnings. Explain why the enable version is simpler to verify and constrain.
 
 ### Experiment 3: review a crossing
+
+[Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-03 .learning-activity}
 
 Instantiate `bit_synchronizer` for an asynchronous pushbutton or simulated external control. Generate input transitions near several clock edges. Verify that the output changes only after synchronization latency, then replace the input with one-cycle pulses and observe why event delivery is not guaranteed. Design a request/acknowledge protocol for reliable pulse transfer.
 
 ### Experiment 4: reset release and timing evidence
 
+[Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-04 .learning-activity}
+
 Use `reset_release` in two independently clocked test domains. Assert reset asynchronously, then release it at several phases of each clock. Confirm that each local reset release is synchronous but can occur in a different cycle. Write the reset contract, CDC assumptions and timing constraints required before integrating the domains.
 
 ### Experiment 5: a long operation with short timing paths
+
+[Core option · P5 · C1 local / C3 system](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-05 .learning-activity}
 
 Implement the microarchitecture chapter's iterative multiplier under several clock periods. Identify the accumulator feedback path and distinguish operation latency from the period available to its adder. Report synthesis estimates separately from placed-and-routed slack.
 
@@ -565,6 +577,8 @@ Explain setup versus hold, clock enables versus generated clocks, and why reset 
 Using a timing exception to hide an unexplained path; assuming simulation tests measure metastability or achieved frequency.
 
 ## Try it yourself {#review-clocking-timing-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-clocking-timing-review .learning-activity}
 
 Review the existing accumulator constraints at two periods. Identify each clock and explain every unconstrained endpoint before comparing slack.
 

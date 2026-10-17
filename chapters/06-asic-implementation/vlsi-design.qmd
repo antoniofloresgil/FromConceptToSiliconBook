@@ -205,6 +205,8 @@ With 0.06 ns clock-to-Q, 0.04 ns minimum data delay, 0.05 ns hold and 0.03 ns un
 
 ### Define a physical experiment
 
+[Core option · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-physical-experiment-plan .learning-activity}
+
 Choose one controlled change: clock target, core utilization, register placement constraint or architecture. Preserve tool and PDK versions, interface loads and activity assumptions. Revalidate behavior for an RTL change, and rerun the relevant physical stages. Classify the result as a verified baseline, a failed candidate or an incomplete experiment.
 
 For example, compare the original accumulator with a pipelined arithmetic implementation. The latter changes result latency and may need additional handling of feedback dependencies; inserting a register into the feedback sum cannot be assumed to preserve one accumulated update per cycle. State the new protocol and verify it before comparing PPA. An area or frequency improvement is irrelevant if the two circuits perform different work.
@@ -213,21 +215,31 @@ For example, compare the original accumulator with a pipelined arithmetic implem
 
 ### Experiment 1: electrical load and cell size
 
+[Core · P5 · C0](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-01 .learning-activity}
+
 Inspect two inverter drive strengths in the selected library. Compare area, input capacitance and delay at the same slew/load. Identify the preceding-stage cost of upsizing. Estimate a simple RC delay by hand and explain why the characterized result differs. Deliver the cell identities, table coordinates, units and a short interpretation.
 
 ### Experiment 2: effort and wire length
+
+[Core option · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-02 .learning-activity}
 
 Evaluate a load ratio of 64 using two, three and four inverter stages in the logical-effort approximation. Include parasitic delay and polarity. Then inspect a high-fanout net in a placed design and compare its route with the hand model. Discuss whether cell sizing, repeaters or physical locality would be the most plausible intervention.
 
 ### Experiment 3: timing closure at more than one corner
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-03 .learning-activity}
+
 Run the accumulator with the supported corners of the chosen physical flow. Tabulate setup, hold and electrical-limit results separately. Select one failing path and explain its startpoint, endpoint, cell arcs, route contribution and clock relation. Propose a repair, run it, and check that it has not created a failure in another analyzed corner.
 
 ### Experiment 4: active and idle energy
 
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-04 .learning-activity}
+
 Create stimulus representing active arithmetic, disabled accumulation and repeated clear/reset. Estimate power with the supported method and state the activity source. Compare energy per accepted operation, including clock and idle costs. A register enable that holds the output does not necessarily stop internal combinational switching when inputs continue changing.
 
 ### Experiment 5: a macro-aware Wally floorplan
+
+[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-05 .learning-activity}
 
 Select a documented Wally cache geometry and compute the required storage bits and ports. Propose compatible SRAM banks, or explicitly identify the missing macro collateral. Sketch controller placement, power access and routing channels. Explain how memory latency affects the pipeline described in @sec-core-v-wally. The deliverable is an integration plan; do not claim a hardened Wally implementation without its physical evidence.
 
@@ -249,6 +261,8 @@ Explain a cell-size/load tradeoff and why an RTL memory array needs an explicit 
 Copying textbook process numbers into another PDK; comparing PPA for designs with different behavior.
 
 ## Try it yourself {#review-vlsi-design-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-review .learning-activity}
 
 Use the existing library exercise to compare two drive strengths at the same slew/load. Record the preceding-stage cost as well as delay.
 

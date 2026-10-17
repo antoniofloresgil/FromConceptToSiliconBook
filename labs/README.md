@@ -63,6 +63,13 @@ Windows mounts use Windows access controls; do not paste POSIX `id` expressions 
 
 ## Commands
 
+The book's [learning-path guide](../learning-paths.qmd) distinguishes Preparation,
+Core, Core option and Advanced activities and their compute classes. Core labels
+map to the existing P0–P5 course milestones; the three general technical routes
+remain available to independent readers. Use the downloadable activity catalogue
+linked there to choose a local test, platform build, physical-report review or
+physical rerun deliberately. The ordinary `run all` scope is unchanged.
+
 ```sh
 python labs/run.py list
 python labs/run.py doctor

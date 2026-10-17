@@ -24,6 +24,8 @@ The baseline is intentionally single-clock and single-outstanding. Each pair req
 
 ## First run: the IP boundary
 
+[Core · P3 · C1](../learning-paths.qmd#sec-path-labels){#act-project-ip .learning-activity}
+
 Build the container described in @sec-reproducible-labs, then run:
 
 ```bash
@@ -47,6 +49,8 @@ The random seed controls the data and independent memory wait states. The RAM mo
 Inspect `labs/build/report.json` and the numbered command logs in `labs/build/dotproduct/`. `dotproduct.json` contains the generic synthesized netlist. The logs distinguish vector generation, simulation, synthesis and formal checking; a simulation PASS is not a timing result.
 
 ## Second run: real Wally, firmware and interrupts
+
+[Core · P3 · C2](../learning-paths.qmd#sec-path-labels){#act-project-wally .learning-activity}
 
 Acquire Wally before the offline run:
 
@@ -219,6 +223,8 @@ Checksums detect changes only relative to a trusted identity. A party that can r
 A reusable soft IP need not bundle a technology-specific hard macro, but it must identify which views exist. An example 10 ns clock is a requested budget, not achieved frequency. A generic netlist is not a placed implementation. Historical results in @sec-complete-case and @sec-layout-verification show how to document physical evidence, but belong to their own hashes. The newly generated endpoint cannot inherit their area, timing, power or DRC/LVS status merely because it preserves register behavior.
 
 ### Reproduce and review the release
+
+[Core option · P5 · C1 local / C2 system](../learning-paths.qmd#sec-path-labels){#act-ip-release .learning-activity}
 
 Start with a new output directory; the packager refuses to overwrite a release:
 

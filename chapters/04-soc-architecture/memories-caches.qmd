@@ -538,6 +538,8 @@ The model's writeback count includes both eviction and explicit clean operations
 
 ### Experiment 1: validate synchronous memory semantics
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-01 .learning-activity}
+
 Save `sync_memory` as `sync_memory.sv` and create a testbench with an independent reference array. Initialize tested locations through writes before comparing read data. Check the first and last address, all byte masks, repeated reads and reset after initialization.
 
 | Test | Expected property |
@@ -554,6 +556,8 @@ Randomize addresses, masks and response waits. A scoreboard should update its re
 Simulate with a four-state tool when investigating unwritten values, and compare with the two-state simulator used elsewhere. Document differences rather than assuming a zero returned by one environment proves initialization in hardware.
 
 ### Experiment 2: check physical memory inference
+
+[Core option · P5 · C1 local / C3 system](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-02 .learning-activity}
 
 Synthesize the wrapper for a selected FPGA family. For the default 256 × 32-bit organization, payload storage is 8,192 bits. Inspect the synthesized primitives and read-during-write configuration, not only total logic cells. The frontend response slot and memory output register also contribute resources.
 
@@ -575,6 +579,8 @@ For an ASIC exercise, select an available macro and collect its required views. 
 
 ### Experiment 3: geometry and adversarial traces
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-03 .learning-activity}
+
 Use the Python model to create sequential, repeated, stride and conflicting traces. At fixed capacity, vary ways and adjust sets accordingly. At fixed ways/line size, vary capacity. At fixed capacity/ways, vary line size and recalculate sets.
 
 | Trace | Mechanism exposed |
@@ -592,6 +598,8 @@ The three-address two-way conflict can occur even though the whole cache has amp
 
 ### Experiment 4: Wally hit and miss waveforms
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-04 .learning-activity}
+
 Select a full Wally configuration with the desired I$/D$ support and preserve its commit hash and effective geometry. Start with translation disabled or a known bare-metal mapping, so page walks do not obscure basic cache traces. Use the revision's startup, linker and simulator arrangements.
 
 Record physical address, set/tag, hit-way vector, valid/dirty state, victim, controller state, line-buffer beat count, bus completion and pipeline stall. Exercise a load hit, store hit, clean miss, dirty miss and uncached access. Trace one operation across boundaries rather than treating a control pulse as an entire transaction.
@@ -608,6 +616,8 @@ Record physical address, set/tag, hit-way vector, valid/dirty state, victim, con
 Count misses on the design's event definition, not once per stalled cycle. The cache exports access/miss signals, but their sampled semantics and any available counter implementation must be checked for the chosen revision. Preserve trace-derived measurements if software-visible performance counters are unavailable.
 
 ### Experiment 5: a bare-metal conflict workload
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-05 .learning-activity}
 
 For the earlier 4 KiB, two-way, 64-byte-line geometry, consecutive same-set blocks are 2 KiB apart. This GCC-oriented C fragment forces three volatile loads per iteration from such a pattern:
 
@@ -637,6 +647,8 @@ Change the pattern to two same-set blocks, then compare associativity at fixed c
 
 ### Experiment 6: instruction visibility and precise side effects
 
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-06 .learning-activity}
+
 In a supported bare-metal environment, modify instructions in writable executable RAM using a controlled routine, perform the required local instruction synchronization and execute the updated code. Use the toolchain/platform-supported mechanism and ensure Zifencei is present. Observe data-side preservation, instruction invalidation and refill. Do not describe a passing test without synchronization as an architectural guarantee.
 
 Separately inject interrupts or pipeline stalls around a pending cache/bus store. Trace accepted side effects and confirm they occur exactly once. Exercise an instruction crossing a cache-line boundary if compressed instructions are enabled. Later, enable a known virtual-memory configuration and distinguish TLB misses/page walks from cache misses in the same traces.
@@ -661,6 +673,8 @@ Explain a dirty eviction/refill and why DMA completion does not by itself guaran
 Treating a cache miss as a translation fault; comparing hit counts while ignoring memory contents and ownership.
 
 ## Try it yourself {#review-memories-caches-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-review .learning-activity}
 
 Trace one dirty replacement in the existing cache model. Account for writeback data, refill contents and the final observable value.
 

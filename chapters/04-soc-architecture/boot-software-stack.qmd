@@ -181,6 +181,8 @@ The small Linux exercise below mounts `/proc` and `/sys`, prints a marker and re
 
 ### Experiment 1: checked QEMU → OpenSBI → supervisor payload
 
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-boot-software-stack-01 .learning-activity}
+
 The [boot practice](../../labs/12-boot/README.md) contains complete sources, a separate optional container and an evidence collector. It is included in the downloadable practice ZIP. Run from the repository or extracted-package root on Linux/WSL:
 
 ```sh
@@ -239,6 +241,8 @@ SRST requests a normal shutdown after the last marker. A timeout, nonzero emulat
 Inspect `labs/build/boot/uart.log`, `payload.map`, `virt.dts`, `packages.txt` and `report.json`. Explain which agent supplied each artifact. Identify the DRAM aperture, UART, timer and interrupt-controller nodes in the generated tree. Compare their widths and interrupt bindings before attempting a port.
 
 ### Experiment 2: a complete Linux userspace boot
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-boot-software-stack-02 .learning-activity}
 
 This experiment extends the same chain with a real Linux kernel and static PID 1. The optional boot container includes both toolchains. Acquire the checksum-pinned Linux 6.12 source with network access, then compile and boot offline. The Linux source and build products are external/generated inputs and stay outside the practice ZIP.
 
@@ -320,6 +324,8 @@ If no Linux output appears, verify the firmware handoff and kernel console confi
 Keep each diagnostic tied to the last confirmed transition. Rebuilding the whole stack before preserving a failure log destroys useful evidence and can introduce a second defect.
 
 ### Experiment 3: Linux, a driver and the accelerator {#sec-linux-accelerator}
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-boot-software-stack-03 .learning-activity}
 
 [Lab 18](../../labs/18-linux-accelerator/README.md) closes the software path with a separately built QEMU device, a real Linux platform driver and a userspace regression. It also supplies the advanced Wally RTL route described below. The two environments share the numerical/register contract and driver/application sources; their reports retain separate execution status. The supplied QEMU model is an addition to the emulator, not a device present in stock `virt`.
 
@@ -467,6 +473,8 @@ Explain who loads each stage, how SBI differs from an OS system call, and how th
 Assuming QEMU virt binaries boot Wally unchanged; treating an image checksum as an authenticated root of trust.
 
 ## Try it yourself {#review-boot-software-stack-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-boot-software-stack-review .learning-activity}
 
 Review the Linux UART logs. Identify firmware, kernel, driver and PID 1 checkpoints and link them to their recorded image/configuration identities. Explain why the timeout test retains DMA buffers and why QEMU timing cannot establish a physical speedup. For the advanced extension, compare the Wally-specific DT and RTL checkpoints with the QEMU report. Explain why correct DMA arithmetic does not establish correct MMIO responses, and why a memory barrier cannot repair overlapping peripheral address decodes.
 

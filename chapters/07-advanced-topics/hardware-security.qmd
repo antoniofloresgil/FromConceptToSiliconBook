@@ -324,6 +324,8 @@ The runner writes separate architectural/digital reports under `labs/build/secur
 
 ### Experiment 1: PMP isolation and access violations
 
+[Core option · P4 · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-01 .learning-activity}
+
 Inspect [pmp.S](../../labs/14-security/pmp.S) and [pmp.ld](../../labs/14-security/pmp.ld). Identify the high-priority denied region, broad allowed RAM region and privilege transition. Explain why the test code can execute while its load/store to the protected word fails.
 
 The expected UART signature is:
@@ -340,6 +342,8 @@ Create a variant that replaces the first denial with an allow rule. The referenc
 
 ### Experiment 2: unauthorized DMA access
 
+[Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-02 .learning-activity}
+
 The digital command invokes the real dot-product lab with its output namespace isolated. It simulates all legal lengths, protocol/error/reset behavior and invalid descriptors, then synthesizes the reference and runs its existing bounded checks. Inspect `digital/dma.log` and `dma/report.json`; follow their paths to the simulator and formal evidence.
 
 For security, focus on the test cases for an out-of-window destination, a near-address-space-wrap source, excessive/zero length and overlapping output. The testbench snapshots actual memory-transaction counters before rejected jobs and requires them not to advance. This is stronger than merely observing an error register.
@@ -349,6 +353,8 @@ Explain the two authorities in the result. The CPU/driver is permitted to reques
 Extend the test plan with window-edge spans, partial/burst access boundaries, policy reconfiguration and a reset during an accepted job. Do not label a permanently stalled bus as an unauthorized-write test unless the checker establishes both denial and protocol recovery. Preserve expected allowed jobs as positive controls.
 
 ### Experiment 3: debug interface locking
+
+[Core option · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-03 .learning-activity}
 
 The [debug testbench](../../labs/14-security/tb_debug.sv) exercises the admission guard without a JTAG or Debug Module implementation. It checks denial on reset and without authority, an allowed development request, same-cycle lock denial, sticky denial after the request disappears, production denial across reset and invalid lifecycle encodings.
 
@@ -364,6 +370,8 @@ The source is intentionally small enough to audit. It does not demonstrate a pro
 
 ### Experiment 4: timing side-channel demonstration
 
+[Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-04 .learning-activity}
+
 The [timing script](../../labs/14-security/timing.py) reuses the existing teaching cache model: 16 sets, one way and 64-byte lines. It assigns a cost of one to a hit and twelve to a miss. Those values are synthetic and are not clock counts measured on Wally.
 
 The observer primes one line in every set. The victim then reads a disjoint address whose set index depends on a synthetic secret 0–15. Probing the observer's own lines reveals one miss, identifying the selected set. This requires shared replacement state; it does not require a direct read of the victim's address or data.
@@ -378,6 +386,8 @@ The script repeats for all sixteen synthetic secrets and saves the observation v
 This result is a useful multi-execution observation, not a physical constant-time qualification. Another cache organization, scheduler, speculative path, data-dependent unit or power measurement could expose a different channel. For a Wally extension, first establish a validated timing/PMU observation path, then collect repeated traces with a documented platform and noise model. Keep that physical/RTL measurement separate from the deterministic model output.
 
 ### Experiment 5: formal verification of a security property
+
+[Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-05 .learning-activity}
 
 Use @sec-formal-verification for the complete assertion/assumption/cover, BMC/induction and counterexample/repair workflow before interpreting this security-specific bounded result. Its FIFO proof and witnesses are separate evidence; they do not upgrade the debug guard's bound or establish a full secure-processor proof.
 
@@ -426,6 +436,8 @@ Explain why CPU PMP does not protect against every DMA/debug master, and disting
 Calling a checksum secure boot; extending a bounded/modelled experiment into a complete secure-SoC claim.
 
 ## Try it yourself {#review-hardware-security-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-hardware-security-review .learning-activity}
 
 Use the chapter evidence matrix to follow one protected asset across CPU, DMA and debug paths. Identify its remaining unverified boundary.
 

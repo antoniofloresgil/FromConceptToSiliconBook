@@ -115,6 +115,8 @@ The reference is small enough to inspect against the queue contract, but it is s
 
 ### Execute the complete experiment
 
+[Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-baseline .learning-activity}
+
 Build the existing teaching image using @sec-reproducible-labs. From the repository or extracted-package root, run on Linux/WSL:
 
 ```bash
@@ -206,12 +208,12 @@ To progress from the FIFO to AXI4-Lite, treat each channel as an ownership contr
 
 ## Hands-on experiments
 
-1. Reproduce all tasks and identify which outputs are bounded results, unbounded safety/equivalence results, witnesses and expected negative controls. Annotate the first useful handshake in each VCD.
-2. Remove one representation invariant in a student copy. Determine whether BMC still passes while induction becomes inconclusive; explain the candidate unreachable state instead of weakening the environment to obtain a green result.
-3. Remove the output-stability assertion while retaining the ordering checks. Introduce a controlled stalled-payload defect and determine which remaining obligation detects it. Record the gap if none does.
-4. Add separate coverage goals for reset during a stall and a particular accepted byte. Demonstrate a witness for each; then deliberately overconstrain one and retain its failed reachability result.
-5. Increase capacity to three in both implementations. Redesign pointer wrap and the state relation, check all new boundary cases and report a new completed proof or an explicit inconclusive result. The depth-two proof does not transfer automatically.
-6. Apply a retained-response property to the course AXI4-Lite endpoint. Add independent AW/W antecedent witnesses and a defective response variant, then repair and regress it. State the remaining AXI obligations.
+1. [Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-01 .learning-activity} — Reproduce all tasks and identify which outputs are bounded results, unbounded safety/equivalence results, witnesses and expected negative controls. Annotate the first useful handshake in each VCD.
+2. [Core option · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-02 .learning-activity} — Remove one representation invariant in a student copy. Determine whether BMC still passes while induction becomes inconclusive; explain the candidate unreachable state instead of weakening the environment to obtain a green result.
+3. [Core option · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-03 .learning-activity} — Remove the output-stability assertion while retaining the ordering checks. Introduce a controlled stalled-payload defect and determine which remaining obligation detects it. Record the gap if none does.
+4. [Core option · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-04 .learning-activity} — Add separate coverage goals for reset during a stall and a particular accepted byte. Demonstrate a witness for each; then deliberately overconstrain one and retain its failed reachability result.
+5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-05 .learning-activity} — Increase capacity to three in both implementations. Redesign pointer wrap and the state relation, check all new boundary cases and report a new completed proof or an explicit inconclusive result. The depth-two proof does not transfer automatically.
+6. [Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-06 .learning-activity} — Apply a retained-response property to the course AXI4-Lite endpoint. Add independent AW/W antecedent witnesses and a defective response variant, then repair and regress it. State the remaining AXI obligations.
 
 Submit the contract, assumption inventory, properties, model/source identities, completed logs, interpreted counterexample, repair/regression and proof limits. Keep student copies in `labs/work/` or a separate branch. Do not edit packaged references and then claim that their original integrity/proof evidence still applies.
 
@@ -232,6 +234,8 @@ Explain the FIFO's simultaneous-transfer defect, the invariant needed for induct
 Assuming away a legal failure; treating a bounded PASS as an unbounded proof; comparing unspecified empty payloads; ignoring reset/history sampling; reporting an induction timeout or an unreachable cover as proof of correctness.
 
 ## Try it yourself {#review-formal-verification-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-review .learning-activity}
 
 Write the next-state occupancy table independently, then predict the smallest legal sequence that distinguishes the faulty and repaired revisions before opening the witness.
 

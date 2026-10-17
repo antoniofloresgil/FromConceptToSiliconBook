@@ -128,6 +128,8 @@ The cell-library reads describe vendor primitives to Yosys; they do not call a v
 
 ### A small standalone synthesis experiment
 
+[Core · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-small-synthesis .learning-activity}
+
 **Exercise:** create and verify `counter.sv` with a matching `counter` top before using this script; that source is not bundled here. The script shows an XC7 run shape. A real board build also needs its own ports/XDC.
 
 ```tcl
@@ -215,11 +217,11 @@ For the book-wide component rather than the small introductory examples, use @se
 
 These synthesis experiments do not require a connected FPGA. The complete Nexys Video build still needs the separate XC7 tools, databases and generated inputs. If these resources are unavailable, run `python labs/run.py run synthesis` and the student RTL comparison in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board), then analyse the instructor's device-synthesis reports. Submit your own generic netlist/storage/arithmetic analysis and identify which BRAM/DSP/LUT observations come from the supplied target reports. Follow the [common alternative guide](../../labs/NO-FPGA.md) for evidence and assessment boundaries.
 
-1. Run `make FLOW=opensource nexysvideo` from `fpga/generator` after loading the CVW environment. Save `opensource-nexysvideo/synthesis.log` and note tool versions.
-2. Change only a benign Wally configuration option or a small GPIO width. Rebuild and compare resources; explain every large difference.
-3. Remove a reset assignment in a controlled test module. Inspect whether the mapping now uses resetless flip-flops and explain why this may help density but complicate deterministic bring-up.
-4. Replace a small register array with a synchronous memory coding pattern. Determine whether it maps to LUT RAM or BRAM, then confirm the intended read latency in simulation.
-5. Deliberately introduce an incomplete combinational assignment in an isolated exercise. Observe the latch warning, fix the RTL and record the corrected report.
+1. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-yosys-01 .learning-activity} — Run `make FLOW=opensource nexysvideo` from `fpga/generator` after loading the CVW environment. Save `opensource-nexysvideo/synthesis.log` and note tool versions.
+2. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-yosys-02 .learning-activity} — Change only a benign Wally configuration option or a small GPIO width. Rebuild and compare resources; explain every large difference.
+3. [Core option · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-yosys-03 .learning-activity} — Remove a reset assignment in a controlled test module. Inspect whether the mapping now uses resetless flip-flops and explain why this may help density but complicate deterministic bring-up.
+4. [Core option · P5 · C1 local / C3 system](../../learning-paths.qmd#sec-path-labels){#act-yosys-04 .learning-activity} — Replace a small register array with a synchronous memory coding pattern. Determine whether it maps to LUT RAM or BRAM, then confirm the intended read latency in simulation.
+5. [Core · P5 · C1](../../learning-paths.qmd#sec-path-labels){#act-yosys-05 .learning-activity} — Deliberately introduce an incomplete combinational assignment in an isolated exercise. Observe the latch warning, fix the RTL and record the corrected report.
 
 The next chapter takes the JSON netlist and constraints through packing, placement, routing, timing analysis, FASM/bitstream generation and physical programming.
 
@@ -239,6 +241,8 @@ Explain how parameters and inferred memories affect the netlist, and why behavio
 Synthesizing the wrong top/configuration; interpreting synthesis success as a validated FPGA bitstream.
 
 ## Try it yourself {#review-yosys-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-yosys-review .learning-activity}
 
 Inspect the existing synthesis report for the accumulator. Account for storage, arithmetic and any unexpected latch or resource inference.
 

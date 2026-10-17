@@ -1,0 +1,83 @@
+# Learning Paths and Experiment Budgets {.unnumbered}
+
+The [Introduction](intro.qmd) offers three technical entry routes. This guide makes their next activities explicit and distinguishes them from the optional twelve-week teaching adoption. All routes use the same complete book and executable sources. There is no reduced RTL version whose results diverge from the reference edition.
+
+## Choose a technical route {#sec-route-map}
+
+| Route | A practical sequence | First checkable destination |
+| --- | --- | --- |
+| **Foundations Route** | ISA/RTL and state → [ready/valid](chapters/01-foundations/systemverilog.qmd#act-systemverilog-06) → [one simulator](chapters/03-simulation-verification/verilator.qmd#act-verilator-baseline) → [small formal FIFO](chapters/03-simulation-verification/formal-verification.qmd#act-formal-baseline) → [generic synthesis](chapters/05-fpga-implementation/yosys.qmd#act-small-synthesis) | A parameterized block, independent checker, interpreted defect and scoped proof/netlist |
+| **Complete SoC Route** | [Wally configuration](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-05) → memory/buses/peripherals → [AXI/DMA IP](appendices/executable-project.qmd#act-project-ip) → [Wally/firmware/IRQ](appendices/executable-project.qmd#act-project-wally) → FPGA constraints and implementation | A software-controlled integration with an explicit memory/reset contract and target implementation dossier |
+| **ASIC Design Route** | Verified RTL → synthesis/SDC → VLSI/PPA → [measured OpenROAD reports](chapters/06-asic-implementation/openroad.qmd#act-physical-study-review) → direct or LibreLane implementation → [closure](appendices/complete-case-study.qmd#act-case-closure) and physical validation | A block GDSII and acceptance decision backed by timing, electrical and physical evidence |
+
+The route destinations are evidence boundaries, not promises that every platform or technology has already been qualified. A Complete SoC reader can start with bare-metal firmware and add Linux later. An ASIC reader can analyze supplied results before acquiring a PDK/tool image. A physical board is unnecessary for unit verification or place-and-route; observations on actual pins, clocks and memory require the appropriate hardware or remain unexecuted.
+
+## Read the activity labels {#sec-path-labels}
+
+Labels appear beside individual experiment headings or numbered exercises, including the chapter's short reflection. They have the form **role · milestone · compute class**, followed by a board indicator where relevant. Milestones P0–P5 refer only to the teaching adoption in Appendix D.
+
+| Role | Meaning for the twelve-week adoption |
+| --- | --- |
+| **Preparation** | Diagnostic or focused reinforcement. Select it according to prior knowledge; it is not an extra assessed deliverable. |
+| **Core** | Contributes to a specified milestone or the common reusable-IP argument. Reuse the artifact in the project. |
+| **Core option** | A choice of frontend, example or extension within an existing milestone. Agree the selection; do not add all options together. |
+| **Advanced** | Outside the compulsory allocation. It can be central to a professional reader's chosen technical route. |
+
+Thus an ASIC implementation can be Advanced relative to the short taught course while being essential practice for the ASIC Design Route. Conversely, the DMA-denial and small formal security checks remain Core: security and formal verification have not been moved wholesale into optional reading.
+
+## Plan compute separately from learning depth
+
+| Class | Work being budgeted | Provisioning decision |
+| --- | --- | --- |
+| **C0 — analysis/observation** | Read code, derive a contract, inspect supplied reports or observe an already built board configuration | Reader/editor and evidence bundle, or host programmer/serial tools for a board task; no compilation/simulation/physical-design campaign |
+| **C1 — local block/model** | Small RTL tests, Python models, bounded/small formal tasks, generic synthesis and fast regression | The ordinary lab image or specified small simulator; a controlled local output directory |
+| **C2 — platform/build** | Full-Wally RTL, Linux/tool/model builds, Chisel/CIRCT environment acquisition or larger campaigns | Prebuilt environments, source/cache storage and access to a suitable workstation/shared runner |
+| **C3 — implementation** | FPGA/ASIC mapping and routing, extraction, target DRC/LVS or repeated physical sweeps | Target databases/PDK plus implementation compute and artifact storage, separately provisioned |
+
+These are planning classes derived from scope and dependencies, **not measured runtime or minimum-RAM guarantees**. A small C3 block may finish before a long C2 Linux simulation. Formal complexity can increase sharply with a changed property or depth. Estimate a new campaign with a pilot run, then record peak resources, tool elapsed time, timeout and available storage for the chosen machine/configuration. A timeout remains a failed or inconclusive run, never a pass.
+
+**C2 build / C1 run** separates acquiring/building an environment from repeating its small checked workload. **C1 local / C2 system** distinguishes an isolated component from the full-platform variant. **C0 review / C3 rerun** offers two different activities: interpreting identified reference evidence, or producing new physical evidence. Only the latter establishes implementation results for a modified candidate.
+
+A **board** marker means that the observation as written uses hardware. **Board optional** identifies an explicit simulation alternative. An absent board marker does not imply that all tools are installed or that a PDK is unnecessary; use the compute class and lab prerequisites. The [no-board guide](labs/NO-FPGA.md) records alternatives and their limits.
+
+For one measured reference point, the [Lab 25 positive report](labs/25-hardware-ci/reference/positive/report.json) records about 37 seconds of summed tool execution in its local container run, excluding image construction. It is an example of the C1 fast chain, not a benchmark for other computers or a budget for physical implementation.
+
+## Core Learning Path: a bounded reusable-IP course
+
+The full schedule, RA5–RA8 outcomes, 150-hour proposal and rubrics are in @sec-hsd-coursework. The table below is a selection map, not another set of assignments. Each milestone produces evidence reused by later milestones and by the final package.
+
+| Weeks / milestone | Essential contribution | Practical selection and compute |
+| --- | --- | --- |
+| 1 / P0 | Environment and prior-knowledge diagnosis | Selected Preparation tasks; one Verilator or cocotb baseline, C1 |
+| 1–2 / P1 | Numerical/interface contract and reusable arithmetic | Dot-product specification, widths/reset and two supported configurations, C0/C1 |
+| 3–4 / P2 | Independent checks and minimized failure | Choose one frontend; retain the oracle, directed cases and controlled defect, C1 |
+| 4–5 / P3 | Transport/MMIO/DMA and firmware integration | Local ready/valid and endpoint tests, C1; the provisioned Wally firmware/DMA/IRQ fixture, C2 |
+| 6–7 / P4 | Completed formal checks and security evaluation | Small FIFO proof/witness work plus accelerator properties and denied-DMA tests, C1; no full-core proof or Linux rebuild |
+| 8–10 / P5 | Synthesis, implementation reasoning, DFT and reusable views | Synthesize own RTL and run the small scan model, C1; analyze supplied physical evidence, C0; physical reruns are optional C3 work |
+| 11–12 / release | Reuse, regression, documentation and defence | Generated register views, second supported integration/configuration, CI and a consistent manifest; reuse P1–P5 evidence |
+
+The instructor provisions the Wally fixture, pinned source/image and expected firmware trace **before** the integration milestone. Access can be a prepared local environment or a shared machine. A small AXI harness prepares the interface checks; it does not silently replace the course's real-Wally firmware demonstration. Building an unfamiliar full platform or booting Linux in RTL is not added to the existing workload.
+
+For P5, provide an identified baseline/variant physical-report bundle and one failing timing/constraint example when students cannot run C3 tools. They still synthesize and analyze their own RTL. Distinguish student-generated results from instructor-provided results, and do not transfer the latter's timing claim to a changed design. Preserve the same rubric opportunities without requiring a board purchase.
+
+Core labels do not require every listed peripheral, both simulator frontends, every formal mutation and every physical sweep. Select examples that satisfy the agreed milestone. If an advanced experiment is substituted, remove or narrow another activity within the existing hours and retain formal/security/DFT obligations. Reading depth, compute access and assessment are separate decisions.
+
+## Advanced Reference Path: select a question
+
+| Question or topic | Reference continuation | Typical execution boundary |
+| --- | --- | --- |
+| How should a generator be traced into RTL? | SystemVerilog generator section and Lab 19 | C2 environment build / C1 accumulator comparison |
+| How do Linux, drivers and DMA ownership fit together? | Boot chapter and Lab 18 | C2 emulator/kernel build; full Wally Linux is a larger RTL campaign |
+| What does a measured event mean? | PMU chapter and Lab 11 | C2 configured RTL/ROI; C3 for changed FPGA implementation |
+| What changes with RVV or another hart? | RVV and multicore chapters, Labs 13/20 | Functional QEMU/model work; coherent RTL integration is separate C2 work |
+| Which security mechanism or attack is being evaluated? | Debug/security extensions and Lab 14 | Small C1 guards/channel models or larger C2 platform experiments; basic Core security remains required |
+| Which architectural candidate is worth implementing? | Architectural Design Exploration | C0 result analysis, C2 simulation sweeps and separately budgeted C3 confirmation |
+| How is a physical failure repaired and qualified? | Appendix F and Labs 21–22 | C0 review / C3 reproduction, including reference-PDK DRC/LVS and explicit manufacturing limits |
+
+Choose one question, configuration and acceptance condition before starting a campaign. Record a new source identity when changing RTL. The open-result records and rejected candidates are useful study material even when the final answer is that a design does not meet its target.
+
+## Adapt the selection to another setting
+
+Download the [activity catalogue](downloads/learning-activities.csv) to filter by role, milestone, compute class, board use and chapter link. It includes the short review tasks as well as experiments. The reviewed source catalogue is checked automatically against every chapter; a new or renamed experiment needs a classification update.
+
+An independent reader can select a technical route without adopting the institutional outcomes or marks. An instructor can map its destinations to local outcomes, choose the required activities, provision C2/C3 access and keep the chapter links and evidence contracts. The Core and Advanced selections remain views of one maintained reference edition, with the technical material intact.

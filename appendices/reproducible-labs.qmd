@@ -172,6 +172,8 @@ A minimized waveform and an explained requirement should accompany a failure rep
 
 ## Continuous hardware verification of the accelerator {#sec-hardware-ci}
 
+[Core · P5 · C1](../learning-paths.qmd#sec-path-labels){#act-hardware-ci .learning-activity}
+
 Reproducible tools become useful regression infrastructure when a change produces a decision tied to the affected hardware. [Lab 25](../labs/25-hardware-ci/README.md) runs the existing AXI/DMA accelerator through one chain, using the same snapshotted RTL throughout:
 
 ```text

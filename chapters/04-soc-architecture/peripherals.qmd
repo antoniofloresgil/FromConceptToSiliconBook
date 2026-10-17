@@ -575,6 +575,8 @@ Begin bring-up with a known LED state, a periodic hardware waveform and a short 
 
 ### Experiment 1: register and GPIO contract
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-peripherals-01 .learning-activity}
+
 Save the teaching modules in a local experiment directory. For GPIO, use an APB driver that separates Setup and Access and updates its scoreboard once per completion. Check reset state, legal/illegal offsets, access direction, masks and SET/CLEAR operations.
 
 | Case | Expected result |
@@ -592,6 +594,8 @@ Change PinIn away from clock edges and wait for the defined synchronizer/history
 
 ### Experiment 2: FIFO boundaries and sustained traffic
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-peripherals-02 .learning-activity}
+
 Test empty and full states, pointer wrap, simultaneous push/pop and stalls. Use a reference queue that changes only on accepted transfers. In the supplied design, a full queue pops without accepting a simultaneous replacement push; an empty queue accepts a push but cannot pop it on that same edge.
 
 Randomize producer/consumer rates. Verify ordering, occupancy, stable stalled head and reset discarding queued data. For a UART-style nonstallable producer, intentionally exceed capacity and check the wrapper's declared loss/error policy rather than pretending the producer observed PushReady.
@@ -599,6 +603,8 @@ Randomize producer/consumer rates. Verify ordering, occupancy, stable stalled he
 Calculate arrival and service budgets for a chosen frame rate and watermark. Show separately the time before overflow, interrupt latency and time needed to drain data. A FIFO passing short tests does not prove it can survive sustained overload.
 
 ### Experiment 3: UART loopback and independent timing
+
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-peripherals-03 .learning-activity}
 
 Use the selected Wally UART or a verified UART implementation with an explicit testbench. Configure 8N1, divisor, FIFO state and optional internal loopback, then transmit 0x00, 0xFF, 0x53 and alternating-bit patterns. Verify received bytes and status, not just the TX waveform.
 
@@ -608,6 +614,8 @@ Delay receive service to test overrun. Check whether old/new data is preserved a
 
 ### Experiment 4: SPI modes and whole commands
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-peripherals-04 .learning-activity}
+
 Use a device model that samples and shifts on distinct protocol edges. Test modes 0–3, representative byte patterns, supported bit order and frame lengths. Observe idle SCK, first-bit preload, sample/shift edges and select delays.
 
 Start with single-frame loopback, then simulate a command/address/dummy/response transaction under continuous select. Verify that every transmitted frame produces one expected receive frame and that the driver consumes it once. Test a full TX FIFO, delayed RX draining and watermark interrupts.
@@ -616,11 +624,15 @@ Do not assert that a passing SPI loopback proves an SD card or flash driver. Add
 
 ### Experiment 5: PWM and coherent updates
 
+[Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-peripherals-05 .learning-activity}
+
 Instantiate pwm_teaching with a short period for simulation. Verify zero, quarter, half and full duty, the exact period in clock ticks and clamping. Request a new duty halfway through a period and confirm that the current period retains its old setting.
 
 Test disable/re-enable separately, then compare with Wally's configured PWM mode and GPIO routing. On a board, measure the pin waveform and explain any polarity inversion. An LED's perceived brightness is not a precise duty/frequency measurement.
 
 ### Experiment 6: an integrated event-driven application
+
+[Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-peripherals-06 .learning-activity}
 
 Build a small bare-metal application with a debounced button or GPIO event, a periodic CLINT deadline, an SPI device/model and UART output. Use the GPIO event to change the sampling mode, the timer to schedule sampling, and UART to report buffered results. PWM can display a selected result independently of software edge timing.
 
@@ -652,6 +664,8 @@ Explain why reading a status/data register can change state and why a transmitte
 Treating MMIO as ordinary RAM; copying a UART divisor or interrupt mapping from another platform.
 
 ## Try it yourself {#review-peripherals-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-peripherals-review .learning-activity}
 
 Select a chapter peripheral and annotate one register operation, external event and acknowledgement using its existing test/driver.
 

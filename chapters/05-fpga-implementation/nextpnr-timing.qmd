@@ -238,12 +238,12 @@ Do not place a USB/JTAG access procedure inside a build script that is also used
 
 Students without a board follow the alternatives below and the deliverables in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). The physical experiments remain available for students with hardware. No experiment requires buying a board to complete the assessed course.
 
-1. Build the Nexys Video configuration and identify the generated JSON, routed JSON, report, FASM, frames and bitstream files.
-2. Request 50 MHz instead of 40 MHz without changing RTL. Compare the timing reports and explain why a failing 50 MHz report must not be ignored merely because the 40 MHz configuration runs.
-3. Add an LED heartbeat generated from the synchronized system clock. Program SRAM and confirm it after every reset before debugging the processor.
-4. Disconnect or rename one XDC port in a copy of the exercise. Observe the implementation error/warning, restore the constraint and verify that the pin name matches the top-level port exactly.
-5. Program only SRAM, power-cycle the board and confirm that the configuration vanishes. Then, after following the board-specific procedure, compare this with a deliberately programmed flash image.
-6. Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstream hash, DONE state and observed LEDs.
+1. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-01 .learning-activity} — Build the Nexys Video configuration and identify the generated JSON, routed JSON, report, FASM, frames and bitstream files.
+2. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-02 .learning-activity} — Request 50 MHz instead of 40 MHz without changing RTL. Compare the timing reports and explain why a failing 50 MHz report must not be ignored merely because the 40 MHz configuration runs.
+3. [Advanced · C3 · board](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-03 .learning-activity} — Add an LED heartbeat generated from the synchronized system clock. Program SRAM and confirm it after every reset before debugging the processor.
+4. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-04 .learning-activity} — Disconnect or rename one XDC port in a copy of the exercise. Observe the implementation error/warning, restore the constraint and verify that the pin name matches the top-level port exactly.
+5. [Advanced · C0 · board](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-05 .learning-activity} — Program only SRAM, power-cycle the board and confirm that the configuration vanishes. Then, after following the board-specific procedure, compare this with a deliberately programmed flash image.
+6. [Advanced · C0 · board](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-06 .learning-activity} — Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstream hash, DONE state and observed LEDs.
 
 ### Alternatives without a board
 
@@ -271,6 +271,8 @@ Explain how constraints and device data affect the physical result, then disting
 Using constraints for another board/die; treating bitstream generation as evidence that DDR or peripherals work.
 
 ## Try it yourself {#review-nextpnr-timing-try .unnumbered .unlisted}
+
+[Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-nextpnr-timing-review .learning-activity}
 
 Review one existing implementation report against its pin/clock constraints. List the board observations still needed before claiming a working system.
 

@@ -126,6 +126,8 @@ These are hexadecimal words: `25` means decimal 37 and `15` means decimal 21. Th
 
 ### Example 1: run and debug with Spike
 
+[Core option · P2 · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-spike-example .learning-activity}
+
 **Checked recipe:** RV64I signature run with Spike 1.1.1-dev and the stated toolchain. Use the example working directory; stop on a failed run rather than accepting an older signature.
 
 With Spike available in `PATH`, run the batch test and compare its signature:
@@ -159,6 +161,8 @@ q
 The `until` condition stops when the loop's result reaches hexadecimal 15. At that point `a0` should hold 25; `a2` is not yet guaranteed to contain its final comparison result, so step further to the comparison before checking it. A stop condition must actually be reached before HTIF completion. Debugger `reg` is a monitor command, unrelated to an HDL declaration. See the [Spike project documentation](https://github.com/riscv-software-src/riscv-isa-sim) for current monitor syntax.
 
 ### Example 2: run and trace with Sail
+
+[Advanced · C2 build / C1 run](../../learning-paths.qmd#sec-path-labels){#act-sail-example .learning-activity}
 
 **Adaptation template:** the modern `sail_riscv_sim` command was not executed in the recorded environment. The older RV64 executable recipe below was checked; use only the CLI/options supported by the selected installation.
 
@@ -196,6 +200,8 @@ Signature formatting matters: different granularities may split or reverse group
 
 ### Diagnose and extend the experiment
 
+[Advanced · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-isa-differential .learning-activity}
+
 If execution traps before a signature store, inspect the instruction encoding and enabled extensions. If execution never completes, check the loop, entry point, mailbox symbols, and mapped addresses. If models disagree only on counters or peripheral state, check environmental assumptions before changing arithmetic RTL.
 
 Change one expected sum or comparison deliberately and confirm that the program signals failure. Then add boundary cases such as unsigned wraparound and signed-versus-unsigned comparisons, expanding signature storage accordingly. Keep the same ELF for both models.
@@ -218,6 +224,8 @@ Explain the signature comparison boundary and what a reference-model pass cannot
 Comparing incompatible ISA/platform configurations; interpreting simulator execution time as target processor performance.
 
 ## Try it yourself {#review-spike-sail-try .unnumbered .unlisted}
+
+[Preparation · C0](../../learning-paths.qmd#sec-path-labels){#act-spike-sail-review .learning-activity}
 
 Follow the supplied signature example from ELF loading to final comparison. Name the first architectural observation you would compare with RTL.
 
