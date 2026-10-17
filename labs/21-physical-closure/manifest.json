@@ -1,0 +1,39 @@
+{
+  "release": "dotproduct-256-closure-2026.10",
+  "baseline_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "baseline_rtl_immutable": true,
+  "parameters": {
+    "MAX_LENGTH": 256,
+    "DMA_BASE": 2147516416,
+    "DMA_LIMIT": 2147532800
+  },
+  "seed": 2026,
+  "candidates": {
+    "baseline": {
+      "clock_mhz": 100,
+      "rtl": "baseline",
+      "physical": "baseline"
+    },
+    "slow": {
+      "clock_mhz": 75,
+      "rtl": "baseline",
+      "physical": "baseline"
+    },
+    "pipeline": {
+      "clock_mhz": 100,
+      "rtl": "dotproduct_engine.sv replaces baseline engine only",
+      "physical": "baseline",
+      "latency_change": "one extra serial accumulation cycle per element; unchanged AXI transactions"
+    },
+    "repair": {
+      "clock_mhz": 100,
+      "rtl": "baseline",
+      "physical": "repair.tcl: electrical margins 20%, hold margin 0.03 ns, maximum hold buffer fraction 50%"
+    }
+  },
+  "acceptance": {
+    "asic": "single typical corner: extracted setup>=0, hold>=0, no reported slew/cap/fanout violations, no unconstrained paths, empty detailed-router DRC, mapped/routed equivalence, nonempty GDS readback",
+    "fpga": "requested routed clock met in nextpnr model; no board IO/CDC/vendor signoff or device power claim",
+    "manufacturing_drc_lvs": "not performed; teaching Nangate45 technology, not fabrication qualification"
+  }
+}

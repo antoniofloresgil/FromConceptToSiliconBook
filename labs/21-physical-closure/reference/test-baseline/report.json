@@ -1,0 +1,128 @@
+{
+  "status": "completed",
+  "target": "test",
+  "candidate": "baseline",
+  "seed": 2026,
+  "requested_mhz": 100,
+  "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "sources": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/21-physical-closure/manifest.json": "f2957ece55bf972d7004d28e8d9545033126bb08efa88dbe57a75c0c6f0b98ac",
+    "labs/17-complete-case/manifest.json": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "labs/17-complete-case/asic.sdc": "36de66ee6bcf4541463a557eef0f070b38a07b3edc7a87eea1ec4dcbdfe599e9",
+    "labs/17-complete-case/asic.tcl": "69b73ac19c847d2da682f1f30f4a9a277ed0702c52e2e537f7ff724fbb11c453",
+    "labs/17-complete-case/streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c",
+    "labs/17-complete-case/nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+    "labs/17-complete-case/nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+    "labs/17-complete-case/tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda",
+    "labs/10-dotproduct/tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "labs/10-dotproduct/axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "labs/10-dotproduct/axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "labs/10-dotproduct/vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "labs/21-physical-closure/run.py": "53aa774744fa5bb78239528310eeb9546c1fc68830f9e64125c1aa276cf777fa",
+    "labs/21-physical-closure/repair.tcl": "adcaf27fc27a7b99014cbe67ef527914525b5c49cbd42f43870404da3133bfb9",
+    "labs/21-physical-closure/dotproduct_engine.sv": "f14bc3e24c3032fd8a8023d83a0ef5d13649ce2f7646a0607ddc9629579a8fc0"
+  },
+  "image": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "commands": [
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-I",
+        "/work/labs/10-dotproduct",
+        "-s",
+        "tb_dotproduct",
+        "-o",
+        "simulation",
+        "/work/labs/10-dotproduct/rtl/dotproduct_mac.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_engine.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_axi.sv",
+        "/work/labs/10-dotproduct/axi_ram_model.sv",
+        "/work/labs/10-dotproduct/tb_dotproduct.sv"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python3",
+        "/work/labs/10-dotproduct/vectors.py",
+        "/work/labs/build/closure-final-test-baseline",
+        "2026"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "simulation"
+      ],
+      "log": "command-03.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python3",
+        "/work/labs/10-dotproduct/vectors.py",
+        "/work/labs/build/closure-final-test-baseline",
+        "2027"
+      ],
+      "log": "command-04.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "simulation"
+      ],
+      "log": "command-05.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_nexys",
+        "-o",
+        "fixture",
+        "/work/labs/10-dotproduct/rtl/dotproduct_mac.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_engine.sv",
+        "/work/labs/10-dotproduct/rtl/dotproduct_axi.sv",
+        "/work/labs/17-complete-case/nexys_video.sv",
+        "/work/labs/17-complete-case/tb_nexys.sv"
+      ],
+      "log": "command-06.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "fixture"
+      ],
+      "log": "command-07.log",
+      "exit_code": 0
+    }
+  ],
+  "tools": {},
+  "artifacts": {
+    "a.hex": "b02f83fb24d1d3442f20229680b57b46582c386b50f044e78c7f614746271d81",
+    "b.hex": "ed16e6773e360997992519851ae9e55c90696af5b238d1e1d59e862307ea455d",
+    "command-01.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-02.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-03.log": "f75040f903241b39cabf3a3b297f68b11bd134feb5d1dc0571b64efdebe7e936",
+    "command-04.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-05.log": "f75040f903241b39cabf3a3b297f68b11bd134feb5d1dc0571b64efdebe7e936",
+    "command-06.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-07.log": "5592470903099c2d0a97c4b84d06069d4fdf864bc37a2fe75576ec4671c0e68b",
+    "expected.hex": "2eaaa31d571e03a094d755195827d91ade1a16afb358d4547d9eb80acff578a5",
+    "fixture": "de1cb7de1ec4001043ee5cd12462fad6e9ce43aa233975c6289fa21261de1009",
+    "simulation": "7172a8c45d1329052a687c7fb018d5365f798c10f6f6c76d6d968263f363dc2e",
+    "square.hex": "a0ab290df6f4821397e873db7edcf0ae2392e7920ab9eac592e4e9279e2e0bc5",
+    "vectors.json": "d0d7e747bd65328b25330291592032440d2066beadd762e0f34714b2ec32b2f2"
+  }
+}

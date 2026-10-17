@@ -392,6 +392,10 @@ Check indexing limits, divisibility, allowed way counts, required macro shapes a
 
 ### Load hit, store hit and dirty miss
 
+![Original transaction sequence for a blocking, write-back cache miss with a dirty victim. Vertical lifelines identify the owner of each step; arrow spacing expresses order rather than measured cycles.](../../figures/architecture-cache-miss.svg){#fig-cache-miss-journey fig-alt="CPU load stalls while D-cache writes back a dirty victim through the bus, requests a refill, installs the line and returns the word" width=100%}
+
+Follow @fig-cache-miss-journey with a single load address. The writeback uses the **victim's** reconstructed address, whereas the refill uses the **requested** line address. The return path must retain the original load's destination and byte selection across every stalled beat. A nonblocking cache can overlap other work; this drawing deliberately follows one blocking miss.
+
 On a data load, the LSU selects the current physical address, access width and path. A cache hit returns the selected word, after which LSU subword/endian logic forms the architectural result. The cache does not by itself implement the sign extension of every RISC-V load [@harrisRiscvSoc].
 
 On a store hit, the way update uses a mask positioned inside the full line and marks the line dirty. A store's immediate architectural width can be smaller than the line or bus width. A following load may face an array-port conflict even when both addresses are cached.

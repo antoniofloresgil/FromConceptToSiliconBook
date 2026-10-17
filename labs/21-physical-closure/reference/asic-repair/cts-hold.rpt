@@ -1,0 +1,228 @@
+Startpoint: _09726_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: _10073_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00029    0.05249 ^ clkbuf_3_3__f_clk/A (CLKBUF_X3)
+     8   25.48348    0.02227    0.05582    0.10831 ^ clkbuf_3_3__f_clk/Z (CLKBUF_X3)
+                     0.02227    0.00026    0.10858 ^ clkbuf_leaf_6_clk/A (CLKBUF_X3)
+     8    9.82255    0.01166    0.04059    0.14916 ^ clkbuf_leaf_6_clk/Z (CLKBUF_X3)
+                     0.01166    0.00002    0.14918 ^ _09726_/CK (DFF_X2)
+     9   19.98248    0.01366    0.10613    0.25531 v _09726_/Q (DFF_X2)
+                     0.01367    0.00107    0.25639 v _05631_/C2 (OAI211_X1)
+     1    1.50033    0.01160    0.03487    0.29125 ^ _05631_/ZN (OAI211_X1)
+                     0.01160    0.00002    0.29127 ^ _10073_/D (DFF_X1)
+                                           0.29127   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00096    0.05316 ^ clkbuf_3_1__f_clk/A (CLKBUF_X3)
+     9   27.19694    0.02347    0.05718    0.11034 ^ clkbuf_3_1__f_clk/Z (CLKBUF_X3)
+                     0.02348    0.00036    0.11070 ^ clkbuf_leaf_5_clk/A (CLKBUF_X3)
+     6    9.55110    0.01153    0.04078    0.15148 ^ clkbuf_leaf_5_clk/Z (CLKBUF_X3)
+                     0.01153    0.00008    0.15156 ^ _10073_/CK (DFF_X1)
+                                0.10000    0.25156   clock uncertainty
+                                0.00000    0.25156   clock reconvergence pessimism
+                                0.00983    0.26140   library hold time
+                                           0.26140   data required time
+-----------------------------------------------------------------------------------------
+                                           0.26140   data required time
+                                          -0.29127   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.02988   slack (MET)
+
+
+Startpoint: _09791_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: _09931_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00029    0.05249 ^ clkbuf_3_3__f_clk/A (CLKBUF_X3)
+     8   25.48348    0.02227    0.05582    0.10831 ^ clkbuf_3_3__f_clk/Z (CLKBUF_X3)
+                     0.02227    0.00033    0.10865 ^ clkbuf_leaf_12_clk/A (CLKBUF_X3)
+     7    8.44553    0.01081    0.03929    0.14793 ^ clkbuf_leaf_12_clk/Z (CLKBUF_X3)
+                     0.01081    0.00001    0.14794 ^ _09791_/CK (DFF_X1)
+     6   11.06266    0.01468    0.09731    0.24526 v _09791_/Q (DFF_X1)
+                     0.01468    0.00002    0.24528 v _05166_/A (INV_X1)
+     2    4.66707    0.01330    0.02298    0.26826 ^ _05166_/ZN (INV_X1)
+                     0.01330    0.00014    0.26840 ^ _09369_/C2 (AOI211_X1)
+     1    1.30791    0.00741    0.01582    0.28422 v _09369_/ZN (AOI211_X1)
+                     0.00741    0.00001    0.28423 v _09931_/D (DFF_X1)
+                                           0.28423   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00108    0.05329 ^ clkbuf_3_4__f_clk/A (CLKBUF_X3)
+    10   26.03171    0.02265    0.05624    0.10953 ^ clkbuf_3_4__f_clk/Z (CLKBUF_X3)
+                     0.02265    0.00015    0.10968 ^ clkbuf_leaf_13_clk/A (CLKBUF_X3)
+     8    9.43177    0.01143    0.04036    0.15004 ^ clkbuf_leaf_13_clk/Z (CLKBUF_X3)
+                     0.01143    0.00005    0.15009 ^ _09931_/CK (DFF_X1)
+                                0.10000    0.25009   clock uncertainty
+                                0.00000    0.25009   clock reconvergence pessimism
+                                0.00410    0.25419   library hold time
+                                           0.25419   data required time
+-----------------------------------------------------------------------------------------
+                                           0.25419   data required time
+                                          -0.28423   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.03004   slack (MET)
+
+
+Startpoint: _09801_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: _09801_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00061    0.05282 ^ clkbuf_3_6__f_clk/A (CLKBUF_X3)
+    10   29.46762    0.02509    0.05901    0.11183 ^ clkbuf_3_6__f_clk/Z (CLKBUF_X3)
+                     0.02509    0.00018    0.11201 ^ clkbuf_leaf_47_clk/A (CLKBUF_X3)
+     8   10.55925    0.01221    0.04233    0.15434 ^ clkbuf_leaf_47_clk/Z (CLKBUF_X3)
+                     0.01221    0.00009    0.15443 ^ _09801_/CK (DFF_X1)
+     5    8.79083    0.01264    0.09492    0.24935 v _09801_/Q (DFF_X1)
+                     0.01264    0.00002    0.24938 v _09008_/A1 (NOR2_X1)
+     1    1.88754    0.01614    0.02580    0.27518 ^ _09008_/ZN (NOR2_X1)
+                     0.01614    0.00002    0.27519 ^ _09009_/B (AOI211_X1)
+     1    1.20072    0.00746    0.01357    0.28876 v _09009_/ZN (AOI211_X1)
+                     0.00746    0.00001    0.28877 v _09801_/D (DFF_X1)
+                                           0.28877   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00061    0.05282 ^ clkbuf_3_6__f_clk/A (CLKBUF_X3)
+    10   29.46762    0.02509    0.05901    0.11183 ^ clkbuf_3_6__f_clk/Z (CLKBUF_X3)
+                     0.02509    0.00018    0.11201 ^ clkbuf_leaf_47_clk/A (CLKBUF_X3)
+     8   10.55925    0.01221    0.04233    0.15434 ^ clkbuf_leaf_47_clk/Z (CLKBUF_X3)
+                     0.01221    0.00009    0.15443 ^ _09801_/CK (DFF_X1)
+                                0.10000    0.25443   clock uncertainty
+                                0.00000    0.25443   clock reconvergence pessimism
+                                0.00426    0.25869   library hold time
+                                           0.25869   data required time
+-----------------------------------------------------------------------------------------
+                                           0.25869   data required time
+                                          -0.28877   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.03008   slack (MET)
+
+
+Startpoint: _10055_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: _09840_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00067    0.05288 ^ clkbuf_3_7__f_clk/A (CLKBUF_X3)
+    12   29.62458    0.02516    0.05897    0.11185 ^ clkbuf_3_7__f_clk/Z (CLKBUF_X3)
+                     0.02516    0.00066    0.11251 ^ clkbuf_leaf_51_clk/A (CLKBUF_X3)
+     8    9.98354    0.01185    0.04179    0.15430 ^ clkbuf_leaf_51_clk/Z (CLKBUF_X3)
+                     0.01185    0.00009    0.15440 ^ _10055_/CK (DFF_X1)
+     2    3.21575    0.00777    0.08658    0.24098 v _10055_/Q (DFF_X1)
+                     0.00777    0.00002    0.24100 v _05007_/A (INV_X1)
+     4    9.08335    0.02233    0.02978    0.27078 ^ _05007_/ZN (INV_X1)
+                     0.02233    0.00037    0.27115 ^ _09092_/C2 (AOI211_X1)
+     1    1.19272    0.00748    0.01748    0.28863 v _09092_/ZN (AOI211_X1)
+                     0.00748    0.00001    0.28864 v _09840_/D (DFF_X1)
+                                           0.28864   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00067    0.05288 ^ clkbuf_3_7__f_clk/A (CLKBUF_X3)
+    12   29.62458    0.02516    0.05897    0.11185 ^ clkbuf_3_7__f_clk/Z (CLKBUF_X3)
+                     0.02516    0.00066    0.11251 ^ clkbuf_leaf_51_clk/A (CLKBUF_X3)
+     8    9.98354    0.01185    0.04179    0.15430 ^ clkbuf_leaf_51_clk/Z (CLKBUF_X3)
+                     0.01185    0.00006    0.15437 ^ _09840_/CK (DFF_X1)
+                                0.10000    0.25437   clock uncertainty
+                                0.00000    0.25437   clock reconvergence pessimism
+                                0.00419    0.25855   library hold time
+                                           0.25855   data required time
+-----------------------------------------------------------------------------------------
+                                           0.25855   data required time
+                                          -0.28864   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.03009   slack (MET)
+
+
+Startpoint: _10055_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: _09808_ (rising edge-triggered flip-flop clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00067    0.05288 ^ clkbuf_3_7__f_clk/A (CLKBUF_X3)
+    12   29.62458    0.02516    0.05897    0.11185 ^ clkbuf_3_7__f_clk/Z (CLKBUF_X3)
+                     0.02516    0.00066    0.11251 ^ clkbuf_leaf_51_clk/A (CLKBUF_X3)
+     8    9.98354    0.01185    0.04179    0.15430 ^ clkbuf_leaf_51_clk/Z (CLKBUF_X3)
+                     0.01185    0.00009    0.15440 ^ _10055_/CK (DFF_X1)
+     2    3.21575    0.00777    0.08658    0.24098 v _10055_/Q (DFF_X1)
+                     0.00777    0.00002    0.24100 v _05007_/A (INV_X1)
+     4    9.08335    0.02233    0.02978    0.27078 ^ _05007_/ZN (INV_X1)
+                     0.02233    0.00049    0.27127 ^ _09023_/C2 (AOI211_X1)
+     1    1.19272    0.00745    0.01748    0.28875 v _09023_/ZN (AOI211_X1)
+                     0.00745    0.00001    0.28876 v _09808_/D (DFF_X1)
+                                           0.28876   data arrival time
+
+                                0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock source latency
+     1   14.87576    0.00000    0.00000    0.00000 ^ clk (in)
+                     0.00128    0.00105    0.00105 ^ clkbuf_0_clk/A (CLKBUF_X3)
+     8   33.20922    0.02755    0.05116    0.05221 ^ clkbuf_0_clk/Z (CLKBUF_X3)
+                     0.02755    0.00067    0.05288 ^ clkbuf_3_7__f_clk/A (CLKBUF_X3)
+    12   29.62458    0.02516    0.05897    0.11185 ^ clkbuf_3_7__f_clk/Z (CLKBUF_X3)
+                     0.02516    0.00071    0.11256 ^ clkbuf_leaf_52_clk/A (CLKBUF_X3)
+     8   10.04042    0.01189    0.04186    0.15442 ^ clkbuf_leaf_52_clk/Z (CLKBUF_X3)
+                     0.01189    0.00005    0.15447 ^ _09808_/CK (DFF_X1)
+                                0.10000    0.25447   clock uncertainty
+                                0.00000    0.25447   clock reconvergence pessimism
+                                0.00419    0.25866   library hold time
+                                           0.25866   data required time
+-----------------------------------------------------------------------------------------
+                                           0.25866   data required time
+                                          -0.28876   data arrival time
+-----------------------------------------------------------------------------------------
+                                           0.03010   slack (MET)
+
+

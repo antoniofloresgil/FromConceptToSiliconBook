@@ -1,0 +1,20 @@
+{
+  "status": "pass",
+  "command": [
+    "yosys",
+    "-Q",
+    "-T",
+    "-p",
+    "read_liberty -ignore_miss_func /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; read_verilog /work/labs/build/closure-final-asic-repair/mapped.v; hierarchy -check -top dotproduct_axi; flatten; proc; opt; check -assert; rename dotproduct_axi gold; design -stash gold; read_liberty -ignore_miss_func /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; read_verilog /work/labs/build/closure-final-asic-repair/routed.v; hierarchy -check -top dotproduct_axi; flatten; proc; opt; check -assert; rename dotproduct_axi gate; design -stash gate; design -copy-from gold -as gold gold; design -copy-from gate -as gate gate; equiv_make gold gate equiv; hierarchy -top equiv; equiv_simple; equiv_induct -seq 5; equiv_status -assert"
+  ],
+  "exit_code": 0,
+  "scope": "Mapped versus repaired routed cell netlist, zero-delay functional model; not extracted LVS or baseline/pipelined sequential equivalence",
+  "inputs": {
+    "report.json": "98706c09352e821409af7bcde3c78d6d6036f97791873ad3ccd360e2c3ff6d8a",
+    "mapped.v": "6ac624a46c2f1018ad4294a7bbfbe67fa432247d7e54c366415c4c99eda99fb9",
+    "routed.v": "7f93b185560e1e6e15cd26686d0c7781fa45026f3daaa5f42a66e4c411b22ad5",
+    "NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1"
+  },
+  "recipe_sha256": "2c9ff04e70d2fdb590c357010a495107b02074ce1a90c5aa264575f99d6158ac",
+  "log_sha256": "1d8043c6703f2474acb383a56548abdef24da463acfb722d699733713fcafe13"
+}

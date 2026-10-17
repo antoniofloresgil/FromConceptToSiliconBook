@@ -1,0 +1,358 @@
+
+OpenSBI v1.7
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name               : riscv-virtio,qemu
+Platform Features           : medeleg
+Platform HART Count         : 2
+Platform IPI Device         : aclint-mswi
+Platform Timer Device       : aclint-mtimer @ 10000000Hz
+Platform Console Device     : uart8250
+Platform HSM Device         : ---
+Platform PMU Device         : ---
+Platform Reboot Device      : syscon-reboot
+Platform Shutdown Device    : syscon-poweroff
+Platform Suspend Device     : ---
+Platform CPPC Device        : ---
+Firmware Base               : 0x80000000
+Firmware Size               : 329 KB
+Firmware RW Offset          : 0x40000
+Firmware RW Size            : 73 KB
+Firmware Heap Offset        : 0x48000
+Firmware Heap Size          : 41 KB (total), 2 KB (reserved), 12 KB (used), 26 KB (free)
+Firmware Scratch Size       : 4096 B (total), 1400 B (used), 2696 B (free)
+Runtime SBI Version         : 3.0
+Standard SBI Extensions     : ipi,pmu,srst,sse,hsm,rfnc,fwft,time,base,legacy,dbcn,dbtr
+Experimental SBI Extensions : none
+
+Domain0 Name                : root
+Domain0 Boot HART           : 0
+Domain0 HARTs               : 0*,1*
+Domain0 Region00            : 0x0000000000100000-0x0000000000100fff M: (I,R,W) S/U: (R,W)
+Domain0 Region01            : 0x0000000010000000-0x0000000010000fff M: (I,R,W) S/U: (R,W)
+Domain0 Region02            : 0x0000000002000000-0x000000000200ffff M: (I,R,W) S/U: ()
+Domain0 Region03            : 0x0000000080040000-0x000000008005ffff M: (R,W) S/U: ()
+Domain0 Region04            : 0x0000000080000000-0x000000008003ffff M: (R,X) S/U: ()
+Domain0 Region05            : 0x000000000c400000-0x000000000c5fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region06            : 0x000000000c000000-0x000000000c3fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region07            : 0x0000000000000000-0xffffffffffffffff M: () S/U: (R,W,X)
+Domain0 Next Address        : 0x0000000080200000
+Domain0 Next Arg1           : 0x000000008fe00000
+Domain0 Next Mode           : S-mode
+Domain0 SysReset            : yes
+Domain0 SysSuspend          : yes
+
+Boot HART ID                : 0
+Boot HART Domain            : root
+Boot HART Priv Version      : v1.12
+Boot HART Base ISA          : rv64imafdch
+Boot HART ISA Extensions    : sstc,zicntr,zihpm,zicboz,zicbom,sdtrig,svadu
+Boot HART PMP Count         : 16
+Boot HART PMP Granularity   : 2 bits
+Boot HART PMP Address Bits  : 54
+Boot HART MHPM Info         : 16 (0x0007fff8)
+Boot HART Debug Triggers    : 2 triggers
+Boot HART MIDELEG           : 0x0000000000001666
+Boot HART MEDELEG           : 0x0000000000f0b509
+[    0.000000] Linux version 6.12.0 (root@buildkitsandbox) (riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #1 SMP Sat Oct 17 07:00:51 UTC 2026
+[    0.000000] random: crng init done
+[    0.000000] Machine model: riscv-virtio,qemu
+[    0.000000] SBI specification v3.0 detected
+[    0.000000] SBI implementation ID=0x1 Version=0x10007
+[    0.000000] SBI TIME extension detected
+[    0.000000] SBI IPI extension detected
+[    0.000000] SBI RFENCE extension detected
+[    0.000000] SBI SRST extension detected
+[    0.000000] SBI DBCN extension detected
+[    0.000000] earlycon: uart8250 at MMIO 0x0000000010000000 (options '')
+[    0.000000] printk: legacy bootconsole [uart8250] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000080000000..0x000000008003ffff (256 KiB) nomap non-reusable mmode_resv1@80000000
+[    0.000000] OF: reserved mem: 0x0000000080040000..0x000000008005ffff (128 KiB) nomap non-reusable mmode_resv0@80040000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000088000000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node dma-pool@88000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000088000000..0x0000000088003fff (16 KiB) nomap non-reusable dma-pool@88000000
+[    0.000000] Zone ranges:
+[    0.000000]   DMA32    [mem 0x0000000080000000-0x000000008fffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000008005ffff]
+[    0.000000]   node   0: [mem 0x0000000080060000-0x0000000087ffffff]
+[    0.000000]   node   0: [mem 0x0000000088000000-0x0000000088003fff]
+[    0.000000]   node   0: [mem 0x0000000088004000-0x000000008fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000008fffffff]
+[    0.000000] SBI HSM extension detected
+[    0.000000] Falling back to deprecated "riscv,isa"
+[    0.000000] riscv: base ISA extensions acdfhim
+[    0.000000] riscv: ELF capabilities acdfim
+[    0.000000] percpu: Embedded 20 pages/cpu s41120 r8192 d32608 u81920
+[    0.000000] Kernel command line: console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable
+[    0.000000] Unknown kernel command line parameters "nokaslr", will be passed to user space.
+[    0.000000] Dentry cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 65536
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] software IO TLB: SWIOTLB bounce buffer size adjusted to 0MB
+[    0.000000] software IO TLB: area num 2.
+[    0.000000] software IO TLB: SWIOTLB bounce buffer size roundup to 0MB
+[    0.000000] software IO TLB: mapped [mem 0x000000008fee1000-0x000000008ff61000] (0MB)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]       fixmap : 0xff1bfffffea00000 - 0xff1bffffff000000   (6144 kB)
+[    0.000000]       pci io : 0xff1bffffff000000 - 0xff1c000000000000   (  16 MB)
+[    0.000000]      vmemmap : 0xff1c000000000000 - 0xff20000000000000   (1024 TB)
+[    0.000000]      vmalloc : 0xff20000000000000 - 0xff60000000000000   (16384 TB)
+[    0.000000]      modules : 0xffffffff00f40000 - 0xffffffff80000000   (2032 MB)
+[    0.000000]       lowmem : 0xff60000000000000 - 0xff60000010000000   ( 256 MB)
+[    0.000000]       kernel : 0xffffffff80000000 - 0xffffffffffffffff   (2047 MB)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=2.
+[    0.000000] rcu: 	RCU debug extended QS entry/exit.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=2
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 64 local interrupts mapped
+[    0.000000] riscv: providing IPIs using SBI IPI extension
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: riscv_clocksource: mask: 0xffffffffffffffff max_cycles: 0x24e6a1710, max_idle_ns: 440795202120 ns
+[    0.000096] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+[    0.000911] riscv-timer: Timer interrupt in S-mode is available via sstc extension
+[    0.010840] Console: colour dummy device 80x25
+[    0.013274] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+[    0.014492] pid_max: default: 32768 minimum: 301
+[    0.016507] LSM: initializing lsm=capability
+[    0.018694] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.019403] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.075601] riscv: ELF compat mode supported
+[    0.076106] ASID allocator using 16 bits (65536 entries)
+[    0.078971] rcu: Hierarchical SRCU implementation.
+[    0.079464] rcu: 	Max phase no-delay instances is 1000.
+[    0.081741] Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+[    0.085607] EFI services will not be available.
+[    0.088791] smp: Bringing up secondary CPUs ...
+[    0.099776] smp: Brought up 1 node, 2 CPUs
+[    0.109232] Memory: 221160K/262144K available (4718K kernel code, 4814K rwdata, 2048K rodata, 2241K init, 366K bss, 38976K reserved, 0K cma-reserved)
+[    0.120125] devtmpfs: initialized
+[    0.133502] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.134118] futex hash table entries: 512 (order: 3, 32768 bytes, linear)
+[    0.137012] pinctrl core: initialized pinctrl subsystem
+[    0.142258] DMI not present or invalid.
+[    0.144734] DMA: preallocated 128 KiB GFP_KERNEL pool for atomic allocations
+[    0.145297] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.148992] thermal_sys: Registered thermal governor 'step_wise'
+[    0.150028] cpuidle: using governor menu
+[    0.176058] cpu1: Ratio of byte access time to unaligned word access is 7.31, unaligned accesses are fast
+[    0.200862] cpu0: Ratio of byte access time to unaligned word access is 6.90, unaligned accesses are fast
+[    0.225181] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.225482] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.231766] iommu: Default domain type: Translated
+[    0.232008] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.235167] SCSI subsystem initialized
+[    0.241010] clocksource: Switched to clocksource riscv_clocksource
+[    0.298673] workingset: timestamp_bits=46 max_order=16 bucket_order=0
+[    0.302153] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
+[    0.302734] Unpacking initramfs...
+[    0.303056] io scheduler mq-deadline registered
+[    0.303337] io scheduler kyber registered
+[    0.303782] io scheduler bfq registered
+[    0.314094] riscv-plic: plic@c000000: mapped 95 interrupts with 2 handlers for 4 contexts.
+[    0.316142] Freeing initrd memory: 552K
+[    0.322132] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    0.337151] printk: legacy console [ttyS0] disabled
+[    0.342330] 10000000.serial: ttyS0 at MMIO 0x10000000 (irq = 12, base_baud = 230400) is a 16550A
+[    0.344517] printk: legacy console [ttyS0] enabled
+[    0.344517] printk: legacy console [ttyS0] enabled
+[    0.345756] printk: legacy bootconsole [uart8250] disabled
+[    0.345756] printk: legacy bootconsole [uart8250] disabled
+[    0.372536] loop: module loaded
+[    0.374522] hsd-dotproduct 10080000.dotproduct: assigned reserved memory node dma-pool@88000000
+[    0.377018] hsd-dotproduct 10080000.dotproduct: HSD_DRIVER_READY dma=0x0000000088000000 irq=13
+[    0.382104] mousedev: PS/2 mouse device common for all mice
+[    0.385550] goldfish_rtc 101000.rtc: registered as rtc0
+[    0.386396] goldfish_rtc 101000.rtc: setting system clock to 2026-10-17T10:13:19 UTC (1792231999)
+[    0.392064] sdhci: Secure Digital Host Controller Interface driver
+[    0.392355] sdhci: Copyright(c) Pierre Ossman
+[    0.393458] Synopsys Designware Multimedia Card Interface Driver
+[    0.394934] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.397135] riscv-pmu-sbi: SBI PMU extension is available
+[    0.398020] riscv-pmu-sbi: 16 firmware and 18 hardware counters
+[    0.398356] riscv-pmu-sbi: Perf sampling/filtering is not supported as sscof extension is not available
+[    0.431847] clk: Disabling unused clocks
+[    0.432333] PM: genpd: Disabling unused power domains
+[    0.495459] Freeing unused kernel image (initmem) memory: 2240K
+[    0.497104] Run /init as init process
+HSD_SMP_READY online=2 producer_cpu=0
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=1 cpu=1 n=1 mode=poll ioctl_ns=1180200
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=2 cpu=1 n=8 mode=irq ioctl_ns=531500
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=3 cpu=1 n=32 mode=poll ioctl_ns=182800
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=4 cpu=1 n=128 mode=irq ioctl_ns=502700
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=5 cpu=1 n=256 mode=poll ioctl_ns=446300
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=6 cpu=1 n=1 mode=irq ioctl_ns=408600
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=7 cpu=1 n=8 mode=poll ioctl_ns=299900
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=8 cpu=1 n=32 mode=irq ioctl_ns=309700
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=9 cpu=1 n=128 mode=poll ioctl_ns=301100
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=10 cpu=1 n=256 mode=irq ioctl_ns=354500
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=11 cpu=1 n=1 mode=poll ioctl_ns=191000
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=12 cpu=1 n=8 mode=irq ioctl_ns=428300
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=13 cpu=1 n=32 mode=poll ioctl_ns=334500
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=14 cpu=1 n=128 mode=irq ioctl_ns=313900
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=15 cpu=1 n=256 mode=poll ioctl_ns=271000
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=16 cpu=1 n=1 mode=irq ioctl_ns=438700
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=17 cpu=1 n=8 mode=poll ioctl_ns=1340400
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=18 cpu=1 n=32 mode=irq ioctl_ns=778100
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=19 cpu=1 n=128 mode=poll ioctl_ns=1055800
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=20 cpu=1 n=256 mode=irq ioctl_ns=633000
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=21 cpu=1 n=1 mode=poll ioctl_ns=539500
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=22 cpu=1 n=8 mode=irq ioctl_ns=706900
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=23 cpu=1 n=32 mode=poll ioctl_ns=259200
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=24 cpu=1 n=128 mode=irq ioctl_ns=427500
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=25 cpu=1 n=256 mode=poll ioctl_ns=283800
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=26 cpu=1 n=1 mode=irq ioctl_ns=345900
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=27 cpu=1 n=8 mode=poll ioctl_ns=162400
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=28 cpu=1 n=32 mode=irq ioctl_ns=430300
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=29 cpu=1 n=128 mode=poll ioctl_ns=165300
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=30 cpu=1 n=256 mode=irq ioctl_ns=312500
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=31 cpu=1 n=1 mode=poll ioctl_ns=294000
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=32 cpu=1 n=8 mode=irq ioctl_ns=380300
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=33 cpu=1 n=32 mode=poll ioctl_ns=163200
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=34 cpu=1 n=128 mode=irq ioctl_ns=563000
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=35 cpu=1 n=256 mode=poll ioctl_ns=237700
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=36 cpu=1 n=1 mode=irq ioctl_ns=350900
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=37 cpu=1 n=8 mode=poll ioctl_ns=335100
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=38 cpu=1 n=32 mode=irq ioctl_ns=279200
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=39 cpu=1 n=128 mode=poll ioctl_ns=373000
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=40 cpu=1 n=256 mode=irq ioctl_ns=348100
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=41 cpu=1 n=1 mode=poll ioctl_ns=175400
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=42 cpu=1 n=8 mode=irq ioctl_ns=359900
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=43 cpu=1 n=32 mode=poll ioctl_ns=139500
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=44 cpu=1 n=128 mode=irq ioctl_ns=343500
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=45 cpu=1 n=256 mode=poll ioctl_ns=186200
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=46 cpu=1 n=1 mode=irq ioctl_ns=336400
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=47 cpu=1 n=8 mode=poll ioctl_ns=321100
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=48 cpu=1 n=32 mode=irq ioctl_ns=660300
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=49 cpu=1 n=128 mode=poll ioctl_ns=210800
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=50 cpu=1 n=256 mode=irq ioctl_ns=463100
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=51 cpu=1 n=1 mode=poll ioctl_ns=601600
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=52 cpu=1 n=8 mode=irq ioctl_ns=459700
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=53 cpu=1 n=32 mode=poll ioctl_ns=197900
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=54 cpu=1 n=128 mode=irq ioctl_ns=340700
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=55 cpu=1 n=256 mode=poll ioctl_ns=351900
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=56 cpu=1 n=1 mode=irq ioctl_ns=467300
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=57 cpu=1 n=8 mode=poll ioctl_ns=231900
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=58 cpu=1 n=32 mode=irq ioctl_ns=458300
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=59 cpu=1 n=128 mode=poll ioctl_ns=176600
+HSD_MODEL n=256 error=0 reads=512 writes=2
+HSD_SMP_JOB epoch=60 cpu=1 n=256 mode=irq ioctl_ns=432600
+HSD_MODEL n=1 error=0 reads=2 writes=2
+HSD_SMP_JOB epoch=61 cpu=1 n=1 mode=poll ioctl_ns=154700
+HSD_MODEL n=8 error=0 reads=16 writes=2
+HSD_SMP_JOB epoch=62 cpu=1 n=8 mode=irq ioctl_ns=402000
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_JOB epoch=63 cpu=1 n=32 mode=poll ioctl_ns=125400
+HSD_MODEL n=128 error=0 reads=256 writes=2
+HSD_SMP_JOB epoch=64 cpu=1 n=128 mode=irq ioctl_ns=295800
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_SMP_IRQ_COUNTS  13:         48          0  SiFive PLIC  20 Edge      10080000.dotproduct
+HSD_SMP_CONTENTION_PASS cpu0_jobs=16 cpu1_jobs=16
+HSD_SMP_OVERLAP ns=10339000
+HSD_SMP_METRIC handoffs=64 elapsed_ns=71610100
+HSD_MULTICORE_PASS jobs=96 producer_cpu=0 worker_cpu=1
+[    0.674203] reboot: Power down

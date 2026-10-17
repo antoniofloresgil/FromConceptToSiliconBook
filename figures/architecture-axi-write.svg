@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="601" viewBox="0 0 960 601" role="img" aria-labelledby="title desc">
+<title id="title">AXI4 write: independent channels and retained response</title><desc id="desc">Single-beat example • green dots mark acceptance at rising edges; dash = no valid payload</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="601" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">AXI4 write: independent channels and retained response</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Single-beat example • green dots mark acceptance at rising edges; dash = no valid payload</text>
+<path d="M262 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="262" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<path d="M348 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="348" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M434 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="434" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<path d="M520 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="520" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4</text>
+<path d="M606 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="606" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<path d="M692 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="692" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">6</text>
+<path d="M778 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="778" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">7</text>
+<path d="M864 110V485" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="864" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">8</text>
+<text x="28" y="97" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Rising edge →</text>
+<text x="28" y="140" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">AWVALID</text>
+<path d=" M176 123H262 L262 123H348 L348 145H434 L434 145H520 L520 145H606 L606 145H692 L692 145H778 L778 145H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="348" cy="135" r="6" fill="#28705c"/>
+<text x="28" y="185" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">AWREADY</text>
+<path d=" M176 190H262 L262 168H348 L348 168H434 L434 168H520 L520 168H606 L606 168H692 L692 168H778 L778 168H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="28" y="230" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">AWADDR</text>
+<rect x="179" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="219.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A</text>
+<rect x="265" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="305.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A</text>
+<rect x="351" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="391.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="437" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="477.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="523" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="563.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="609" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="649.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="695" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="735.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="781" y="208" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="821.0" y="229" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<text x="28" y="275" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">WVALID</text>
+<path d=" M176 280H262 L262 280H348 L348 258H434 L434 258H520 L520 258H606 L606 280H692 L692 280H778 L778 280H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="606" cy="270" r="6" fill="#28705c"/>
+<text x="28" y="320" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">WREADY</text>
+<path d=" M176 325H262 L262 325H348 L348 325H434 L434 325H520 L520 303H606 L606 303H692 L692 303H778 L778 303H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="28" y="365" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">WDATA</text>
+<rect x="179" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="219.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="265" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="305.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="351" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="391.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">D0</text>
+<rect x="437" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="477.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">D0</text>
+<rect x="523" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="563.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">D0</text>
+<rect x="609" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="649.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="695" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="735.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<rect x="781" y="343" width="80" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="821.0" y="364" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<text x="28" y="410" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">BVALID</text>
+<path d=" M176 415H262 L262 415H348 L348 415H434 L434 415H520 L520 415H606 L606 393H692 L692 393H778 L778 393H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="864" cy="405" r="6" fill="#28705c"/>
+<text x="28" y="455" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">BREADY</text>
+<path d=" M176 460H262 L262 460H348 L348 460H434 L434 460H520 L520 460H606 L606 460H692 L692 460H778 L778 438H864" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="28" y="503" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="531" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">AW accepted at edge 2; W (WLAST=1) accepted at edge 5; B accepted at edge 8.</text>
+<text x="44" y="556" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Keep WDATA / WSTRB / WLAST stable through edge 5; keep BRESP stable through edge 8.</text>
+</g></svg>

@@ -1,0 +1,31 @@
+{
+  "baseline-lvs": {
+    "error_count": 23804,
+    "first_errors": [
+      "Net m_arsize[1] is not matching any net from reference netlist'))",
+      "Net m_wstrb[3] is not matching any net from reference netlist'))",
+      "Net m_awburst[0] is not matching any net from reference netlist'))",
+      "Net m_wstrb[0] is not matching any net from reference netlist'))",
+      "Net m_wlast is not matching any net from reference netlist'))",
+      "Net m_wstrb[1] is not matching any net from reference netlist'))"
+    ],
+    "database_sha256": "b6f75db71cc1f7f1cea96dde004e663343d9204a643e4c260615131700dffe2e"
+  },
+  "finished-lvs": {
+    "error_count": 0,
+    "first_errors": [],
+    "database_sha256": "eff7de638a0ebc9aa41cbd1d94401ff6385aeeb2d4de0381adb6cdca139059dd"
+  },
+  "negative-lvs": {
+    "error_count": 11146,
+    "first_errors": [
+      "Net s_awaddr[1] is not matching any net from reference netlist'))",
+      "Net s_wdata[26] is not matching any net from reference netlist'))",
+      "Net s_wdata[21] is not matching any net from reference netlist'))",
+      "Net s_wdata[14] is not matching any net from reference netlist'))",
+      "Net s_wstrb[0] is not matching any net from reference netlist'))",
+      "Net s_wdata[2] is not matching any net from reference netlist'))"
+    ],
+    "database_sha256": "18f903ab46a0ae35cdcd631afd4e1f95cc677510eb523b906ed7e481e8d278fa"
+  }
+}

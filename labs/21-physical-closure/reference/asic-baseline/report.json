@@ -1,0 +1,123 @@
+{
+  "status": "completed",
+  "target": "asic",
+  "candidate": "baseline",
+  "seed": 2026,
+  "requested_mhz": 100,
+  "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "sources": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/10-dotproduct/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/21-physical-closure/manifest.json": "f2957ece55bf972d7004d28e8d9545033126bb08efa88dbe57a75c0c6f0b98ac",
+    "labs/17-complete-case/manifest.json": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "labs/17-complete-case/asic.sdc": "36de66ee6bcf4541463a557eef0f070b38a07b3edc7a87eea1ec4dcbdfe599e9",
+    "labs/17-complete-case/asic.tcl": "69b73ac19c847d2da682f1f30f4a9a277ed0702c52e2e537f7ff724fbb11c453",
+    "labs/17-complete-case/streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c",
+    "labs/17-complete-case/nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+    "labs/17-complete-case/nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+    "labs/17-complete-case/tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda",
+    "labs/10-dotproduct/tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "labs/10-dotproduct/axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "labs/10-dotproduct/axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "labs/10-dotproduct/vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "labs/21-physical-closure/run.py": "53aa774744fa5bb78239528310eeb9546c1fc68830f9e64125c1aa276cf777fa",
+    "labs/21-physical-closure/repair.tcl": "adcaf27fc27a7b99014cbe67ef527914525b5c49cbd42f43870404da3133bfb9",
+    "labs/21-physical-closure/dotproduct_engine.sv": "f14bc3e24c3032fd8a8023d83a0ef5d13649ce2f7646a0607ddc9629579a8fc0"
+  },
+  "image": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "commands": [
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/10-dotproduct/rtl/dotproduct_mac.sv /work/labs/10-dotproduct/rtl/dotproduct_engine.sv /work/labs/10-dotproduct/rtl/dotproduct_axi.sv; hierarchy -top dotproduct_axi; chparam -set MAX_LENGTH 256 -set DMA_BASE 32'h80008000 -set DMA_LIMIT 33'h08000c000 dotproduct_axi; synth -top dotproduct_axi -flatten; dfflibmap -liberty /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; abc -liberty /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; hilomap -hicell LOGIC1_X1 Z -locell LOGIC0_X1 Z; read_liberty -lib /OpenROAD-flow-scripts/flow/platforms/nangate45/lib/NangateOpenCellLibrary_typical.lib; clean; check -assert; write_verilog -noattr -noexpr mapped.v"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/17-complete-case/asic.tcl"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/closure-final-asic-baseline",
+        "-rm",
+        "/work/labs/17-complete-case/streamout.py"
+      ],
+      "log": "command-03.log",
+      "exit_code": 0
+    }
+  ],
+  "tools": {
+    "yosys": "Yosys 0.60 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)",
+    "openroad": "24Q3-11382-g61879bec53"
+  },
+  "technology_sha256": {
+    "lib/NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1",
+    "rcx_patterns.rules": "2f65fafbe2c704b378563c53a680b93cef080c2799997019d43df7d1e5a563e9",
+    "lef/NangateOpenCellLibrary.tech.lef": "834a79295054cd4209178d1bade67c353863c47bb4b3c22ee38b862b7cec37f2",
+    "lef/NangateOpenCellLibrary.macro.mod.lef": "a43aea339f12a57a63497783e508ba16f3da2dc056d3247dec7d99707c2dedef"
+  },
+  "artifacts": {
+    "command-01.log": "4d19c265898c525632eac7a497c3bc53ad2a3e5a7d565bd530d05b412c091665",
+    "command-02.log": "8b1c09c7d51e52fd4254206a0f60b457fe9e11d8aca6d093d3bb233ead2b7ff3",
+    "command-03.log": "a38dd03c7588a4e603866178835147bbbd15647363fe53cc1f45ffd3ecb7181a",
+    "cts-area.rpt": "7b75b038151f31f9fa62d66cf8205eb0e2aac6ebd64953b0f1a3d17098e0b6ba",
+    "cts-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cts-hold.rpt": "dff0cf244fddcaa10c2efe99de4d94f73db84ec3f3ab123c134d6992bd6b4dde",
+    "cts-limits.rpt": "de90ad5a497a0fc1aa0a21360e157b4c3497b1ed8ece5cec08fe40d9f61005a6",
+    "cts-metrics.json": "5cedf63fde10d9c03bc10a8360ce0f9561780d5926acaa72b851fd940698698b",
+    "cts-setup.rpt": "de91df5d3d442a4ed3d225f14972d224a01aa3b04354abed0e6fb8fe50c8c802",
+    "cts-tree.rpt": "9075013b7501c8046b89a6393bd0723034ac27d87dd8fbd9484c23d29ac3bfc5",
+    "cts.odb": "14d46649d2690a903882de4655ca39dcb5aa017c627832d7c85edfcf34324f5f",
+    "cts.sdc": "dc6bdf04c0ee409fac4122e5a8a7c4d9f320209e6357ec951d6b363b8fd54bb2",
+    "dotproduct_axi.gds": "06779e85965cd0719a49a0ba1bf251fee8efed24e9464f449e9e8a26cb4cfb00",
+    "gds-readback.json": "90f5678a1d92c5d56cf2b33bf7b6f574cc69e979159e7a585bdf7e32b6d66ba0",
+    "global-area.rpt": "7b75b038151f31f9fa62d66cf8205eb0e2aac6ebd64953b0f1a3d17098e0b6ba",
+    "global-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "global-hold.rpt": "8ed7dcb23b254c3f87bd412c88cba61fc6683dfd0d44cbeff695700791b94437",
+    "global-limits.rpt": "f1cdc4395db49d2b5305a7011721fbf82f2b764619f8a62929f319b460576a08",
+    "global-metrics.json": "d384b105b5c85d1726d453e12d8bd2ac5237dd7243a2e86410e9123f37a4337d",
+    "global-setup.rpt": "c6837a1d8cf3edcea1927340cd0cf7904a6df72b47742e8b1ff6990ea43659cd",
+    "global.odb": "f2214f3f157c890e9b551cd40393156bba02daed99cad97053c4e5cb77657578",
+    "global.sdc": "32ed6f10b64c478a09c46ffecd19f2c634da513c6b7cdfdd27d269ff4ac388eb",
+    "mapped.v": "6ac624a46c2f1018ad4294a7bbfbe67fa432247d7e54c366415c4c99eda99fb9",
+    "placed-area.rpt": "68ae6c8c33889db399292d6188567d6da468c2732442052b927a8ad138d2c468",
+    "placed-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "placed-hold.rpt": "8c412d328a5f8ea3912fdcce3a2ee923fb4290c29b60ea026c0bcbe2e2c8591b",
+    "placed-limits.rpt": "c63d175b394dde0a0c065148b0789981d6bfa47fd65551928626c9e99167be13",
+    "placed-metrics.json": "59a7c02a9d6dce2505756aa39eb0d6f69aac75234505639f0421d20a14ed446f",
+    "placed-setup.rpt": "f3f4edfd5c183ad3e246d395eee0b7cf741bd056cf6c589e77e03027e360bc0b",
+    "placed.odb": "d38c614d50368aac69c7193f7576d656959124f522a51519f793538f749349f5",
+    "placed.sdc": "5c440b6e71486db9845cccd2e7fd4fe8ece1ca1d7db21f0222289676d0012794",
+    "power.rpt": "77e332a54aaa4211347983b405d745b01a47673326c066b64abb8dbdfd340c23",
+    "route-drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "route.guide": "c10606feaeaa138088febb846ea87d9cea5eef5f6cbddab204558807e6d3afbd",
+    "routed-area.rpt": "7b75b038151f31f9fa62d66cf8205eb0e2aac6ebd64953b0f1a3d17098e0b6ba",
+    "routed-constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "routed-hold.rpt": "f6381fb66dae9be4d231513efbdd06622131bc900fd6cdfe09c343306e36774e",
+    "routed-limits.rpt": "d60b727ada1a6b8a7af619c0b2253868c9dcb14c34eabdcd75e901c5a3799a82",
+    "routed-metrics.json": "c5404149ca32c371dbf341b84841819a0209528e6644b66d307c57aeeb00176e",
+    "routed-setup.rpt": "9d5aac604eaaa7f4f3270f10124365ee58ee094f9144c3a8c14daef8b34dbf30",
+    "routed.def": "e6e61ecb6007ac4406a5051edc11dabbcf3254c2108202a7418562276ca1cc87",
+    "routed.odb": "7f0038fa92cbaf4c1c7567690825ec9631b69c4614b0274e6786378f603a0550",
+    "routed.sdc": "a371fce48e5bdd96ddf7f829b8737dde8d347aba495d1130f8313f4f2995b21a",
+    "routed.spef": "e53cf4fcd37fd9b3cb890f0fab9ee1fb9d5a9b7347e77b5a84883e9985bfffd5",
+    "routed.v": "5d05ab3a5240b25971c8c4b58372749b71833a404f2e14674d2c967a9acbec70"
+  }
+}

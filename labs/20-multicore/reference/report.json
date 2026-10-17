@@ -1,0 +1,597 @@
+{
+  "status": "pass",
+  "scope": "Actual Linux two-CPU software integration on QEMU; no modeled CPU cache hierarchy, coherent RTL or hardware performance claim",
+  "image": "sha256:b21777fbb921393ecc46bb02f2d05680e39792fd6aeaa487b8cd7883a4417de9",
+  "sources": {
+    "collect.py": "594bcea759b6dc5225f378f54f224ddd01a24e13527bce6eea12c214ced77abf",
+    "Dockerfile": "89791892bc2c5951d83802513a7ab5dfb933678765f630bb118d3e534023ce91",
+    "models.py": "cd5af937c9498325d77f107ba9c237de0b1311c89c7357d62b78647c2924ceac",
+    "run.py": "c07ac343ea76e02dd04c50488f2d7d7de24df41176782d67b6ca4f16a9e70192",
+    "smp.c": "84e8aab6b3715978e0749f258c0dfc5bbccdb7542de409ac9e873cc23973d137",
+    "verify_reference.py": "8be09f0e2c14fbd00f692ac6356b17fea0a0aaddb4d83ad7509901794c3b701f"
+  },
+  "dependencies": {
+    "labs/18-linux-accelerator/hsd-dotproduct.c": "a6397a55fdb0713e17df45c458a33c80f1c3c93a1d4b8fa770ef045803a1818a",
+    "labs/18-linux-accelerator/hsd-dotproduct.h": "203ff322613388be7befe7f56fd01a8b280ebed2e7c879684f44d21972a50cc9",
+    "labs/18-linux-accelerator/dotproduct-driver.c": "7df70145b9a7ddcf92b894fc4361cf9965a9e0edb326ab7a80b8e38289bc9c09",
+    "labs/18-linux-accelerator/dotproduct-uapi.h": "915ca4f5f5df69580d1064b1fc5aa0292ce2841b3da66cfe72290992f4138c21",
+    "labs/18-linux-accelerator/linux-app.c": "d6592f00313366458c084f52717c98d7affad8913af375c71123abf731c18551",
+    "labs/18-linux-accelerator/prepare.py": "9b9bbed61f25660b4e64c88eab47921411d298a3945c3502e571db0ca90e65ce",
+    "labs/18-linux-accelerator/manifest.json": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633"
+  },
+  "commands": [
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "--version"
+      ],
+      "log": "qemu-version.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "riscv64-linux-gnu-gcc",
+        "--version"
+      ],
+      "log": "compiler-version.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "riscv64-linux-gnu-objdump",
+        "-d",
+        "/opt/multicore/init"
+      ],
+      "log": "disassembly.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "2",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/multicore/rootfs.cpio",
+        "-machine",
+        "dumpdtb=/work/labs/build/multicore-release/virt.dtb"
+      ],
+      "log": "dumpdtb.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "dtc",
+        "-I",
+        "dtb",
+        "-O",
+        "dts",
+        "-o",
+        "/work/labs/build/multicore-release/virt.dts",
+        "/work/labs/build/multicore-release/virt.dtb"
+      ],
+      "log": "dtc.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "qemu-system-riscv64",
+        "-machine",
+        "virt",
+        "-m",
+        "256M",
+        "-smp",
+        "2",
+        "-nographic",
+        "-no-reboot",
+        "-bios",
+        "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin",
+        "-kernel",
+        "/opt/linux/arch/riscv/boot/Image",
+        "-initrd",
+        "/opt/multicore/rootfs.cpio",
+        "-append",
+        "console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable"
+      ],
+      "log": "uart.txt",
+      "exit_code": 0
+    }
+  ],
+  "profile": {
+    "cpus": 2,
+    "ram_bytes": 268435456,
+    "mmio": "0x10080000",
+    "dma_base": "0x88000000",
+    "jobs": 96,
+    "handoffs": 64,
+    "contenders_per_cpu": 16
+  },
+  "tools": {
+    "qemu": "QEMU emulator version 8.2.2",
+    "compiler": "riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "bundle": {
+    "/opt/linux/arch/riscv/boot/Image": "a1fd6b0cf8b10f71421f0d2c734cacdad69d52b2e335724f7eaa310364e5520c",
+    "/opt/multicore/rootfs.cpio": "f21e50f768ac2279b1ad14d4229e6f74f0a097b5d3940fff7deb807663c3aaff",
+    "/usr/lib/riscv64-linux-gnu/opensbi/generic/fw_dynamic.bin": "c9550c7dedc56fbc186c080d3005747260b24335b5f285ba359ce85540b79606",
+    "/opt/multicore/init": "826a49a8c1c005f575e83d68657101529554b3aa8c18a97a4f4ae557d455ad37"
+  },
+  "metrics": [
+    {
+      "epoch": 1,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 1180200
+    },
+    {
+      "epoch": 2,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 531500
+    },
+    {
+      "epoch": 3,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 182800
+    },
+    {
+      "epoch": 4,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 502700
+    },
+    {
+      "epoch": 5,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 446300
+    },
+    {
+      "epoch": 6,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 408600
+    },
+    {
+      "epoch": 7,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 299900
+    },
+    {
+      "epoch": 8,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 309700
+    },
+    {
+      "epoch": 9,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 301100
+    },
+    {
+      "epoch": 10,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 354500
+    },
+    {
+      "epoch": 11,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 191000
+    },
+    {
+      "epoch": 12,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 428300
+    },
+    {
+      "epoch": 13,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 334500
+    },
+    {
+      "epoch": 14,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 313900
+    },
+    {
+      "epoch": 15,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 271000
+    },
+    {
+      "epoch": 16,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 438700
+    },
+    {
+      "epoch": 17,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 1340400
+    },
+    {
+      "epoch": 18,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 778100
+    },
+    {
+      "epoch": 19,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 1055800
+    },
+    {
+      "epoch": 20,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 633000
+    },
+    {
+      "epoch": 21,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 539500
+    },
+    {
+      "epoch": 22,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 706900
+    },
+    {
+      "epoch": 23,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 259200
+    },
+    {
+      "epoch": 24,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 427500
+    },
+    {
+      "epoch": 25,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 283800
+    },
+    {
+      "epoch": 26,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 345900
+    },
+    {
+      "epoch": 27,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 162400
+    },
+    {
+      "epoch": 28,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 430300
+    },
+    {
+      "epoch": 29,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 165300
+    },
+    {
+      "epoch": 30,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 312500
+    },
+    {
+      "epoch": 31,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 294000
+    },
+    {
+      "epoch": 32,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 380300
+    },
+    {
+      "epoch": 33,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 163200
+    },
+    {
+      "epoch": 34,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 563000
+    },
+    {
+      "epoch": 35,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 237700
+    },
+    {
+      "epoch": 36,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 350900
+    },
+    {
+      "epoch": 37,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 335100
+    },
+    {
+      "epoch": 38,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 279200
+    },
+    {
+      "epoch": 39,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 373000
+    },
+    {
+      "epoch": 40,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 348100
+    },
+    {
+      "epoch": 41,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 175400
+    },
+    {
+      "epoch": 42,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 359900
+    },
+    {
+      "epoch": 43,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 139500
+    },
+    {
+      "epoch": 44,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 343500
+    },
+    {
+      "epoch": 45,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 186200
+    },
+    {
+      "epoch": 46,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 336400
+    },
+    {
+      "epoch": 47,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 321100
+    },
+    {
+      "epoch": 48,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 660300
+    },
+    {
+      "epoch": 49,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 210800
+    },
+    {
+      "epoch": 50,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 463100
+    },
+    {
+      "epoch": 51,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 601600
+    },
+    {
+      "epoch": 52,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 459700
+    },
+    {
+      "epoch": 53,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 197900
+    },
+    {
+      "epoch": 54,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 340700
+    },
+    {
+      "epoch": 55,
+      "cpu": 1,
+      "length": 256,
+      "mode": "poll",
+      "ioctl_ns": 351900
+    },
+    {
+      "epoch": 56,
+      "cpu": 1,
+      "length": 1,
+      "mode": "irq",
+      "ioctl_ns": 467300
+    },
+    {
+      "epoch": 57,
+      "cpu": 1,
+      "length": 8,
+      "mode": "poll",
+      "ioctl_ns": 231900
+    },
+    {
+      "epoch": 58,
+      "cpu": 1,
+      "length": 32,
+      "mode": "irq",
+      "ioctl_ns": 458300
+    },
+    {
+      "epoch": 59,
+      "cpu": 1,
+      "length": 128,
+      "mode": "poll",
+      "ioctl_ns": 176600
+    },
+    {
+      "epoch": 60,
+      "cpu": 1,
+      "length": 256,
+      "mode": "irq",
+      "ioctl_ns": 432600
+    },
+    {
+      "epoch": 61,
+      "cpu": 1,
+      "length": 1,
+      "mode": "poll",
+      "ioctl_ns": 154700
+    },
+    {
+      "epoch": 62,
+      "cpu": 1,
+      "length": 8,
+      "mode": "irq",
+      "ioctl_ns": 402000
+    },
+    {
+      "epoch": 63,
+      "cpu": 1,
+      "length": 32,
+      "mode": "poll",
+      "ioctl_ns": 125400
+    },
+    {
+      "epoch": 64,
+      "cpu": 1,
+      "length": 128,
+      "mode": "irq",
+      "ioctl_ns": 295800
+    }
+  ],
+  "handoff_elapsed_ns": 71610100,
+  "contender_overlap_ns": 10339000,
+  "irq_counts": [
+    48,
+    0
+  ],
+  "timing_scope": "Single emulator elapsed-time observations; no physical cache/NoC timing or multicore hardware speedup claim",
+  "artifacts": {
+    "compiler-version.txt": "feeaf39955a477b2b8faf9c46cbb0d307cc54f7dfea2323eca2b49441d7c92de",
+    "disassembly.txt": "128aa6f77aef704316a5a4b36dcc80fb1339ddc25d65781a2f822a1209907040",
+    "dtc.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dumpdtb.txt": "d3289e2c483a57d1788dfe4a0090cc3be0960ce8221d51f6a2bc6fa6ee634290",
+    "kernel.config": "41887a41ee67f09b21a7adefbdeaae2d287438a49fbed50ae0d44785c383774e",
+    "models.json": "67e91086e5024aceb4dfbe79d5958e184467826bf9852f13d623fe26b7bcc3ea",
+    "qemu-version.txt": "de88a7c2fbf419207e085dd8729404d6fdf6da7f2124515e6cff66d86ece59e6",
+    "uart.txt": "8c48e68d38ce14636cca465d2ae3d878f3781b4f3ffcd0521bbddfc60a97452c",
+    "virt.dtb": "b21342ad9ce158b03cebb8663cc8f19580fd6deee7017fd4b48925089329e762",
+    "virt.dts": "b13c78bc493e05b243f9f49ca386489471c24c64421cd35b48b55e3f4c1d975d"
+  }
+}

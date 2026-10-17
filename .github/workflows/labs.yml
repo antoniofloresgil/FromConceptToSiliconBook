@@ -18,12 +18,17 @@ jobs:
           python labs/tools/check_recipes.py
           python labs/tools/test_recipes.py
           python labs/tools/test_package.py
+          python tools/figures/architecture.py --check
           python labs/16-openroad-study/verify_reference.py
           python labs/17-complete-case/verify_reference.py
           python labs/17-complete-case/verify_nexys.py
           python labs/17-complete-case/test_collection.py
           python labs/18-linux-accelerator/verify_reference.py
           python labs/18-linux-accelerator/test_platform_map.py
+          python labs/19-hardware-generators/verify_reference.py
+          python labs/20-multicore/verify_reference.py
+          python labs/21-physical-closure/verify_reference.py
+          python labs/22-layout-verification/verify_reference.py
       - name: Acquire pinned Wally source
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:

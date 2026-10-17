@@ -498,6 +498,10 @@ Writing a SPEF without importing it into the timing analysis would leave an earl
 
 ### Placement: inspect geometry before interpreting the table
 
+![Four views of the same accumulator configuration: an actual replay of the original floorplan prefix followed by the recorded placement, CTS and detailed-route captures. The panels share a graphical frame, while their contents are exported OpenROAD geometry.](../../figures/architecture-openroad-checkpoints.svg){#fig-openroad-four-checkpoints fig-alt="Four actual OpenROAD views show floorplan rows and pins, placed logic, inserted clock buffers and detailed routing for the 55 percent accumulator case" width=100%}
+
+Read @fig-openroad-four-checkpoints as a sequence of newly introduced obligations. The floorplan fixes rows, pins and supply geometry; placement fixes cell locations; CTS introduces clock delay and skew; routing supplies wire geometry for extracted timing. The first panel is a new prefix replay using the same mapped netlist, constraints and pinned image as Lab 16. Its [capture provenance](../../figures/architecture-floorplan.json) records inputs and hashes. The other panels are the existing measured run, whose timing reports below remain authoritative. The overview does not introduce a new timing result or replace the larger diagnostic captures.
+
 ![Actual OpenROAD placement export at 45% target utilization and a 1 ns requested period. Cell positions and row whitespace are the outcome of the recorded run.](../../figures/openroad-study-u45-placed.png){#fig-openroad-study-low fig-alt="Actual Nangate45 accumulator placement at 45 percent target utilization" width=75%}
 
 ![Actual placement at 65% target utilization, with the same mapped netlist and 1 ns period. The smaller core changes adjacency, pin distances and available routing space.](../../figures/openroad-study-u65-placed.png){#fig-openroad-study-dense fig-alt="Actual Nangate45 accumulator placement at 65 percent target utilization" width=75%}
@@ -645,6 +649,62 @@ Physical-design failures are information. The correct response is to locate the 
 | Hold failure after CTS | Fast data path relative to clock arrival | Minimum-delay report | Apply hold repair; never hide it with an unjustified exception |
 | Repeated antenna/DRC markers | Routing/resource or rule issue | Detailed-route report and GUI markers | Use PDK-approved repair, change route/floorplan |
 | Great reports but no fabrication path | Missing sign-off, pads, package, or accepted PDK flow | Tapeout checklist | Complete integration and foundry requirements |
+
+## From Timing Violations to a Qualified Implementation {#sec-physical-closure}
+
+The next step after producing a routed block is to decide which requirements it actually satisfies, repair the failures, and repeat the checks that the repair can invalidate. The dot-product continuation in @sec-complete-closure executes this process on the implementation already preserved in @sec-complete-case. Its original ASIC has positive setup slack, negative hold slack and electrical-limit violations. Its original ECP5 and Nexys Video implementations both miss 100 MHz. [Lab 21](../../labs/21-physical-closure/README.md) retains that baseline and records new candidates separately.
+
+Here, a **qualified implementation** means a candidate accepted against a named, limited set of checks. For the Nangate45 block, the acceptance gate requires extracted setup and hold slack of at least zero, no reported slew/capacitance/fanout violations, no unconstrained-path warnings, an empty final detailed-router DRC report, a successful mapped-to-repaired netlist equivalence check and GDS stream-out/readback. The result covers the supplied single typical corner and block interface budgets. Manufacturing DRC/LVS, multi-corner analysis, integration into Wally, pads and package remain separate open obligations. A report must state this boundary next to its acceptance decision.
+
+### Read the failure before choosing the repair
+
+A maximum-delay report answers whether data reaches its endpoint before the next relevant capture edge. A minimum-delay report answers whether data remains stable long enough around the relevant capture edge. Read the launch and capture clocks, clock insertion delays, external delays, uncertainty, cell arcs and net contributions before looking at the final slack. Check whether the path is register-to-register, input-to-register or register-to-output: a repair that helps one class can leave another untouched.
+
+The original ASIC's worst hold report starts at the `m_bvalid` input and ends at a clocked register. Its minimum input budget is 0.2 ns, while the propagated capture clock and hold uncertainty leave a small negative margin. Other short paths start at reset; the report shows reset driving 419 loads. The electrical report also includes an internal output transition of 3.41 ns against a 0.20 ns limit. These observations lead to two specific actions: build appropriate buffering for heavily loaded signals and add controlled delay to short data paths after CTS. They do not justify declaring reset or every input path false.
+
+The FPGA diagnosis is different. The preserved critical paths cross the arithmetic network. In ECP5, the path includes the unregistered DSP multiplier followed by the accumulation carry chain; in Nexys Video, the chosen open flow maps multiplication into LUTs and carry logic. The target is therefore a long combinational calculation between state elements. Improving the ASIC clock tree would not repair that FPGA path.
+
+Use electrical reports together with timing reports. A cell operating beyond its characterized transition/load limits weakens the interpretation of an apparently attractive timing result. Repairing a maximum-capacitance violation may insert a buffer, change placement and alter both setup and hold. A new worst path after repair is useful evidence that the bottleneck has moved.
+
+### Three candidates, three different contracts
+
+| Candidate | What changes | Expected benefit | Obligation introduced or retained |
+| --- | --- | --- | --- |
+| Lower frequency | 100 MHz becomes 75 MHz; original RTL, seed and implementation recipe remain fixed | More setup time without changing job cycle semantics | Slower wall-clock service; minimum-delay and electrical checks still apply |
+| Register the product | Separate multiplication from accumulation; target remains 100 MHz | Remove multiplier-plus-adder from one cycle | Extra state/registers and one extra serial cycle per element; repeat arithmetic, protocol, error and reset tests |
+| Physical repair | Original ASIC RTL and 100 MHz remain fixed; add electrical and timing repair | Fix load/slew and short data paths without changing architectural latency | Added cells/routing/power; repeat legalization, routing, extraction, timing and equivalence |
+
+Lowering frequency is a valid engineering decision when the application permits it. It changes the requirement: a 75 MHz acceptance does not close the original 100 MHz requirement. It also does not generally fix a same-edge hold failure, because the period does not provide extra time between the data and clock edges involved in that check. Lab 21 reruns the ASIC at 75 MHz to make this distinction measurable rather than merely asserting it.
+
+The RTL candidate registers a signed 32-bit product when the second operand response is accepted, enters `ACCUMULATE`, and updates the 64-bit accumulator on the following edge. It issues no new DMA request in between. The register map, signed arithmetic, transaction count, error responses and completion-after-write-response rule stay intact. It is a serial multicycle engine: this change adds latency and does not establish a one-element-per-cycle pipeline. A result at a higher clock must be evaluated against the extra cycles, memory latency and application workload.
+
+Do not copy a known result from the original source revision into the candidate's evidence column. In this experiment the new engine passes the independent integer-oracle regression for lengths 1–256 at two seeds and the Nexys serial-boundary fixture. A negative control deliberately zero-extends a negative product and must fail that same scoreboard. These are candidate-specific simulation checks. They do not transfer the original bounded proof or real-Wally firmware cycle measurements to the modified engine, and they do not prove the two state machines cycle-equivalent.
+
+### Repair the physical implementation in the right order
+
+The executable [repair recipe](../../labs/21-physical-closure/repair.tcl) keeps the original synthesis, floorplan, utilization, clock and interface constraints. After placement, it estimates parasitics and calls `repair_design` with 20% slew and capacitance margins. After CTS, it propagates clocks, repairs setup, then repairs hold with a 0.03 ns target margin. After global routing, it repeats electrical/setup/hold repair against routing-based estimates, legalizes the cells, reroutes and updates the estimates. The margins are optimization targets; final acceptance uses fresh extracted reports.
+
+This command sequence follows the resizer's documented distinction between electrical repair and timing repair. The installed release's `help` output remains authoritative for supported options; the [official Gate Resizer documentation](https://openroad.readthedocs.io/en/latest/main/src/rsz/README.html) explains the underlying operations. In particular, hold repair follows CTS with propagated clocks, and setup repair precedes hold repair.
+
+The exploratory 0.10 ns hold-margin run exhausted its buffer allowance. Increasing an optimization target is therefore not free: it can consume cells and whitespace without addressing a release requirement. The retained candidate uses the smaller 0.03 ns margin and an explicit maximum hold-buffer percentage. A buffer allowance is a stopping condition for the optimizer, never a replacement for reading the resulting slack and area. The final repaired database must still be legalized and routed.
+
+After detailed routing, OpenRCX extracts parasitics into SPEF. The flow reloads those parasitics and regenerates setup, hold, electrical-limit, constraint and power reports. A clean placement estimate or global-route report cannot satisfy this final gate. If extracted hold becomes negative again, preserve that failed candidate, choose a justified larger margin or local repair, reroute and repeat extraction. Avoid editing an already collected report or treating an intermediate checkpoint as the final layout.
+
+### Recheck function and keep the acceptance gate executable
+
+Physical buffering and resizing should preserve the digital function, but the result must be checked. Lab 21 reads the original mapped cell netlist and repaired routed cell netlist with the same Liberty functional models, flattens them and uses Yosys equivalence passes with an asserting completion check. This is a zero-delay sequential netlist equivalence obligation for the original RTL's physical repair. It does not establish timing correctness, layout-versus-schematic connectivity, analog behavior or equivalence to the separately pipelined engine.
+
+The collector rejects incomplete commands, stale source hashes, altered raw artifacts and an equivalence record tied to a different netlist. It derives the published results from preserved reports, including failed candidates. Large ODB, SPEF, GDS and routed FPGA JSON files remain reproduction outputs with recorded hashes. Actual OpenROAD exports show the repaired layout, critical path and clock tree; they are associated with the routed database through a capture record.
+
+For a review, write an acceptance sentence that another engineer can check: “This block meets the specified 100 MHz setup/hold and reported electrical checks at Nangate45 typical with the supplied interface budgets, and its repaired netlist passed functional equivalence.” Then state the open manufacturing and integration obligations. For FPGA, the corresponding claim is restricted to the routed clock model and target boundary, since the experiment supplies neither complete board I/O timing nor vendor timing/power signoff.
+
+The numerical comparison and engineering decisions in @sec-complete-closure show why all three candidates are useful. A lower clock can release the original FPGA block under a revised requirement; a register can restore 100 MHz on one target while exposing a different bottleneck on another; physical optimization can close the ASIC's short paths and electrical limits without changing RTL. The choice follows the diagnosed failure and the application's constraints.
+
+### Continue from timing closure to actual GDS verification
+
+The next executed stage, @sec-layout-verification and [Lab 22](../../labs/22-layout-verification/README.md), checks the actual GDS with the available FreePDK45 DRC deck and a reviewed Nangate45 transistor-extraction adapter. It exposes a failure that the earlier digital equivalence proof cannot see: cells added by CTS and timing repair can have unconnected power terminals in OpenDB when global power connections were applied only before those cells existed. This block had **1,408** such POWER/GROUND terminals, despite its positive setup/hold reports.
+
+The continuation reruns `global_connect` under the declared power-net rules, inserts physical well-contact/filler cells, checks all power-terminal connections and legal placement, and re-extracts timing. It then requires the actual GDS extraction to match the CDL, including body connections. No implicit/global power join is introduced into the LVS deck to bypass the missing geometry. A copy of the original GDS remains the failed LVS case; deliberate narrow-metal and supply-short defects test the checkers themselves. This extends the block's acceptance evidence to the implemented public reference checks. The reference PDK, its incomplete rule coverage and the absence of foundry qualification remain explicit.
 
 ## Hands-on Experiments
 

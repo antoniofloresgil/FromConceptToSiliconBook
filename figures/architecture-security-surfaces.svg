@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="698" viewBox="0 0 960 698" role="img" aria-labelledby="title desc">
+<title id="title">Trust boundaries and attack surfaces</title><desc id="desc">Proposed security architecture • guards / root of trust are additions, not existing Wally claims</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="698" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Trust boundaries and attack surfaces</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Proposed security architecture • guards / root of trust are additions, not existing Wally claims</text>
+<rect x="28" y="100" width="250" height="85" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="125.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">External inputs</text>
+<text x="153.0" y="151.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">UART / network / storage</text>
+<text x="153.0" y="177.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">untrusted data and images</text>
+<rect x="355" y="100" width="250" height="85" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="125.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Debug / test pins</text>
+<text x="480.0" y="151.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">JTAG / halt / bus access</text>
+<text x="480.0" y="177.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">lifecycle + authentication</text>
+<rect x="682" y="100" width="250" height="85" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="807.0" y="125.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Physical access</text>
+<text x="807.0" y="151.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clock / voltage / power</text>
+<text x="807.0" y="177.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">faults and observations</text>
+<rect x="28" y="235" width="904" height="290" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="48" y="268" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">SoC boundary: admission policy must cover every master</text>
+<rect x="48" y="305" width="245" height="82" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="170.5" y="329.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Boot / policy root</text>
+<text x="170.5" y="355.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">verify image + version</text>
+<text x="170.5" y="381.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">protect keys / policy</text>
+<rect x="355" y="305" width="250" height="82" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="329.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU + PMP</text>
+<text x="480.0" y="355.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">privilege / access checks</text>
+<text x="480.0" y="381.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">CPU requests only</text>
+<rect x="665" y="305" width="245" height="82" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="787.5" y="329.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">DMA / debug guards</text>
+<text x="787.5" y="355.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">bounds / ownership</text>
+<text x="787.5" y="381.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">independent admission</text>
+<rect x="355" y="435" width="555" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="632.5" y="462.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Interconnect → RAM / peripherals / secrets</text>
+<text x="632.5" y="488.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">authorization must hold at the actual target</text>
+<path d="M153 185V305" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M480 185V213H788V305" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M807 185H945V420H910" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="650" y="412" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">fault / leakage surfaces</text>
+<path d="M293 345H355" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M480 387V435" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M788 387V435" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="550" width="904" height="128" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="578" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A verified boot image does not confine DMA. CPU PMP does not authorize debug or other</text>
+<text x="44" y="603" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">masters.</text>
+<text x="44" y="628" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Threat model + enforcement + negative tests belong to each boundary; no aggregate</text>
+<text x="44" y="653" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">“secure” claim.</text>
+</g></svg>

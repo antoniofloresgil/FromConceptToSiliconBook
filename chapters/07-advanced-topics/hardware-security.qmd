@@ -56,6 +56,10 @@ For each boundary, state the decision inputs, their owner, the point of enforcem
 
 ### Architectural correctness and information flow
 
+![Original attack-surface map for the proposed security architecture. The dashed enclosure is an integration boundary, not a claim that everything inside is trusted. Dashed orange arrows identify external entry paths and physical influences; blue and green identify internal access and policy paths.](../../figures/architecture-security-surfaces.svg){#fig-security-attack-surfaces fig-alt="External images and inputs, debug pins and physical access meet separate boot-policy, CPU PMP and DMA-debug enforcement points before reaching shared targets" width=100%}
+
+For each entry in @fig-security-attack-surfaces, name the enforcing block and a negative test. For example, a rejected CPU access tests PMP, while a rejected DMA descriptor tests a different guard. Neither test establishes resistance to the physical fault and observation path on the right. The additions are a design proposal, consistent with the implemented-versus-proposed distinction later in this chapter.
+
 Functional verification often checks that the allowed result is correct. Security additionally asks whether a forbidden effect can occur, whether an unauthorized observer learns something, and whether the policy remains active during exceptional conditions. A successful denied transaction should not modify memory, but an error response alone does not prove that no earlier write occurred.
 
 A safety property can describe a single trace: whenever a DMA address is presented, its entire accessed span lies within the allowed window. Confidentiality often needs a relationship between traces. If two executions have the same public inputs but different secrets, the permitted observations should be equal, except for an explicitly authorized disclosure.

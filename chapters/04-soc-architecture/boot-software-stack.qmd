@@ -33,6 +33,10 @@ A practical boot contract lists the reset address, initial privilege, executable
 
 ### ROM, SRAM and DRAM have different jobs
 
+![Original boot timeline with privilege and handoff contracts. OpenSBI initialization ends before Linux entry, but its resident M-mode runtime remains available to service SBI calls. Horizontal distance does not represent elapsed boot time.](../../figures/architecture-boot-timeline.svg){#fig-boot-handoff-timeline fig-alt="ROM loader enters OpenSBI in M-mode, firmware hands hart ID and DTB to Linux in S-mode, and Linux starts U-mode applications while resident firmware handles SBI calls" width=100%}
+
+Use @fig-boot-handoff-timeline to locate the earliest missing milestone. An OpenSBI banner establishes firmware execution; a Linux banner establishes the next handoff; neither establishes a working root filesystem or userspace driver. Keep the kernel-entry register contract separate from the argument convention used by later SBI calls.
+
 A small ROM can contain immutable startup code, a diagnostic loop or a loader. SRAM provides writable state before external memory is available. DRAM usually provides the capacity needed by an OS, but a controller and a working physical interface must already exist before code executes there. Linux does not initialize an unusable instruction memory on behalf of the reset program.
 
 An FPGA development image may preload an ELF into simulated RAM or initialize block RAM while creating the bitstream. That is a valid development arrangement, but its loading mechanism must be recorded. A production device cannot rely on a simulator to deposit bytes. It needs an actual path such as ROM loading from flash, a host download protocol, or a first-stage loader using local SRAM.

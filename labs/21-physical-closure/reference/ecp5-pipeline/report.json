@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "target": "ecp5",
+  "candidate": "pipeline",
+  "seed": 2026,
+  "requested_mhz": 100,
+  "common_manifest_sha256": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+  "sources": {
+    "labs/10-dotproduct/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "labs/21-physical-closure/dotproduct_engine.sv": "f14bc3e24c3032fd8a8023d83a0ef5d13649ce2f7646a0607ddc9629579a8fc0",
+    "labs/10-dotproduct/rtl/dotproduct_axi.sv": "e99475dc365cdeb86a45383a33822558a3904cda0cea603ac00cdf1141462393",
+    "labs/21-physical-closure/manifest.json": "f2957ece55bf972d7004d28e8d9545033126bb08efa88dbe57a75c0c6f0b98ac",
+    "labs/17-complete-case/manifest.json": "657e7a2d1afd4cb3bd6f2efc2a80df8ae0bbab71d812243ec6b7b8cfc83fe7f0",
+    "labs/17-complete-case/asic.sdc": "36de66ee6bcf4541463a557eef0f070b38a07b3edc7a87eea1ec4dcbdfe599e9",
+    "labs/17-complete-case/asic.tcl": "69b73ac19c847d2da682f1f30f4a9a277ed0702c52e2e537f7ff724fbb11c453",
+    "labs/17-complete-case/streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c",
+    "labs/17-complete-case/nexys_video.sv": "f0c2d4b0e3ecf08a367e0fe7a8d623aaffe9f06ccfdc5ca0e30b66ca040c5789",
+    "labs/17-complete-case/nexys-video.xdc": "a3e57eb6ec390e24f6a70b8ed0332776957335087449e3ef3aad258af9ea3444",
+    "labs/17-complete-case/tb_nexys.sv": "b714a7ba82ded21f0c73558e57de3c48a317c7c882b31b4d0a9f2d0530be0bda",
+    "labs/10-dotproduct/tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "labs/10-dotproduct/axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "labs/10-dotproduct/axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "labs/10-dotproduct/vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "labs/21-physical-closure/run.py": "53aa774744fa5bb78239528310eeb9546c1fc68830f9e64125c1aa276cf777fa",
+    "labs/21-physical-closure/repair.tcl": "adcaf27fc27a7b99014cbe67ef527914525b5c49cbd42f43870404da3133bfb9"
+  },
+  "image": "sha256:983c748b55c757be86de6d3f217f8a9f7016251bf20d95e22ff2f91dc23bfc9c",
+  "commands": [
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/10-dotproduct/rtl/dotproduct_mac.sv /work/labs/21-physical-closure/dotproduct_engine.sv /work/labs/10-dotproduct/rtl/dotproduct_axi.sv; hierarchy -top dotproduct_axi; chparam -set MAX_LENGTH 256 -set DMA_BASE 32'h80008000 -set DMA_LIMIT 33'h08000c000 dotproduct_axi; synth_ecp5 -top dotproduct_axi -json mapped.json"
+      ],
+      "log": "command-01.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "nextpnr-ecp5",
+        "--25k",
+        "--package",
+        "CABGA381",
+        "--speed",
+        "6",
+        "--out-of-context",
+        "--json",
+        "mapped.json",
+        "--write",
+        "routed.json",
+        "--report",
+        "timing.json",
+        "--freq",
+        "100",
+        "--timing-allow-fail",
+        "--seed",
+        "2026"
+      ],
+      "log": "command-02.log",
+      "exit_code": 0
+    }
+  ],
+  "tools": {
+    "yosys": "Yosys 0.70+16 (git sha1 3bb533450, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "nextpnr": "\"nextpnr-ecp5\" -- Next Generation Place and Route (Version nextpnr-0.11.1-63-g44a6c739)"
+  },
+  "artifacts": {
+    "command-01.log": "5d9b757713f811c5779fcc8c98194b6a21f54f7c603f687836e2f5062d18888c",
+    "command-02.log": "7aac4bc11fca910f3f346bfff1bbdd02f613870eb42b66dfdb84f509eae7fe4e",
+    "mapped.json": "10c531fe7a5f118e55bdf2e79e4ba5d7c8276e97d919fef99277adc7644569dd",
+    "routed.json": "91fc387fb4b4120d42f6f9a414be5f2dcb8c7d09f5a95ea8742e4b96c7e9d580",
+    "timing.json": "7282f02aa2d80f491d2de5d8c0c3531fc9c27a079872b0e0c9e6c1bfa5d86312"
+  }
+}

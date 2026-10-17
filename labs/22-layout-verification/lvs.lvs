@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Adapted from FreePDK45_for_KLayout, ab0495a69fa76fdc726a75f890bbf67b518db42a.
+# Upstream and license: vendor/. Specific Nangate45 conventions: README.md.
+source($in_gds)
+deep
+top_level(true)
+report_lvs($report_file)
+report_netlist($l2n_file)
+target_netlist($extracted_file, write_spice(true, false))
+schematic($cdl_file)
+
+active = input(1, 0)
+pwell = input(2, 0)
+nwell = input(3, 0)
+nplus = input(4, 0)
+pplus = input(5, 0)
+poly = input(9, 0)
+cont = input(10, 0)
+metals = (0...10).map { |i| input(11 + 2*i, 0) }
+vias = (0...9).map { |i| input(12 + 2*i, 0) }
+
+pactive = active & nwell & pplus
+nactive = active & pwell & nplus
+pgate = pactive & poly
+ngate = nactive & poly
+psd = pactive - pgate
+nsd = nactive - ngate
+# Nangate TAPCELL_X1 has active/contact geometry without implant marker shapes.
+# Preflight rejects unmarked active in every other master. These are body ties,
+# not transistor channels. No implicit/global VDD/VSS connections are introduced.
+ntie = (active & nwell) - pactive
+ptie = (active & pwell) - nactive
+pbulk = polygon_layer
+nbulk = polygon_layer
+extract_devices(mos4("PMOS_VTL"), {"SD" => psd, "G" => pgate,
+  "tS" => psd, "tD" => psd, "tG" => poly, "W" => nwell, "tB" => pbulk})
+extract_devices(mos4("NMOS_VTL"), {"SD" => nsd, "G" => ngate,
+  "tS" => nsd, "tD" => nsd, "tG" => poly, "W" => pwell, "tB" => nbulk})
+connect(pbulk, nwell)
+connect(nbulk, pwell)
+connect(nwell, ntie)
+connect(pwell, ptie)
+connect(cont, ntie)
+connect(cont, ptie)
+connect(psd, cont)
+connect(nsd, cont)
+connect(poly, cont)
+connect(cont, metals[0])
+(0...9).each do |i|
+  connect(metals[i], vias[i])
+  connect(vias[i], metals[i+1])
+end
+
+# Create actual top pins before flattening; dangling internal cell outputs are
+# not top-level ports. Both sides receive identical device-combination rules.
+netlist.make_top_level_pins
+align
+netlist.flatten
+schematic.flatten
+netlist.simplify
+schematic.simplify
+ok = compare
+require 'json'
+stats = lambda do |n|
+  c = n.top_circuit
+  devices = Hash.new(0)
+  c.each_device { |d| devices[d.device_class.name] += 1 }
+  nets = 0; pins = 0
+  c.each_net { |n| nets += 1 }
+  c.each_pin { |p| pins += 1 }
+  {"nets" => nets, "pins" => pins, "devices" => devices}
+end
+File.write($summary_file, JSON.pretty_generate({"match" => ok,
+  "layout" => stats.call(netlist), "reference" => stats.call(schematic),
+  "bulk_connections" => "geometric contacts; no implicit/global power joins"}) + "\n")
+puts("LVS_RESULT=" + ok.to_s)

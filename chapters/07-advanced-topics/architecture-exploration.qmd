@@ -1,5 +1,7 @@
 # Architectural Design Exploration {#sec-architecture-exploration}
 
+For multicore alternatives, use @sec-multicore to establish coherence-domain, ordering, ownership and progress constraints before comparing performance. A configuration with missing integration guarantees is not a feasible point merely because its core count is larger.
+
 ## Concepts
 
 Architectural design-space exploration (DSE) selects among implementable processor and SoC alternatives under defined objectives and constraints. A useful result connects a design decision to verified behavior, a workload, measured performance and implementation cost. A configuration table is a starting point; a defensible choice requires a controlled comparison and an explanation of its limits.

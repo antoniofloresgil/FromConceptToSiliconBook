@@ -12,7 +12,9 @@ The Linux/driver continuation in @sec-linux-accelerator and [Lab 18](../labs/18-
 
 ### Access for online students
 
-No student needs to purchase an FPGA to complete P0–P5 or the final project. The [route without a board](../labs/NO-FPGA.md) maps all eighteen reference labs to activities, evidence and limits. The physical FPGA activities remain available as extensions. Both routes have the same rubric opportunities: assess the requirement, independent checks, analysis and explanation, rather than ownership of hardware.
+The advanced multicore chapter @sec-multicore and [Lab 20](../labs/20-multicore/README.md) are optional follow-on study. Neither a two-hart coherent RTL system nor its Linux boot is required for P0–P5 or the final project, and the workload table below is unchanged.
+
+No student needs to purchase an FPGA to complete P0–P5 or the final project. The [route without a board](../labs/NO-FPGA.md) maps the reference labs to activities, evidence and limits. The physical FPGA activities remain available as extensions. Both routes have the same rubric opportunities: assess the requirement, independent checks, analysis and explanation, rather than ownership of hardware.
 
 P0–P4 use the existing simulation, architectural-model and formal environments. P3 and the final demonstration execute firmware on real Wally RTL in the virtual platform. For P5, students synthesize their own RTL and review constraints, then either run the separate technology tools without connecting a board or analyse instructor-provided implementation reports. Before P5, the instructor supplies baseline/variant reports, source/target/tool/constraint provenance and a failing timing or constraint case if students cannot run that flow. The bundle requirements and physical-observation replacements are in the alternative guide. Physical tools and full-Wally harness adaptations remain explicit dependencies; simulation access alone does not supply them.
 

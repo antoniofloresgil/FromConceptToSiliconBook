@@ -1,0 +1,716 @@
+{
+  "test-baseline": {
+    "accepted": true,
+    "checked_lengths": 512,
+    "seeds": [
+      2026,
+      2027
+    ],
+    "fixture": true
+  },
+  "test-pipeline": {
+    "accepted": true,
+    "checked_lengths": 512,
+    "seeds": [
+      2026,
+      2027
+    ],
+    "fixture": true
+  },
+  "ecp5-slow": {
+    "requested_mhz": 75,
+    "achieved_mhz": 86.99434661865234,
+    "setup_margin_ns": 1.838333498647625,
+    "accepted": true,
+    "utilization": {
+      "ALU54B": {
+        "available": 14,
+        "used": 0
+      },
+      "CLKDIVF": {
+        "available": 4,
+        "used": 0
+      },
+      "DCCA": {
+        "available": 56,
+        "used": 0
+      },
+      "DCSC": {
+        "available": 2,
+        "used": 0
+      },
+      "DCUA": {
+        "available": 1,
+        "used": 0
+      },
+      "DDRDLL": {
+        "available": 4,
+        "used": 0
+      },
+      "DLLDELD": {
+        "available": 8,
+        "used": 0
+      },
+      "DP16KD": {
+        "available": 56,
+        "used": 0
+      },
+      "DQSBUFM": {
+        "available": 8,
+        "used": 0
+      },
+      "DTR": {
+        "available": 1,
+        "used": 0
+      },
+      "ECLKBRIDGECS": {
+        "available": 2,
+        "used": 0
+      },
+      "ECLKSYNCB": {
+        "available": 10,
+        "used": 0
+      },
+      "EHXPLLL": {
+        "available": 2,
+        "used": 0
+      },
+      "EXTREFB": {
+        "available": 1,
+        "used": 0
+      },
+      "GSR": {
+        "available": 1,
+        "used": 0
+      },
+      "IOLOGIC": {
+        "available": 128,
+        "used": 0
+      },
+      "JTAGG": {
+        "available": 1,
+        "used": 0
+      },
+      "MULT18X18D": {
+        "available": 28,
+        "used": 1
+      },
+      "OSCG": {
+        "available": 1,
+        "used": 0
+      },
+      "PCSCLKDIV": {
+        "available": 2,
+        "used": 0
+      },
+      "SEDGA": {
+        "available": 1,
+        "used": 0
+      },
+      "SIOLOGIC": {
+        "available": 69,
+        "used": 0
+      },
+      "TRELLIS_COMB": {
+        "available": 24288,
+        "used": 1092
+      },
+      "TRELLIS_ECLKBUF": {
+        "available": 8,
+        "used": 0
+      },
+      "TRELLIS_FF": {
+        "available": 24288,
+        "used": 469
+      },
+      "TRELLIS_IO": {
+        "available": 197,
+        "used": 0
+      },
+      "TRELLIS_RAMW": {
+        "available": 3036,
+        "used": 0
+      },
+      "USRMCLK": {
+        "available": 1,
+        "used": 0
+      }
+    },
+    "critical_logic_ns": 7.143000110983849,
+    "critical_route_ns": 3.8269999027252197,
+    "power_w": null
+  },
+  "ecp5-pipeline": {
+    "requested_mhz": 100,
+    "achieved_mhz": 98.19324493408203,
+    "setup_margin_ns": -0.18399993473388676,
+    "accepted": false,
+    "utilization": {
+      "ALU54B": {
+        "available": 14,
+        "used": 0
+      },
+      "CLKDIVF": {
+        "available": 4,
+        "used": 0
+      },
+      "DCCA": {
+        "available": 56,
+        "used": 0
+      },
+      "DCSC": {
+        "available": 2,
+        "used": 0
+      },
+      "DCUA": {
+        "available": 1,
+        "used": 0
+      },
+      "DDRDLL": {
+        "available": 4,
+        "used": 0
+      },
+      "DLLDELD": {
+        "available": 8,
+        "used": 0
+      },
+      "DP16KD": {
+        "available": 56,
+        "used": 0
+      },
+      "DQSBUFM": {
+        "available": 8,
+        "used": 0
+      },
+      "DTR": {
+        "available": 1,
+        "used": 0
+      },
+      "ECLKBRIDGECS": {
+        "available": 2,
+        "used": 0
+      },
+      "ECLKSYNCB": {
+        "available": 10,
+        "used": 0
+      },
+      "EHXPLLL": {
+        "available": 2,
+        "used": 0
+      },
+      "EXTREFB": {
+        "available": 1,
+        "used": 0
+      },
+      "GSR": {
+        "available": 1,
+        "used": 0
+      },
+      "IOLOGIC": {
+        "available": 128,
+        "used": 0
+      },
+      "JTAGG": {
+        "available": 1,
+        "used": 0
+      },
+      "MULT18X18D": {
+        "available": 28,
+        "used": 1
+      },
+      "OSCG": {
+        "available": 1,
+        "used": 0
+      },
+      "PCSCLKDIV": {
+        "available": 2,
+        "used": 0
+      },
+      "SEDGA": {
+        "available": 1,
+        "used": 0
+      },
+      "SIOLOGIC": {
+        "available": 69,
+        "used": 0
+      },
+      "TRELLIS_COMB": {
+        "available": 24288,
+        "used": 1097
+      },
+      "TRELLIS_ECLKBUF": {
+        "available": 8,
+        "used": 0
+      },
+      "TRELLIS_FF": {
+        "available": 24288,
+        "used": 502
+      },
+      "TRELLIS_IO": {
+        "available": 197,
+        "used": 0
+      },
+      "TRELLIS_RAMW": {
+        "available": 3036,
+        "used": 0
+      },
+      "USRMCLK": {
+        "available": 1,
+        "used": 0
+      }
+    },
+    "critical_logic_ns": 3.6219999939203262,
+    "critical_route_ns": 6.036999940872192,
+    "power_w": null
+  },
+  "nexys-slow": {
+    "requested_mhz": 75,
+    "achieved_mhz": 85.41898345947266,
+    "setup_margin_ns": 1.6263337941213791,
+    "accepted": true,
+    "utilization": {
+      "BUFFER": {
+        "available": 480,
+        "used": 0
+      },
+      "BUFGCTRL": {
+        "available": 32,
+        "used": 1
+      },
+      "BUFG_BUFG": {
+        "available": 32,
+        "used": 0
+      },
+      "BUFHCE_BUFHCE": {
+        "available": 120,
+        "used": 0
+      },
+      "BUFIO_BUFIO": {
+        "available": 40,
+        "used": 0
+      },
+      "CARRY4": {
+        "available": 33650,
+        "used": 102
+      },
+      "DSP48E1_DSP48E1": {
+        "available": 740,
+        "used": 0
+      },
+      "FIFO18E1_FIFO18E1": {
+        "available": 365,
+        "used": 0
+      },
+      "HARD0": {
+        "available": 3960,
+        "used": 0
+      },
+      "IDELAYCTRL_IDELAYCTRL": {
+        "available": 10,
+        "used": 0
+      },
+      "IDELAYE2_IDELAYE2": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE2_IFF": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE3_IFF": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE3_ZHOLD_DELAY": {
+        "available": 500,
+        "used": 0
+      },
+      "INVERTER": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_INBUF_EN": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_OUTBUF": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_TERM_OVERRIDE": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_INBUF_EN": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_OUTBUF": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_TERM_OVERRIDE": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33_INBUF_EN": {
+        "available": 500,
+        "used": 6
+      },
+      "IOB33_OUTBUF": {
+        "available": 500,
+        "used": 1
+      },
+      "IOB33_TERM_OVERRIDE": {
+        "available": 500,
+        "used": 0
+      },
+      "ISERDESE2_ISERDESE2": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_MISR": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_OUTFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_TFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_MISR": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_OUTFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_TFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OSERDESE2_OSERDESE2": {
+        "available": 500,
+        "used": 0
+      },
+      "PAD": {
+        "available": 1460,
+        "used": 7
+      },
+      "PLLE2_ADV_PLLE2_ADV": {
+        "available": 10,
+        "used": 0
+      },
+      "PSEUDO_GND": {
+        "available": 69165,
+        "used": 1
+      },
+      "PSEUDO_VCC": {
+        "available": 69165,
+        "used": 1
+      },
+      "PULL_OR_KEEP1": {
+        "available": 980,
+        "used": 0
+      },
+      "RAMB18E1_RAMB18E1": {
+        "available": 730,
+        "used": 0
+      },
+      "RAMB36E1_RAMB36E1": {
+        "available": 365,
+        "used": 0
+      },
+      "RAMBFIFO36E1_RAMBFIFO36E1": {
+        "available": 365,
+        "used": 0
+      },
+      "SELMUX2_1": {
+        "available": 102950,
+        "used": 0
+      },
+      "SLICE_FFX": {
+        "available": 269200,
+        "used": 916
+      },
+      "SLICE_LUTX": {
+        "available": 269200,
+        "used": 2148
+      }
+    },
+    "critical_logic_ns": 4.112999990582466,
+    "critical_route_ns": 7.393999928608537,
+    "power_w": null
+  },
+  "nexys-pipeline": {
+    "requested_mhz": 100,
+    "achieved_mhz": 102.13461303710938,
+    "setup_margin_ns": 0.20899996324789427,
+    "accepted": true,
+    "utilization": {
+      "BUFFER": {
+        "available": 480,
+        "used": 0
+      },
+      "BUFGCTRL": {
+        "available": 32,
+        "used": 1
+      },
+      "BUFG_BUFG": {
+        "available": 32,
+        "used": 0
+      },
+      "BUFHCE_BUFHCE": {
+        "available": 120,
+        "used": 0
+      },
+      "BUFIO_BUFIO": {
+        "available": 40,
+        "used": 0
+      },
+      "CARRY4": {
+        "available": 33650,
+        "used": 102
+      },
+      "DSP48E1_DSP48E1": {
+        "available": 740,
+        "used": 0
+      },
+      "FIFO18E1_FIFO18E1": {
+        "available": 365,
+        "used": 0
+      },
+      "HARD0": {
+        "available": 3960,
+        "used": 0
+      },
+      "IDELAYCTRL_IDELAYCTRL": {
+        "available": 10,
+        "used": 0
+      },
+      "IDELAYE2_IDELAYE2": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE2_IFF": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE3_IFF": {
+        "available": 500,
+        "used": 0
+      },
+      "ILOGICE3_ZHOLD_DELAY": {
+        "available": 500,
+        "used": 0
+      },
+      "INVERTER": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_INBUF_EN": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_OUTBUF": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33M_TERM_OVERRIDE": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_INBUF_EN": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_OUTBUF": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33S_TERM_OVERRIDE": {
+        "available": 240,
+        "used": 0
+      },
+      "IOB33_INBUF_EN": {
+        "available": 500,
+        "used": 6
+      },
+      "IOB33_OUTBUF": {
+        "available": 500,
+        "used": 1
+      },
+      "IOB33_TERM_OVERRIDE": {
+        "available": 500,
+        "used": 0
+      },
+      "ISERDESE2_ISERDESE2": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_MISR": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_OUTFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE2_TFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_MISR": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_OUTFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OLOGICE3_TFF": {
+        "available": 500,
+        "used": 0
+      },
+      "OSERDESE2_OSERDESE2": {
+        "available": 500,
+        "used": 0
+      },
+      "PAD": {
+        "available": 1460,
+        "used": 7
+      },
+      "PLLE2_ADV_PLLE2_ADV": {
+        "available": 10,
+        "used": 0
+      },
+      "PSEUDO_GND": {
+        "available": 69165,
+        "used": 1
+      },
+      "PSEUDO_VCC": {
+        "available": 69165,
+        "used": 1
+      },
+      "PULL_OR_KEEP1": {
+        "available": 980,
+        "used": 0
+      },
+      "RAMB18E1_RAMB18E1": {
+        "available": 730,
+        "used": 0
+      },
+      "RAMB36E1_RAMB36E1": {
+        "available": 365,
+        "used": 0
+      },
+      "RAMBFIFO36E1_RAMBFIFO36E1": {
+        "available": 365,
+        "used": 0
+      },
+      "SELMUX2_1": {
+        "available": 102950,
+        "used": 0
+      },
+      "SLICE_FFX": {
+        "available": 269200,
+        "used": 948
+      },
+      "SLICE_LUTX": {
+        "available": 269200,
+        "used": 2140
+      }
+    },
+    "critical_logic_ns": 2.0620000064373016,
+    "critical_route_ns": 7.528999999165535,
+    "power_w": null
+  },
+  "asic-baseline": {
+    "setup_ns": 4.5640226223490785,
+    "hold_ns": -0.01844807692158239,
+    "core_um2": 15743.21,
+    "model": "openrcx_propagated_clock",
+    "cell_um2": 7350.0,
+    "electrical_violations": 48,
+    "router_drc_empty": true,
+    "unconstrained_report_empty": true,
+    "power_w": 0.000846,
+    "requested_mhz": 100,
+    "gds_readback": {
+      "top": "dotproduct_axi",
+      "cells": 47,
+      "dbu_um": 0.0001,
+      "bbox_um": [
+        0.0,
+        0.0,
+        136.505,
+        136.505
+      ],
+      "empty_cells": [],
+      "validation": "readback and nonempty cell geometry; no DRC/LVS claim"
+    },
+    "timing_electrical_pass": false,
+    "accepted": false,
+    "manufacturing_qualified": false
+  },
+  "asic-slow": {
+    "setup_ns": 7.897355881667542,
+    "hold_ns": -0.01844807692158239,
+    "core_um2": 15743.21,
+    "model": "openrcx_propagated_clock",
+    "cell_um2": 7350.0,
+    "electrical_violations": 48,
+    "router_drc_empty": true,
+    "unconstrained_report_empty": true,
+    "power_w": 0.000674,
+    "requested_mhz": 75,
+    "gds_readback": {
+      "top": "dotproduct_axi",
+      "cells": 47,
+      "dbu_um": 0.0001,
+      "bbox_um": [
+        0.0,
+        0.0,
+        136.505,
+        136.505
+      ],
+      "empty_cells": [],
+      "validation": "readback and nonempty cell geometry; no DRC/LVS claim"
+    },
+    "timing_electrical_pass": false,
+    "accepted": false,
+    "manufacturing_qualified": false
+  },
+  "asic-repair": {
+    "setup_ns": 5.204097744481942,
+    "hold_ns": 0.029677428021741278,
+    "core_um2": 15743.21,
+    "model": "openrcx_propagated_clock",
+    "cell_um2": 7811.0,
+    "electrical_violations": 0,
+    "router_drc_empty": true,
+    "unconstrained_report_empty": true,
+    "power_w": 0.00086,
+    "requested_mhz": 100,
+    "gds_readback": {
+      "top": "dotproduct_axi",
+      "cells": 58,
+      "dbu_um": 0.0001,
+      "bbox_um": [
+        0.0,
+        0.0,
+        136.505,
+        136.505
+      ],
+      "empty_cells": [],
+      "validation": "readback and nonempty cell geometry; no DRC/LVS claim"
+    },
+    "timing_electrical_pass": true,
+    "accepted": true,
+    "manufacturing_qualified": false
+  }
+}

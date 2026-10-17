@@ -1,0 +1,2461 @@
+
+-- Running command `read_verilog -sv /work/labs/10-dotproduct/rtl/dotproduct_mac.sv /work/labs/10-dotproduct/rtl/dotproduct_engine.sv /work/labs/10-dotproduct/rtl/dotproduct_axi.sv; hierarchy -top dotproduct_axi; chparam -set MAX_LENGTH 256 -set DMA_BASE 32'h80008000 -set DMA_LIMIT 33'h08000c000 dotproduct_axi; synth_ecp5 -top dotproduct_axi -json mapped.json' --
+
+1. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_mac.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_engine.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/10-dotproduct/rtl/dotproduct_axi.sv
+Parsing SystemVerilog input from `/work/labs/10-dotproduct/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+4.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removed 0 unused modules.
+Parameter \MAX_LENGTH = 256
+Parameter \DMA_BASE = 32'10000000000000001000000000000000
+Parameter \DMA_LIMIT = 33'010000000000000001100000000000000
+
+5. Executing AST frontend in derive mode using pre-parsed AST for module `\dotproduct_axi'.
+Parameter \MAX_LENGTH = 256
+Parameter \DMA_BASE = 32'10000000000000001000000000000000
+Parameter \DMA_LIMIT = 33'010000000000000001100000000000000
+Generating RTLIL representation for module `$paramod$f4c10e0806c4b3570376780d0679ad70f5871d2b\dotproduct_axi'.
+
+6. Executing SYNTH_LATTICE pass.
+
+6.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_sim_ecp5.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/cells_sim_ecp5.v' to AST representation.
+Generating RTLIL representation for module `\LUT4'.
+Generating RTLIL representation for module `\$__ABC9_LUT5'.
+Generating RTLIL representation for module `\$__ABC9_LUT6'.
+Generating RTLIL representation for module `\$__ABC9_LUT7'.
+Generating RTLIL representation for module `\L6MUX21'.
+Generating RTLIL representation for module `\TRELLIS_RAM16X2'.
+Generating RTLIL representation for module `\PFUMX'.
+Generating RTLIL representation for module `\TRELLIS_DPR16X4'.
+Generating RTLIL representation for module `\DPR16X4C'.
+Generating RTLIL representation for module `\LUT2'.
+Generating RTLIL representation for module `\TRELLIS_FF'.
+Generating RTLIL representation for module `\TRELLIS_IO'.
+Generating RTLIL representation for module `\INV'.
+Generating RTLIL representation for module `\TRELLIS_COMB'.
+Generating RTLIL representation for module `\VLO'.
+Generating RTLIL representation for module `\VHI'.
+Generating RTLIL representation for module `\FD1P3AX'.
+Generating RTLIL representation for module `\FD1P3AY'.
+Generating RTLIL representation for module `\FD1P3BX'.
+Generating RTLIL representation for module `\FD1P3DX'.
+Generating RTLIL representation for module `\FD1P3IX'.
+Generating RTLIL representation for module `\FD1P3JX'.
+Generating RTLIL representation for module `\FD1S3AX'.
+Generating RTLIL representation for module `\FD1S3AY'.
+Generating RTLIL representation for module `\FD1S3BX'.
+Generating RTLIL representation for module `\FD1S3DX'.
+Generating RTLIL representation for module `\FD1S3IX'.
+Generating RTLIL representation for module `\FD1S3JX'.
+Generating RTLIL representation for module `\IFS1P3BX'.
+Generating RTLIL representation for module `\IFS1P3DX'.
+Generating RTLIL representation for module `\IFS1P3IX'.
+Generating RTLIL representation for module `\IFS1P3JX'.
+Generating RTLIL representation for module `\OFS1P3BX'.
+Generating RTLIL representation for module `\OFS1P3DX'.
+Generating RTLIL representation for module `\OFS1P3IX'.
+Generating RTLIL representation for module `\OFS1P3JX'.
+Generating RTLIL representation for module `\IB'.
+Generating RTLIL representation for module `\IBPU'.
+Generating RTLIL representation for module `\IBPD'.
+Generating RTLIL representation for module `\OB'.
+Generating RTLIL representation for module `\OBZ'.
+Generating RTLIL representation for module `\OBZPU'.
+Generating RTLIL representation for module `\OBZPD'.
+Generating RTLIL representation for module `\OBCO'.
+Generating RTLIL representation for module `\BB'.
+Generating RTLIL representation for module `\BBPU'.
+Generating RTLIL representation for module `\BBPD'.
+Generating RTLIL representation for module `\ILVDS'.
+Generating RTLIL representation for module `\OLVDS'.
+Generating RTLIL representation for module `\CCU2C'.
+Generating RTLIL representation for module `\DP16KD'.
+Replacing existing blackbox module `\FD1P3AX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:2.1-2.261.
+Generating RTLIL representation for module `\FD1P3AX'.
+Replacing existing blackbox module `\FD1P3AY' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:3.1-3.261.
+Generating RTLIL representation for module `\FD1P3AY'.
+Replacing existing blackbox module `\FD1P3BX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:4.1-4.261.
+Generating RTLIL representation for module `\FD1P3BX'.
+Replacing existing blackbox module `\FD1P3DX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:5.1-5.261.
+Generating RTLIL representation for module `\FD1P3DX'.
+Replacing existing blackbox module `\FD1P3IX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:6.1-6.261.
+Generating RTLIL representation for module `\FD1P3IX'.
+Replacing existing blackbox module `\FD1P3JX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:7.1-7.261.
+Generating RTLIL representation for module `\FD1P3JX'.
+Replacing existing blackbox module `\FD1S3AX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:8.1-8.261.
+Generating RTLIL representation for module `\FD1S3AX'.
+Replacing existing blackbox module `\FD1S3AY' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:9.1-9.261.
+Generating RTLIL representation for module `\FD1S3AY'.
+Replacing existing blackbox module `\FD1S3BX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:10.1-10.261.
+Generating RTLIL representation for module `\FD1S3BX'.
+Replacing existing blackbox module `\FD1S3DX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:11.1-11.261.
+Generating RTLIL representation for module `\FD1S3DX'.
+Replacing existing blackbox module `\FD1S3IX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:12.1-12.261.
+Generating RTLIL representation for module `\FD1S3IX'.
+Replacing existing blackbox module `\FD1S3JX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:13.1-13.261.
+Generating RTLIL representation for module `\FD1S3JX'.
+Replacing existing blackbox module `\IFS1P3BX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:26.1-26.301.
+Generating RTLIL representation for module `\IFS1P3BX'.
+Replacing existing blackbox module `\IFS1P3DX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:27.1-27.301.
+Generating RTLIL representation for module `\IFS1P3DX'.
+Replacing existing blackbox module `\IFS1P3IX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:28.1-28.301.
+Generating RTLIL representation for module `\IFS1P3IX'.
+Replacing existing blackbox module `\IFS1P3JX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:29.1-29.301.
+Generating RTLIL representation for module `\IFS1P3JX'.
+Replacing existing blackbox module `\OFS1P3BX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:31.1-31.302.
+Generating RTLIL representation for module `\OFS1P3BX'.
+Replacing existing blackbox module `\OFS1P3DX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:32.1-32.302.
+Generating RTLIL representation for module `\OFS1P3DX'.
+Replacing existing blackbox module `\OFS1P3IX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:33.1-33.302.
+Generating RTLIL representation for module `\OFS1P3IX'.
+Replacing existing blackbox module `\OFS1P3JX' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_ff.vh:34.1-34.302.
+Generating RTLIL representation for module `\OFS1P3JX'.
+Replacing existing blackbox module `\IB' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:2.1-2.157.
+Generating RTLIL representation for module `\IB'.
+Replacing existing blackbox module `\IBPU' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:3.1-3.157.
+Generating RTLIL representation for module `\IBPU'.
+Replacing existing blackbox module `\IBPD' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:4.1-4.157.
+Generating RTLIL representation for module `\IBPD'.
+Replacing existing blackbox module `\OB' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:5.1-5.157.
+Generating RTLIL representation for module `\OB'.
+Replacing existing blackbox module `\OBZ' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:6.1-6.164.
+Generating RTLIL representation for module `\OBZ'.
+Replacing existing blackbox module `\OBZPU' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:7.1-7.164.
+Generating RTLIL representation for module `\OBZPU'.
+Replacing existing blackbox module `\OBZPD' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:8.1-8.164.
+Generating RTLIL representation for module `\OBZPD'.
+Replacing existing blackbox module `\OBCO' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:9.1-9.90.
+Generating RTLIL representation for module `\OBCO'.
+Replacing existing blackbox module `\BB' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:10.1-10.179.
+Generating RTLIL representation for module `\BB'.
+Replacing existing blackbox module `\BBPU' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:11.1-11.179.
+Generating RTLIL representation for module `\BBPU'.
+Replacing existing blackbox module `\BBPD' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:12.1-12.179.
+Generating RTLIL representation for module `\BBPD'.
+Replacing existing blackbox module `\ILVDS' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:13.1-13.139.
+Generating RTLIL representation for module `\ILVDS'.
+Replacing existing blackbox module `\OLVDS' at /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_io.vh:14.1-14.146.
+Generating RTLIL representation for module `\OLVDS'.
+Successfully finished Verilog frontend.
+
+6.2. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_bb_ecp5.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/cells_bb_ecp5.v' to AST representation.
+Generating RTLIL representation for module `\GSR'.
+Generating RTLIL representation for module `\PUR'.
+Generating RTLIL representation for module `\SGSR'.
+Generating RTLIL representation for module `\PDPW16KD'.
+Generating RTLIL representation for module `\MULT18X18D'.
+Generating RTLIL representation for module `\ALU54B'.
+Generating RTLIL representation for module `\CLKDIVF'.
+Generating RTLIL representation for module `\PCSCLKDIV'.
+Generating RTLIL representation for module `\DCSC'.
+Generating RTLIL representation for module `\DCCA'.
+Generating RTLIL representation for module `\ECLKSYNCB'.
+Generating RTLIL representation for module `\ECLKBRIDGECS'.
+Generating RTLIL representation for module `\DELAYF'.
+Generating RTLIL representation for module `\DELAYG'.
+Generating RTLIL representation for module `\USRMCLK'.
+Generating RTLIL representation for module `\DQSBUFM'.
+Generating RTLIL representation for module `\DDRDLLA'.
+Generating RTLIL representation for module `\DLLDELD'.
+Generating RTLIL representation for module `\IDDRX1F'.
+Generating RTLIL representation for module `\IDDRX2F'.
+Generating RTLIL representation for module `\IDDR71B'.
+Generating RTLIL representation for module `\IDDRX2DQA'.
+Generating RTLIL representation for module `\ODDRX1F'.
+Generating RTLIL representation for module `\ODDRX2F'.
+Generating RTLIL representation for module `\ODDR71B'.
+Generating RTLIL representation for module `\OSHX2A'.
+Generating RTLIL representation for module `\TSHX2DQA'.
+Generating RTLIL representation for module `\TSHX2DQSA'.
+Generating RTLIL representation for module `\ODDRX2DQA'.
+Generating RTLIL representation for module `\ODDRX2DQSB'.
+Generating RTLIL representation for module `\EHXPLLL'.
+Generating RTLIL representation for module `\DTR'.
+Generating RTLIL representation for module `\OSCG'.
+Generating RTLIL representation for module `\EXTREFB'.
+Generating RTLIL representation for module `\JTAGG'.
+Generating RTLIL representation for module `\DCUA'.
+Successfully finished Verilog frontend.
+
+6.3. Executing HIERARCHY pass (managing design hierarchy).
+
+6.3.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+6.3.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removed 0 unused modules.
+
+6.4. Executing PROC pass (convert processes to netlists).
+
+6.4.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.4.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 27 switch rules as full_case in process $proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299 in module dotproduct_axi.
+Marked 7 switch rules as full_case in process $proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24 in module dotproduct_engine.
+Removed a total of 0 dead cases.
+
+6.4.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 20 assignments to connections.
+
+6.4.4. Executing PROC_INIT pass (extract init attributes).
+
+6.4.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.4.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~51 debug messages>
+
+6.4.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+     1/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:24]$443
+     2/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[23:16]$442
+     3/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[15:8]$441
+     4/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[7:0]$440
+     5/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$435 [31:24]
+     6/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$435 [23:16]
+     7/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$435 [15:8]
+     8/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$435 [7:0]
+     9/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask[3:0]$438
+    10/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value[31:0]$437
+    11/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value[31:0]$436
+    12/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b[31:0]$439
+    13/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:24]$434
+    14/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[23:16]$433
+    15/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[15:8]$432
+    16/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[7:0]$431
+    17/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$426 [31:24]
+    18/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$426 [23:16]
+    19/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$426 [15:8]
+    20/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$426 [7:0]
+    21/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask[3:0]$429
+    22/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value[31:0]$428
+    23/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value[31:0]$427
+    24/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b[31:0]$430
+    25/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:24]$425
+    26/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[23:16]$424
+    27/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[15:8]$423
+    28/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[7:0]$422
+    29/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$417 [31:24]
+    30/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$417 [23:16]
+    31/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$417 [15:8]
+    32/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$417 [7:0]
+    33/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask[3:0]$420
+    34/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value[31:0]$419
+    35/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value[31:0]$418
+    36/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b[31:0]$421
+    37/153: $9\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:24]$416
+    38/153: $8\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[23:16]$415
+    39/153: $7\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[15:8]$414
+    40/153: $6\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[7:0]$413
+    41/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$408 [31:24]
+    42/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$408 [23:16]
+    43/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$408 [15:8]
+    44/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$408 [7:0]
+    45/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask[3:0]$411
+    46/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value[31:0]$410
+    47/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value[31:0]$409
+    48/153: $5\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b[31:0]$412
+    49/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b[31:0]$407
+    50/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask[3:0]$406
+    51/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value[31:0]$405
+    52/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value[31:0]$404
+    53/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$403
+    54/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b[31:0]$402
+    55/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask[3:0]$401
+    56/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value[31:0]$400
+    57/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value[31:0]$399
+    58/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$398
+    59/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b[31:0]$397
+    60/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask[3:0]$396
+    61/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value[31:0]$395
+    62/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value[31:0]$394
+    63/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$393
+    64/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b[31:0]$392
+    65/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask[3:0]$391
+    66/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value[31:0]$390
+    67/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value[31:0]$389
+    68/153: $4\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$388
+    69/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b[31:0]$387
+    70/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask[3:0]$386
+    71/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value[31:0]$385
+    72/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value[31:0]$384
+    73/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$383
+    74/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b[31:0]$382
+    75/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask[3:0]$381
+    76/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value[31:0]$380
+    77/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value[31:0]$379
+    78/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$378
+    79/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b[31:0]$377
+    80/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask[3:0]$376
+    81/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value[31:0]$375
+    82/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value[31:0]$374
+    83/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$373
+    84/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b[31:0]$372
+    85/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask[3:0]$371
+    86/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value[31:0]$370
+    87/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value[31:0]$369
+    88/153: $3\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$368
+    89/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b[31:0]$366
+    90/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask[3:0]$365
+    91/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value[31:0]$364
+    92/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value[31:0]$363
+    93/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$362
+    94/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b[31:0]$361
+    95/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask[3:0]$360
+    96/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value[31:0]$359
+    97/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value[31:0]$358
+    98/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$357
+    99/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b[31:0]$356
+   100/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask[3:0]$355
+   101/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value[31:0]$354
+   102/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value[31:0]$353
+   103/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$352
+   104/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b[31:0]$351
+   105/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask[3:0]$350
+   106/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value[31:0]$349
+   107/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value[31:0]$348
+   108/153: $2\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$347
+   109/153: $0\launch[0:0]
+   110/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b[31:0]$339
+   111/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask[3:0]$338
+   112/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value[31:0]$337
+   113/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value[31:0]$336
+   114/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result[31:0]$335
+   115/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b[31:0]$334
+   116/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask[3:0]$333
+   117/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value[31:0]$332
+   118/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value[31:0]$331
+   119/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result[31:0]$330
+   120/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b[31:0]$329
+   121/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask[3:0]$328
+   122/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value[31:0]$327
+   123/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value[31:0]$326
+   124/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result[31:0]$325
+   125/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b[31:0]$324
+   126/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask[3:0]$323
+   127/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value[31:0]$322
+   128/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value[31:0]$321
+   129/153: $1\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result[31:0]$320
+   130/153: $0\write_strobe[3:0]
+   131/153: $0\write_data[31:0]
+   132/153: $0\write_addr[4:0]
+   133/153: $0\w_full[0:0]
+   134/153: $0\aw_full[0:0]
+   135/153: $0\enable_irq[0:0]
+   136/153: $0\pending[0:0]
+   137/153: $0\error[0:0]
+   138/153: $0\active_n[31:0]
+   139/153: $0\active_dst[31:0]
+   140/153: $0\active_b[31:0]
+   141/153: $0\active_a[31:0]
+   142/153: $0\s_rvalid[0:0]
+   143/153: $0\s_rresp[1:0]
+   144/153: $0\s_rdata[31:0]
+   145/153: $0\s_bvalid[0:0]
+   146/153: $0\s_bresp[1:0]
+   147/153: $0\error_code[31:0]
+   148/153: $0\done[0:0]
+   149/153: $0\busy[0:0]
+   150/153: $0\length[31:0]
+   151/153: $0\dst[31:0]
+   152/153: $0\src_b[31:0]
+   153/153: $0\src_a[31:0]
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\w_sent[0:0]
+     4/10: $0\aw_sent[0:0]
+     5/10: $0\high_word[0:0]
+     6/10: $0\operand_a[15:0]
+     7/10: $0\index[31:0]
+     8/10: $0\state[2:0]
+     9/10: $0\error_code[31:0]
+    10/10: $0\accumulator[63:0]
+
+6.4.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.4.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_axi.\src_a' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2906' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2907' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\dst' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2908' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\length' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2909' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\busy' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2910' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\done' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2911' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error_code' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2912' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bresp' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2913' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bvalid' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2914' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rdata' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2915' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rresp' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2916' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rvalid' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2917' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_a' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2918' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2919' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_dst' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2920' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_n' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2921' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2922' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\pending' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2923' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\enable_irq' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2924' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\launch' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2925' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\aw_full' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2926' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\w_full' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2927' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_addr' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2928' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_data' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2929' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_strobe' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2930' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2931' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2932' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2933' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2934' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:107$242.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2935' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2936' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2937' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2938' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2939' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:108$243.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2940' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2941' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2942' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2943' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2944' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:109$244.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2945' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.$result' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2946' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.old_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2947' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.new_value' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2948' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.mask' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2949' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:110$245.b' using process `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+  created $dff cell `$procdff$2950' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2951' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2952' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2953' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2954' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2955' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2956' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2957' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2958' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2959' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2960' with positive edge clock.
+
+6.4.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.4.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 36 empty switches in `\dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+Removing empty process `dotproduct_axi.$proc$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:77$299'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:34$24'.
+Cleaned up 51 empty switches.
+
+6.4.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~9 debug messages>
+Optimizing module dotproduct_mac.
+
+6.5. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Checking module dotproduct_engine...
+Checking module dotproduct_mac...
+Found and reported 0 problems.
+
+6.6. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_engine.
+Deleting now unused module dotproduct_mac.
+<suppressed ~2 debug messages>
+
+6.7. Executing TRIBUF pass.
+
+6.8. Executing DEMINOUT pass (demote inout ports to input or output).
+
+6.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.10. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+6.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 433 unused cells and 1207 unused wires.
+<suppressed ~452 debug messages>
+
+6.12. Executing OPT pass (performing simple optimizations).
+
+6.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 540 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 463 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 456 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~252 debug messages>
+Removed a total of 84 cells.
+
+6.12.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$2601: \busy -> 1'1
+      Replacing known input bits on port A of cell $procmux$2598: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2596: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2594: \busy -> 1'0
+      Replacing known input bits on port B of cell $flatten\engine.$procmux$2776: \engine.high_word -> 1'1
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$1406.
+    dead port 2/2 on $mux $procmux$1403.
+    dead port 1/2 on $mux $procmux$1401.
+    dead port 2/2 on $mux $procmux$1398.
+    dead port 1/2 on $mux $procmux$1396.
+    dead port 1/2 on $mux $procmux$1384.
+    dead port 2/2 on $mux $procmux$1381.
+    dead port 1/2 on $mux $procmux$1379.
+    dead port 2/2 on $mux $procmux$1376.
+    dead port 1/2 on $mux $procmux$1374.
+    dead port 1/2 on $mux $procmux$1362.
+    dead port 2/2 on $mux $procmux$1359.
+    dead port 1/2 on $mux $procmux$1357.
+    dead port 2/2 on $mux $procmux$1354.
+    dead port 1/2 on $mux $procmux$1352.
+    dead port 1/2 on $mux $procmux$1340.
+    dead port 2/2 on $mux $procmux$1337.
+    dead port 1/2 on $mux $procmux$1335.
+    dead port 2/2 on $mux $procmux$1332.
+    dead port 1/2 on $mux $procmux$1330.
+    dead port 1/2 on $mux $procmux$1174.
+    dead port 2/2 on $mux $procmux$1171.
+    dead port 1/2 on $mux $procmux$1169.
+    dead port 2/2 on $mux $procmux$1166.
+    dead port 1/2 on $mux $procmux$1164.
+    dead port 1/2 on $mux $procmux$1153.
+    dead port 2/2 on $mux $procmux$1150.
+    dead port 1/2 on $mux $procmux$1148.
+    dead port 2/2 on $mux $procmux$1145.
+    dead port 1/2 on $mux $procmux$1143.
+    dead port 1/2 on $mux $procmux$1132.
+    dead port 2/2 on $mux $procmux$1129.
+    dead port 1/2 on $mux $procmux$1127.
+    dead port 2/2 on $mux $procmux$1124.
+    dead port 1/2 on $mux $procmux$1122.
+    dead port 1/2 on $mux $procmux$1111.
+    dead port 2/2 on $mux $procmux$1108.
+    dead port 1/2 on $mux $procmux$1106.
+    dead port 2/2 on $mux $procmux$1103.
+    dead port 1/2 on $mux $procmux$1101.
+    dead port 1/2 on $mux $procmux$954.
+    dead port 2/2 on $mux $procmux$951.
+    dead port 1/2 on $mux $procmux$949.
+    dead port 2/2 on $mux $procmux$946.
+    dead port 1/2 on $mux $procmux$944.
+    dead port 1/2 on $mux $procmux$934.
+    dead port 2/2 on $mux $procmux$931.
+    dead port 1/2 on $mux $procmux$929.
+    dead port 2/2 on $mux $procmux$926.
+    dead port 1/2 on $mux $procmux$924.
+    dead port 1/2 on $mux $procmux$914.
+    dead port 2/2 on $mux $procmux$911.
+    dead port 1/2 on $mux $procmux$909.
+    dead port 2/2 on $mux $procmux$906.
+    dead port 1/2 on $mux $procmux$904.
+    dead port 1/2 on $mux $procmux$894.
+    dead port 2/2 on $mux $procmux$891.
+    dead port 1/2 on $mux $procmux$889.
+    dead port 2/2 on $mux $procmux$886.
+    dead port 1/2 on $mux $procmux$884.
+    dead port 1/2 on $mux $procmux$746.
+    dead port 2/2 on $mux $procmux$743.
+    dead port 1/2 on $mux $procmux$741.
+    dead port 2/2 on $mux $procmux$738.
+    dead port 1/2 on $mux $procmux$736.
+    dead port 1/2 on $mux $procmux$727.
+    dead port 2/2 on $mux $procmux$724.
+    dead port 1/2 on $mux $procmux$722.
+    dead port 2/2 on $mux $procmux$719.
+    dead port 1/2 on $mux $procmux$717.
+    dead port 1/2 on $mux $procmux$708.
+    dead port 2/2 on $mux $procmux$705.
+    dead port 1/2 on $mux $procmux$703.
+    dead port 2/2 on $mux $procmux$700.
+    dead port 1/2 on $mux $procmux$698.
+    dead port 1/2 on $mux $procmux$689.
+    dead port 2/2 on $mux $procmux$686.
+    dead port 1/2 on $mux $procmux$684.
+    dead port 2/2 on $mux $procmux$681.
+    dead port 1/2 on $mux $procmux$679.
+Removed 80 multiplexer ports.
+<suppressed ~360 debug messages>
+
+6.12.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$2462: $auto$opt_reduce.cc:137:opt_pmux$2964
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 2 changes.
+
+6.12.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 376 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 371 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 370 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 369 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~21 debug messages>
+Removed a total of 7 cells.
+
+6.12.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.12.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 164 unused wires.
+<suppressed ~1 debug messages>
+
+6.12.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.12.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.12.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~285 debug messages>
+
+6.12.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$2501: { $procmux$2295_CMP $auto$opt_reduce.cc:137:opt_pmux$2966 }
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 1 changes.
+
+6.12.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 370 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.12.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.12.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.12.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.12.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.12.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~279 debug messages>
+
+6.12.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.12.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 370 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.12.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.12.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.12.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.12.23. Finished fast OPT passes. (There is nothing left to do.)
+
+6.13. Executing FSM pass (extract and optimize FSM).
+
+6.13.1. Executing FSM_DETECT pass (finding FSMs in design).
+Not marking dotproduct_axi.s_bresp as FSM state register:
+    Register is connected to module port.
+    Users of register don't seem to benefit from recoding.
+Not marking dotproduct_axi.s_rresp as FSM state register:
+    Register is connected to module port.
+    Users of register don't seem to benefit from recoding.
+Found FSM state register dotproduct_axi.engine.state.
+Not marking dotproduct_axi.engine.error_code as FSM state register:
+    Users of register don't seem to benefit from recoding.
+
+6.13.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+Extracting FSM `\engine.state' from module `\dotproduct_axi'.
+  found $dff cell for state register: $flatten\engine.$procdff$2955
+  root of input selection tree: $flatten\engine.$0\state[2:0]
+  found reset state: 3'000 (guessed from mux tree)
+  found ctrl input: \reset
+  found ctrl input: \m_bready
+  found ctrl input: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:31$17_Y
+  found ctrl input: $flatten\engine.$procmux$2698_CTRL
+  found ctrl input: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$5_Y
+  found ctrl input: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$4_Y
+  found ctrl input: $flatten\engine.$procmux$2787_CMP
+  found state code: 3'000
+  found ctrl input: \m_bvalid
+  found ctrl input: $flatten\engine.$ne$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:66$35_Y
+  found ctrl input: \engine.high_word
+  found state code: 3'101
+  found ctrl input: $flatten\engine.$logic_and$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:63$34_Y
+  found state code: 3'110
+  found ctrl input: \m_rvalid
+  found ctrl input: $flatten\engine.$logic_or$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:49$27_Y
+  found ctrl input: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$11_Y
+  found ctrl input: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$30_Y
+  found state code: 3'001
+  found state code: 3'011
+  found ctrl input: \m_arready
+  found state code: 3'100
+  found state code: 3'010
+  found ctrl input: \launch
+  found ctrl output: $flatten\engine.$procmux$2787_CMP
+  found ctrl output: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$12_Y
+  found ctrl output: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$11_Y
+  found ctrl output: \m_bready
+  found ctrl output: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$4_Y
+  found ctrl output: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$5_Y
+  found ctrl output: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:31$17_Y
+  ctrl inputs: { \engine.high_word $flatten\engine.$logic_or$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:49$27_Y $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$30_Y $flatten\engine.$logic_and$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:63$34_Y $flatten\engine.$ne$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:66$35_Y $flatten\engine.$procmux$2698_CTRL \launch \m_bvalid \m_rvalid \m_arready \reset }
+  ctrl outputs: { $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$4_Y $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$5_Y $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$11_Y $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$12_Y $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:31$17_Y $flatten\engine.$0\state[2:0] $flatten\engine.$procmux$2787_CMP \m_bready }
+  transition:      3'000 11'------0---0 ->      3'000 10'0000000010
+  transition:      3'000 11'------1---0 ->      3'001 10'0000000110
+  transition:      3'000 11'----------1 ->      3'000 10'0000000010
+  transition:      3'100 11'--------0-0 ->      3'100 10'0001010000
+  transition:      3'100 11'-00-----1-0 ->      3'001 10'0001000100
+  transition:      3'100 11'-01-----1-0 ->      3'101 10'0001010100
+  transition:      3'100 11'-1------1-0 ->      3'000 10'0001000000
+  transition:      3'100 11'----------1 ->      3'000 10'0001000000
+  transition:      3'010 11'--------0-0 ->      3'010 10'0010001000
+  transition:      3'010 11'-0------1-0 ->      3'011 10'0010001100
+  transition:      3'010 11'-1------1-0 ->      3'000 10'0010000000
+  transition:      3'010 11'----------1 ->      3'000 10'0010000000
+  transition:      3'110 11'-------0--0 ->      3'110 10'0000011001
+  transition:      3'110 11'0---0--1--0 ->      3'101 10'0000010101
+  transition:      3'110 11'1---0--1--0 ->      3'000 10'0000000001
+  transition:      3'110 11'----1--1--0 ->      3'000 10'0000000001
+  transition:      3'110 11'----------1 ->      3'000 10'0000000001
+  transition:      3'001 11'---------00 ->      3'001 10'1000000100
+  transition:      3'001 11'---------10 ->      3'010 10'1000001000
+  transition:      3'001 11'----------1 ->      3'000 10'1000000000
+  transition:      3'101 11'---0------0 ->      3'101 10'0000110100
+  transition:      3'101 11'---1------0 ->      3'110 10'0000111000
+  transition:      3'101 11'----------1 ->      3'000 10'0000100000
+  transition:      3'011 11'---------00 ->      3'011 10'0100001100
+  transition:      3'011 11'---------10 ->      3'100 10'0100010000
+  transition:      3'011 11'----------1 ->      3'000 10'0100000000
+
+6.13.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\engine.state$2967' from module `\dotproduct_axi'.
+  Removing unused input signal $flatten\engine.$procmux$2698_CTRL.
+
+6.13.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 21 unused cells and 21 unused wires.
+<suppressed ~22 debug messages>
+
+6.13.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\engine.state$2967' from module `\dotproduct_axi'.
+  Removing unused output signal $flatten\engine.$0\state[2:0] [0].
+  Removing unused output signal $flatten\engine.$0\state[2:0] [1].
+  Removing unused output signal $flatten\engine.$0\state[2:0] [2].
+
+6.13.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+Recoding FSM `$fsm$\engine.state$2967' from module `\dotproduct_axi' using `auto' encoding:
+  mapping auto encoding to `one-hot` for this FSM.
+  000 -> ------1
+  100 -> -----1-
+  010 -> ----1--
+  110 -> ---1---
+  001 -> --1----
+  101 -> -1-----
+  011 -> 1------
+
+6.13.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+FSM `$fsm$\engine.state$2967' from module `dotproduct_axi':
+-------------------------------------
+
+  Information on FSM $fsm$\engine.state$2967 (\engine.state):
+
+  Number of input signals:   10
+  Number of output signals:   7
+  Number of state bits:       7
+
+  Input signals:
+    0: \reset
+    1: \m_arready
+    2: \m_rvalid
+    3: \m_bvalid
+    4: \launch
+    5: $flatten\engine.$ne$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:66$35_Y
+    6: $flatten\engine.$logic_and$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:63$34_Y
+    7: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:55$30_Y
+    8: $flatten\engine.$logic_or$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:49$27_Y
+    9: \engine.high_word
+
+  Output signals:
+    0: \m_bready
+    1: $flatten\engine.$procmux$2787_CMP
+    2: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:31$17_Y
+    3: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$12_Y
+    4: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:28$11_Y
+    5: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$5_Y
+    6: $flatten\engine.$eq$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:26$4_Y
+
+  State encoding:
+    0:  7'------1  <RESET STATE>
+    1:  7'-----1-
+    2:  7'----1--
+    3:  7'---1---
+    4:  7'--1----
+    5:  7'-1-----
+    6:  7'1------
+
+  Transition Table (state_in, ctrl_in, state_out, ctrl_out):
+      0:     0 10'-----0---0   ->     0 7'0000010
+      1:     0 10'---------1   ->     0 7'0000010
+      2:     0 10'-----1---0   ->     4 7'0000010
+      3:     1 10'-1-----1-0   ->     0 7'0001000
+      4:     1 10'---------1   ->     0 7'0001000
+      5:     1 10'-------0-0   ->     1 7'0001000
+      6:     1 10'-00----1-0   ->     4 7'0001000
+      7:     1 10'-01----1-0   ->     5 7'0001000
+      8:     2 10'-1-----1-0   ->     0 7'0010000
+      9:     2 10'---------1   ->     0 7'0010000
+     10:     2 10'-------0-0   ->     2 7'0010000
+     11:     2 10'-0-----1-0   ->     6 7'0010000
+     12:     3 10'1---0-1--0   ->     0 7'0000001
+     13:     3 10'----1-1--0   ->     0 7'0000001
+     14:     3 10'---------1   ->     0 7'0000001
+     15:     3 10'------0--0   ->     3 7'0000001
+     16:     3 10'0---0-1--0   ->     5 7'0000001
+     17:     4 10'---------1   ->     0 7'1000000
+     18:     4 10'--------10   ->     2 7'1000000
+     19:     4 10'--------00   ->     4 7'1000000
+     20:     5 10'---------1   ->     0 7'0000100
+     21:     5 10'---1-----0   ->     3 7'0000100
+     22:     5 10'---0-----0   ->     5 7'0000100
+     23:     6 10'---------1   ->     0 7'0100000
+     24:     6 10'--------10   ->     1 7'0100000
+     25:     6 10'--------00   ->     6 7'0100000
+
+-------------------------------------
+
+6.13.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+Mapping FSM `$fsm$\engine.state$2967' from module `\dotproduct_axi'.
+
+6.14. Executing OPT pass (performing simple optimizations).
+
+6.14.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~8 debug messages>
+
+6.14.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 394 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 390 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~12 debug messages>
+Removed a total of 4 cells.
+
+6.14.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~265 debug messages>
+
+6.14.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.14.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 390 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.14.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$2909 ($dff) from module dotproduct_axi (D = $procmux$2626_Y, Q = \length, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3063 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \length [7:0]).
+Adding EN signal on $auto$ff.cc:337:slice$3063 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \length [15:8]).
+Adding EN signal on $auto$ff.cc:337:slice$3063 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \length [23:16]).
+Adding EN signal on $auto$ff.cc:337:slice$3063 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \length [31:24]).
+Adding SRST signal on $procdff$2908 ($dff) from module dotproduct_axi (D = $procmux$2643_Y, Q = \dst, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3092 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \dst [7:0]).
+Adding EN signal on $auto$ff.cc:337:slice$3092 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \dst [15:8]).
+Adding EN signal on $auto$ff.cc:337:slice$3092 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \dst [23:16]).
+Adding EN signal on $auto$ff.cc:337:slice$3092 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \dst [31:24]).
+Adding SRST signal on $procdff$2907 ($dff) from module dotproduct_axi (D = $procmux$2661_Y, Q = \src_b, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3121 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \src_b [7:0]).
+Adding EN signal on $auto$ff.cc:337:slice$3121 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \src_b [15:8]).
+Adding EN signal on $auto$ff.cc:337:slice$3121 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \src_b [23:16]).
+Adding EN signal on $auto$ff.cc:337:slice$3121 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \src_b [31:24]).
+Adding SRST signal on $procdff$2906 ($dff) from module dotproduct_axi (D = $procmux$2680_Y, Q = \src_a, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3150 ($sdff) from module dotproduct_axi (D = \write_data [7:0], Q = \src_a [7:0]).
+Adding EN signal on $auto$ff.cc:337:slice$3150 ($sdff) from module dotproduct_axi (D = \write_data [15:8], Q = \src_a [15:8]).
+Adding EN signal on $auto$ff.cc:337:slice$3150 ($sdff) from module dotproduct_axi (D = \write_data [23:16], Q = \src_a [23:16]).
+Adding EN signal on $auto$ff.cc:337:slice$3150 ($sdff) from module dotproduct_axi (D = \write_data [31:24], Q = \src_a [31:24]).
+Adding SRST signal on $flatten\engine.$procdff$2960 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2725_Y, Q = \engine.w_sent, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3179 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2725_Y, Q = \engine.w_sent).
+Adding SRST signal on $procdff$2916 ($dff) from module dotproduct_axi (D = $procmux$2471_Y, Q = \s_rresp, rval = 2'00).
+Adding EN signal on $auto$ff.cc:337:slice$3201 ($sdff) from module dotproduct_axi (D = $procmux$2462_Y, Q = \s_rresp).
+Adding SRST signal on $procdff$2915 ($dff) from module dotproduct_axi (D = $procmux$2486_Y, Q = \s_rdata, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3203 ($sdff) from module dotproduct_axi (D = $procmux$2478_Y, Q = \s_rdata).
+Adding SRST signal on $procdff$2914 ($dff) from module dotproduct_axi (D = $procmux$2494_Y, Q = \s_bvalid, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3205 ($sdff) from module dotproduct_axi (D = $procmux$2494_Y, Q = \s_bvalid).
+Adding SRST signal on $procdff$2910 ($dff) from module dotproduct_axi (D = $procmux$2608_Y, Q = \busy, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3209 ($sdff) from module dotproduct_axi (D = $procmux$2601_Y, Q = \busy).
+Adding SRST signal on $procdff$2930 ($dff) from module dotproduct_axi (D = $procmux$2237_Y, Q = \write_strobe, rval = 4'0000).
+Adding EN signal on $auto$ff.cc:337:slice$3217 ($sdff) from module dotproduct_axi (D = \s_wstrb, Q = \write_strobe).
+Adding SRST signal on $procdff$2929 ($dff) from module dotproduct_axi (D = $procmux$2242_Y, Q = \write_data, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3219 ($sdff) from module dotproduct_axi (D = \s_wdata, Q = \write_data).
+Adding SRST signal on $procdff$2928 ($dff) from module dotproduct_axi (D = $procmux$2247_Y, Q = \write_addr, rval = 5'00000).
+Adding EN signal on $auto$ff.cc:337:slice$3221 ($sdff) from module dotproduct_axi (D = \s_awaddr, Q = \write_addr).
+Adding SRST signal on $procdff$2927 ($dff) from module dotproduct_axi (D = $procmux$2252_Y, Q = \w_full, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3223 ($sdff) from module dotproduct_axi (D = 1'1, Q = \w_full).
+Adding SRST signal on $procdff$2926 ($dff) from module dotproduct_axi (D = $procmux$2260_Y, Q = \aw_full, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3227 ($sdff) from module dotproduct_axi (D = 1'1, Q = \aw_full).
+Adding SRST signal on $procdff$2925 ($dff) from module dotproduct_axi (D = $procmux$2162_Y, Q = \launch, rval = 1'0).
+Adding SRST signal on $procdff$2924 ($dff) from module dotproduct_axi (D = $procmux$2285_Y, Q = \enable_irq, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3238 ($sdff) from module dotproduct_axi (D = \write_data [1], Q = \enable_irq).
+Adding SRST signal on $procdff$2923 ($dff) from module dotproduct_axi (D = $procmux$2312_Y, Q = \pending, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3246 ($sdff) from module dotproduct_axi (D = $procmux$2312_Y, Q = \pending).
+Adding SRST signal on $procdff$2922 ($dff) from module dotproduct_axi (D = $procmux$2341_Y, Q = \error, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3264 ($sdff) from module dotproduct_axi (D = $procmux$2341_Y, Q = \error).
+Adding SRST signal on $procdff$2921 ($dff) from module dotproduct_axi (D = $procmux$2368_Y, Q = \active_n, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3280 ($sdff) from module dotproduct_axi (D = \length, Q = \active_n).
+Adding SRST signal on $procdff$2920 ($dff) from module dotproduct_axi (D = $procmux$2395_Y, Q = \active_dst, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3288 ($sdff) from module dotproduct_axi (D = \dst, Q = \active_dst).
+Adding SRST signal on $procdff$2919 ($dff) from module dotproduct_axi (D = $procmux$2422_Y, Q = \active_b, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3296 ($sdff) from module dotproduct_axi (D = \src_b, Q = \active_b).
+Adding SRST signal on $procdff$2918 ($dff) from module dotproduct_axi (D = $procmux$2449_Y, Q = \active_a, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3304 ($sdff) from module dotproduct_axi (D = \src_a, Q = \active_a).
+Adding SRST signal on $procdff$2917 ($dff) from module dotproduct_axi (D = $procmux$2456_Y, Q = \s_rvalid, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3312 ($sdff) from module dotproduct_axi (D = $procmux$2456_Y, Q = \s_rvalid).
+Adding SRST signal on $procdff$2913 ($dff) from module dotproduct_axi (D = $procmux$2526_Y, Q = \s_bresp, rval = 2'00).
+Adding EN signal on $auto$ff.cc:337:slice$3316 ($sdff) from module dotproduct_axi (D = $procmux$2524_Y, Q = \s_bresp).
+Adding SRST signal on $procdff$2912 ($dff) from module dotproduct_axi (D = $procmux$2555_Y, Q = \error_code, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3318 ($sdff) from module dotproduct_axi (D = $procmux$2555_Y, Q = \error_code).
+Adding SRST signal on $procdff$2911 ($dff) from module dotproduct_axi (D = $procmux$2581_Y, Q = \done, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3334 ($sdff) from module dotproduct_axi (D = $procmux$2581_Y, Q = \done).
+Adding SRST signal on $flatten\engine.$procdff$2951 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2898_Y, Q = \engine.accumulator, rval = 64'0000000000000000000000000000000000000000000000000000000000000000).
+Adding EN signal on $auto$ff.cc:337:slice$3350 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2898_Y, Q = \engine.accumulator).
+Adding SRST signal on $flatten\engine.$procdff$2952 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2704_Y, Q = \engine.done, rval = 1'0).
+Adding SRST signal on $flatten\engine.$procdff$2953 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2691_Y, Q = \engine.failed, rval = 1'0).
+Adding SRST signal on $flatten\engine.$procdff$2954 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2873_Y, Q = \engine.error_code, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3372 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2873_Y, Q = \engine.error_code).
+Adding SRST signal on $flatten\engine.$procdff$2956 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2821_Y, Q = \engine.index, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$3388 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2821_Y, Q = \engine.index).
+Adding SRST signal on $flatten\engine.$procdff$2957 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2802_Y, Q = \engine.operand_a, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:337:slice$3404 ($sdff) from module dotproduct_axi (D = \m_rdata [15:0], Q = \engine.operand_a).
+Adding SRST signal on $flatten\engine.$procdff$2958 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2783_Y, Q = \engine.high_word, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3410 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2783_Y, Q = \engine.high_word).
+Adding SRST signal on $flatten\engine.$procdff$2959 ($dff) from module dotproduct_axi (D = $flatten\engine.$procmux$2754_Y, Q = \engine.aw_sent, rval = 1'0).
+Adding EN signal on $auto$ff.cc:337:slice$3422 ($sdff) from module dotproduct_axi (D = $flatten\engine.$procmux$2754_Y, Q = \engine.aw_sent).
+
+6.14.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 124 unused cells and 138 unused wires.
+<suppressed ~125 debug messages>
+
+6.14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+
+6.14.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.14.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~119 debug messages>
+
+6.14.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.14.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 430 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 349 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 342 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 340 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 339 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~273 debug messages>
+Removed a total of 91 cells.
+
+6.14.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.14.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 91 unused wires.
+<suppressed ~1 debug messages>
+
+6.14.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.14.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.14.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~130 debug messages>
+
+6.14.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.14.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 339 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.14.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.14.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.14.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.14.23. Finished fast OPT passes. (There is nothing left to do.)
+
+6.15. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell dotproduct_axi.$auto$simple.cc:194:make_patterns_logic$3429 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_axi.$auto$simple.cc:194:make_patterns_logic$3393 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_axi.$auto$simple.cc:194:make_patterns_logic$3379 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_axi.$auto$simple.cc:194:make_patterns_logic$3337 ($ne).
+Removed top 1 bits (of 2) from port B of cell dotproduct_axi.$auto$simple.cc:194:make_patterns_logic$3257 ($ne).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$auto$fsm_map.cc:77:implement_pattern_cache$3059 ($eq).
+Removed top 2 bits (of 4) from port B of cell dotproduct_axi.$auto$fsm_map.cc:77:implement_pattern_cache$3046 ($eq).
+Removed top 1 bits (of 4) from port B of cell dotproduct_axi.$auto$fsm_map.cc:77:implement_pattern_cache$3042 ($eq).
+Removed top 2 bits (of 4) from port B of cell dotproduct_axi.$auto$fsm_map.cc:77:implement_pattern_cache$3033 ($eq).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$247 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$249 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$250 ($add).
+Removed top 29 bits (of 33) from port B of cell dotproduct_axi.$add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$250 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$251 ($ge).
+Removed top 23 bits (of 32) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$252 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$266 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$268 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$270 ($le).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2467_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2468_CMP0 ($eq).
+Removed top 2 bits (of 5) from port B of cell dotproduct_axi.$procmux$2469_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2514_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$2518_CMP0 ($eq).
+Removed top 31 bits (of 32) from mux cell dotproduct_axi.$procmux$2539 ($mux).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:57$31 ($add).
+Removed top 29 bits (of 32) from mux cell dotproduct_axi.$flatten\engine.$ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$14 ($mux).
+Removed top 31 bits (of 32) from wire dotproduct_axi.$procmux$2539_Y.
+Removed top 29 bits (of 32) from wire dotproduct_axi.$flatten\engine.$ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$14_Y.
+
+6.16. Executing PEEPOPT pass (run peephole optimizers).
+
+6.17. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+6.18. Executing SHARE pass (SAT-based resource sharing).
+
+6.19. Executing TECHMAP pass (map to technology primitives).
+
+6.19.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/cmp2lut.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/cmp2lut.v' to AST representation.
+Generating RTLIL representation for module `\_90_lut_cmp_'.
+Successfully finished Verilog frontend.
+
+6.19.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~134 debug messages>
+
+6.20. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.22. Executing TECHMAP pass (map to technology primitives).
+
+6.22.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/mul2dsp.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/mul2dsp.v' to AST representation.
+Generating RTLIL representation for module `\_80_mul'.
+Generating RTLIL representation for module `\_90_soft_mul'.
+Successfully finished Verilog frontend.
+
+6.22.2. Continuing TECHMAP pass.
+Using template $paramod$98b5abf51e25760e7ff42b5f29b6a0813dd63380\_80_mul for cells of type $mul.
+No more expansions possible.
+<suppressed ~70 debug messages>
+
+6.23. Executing TECHMAP pass (map to technology primitives).
+
+6.23.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/dsp_map_18x18.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/dsp_map_18x18.v' to AST representation.
+Generating RTLIL representation for module `$__MUL18X18'.
+Successfully finished Verilog frontend.
+
+6.23.2. Continuing TECHMAP pass.
+Using template $paramod$c323049b3a09641e040ac6dc45a727e0aaf653a8$__MUL18X18 for cells of type $__MUL18X18.
+No more expansions possible.
+<suppressed ~21 debug messages>
+
+6.24. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module dotproduct_axi:
+  creating $macc model for $flatten\engine.\arithmetic.$add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$2 ($add).
+  creating $macc model for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:57$31 ($add).
+  creating $macc model for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$15 ($add).
+  creating $macc model for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$10 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$247 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$249 ($add).
+  creating $macc model for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$250 ($add).
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$250.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$249.
+  creating $alu model for $macc $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$247.
+  creating $alu model for $macc $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$10.
+  creating $alu model for $macc $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$15.
+  creating $alu model for $macc $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:57$31.
+  creating $alu model for $macc $flatten\engine.\arithmetic.$add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$2.
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$251 ($ge): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$252 ($le): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$260 ($ge): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$262 ($ge): new $alu
+  creating $alu model for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$264 ($ge): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$266 ($le): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$268 ($le): new $alu
+  creating $alu model for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$270 ($le): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$278 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$279 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$283 ($lt): new $alu
+  creating $alu model for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$284 ($lt): new $alu
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$284: $auto$alumacc.cc:578:replace_alu$3461
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$283: $auto$alumacc.cc:578:replace_alu$3466
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$279: $auto$alumacc.cc:578:replace_alu$3471
+  creating $alu cell for $lt$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:49$278: $auto$alumacc.cc:578:replace_alu$3476
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$270: $auto$alumacc.cc:578:replace_alu$3481
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$268: $auto$alumacc.cc:578:replace_alu$3490
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:47$266: $auto$alumacc.cc:578:replace_alu$3499
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$264: $auto$alumacc.cc:578:replace_alu$3508
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$262: $auto$alumacc.cc:578:replace_alu$3521
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:46$260: $auto$alumacc.cc:578:replace_alu$3534
+  creating $alu cell for $le$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$252: $auto$alumacc.cc:578:replace_alu$3547
+  creating $alu cell for $ge$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:44$251: $auto$alumacc.cc:578:replace_alu$3556
+  creating $alu cell for $flatten\engine.\arithmetic.$add$/work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9$2: $auto$alumacc.cc:578:replace_alu$3569
+  creating $alu cell for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:57$31: $auto$alumacc.cc:578:replace_alu$3572
+  creating $alu cell for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$15: $auto$alumacc.cc:578:replace_alu$3575
+  creating $alu cell for $flatten\engine.$add$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:27$10: $auto$alumacc.cc:578:replace_alu$3578
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:41$247: $auto$alumacc.cc:578:replace_alu$3581
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:42$249: $auto$alumacc.cc:578:replace_alu$3584
+  creating $alu cell for $add$/work/labs/10-dotproduct/rtl/dotproduct_axi.sv:43$250: $auto$alumacc.cc:578:replace_alu$3587
+  created 19 $alu and 0 $macc cells.
+
+6.25. Executing OPT pass (performing simple optimizations).
+
+6.25.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.25.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 375 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.25.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~130 debug messages>
+
+6.25.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.25.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 375 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 374 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+6.25.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.25.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 21 unused wires.
+<suppressed ~1 debug messages>
+
+6.25.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.25.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.25.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~132 debug messages>
+
+6.25.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.25.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 374 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.25.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.25.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.25.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.25.16. Finished fast OPT passes. (There is nothing left to do.)
+
+6.26. Executing MEMORY pass.
+
+6.26.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+6.26.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+6.26.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+6.26.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+6.26.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+6.26.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.26.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+6.26.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+6.26.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.26.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.27. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.28. Executing MEMORY_LIBMAP pass (mapping memories to cells).
+
+6.29. Executing TECHMAP pass (map to technology primitives).
+
+6.29.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/lutrams_map_trellis.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/lutrams_map_trellis.v' to AST representation.
+Generating RTLIL representation for module `$__TRELLIS_DPR16X4_'.
+Successfully finished Verilog frontend.
+
+6.29.2. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/brams_map_16kd.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/brams_map_16kd.v' to AST representation.
+Generating RTLIL representation for module `$__DP16KD_'.
+Generating RTLIL representation for module `$__PDPW16KD_'.
+Successfully finished Verilog frontend.
+
+6.29.3. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~5 debug messages>
+
+6.30. Executing OPT pass (performing simple optimizations).
+
+6.30.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~73 debug messages>
+
+6.30.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 414 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 406 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~24 debug messages>
+Removed a total of 8 cells.
+
+6.30.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.30.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 151 unused wires.
+<suppressed ~1 debug messages>
+
+6.30.5. Finished fast OPT passes.
+
+6.31. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+6.32. Executing OPT pass (performing simple optimizations).
+
+6.32.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~3 debug messages>
+
+6.32.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 403 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.32.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~49 debug messages>
+
+6.32.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $mux cell $procmux$2504:
+      Old ports: A=2'00, B=2'10, Y=$procmux$2504_Y
+      New ports: A=1'0, B=1'1, Y=$procmux$2504_Y [1]
+      New connections: $procmux$2504_Y [0] = 1'0
+    Consolidated identical input bits for $pmux cell $flatten\engine.$procmux$2873:
+      Old ports: A=0, B=64'0000000000000000000000000000001000000000000000000000000000000011, Y=$flatten\engine.$procmux$2873_Y
+      New ports: A=2'00, B=4'1011, Y=$flatten\engine.$procmux$2873_Y [1:0]
+      New connections: $flatten\engine.$procmux$2873_Y [31:2] = 30'000000000000000000000000000000
+    New ctrl vector for $pmux cell $flatten\engine.$procmux$2754: \engine.state [5]
+    Consolidated identical input bits for $mux cell $flatten\engine.$ternary$/work/labs/10-dotproduct/rtl/dotproduct_engine.sv:29$14:
+      Old ports: A=3'000, B=3'100, Y=$auto$wreduce.cc:513:run$3445 [2:0]
+      New ports: A=1'0, B=1'1, Y=$auto$wreduce.cc:513:run$3445 [2]
+      New connections: $auto$wreduce.cc:513:run$3445 [1:0] = 2'00
+    Consolidated identical input bits for $mux cell $procmux$2462:
+      Old ports: A=2'10, B=2'00, Y=$procmux$2462_Y
+      New ports: A=1'1, B=1'0, Y=$procmux$2462_Y [1]
+      New connections: $procmux$2462_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $pmux cell $procmux$2501:
+      Old ports: A=2'10, B={ 2'00 $procmux$2504_Y }, Y=$procmux$2501_Y
+      New ports: A=1'1, B={ 1'0 $procmux$2504_Y [1] }, Y=$procmux$2501_Y [1]
+      New connections: $procmux$2501_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $mux cell $procmux$2524:
+      Old ports: A=$procmux$2501_Y, B=2'10, Y=$procmux$2524_Y
+      New ports: A=$procmux$2501_Y [1], B=1'1, Y=$procmux$2524_Y [1]
+      New connections: $procmux$2524_Y [0] = 1'0
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 7 changes.
+
+6.32.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 403 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.32.6. Executing OPT_DFF pass (perform DFF optimizations).
+Setting constant 0-bit at position 2 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 3 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 4 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 5 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 6 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 7 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 8 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 9 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 10 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 11 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 12 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 13 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 14 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 15 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 16 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 17 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 18 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 19 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 20 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 21 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 22 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 23 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 24 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 25 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 26 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 27 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 28 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 29 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 30 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 31 on $auto$ff.cc:337:slice$3373 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 0 on $auto$ff.cc:337:slice$3317 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 0 on $auto$ff.cc:337:slice$3202 ($sdffe) from module dotproduct_axi.
+
+6.32.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~1 debug messages>
+
+6.32.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~4 debug messages>
+
+6.32.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.32.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~44 debug messages>
+
+6.32.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    Consolidated identical input bits for $mux cell $procmux$2555:
+      Old ports: A={ 31'0000000000000000000000000000000 $auto$wreduce.cc:513:run$3444 [0] }, B={ 30'000000000000000000000000000000 \engine.error_code [1:0] }, Y=$procmux$2555_Y
+      New ports: A={ 1'0 $auto$wreduce.cc:513:run$3444 [0] }, B=\engine.error_code [1:0], Y=$procmux$2555_Y [1:0]
+      New connections: $procmux$2555_Y [31:2] = 30'000000000000000000000000000000
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 1 changes.
+
+6.32.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 400 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.32.13. Executing OPT_DFF pass (perform DFF optimizations).
+Setting constant 0-bit at position 2 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 3 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 4 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 5 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 6 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 7 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 8 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 9 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 10 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 11 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 12 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 13 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 14 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 15 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 16 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 17 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 18 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 19 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 20 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 21 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 22 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 23 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 24 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 25 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 26 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 27 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 28 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 29 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 30 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+Setting constant 0-bit at position 31 on $auto$ff.cc:337:slice$3319 ($sdffe) from module dotproduct_axi.
+
+6.32.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~1 debug messages>
+
+6.32.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.32.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.32.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~44 debug messages>
+
+6.32.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.32.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 400 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.32.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.32.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.32.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.32.23. Finished fast OPT passes. (There is nothing left to do.)
+
+6.33. Executing TECHMAP pass (map to technology primitives).
+
+6.33.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+6.33.2. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v' to AST representation.
+Generating RTLIL representation for module `\_80_ccu2c_alu'.
+Successfully finished Verilog frontend.
+
+6.33.3. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $sdffe.
+Using extmapper simplemap for cells of type $not.
+Using template $paramod$08eec5a6921d570f658f0ddff79a3d6fd06b1ec1\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$33932025bf4abd97855bed7b134b5a5105ed1f1b\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$403d07c18de10cda2ac652a859c56aea81aaf9b5\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$6a42b6fefed750f8a1c58eab59479d960557103c\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$039520c137afc9cd69dd56c3fb11a4e1fbe5f664\_80_ccu2c_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $reduce_and.
+Using template $paramod$c04af8dbf0e5d1d69bbccb2c7bd8a93fc9ef54dc\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$c9511eeb847f2aa95252b1013477609463f67ee0\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$3bb72ad0665cdca279bbc49ed6a39f403f16497f\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$f252d71e91501157ef4fbf06e08bbe0b6195ef1a\_80_ccu2c_alu for cells of type $alu.
+Using template $paramod$789c344356a154d2afc7b832b41d1067dbc946ba\_80_ccu2c_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $ne.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $sdff.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $dff.
+Using extmapper simplemap for cells of type $logic_and.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $logic_or.
+Using extmapper simplemap for cells of type $pmux.
+Using extmapper simplemap for cells of type $xor.
+Using extmapper simplemap for cells of type $pos.
+No more expansions possible.
+<suppressed ~1875 debug messages>
+
+6.34. Executing OPT pass (performing simple optimizations).
+
+6.34.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~1768 debug messages>
+
+6.34.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 3587 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 3241 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 3201 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 3191 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 3189 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 3188 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~1197 debug messages>
+Removed a total of 399 cells.
+
+6.34.3. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $auto$ff.cc:337:slice$5277 ($_SDFF_PP0_) from module dotproduct_axi (D = $auto$simplemap.cc:189:logic_reduce$7384, Q = \engine.failed, rval = 1'0).
+
+6.34.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 1133 unused cells and 2053 unused wires.
+<suppressed ~1134 debug messages>
+
+6.34.5. Rerunning OPT passes. (Removed registers in this run.)
+
+6.34.6. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.34.7. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 2057 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.34.8. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.34.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.34.10. Finished fast OPT passes.
+
+6.35. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.36. Executing DFFLEGALIZE pass (convert FFs and LATCHes to types supported by the target).
+
+6.37. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 2057 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.38. Executing TECHMAP pass (map to technology primitives).
+
+6.38.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_map_trellis.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/cells_map_trellis.v' to AST representation.
+Generating RTLIL representation for module `$_DFF_N_'.
+Generating RTLIL representation for module `$_DFF_P_'.
+Generating RTLIL representation for module `$_DFFE_NN_'.
+Generating RTLIL representation for module `$_DFFE_PN_'.
+Generating RTLIL representation for module `$_DFFE_NP_'.
+Generating RTLIL representation for module `$_DFFE_PP_'.
+Generating RTLIL representation for module `$_DFF_NP0_'.
+Generating RTLIL representation for module `$_DFF_NP1_'.
+Generating RTLIL representation for module `$_DFF_PP0_'.
+Generating RTLIL representation for module `$_DFF_PP1_'.
+Generating RTLIL representation for module `$_SDFF_NP0_'.
+Generating RTLIL representation for module `$_SDFF_NP1_'.
+Generating RTLIL representation for module `$_SDFF_PP0_'.
+Generating RTLIL representation for module `$_SDFF_PP1_'.
+Generating RTLIL representation for module `$_DFFE_NP0P_'.
+Generating RTLIL representation for module `$_DFFE_NP1P_'.
+Generating RTLIL representation for module `$_DFFE_PP0P_'.
+Generating RTLIL representation for module `$_DFFE_PP1P_'.
+Generating RTLIL representation for module `$_DFFE_NP0N_'.
+Generating RTLIL representation for module `$_DFFE_NP1N_'.
+Generating RTLIL representation for module `$_DFFE_PP0N_'.
+Generating RTLIL representation for module `$_DFFE_PP1N_'.
+Generating RTLIL representation for module `$_SDFFE_NP0P_'.
+Generating RTLIL representation for module `$_SDFFE_NP1P_'.
+Generating RTLIL representation for module `$_SDFFE_PP0P_'.
+Generating RTLIL representation for module `$_SDFFE_PP1P_'.
+Generating RTLIL representation for module `$_SDFFE_NP0N_'.
+Generating RTLIL representation for module `$_SDFFE_NP1N_'.
+Generating RTLIL representation for module `$_SDFFE_PP0N_'.
+Generating RTLIL representation for module `$_SDFFE_PP1N_'.
+Generating RTLIL representation for module `$_ALDFF_NP_'.
+Generating RTLIL representation for module `$_ALDFF_PP_'.
+Generating RTLIL representation for module `$_ALDFFE_NPN_'.
+Generating RTLIL representation for module `$_ALDFFE_NPP_'.
+Generating RTLIL representation for module `$_ALDFFE_PPN_'.
+Generating RTLIL representation for module `$_ALDFFE_PPP_'.
+Generating RTLIL representation for module `\FD1P3AX'.
+Generating RTLIL representation for module `\FD1P3AY'.
+Generating RTLIL representation for module `\FD1P3BX'.
+Generating RTLIL representation for module `\FD1P3DX'.
+Generating RTLIL representation for module `\FD1P3IX'.
+Generating RTLIL representation for module `\FD1P3JX'.
+Generating RTLIL representation for module `\FD1S3AX'.
+Generating RTLIL representation for module `\FD1S3AY'.
+Generating RTLIL representation for module `\FD1S3BX'.
+Generating RTLIL representation for module `\FD1S3DX'.
+Generating RTLIL representation for module `\FD1S3IX'.
+Generating RTLIL representation for module `\FD1S3JX'.
+Generating RTLIL representation for module `\IFS1P3BX'.
+Generating RTLIL representation for module `\IFS1P3DX'.
+Generating RTLIL representation for module `\IFS1P3IX'.
+Generating RTLIL representation for module `\IFS1P3JX'.
+Generating RTLIL representation for module `\OFS1P3BX'.
+Generating RTLIL representation for module `\OFS1P3DX'.
+Generating RTLIL representation for module `\OFS1P3IX'.
+Generating RTLIL representation for module `\OFS1P3JX'.
+Generating RTLIL representation for module `\IB'.
+Generating RTLIL representation for module `\IBPU'.
+Generating RTLIL representation for module `\IBPD'.
+Generating RTLIL representation for module `\OB'.
+Generating RTLIL representation for module `\OBZ'.
+Generating RTLIL representation for module `\OBZPU'.
+Generating RTLIL representation for module `\OBZPD'.
+Generating RTLIL representation for module `\OBCO'.
+Generating RTLIL representation for module `\BB'.
+Generating RTLIL representation for module `\BBPU'.
+Generating RTLIL representation for module `\BBPD'.
+Generating RTLIL representation for module `\ILVDS'.
+Generating RTLIL representation for module `\OLVDS'.
+Successfully finished Verilog frontend.
+
+6.38.2. Continuing TECHMAP pass.
+Using template $_SDFF_PP0_ for cells of type $_SDFF_PP0_.
+Using template $paramod$_DFF_P_\_TECHMAP_WIREINIT_Q_=1'x for cells of type $_DFF_P_.
+Using template $_SDFFE_PP0P_ for cells of type $_SDFFE_PP0P_.
+No more expansions possible.
+<suppressed ~549 debug messages>
+
+6.39. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.40. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+6.41. Executing LATTICE_GSR pass (implement FF init values).
+Handling GSR in dotproduct_axi.
+
+6.42. Executing ATTRMVCP pass (move or copy attributes).
+
+6.43. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 2797 unused wires.
+<suppressed ~1 debug messages>
+
+6.44. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+6.45. Executing TECHMAP pass (map to technology primitives).
+
+6.45.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/latches_map.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/latches_map.v' to AST representation.
+Generating RTLIL representation for module `$_DLATCH_N_'.
+Generating RTLIL representation for module `$_DLATCH_P_'.
+Successfully finished Verilog frontend.
+
+6.45.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~4 debug messages>
+
+6.46. Executing ABC9 pass.
+
+6.46.1. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.2. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.3. Executing SCC pass (detecting logic loops).
+Found an SCC: $auto$ff.cc:337:slice$5604 $auto$simplemap.cc:256:simplemap_logbin$6227 $auto$ff.cc:337:slice$5601 $auto$simplemap.cc:157:simplemap_reduce$5603 $auto$simplemap.cc:256:simplemap_logbin$6228
+Found 1 SCCs in module dotproduct_axi.
+Found 1 SCCs.
+
+6.46.4. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.5. Executing TECHMAP pass (map to technology primitives).
+
+6.46.5.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+6.46.5.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~166 debug messages>
+
+6.46.6. Executing OPT pass (performing simple optimizations).
+
+6.46.6.1. Executing OPT_EXPR pass (perform const folding).
+
+6.46.6.2. Executing OPT_MERGE pass (detect identical cells).
+Removed a total of 0 cells.
+
+6.46.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Removed 0 multiplexer ports.
+
+6.46.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+Performed a total of 0 changes.
+
+6.46.6.5. Executing OPT_MERGE pass (detect identical cells).
+Removed a total of 0 cells.
+
+6.46.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.46.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+
+6.46.6.8. Executing OPT_EXPR pass (perform const folding).
+
+6.46.6.9. Finished fast OPT passes. (There is nothing left to do.)
+
+6.46.7. Executing TECHMAP pass (map to technology primitives).
+
+6.46.7.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/abc9_map.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/abc9_map.v' to AST representation.
+Lexer warning: The SystemVerilog keyword `bit' (at /opt/oss-cad-suite/lib/../share/yosys/abc9_map.v:35) is not recognized unless read_verilog is called with -sv!
+Generating RTLIL representation for module `$__ABC9_BARRIER_MAP'.
+Successfully finished Verilog frontend.
+
+6.46.7.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~3 debug messages>
+
+6.46.8. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/abc9_model.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/abc9_model.v' to AST representation.
+Generating RTLIL representation for module `$__ABC9_DELAY'.
+Generating RTLIL representation for module `$__ABC9_BARRIER'.
+Generating RTLIL representation for module `$__ABC9_SCC_BREAKER'.
+Generating RTLIL representation for module `$__DFF_N__$abc9_flop'.
+Generating RTLIL representation for module `$__DFF_P__$abc9_flop'.
+Successfully finished Verilog frontend.
+
+6.46.9. Executing ABC9_OPS pass (helper functions for ABC9).
+<suppressed ~2 debug messages>
+
+6.46.10. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.11. Executing ABC9_OPS pass (helper functions for ABC9).
+<suppressed ~2 debug messages>
+
+6.46.12. Executing TECHMAP pass (map to technology primitives).
+
+6.46.12.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/techmap.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+6.46.12.2. Continuing TECHMAP pass.
+Using template $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C for cells of type $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\LUT2\INIT=4'1010 for cells of type LUT2.
+Using template $paramod\LUT4\INIT=16'1001011010101010 for cells of type LUT4.
+Using extmapper simplemap for cells of type $mux.
+No more expansions possible.
+<suppressed ~204 debug messages>
+
+6.46.13. Executing OPT pass (performing simple optimizations).
+
+6.46.13.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~18 debug messages>
+
+6.46.13.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 59 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Computing hashes of 57 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+<suppressed ~6 debug messages>
+Removed a total of 2 cells.
+
+6.46.13.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.46.13.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.46.13.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 57 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.46.13.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.46.13.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 55 unused wires.
+<suppressed ~1 debug messages>
+
+6.46.13.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.46.13.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.46.13.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+6.46.13.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.46.13.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Computing hashes of 57 cells of `\dotproduct_axi'.
+Finding duplicate cells in `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.46.13.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.46.13.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.46.13.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.46.13.16. Finished fast OPT passes. (There is nothing left to do.)
+
+6.46.14. Executing AIGMAP pass (map logic to AIG).
+Module dotproduct_axi: replaced 537 cells with 2880 new cells, skipped 1521 cells.
+  replaced 3 cell types:
+     212 $_MUX_
+     293 $_OR_
+      32 $_XOR_
+  not replaced 7 cell types:
+     492 $_AND_
+     288 $_NOT_
+       1 $__ABC9_SCC_BREAKER
+       2 $scopeinfo
+     469 TRELLIS_FF
+       1 MULT18X18D
+     268 $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C
+
+6.46.14.1. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.14.2. Executing ABC9_OPS pass (helper functions for ABC9).
+
+6.46.14.3. Executing XAIGER2 backend.
+<suppressed ~1722 debug messages>
+Extracted 2646 AND gates and 0 wires from module `dotproduct_axi' to a netlist network with 1413 inputs and 4746 outputs.
+
+6.46.14.4. Executing ABC9_EXE pass (technology mapping using ABC9).
+
+6.46.14.5. Executing ABC9.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_lut <abc-temp-dir>/input.lut 
+ABC: + read_box <abc-temp-dir>/input.box 
+ABC: + &read <abc-temp-dir>/input.xaig 
+ABC: + &ps 
+ABC: <abc-temp-dir>/input : i/o =    609/   2334  and =    1226  lev =   26 (1.24)  mem = 0.11 MB  box = 268  bb = 0
+ABC: + &scorr 
+ABC: Warning: The network is combinational.
+ABC: + &sweep 
+ABC: + &dc2 
+ABC: + &dch -f -r 
+ABC: + &ps 
+ABC: <abc-temp-dir>/input : i/o =    609/   2334  and =    1806  lev =   66 (0.75)  mem = 0.12 MB  ch =  211  box = 268  bb = 0
+ABC: cst =       0  cls =    175  lit =     211  unused =    2833  proof =     0
+ABC: + &if -W 300 -v 
+ABC: K = 7. Memory (bytes): Truth =    0. Cut =   76. Obj =  156. Set =  780. CutMin = no
+ABC: Node =    1806.  Ch =   175.  Total mem =    1.31 MB. Peak cut mem =    0.08 MB.
+ABC: P:  Del = 3558.00.  Ar =    1176.0.  Edge =     1695.  Cut =    16981.  T =     0.01 sec
+ABC: P:  Del = 3558.00.  Ar =    1182.0.  Edge =     1795.  Cut =    16961.  T =     0.01 sec
+ABC: P:  Del = 3558.00.  Ar =     586.0.  Edge =     1623.  Cut =    25295.  T =     0.01 sec
+ABC: F:  Del = 3558.00.  Ar =     495.0.  Edge =     1487.  Cut =    22218.  T =     0.01 sec
+ABC: A:  Del = 3558.00.  Ar =     482.0.  Edge =     1316.  Cut =    21730.  T =     0.01 sec
+ABC: A:  Del = 3558.00.  Ar =     481.0.  Edge =     1315.  Cut =    21949.  T =     0.02 sec
+ABC: Total time =     0.07 sec
+ABC: + &write -n <abc-temp-dir>/output.aig 
+ABC: + &mfs 
+ABC: + &ps -l 
+ABC: <abc-temp-dir>/input : i/o =    609/   2334  and =    1046  lev =   14 (0.83)  mem = 0.11 MB  box = 268  bb = 0
+ABC: Mapping (K=7)  :  lut =    400  edge =    1301  lev =    7 (0.48)  levB =   33  mem = 0.04 MB
+ABC: LUT = 400 : 2=131 32.8 %  3=99 24.8 %  4=118 29.5 %  5=44 11.0 %  6=6 1.5 %  7=2 0.5 %  Ave = 3.25
+ABC: + &write -n <abc-temp-dir>/output.aig 
+ABC: + &verify 
+ABC: Networks are equivalent.  Time =     0.19 sec
+ABC: + time 
+ABC: elapse: 0.77 seconds, total: 0.77 seconds
+
+6.46.14.6. Executing AIGER frontend.
+<suppressed ~10 debug messages>
+Removed 1431 unused cells and 5543 unused wires.
+
+6.46.14.7. Executing ABC_OPS_REINTEGRATE pass (reintegrate ABC mapped design into module).
+ABC RESULTS:              $lut cells:      402
+ABC RESULTS:   $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C cells:      268
+ABC RESULTS:           input signals:       93
+ABC RESULTS:          output signals:       35
+<suppressed ~2943 debug messages>
+Removing temp directory.
+
+6.46.15. Executing TECHMAP pass (map to technology primitives).
+
+6.46.15.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/abc9_unmap.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/abc9_unmap.v' to AST representation.
+Generating RTLIL representation for module `$__DFF_x__$abc9_flop'.
+Generating RTLIL representation for module `$__ABC9_SCC_BREAKER'.
+Generating RTLIL representation for module `$__ABC9_BARRIER'.
+Successfully finished Verilog frontend.
+
+6.46.15.2. Continuing TECHMAP pass.
+Using template $paramod$__ABC9_SCC_BREAKER\WIDTH=32'00000000000000000000000000000001 for cells of type $__ABC9_SCC_BREAKER.
+Using template $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C for cells of type $paramod$838872d5a4bab89607f53482b205c0fd50d8b82e\CCU2C.
+No more expansions possible.
+<suppressed ~285 debug messages>
+Removed 50 unused cells and 7367 unused wires.
+
+6.47. Executing TECHMAP pass (map to technology primitives).
+
+6.47.1. Executing Verilog-2005 frontend: /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_map_trellis.v
+Parsing Verilog input from `/opt/oss-cad-suite/lib/../share/yosys/lattice/cells_map_trellis.v' to AST representation.
+Generating RTLIL representation for module `$_DFF_N_'.
+Generating RTLIL representation for module `$_DFF_P_'.
+Generating RTLIL representation for module `$_DFFE_NN_'.
+Generating RTLIL representation for module `$_DFFE_PN_'.
+Generating RTLIL representation for module `$_DFFE_NP_'.
+Generating RTLIL representation for module `$_DFFE_PP_'.
+Generating RTLIL representation for module `$_DFF_NP0_'.
+Generating RTLIL representation for module `$_DFF_NP1_'.
+Generating RTLIL representation for module `$_DFF_PP0_'.
+Generating RTLIL representation for module `$_DFF_PP1_'.
+Generating RTLIL representation for module `$_SDFF_NP0_'.
+Generating RTLIL representation for module `$_SDFF_NP1_'.
+Generating RTLIL representation for module `$_SDFF_PP0_'.
+Generating RTLIL representation for module `$_SDFF_PP1_'.
+Generating RTLIL representation for module `$_DFFE_NP0P_'.
+Generating RTLIL representation for module `$_DFFE_NP1P_'.
+Generating RTLIL representation for module `$_DFFE_PP0P_'.
+Generating RTLIL representation for module `$_DFFE_PP1P_'.
+Generating RTLIL representation for module `$_DFFE_NP0N_'.
+Generating RTLIL representation for module `$_DFFE_NP1N_'.
+Generating RTLIL representation for module `$_DFFE_PP0N_'.
+Generating RTLIL representation for module `$_DFFE_PP1N_'.
+Generating RTLIL representation for module `$_SDFFE_NP0P_'.
+Generating RTLIL representation for module `$_SDFFE_NP1P_'.
+Generating RTLIL representation for module `$_SDFFE_PP0P_'.
+Generating RTLIL representation for module `$_SDFFE_PP1P_'.
+Generating RTLIL representation for module `$_SDFFE_NP0N_'.
+Generating RTLIL representation for module `$_SDFFE_NP1N_'.
+Generating RTLIL representation for module `$_SDFFE_PP0N_'.
+Generating RTLIL representation for module `$_SDFFE_PP1N_'.
+Generating RTLIL representation for module `$_ALDFF_NP_'.
+Generating RTLIL representation for module `$_ALDFF_PP_'.
+Generating RTLIL representation for module `$_ALDFFE_NPN_'.
+Generating RTLIL representation for module `$_ALDFFE_NPP_'.
+Generating RTLIL representation for module `$_ALDFFE_PPN_'.
+Generating RTLIL representation for module `$_ALDFFE_PPP_'.
+Generating RTLIL representation for module `\FD1P3AX'.
+Generating RTLIL representation for module `\FD1P3AY'.
+Generating RTLIL representation for module `\FD1P3BX'.
+Generating RTLIL representation for module `\FD1P3DX'.
+Generating RTLIL representation for module `\FD1P3IX'.
+Generating RTLIL representation for module `\FD1P3JX'.
+Generating RTLIL representation for module `\FD1S3AX'.
+Generating RTLIL representation for module `\FD1S3AY'.
+Generating RTLIL representation for module `\FD1S3BX'.
+Generating RTLIL representation for module `\FD1S3DX'.
+Generating RTLIL representation for module `\FD1S3IX'.
+Generating RTLIL representation for module `\FD1S3JX'.
+Generating RTLIL representation for module `\IFS1P3BX'.
+Generating RTLIL representation for module `\IFS1P3DX'.
+Generating RTLIL representation for module `\IFS1P3IX'.
+Generating RTLIL representation for module `\IFS1P3JX'.
+Generating RTLIL representation for module `\OFS1P3BX'.
+Generating RTLIL representation for module `\OFS1P3DX'.
+Generating RTLIL representation for module `\OFS1P3IX'.
+Generating RTLIL representation for module `\OFS1P3JX'.
+Generating RTLIL representation for module `\IB'.
+Generating RTLIL representation for module `\IBPU'.
+Generating RTLIL representation for module `\IBPD'.
+Generating RTLIL representation for module `\OB'.
+Generating RTLIL representation for module `\OBZ'.
+Generating RTLIL representation for module `\OBZPU'.
+Generating RTLIL representation for module `\OBZPD'.
+Generating RTLIL representation for module `\OBCO'.
+Generating RTLIL representation for module `\BB'.
+Generating RTLIL representation for module `\BBPU'.
+Generating RTLIL representation for module `\BBPD'.
+Generating RTLIL representation for module `\ILVDS'.
+Generating RTLIL representation for module `\OLVDS'.
+Generating RTLIL representation for module `$lut'.
+Successfully finished Verilog frontend.
+
+6.47.2. Continuing TECHMAP pass.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1110 for cells of type $lut.
+Using template $paramod$658b9ed803f0d3d335616d3858b53e0a2522f1e8$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00010000 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0010 for cells of type $lut.
+Using template $paramod$47a8214374025465e226fa66bee690ff33268a25$lut for cells of type $lut.
+Using template $paramod$0d3ac82cf5b8a192d5ff4c23e3143360366ae882$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1011 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0001 for cells of type $lut.
+Using template $paramod$f951d944eb5766c38efc7c7738f1d7b3ea6d97c8$lut for cells of type $lut.
+Using template $paramod$30305e55a780880b9c824fe3509a4d981acb0f2b$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'01000000 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'10000000 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0100 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1000 for cells of type $lut.
+Using template $paramod$873c285bdccf0ac2b60d2304ea5cd14bf211d2a6$lut for cells of type $lut.
+Using template $paramod$f3ada871809f362efd8eb0c4fb952bb5c98f0750$lut for cells of type $lut.
+Using template $paramod$ead66ba22839f96e739c8f1b5a09bc1717b3be02$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00001000 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11101010 for cells of type $lut.
+Using template $paramod$7bb6a37e65823eeb4b38c370fec30ab082759a14$lut for cells of type $lut.
+Using template $paramod$6e238df02989b317f10820a22773676e71120644$lut for cells of type $lut.
+Using template $paramod$272652f6c6fbe9a75eff76e45cc7e2788835518b$lut for cells of type $lut.
+Using template $paramod$571404c0889eaf57f492cb5e37f8acb5df5852f9$lut for cells of type $lut.
+Using template $paramod$d7856980c8e3df62f97c26ab34037f33a9e831b5$lut for cells of type $lut.
+Using template $paramod$8e44661def013b6bf9fe6f8b049ef2c838d749f9$lut for cells of type $lut.
+Using template $paramod$eba7de026ff587370e320127e266317dae097a89$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00000001 for cells of type $lut.
+Using template $paramod$20f3f4b8e32f8a8b038b0056872dc94926194798$lut for cells of type $lut.
+Using template $paramod$814c3b252be27c827211b823a5bea75e4098fa4e$lut for cells of type $lut.
+Using template $paramod$5e9374f44a27c3f8a1c38af244ec43ceb4fb8d4f$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00101010 for cells of type $lut.
+Using template $paramod$8c11a155773d2e4aba9b1022fc059160b55313e8$lut for cells of type $lut.
+Using template $paramod$71d09d8354f5555fb54ab0bd4f3934a22c793990$lut for cells of type $lut.
+Using template $paramod$a4acbc71104187538339b0cd522368fa0e0d18c3$lut for cells of type $lut.
+Using template $paramod$aebaf2a738788db63f82cd94c098f896b0266035$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11101111 for cells of type $lut.
+Using template $paramod$6b4a687dc3f52ef9183c58be1e698cff6eb1e613$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1101 for cells of type $lut.
+Using template $paramod$3bbe788c70c951763cf32aa91c89baa5a59c2691$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11011111 for cells of type $lut.
+Using template $paramod$81d8a60fd95b1a9f9ef71c12a774ae6988cb9fd5$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00101111 for cells of type $lut.
+Using template $paramod$f8f63b209b7230e81958663ff24fef1613156af7$lut for cells of type $lut.
+Using template $paramod$c1a19a87ccbbb03d43a72335db63f692ddf82cc1$lut for cells of type $lut.
+Using template $paramod$be48d952fcad8a16b8d84daa4c48a3065f343e5e$lut for cells of type $lut.
+Using template $paramod$fb5ee0bdef1c4e74aaf1fd8efae98b46a2f5e564$lut for cells of type $lut.
+Using template $paramod$a59854b679c443f21a6748ea460109b8241cb007$lut for cells of type $lut.
+Using template $paramod$fbeae4d13c6561566bb87c819d405873ec370e64$lut for cells of type $lut.
+Using template $paramod$8512f4fb47fa9596f76cdbe5b407a5b54df368e7$lut for cells of type $lut.
+Using template $paramod$8d7a8d6e3356de09670738ba85f2c6b874f6b06d$lut for cells of type $lut.
+Using template $paramod$e3e4230bb990723642112b292aa705ee0cbad0d4$lut for cells of type $lut.
+Using template $paramod$024f437069ede126a08cbaf2540201977a378569$lut for cells of type $lut.
+Using template $paramod$251994398653c4cf8de320f1e306e535d5d2d624$lut for cells of type $lut.
+Using template $paramod$a50983bc2d916c31a7d4beac5feb90028d16502d$lut for cells of type $lut.
+Using template $paramod$64ee7ab34dfc7eebd69a19ba845e387ccf31cd09$lut for cells of type $lut.
+Using template $paramod$ea01c267d60de3df2a073e256dd58614b0b52c59$lut for cells of type $lut.
+Using template $paramod$3258fabf91107b4a007ae89b2246a16c31e8ae28$lut for cells of type $lut.
+Using template $paramod$f79938a687f03dc06c4fb088b4b491fc2a3339e4$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11100100 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'00001110 for cells of type $lut.
+Using template $paramod$cad45b6c9da81941161a13849773fe2ed4bc1c6f$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'10110000 for cells of type $lut.
+Using template $paramod$5e96c51e862795fcf5123ad90ed33b3bddf109cb$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11011000 for cells of type $lut.
+Using template $paramod$4cab3b31c601551ff65536bf4f533afa0b2094ee$lut for cells of type $lut.
+Using template $paramod$18455d4fd1270af2266bf4bb1c44971b2eb6b37a$lut for cells of type $lut.
+Using template $paramod$0ee0167fb5dd83bdfe7197fff23e2c7146c57037$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'01001100 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11100010 for cells of type $lut.
+Using template $paramod$ec6c71d259df49ae0842190ffaff1179e43a8db4$lut for cells of type $lut.
+Using template $paramod$517625bf4a7b846fd553901d881a35fcc8afe4c4$lut for cells of type $lut.
+Using template $paramod$364c9ffbffac467d60dfec81bba4e18476c15602$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11100000 for cells of type $lut.
+Using template $paramod$2b32bb54e617ed260ab04db591b24e2267923a52$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'10101100 for cells of type $lut.
+Using template $paramod$1cabbe2f17ea824b0f9f091fd1dc13fff0b3a362$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'11001010 for cells of type $lut.
+Using template $paramod$256c12d6c24ada3ad6d2477637e485e8ad22c9be$lut for cells of type $lut.
+Using template $paramod$64326a0d30f327d60abcb28f4b0e41e768e28e9f$lut for cells of type $lut.
+Using template $paramod$e521947e91994a7dcd7b88ccefc1be509c0df3b1$lut for cells of type $lut.
+Using template $paramod$4d1bf23aa47c1ac4930b829df9b99f2a661b59d6$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'10111000 for cells of type $lut.
+Using template $paramod$c28a8b7ce0535d090c4cfb52e9c74affd52b110c$lut for cells of type $lut.
+Using template $paramod$5d465bcb0b72d0207b19ca10d090492e09d0263d$lut for cells of type $lut.
+Using template $paramod$6d6beead1425af15cf78b27fd9b11b41b5d4bce8$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000001\LUT=2'01 for cells of type $lut.
+No more expansions possible.
+<suppressed ~1420 debug messages>
+
+6.48. Executing OPT_LUT_INS pass (discard unused LUT inputs).
+Optimizing LUTs in dotproduct_axi.
+  Optimizing lut $abc$22606$lut$aiger$o4301.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger$o4301.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger$o2628.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1523.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1523.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 2)
+  Optimizing lut $abc$22606$lut$aiger22605$1766.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut3 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut5 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut6 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut7 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut3 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut5 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut6 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut7 (4 -> 1)
+  Optimizing lut $abc$22606$lut$aiger22605$1477.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1477.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1477.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut3 (4 -> 1)
+  Optimizing lut $abc$22606$lut$aiger22605$1612.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut2 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1612.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut3 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger$o4077.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 3)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 1)
+  Optimizing lut $abc$22606$lut$aiger$o4071.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger$o4069.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger$o4301.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1684.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1793.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger$o2628.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger$o2628.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1869.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1699.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger$o2674.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1902.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$2248.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 3)
+  Optimizing lut $abc$22606$lut$aiger22605$1612.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 2)
+  Optimizing lut $abc$22606$lut$aiger22605$1766.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 1)
+  Optimizing lut $abc$22606$lut$aiger22605$1766.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 1)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22653.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22649.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 1)
+  Optimizing lut $abc$22606$lut$aiger22605$1511.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22644.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22637.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22636.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22635.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22634.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22633.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22632.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1612.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 2)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22631.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22630.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22629.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22628.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1595.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22627.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22626.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22625.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22624.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22623.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22622.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22621.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22620.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22619.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22618.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22617.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22616.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22615.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22614.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22613.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22612.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22611.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $auto$abc_ops_reintegrate.cc:694:reintegrate$22610.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1523.genblk1.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1515.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger22605$1602.genblk1.genblk1.genblk1.genblk1.genblk1.lut0 (4 -> 0)
+  Optimizing lut $abc$22606$lut$aiger$o2493.genblk1.genblk1.genblk1.genblk1.genblk1.lut1 (4 -> 0)
+Removed 0 unused cells and 954 unused wires.
+
+6.49. Executing AUTONAME pass.
+Renamed 2403 objects in module dotproduct_axi.
+<suppressed ~2403 debug messages>
+
+6.50. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `dotproduct_axi'. Setting top module to dotproduct_axi.
+
+6.50.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+
+6.50.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Removed 0 unused modules.
+
+6.51. Printing statistics.
+
+=== dotproduct_axi ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     1212 wires
+     2461 wire bits
+     1212 public wires
+     2461 public wire bits
+       57 ports
+      309 port bits
+        3 cells
+        2   $scopeinfo
+        1   MULT18X18D
+     1291 submodules
+      268   CCU2C
+       12   L6MUX21
+      478   LUT4
+       64   PFUMX
+      469   TRELLIS_FF
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+        3 dotproduct_axi
+
+        +----------Count including submodules.
+        | 
+     1212 wires
+     2461 wire bits
+     1212 public wires
+     2461 public wire bits
+       57 ports
+      309 port bits
+        - memories
+        - memory bits
+        - processes
+        3 cells
+        2   $scopeinfo
+        1   MULT18X18D
+     1291 submodules
+      268   CCU2C
+       12   L6MUX21
+      478   LUT4
+       64   PFUMX
+      469   TRELLIS_FF
+
+6.52. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+6.53. Executing JSON backend.

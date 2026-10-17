@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="658" viewBox="0 0 960 658" role="img" aria-labelledby="title desc">
+<title id="title">A dirty cache miss: follow ownership of a line</title><desc id="desc">Blocking write-back example • translation/protection already completed successfully</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="658" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A dirty cache miss: follow ownership of a line</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Blocking write-back example • translation/protection already completed successfully</text>
+<rect x="29" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="125.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU / LSU</text>
+<path d="M125 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="269" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="365.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">D-cache</text>
+<path d="M365 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="509" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="605.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">EBU / bus</text>
+<path d="M605 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="739" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="835.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">RAM</text>
+<path d="M835 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M125 185H365" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="245.0" y="175" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1  Load request</text>
+<text x="380" y="216" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">tag miss; select dirty victim</text>
+<path d="M365 255H835" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="600.0" y="245" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2  Write back victim address + data</text>
+<path d="M835 304H365" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="600.0" y="294" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3  Writeback complete; victim may be replaced</text>
+<path d="M365 356H835" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="600.0" y="346" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4  Request missed line</text>
+<path d="M835 410H365" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="600.0" y="400" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5  Refill accepted beat by beat</text>
+<text x="380" y="444" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">install tag / data; set valid; clear dirty</text>
+<path d="M365 492H125" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="245.0" y="482" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">6  Return requested word</text>
+<text x="42" y="349" font-size="19" text-anchor="start" fill="#a34624" font-weight="normal">CPU waits</text>
+<rect x="28" y="535" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="563" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A clean or invalid victim skips writeback. Backpressure lengthens the intervals.</text>
+<text x="44" y="588" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">In the chapter’s RV32 / 32-bit AHB baseline, a 64-byte line needs 16 accepted data</text>
+<text x="44" y="613" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">beats.</text>
+</g></svg>

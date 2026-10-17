@@ -1,0 +1,32 @@
+FIRRTL version 3.3.0
+circuit Accumulator :
+  module Accumulator : @[src/main/scala/Accumulator.scala 7:7]
+    input clock : Clock @[src/main/scala/Accumulator.scala 9:17]
+    input reset : UInt<1> @[src/main/scala/Accumulator.scala 10:17]
+    input Clear : UInt<1> @[src/main/scala/Accumulator.scala 11:17]
+    input Enable : UInt<1> @[src/main/scala/Accumulator.scala 12:18]
+    input Operand : UInt<32> @[src/main/scala/Accumulator.scala 13:19]
+    output Sum : UInt<32> @[src/main/scala/Accumulator.scala 14:15]
+    output Valid : UInt<1> @[src/main/scala/Accumulator.scala 15:17]
+    output Overflow : UInt<1> @[src/main/scala/Accumulator.scala 16:20]
+
+    regreset sum : UInt<32>, clock, reset, UInt<32>(0h0) @[src/main/scala/Accumulator.scala 18:22]
+    regreset valid : UInt<1>, clock, reset, UInt<1>(0h0) @[src/main/scala/Accumulator.scala 19:24]
+    regreset overflow : UInt<1>, clock, reset, UInt<1>(0h0) @[src/main/scala/Accumulator.scala 20:27]
+    node extended = add(sum, Operand) @[src/main/scala/Accumulator.scala 21:24]
+    when Clear : @[src/main/scala/Accumulator.scala 23:20]
+      connect sum, UInt<1>(0h0) @[src/main/scala/Accumulator.scala 24:11]
+      connect valid, UInt<1>(0h0) @[src/main/scala/Accumulator.scala 25:13]
+      connect overflow, UInt<1>(0h0) @[src/main/scala/Accumulator.scala 26:16]
+    else :
+      connect valid, Enable @[src/main/scala/Accumulator.scala 28:13]
+      node _overflow_T = bits(extended, 32, 32) @[src/main/scala/Accumulator.scala 29:37]
+      node _overflow_T_1 = and(Enable, _overflow_T) @[src/main/scala/Accumulator.scala 29:26]
+      connect overflow, _overflow_T_1 @[src/main/scala/Accumulator.scala 29:16]
+      when Enable : @[src/main/scala/Accumulator.scala 30:20]
+        node _sum_T = bits(extended, 31, 0) @[src/main/scala/Accumulator.scala 30:37]
+        connect sum, _sum_T @[src/main/scala/Accumulator.scala 30:26]
+    connect Sum, sum @[src/main/scala/Accumulator.scala 32:9]
+    connect Valid, valid @[src/main/scala/Accumulator.scala 33:11]
+    connect Overflow, overflow @[src/main/scala/Accumulator.scala 34:14]
+

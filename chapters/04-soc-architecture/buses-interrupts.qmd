@@ -220,6 +220,10 @@ B itself may stall. A pending response cannot disappear or be replaced while BRE
 
 #### Read snapshots and side effects
 
+![Original AXI4 single-beat write timing. Each value occupies the interval immediately before the numbered rising edge. Green dots identify handshakes; address, data and response are accepted at different edges. Payload boxes marked with a dash have no valid information.](../../figures/architecture-axi-write.svg){#fig-axi-write-backpressure fig-alt="AXI write address accepted at edge two, data held until edge five and response retained until edge eight" width=100%}
+
+In @fig-axi-write-backpressure, neither address acceptance nor an asserted READY on its own completes the write. Track the three acceptance edges separately, and retain the accepted AW information while W waits. The same channel independence applies when W arrives first.
+
 After AR acceptance, the subordinate eventually presents R data/status. If RREADY is low, it retains that response. Reading a changing register afresh on every stalled R cycle violates stability; popping a FIFO every cycle corrupts it.
 
 A device can consume a FIFO entry when it creates a retained response, or use another defined internal schedule. In either case, one request consumes one entry. The design must assign ownership of the entry to either the FIFO or the response buffer throughout the wait.
@@ -253,6 +257,10 @@ AXI4 INCR bursts can have up to 256 beats and must not cross a 4 KiB boundary. S
 R and W may stall between beats. Advance a beat counter only on acceptance. Counting cycles with VALID alone can assert LAST too early. Once a burst is accepted, a manager cannot end it early because software no longer wants the remaining data; the protocol obligation still exists.
 
 #### Outstanding requests, IDs and ordering
+
+![Original four-beat AXI4 read timing with response backpressure. Data D1 stays valid through two stalled edges; D3 carries RLAST. Timing values are illustrative protocol stimulus, not measurements of the project accelerator, which uses single-beat transfers.](../../figures/architecture-axi-read.svg){#fig-axi-read-backpressure fig-alt="Read burst accepts beats at edges two, five, six and seven; stalled D1 and its response fields remain stable" width=100%}
+
+@fig-axi-read-backpressure makes the difference between elapsed cycles and accepted beats visible. Increment the burst index at edges 2, 5, 6 and 7. Counting either VALID cycles or READY cycles would end this burst at the wrong time.
 
 An outstanding transaction is accepted but incomplete. IDs associate responses with requests and enable eligible different-ID transactions to complete out of order. Same-ID ordering constraints still apply. For example, a slow read with ID 1 need not block a ready read with ID 2 if the manager has state to place both results correctly.
 

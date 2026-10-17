@@ -184,11 +184,17 @@ The key benefit is conditional: a program must offer independent work and a memo
 
 ### One instruction through the window
 
+![Original conceptual OoO pipeline: rename maps architectural to physical registers, dispatch allocates window and ROB entries, issue follows readiness, and commit retires the oldest completed instruction. This is a teaching organization, not a particular BOOM or XiangShan configuration.](../../figures/architecture-ooo-window.svg){#fig-ooo-window fig-alt="Fetch, rename, dispatch, issue, physical register file, execution, reorder buffer and in-order commit with recovery feedback" width=100%}
+
+In @fig-ooo-window, distinguish the result path from the retirement path. Writing a physical register can wake a dependent instruction while the producer still waits in the ROB. A misprediction or exception must discard younger work and recover the appropriate rename state; completion alone does not authorize an architectural side effect.
+
 Consider `mul x5,x1,x2`, followed by `add x6,x3,x4`, then `sub x7,x5,x6`. The multiply and add can execute independently. The subtract waits for both results. Renaming assigns separate physical destinations, the issue logic schedules ready operations, and the reorder buffer retires them in program order. If an older instruction faults, younger results cannot become architectural state, even if the arithmetic finished.
 
 This example distinguishes *executed* from *retired*. PMU `instret` counts retirement, not the speculative instructions later squashed. A performance comparison that counts every executed micro-operation as an instruction overstates work completed.
 
 ### Chisel as a generator language
+
+The short section @sec-hardware-generators explains the Chisel/FIRRTL/CIRCT route and provides an executable accumulator comparison before approaching a full processor generator.
 
 Chisel programs elaborate into hardware. A parameter may change widths, queue entries or generated modules before Verilog is emitted. The generated RTL is a build artifact for a specific configuration, not the full design intent. A reproducible result therefore records source commit, generator parameters, Scala/Chisel tool versions and the emitted RTL alongside normal synthesis inputs.
 

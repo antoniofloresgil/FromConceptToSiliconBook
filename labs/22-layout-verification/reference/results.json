@@ -1,0 +1,94 @@
+{
+  "baseline_drc": {
+    "categories": 129,
+    "markers": 0,
+    "by_category": {}
+  },
+  "baseline_lvs": {
+    "match": false,
+    "layout": {
+      "nets": 24722,
+      "pins": 293,
+      "devices": {
+        "PMOS_VTL": 22248,
+        "NMOS_VTL": 22223
+      }
+    },
+    "reference": {
+      "nets": 24802,
+      "pins": 293,
+      "devices": {
+        "NMOS_VTL": 22223,
+        "PMOS_VTL": 22248
+      }
+    },
+    "bulk_connections": "geometric contacts; no implicit/global power joins"
+  },
+  "finished_drc": {
+    "categories": 129,
+    "markers": 0,
+    "by_category": {}
+  },
+  "finished_lvs": {
+    "match": true,
+    "layout": {
+      "nets": 23394,
+      "pins": 293,
+      "devices": {
+        "PMOS_VTL": 22248,
+        "NMOS_VTL": 22223
+      }
+    },
+    "reference": {
+      "nets": 23394,
+      "pins": 293,
+      "devices": {
+        "NMOS_VTL": 22223,
+        "PMOS_VTL": 22248
+      }
+    },
+    "bulk_connections": "geometric contacts; no implicit/global power joins"
+  },
+  "negative_drc": {
+    "categories": 129,
+    "markers": 1,
+    "by_category": {
+      "'METAL2.1'": 1
+    }
+  },
+  "negative_lvs": {
+    "match": false,
+    "layout": {
+      "nets": 23393,
+      "pins": 293,
+      "devices": {
+        "PMOS_VTL": 22248,
+        "NMOS_VTL": 22223
+      }
+    },
+    "reference": {
+      "nets": 23394,
+      "pins": 293,
+      "devices": {
+        "NMOS_VTL": 22223,
+        "PMOS_VTL": 22248
+      }
+    },
+    "bulk_connections": "geometric contacts; no implicit/global power joins"
+  },
+  "pg": {
+    "missing_pg_before": 1408,
+    "missing_pg_reconnected": 0,
+    "missing_pg_finished": 0,
+    "added_physical_cells": 29821
+  },
+  "timing": {
+    "setup_ns": 5.204097744481942,
+    "hold_ns": 0.029677428021741278
+  },
+  "electrical_violations": 0,
+  "unconstrained_report_empty": true,
+  "functional_snapshot_equal": true,
+  "reference_gate_pass": true,
+  "manufacturing_qualified": false
+}

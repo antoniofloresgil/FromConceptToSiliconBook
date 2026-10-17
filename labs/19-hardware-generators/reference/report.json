@@ -1,0 +1,608 @@
+{
+  "status": "pass",
+  "seed": 2026,
+  "image": "sha256:be8d690acc40113934e300f2ad054bbf78aced42c53b90c5e4cf703c6b45a905",
+  "scope": "Sampled cycle-level checks against an independent integer contract; generic synthesis statistics; no general equivalence or physical PPA claim",
+  "versions": {
+    "java": "openjdk version \"17.0.20.1\" 2026-08-18",
+    "firtool": "LLVM (http://llvm.org/):\n  LLVM version 18.0.0git\n  Optimized build.\nCIRCT firtool-1.62.0",
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)",
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()"
+  },
+  "toolchain": {
+    "scala": "2.13.12",
+    "chisel": "6.5.0",
+    "sbt": "1.10.2",
+    "firtool": "1.62.0"
+  },
+  "commands": [
+    {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "log": "java-version.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "--version"
+      ],
+      "log": "firtool-version.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-V"
+      ],
+      "log": "yosys-version.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-V"
+      ],
+      "log": "iverilog-version.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "java",
+        "-Duser.home=/tmp",
+        "-cp",
+        "/opt/generator/target/scala-2.13/classes:/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/chipsalliance/chisel_2.13/6.5.0/chisel_2.13-6.5.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/scala-reflect/2.13.12/scala-reflect-2.13.12.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/github/scopt/scopt_2.13/4.1.0/scopt_2.13-4.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/net/jcazevedo/moultingyaml_2.13/0.4.2/moultingyaml_2.13-0.4.2.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-native_2.13/4.0.6/json4s-native_2.13-4.0.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-text/1.10.0/commons-text-1.10.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/data-class_2.13/0.2.6/data-class_2.13-0.2.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/os-lib_2.13/0.9.2/os-lib_2.13-0.9.2.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/1.0.4/scala-parallel-collections_2.13-1.0.4.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle_2.13/3.1.0/upickle_2.13-3.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/chipsalliance/firtool-resolver_2.13/1.3.0/firtool-resolver_2.13-1.3.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/github/nscala-time/nscala-time_2.13/2.22.0/nscala-time_2.13-2.22.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/yaml/snakeyaml/1.26/snakeyaml-1.26.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-core_2.13/4.0.6/json4s-core_2.13-4.0.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-native-core_2.13/4.0.6/json4s-native-core_2.13-4.0.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/geny_2.13/1.0.0/geny_2.13-1.0.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/ujson_2.13/3.1.0/ujson_2.13-3.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upack_2.13/3.1.0/upack_2.13-3.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.1.0/upickle-implicits_2.13-3.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/dev/dirs/directories/26/directories-26.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/scribe_2.13/3.13.0/scribe_2.13-3.13.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier_2.13/2.1.8/coursier_2.13-2.1.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/joda-time/joda-time/2.10.1/joda-time-2.10.1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/joda/joda-convert/2.2.0/joda-convert-2.2.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-ast_2.13/4.0.6/json4s-ast_2.13-4.0.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-scalap_2.13/4.0.6/json4s-scalap_2.13-4.0.6.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle-core_2.13/3.1.0/upickle-core_2.13-3.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/perfolation_2.13/1.2.9/perfolation_2.13-1.2.9.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.1/sourcecode_2.13-0.3.1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.11.0/scala-collection-compat_2.13-2.11.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/moduload_2.13/1.1.7/moduload_2.13-1.1.7.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.13/2.13.5.2/jsoniter-scala-core_2.13-2.13.5.2.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-core_2.13/2.1.8/coursier-core_2.13-2.1.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-cache_2.13/2.1.8/coursier-cache_2.13-2.1.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-proxy-setup/2.1.8/coursier-proxy-setup-2.1.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/concurrent-reference-hash-map/1.1.0/concurrent-reference-hash-map-1.1.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.2.0/scala-xml_2.13-2.2.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-util_2.13/2.1.8/coursier-util_2.13-2.1.8.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/jniutils/windows-jni-utils/0.3.3/windows-jni-utils-0.3.3.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/4.9.0/plexus-archiver-4.9.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-container-default/2.1.1/plexus-container-default-2.1.1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/virtuslab/scala-cli/config_2.13/0.2.1/config_2.13-0.2.1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/windows-ansi/windows-ansi/0.0.5/windows-ansi-0.0.5.jar:/opt/coursier/https/repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/4.0.0/plexus-utils-4.0.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/3.4.1/plexus-io-3.4.1.jar:/opt/coursier/https/repo.maven.apache.org/maven2/commons-io/commons-io/2.15.0/commons-io-2.15.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.24.0/commons-compress-1.24.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/iq80/snappy/snappy/0.4/snappy-0.4.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/tukaani/xz/1.9/xz-1.9.jar:/opt/coursier/https/repo.maven.apache.org/maven2/com/github/luben/zstd-jni/1.5.5-10/zstd-jni-1.5.5-10.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-classworlds/2.6.0/plexus-classworlds-2.6.0.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/xbean/xbean-reflect/3.7/xbean-reflect-3.7.jar:/opt/coursier/https/repo.maven.apache.org/maven2/org/fusesource/jansi/jansi/1.18/jansi-1.18.jar",
+        "Emit",
+        "/work/labs/build/hardware-generators-author-final"
+      ],
+      "log": "elaboration.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w8/Accumulator.fir",
+        "--disable-all-randomization",
+        "--lowering-options=disallowLocalVariables",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w8/Accumulator.sv"
+      ],
+      "log": "w8-lower.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w8/Accumulator.fir",
+        "--ir-hw",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w8/lowered.mlir"
+      ],
+      "log": "w8-ir.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-Ptb.W=8",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w8/sim.vvp",
+        "/work/labs/19-hardware-generators/tb.sv",
+        "/work/labs/19-hardware-generators/accumulator_sv.sv",
+        "/work/examples/verilator/accumulator.sv",
+        "/work/labs/build/hardware-generators-author-final/w8/Accumulator.sv"
+      ],
+      "log": "w8-compile.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "/work/labs/build/hardware-generators-author-final/w8/sim.vvp",
+        "+VECTORS=/work/labs/build/hardware-generators-author-final/w8/vectors.txt"
+      ],
+      "log": "w8-simulation.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/19-hardware-generators/accumulator_sv.sv; hierarchy -top accumulator_sv -chparam W 8; synth -top accumulator_sv -noabc; write_json /work/labs/build/hardware-generators-author-final/w8/direct-synth.json"
+      ],
+      "log": "w8-direct-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/build/hardware-generators-author-final/w8/Accumulator.sv; hierarchy -top Accumulator; synth -top Accumulator -noabc; write_json /work/labs/build/hardware-generators-author-final/w8/generated-synth.json"
+      ],
+      "log": "w8-generated-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w16/Accumulator.fir",
+        "--disable-all-randomization",
+        "--lowering-options=disallowLocalVariables",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w16/Accumulator.sv"
+      ],
+      "log": "w16-lower.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w16/Accumulator.fir",
+        "--ir-hw",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w16/lowered.mlir"
+      ],
+      "log": "w16-ir.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-Ptb.W=16",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w16/sim.vvp",
+        "/work/labs/19-hardware-generators/tb.sv",
+        "/work/labs/19-hardware-generators/accumulator_sv.sv",
+        "/work/examples/verilator/accumulator.sv",
+        "/work/labs/build/hardware-generators-author-final/w16/Accumulator.sv"
+      ],
+      "log": "w16-compile.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "/work/labs/build/hardware-generators-author-final/w16/sim.vvp",
+        "+VECTORS=/work/labs/build/hardware-generators-author-final/w16/vectors.txt"
+      ],
+      "log": "w16-simulation.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/19-hardware-generators/accumulator_sv.sv; hierarchy -top accumulator_sv -chparam W 16; synth -top accumulator_sv -noabc; write_json /work/labs/build/hardware-generators-author-final/w16/direct-synth.json"
+      ],
+      "log": "w16-direct-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/build/hardware-generators-author-final/w16/Accumulator.sv; hierarchy -top Accumulator; synth -top Accumulator -noabc; write_json /work/labs/build/hardware-generators-author-final/w16/generated-synth.json"
+      ],
+      "log": "w16-generated-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w32/Accumulator.fir",
+        "--disable-all-randomization",
+        "--lowering-options=disallowLocalVariables",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w32/Accumulator.sv"
+      ],
+      "log": "w32-lower.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/w32/Accumulator.fir",
+        "--ir-hw",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w32/lowered.mlir"
+      ],
+      "log": "w32-ir.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-Ptb.W=32",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/w32/sim.vvp",
+        "/work/labs/19-hardware-generators/tb.sv",
+        "/work/labs/19-hardware-generators/accumulator_sv.sv",
+        "/work/examples/verilator/accumulator.sv",
+        "/work/labs/build/hardware-generators-author-final/w32/Accumulator.sv"
+      ],
+      "log": "w32-compile.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "/work/labs/build/hardware-generators-author-final/w32/sim.vvp",
+        "+VECTORS=/work/labs/build/hardware-generators-author-final/w32/vectors.txt"
+      ],
+      "log": "w32-simulation.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/19-hardware-generators/accumulator_sv.sv; hierarchy -top accumulator_sv -chparam W 32; synth -top accumulator_sv -noabc; write_json /work/labs/build/hardware-generators-author-final/w32/direct-synth.json"
+      ],
+      "log": "w32-direct-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv /work/labs/build/hardware-generators-author-final/w32/Accumulator.sv; hierarchy -top Accumulator; synth -top Accumulator -noabc; write_json /work/labs/build/hardware-generators-author-final/w32/generated-synth.json"
+      ],
+      "log": "w32-generated-synthesis.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/Accumulator.fir",
+        "--disable-all-randomization",
+        "--lowering-options=disallowLocalVariables",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/Accumulator.sv"
+      ],
+      "log": "fault-w16-lower.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "firtool",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/Accumulator.fir",
+        "--ir-hw",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/lowered.mlir"
+      ],
+      "log": "fault-w16-ir.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-Ptb.W=16",
+        "-o",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/sim.vvp",
+        "/work/labs/19-hardware-generators/tb.sv",
+        "/work/labs/19-hardware-generators/accumulator_sv.sv",
+        "/work/examples/verilator/accumulator.sv",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/Accumulator.sv"
+      ],
+      "log": "fault-w16-compile.txt",
+      "expected_failure": false,
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "vvp",
+        "/work/labs/build/hardware-generators-author-final/fault-w16/sim.vvp",
+        "+VECTORS=/work/labs/build/hardware-generators-author-final/fault-w16/vectors.txt"
+      ],
+      "log": "fault-w16-simulation.txt",
+      "expected_failure": true,
+      "exit_code": 1
+    }
+  ],
+  "cases": {
+    "w8": {
+      "status": "pass",
+      "width": 8,
+      "bad_clear_priority": false,
+      "cycles": 552,
+      "vector_count": 552,
+      "stimulus_coverage": {
+        "reset": 52,
+        "clear_and_enable": 31,
+        "hold": 178,
+        "overflow": 106
+      },
+      "synthesis": {
+        "direct": {
+          "generic_cells": 61,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 8,
+            "$_OR_": 12,
+            "$_AND_": 24,
+            "$_XOR_": 15
+          }
+        },
+        "generated": {
+          "generic_cells": 63,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 8,
+            "$_OR_": 12,
+            "$_NOT_": 1,
+            "$_AND_": 25,
+            "$_XOR_": 15
+          }
+        }
+      }
+    },
+    "w16": {
+      "status": "pass",
+      "width": 16,
+      "bad_clear_priority": false,
+      "cycles": 552,
+      "vector_count": 552,
+      "stimulus_coverage": {
+        "reset": 44,
+        "clear_and_enable": 38,
+        "hold": 159,
+        "overflow": 118
+      },
+      "synthesis": {
+        "direct": {
+          "generic_cells": 130,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 16,
+            "$_OR_": 27,
+            "$_AND_": 54,
+            "$_XOR_": 31
+          }
+        },
+        "generated": {
+          "generic_cells": 132,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 16,
+            "$_OR_": 27,
+            "$_NOT_": 1,
+            "$_AND_": 55,
+            "$_XOR_": 31
+          }
+        }
+      }
+    },
+    "w32": {
+      "status": "pass",
+      "width": 32,
+      "bad_clear_priority": false,
+      "cycles": 552,
+      "vector_count": 552,
+      "stimulus_coverage": {
+        "reset": 40,
+        "clear_and_enable": 48,
+        "hold": 158,
+        "overflow": 107
+      },
+      "synthesis": {
+        "direct": {
+          "generic_cells": 271,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 32,
+            "$_OR_": 58,
+            "$_AND_": 116,
+            "$_XOR_": 63
+          }
+        },
+        "generated": {
+          "generic_cells": 273,
+          "cell_types": {
+            "$_SDFF_PP0_": 2,
+            "$_SDFFE_PP0P_": 32,
+            "$_OR_": 58,
+            "$_NOT_": 1,
+            "$_AND_": 117,
+            "$_XOR_": 63
+          }
+        }
+      }
+    },
+    "fault-w16": {
+      "status": "expected_mismatch",
+      "width": 16,
+      "bad_clear_priority": true,
+      "cycles": 2,
+      "vector_count": 552,
+      "stimulus_coverage": {
+        "reset": 44,
+        "clear_and_enable": 38,
+        "hold": 159,
+        "overflow": 118
+      }
+    }
+  },
+  "original_source": {
+    "examples/verilator/accumulator.sv": "a0f44c7a1f2c1e610fe0dc73ee4d39f11b3ff61b6d5ff4ce272f2f38a96d2201"
+  },
+  "sources": {
+    "accumulator_sv.sv": "201a757719ef4d3c6270b76b06ca74afb9ca41019281c722e4253ac85c348fb0",
+    "build.sbt": "e65a1bd62862e14a1c817039a7669bb8a1ea8bb501be3cb44d92d3b58790251b",
+    "collect.py": "d05da937da496a20f93bb4077d9d35a69d7f925271ab7e946f0021b41d9e5667",
+    "Dockerfile": "acf624d4f9075e7f67a92506db38a467a00ea0c8ad8fd78b0a2748038dbdf78e",
+    "run.py": "e8e465e9107fb0e1965bdcfb025d227773e19909d04b61860276416fc29b4937",
+    "sbt.sh": "f9310f07f3fe6c8dda1b374f11e0f79217edc7b0c1d98c7fd95d177b5d2c7436",
+    "tb.sv": "796c55c1f077f103fdda856e1826be0f463eb51cb328a739423e853023a19e89",
+    "verify_reference.py": "0878ce4119933c9a236bd0a7158c09426b9162cc6460f494c75a40294039182c",
+    "project/build.properties": "97e9b0adc044c92dbf8dc1e671a268242449320b6911d1623cc93427f0bb1b61",
+    "src/main/scala/Accumulator.scala": "679bc9ca60c9501f857a18cf0367d6d95f055608d2347e57ed473e87a6f5f25b"
+  },
+  "runtime_jars": {
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.jar": "c6a879e4973a60f6162668542a33eaccc2bb565d1c934fb061c5844259131dd1",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/chipsalliance/chisel_2.13/6.5.0/chisel_2.13-6.5.0.jar": "187ca3152a11054cddf5d4d17002f1901feb680726270714666dee3bd6f69c76",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/scala-reflect/2.13.12/scala-reflect-2.13.12.jar": "c648ceb93a9fcbd22603e0be3d6a156723ae661f516c772a550a088bb3cbca7a",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/github/scopt/scopt_2.13/4.1.0/scopt_2.13-4.1.0.jar": "2e5037bda974630b046794274e344273919abf4727acfcd86352617dce68f82b",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/net/jcazevedo/moultingyaml_2.13/0.4.2/moultingyaml_2.13-0.4.2.jar": "a304da2389f760f1a36513d8b10ba546d50243cf0b94415ea2a76906114d7197",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-native_2.13/4.0.6/json4s-native_2.13-4.0.6.jar": "f7089df299f43c6f76cfa2876d3a9cf9fd4d983e952f6ecfe11ed4b5f129e0c6",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-text/1.10.0/commons-text-1.10.0.jar": "770cd903fa7b604d1f7ef7ba17f84108667294b2b478be8ed1af3bffb4ae0018",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/data-class_2.13/0.2.6/data-class_2.13-0.2.6.jar": "2ed5882d03653438b52bee6a145bca84a95fe363f49afd06b9b92b5e7117afb5",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/os-lib_2.13/0.9.2/os-lib_2.13-0.9.2.jar": "814edf957545fd952e97a772d850643516acc18000119ad566c03368c43c60f2",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/1.0.4/scala-parallel-collections_2.13-1.0.4.jar": "68f266c4fa37cb20a76e905ad940e241190ce288b7e4a9877f1dd1261cd1a9a7",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle_2.13/3.1.0/upickle_2.13-3.1.0.jar": "9c00332462f16ccaf2f49fcd31af2040b28f0329200d02c7817e8c0841d28ebc",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/chipsalliance/firtool-resolver_2.13/1.3.0/firtool-resolver_2.13-1.3.0.jar": "c6cf214fb53b83fff73e082b6752eab53dc67c987bbece87461600e9c0e8ad38",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/github/nscala-time/nscala-time_2.13/2.22.0/nscala-time_2.13-2.22.0.jar": "7fcdf69482982f0dd3f48b7dac27f091e3f1e3cb80eae4c7ac73890d51095c9c",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/yaml/snakeyaml/1.26/snakeyaml-1.26.jar": "d87d607e500885356c03c1cae61e8c2e05d697df8787d5aba13484c2eb76a844",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-core_2.13/4.0.6/json4s-core_2.13-4.0.6.jar": "7f7a6b7802a05d75a7612d0f5c54832bd473a7c60118192713f45d80d1d51e71",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-native-core_2.13/4.0.6/json4s-native-core_2.13-4.0.6.jar": "e51e542f5c5ef25495918dfe15bfebb417cee6a56f13b188e8088f2d50df1c65",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar": "d919d904486c037f8d193412da0c92e22a9fa24230b9d67a57855c5c31c7e94e",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/geny_2.13/1.0.0/geny_2.13-1.0.0.jar": "078af5bf405bbf41d6eca6441b2bcd282551d054c47acf4f949b6c983063b117",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/ujson_2.13/3.1.0/ujson_2.13-3.1.0.jar": "dd34c47a41d005d0e0ca947e208a20fbc136ea02357333392ba9ba6a96beb1c7",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upack_2.13/3.1.0/upack_2.13-3.1.0.jar": "95d22fef52254a6ea3ddabec144dd01ed6d9046b02cf5b124b89cf3627e8869a",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.1.0/upickle-implicits_2.13-3.1.0.jar": "b504db94ec69487b1460e3e97cc7cfdab7960d219d5724bb62d31c044f29d5df",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/dev/dirs/directories/26/directories-26.jar": "6d18fe25aa30b7e08b908cd21151d8f96e22965c640acd7751add9bbfe6137d4",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/scribe_2.13/3.13.0/scribe_2.13-3.13.0.jar": "7ab781667feef71f3da9f9170efea06771e324d7ebcfde5e1e77144550bda4e8",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier_2.13/2.1.8/coursier_2.13-2.1.8.jar": "530c50e3a81e24e7ff4305ea8f637db378526c31f4d9474836a785da604ecd6e",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/joda-time/joda-time/2.10.1/joda-time-2.10.1.jar": "d269671656767e05a58dd634cbafc36ed70d417220b058d11c0d88dfd281616d",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/joda/joda-convert/2.2.0/joda-convert-2.2.0.jar": "6d9c8050943dce3e6e6cfb028a7cbd5fd46555c7edf89bf0d829061ff5d2ade6",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-ast_2.13/4.0.6/json4s-ast_2.13-4.0.6.jar": "c9fa3c4799615ebf299f616e4817efd16dcff341e1ee04e51e741d8add68bb43",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/json4s/json4s-scalap_2.13/4.0.6/json4s-scalap_2.13-4.0.6.jar": "4ff2f359e2a6595d7b709ca1de43ed6da8c2cf67fe8b78f334e10f27c21c4361",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar": "688cb118a6021d819138e855208c956031688be4b47a24bb615becc63acedf07",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/upickle-core_2.13/3.1.0/upickle-core_2.13-3.1.0.jar": "39c52652da329751ed4bb05c62053ff91b1d86c3b06c9488b7f6bfd0d2e05feb",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/perfolation_2.13/1.2.9/perfolation_2.13-1.2.9.jar": "cdf192a807103ea0e26d3b16b2fe316bef4cb7f1a4c3d0cc80b9955a93f4eb4f",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.1/sourcecode_2.13-0.3.1.jar": "0e663be9a6c81e9515bdd07c04831397e38ea648a211e85ad005300fe840a03d",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.11.0/scala-collection-compat_2.13-2.11.0.jar": "0c1108883b7b97851750e8932f9584346ccb23f1260c197f97295ac2e6c56cec",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/outr/moduload_2.13/1.1.7/moduload_2.13-1.1.7.jar": "53bdf91631e018b2cbb3a96151d34576d8c7551288a398444fc4ce6e1fbdbea1",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/github/plokhotnyuk/jsoniter-scala/jsoniter-scala-core_2.13/2.13.5.2/jsoniter-scala-core_2.13-2.13.5.2.jar": "86d9f5335dc6418a3b5ac28d2cfb6ed939236541566738df3bc0da2420d0f100",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-core_2.13/2.1.8/coursier-core_2.13-2.1.8.jar": "0c83986214f80d6ae47c93884b982539feb7d07b0abf4714821d2144ea0e1378",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-cache_2.13/2.1.8/coursier-cache_2.13-2.1.8.jar": "1074ca0717d743296d8d4eec1206eb9a74cb31aa76abf307931da8fe4ac02067",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-proxy-setup/2.1.8/coursier-proxy-setup-2.1.8.jar": "6898f545052f8ca57e21d09edc4e15eefb5c729f7f2e4a726cf3a88478ec5d98",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/concurrent-reference-hash-map/1.1.0/concurrent-reference-hash-map-1.1.0.jar": "552707982209afb9feffdccb2e73cc4681a1353e34a47df1bf643d1d2e0a2f61",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.2.0/scala-xml_2.13-2.2.0.jar": "0d9d63091a73cf837cd5412671a30abecad460dc254aeb43a2b18f4910af6a09",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/coursier-util_2.13/2.1.8/coursier-util_2.13-2.1.8.jar": "f98c2a3dedcaf87873990bc0df49cc1c70202211e96dc76813ed50bcc49ad085",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/get-coursier/jniutils/windows-jni-utils/0.3.3/windows-jni-utils-0.3.3.jar": "ab68efcf162355e20007b238d8108b7ffec0c06b467ee44cbb44ec3f8ac3a7e6",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/4.9.0/plexus-archiver-4.9.0.jar": "094d7eed03f8610cf149cade0340a5b2a55935dc77864e29f959c9e46a68a03e",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-container-default/2.1.1/plexus-container-default-2.1.1.jar": "8b65840e41ca669a1a69ec1daedb3426304e560b24172cc93bb02e8c199e1ce7",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/virtuslab/scala-cli/config_2.13/0.2.1/config_2.13-0.2.1.jar": "e9567682876d6941b7daac9d995ef241aebe1c1e3dc50e123245a4df53699626",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/io/github/alexarchambault/windows-ansi/windows-ansi/0.0.5/windows-ansi-0.0.5.jar": "f9acb082199470d4ca9165b36a4544ee9402ba09964476ba9710cd9ca4c41f69",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1.jar": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/4.0.0/plexus-utils-4.0.0.jar": "270cd703b48c6e5c8c691f1875f22d62d22cfe072c73ae2f5814d83d68c1da0b",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/3.4.1/plexus-io-3.4.1.jar": "ac3be07c2968f98656604ddb8fdf08f1cfc560bc7b329fd17847f151510dc2c4",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/commons-io/commons-io/2.15.0/commons-io-2.15.0.jar": "a328dad730921d197b6a9b195dffa00e41c974c2dac8fe37e84d31706bca7792",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.24.0/commons-compress-1.24.0.jar": "fbf2c5d275e513c08f4e4fb539726dbf3ac2142af956ba93efb983244f0c36bd",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar": "d3ef575e3e4979678dc01bf1dcce51021493b4d11fb7f1be8ad982877c16a1c0",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/iq80/snappy/snappy/0.4/snappy-0.4.jar": "46a0c87d504ce9d6063e1ff6e4d20738feb49d8abf85b5071a7d18df4f11bac9",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/tukaani/xz/1.9/xz-1.9.jar": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/com/github/luben/zstd-jni/1.5.5-10/zstd-jni-1.5.5-10.jar": "9465fb23f4e95630f225d0108dbf9830cd8bf537dd6c63792eb7c9a7014151c1",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-classworlds/2.6.0/plexus-classworlds-2.6.0.jar": "52f77c5ec49f787c9c417ebed5d6efd9922f44a202f217376e4f94c0d74f3549",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/apache/xbean/xbean-reflect/3.7/xbean-reflect-3.7.jar": "104e5e9bb5a669f86722f32281960700f7ec8e3209ef51b23eb9b6d23d1629cb",
+    "/opt/coursier/https/repo.maven.apache.org/maven2/org/fusesource/jansi/jansi/1.18/jansi-1.18.jar": "109e64fc65767c7a1a3bd654709d76f107b0a3b39db32cbf11139e13a6f5229b"
+  },
+  "artifacts": {
+    "build.txt": "1b476edd9fedf6091726d36e95db6d10570e9e2f227a7313c22d2c2d48f7294e",
+    "elaboration.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fault-w16-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fault-w16-ir.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fault-w16-lower.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fault-w16-simulation.txt": "da8d4dd7a52dca54855f751a48ac64a1564075693ce9fa1a93c52e548bae2ad0",
+    "firtool-version.txt": "fc885afdd76fa07ddd575e886b5452199ed0d915407761639524ffacdeddc734",
+    "iverilog-version.txt": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946",
+    "java-version.txt": "cbb14dcffd945ca71615f0afb1c2d03d409199caaafc4483b47d40cad2e5e4f5",
+    "runtime-classpath.txt": "0828279d3bd1b23827370f52473905bf41962bea469bc842131c444c5f95913e",
+    "w16-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w16-direct-synthesis.txt": "4a22abd4ca02ca55940efa14d4d07619904b0fc747bd606720359108f3c96357",
+    "w16-generated-synthesis.txt": "0ad5a8f1a869902950028d4858cb5e95331a04228c9cdb0437e0997ed448f563",
+    "w16-ir.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w16-lower.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w16-simulation.txt": "f700a91e8206a1f96ae605787c44ce3190aa867db835fc2f149a2d9f41552a80",
+    "w32-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w32-direct-synthesis.txt": "6ead3546b4e70afce121144a09a033be2413ae8dc1565a9286cc2ee990e4ab76",
+    "w32-generated-synthesis.txt": "4c865c92c479bf27babbd6d6bb4d36f2614671b75f4050e32b01e9a0f5c75de4",
+    "w32-ir.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w32-lower.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w32-simulation.txt": "792eeb5e15f86248227e7b2a9a90f4d6fd837699184f65e47fd6305b3d615f4d",
+    "w8-compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w8-direct-synthesis.txt": "2ee7e20f9e71252c9736c2234bc85590a7145e899712a5f25a84a571526aca69",
+    "w8-generated-synthesis.txt": "40e8a466e05420ad6420012708e8573a5469c5bc84276922971ef05767371a05",
+    "w8-ir.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w8-lower.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "w8-simulation.txt": "aa2824a3166eef697287a8d9bbcfabe3b5952f3e4e9f16d9a22869ec7e027fc2",
+    "yosys-version.txt": "14022961a7564dcc908f30f8b52cc1289449e8f25a95ed5c2d2afb88c4bde4fa",
+    "fault-w16/Accumulator.fir": "38a0dfe09a793419365528fda8d89958ba3339fbb183751a3ab6d1e11640e8e9",
+    "fault-w16/Accumulator.sv": "85ff1840418085f50efdec68707599369793720f7409ce2d08cafcbc79d0d167",
+    "fault-w16/lowered.mlir": "19f019d45f1e8db54e01e2359f404148c0a2a983af863fc9baa6bb4c5b7b3c03",
+    "fault-w16/sim.vvp": "e5de16d9f933e648e6e50e15d8f0f8d5fdcddb21b8782e429cd9d5e8f1ca70cf",
+    "fault-w16/vectors.txt": "37d8d3e94ce5d4092c02b252c5fa36fddf722aee2407658392cb18dc877a6e34",
+    "w16/Accumulator.fir": "5c646a4367358f716300d05182c7fafe158bd2675a3ccb1678e2af1487c0861d",
+    "w16/Accumulator.sv": "2813d913371df317708ba21ba762329c38dbbf4ccefca1b886254bfaa122cbf7",
+    "w16/direct-synth.json": "43b7fd22fa7ec0852217502db30ef0778b6272cb3961aab1b546c84a6212d0c9",
+    "w16/generated-synth.json": "c212c24cdf8b4f0ec10253232212eb342f5b697ea3b72fd0a973509e3fdd78a7",
+    "w16/lowered.mlir": "78bb925740a42e14d2c07266e989c9e431ab34ddfaf72d07c6a2230e66498c90",
+    "w16/sim.vvp": "2a83f882021e3f2b5b491dded80ba8c2c74879bb7452f308e902aa195f61e2c6",
+    "w16/vectors.txt": "37d8d3e94ce5d4092c02b252c5fa36fddf722aee2407658392cb18dc877a6e34",
+    "w32/Accumulator.fir": "3d3b1f54d7fc7cddaf6283e6bda69ff92de06b6ec1ae86ec0302cb68d3565253",
+    "w32/Accumulator.sv": "f889b111eb5e3e11ba1411e43e2bb4f0e6512496f523fea2dbadd1a8566f8a56",
+    "w32/direct-synth.json": "8345aeddbbacdbf5393a54bca32ecf7186c5892a9f873e28fa9537799d1db2e1",
+    "w32/generated-synth.json": "edb6a40db276c3de1d11aa8370419fdaf31e444fc57e7279a284dca3899774a9",
+    "w32/lowered.mlir": "6f6dbb9bae18b71375bda62a07772f7a4353c0661e6f78b937c9008320f66236",
+    "w32/sim.vvp": "ba4ecba0a223168eda92f66d2553bf3488867d9b9cda261860d7496c68225200",
+    "w32/vectors.txt": "a9ff56a94651bf1986cbce6e8ff7869e0beaa50e85078ae1e683745255be3cd4",
+    "w8/Accumulator.fir": "a08b90f57927f1b6554ef8e7f89356ef763b9e2ff8ae521acd5981751a555179",
+    "w8/Accumulator.sv": "d3aa89d86e41121b4b2017f52f3c043d5aaf4441abc3320e8d6f1e3ef8283cc8",
+    "w8/direct-synth.json": "e2a51aefa63adcfeae91e63890746719da63c070773f835c2e625fcbde2a5636",
+    "w8/generated-synth.json": "b4c10e2b80452d26025ce06665a1067d17730a62d8a67c8fa034d13d31f31e4c",
+    "w8/lowered.mlir": "cd1205393f190f95529ff15dec9999c9f218e0c00fa4b82d175e934d3b2588a5",
+    "w8/sim.vvp": "83de51c0a5ee50d710e907b7c49b60d0201ab4c2beea1ccfc6f3638de564a21f",
+    "w8/vectors.txt": "dccbe043584df16a615a37ce3049c58a5380f5d309eeb72df2280f75f740f172"
+  }
+}

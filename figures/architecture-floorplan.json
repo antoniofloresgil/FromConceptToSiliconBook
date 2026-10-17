@@ -1,0 +1,31 @@
+{
+  "image_id": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "command": [
+    "openroad",
+    "-gui",
+    "-no_init",
+    "-exit",
+    "-threads",
+    "2",
+    "/work/tools/figures/capture_floorplan.tcl"
+  ],
+  "tool": "24Q3-11382-g61879bec53",
+  "scope": "Floorplan prefix replay only; no placement or new timing claim.",
+  "case": {
+    "target_util_pct": 55,
+    "period_ns": 0.91
+  },
+  "inputs": {
+    "tools/figures/capture_floorplan.py": "4cf09590ed6099e91cacc5c313e1723f7c51cbb6fa1c3161bdc5f7d14b4c7996",
+    "tools/figures/capture_floorplan.tcl": "32988c7a42a516fa29a2b47bdb977fa0b7a546fb74c8e7bd258684b545547a66",
+    "labs/16-openroad-study/reference/study.json": "60130a82954fcd24387072f8c3e2de3542dc30b71ef0d8efd8b6f7696545b710",
+    "labs/16-openroad-study/reference/mapped.v": "5fccbe79c04a22cfc6f6b86c2fd459bc147ddefee1c048182272d03086b519f5",
+    "labs/16-openroad-study/flow.tcl": "023dd357a3b137297908cd7ff89376f167c959a63d1490f91f05f44655b9a4e7",
+    "labs/16-openroad-study/constraints.sdc": "293d9adce629041dbd5b0bc8dd24929c41f4f0563b6866b6154dff74651e8e95"
+  },
+  "outputs": {
+    "floorplan.odb": "5b21e7e4b22dc4229c1290fc966dee5eabbb7de82dee1f5b7bdede97f32a4ae7",
+    "floorplan.png": "b3959fdd11e2b812d33d9effe9dc6eaaf49eebb0c776e8f388b81d69939aa33e",
+    "capture.log": "b3d401a448f672f5cf7d6483cc0ee26a2a54673acc680489dffdbb6d8acf9f4a"
+  }
+}

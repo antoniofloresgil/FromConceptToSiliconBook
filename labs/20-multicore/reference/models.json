@@ -1,0 +1,417 @@
+{
+  "status": "pass",
+  "scope": "Explicit finite visibility/cache-line/dependency examples, not a complete ISA/cache/interconnect model",
+  "checks": {
+    "dirty-input": {
+      "cpu1_sees": 7,
+      "dma_sees": 0,
+      "expected_stale": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          0,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          0,
+          7
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          7
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ]
+      ]
+    },
+    "fence-without-clean": {
+      "dma_sees": 0,
+      "expected_stale": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          0,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          0,
+          7
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          7
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "fence_order_only"
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ]
+      ]
+    },
+    "clean-only-local-non-owner": {
+      "dma_sees": 0,
+      "expected_stale": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          0,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          0,
+          7
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          7
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "fence_order_only"
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "local_clean",
+          1,
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ]
+      ],
+      "assumption": "This local-only operation cannot clean the remote dirty owner"
+    },
+    "domain-clean-before-launch": {
+      "dma_sees": 7,
+      "pass": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          0,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          0,
+          7
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          7
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "fence_order_only"
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "local_clean",
+          1,
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "local_clean",
+          0,
+          0
+        ],
+        [
+          "local_clean",
+          1,
+          0
+        ],
+        [
+          "domain_clean",
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          7
+        ]
+      ]
+    },
+    "completion-without-invalidate": {
+      "cpu1_sees": 0,
+      "ram": 49,
+      "expected_stale": true,
+      "trace": [
+        [
+          "cpu_load",
+          1,
+          0,
+          0
+        ],
+        [
+          "dma_write",
+          0,
+          49
+        ],
+        [
+          "fence_order_only"
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          49
+        ]
+      ]
+    },
+    "invalidate-before-consume": {
+      "cpu1_sees": 49,
+      "pass": true,
+      "trace": [
+        [
+          "cpu_load",
+          1,
+          0,
+          0
+        ],
+        [
+          "dma_write",
+          0,
+          49
+        ],
+        [
+          "fence_order_only"
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          49
+        ],
+        [
+          "invalidate",
+          1,
+          0
+        ],
+        [
+          "cpu_load",
+          1,
+          0,
+          49
+        ]
+      ]
+    },
+    "false-sharing-writeback": {
+      "result": 0,
+      "flag": 1,
+      "expected_lost_result": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          1,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          1,
+          1
+        ],
+        [
+          "dma_write",
+          0,
+          49
+        ],
+        [
+          "local_clean",
+          0,
+          0
+        ],
+        [
+          "invalidate",
+          0,
+          0
+        ],
+        [
+          "evict",
+          0,
+          0
+        ],
+        [
+          "dma_read",
+          0,
+          0
+        ],
+        [
+          "dma_read",
+          1,
+          1
+        ]
+      ]
+    },
+    "separate-owned-lines": {
+      "result": 49,
+      "pass": true,
+      "trace": [
+        [
+          "cpu_load",
+          0,
+          2,
+          0
+        ],
+        [
+          "cpu_store",
+          0,
+          2,
+          1
+        ],
+        [
+          "dma_write",
+          0,
+          49
+        ],
+        [
+          "local_clean",
+          0,
+          1
+        ],
+        [
+          "invalidate",
+          0,
+          1
+        ],
+        [
+          "evict",
+          0,
+          1
+        ],
+        [
+          "dma_read",
+          0,
+          49
+        ]
+      ]
+    },
+    "publication-release0-acquire0": {
+      "executions": 12,
+      "stale": 6,
+      "witness": {
+        "events": [
+          "publish",
+          "flag",
+          "read",
+          "data"
+        ],
+        "observed_data": 0
+      }
+    },
+    "publication-release1-acquire0": {
+      "executions": 4,
+      "stale": 1,
+      "witness": {
+        "events": [
+          "read",
+          "data",
+          "publish",
+          "flag"
+        ],
+        "observed_data": 0
+      }
+    },
+    "publication-release0-acquire1": {
+      "executions": 4,
+      "stale": 1,
+      "witness": {
+        "events": [
+          "publish",
+          "flag",
+          "read",
+          "data"
+        ],
+        "observed_data": 0
+      }
+    },
+    "publication-release1-acquire1": {
+      "executions": 1,
+      "stale": 0,
+      "witness": null
+    },
+    "dependency-cycle": {
+      "cycle": [
+        "request",
+        "probe",
+        "response",
+        "request"
+      ],
+      "repair_cycle": null,
+      "scope": "Finite resource-dependency abstraction; not a full protocol liveness proof"
+    },
+    "arbitration": {
+      "fixed_priority_hart1_grants": 0,
+      "round_robin_hart1_grants": 8,
+      "assumption": "Both request continuously; every response is accepted"
+    },
+    "late-completion": {
+      "untagged_completion_accepted": true,
+      "tagged_completion_accepted": false,
+      "scope": "Hypothetical tagged interface; the supplied dot-product IP has no reset/epoch register"
+    }
+  }
+}

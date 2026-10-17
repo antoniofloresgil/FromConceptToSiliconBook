@@ -6,6 +6,8 @@ Run commands from the repository or extracted-package root, using the containers
 
 ## Activity map
 
+The generator and multicore practices are optional advanced routes. They add no compulsory work to the course and require no physical board.
+
 | Lab | Route without a physical board | Required evidence / boundary |
 | --- | --- | --- |
 | 01 Foundations | Run `foundations`; implement the arithmetic variant in simulation | Independent expected values, latency/stall/reset trace; generic synthesis for the resource comparison |
@@ -26,6 +28,8 @@ Run commands from the repository or extracted-package root, using the containers
 | 16 Physical study | Run the separate OpenROAD image or analyse its supplied reports/captures | Measured period/utilization sweep, pre/post-route setup and hold diagnosis, infeasible floorplans and a proposed RTL/physical repair; no chip fabrication |
 | 17 Complete case | Run the common-manifest stages or inspect the joined report bundle and book visuals | Same IP RTL in tests/formal/Wally and both physical block targets; cycle/resource/area/timing/power-model analysis and acceptance decision; no board/fabrication |
 | 18 Linux accelerator | Execute the QEMU/Linux driver/application experiment; Wally RV64 RTL Linux is advanced | Device Tree, reserved DMA ownership, IRQ/polling, errors and timeout quarantine; emulator timing and RTL boot checkpoints distinguished |
+| 19 Hardware generators | Execute the separate Chisel/CIRCT image and compare generated/direct RTL | Independent vectors, generated IR/RTL, intended priority failure and generic synthesis; no physical PPA claim |
+| 20 Multicore | Run two Linux CPUs in QEMU and the finite ownership/visibility/dependency models | 96 modeled DMA jobs plus abstract witnesses; coherent two-hart Wally RTL and physical performance remain separate advanced work |
 
 The command names in backticks such as `memory` mean `python labs/run.py run memory`. Labs 09 and 11–14 have explicit scripts or external environments documented in their individual guides; requesting a guided entry from the runner only displays guidance. `run all` executes the nine automatic entries. An absent external dependency must be resolved or reported, rather than replaced by a claimed PASS.
 
@@ -44,6 +48,8 @@ The command names in backticks such as `memory` mean `python labs/run.py run mem
 The wrapper, UART decoder, DDR bridge bench and modified full-SoC scenarios above are student exercises, not additional checked scripts supplied by this package. The checked starting point for CPU-controlled acceleration is [Lab 10](10-dotproduct/README.md). Its fixture instantiates real Wally RTL with simulated RAM and a direct interrupt input; it does not reproduce the Nexys Video wrapper, LiteDRAM or PLIC.
 
 ## Implementation resources and assessment
+
+[Lab 21](21-physical-closure/README.md) supplies an executed repair comparison for the same dot-product block: lower-clock FPGA routes, a separately tested registered-product engine, and an ASIC electrical/hold repair with extracted timing and netlist equivalence. Its preserved reports and actual physical captures support the full diagnosis exercise without a board. Accept only the stated block/tool-model scope; manufacturing and board qualification remain separate.
 
 If XC7 tools/databases or local compute are unavailable, the instructor supplies a review bundle before P5: source revision and parameters, FPGA part, tool/database versions, XDC/clock definitions, synthesis utilization, route/timing logs including warnings and constraint coverage, and hashes of generated artifacts. Include one baseline and one changed timing target or configuration for comparison. Supply a failing report or constraint case for diagnosis. If no bitstream was produced, record that explicitly. A screenshot of utilization alone is insufficient.
 

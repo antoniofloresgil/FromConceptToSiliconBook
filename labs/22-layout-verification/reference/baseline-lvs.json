@@ -1,0 +1,20 @@
+{
+  "match": false,
+  "layout": {
+    "nets": 24722,
+    "pins": 293,
+    "devices": {
+      "PMOS_VTL": 22248,
+      "NMOS_VTL": 22223
+    }
+  },
+  "reference": {
+    "nets": 24802,
+    "pins": 293,
+    "devices": {
+      "NMOS_VTL": 22223,
+      "PMOS_VTL": 22248
+    }
+  },
+  "bulk_connections": "geometric contacts; no implicit/global power joins"
+}

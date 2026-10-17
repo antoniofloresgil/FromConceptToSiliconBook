@@ -105,6 +105,10 @@ The cost is area, an additional embedded firmware dependency and a critical cali
 
 ### Address map and bridge behavior
 
+![Original architecture of the open Nexys Video target described in this chapter [@cvwOpenSourceFpga; @cvwLiteDram]. Blue follows Wally's memory requests, green follows DDR service and memory paths, and dashed orange shows the reset-release dependency. PHY clocks are a separate constraint obligation.](../../figures/architecture-nexys-domains.svg){#fig-nexys-clock-memory fig-alt="100 MHz oscillator drives LiteDRAM clock generation, shared 40 MHz Wally and Wishbone fabric, DDR service CPU, memory controller and Artix-7 DDR PHY; initialization gates Wally reset" width=100%}
+
+In @fig-nexys-clock-memory, the service CPU is an initialization dependency, not an additional application hart. Follow its reset, ROM fetch and CSR accesses before investigating Wally's memory traffic. The diagram records the intended integration: the unresolved service-firmware/calibration milestone described above remains unresolved.
+
 The open configuration deliberately avoids overlapping the boot ROM. It maps the on-chip instruction ROM at `0x80000000` and assigns a 128 MiB DDR3 region beginning at `0x40000000`. The processor therefore boots from known on-chip storage even while DDR3 is unavailable.
 
 The bridge accepts Wally's external AHB transactions and creates Wishbone cycles for LiteDRAM. The design supports single `NONSEQ` transfers in the selected cache-disabled configuration. It takes byte enables from `HWSTRB`, waits for Wishbone acknowledgment and returns AHB `OKAY` responses. Its region select is registered, avoiding a combinational loop through Wally's bus state machine and address decoder.

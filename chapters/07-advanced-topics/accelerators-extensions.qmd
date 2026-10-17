@@ -465,11 +465,17 @@ The reusable outcome is not only a filter. It is a disciplined template for deci
 
 ## Executable cross-course reference
 
+The advanced continuation @sec-multicore examines what changes when another hart shares the accelerator and memory: coherent/non-coherent paths, software ownership, interrupts and verification. It is outside the compulsory twelve-week project.
+
 @sec-complete-case extends this reference into the book-wide engineering narrative: one RTL/configuration lock links its tests and real-Wally measurements to ECP5 placement/routing and Nangate45 ASIC GDSII. Read its actual resource/area, frequency, modeled-power and acceptance results before choosing a performance extension. The physically implemented boundary is the accelerator IP; full-SoC and workload-energy claims remain separate work.
 
 The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-project supplies a complementary reference to the accelerator designs in this chapter. It includes independent numerical checks, an AHB-to-AXI4-Lite CPU adapter, bounded DMA, real RV32 firmware, interrupt completion, formal witnesses and defect checks. Use its measured single-beat baseline before evaluating burst, concurrency or numerical-format extensions.
 
 ### Verification obligations for a changed accelerator
+
+![Original architecture mapped to the executable dot-product RTL. Control writes are validated and latched before the engine issues single-beat AXI4 accesses; the MAC accumulates signed products and the engine checks both result-write responses before completion.](../../figures/architecture-dotproduct-dma.svg){#fig-dotproduct-complete-architecture fig-alt="CPU control adapter, AXI4-Lite register bank, bounded descriptor validation, dot-product MAC and engine, AXI memory port, shared buffers and interrupt completion" width=100%}
+
+@fig-dotproduct-complete-architecture follows the [actual register endpoint](../../labs/10-dotproduct/rtl/dotproduct_axi.sv) and [engine](../../labs/10-dotproduct/rtl/dotproduct_engine.sv), rather than the earlier FIR design proposal. The Linux/Wally extension uses MMIO base `0x10080000`; the IP consumes offsets and its DMA window is separately parameterized. Platform arbitration, interrupt routing and driver buffer ownership belong outside the IP. This baseline has no burst pipeline or automatic CPU-cache snooping.
 
 Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.
 

@@ -366,6 +366,42 @@ Four-state simulation can expose uninitialized inputs, while a two-state simulat
 
 Coverage also needs intent. Executing every `case` branch is useful code coverage, but does not establish that every instruction aliasing pattern, signed boundary, invalid encoding or stalled transfer was checked. The later simulation chapters turn these requirements into executable tests.
 
+## Hardware Generators and Modern HDL Toolchains {#sec-hardware-generators}
+
+SystemVerilog remains the implementation language used throughout this book. Understanding generators also helps when reading BOOM and XiangShan: their Scala/Chisel source constructs a hardware description before downstream tools implement it. Chisel is a Scala library and compiler plugin; modern Chisel uses CIRCT's `firtool` backend [@chiselInstallation; @chiselVersioning].
+
+| Route | What executes during elaboration? | What implementation tools receive |
+| --- | --- | --- |
+| Direct SystemVerilog | HDL parameters, constant functions and `generate` constructs specialize modules | Elaborated RTL derived from the written `.sv` |
+| Chisel → FIRRTL/CIRCT → SystemVerilog | Scala constructs a circuit using Chisel; the hardware compiler lowers it | Generated `.sv`, then the usual RTL frontend and synthesis flow |
+| Parameterized generation | Scripts/templates or generators emit configured RTL; HDL elaboration specializes parameters and `generate` branches | One concrete configuration, with its generated files and parameter manifest |
+
+These routes overlap: SystemVerilog already supports parameterized hardware, and a Chisel program is itself a generator. A Python/template generator can emit SystemVerilog without introducing FIRRTL. A Scala `if` selects which hardware to construct; Chisel `when` constructs conditional hardware behavior. A static loop may instantiate many adders. Neither implies that one software instruction runs inside the eventual FPGA on each clock edge.
+
+### What the intermediate levels represent
+
+Elaboration produces an early FIRRTL circuit, often called CHIRRTL: modules, typed connections, operations, registers and memories, with source information. It can retain inferred widths and higher-level memory constructs. It describes hardware rather than a sequence of Scala instructions or a placed gate netlist. FIRRTL also names the hardware IR and its lowering semantics; it should not be confused with only the historical Scala FIRRTL compiler.
+
+CIRCT is compiler infrastructure based on MLIR. Its FIRRTL dialect represents that hardware inside the compiler. Lowering can resolve widths, expand aggregate connections, simplify constants and remove unused logic. The `hw`, `comb` and `seq` dialects express modules/connections, combinational operations and sequential elements; SystemVerilog-specific constructs use the `sv` dialect. The emitter then writes SystemVerilog [@circtFirrtl; @circtPasses; @circtVerilog]. Generated SystemVerilog still needs frontend elaboration, synthesis, technology mapping and physical implementation. These compiler transformations do not establish timing closure.
+
+### A small executable comparison
+
+[Lab 19](../../labs/19-hardware-generators/README.md) generates an unsigned accumulator with Chisel 6.5.0 and `firtool` 1.62.0, a documented version pairing. It retains the early `.fir`, lowered MLIR and emitted `.sv`. The key arithmetic operation is `sum +& Operand`, which preserves the carry bit; truncating the sum and observing carry are separate decisions. Width is an elaboration parameter, not a runtime register.
+
+The contract is synchronous active-high reset, then clear priority, enabled modular accumulation, a one-cycle `Valid` indication and a non-sticky carry indication. Tests check generated RTL and directly written parameterized SystemVerilog independently against a Python integer reference at widths 8, 16 and 32. At width 16, they also instantiate the unchanged accumulator from the Verilator chapter. Directed boundaries and seeded random traffic include reset during activity, clear together with enable, disabled cycles and overflow.
+
+A deliberately faulty generator gives enable priority over clear. The same test must reject its generated RTL on a directed simultaneous-clear/enable case. Successful compilation, similar RTL text or equal generic synthesis cell counts would not establish equivalence. Passing these sampled traces establishes the stated simulation evidence; a formal equivalence claim requires a separate proof with explicit input, reset and initial-state correspondence, as discussed in @sec-formal-verification.
+
+Backend emission options also matter: this example disables automatic local variables to accommodate the tested Icarus frontend. Valid generated SystemVerilog can still exceed a particular tool's supported subset; record compatibility options alongside the generator parameters.
+
+In the preserved [execution report](../../labs/19-hardware-generators/reference/report.json), all three widths pass 552 sampled cycles each, and the [faulty variant](../../labs/19-hardware-generators/reference/fault-w16-simulation.txt) fails at cycle index 1. Direct/generated generic cell counts are respectively 61/63, 130/132 and 271/273. These counts describe the recorded Yosys flow, not relative physical area or proof of a behavioral difference.
+
+### Traceability through implementation
+
+Retain the generator revision, parameters, Scala/plugin/backend versions, compiler flags and dependencies, followed by hashes of every IR and emitted RTL file. Join these to verification commands, synthesis inputs, constraints and implementation reports. Source locations and emitted comments help navigate the chain, but one generator expression can become many hardware objects, while optimization can merge or remove others. A signal name alone is not a stable identifier across configurations or compiler releases.
+
+The practice records generic synthesis statistics for both descriptions. They are a useful structural comparison, with no conversion into FPGA LUTs, ASIC area, frequency or power. To extend the experiment physically, feed the preserved emitted RTL into the same target and constraints as the direct version and retain that new implementation evidence.
+
 ## Hands-on Experiments
 
 ### Fundamentals exercises

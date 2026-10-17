@@ -60,6 +60,10 @@ Mixed-width instructions also have an **effective LMUL**, EMUL. If an operand's 
 
 ### Configuration through `vtype` and `vl`
 
+![Original separation of RVV architectural register grouping and a possible banked implementation. With VLEN=128, e16/m2 groups v8 and v9 into sixteen element positions. The four banks below are an illustrative implementation choice, not a Wally vector unit or a required RVV organization.](../../figures/architecture-rvv-registers.svg){#fig-rvv-register-organization fig-alt="Registers v8 and v9 group into sixteen 16-bit elements, while a separate conceptual physical view shows four banks feeding operand routing and execution" width=100%}
+
+The two views in @fig-rvv-register-organization answer different questions. LMUL determines which architectural names an operand occupies; banking determines how an implementation supplies and accepts slices. Element positions beyond the selected `vl`, and masked positions, still follow the tail and mask policies discussed below. Group capacity alone does not establish throughput.
+
 `vtype` selects SEW, LMUL and inactive-element policies. `vsetvli` takes an AVL from an integer register and writes the chosen `vl` to an integer destination:
 
 ```asm

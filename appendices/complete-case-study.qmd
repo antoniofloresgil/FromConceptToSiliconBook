@@ -223,7 +223,146 @@ A defensible decision is to retain the functional IP as a verified baseline whil
 
 The workload data suggest a separate architectural experiment: reduce per-job setup or DMA transaction overhead for short vectors. Bursts/concurrency may improve long jobs but add protocol/error obligations. A faster multiplier alone may not address the observed software-visible bottleneck. A power decision needs workload-derived switching and a full-system boundary before claiming energy savings.
 
-None of those proposed changes is presented as an executed repair in this release. Preserve the baseline, change one independent factor, state the expected benefit and regression risk, then measure the new candidate under a new manifest. This is the connection from specification to implementation: the result is a reviewable engineering decision, including an explicit decision not to accept an implementation with open requirements.
+Those findings describe the original release. The continuation below executes repairs under a separate manifest, preserving the original dossier and its failed acceptance decisions. This is the connection from specification to implementation: the result is a reviewable engineering decision, including an explicit decision not to accept a candidate with open requirements.
+
+## From Timing Violations to a Qualified Implementation {#sec-complete-closure}
+
+The continuation uses the same dot-product specification, maximum length, DMA window, seed and target boundaries. [Lab 21](../labs/21-physical-closure/README.md) supplies a [new manifest](../labs/21-physical-closure/manifest.json), executable recipes, independent regressions and a [collected comparison](../labs/21-physical-closure/reference/results.json). The original Lab 17 reports remain unchanged. The process developed in @sec-physical-closure now leads to an accepted ASIC candidate within a stated block-level scope, rather than ending with a list of proposed repairs.
+
+### Establish a comparable baseline
+
+The historical baseline remains useful evidence: ASIC setup +4.04594 ns, hold −0.03355 ns, 237 reported electrical violations and 7,355 µm² of cells. The continuation also reruns a 100 MHz baseline through its own runner. Its elaboration sets the same parameters in one Yosys command instead of three separate commands; this changes generated names and the mapped-file hash. Implementation differences must therefore not be attributed entirely to the repair.
+
+To isolate the intervention, the new ASIC baseline, 75 MHz candidate and repaired 100 MHz candidate all start with a **byte-identical mapped netlist**. The collector enforces this identity. Only the clock target changes in the slow experiment; only the physical repair recipe changes in the repaired experiment. The source RTL is unchanged in all three. Retaining both the historical and contemporaneous baselines makes this distinction reviewable.
+
+The acceptance gate requires nonnegative extracted setup/hold, zero reported slew/capacitance/fanout violations, no unconstrained-path warnings, an empty final detailed-router DRC report, mapped/routed netlist equivalence and nonempty GDS readback. Qualification covers Nangate45 typical, this block and the supplied interface budgets. It does not close manufacturing DRC/LVS, multi-corner timing, complete-SoC timing or board qualification.
+
+| ASIC candidate | Setup (ns) | Hold (ns) | Electrical violations | Block gate |
+| --- | ---: | ---: | ---: | --- |
+| Historical baseline, 100 MHz | +4.04594 | −0.03355 | 237 | Reject |
+| Comparable baseline, 100 MHz | +4.56402 | −0.01845 | 48 | Reject |
+| Lower clock, 75 MHz | +7.89736 | −0.01845 | 48 | Reject |
+| Physical repair, 100 MHz | **+5.20410** | **+0.02968** | **0** | Accept in declared scope |
+
+| ASIC candidate | Cell area (µm²) | Vectorless power (mW) |
+| --- | ---: | ---: |
+| Historical baseline, 100 MHz | 7,355 | 0.857 |
+| Comparable baseline, 100 MHz | 7,350 | 0.846 |
+| Lower clock, 75 MHz | 7,350 | 0.674 |
+| Physical repair, 100 MHz | **7,811** | **0.860** |
+
+The last three rows have the same mapped-input hash. Their identical negative hold result before repair makes the distinction particularly clear: the longer period helps setup while leaving the minimum-delay problem intact. Relative to the comparable baseline, repair adds 461 µm² of cells, approximately 6.3%, within the same core. Power remains a vectorless model estimate with the limitations discussed below.
+
+### Candidate 1: reduce the requested frequency
+
+Both FPGA targets are resynthesized and placed/routed at **75 MHz**, keeping the original RTL and seed. The resulting clock limits equal the original reported limits in these runs: 86.99 MHz for ECP5 and 85.42 MHz for Nexys Video. The positive period margins are approximately 1.84 ns and 1.63 ns respectively. This accepts a revised 75 MHz requirement; the 100 MHz requirement still fails.
+
+The ASIC is also rerun at 75 MHz. Its extracted setup slack is **+7.89736 ns**, but hold remains **−0.01845 ns** and 48 electrical violations remain. Cell area is 7,350 µm²; the vectorless power estimate at the new clock is 0.674 mW. Lowering the clock is therefore sufficient for the FPGA's reported maximum-frequency objective, but insufficient for the ASIC's minimum-delay and electrical acceptance gate. The ASIC remains rejected even though its setup number improves and its power estimate falls.
+
+### Candidate 2: shorten the arithmetic path in RTL
+
+The separate [engine candidate](../labs/21-physical-closure/dotproduct_engine.sv) registers the signed 16 × 16 product on the accepted second-operand response, then performs the sign-extended 64-bit addition in a new `ACCUMULATE` state. The AXI register map, descriptor checks and number of DMA reads/writes remain fixed. One extra serial cycle per vector element is introduced. This is an architectural latency change, so its identity and evidence remain separate from the original RTL release.
+
+| Target and candidate | Requested clock | Routed clock limit | Period margin | Clock objective |
+| --- | ---: | ---: | ---: | --- |
+| ECP5, original RTL | 100 MHz | 86.99 MHz | −1.49 ns | Fail |
+| ECP5, original RTL, slower target | 75 MHz | 86.99 MHz | +1.84 ns | Pass at 75 MHz |
+| ECP5, registered product | 100 MHz | **98.19 MHz** | −0.18 ns | Fail |
+| Nexys Video, original RTL plus fixture | 100 MHz | 85.42 MHz | −1.71 ns | Fail |
+| Nexys Video, original RTL, slower target | 75 MHz | 85.42 MHz | +1.63 ns | Pass at 75 MHz |
+| Nexys Video, registered product plus fixture | 100 MHz | **102.13 MHz** | +0.21 ns | Pass at 100 MHz |
+
+Period margins are calculated as requested period minus the period implied by the routed clock limit. They express this nextpnr clock model, without adding a board I/O/CDC/vendor signoff claim. ECP5 remains an out-of-context LFE5U25F block; Nexys remains the XC7A200T implementation with the existing serial boundary fixture, `-nodsp` LUT multiplication and the same pin assignments. Resource columns from these two boundaries must not be treated as a technology-normalized area comparison.
+
+The Nexys result restores the requested 100 MHz clock objective. The ECP5 result is especially instructive: registering the product improves frequency, but the worst path moves into descriptor/destination-address validation, from `dst` to `active_dst`. Its preserved critical path contains approximately 3.62 ns of logic and 6.04 ns of routing, excluding the separate clock-to-Q/setup contributions. The original ECP5 arithmetic path contains approximately 7.14 ns of logic and 3.83 ns of routing. Another arithmetic pipeline stage would not directly target the new worst path.
+
+The next ECP5 experiment would stage descriptor validation before starting DMA, or change its physical placement strategy, then repeat the security-window and protocol checks. Declaring a multicycle path without implementing and proving the matching endpoint protocol would conceal the problem. This continuation retains the 98.19 MHz failure as evidence of a moved bottleneck.
+
+| Routed resources, including each target's stated boundary | Original RTL / 75 MHz | Registered product / 100 MHz |
+| --- | ---: | ---: |
+| ECP5 `TRELLIS_COMB` | 1,092 | 1,097 |
+| ECP5 flip-flops | 469 | 502 |
+| ECP5 multipliers | 1 | 1 |
+| Nexys `SLICE_LUTX` | 2,148 | 2,140 |
+| Nexys `SLICE_FFX` | 916 | 948 |
+| Nexys `CARRY4` | 102 | 102 |
+
+These are actual nextpnr resource categories, not gate-equivalent area or FPGA power estimates. The additional product register is visible in the flip-flop counts. Small LUT changes also reflect elaboration and mapping around the new state; they do not imply that added state is free.
+
+Before using the RTL result, both engines pass the original independent integer-oracle tests for lengths 1–256 at seeds 2026 and 2027: **512 length cases per engine**, plus wide signed sums, channel ordering/strobes, DMA stalls/errors, window-policy failures, IRQ/reset and reuse. Both pass the Nexys serial fixture. A deliberately zero-extended negative product fails the same scoreboard at the first length. These are fresh candidate-specific checks; the earlier Wally cycles and bounded formal evidence remain attached to the original engine. No baseline/pipelined sequential-equivalence proof or new Wally cycle measurement is claimed.
+
+### Candidate 3: repair the ASIC without changing RTL
+
+The [physical recipe](../labs/21-physical-closure/repair.tcl) buffers/resizes electrical violations after placement, then repairs setup and hold after CTS with propagated clocks. It repeats repair after global routing, legalizes, reroutes, performs detailed routing and extracts fresh SPEF. It keeps the original 100 MHz target, 0.10 ns clock uncertainty, input/output budgets and 45% floorplan utilization. The hold target margin is 0.03 ns. An exploratory 0.10 ns margin exhausted the buffer allowance; the retained recipe records a smaller target and an explicit 50% maximum hold-buffer percentage.
+
+The repaired candidate has **+5.20410 ns setup**, **+0.02968 ns hold**, **zero reported electrical violations**, and an empty final detailed-router DRC report. Its core stays at **15,743.21 µm²**, while cells occupy **7,811 µm²**. The area increase relative to the historical baseline is approximately 6.2%. This is a physical-optimization result using the original RTL, with no extra architectural cycle.
+
+The vectorless power estimate is **0.860 mW at 100 MHz**, split into approximately 0.426 mW internal, 0.267 mW switching and 0.168 mW leakage; component rounding explains the sum. It uses the same 0.1 global activity and Liberty power model as the earlier estimate. The historical 0.857 mW estimate was evaluated with electrical violations, so this small difference is not evidence of a measured energy improvement or a precisely calibrated repair cost. No FPGA watts or workload energy are inferred.
+
+The final worst setup path now starts at `m_rdata[2]`, so its interpretation includes the external input budget as well as the internal logic and capture clock. The worst hold path is register-to-register. Read the [extracted setup report](../labs/21-physical-closure/reference/asic-repair/routed-setup.rpt), [hold report](../labs/21-physical-closure/reference/asic-repair/routed-hold.rpt), [electrical report](../labs/21-physical-closure/reference/asic-repair/routed-limits.rpt) and [constraint report](../labs/21-physical-closure/reference/asic-repair/routed-constraints.rpt) together. A blank violations report is meaningful here because its generating command and successful completion are preserved.
+
+![Actual repaired 100 MHz ASIC routing, exported from the final OpenROAD database after extraction. The floorplan is unchanged; buffering, sizing and routing differ from the original implementation.](../labs/21-physical-closure/reference/asic-repair/implementation.png){#fig-complete-closure-routing width=80%}
+
+![Clock tree of the repaired block, with insertion-delay scale in ns. This is an actual OpenROAD clock-tree export; hold acceptance also depends on the data paths in the extracted reports.](../labs/21-physical-closure/reference/asic-repair/clocktree.png){#fig-complete-closure-clock width=95%}
+
+The [capture record](../labs/21-physical-closure/reference/asic-repair/capture.json) binds these images and the separate [critical-path export](../labs/21-physical-closure/reference/asic-repair/critical-path.png) to the final ODB, SDC and SPEF hashes. The layout is streamed to GDSII using actual library cell geometry and reopened successfully. Stream-out/readback and the router's own DRC report do not replace foundry rule decks or extracted LVS.
+
+The repaired netlist must also pass the [mapped/routed functional equivalence check](../labs/21-physical-closure/reference/asic-repair/equivalence.json). The check uses Liberty zero-delay functional cell models, hierarchy/structural checks and asserting Yosys equivalence completion. It proves the stated netlist obligation; it does not establish layout connectivity or analog timing. Together with the fresh extracted reports, this supports acceptance of the repaired block for the declared single-corner timing/electrical gate.
+
+### Compare the decisions and the remaining obligations
+
+| Decision | Evidence | Consequence |
+| --- | --- | --- |
+| Accept original FPGA RTL at 75 MHz | Both fresh routes exceed 75 MHz in the recorded clock model | Revise the clock requirement; application wall-clock latency still needs review |
+| Accept registered-product Nexys clock at 100 MHz | 102.13 MHz routed limit and fresh functional tests | Extra cycle per element; retain candidate identity and board-validation obligations |
+| Reject registered-product ECP5 at 100 MHz | 98.19 MHz; new descriptor-validation critical path | Target the moved bottleneck in a further experiment |
+| Reject slow ASIC | Hold remains negative and electrical violations remain | Lower frequency alone cannot close this candidate |
+| Accept repaired ASIC against the declared block gate | Extracted setup/hold/electrical checks, router DRC, equivalence, GDS readback | Manufacturing/multi-corner/full-SoC qualification remains open |
+
+For assessment, explain the causal path from one baseline failure to one chosen repair. Compare the contemporaneous ASIC baseline, slow and repaired reports with their common mapped-netlist hash. Explain why the extra product register helps Nexys yet does not close ECP5, and state an application-latency test that could change the choice between 75 MHz original RTL and 100 MHz modified RTL. Finally list precisely which checks would still be required before deployment on a board or fabrication of a complete SoC. A useful release decision includes its accepted scope, measured costs and open obligations.
+
+## Actual GDS DRC/LVS and power/body finishing {#sec-layout-verification}
+
+The previous section's timing/electrical gate was deliberately narrower than physical signoff. [Lab 22](../labs/22-layout-verification/README.md) now executes the next checks on that same GDS. The existing Wally development environment contains FreePDK45/Nangate45 under its OpenROAD-flow-scripts checkout. Its standard-cell GDS has the same SHA-256 as the library used by this case study. The continuation retains the digest-pinned ORFS image and records its precise DRC, CDL, LEF, Liberty, GDS and extraction-rule identities instead of mixing technology revisions.
+
+The available technology is a **public reference PDK**, not a foundry-qualified fabrication kit. Its DRC deck implements useful front-end, back-end, manufacturing-grid and antenna checks, but includes documented rule omissions. The configured LVS deck is absent from the pinned image. The continuation supplies a batch adapter derived from the attributed [FreePDK45 extraction example](https://github.com/klayoutmatthias/FreePDK45_for_KLayout/tree/ab0495a69fa76fdc726a75f890bbf67b518db42a), with its GPL source/license and Nangate-specific assumptions retained for review. It does not turn an educational technology into an accepted manufacturing process.
+
+### A real failure beyond digital equivalence
+
+The original timing-repaired GDS produces **zero DRC markers across 129 reported rule categories**, but its transistor-level LVS does not match. A separate OpenDB audit finds **1,408 unconnected POWER/GROUND ITerms**. The original flow had applied global power connections before later CTS/resizer cell insertion. Those later cells need the connections applied again. The CDL also contains 56 deliberately unconnected signal outputs from clock-loading cells; these are distinct from missing power pins and must not be included in that count.
+
+This is why successful zero-delay cell-netlist equivalence and positive setup/hold slack do not establish physical correctness. The logical models used for those earlier checks abstract supplies and transistor bodies. The GDS/CDL comparison adds obligations that those models do not represent.
+
+The finishing candidate reruns `global_connect`, fills free sites conservatively with `TAPCELL_X1` body contacts and one-site filler where needed, reconnects the new physical cells, and checks placement. It adds **29,821 physical-only cells** within the same core. This teaching implementation deliberately prioritizes explicit body connectivity over an optimized contact pitch; it is not a recommended density/power optimum. The count must not be presented as added functional logic or a calibrated power estimate. Functional cell masters, placements and signal-pin net assignments are preserved in byte-identical before/after snapshots.
+
+The flow re-extracts SPEF from the finished database, reruns timing/electrical/constraint checks and streams a new GDS. The historical Lab 21 artifacts remain intact. The [collected result](../labs/22-layout-verification/reference/results.json), [power-terminal audit](../labs/22-layout-verification/reference/power-connectivity.json), [fresh timing report](../labs/22-layout-verification/reference/timing.json) and [command/technology record](../labs/22-layout-verification/reference/report.json) bind this continuation to the original repaired block.
+
+| Obligation | Original timing-repaired layout | Finished candidate |
+| --- | ---: | ---: |
+| DRC categories reported | 129 | 129 |
+| DRC markers | 0 | **0** |
+| Unconnected POWER/GROUND ITerms | 1,408 | **0** |
+| Extracted transistor-level LVS | Mismatch | **Match** |
+| PMOS devices after normalization | 22,248 | 22,248 |
+| NMOS devices after normalization | 22,223 | 22,223 |
+| Extracted setup slack | +5.20410 ns | **+5.20410 ns** |
+| Extracted hold slack | +0.02968 ns | **+0.02968 ns** |
+| Reported electrical violations | 0 | **0** |
+| Foundry manufacturing qualification | Open | **Open** |
+
+The matched finished circuits contain **44,471 MOS devices**, with the same device-class counts, 23,394 nets and 293 retained pins on both sides after consistent simplification. Device extraction follows active/poly/wells, contacts and metal/via geometry; the reference is the exported CDL plus the actual cell CDL. The unchanged timing values are fresh extracted results under the same single-corner model, not a transfer of a number from the older report. The physical-only finish leaves the functional signal implementation unchanged.
+
+### Check the checker and state the assumptions
+
+The LVS adapter makes two important library conventions explicit. Nangate's CDL uses VTL MOS models while its GDS lacks VT-flavour marker shapes; the preflight rejects other marker layers. Its `TAPCELL_X1` contains active/contact/well geometry without implant-marker shapes. Only that known master may have unmarked active, which is interpreted as body-contact geometry. Other masters with unmarked active are rejected. The deck connects body terminals through the actual well/contact/metal geometry; it contains no `connect_global`, `connect_implicit`, `connect_explicit` or transistor black-box shortcut to make the comparison pass.
+
+Both extracted and schematic netlists normalize parallel devices consistently. Top-level pins are established before flattening so that dangling internal cell outputs do not become interface pins. These integration details are part of a reviewable extraction contract, not a substitute for foundry-approved models and decks.
+
+A separate [port-identity audit](../labs/22-layout-verification/reference/port-identity.json) reads the actual LVS cross-reference and verifies the correspondence of all **293 retained top-level pin names**, allowing only SPICE case normalization. It does not force net equivalence or bypass a topology mismatch.
+
+Two faulty layouts provide negative controls. A deliberately **1 nm wide M2 sliver** produces a `METAL2.1` marker. A metal bridge between actual VDD/VSS rails causes **LVS mismatch** while preserving the transistor count; the extracted net count falls from 23,394 to 23,393. Thus the checks reject real geometric defects, and the passing result is not an empty extraction. The compact dossier retains the DRC databases, extraction summaries, diagnostics and exact logs; full GDS/ODB/SPEF/CDL and cross-probing LVS databases are generated on reproduction and identified by their hashes.
+
+The engineering decision now advances from “timing/electrical block gate passed” to **“the stated public-reference DRC/LVS and timing/PG checks passed after physical finishing.”** Manufacturing remains open because FreePDK45 is a reference technology, the deck has incomplete coverage, and this experiment supplies neither foundry acceptance nor complete density/ERC/IR/EM, multi-corner, pad/package or whole-SoC signoff. These are different claims, and the result record keeps `manufacturing_qualified=false`.
 
 ## Reproduction and student deliverables
 
@@ -235,4 +374,4 @@ The complete case remains outside the nine automatic `run all` entries. CI check
 
 For the final defence, submit the common manifest, requirement-to-evidence map, independent checks and one interpreted counterexample; reconstruct a CPU control transaction, a DMA response and interrupt return; present the two implementation visuals and the area/resource, timing and power tables; finally justify the release decision and the next experiment. Mark every value by design boundary, model, corner and actual execution status. The same evidence-based assessment is available without buying hardware.
 
-The remaining product work includes a synthesized memory/arbitration fabric, full Wally physical integration, board I/O/clock/reset validation, project-specific equivalence, ASIC hold/electrical repair, manufacturing/foundry checks and workload-calibrated energy measurements. Those limits do not weaken the case study: they identify exactly which conclusions its evidence supports and what the next designer must still establish.
+The remaining product work includes a synthesized memory/arbitration fabric, full Wally physical integration, board I/O/clock/reset validation, candidate-specific SoC verification, additional ASIC corners/modes, manufacturing/foundry checks and workload-calibrated energy measurements. The continuation closes the declared ASIC block timing/electrical gate, while those wider obligations remain explicit.

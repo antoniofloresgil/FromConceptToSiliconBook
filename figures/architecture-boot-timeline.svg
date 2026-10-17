@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="653" viewBox="0 0 960 653" role="img" aria-labelledby="title desc">
+<title id="title">Reset → OpenSBI → Linux: execution and handoff contracts</title><desc id="desc">Conventional single-hart path • milestone order, not a calibrated time scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="653" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Reset → OpenSBI → Linux: execution and handoff contracts</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conventional single-hart path • milestone order, not a calibrated time scale</text>
+<path d="M55 112H910" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="55" y="98" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">reset</text>
+<text x="295" y="98" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">firmware</text>
+<text x="555" y="98" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">kernel</text>
+<text x="820" y="98" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">userspace</text>
+<rect x="28" y="145" width="205" height="115" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="130.5" y="173.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">ROM / loader</text>
+<text x="130.5" y="199.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">M-mode entry</text>
+<text x="130.5" y="225.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stack / memory ready</text>
+<text x="130.5" y="251.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">place images + DTB</text>
+<rect x="265" y="145" width="205" height="115" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="367.5" y="173.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">OpenSBI init</text>
+<text x="367.5" y="199.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">M-mode firmware</text>
+<text x="367.5" y="225.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">trap / PMP policy</text>
+<text x="367.5" y="251.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">SBI services</text>
+<rect x="505" y="145" width="205" height="115" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="607.5" y="173.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Linux entry</text>
+<text x="607.5" y="199.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S-mode kernel</text>
+<text x="607.5" y="225.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">MMU / timer / drivers</text>
+<text x="607.5" y="251.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">mount root filesystem</text>
+<rect x="745" y="145" width="187" height="115" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="838.5" y="185.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Application</text>
+<text x="838.5" y="211.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">U-mode process</text>
+<text x="838.5" y="237.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">syscalls → kernel</text>
+<path d="M233 201H265" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M470 201H502" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M710 201H745" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="320" width="530" height="85" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="615.0" y="357.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Kernel entry contract</text>
+<text x="615.0" y="383.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a0 = hart ID; a1 = DTB address; satp = 0</text>
+<path d="M505 246H490V362H350" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<rect x="265" y="445" width="667" height="65" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="598.5" y="472.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Resident OpenSBI: M-mode service runtime</text>
+<text x="598.5" y="498.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">remains available after kernel startup</text>
+<path d="M368 260V445" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M605 405V445" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="628" y="432" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">SBI ecall / mret</text>
+<rect x="28" y="530" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">An optional bootloader may run between firmware and kernel.</text>
+<text x="44" y="583" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">QEMU loads images for the experiment; a physical platform must supply its own loading</text>
+<text x="44" y="608" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">path.</text>
+</g></svg>

@@ -64,6 +64,10 @@ LABS = {
     "physical-study": {"folder": "16-openroad-study", "mode": "guided", "goal": "Measured direct OpenROAD accumulator clock/utilization sweep, extracted timing and GUI captures"},
     "complete-case": {"folder": "17-complete-case", "mode": "guided", "goal": "One locked dot-product release across formal/tests, real Wally, ECP5/Nexys Video PnR and ASIC GDSII with joined results"},
     "linux-accelerator": {"folder": "18-linux-accelerator", "mode": "guided", "goal": "Linux/QEMU MMIO driver, reserved DMA pool, IRQ/polling and userspace; advanced real Wally RV64 RTL Linux platform"},
+    "hardware-generators": {"folder": "19-hardware-generators", "mode": "guided", "goal": "Explicit Chisel/FIRRTL/CIRCT accumulator generation, independent checks, negative control and generic synthesis comparison"},
+    "multicore": {"folder": "20-multicore", "mode": "guided", "goal": "Advanced two-CPU Linux/QEMU DMA ownership/contending callers and separate finite cache/ordering/dependency witnesses"},
+    "physical-closure": {"folder": "21-physical-closure", "mode": "guided", "goal": "Measured lower-clock, registered-product and physical-repair candidates; extracted ASIC timing/electrical closure and mapped/routed equivalence"},
+    "layout-verification": {"folder": "22-layout-verification", "mode": "guided", "goal": "Actual FreePDK45 GDS DRC/LVS, diagnosed PG/body connectivity, separate physical finish, fresh timing and rejected geometry defects"},
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"

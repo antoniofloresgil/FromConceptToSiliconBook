@@ -1,0 +1,135 @@
+Startpoint: _09892_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: s_arready (output port clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                     0.00000    0.00000    0.00000 ^ _09892_/CK (DFF_X1)
+     1    5.00000    0.01690    0.07147    0.07147 ^ _09892_/QN (DFF_X1)
+                     0.01690    0.00000    0.07147 ^ s_arready (out)
+                                           0.07147   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.10000    0.10000   clock uncertainty
+                                0.00000    0.10000   clock reconvergence pessimism
+                                0.00000    0.10000   output external delay
+                                           0.10000   data required time
+-----------------------------------------------------------------------------------------
+                                           0.10000   data required time
+                                          -0.07147   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.02853   slack (VIOLATED)
+
+
+Startpoint: _09610_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: s_bresp[1] (output port clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                     0.00000    0.00000    0.00000 ^ _09610_/CK (DFF_X1)
+     2    6.40993    0.01082    0.08647    0.08647 v _09610_/Q (DFF_X1)
+                     0.01082    0.00000    0.08647 v s_bresp[1] (out)
+                                           0.08647   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.10000    0.10000   clock uncertainty
+                                0.00000    0.10000   clock reconvergence pessimism
+                                0.00000    0.10000   output external delay
+                                           0.10000   data required time
+-----------------------------------------------------------------------------------------
+                                           0.10000   data required time
+                                          -0.08647   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.01353   slack (VIOLATED)
+
+
+Startpoint: _09957_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: m_awaddr[0] (output port clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                     0.00000    0.00000    0.00000 ^ _09957_/CK (DFF_X1)
+     2    6.54936    0.01094    0.08668    0.08668 v _09957_/Q (DFF_X1)
+                     0.01094    0.00000    0.08668 v m_awaddr[0] (out)
+                                           0.08668   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.10000    0.10000   clock uncertainty
+                                0.00000    0.10000   clock reconvergence pessimism
+                                0.00000    0.10000   output external delay
+                                           0.10000   data required time
+-----------------------------------------------------------------------------------------
+                                           0.10000   data required time
+                                          -0.08668   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.01332   slack (VIOLATED)
+
+
+Startpoint: _09958_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: m_awaddr[1] (output port clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                     0.00000    0.00000    0.00000 ^ _09958_/CK (DFF_X1)
+     2    6.54936    0.01094    0.08668    0.08668 v _09958_/Q (DFF_X1)
+                     0.01094    0.00000    0.08668 v m_awaddr[1] (out)
+                                           0.08668   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.10000    0.10000   clock uncertainty
+                                0.00000    0.10000   clock reconvergence pessimism
+                                0.00000    0.10000   output external delay
+                                           0.10000   data required time
+-----------------------------------------------------------------------------------------
+                                           0.10000   data required time
+                                          -0.08668   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.01332   slack (VIOLATED)
+
+
+Startpoint: _09860_ (rising edge-triggered flip-flop clocked by core_clk)
+Endpoint: s_rdata[0] (output port clocked by core_clk)
+Path Group: core_clk
+Path Type: min
+
+Fanout        Cap       Slew      Delay       Time   Description
+-----------------------------------------------------------------------------------------
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                     0.00000    0.00000    0.00000 ^ _09860_/CK (DFF_X1)
+     2    6.55832    0.01095    0.08669    0.08669 v _09860_/Q (DFF_X1)
+                     0.01095    0.00000    0.08669 v s_rdata[0] (out)
+                                           0.08669   data arrival time
+
+                     0.00000    0.00000    0.00000   clock core_clk (rise edge)
+                                0.00000    0.00000   clock network delay (ideal)
+                                0.10000    0.10000   clock uncertainty
+                                0.00000    0.10000   clock reconvergence pessimism
+                                0.00000    0.10000   output external delay
+                                           0.10000   data required time
+-----------------------------------------------------------------------------------------
+                                           0.10000   data required time
+                                          -0.08669   data arrival time
+-----------------------------------------------------------------------------------------
+                                          -0.01331   slack (VIOLATED)
+
+

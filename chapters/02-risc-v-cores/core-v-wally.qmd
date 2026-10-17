@@ -126,6 +126,10 @@ This baseline permits following cache misses, MMIO and interrupts in one configu
 
 ### Read the hierarchy as a functional map
 
+@fig-wally-module-hierarchy adds a containment view to the transaction view below. Start at the SoC top, identify the module that owns a function, then follow its interface into the core or uncore. Configuration-dependent subtrees are grouped rather than expanded into every generated instance.
+
+![Original module ownership map for the pinned rv32gc reading baseline. Solid blue arrows show selected requests; the dashed orange arrow returns interrupt events. Names follow the inspected Wally RTL [@cvwBridgeSoc; @cvwBridgeCore].](../../figures/architecture-wally-hierarchy.svg){#fig-wally-module-hierarchy fig-alt="Nested Wally SoC, core and uncore blocks with IFU, IEU, LSU, arithmetic, privileged and hazard logic, EBU, memories and peripherals" width=100%}
+
 ![Wally core-to-SoC organization. Original editable vector redraw informed by Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Figure 2.13, and the CVW repository's `wallyriscvTopAll.png`. The layout groups functions and makes the AHB/APB and interrupt paths explicit; it is not a verbatim reproduction or a pipeline-stage diagram.](../../figures/wally-soc-overview.svg){#fig-wally-soc-overview fig-alt="Wally IFU, execution units, LSU and privileged control connect through EBU and AHB to RAM and APB peripherals; separate interrupt paths return from CLINT and PLIC"}
 
 The repository diagram provides a complementary stage-oriented view [@cvwRepositoryDiagram]. The new SVG reorganizes those functions for system integration. In particular, it separates outward requests from inward events: a peripheral write and an interrupt are not two directions of one bus transaction.

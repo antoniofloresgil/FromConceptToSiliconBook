@@ -1,0 +1,1493 @@
+{
+  "creator": "Yosys 0.33 (git sha1 2584903a060)",
+  "modules": {
+    "accumulator_sv": {
+      "attributes": {
+        "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:3.1-19.10",
+        "top": "00000000000000000000000000000001",
+        "dynports": "00000000000000000000000000000001",
+        "hdlname": "\\accumulator_sv"
+      },
+      "parameter_default_values": {
+        "W": "00000000000000000000000000001000"
+      },
+      "ports": {
+        "clock": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "reset": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "Clear": {
+          "direction": "input",
+          "bits": [ 4 ]
+        },
+        "Enable": {
+          "direction": "input",
+          "bits": [ 5 ]
+        },
+        "Operand": {
+          "direction": "input",
+          "bits": [ 6, 7, 8, 9, 10, 11, 12, 13 ]
+        },
+        "Sum": {
+          "direction": "output",
+          "bits": [ 14, 15, 16, 17, 18, 19, 20, 21 ]
+        },
+        "Valid": {
+          "direction": "output",
+          "bits": [ 22 ]
+        },
+        "Overflow": {
+          "direction": "output",
+          "bits": [ 23 ]
+        }
+      },
+      "cells": {
+        "$auto$ff.cc:266:slice$114": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 24 ],
+            "Q": [ 23 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$115": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 26 ],
+            "E": [ 5 ],
+            "Q": [ 14 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$116": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 27 ],
+            "E": [ 5 ],
+            "Q": [ 15 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$117": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 28 ],
+            "E": [ 5 ],
+            "Q": [ 16 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$118": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 29 ],
+            "E": [ 5 ],
+            "Q": [ 17 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$119": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 30 ],
+            "E": [ 5 ],
+            "Q": [ 18 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$120": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 31 ],
+            "E": [ 5 ],
+            "Q": [ 19 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$121": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 32 ],
+            "E": [ 5 ],
+            "Q": [ 20 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$122": {
+          "hide_name": 1,
+          "type": "$_SDFFE_PP0P_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 33 ],
+            "E": [ 5 ],
+            "Q": [ 21 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$123": {
+          "hide_name": 1,
+          "type": "$_SDFF_PP0_",
+          "parameters": {
+          },
+          "attributes": {
+            "always_ff": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:11.3-18.6"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 5 ],
+            "Q": [ 22 ],
+            "R": [ 25 ]
+          }
+        },
+        "$auto$simplemap.cc:225:simplemap_logbin$112": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:12.8-12.22"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 3 ],
+            "B": [ 4 ],
+            "Y": [ 25 ]
+          }
+        },
+        "$auto$simplemap.cc:225:simplemap_logbin$113": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:15.17-15.38"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5 ],
+            "B": [ 34 ],
+            "Y": [ 24 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$125": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 35 ],
+            "B": [ 36 ],
+            "Y": [ 27 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$126": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 37 ],
+            "B": [ 38 ],
+            "Y": [ 28 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$127": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 39 ],
+            "B": [ 40 ],
+            "Y": [ 29 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$128": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 41 ],
+            "B": [ 42 ],
+            "Y": [ 30 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$129": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 43 ],
+            "B": [ 44 ],
+            "Y": [ 31 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$130": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 45 ],
+            "B": [ 46 ],
+            "Y": [ 32 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$131": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 47 ],
+            "B": [ 48 ],
+            "Y": [ 33 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$134": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 14 ],
+            "Y": [ 26 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$135": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 7 ],
+            "B": [ 15 ],
+            "Y": [ 35 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$136": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 16 ],
+            "Y": [ 37 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$137": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 9 ],
+            "B": [ 17 ],
+            "Y": [ 39 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$138": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 18 ],
+            "Y": [ 41 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$139": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 11 ],
+            "B": [ 19 ],
+            "Y": [ 43 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$140": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 12 ],
+            "B": [ 20 ],
+            "Y": [ 45 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$141": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:288.13-288.20"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 13 ],
+            "B": [ 21 ],
+            "Y": [ 47 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$143": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 6 ],
+            "B": [ 14 ],
+            "Y": [ 36 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$144": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 7 ],
+            "B": [ 15 ],
+            "Y": [ 49 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$145": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 16 ],
+            "Y": [ 50 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$146": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 9 ],
+            "B": [ 17 ],
+            "Y": [ 51 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$147": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 18 ],
+            "Y": [ 52 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$148": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 11 ],
+            "B": [ 19 ],
+            "Y": [ 53 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$149": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 12 ],
+            "B": [ 20 ],
+            "Y": [ 54 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$150": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.42-286.49"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 13 ],
+            "B": [ 21 ],
+            "Y": [ 55 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$210": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 35 ],
+            "B": [ 36 ],
+            "Y": [ 56 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$211": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 39 ],
+            "B": [ 50 ],
+            "Y": [ 57 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$212": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 43 ],
+            "B": [ 52 ],
+            "Y": [ 58 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$213": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 47 ],
+            "B": [ 54 ],
+            "Y": [ 59 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$214": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 60 ],
+            "B": [ 38 ],
+            "Y": [ 61 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$215": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 62 ],
+            "B": [ 63 ],
+            "Y": [ 64 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$216": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 65 ],
+            "B": [ 42 ],
+            "Y": [ 66 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$217": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 39 ],
+            "B": [ 37 ],
+            "Y": [ 60 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$218": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 43 ],
+            "B": [ 41 ],
+            "Y": [ 67 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$219": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 47 ],
+            "B": [ 45 ],
+            "Y": [ 62 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$220": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 62 ],
+            "B": [ 67 ],
+            "Y": [ 65 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$221": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 67 ],
+            "B": [ 42 ],
+            "Y": [ 68 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$222": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 37 ],
+            "B": [ 38 ],
+            "Y": [ 69 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$223": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 41 ],
+            "B": [ 42 ],
+            "Y": [ 70 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$224": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 45 ],
+            "B": [ 46 ],
+            "Y": [ 71 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$227": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 49 ],
+            "B": [ 56 ],
+            "Y": [ 38 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$228": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 51 ],
+            "B": [ 57 ],
+            "Y": [ 72 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$229": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 53 ],
+            "B": [ 58 ],
+            "Y": [ 63 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$230": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 55 ],
+            "B": [ 59 ],
+            "Y": [ 73 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$231": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 72 ],
+            "B": [ 61 ],
+            "Y": [ 42 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$232": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 73 ],
+            "B": [ 64 ],
+            "Y": [ 74 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$233": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 74 ],
+            "B": [ 66 ],
+            "Y": [ 34 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$234": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.12-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 63 ],
+            "B": [ 68 ],
+            "Y": [ 46 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$235": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.12-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 50 ],
+            "B": [ 69 ],
+            "Y": [ 40 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$236": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.12-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 52 ],
+            "B": [ 70 ],
+            "Y": [ 44 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$237": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.12-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 54 ],
+            "B": [ 71 ],
+            "Y": [ 48 ]
+          }
+        }
+      },
+      "netnames": {
+        "$auto$alumacc.cc:485:replace_alu$27.CO": {
+          "hide_name": 1,
+          "bits": [ 36, 38, 40, 42, 44, 46, 48, 34, "0" ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:274.23-274.25"
+          }
+        },
+        "$auto$alumacc.cc:485:replace_alu$27.X": {
+          "hide_name": 1,
+          "bits": [ 26, 35, 37, 39, 41, 43, 45, 47, "0" ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:270.23-270.24"
+          }
+        },
+        "$auto$alumacc.cc:485:replace_alu$27.lcu.G": {
+          "hide_name": 1,
+          "bits": [ 36, 49, 50, 51, 52, 53, 54, 55, "0" ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:214.23-214.24"
+          }
+        },
+        "$logic_and$/work/labs/19-hardware-generators/accumulator_sv.sv:15$8_Y": {
+          "hide_name": 1,
+          "bits": [ 24 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:15.17-15.38"
+          }
+        },
+        "$logic_or$/work/labs/19-hardware-generators/accumulator_sv.sv:12$7_Y": {
+          "hide_name": 1,
+          "bits": [ 25 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:12.8-12.22"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$155_Y": {
+          "hide_name": 1,
+          "bits": [ 56 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$158_Y": {
+          "hide_name": 1,
+          "bits": [ 57 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$161_Y": {
+          "hide_name": 1,
+          "bits": [ 58 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$164_Y": {
+          "hide_name": 1,
+          "bits": [ 59 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$167_Y": {
+          "hide_name": 1,
+          "bits": [ 61 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$170_Y": {
+          "hide_name": 1,
+          "bits": [ 64 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:240$173_Y": {
+          "hide_name": 1,
+          "bits": [ 66 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.19-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:241$160_Y": {
+          "hide_name": 1,
+          "bits": [ 60 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:241$163_Y": {
+          "hide_name": 1,
+          "bits": [ 67 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:241$166_Y": {
+          "hide_name": 1,
+          "bits": [ 62 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:241$172_Y": {
+          "hide_name": 1,
+          "bits": [ 65 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:248$176_Y": {
+          "hide_name": 1,
+          "bits": [ 68 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:248$179_Y": {
+          "hide_name": 1,
+          "bits": [ 69 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:248$182_Y": {
+          "hide_name": 1,
+          "bits": [ 70 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$and$/usr/bin/../share/yosys/techmap.v:248$185_Y": {
+          "hide_name": 1,
+          "bits": [ 71 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:248.19-248.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$or$/usr/bin/../share/yosys/techmap.v:240$159_Y": {
+          "hide_name": 1,
+          "bits": [ 72 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$or$/usr/bin/../share/yosys/techmap.v:240$162_Y": {
+          "hide_name": 1,
+          "bits": [ 63 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$or$/usr/bin/../share/yosys/techmap.v:240$165_Y": {
+          "hide_name": 1,
+          "bits": [ 73 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          }
+        },
+        "$techmap$auto$alumacc.cc:485:replace_alu$27.lcu.$or$/usr/bin/../share/yosys/techmap.v:240$171_Y": {
+          "hide_name": 1,
+          "bits": [ 74 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:10.19-10.44|/usr/bin/../share/yosys/techmap.v:286.27-286.69|/usr/bin/../share/yosys/techmap.v:240.12-240.41"
+          }
+        },
+        "Clear": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:4.29-4.34"
+          }
+        },
+        "Enable": {
+          "hide_name": 0,
+          "bits": [ 5 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:4.36-4.42"
+          }
+        },
+        "Operand": {
+          "hide_name": 0,
+          "bits": [ 6, 7, 8, 9, 10, 11, 12, 13 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:5.23-5.30"
+          }
+        },
+        "Overflow": {
+          "hide_name": 0,
+          "bits": [ 23 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:7.23-7.31"
+          }
+        },
+        "Sum": {
+          "hide_name": 0,
+          "bits": [ 14, 15, 16, 17, 18, 19, 20, 21 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:6.24-6.27"
+          }
+        },
+        "Valid": {
+          "hide_name": 0,
+          "bits": [ 22 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:7.16-7.21"
+          }
+        },
+        "clock": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:4.15-4.20"
+          }
+        },
+        "extended": {
+          "hide_name": 0,
+          "bits": [ 26, 27, 28, 29, 30, 31, 32, 33, 34 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:9.15-9.23"
+          }
+        },
+        "reset": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "/work/labs/19-hardware-generators/accumulator_sv.sv:4.22-4.27"
+          }
+        }
+      }
+    }
+  }
+}

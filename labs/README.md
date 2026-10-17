@@ -53,6 +53,10 @@ Windows mounts use Windows access controls; do not paste POSIX `id` expressions 
 | `physical-study` | Accumulator on Nangate45 | Eleven real direct OpenROAD cases, extracted timing, seven GUI captures and preserved placement failures; separate image, outside `run all` | [16](16-openroad-study/README.md) |
 | `complete-case` | Same maximum-256 dot-product IP | Common manifest joins tests/formal/Wally with ECP5/Nexys Video PnR and Nangate45 GDSII, metrics and physical visuals; explicit, outside `run all` | [17](17-complete-case/README.md) |
 | `linux-accelerator` | Real Linux driver and the dot-product contract | QEMU model, DT, reserved DMA pool, IRQ/poll and userspace; advanced real Wally RV64 RTL Linux route | [18](18-linux-accelerator/README.md) |
+| `hardware-generators` | Chisel and direct SystemVerilog accumulators | Explicit generation through FIRRTL/CIRCT, three widths, independent model and rejected priority defect; separate image, outside `run all` | [19](19-hardware-generators/README.md) |
+| `multicore` | Two Linux CPUs and the existing DMA accelerator | Pinned-CPU ownership, 96 checked jobs and explicit cache/ordering/dependency models; optional advanced image, outside `run all` | [20](20-multicore/README.md) |
+| `physical-closure` | Original dot-product baseline and separately identified repair candidates | Fresh FPGA/ASIC routes, 75/100 MHz comparison, arithmetic register, extracted ASIC electrical/hold repair and netlist equivalence; outside `run all` | [21](21-physical-closure/README.md) |
+| `layout-verification` | Actual GDS and transistor reference | FreePDK45 DRC/LVS, diagnosed PG/body failure, physical finish, fresh timing and geometry negative controls; reference technology, outside `run all` | [22](22-layout-verification/README.md) |
 
 ## Commands
 

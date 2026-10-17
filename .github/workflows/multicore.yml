@@ -1,0 +1,30 @@
+name: Multicore integration (optional)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  multicore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build existing Linux environment and two-CPU application
+        run: |
+          docker build -f labs/12-boot/Dockerfile -t from-concept-boot:2026.10 .
+          docker build -f labs/18-linux-accelerator/Dockerfile -t from-concept-linux-accelerator:2026.10 .
+          docker build -f labs/20-multicore/Dockerfile -t from-concept-multicore:2026.10 .
+      - name: Execute offline as runner UID
+        run: >-
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp
+          --env CASE_IMAGE_ID="$(docker image inspect --format '{{.Id}}' from-concept-multicore:2026.10)"
+          --mount "type=bind,source=$PWD,target=/work" from-concept-multicore:2026.10
+          python3 labs/20-multicore/run.py --output-dir labs/build/multicore-ci
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: multicore-integration-evidence
+          path: labs/build/multicore-ci/

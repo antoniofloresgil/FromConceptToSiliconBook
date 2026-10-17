@@ -1,0 +1,230 @@
+{
+  "status": "completed",
+  "image": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "input_report_sha256": "98706c09352e821409af7bcde3c78d6d6036f97791873ad3ccd360e2c3ff6d8a",
+  "sources": {
+    "labs/22-layout-verification/run.py": "c3376beed71fed201790e25f804f9233bce2cf83cf9a9f3dc5c71e8d50659604",
+    "labs/22-layout-verification/finish.tcl": "af59f083e391b219d6db9b224831308648a5996bf0845812ed08acab6d797ade",
+    "labs/22-layout-verification/lvs.lvs": "67209b20baa62af8f5c441da31756c18627b1c9d3141481c6b97298c8fe54180",
+    "labs/22-layout-verification/layout.py": "9cb4be6d5cf29831e0eb4380f60fc42920f4457344f77078c397ed0e1bd13806",
+    "labs/17-complete-case/streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c"
+  },
+  "input_artifacts": {
+    "routed.odb": "4f1e0af1fc6b0c8ca200877900d730f601ee2f0cf27913fb1a90fa75c1808fb7",
+    "routed.sdc": "80c383880244b68f26349e31567ff4cc29f318080ca97fd64f989ecb17a6d417",
+    "routed.def": "86956551b8f37167e296d7bf5a30e16701551077dd88fc17ec1a3a2259325760",
+    "dotproduct_axi.gds": "72ef4abc12dd2290aece7bbb900fac85939ab3f4701e6320e8eea189ea6ebc4e"
+  },
+  "technology": {
+    "drc/FreePDK45.lydrc": "4e35cad6786f21c6e233fb606bea59bb44e1a12713008cf7367d65a1a3de2147",
+    "cdl/NangateOpenCellLibrary.cdl": "457f0e3836b369f56d2cb04aab2a16d0e40b56d32bf2c62f19475b0abca2f6b3",
+    "gds/NangateOpenCellLibrary.gds": "7fdbd7f4e46283fdd9b9a369e1cae1a7f6f742c8e75cfe943c17f451626fe8e8",
+    "rcx_patterns.rules": "2f65fafbe2c704b378563c53a680b93cef080c2799997019d43df7d1e5a563e9",
+    "lib/NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1",
+    "lef/NangateOpenCellLibrary.macro.mod.lef": "a43aea339f12a57a63497783e508ba16f3da2dc056d3247dec7d99707c2dedef"
+  },
+  "tools": {
+    "openroad": "24Q3-11382-g61879bec53",
+    "klayout": "KLayout 0.30.3"
+  },
+  "commands": [
+    {
+      "argv": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/22-layout-verification/finish.tcl"
+      ],
+      "log": "command-01.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/layout-verification-final",
+        "-rm",
+        "/work/labs/17-complete-case/streamout.py"
+      ],
+      "log": "command-02.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/layout-verification-final",
+        "-rd",
+        "source=/work/labs/build/layout-verification-final/dotproduct_axi.gds",
+        "-rm",
+        "/work/labs/22-layout-verification/layout.py"
+      ],
+      "log": "command-03.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/closure-final-asic-repair/dotproduct_axi.gds",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/baseline-drc.lyrdb",
+        "-r",
+        "/work/labs/build/layout-verification-final/flat.lydrc"
+      ],
+      "log": "command-04.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/closure-final-asic-repair/dotproduct_axi.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/layout-verification-final/baseline-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/baseline-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/layout-verification-final/baseline-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/layout-verification-final/baseline-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/layout-verification-final/baseline-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-05.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/layout-verification-final/dotproduct_axi.gds",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/finished-drc.lyrdb",
+        "-r",
+        "/work/labs/build/layout-verification-final/flat.lydrc"
+      ],
+      "log": "command-06.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/layout-verification-final/dotproduct_axi.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/layout-verification-final/finished-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/finished-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/layout-verification-final/finished-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/layout-verification-final/finished-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/layout-verification-final/finished-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-07.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/layout-verification-final/bad-drc.gds",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/negative-drc.lyrdb",
+        "-r",
+        "/work/labs/build/layout-verification-final/flat.lydrc"
+      ],
+      "log": "command-08.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/layout-verification-final/bad-lvs.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/layout-verification-final/finished-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/layout-verification-final/negative-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/layout-verification-final/negative-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/layout-verification-final/negative-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/layout-verification-final/negative-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-09.txt",
+      "exit_code": 0
+    }
+  ],
+  "manufacturing_qualified": false,
+  "artifacts": {
+    "bad-drc.gds": "d6aa9bf386f17123882c826cde20ae7bb4c49630945797c1afd6c866427a1b93",
+    "bad-lvs.gds": "82a6b69bf300eca25bf24f833fee4dc58028ee6d738fa09d11617cc07057ca97",
+    "baseline-drc.lyrdb": "18df0d67ef86266f0b2235147972e212a7fb13f743978b94f7eca7c7d5e7b13d",
+    "baseline-lvs.cir": "750a12b77eaaad13ec17c852c1aae3ea9efec26751a1553325488c824bc8366d",
+    "baseline-lvs.json": "569c2b7df935d2ac4e6f0b243cbe65a4ffdd213993ddccf82bcf09331bf645bd",
+    "baseline-lvs.l2n": "3b1e05015e7e9e775d46b77c6ce985eda5622869908f913b0e0b42ab6a19e7b4",
+    "baseline-lvs.lvsdb": "b6f75db71cc1f7f1cea96dde004e663343d9204a643e4c260615131700dffe2e",
+    "baseline-reference.cdl": "e27002a15fcfbc7a1db400a1ba344a5ecde773690b08fd31628d0c974e61ee40",
+    "baseline.cdl": "fd32901d4779818ac6e21e7c73ab4a64d000388b2798284ccc32d922cbf549b0",
+    "command-01.txt": "08efa26a99b198d81379618d51220efaa9ff8d22d06af623c1a66039cad32c78",
+    "command-02.txt": "51c97a437f0fda47f1281d04e52de63e56c279786cb331052b8437686889751f",
+    "command-03.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-04.txt": "f44293bfb168c8564c59fedc50a3397d547df706dc568c58437094178d7d1685",
+    "command-05.txt": "1541dce287d0663d9ef76879cb3e799e43061f7028cce19249b49a9a46f648c4",
+    "command-06.txt": "3121046796d9f75c98992a352bd138827604b7ae1b11a98410529fc3cd53a1c8",
+    "command-07.txt": "cfca81fa7f43f192a2754ae0e031ef2d7e944f900cd268153d9492c7c37c0b67",
+    "command-08.txt": "acb6b2e3abbf68dd5cd50bf556d7fbbc401240d4076680f01c339a01805c824a",
+    "command-09.txt": "1541dce287d0663d9ef76879cb3e799e43061f7028cce19249b49a9a46f648c4",
+    "constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dotproduct_axi.gds": "56a3264adbf7fee42a2673295229a495832be7fa40574c01e120a4d1d518b576",
+    "finished-drc.lyrdb": "18df0d67ef86266f0b2235147972e212a7fb13f743978b94f7eca7c7d5e7b13d",
+    "finished-lvs.cir": "07adf18230517c6c619208cd4dd7f18165ad884e3da04e4475812bff6c1c6f5d",
+    "finished-lvs.json": "288ebae4091bd41bfd273d56138f65e33652d6f9b8ea3ac4268e118af430cc71",
+    "finished-lvs.l2n": "3fad16feccda6e9ff6cecf7ad13137fbb49e4516582fd28db23cc98cc71fb224",
+    "finished-lvs.lvsdb": "eff7de638a0ebc9aa41cbd1d94401ff6385aeeb2d4de0381adb6cdca139059dd",
+    "finished-reference.cdl": "b28b0fa27125f012b9ecdfdcb107550bc37ab2489dc78b2eeacaab4c7a2a6462",
+    "finished.cdl": "07ae09d54f09fa82567ecc1807b0d53f403e7a3c747d3cb58fe3e5e3b72808b8",
+    "flat.lydrc": "0a2402fcc826abe57ef652c31442d52ca5e7984800082501d9ae47d24390e1c7",
+    "functional-after.txt": "8c50366f8e6148d90c336c5a9eda8882cd15ff3a75c513dc72bb641daa4b7024",
+    "functional-before.txt": "8c50366f8e6148d90c336c5a9eda8882cd15ff3a75c513dc72bb641daa4b7024",
+    "gds-readback.json": "5a1be776f7855b8539bf2b051c5851fe32bcec054a6196619b171d78f26354ac",
+    "hold.rpt": "2d24b118aa05635210b594daa132ba0f5d7a04f25895e02ac5aa9afa85205561",
+    "layout-preflight.json": "707f144d53422f1e58f06951b688cbf0810445de3e1938b1063b11c7748e08cb",
+    "limits.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "negative-drc.lyrdb": "a65c5615c9a7847211a3765e67f4f3e155506ef6e6d46c5222605662377a9f2a",
+    "negative-lvs.cir": "94e7c291a096f5d08bdeb47313c504af66dadbb8c8fe0842d46a0ca1fdaf06a1",
+    "negative-lvs.json": "48a89e0213813e8e896970c11172caf512e7409237e144e53071c2cc907e5291",
+    "negative-lvs.l2n": "11fc6c37b6d11052e1a9ab0f92f8e8a15b1803bed4cd8ee09efdc340909e88a9",
+    "negative-lvs.lvsdb": "18f903ab46a0ae35cdcd631afd4e1f95cc677510eb523b906ed7e481e8d278fa",
+    "power-connectivity.json": "fbc8d46f578d75a5a4097c8e306acf10df9123423fea758579a40181b62f9ecb",
+    "reconnected-reference.cdl": "fffc47affb1a91ecea2290d1af2cb395205e548856c177feeb966a1943816363",
+    "reconnected.cdl": "46f6e466cc2db0934b7ed9b1e82251260a24931d0397183e18b8e2ba0781f701",
+    "results.json": "e96186c9ba3e38ed8e2f0655208ab99b404c871b11986bd7c83ece47b89bb536",
+    "routed.def": "73642b5adb413350cc744662356955778099257c53a79fe58cd19c526ab210fe",
+    "routed.odb": "7e9cc5f82a26537fa34472edc53880be320fa923dd695648bca1c8b757869461",
+    "routed.sdc": "cb941b0ec2b6f4e29eb4e36d715727bb03f1e96602794c5681cd36d2c8a8fb9a",
+    "routed.spef": "2e33bcd1ad2911f931e0d5ffb3016cd4c601a285665f84def7139a96c400f008",
+    "setup.rpt": "5d5654512f0c4bd45b0c29833d8a122bdd64099c905e3509d8ce1bed04ea1e02",
+    "timing.json": "eb6b4d4316e9609ceba4e34d8efd7062c328aa722c7ce7e91c7ee97a084177ba"
+  }
+}
