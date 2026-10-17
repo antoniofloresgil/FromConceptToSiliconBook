@@ -11,6 +11,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'labs'))
 import run as runner
+from tools.package import BOOK_URL
 
 
 class PracticeDownload(unittest.TestCase):
@@ -40,6 +41,9 @@ class PracticeDownload(unittest.TestCase):
             self.assertTrue((self.root / name).is_file(), name)
 
     def test_extracted_package_checks_without_chapters(self):
+        guide = (self.root / 'labs/README.md').read_text(encoding='utf-8')
+        self.assertNotIn('../learning-paths.qmd', guide)
+        self.assertIn(BOOK_URL + 'learning-paths.html', guide)
         result = self.command('check')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn('29 listing origins', result.stdout)

@@ -48,7 +48,7 @@ def online_book_links(root, path, text):
         if not destination.is_relative_to(root):
             return match.group(0)
         name = destination.relative_to(root).as_posix()
-        if name.startswith(('chapters/', 'appendices/')) or name == 'summary.qmd':
+        if destination.suffix == '.qmd':
             return '](' + BOOK_URL + str(Path(name).with_suffix('.html')).replace('\\', '/') + (separator + fragment if separator else '') + ')'
         return match.group(0)
     return re.sub(r'\]\(([^\n)]+)\)', replace, text)
