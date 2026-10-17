@@ -170,6 +170,78 @@ Copy the complete RTL directory, preserving module names and dependencies. On Wi
 
 A minimized waveform and an explained requirement should accompany a failure report. A repaired design needs a new passing run and a retained regression case. CI executes the automatic suite on pushes and pull requests and preserves logs and reports as an artifact; it does not physically program a board or sign off an ASIC.
 
+## Continuous hardware verification of the accelerator {#sec-hardware-ci}
+
+Reproducible tools become useful regression infrastructure when a change produces a decision tied to the affected hardware. [Lab 25](../labs/25-hardware-ci/README.md) runs the existing AXI/DMA accelerator through one chain, using the same snapshotted RTL throughout:
+
+```text
+Lint -> Elaboration -> Simulation -> Formal -> Synthesis -> Reports
+```
+
+This is an executable application of the plan in @sec-verification-methodology. It adds no new hardware feature. The RTL remains the Lab 10 baseline; candidates are copied into a separate directory. The stages share source hashes, seed 2026, configuration, tool versions and one result record. A failed stage stops dependent work. Later stages are `skipped`, not successful by absence.
+
+### What each stage must establish
+
+| Stage | Executed check | Rejection condition |
+| --- | --- | --- |
+| Lint | Verilator checks the actual accelerator hierarchy | Tool mismatch, syntax/error diagnostic or unreviewed warning |
+| Elaboration | Yosys resolves hierarchy/processes and exports the interface | Missing module, structural inconsistency, changed port/default-parameter contract |
+| Simulation | Independent Lab 10 scoreboard at maximum lengths 256 and 16; AHB bridge test | Arithmetic, ordering, strobe, DMA-window, error, completion, interrupt/reset or stall assertion failure |
+| Formal | Existing bounded RTL assertions plus reachable completion witness | Failed assertion, timeout or missing successful proof/witness |
+| Synthesis | Flattened generic mapping of the default 256-element-capacity configuration | Structural error, unintended latch or failed synthesis |
+| Reports | Compare mapped cell count with the reviewed budget; recheck source identity | Excessive logic growth or changed inputs |
+
+The elaborated [contract](../labs/25-hardware-ci/contract.json) records port names, directions, widths, signedness and default parameters. It catches a changed interface even if a testbench happens not to exercise the affected bits. It does not encode every AXI or register semantic rule. Independent transactions and assertions check those behaviors. An intended ABI change needs explicit integration/test review, not an edit that makes the old checker agree automatically.
+
+Lint also needs an explicit policy. The preserved RTL produces six reviewed diagnostics: four implicit unsigned address extensions in 33-bit range comparisons, the unused engine-busy indication, and the unused upper half of a 32-bit DMA operand. The runner uses `-Wno-fatal` to collect diagnostics, then compares the **exact reviewed multiset** of warning codes, source filenames and messages. Additional, changed or missing messages fail. It does not globally accept a warning category. Logs retain all six observations, and an intentional cleanup requires updating the reviewed expectation.
+
+The formal stage retains its original boundary: 20-cycle symbolic control BMC and a 24-cycle engine check with a fixed valid length-one descriptor and a reachable DONE witness. The witness helps expose a vacuous completion argument. These checks do not establish induction, unrestricted AXI compliance, full arithmetic correctness or unbounded progress. The standalone FIFO chapter in @sec-formal-verification develops those proof distinctions more fully.
+
+### A metric gate needs a stable denominator
+
+The actual reference produces **5,662 generic cells** with Yosys 0.33, after flattening the same top and mapping with the same recipe. The [policy](../labs/25-hardware-ci/policy.json) sets:
+
+$$N_{\mathrm{limit}} = \left\lceil 1.05\times 5662\right\rceil = 5946.$$
+
+Five percent is a declared teaching **review budget** for logical growth. It allows small deliberate changes within the fixed configuration while flagging a larger increase for an engineering decision. It is not a technology limit or a claim that every 4% increase is acceptable. Tool versions are checked before running the gate; changing the mapper can change the cell denominator without changing the RTL.
+
+Generic cells are not square micrometres, watts or nanoseconds. The gate cannot reject a timing regression that only appears after routing. A product could instead budget a characterized cell area, extracted slack or workload latency, but each requires its own configuration and measurement contract. Keep such a decision separate from this fast count comparison.
+
+The runner never learns a new baseline from the current candidate. For an intended architecture change, inspect the failing report, explain the cost and functional consequences, rerun relevant system/physical checks, and review a new policy explicitly. Repository review and branch-protection settings remain administrative controls; adding a workflow file does not configure them.
+
+### Demonstrate that rejection actually works
+
+The [recorded dossier](../labs/25-hardware-ci/reference/negative-results.json) contains four real modified copies of the RTL, passed through the same entry point:
+
+| Modification | First failing stage | Observed evidence |
+| --- | --- | --- |
+| Change default `MAX_LENGTH` from 256 to 257 | Elaboration | Elaborated parameter contract mismatch |
+| Make multiplication unsigned | Simulation | Independent arithmetic mismatch |
+| Insert a deliberately false formal assertion | Formal | Failed bounded assertion and VCD counterexample |
+| Add a retained unused 256-bit counter | Reports | **6,668 cells**, exceeding the **5,946** limit |
+
+The last candidate passes lint, elaboration, simulation, bounded formal checks and synthesis. Its counter is deliberately retained so optimization cannot remove the experiment. It demonstrates a cost regression that functional tests alone would accept. The false assertion is a sensitivity test for the formal stage, not a previously hidden defect in the healthy accelerator. The [positive run](../labs/25-hardware-ci/reference/positive/report.json) passes all six stages at 5,662 cells.
+
+Reproduce the positive run with the ordinary lab image using the Linux/WSL or PowerShell commands in the guide. Sources are mounted read-only; a separate writable mount receives results. Run `negative.py` in the same environment to challenge all four gates. Alternatively, `verify_reference.py` audits the delivered transcripts, source/artifact hashes, actual generic netlists and failure outcomes using Python only. Auditing recorded evidence is not rerunning EDA tools.
+
+### Separate per-change checks from physical campaigns
+
+The publication workflow calls the dedicated [accelerator workflow](../labs/25-hardware-ci/reference/workflows/hardware-ci.yml) on main-branch pushes and pull requests, alongside the broader laboratory/Wally regression. The book build requires both jobs. The accelerator job executes the healthy chain and negative controls offline after image construction, and uploads its evidence even on failure. Preserve the first diagnostic, failed-stage identity and counterexample rather than presenting only the final red status.
+
+| Tier | Trigger and scope | Evidence and limit |
+| --- | --- | --- |
+| Per change | Main push / pull request; lint through generic synthesis | Interface, independent tests, bounded proof/witness, cell budget; no routed timing |
+| Wider functional campaign | Existing laboratory/Wally jobs; explicit additional configurations | Broader software/system evidence; no inherited whole-core proof |
+| Physical implementation | Explicit dispatch of the separate physical workflow; other FPGA/ASIC sweeps through Labs 21–22 | Fresh routing/extraction and target-specific acceptance; longer runtime and additional images/PDK |
+
+The new manual [ASIC workflow](../labs/25-hardware-ci/reference/workflows/physical-regression.yml) first requires a fresh fast gate at the same Git revision. It then uses the pinned ORFS image to implement the Lab 21 repaired 100 MHz block and check mapped/routed equivalence. `physical_gate.py` requires nonnegative extracted setup and hold, zero reported electrical violations, no unconstrained-path report, an empty final router DRC report and valid nonempty GDS readback. Its scope is Nangate45 typical with the block's supplied interface budgets. Reference-PDK transistor LVS and geometry DRC retain their separate Lab 22 campaign; manufacturing qualification remains open.
+
+The physical runner also enforces the locked Lab 17 RTL manifest. Changing the accelerator cannot silently reuse the historical physical result. A new implementation candidate needs an explicitly reviewed manifest/configuration and fresh physical runs, following @sec-complete-closure. FPGA sweeps remain separate reproducible commands, not an implied side effect of this ASIC job.
+
+The healthy chain and all four mutations were executed locally in Docker with network disabled, UID/GID 1000 and read-only sources. The physical acceptance helper was checked against the existing actual repaired-block run, retaining setup **+5.20410 ns** and hold **+0.02968 ns**. This addition supplies workflow definitions and locally executed evidence; it does not claim a new physical campaign or an observed GitHub-hosted Actions execution.
+
+For assessment, submit one passing candidate, one minimized rejection and its first failing stage. Explain why the 6,668-cell candidate can be functionally correct yet rejected, which configuration makes the comparison meaningful, and what new evidence would justify replacing the baseline. Then identify a possible routed-timing regression that this fast chain cannot detect.
+
 ## Preserve and share an environment
 
 Record both the package checksum and built-image identity:
@@ -302,6 +374,10 @@ Select **GitHub Actions** as the repository's Pages source. If a check fails, in
 The workflow mechanism and book download settings follow the [GitHub reusable-workflow documentation](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) and [Quarto book-output documentation](https://quarto.org/docs/books/book-output.html). SVG conversion follows [Quarto's PDF guidance](https://quarto.org/docs/output-formats/pdf-basics).
 
 ## Optional boot and software-stack environment
+
+The [asynchronous-FIFO practice](../labs/24-async-fifo/README.md) develops @sec-async-fifo in the ordinary lab image. It uses actual independent simulator clocks, power-of-two storage, registered Gray pointers, coordinated reset epochs and an independent queue oracle. The checked dossier includes 48 runs, six generic netlists and four detected defects. It is an explicit guided entry outside `run all`; its XDC remains a physical-integration template.
+
+The [reusable-IP practice](../labs/23-reusable-ip/README.md) develops @sec-reusable-ip using the ordinary lab image. It generates a portable release, mounts it read-only without the book tree, and qualifies the same accelerator RTL in AXI and actual-Wally simulation environments. Two supported profiles, generated register views, negative controls and an auditable compact dossier support RA6 without a physical board. It remains an explicit guided entry outside `run all`.
 
 The [security practice](../labs/14-security/README.md) connects @sec-hardware-security to two existing environments. The boot image runs `python3 labs/14-security/run.py pmp`; the unit-lab image runs `python labs/14-security/run.py digital`. Use the guide's Linux/WSL UID/GID or PowerShell commands. Evidence stays under `labs/build/security/`, with a separate nested DMA report, preserving ordinary unit results. Claims are architectural QEMU PMP, actual accelerator RTL, teaching debug admission/bounded SAT and synthetic cache timing; secure boot, full Wally security integration and physical qualification remain explicitly proposed work.
 

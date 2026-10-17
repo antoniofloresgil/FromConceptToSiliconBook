@@ -1,0 +1,43 @@
+{
+  "arithmetic": {
+    "error": "Simulation: command failed (1); see command-04.txt",
+    "metrics": {},
+    "stage": "Simulation",
+    "status": "rejected"
+  },
+  "assertion": {
+    "error": "Formal: command failed (1); see command-09.txt",
+    "metrics": {},
+    "stage": "Formal",
+    "status": "rejected"
+  },
+  "cell-growth": {
+    "error": "Generic-cell budget exceeded: 6668 > 5946",
+    "metrics": {
+      "cell_types": {
+        "$_ANDNOT_": 1985,
+        "$_AND_": 311,
+        "$_DFF_P_": 7,
+        "$_MUX_": 73,
+        "$_NAND_": 570,
+        "$_NOR_": 259,
+        "$_NOT_": 191,
+        "$_ORNOT_": 181,
+        "$_OR_": 927,
+        "$_SDFFE_PP0P_": 459,
+        "$_SDFF_PP0_": 259,
+        "$_XNOR_": 276,
+        "$_XOR_": 1170
+      },
+      "generic_cells": 6668
+    },
+    "stage": "Reports",
+    "status": "rejected"
+  },
+  "contract": {
+    "error": "Interface/default-parameter contract changed; explicit ABI review required",
+    "metrics": {},
+    "stage": "Elaboration",
+    "status": "rejected"
+  }
+}

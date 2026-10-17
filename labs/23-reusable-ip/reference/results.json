@@ -1,0 +1,20 @@
+{
+  "status": "pass",
+  "image_id": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "ip_version": "1.1.0",
+  "register_abi": "1.0",
+  "release_sha256": "3c0151ee34537ab69eee3300afafe7efe82bcfb2f5587c1fce8f7384f593e516",
+  "rtl_sha256": {
+    "rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "rtl/dotproduct_axi.sv": "e0518c0f097f4290b2bd288115caf2809cc48a5afd3865752f46e711eabea515"
+  },
+  "configurations": {
+    "axi-course": 256,
+    "axi-compact": 16,
+    "wally": 256
+  },
+  "wally_revision": "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c",
+  "wally_mmio": "0x10080000",
+  "boundary": "AXI bus-functional subsystem and real Wally RTL firmware fixture; no second CPU SoC or physical qualification."
+}

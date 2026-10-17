@@ -1,0 +1,26 @@
+%Warning-WIDTHEXPAND: /results/negative/contract/run/input/rtl/dotproduct_axi.sv:49:11: Operator LT expects 33 bits on the LHS, but LHS's VARREF 'dst' generates 32 bits.
+                                                                                      : ... note: In instance 'dotproduct_axi'
+   49 |     !(dst < end_a && src_a < end_dst) && !(dst < end_b && src_b < end_dst);
+      |           ^
+                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.020
+                      ... Use "/* verilator lint_off WIDTHEXPAND */" and lint_on around source to disable this message.
+%Warning-WIDTHEXPAND: /results/negative/contract/run/input/rtl/dotproduct_axi.sv:49:28: Operator LT expects 33 bits on the LHS, but LHS's VARREF 'src_a' generates 32 bits.
+                                                                                      : ... note: In instance 'dotproduct_axi'
+   49 |     !(dst < end_a && src_a < end_dst) && !(dst < end_b && src_b < end_dst);
+      |                            ^
+%Warning-WIDTHEXPAND: /results/negative/contract/run/input/rtl/dotproduct_axi.sv:49:48: Operator LT expects 33 bits on the LHS, but LHS's VARREF 'dst' generates 32 bits.
+                                                                                      : ... note: In instance 'dotproduct_axi'
+   49 |     !(dst < end_a && src_a < end_dst) && !(dst < end_b && src_b < end_dst);
+      |                                                ^
+%Warning-WIDTHEXPAND: /results/negative/contract/run/input/rtl/dotproduct_axi.sv:49:65: Operator LT expects 33 bits on the LHS, but LHS's VARREF 'src_b' generates 32 bits.
+                                                                                      : ... note: In instance 'dotproduct_axi'
+   49 |     !(dst < end_a && src_a < end_dst) && !(dst < end_b && src_b < end_dst);
+      |                                                                 ^
+%Warning-UNUSEDSIGNAL: /results/negative/contract/run/input/rtl/dotproduct_axi.sv:33:9: Signal is not used: 'engine_busy'
+                                                                                      : ... note: In instance 'dotproduct_axi'
+   33 |   logic engine_busy, engine_done, engine_failed;
+      |         ^~~~~~~~~~~
+%Warning-UNUSEDSIGNAL: /results/negative/contract/run/input/rtl/dotproduct_engine.sv:9:22: Bits of signal are not used: 'rdata'[31:16]
+                                                                                         : ... note: In instance 'dotproduct_axi.engine'
+    9 |   input logic [31:0] rdata, input logic [1:0] rresp,
+      |                      ^~~~~

@@ -108,3 +108,128 @@ Submitting the unchanged reference is not the final assessed project. Students s
 ## Verification plan and evidence collection
 
 Use @sec-verification-methodology for the requirement-driven hierarchy from RTL to physical release and production test. The package includes `labs/verification/project-plan.json`, a reusable plan template and an evidence collector. After the standalone and real Wally runs, generate `verification-evidence.json` using the commands in that chapter. Current source/artifact identities and expected checker completions are checked; equivalence, measured cross coverage, timing, physical and manufacturing obligations remain visible where unexecuted. This dossier complements the runner report rather than turning a simulation PASS into a physical qualification.
+
+## Reusable IP Design and Packaging {#sec-reusable-ip}
+
+A working accelerator answers whether one design computes the expected result in its original environment. A reusable IP must also tell another team what it may connect, which configurations it may select, what software must do, and which evidence applies after integration. That team should not need the author's working directory, undocumented tool settings or memory of a successful demonstration. This section turns the dot-product example into a concrete release and connects that work to **RA6: reusable architectures, supported parameters and justified design patterns**.
+
+[Lab 23](../labs/23-reusable-ip/README.md) delivers `dotproduct_ip` version **1.1.0**, with register ABI **1.0**. It generates the control endpoint's register-address decoding from a common description and retains the original MAC and DMA engine byte for byte. The release is qualified in an AXI bus-functional subsystem and a real-Wally firmware fixture. Both compile the **same three released RTL files**, without platform-specific edits. The bus-functional subsystem supplies one integration boundary; it is not described as a second processor SoC.
+
+### Draw the IP boundary before arranging files
+
+![Original release/integration map. Blue identifies integration clients, green the common released IP, and dashed orange the Wally platform policy. Address decode, PMA, interrupt routing and firmware are platform responsibilities.](../figures/ip-release-boundaries.svg){#fig-ip-release-boundaries fig-alt="AXI stimulus and a real Wally platform connect to the same released endpoint, engine and MAC; register generation and platform policy remain distinct" width=100%}
+
+In @fig-ip-release-boundaries, `rtl/` contains only `dotproduct_axi`, `dotproduct_engine` and `dotproduct_mac`. The AHB adapter belongs to the integrator because the IP exposes AXI4-Lite, not AHB. A different CPU can replace that adapter without changing arithmetic or DMA. The shared RAM is a supplied simulation model; a physical memory subsystem must implement arbitration, visibility and response behavior separately.
+
+The release uses this layout:
+
+```text
+dotproduct_ip/
+|-- rtl/          # three released accelerator modules
+|-- sim/          # AXI/Wally fixtures, RAM, oracle and runner
+|-- formal/       # bounded properties and reachable witness recipe
+|-- sw/           # generated headers, RV32 startup and firmware
+|-- constraints/  # explicit example clock/interface budgets
+|-- docs/         # behavioral contract and generated register table
+|-- synthesis/    # synthesis entry/required-view description
++-- manifest/     # release inventory, profiles and dependency locks
+```
+
+Folder names are navigation; the manifest is the source list. Compiling every `.sv` recursively would mix testbenches, a platform adapter and checker packages into the delivered design. Simulation and synthesis must consume the declared RTL view. Keep generated build products outside the immutable release tree so a test run cannot quietly replace the delivered implementation.
+
+### Contracts and versions are part of the interface
+
+The contract specifies a single rising-edge clock and active-high synchronous reset, coordinated across CPU, adapter, IP and memory protocol state. An isolated IP reset during an outstanding transaction is unsupported. RAM contents survive reset, and two result-word writes are not an atomic 64-bit transaction. Software accepts the result only after DONE without ERROR. These requirements determine whether an integrator can safely reset, share memory with or recover the device.
+
+AXI4-Lite control uses 32-bit data and byte offsets, independent AW/W capture and retained R/B responses. DMA uses 32-bit AXI4, ID zero, one outstanding single-beat INCR transaction, `SIZE=2` and `LEN=0`. The interrupt is a retained level with W1C acknowledgement; a new completion/error event wins over simultaneous ACK. Neither an AXI port name nor an interrupt wire supplies these behavioral details.
+
+Keep three version questions distinct. The **IP release version** identifies the complete delivered implementation and collateral. The **register ABI version** identifies the software-visible contract. The **manifest schema version** identifies how tools parse the package. Here release 1.1.0 introduces generated packaging while retaining ABI 1.0; it is separate from the historical 1.0.0 source-locked physical studies. Version numbers describe policy; exact hashes identify bytes.
+
+A changed register offset, field meaning, numerical format or reset contract needs an explicit compatibility decision. Adding a supported profile needs new configuration evidence. A decoder refactoring can preserve ABI while still changing the RTL identity and invalidating an old mapped netlist. ABI 1.0 has no readable IP-version register: select the software binding through platform metadata and the release manifest instead of inventing a successful discovery read.
+
+### Generate register views from one description
+
+The authoritative [register description](../labs/23-reusable-ip/registers.json) records names, offsets, access policies, reset values, fields and behavioral notes. The package generator produces the endpoint's fourteen read/write case labels, C offsets and masks, assembly offsets, SystemVerilog checker constants and Markdown register table. Software and documentation therefore use the same addresses that enter the generated RTL decoder.
+
+For example, the IRQ acknowledgement entry is:
+
+```json
+{"name":"IRQ_ACK","offset":28,"access":"w1c","reset":0,
+ "fields":[{"name":"ACK","lsb":0,"width":1}],
+ "behavior":"Byte 0 bit 0 clears pending; reads zero; a simultaneous new terminal event wins."}
+```
+
+The generated C view exposes `DP_IRQ_ACK` and `DP_IRQ_ACK_ACK_MASK`; the assembly view exposes the offset without C types. The latter matters because the machine interrupt handler acknowledges the peripheral from `start.S`. Generating a C header while leaving a literal address in assembly creates another source of drift.
+
+This is deliberately a small generation backend. It generates addresses and views; **access behavior and field positions remain implemented in an explicit behavioral template**. It rejects unsupported field layouts rather than accepting metadata that the hardware ignores. A general register compiler would need backends for additional policies, reset domains, side effects and verification. The supplied generator is not presented as such a compiler.
+
+Single-source generation also creates common-mode risk. A wrong offset shared by the RTL, driver and test could make all three agree incorrectly. The AXI regression retains the independently written ABI 1.0 accesses and numerical oracle from Lab 10. The release negative controls reject duplicate offsets and unsupported field layouts. Functional tests still check byte strobes, busy rejection, retained responses and event-versus-ACK priority; a generated table cannot establish those behaviors by itself.
+
+### Support a configuration matrix, not arbitrary elaboration
+
+The underlying RTL permits a configurable maximum length and trusted DMA bounds. This release narrows the supported space to two named profiles, both with DMA window `[0x80008000, 0x8000c000)`:
+
+| Profile | `MAX_LENGTH` | Exercised integration | Claim |
+| --- | ---: | --- | --- |
+| `compact` | 16 | AXI subsystem | Every accepted job length 1–16, protocol/error suite, generic synthesis |
+| `course` | 256 | AXI subsystem | Every accepted job length 1–256, protocol/error suite, generic synthesis |
+| `course` | 256 | Real RV32 Wally fixture | Five polling lengths, interrupt job and rejected descriptor |
+
+The runner refuses unknown profile names and rejects the compact profile for the current Wally firmware fixture. A parameter value that elaborates successfully is not automatically supported. A new window also needs model storage, linker placement, ownership and protection checks; changing a top-level parameter alone does not discharge them.
+
+The supported numerical contract remains signed 16-bit operands in 32-bit words and an exact 64-bit sum. Maximum length affects descriptor admission; it does not change sample format or add saturation. Record unsupported tuples explicitly and require a new evidence entry before advertising them. This keeps configuration freedom useful to an integrator instead of turning every parameter into an untested promise.
+
+### Integrate the same release in two environments
+
+The AXI platform supplies a bus-functional manager and a randomized, independently stalled memory model. It tests the released IP directly, including AW-first/W-first control writes, response stalls, alignment/range rejection, DMA errors and reset. The Wally platform adds an actual pinned RV32 core, an AHB-to-AXI4-Lite adapter, compiled firmware, shared simulated RAM and a direct machine-external interrupt. No behavioral CPU substitutes for Wally.
+
+The IP sees offsets in both cases. Wally's platform decoder maps them at `0x10080000`, leaving the native GPIO base `0x10060000` available to its own device. The platform manifest generates the fixture's range and the firmware's base; the common register schema supplies offsets. The three-file accelerator RTL identity remains identical across these choices.
+
+An initial decoder/software-only relocation produced a real **store-access fault (`mcause=7`)**. The core's physical-memory attributes still rejected the new range. Reviewing the integration also found the old IRQ_ACK address in assembly startup. The corrected platform adds the decoded range to Wally's derived configuration, classifies it as uncached, non-idempotent, non-atomic and non-executable in the exported PMA policy, and generates the assembly offset. The correction belongs to the platform; the IP did not need a special Wally branch. The checked-out Wally repository remains unchanged.
+
+This failure is the practical difference between connecting wires and integrating a reusable component. The decoder, processor attributes, firmware, exception path and interrupt handler must agree. The fixture disables caches and routes IRQ directly to `MExtInt`; it does not qualify PLIC configuration, cache coherence, Linux or physical memory arbitration. Those are additional platform contracts, not defects to conceal inside the IP.
+
+### Supply models, checkers and assumptions to the integrator
+
+The package supplies an arbitrary-precision Python reference, seeded vectors, an AXI RAM model, a direct-control testbench, Wally firmware and an executable runner. Models describe their response assumptions and failure injection. The `2*N` read/two-write conservation rule and signed numerical comparison give the integrator observable obligations beyond a final PASS string. Software fences and ownership transfers remain part of the system test.
+
+The formal recipe checks control properties at depth 20 with `MAX_LENGTH=16`, and the engine at depth 24 with a fixed one-pair descriptor. It separately obtains a reachable DONE witness. This scope is the same even when the simulation profile allows 256 pairs; it is not an exhaustive proof of long jobs, fairness, arbitrary reset sequences or complete AXI compliance. Deliver the assumptions and bounds beside the result so a new environment can decide whether they still apply.
+
+A useful integration checklist asks who owns each assumption. Does the fabric guarantee a matching response ID and a final beat? Can another master overwrite an input? Can a reset strand a retained response? Who provides a timeout if memory never replies? If the platform cannot satisfy an assumption, change the platform or revise the IP contract and implementation. Passing unit tests cannot answer a question outside their environment.
+
+### Lock dependencies and preserve ownership
+
+The release inventory records the generated RTL, templates, generator, profile descriptions, firmware and supplied views by SHA-256. The [dependency lock](../labs/23-reusable-ip/dependencies.json) separately names Wally repository, revision and derived configuration. The Wally utility exports the pinned revision from a supplied clone, retaining upstream headers and license; it does not build whatever branch happens to be checked out or modify that clone.
+
+The checked qualification mounts only the delivered package, a results directory and, for Wally, the read-only dependency clone. It runs offline with the package itself read-only. This tests whether the release is autonomous: a hidden include from the author's book checkout cannot rescue a missing delivered file. Tool-image identity and per-command output accompany the evidence.
+
+Checksums detect changes only relative to a trusted identity. A party that can replace both RTL and its inventory can generate matching hashes. Preserve an independently obtained release digest and apply the project's release/authentication policy. Record licenses at the file/dependency boundary; packaging a component does not replace its original terms.
+
+### Distinguish logical and physical deliverables
+
+| View | Delivered or generated here | Integrator's next obligation |
+| --- | --- | --- |
+| RTL / registers / drivers | Locked source list and generated views | Select compatible ABI, profile and platform policy |
+| Simulation / formal | Executable models, regressions, bounds and witness | Discharge assumptions; add system-specific cases |
+| Synthesis | Generic Yosys JSON and log for each AXI profile | Map this release to a declared technology and review resources |
+| Constraints | Example clock and interface-delay SDC | Replace budgets with actual clocks, loads, reset/CDC contracts |
+| FPGA view | No new board implementation for release 1.1.0 | Pin/device/clock constraints, route/timing and board evidence |
+| ASIC view | No new mapped netlist, LEF or GDS for release 1.1.0 | Technology/corner lock, extracted timing, power, DRC/LVS and DFT |
+
+A reusable soft IP need not bundle a technology-specific hard macro, but it must identify which views exist. An example 10 ns clock is a requested budget, not achieved frequency. A generic netlist is not a placed implementation. Historical results in @sec-complete-case and @sec-layout-verification show how to document physical evidence, but belong to their own hashes. The newly generated endpoint cannot inherit their area, timing, power or DRC/LVS status merely because it preserves register behavior.
+
+### Reproduce and review the release
+
+Start with a new output directory; the packager refuses to overwrite a release:
+
+```sh
+python labs/23-reusable-ip/package.py \
+  --output labs/build/ip-release/dotproduct_ip
+python labs/build/ip-release/dotproduct_ip/manifest/verify.py
+```
+
+Then use [Lab 23's isolated-container recipes](../labs/23-reusable-ip/README.md#qualify-the-autonomous-release) to run `axi/course`, `axi/compact` and `wally/course`. Build results stay outside the release. The evidence collector requires the same release hash and the same three RTL hashes for all runs, successful command statuses, and rejected negative controls. Its [compact reference](../labs/23-reusable-ip/reference/results.json) and [auditor](../labs/23-reusable-ip/verify_reference.py) let readers inspect the checked outcome without running a simulator or acquiring Wally.
+
+The checked package contains **28 supplied files**. The AXI suites pass all 256 and 16 job lengths respectively; the Wally fixture reaches its successful mailbox after **53,153 simulated cycles**, including five polling jobs, an interrupt job and an invalid descriptor. This is a firmware/integration milestone, not measured hardware throughput. Four separate negative controls reject duplicate offsets, an unsupported field layout, RTL drift and an unsupported Wally/profile pairing. The recorded original relocation failure remains visible beside the corrected run.
+
+For RA6, review the package as the receiving team. Explain one supported profile, one rejected change and one missing physical view. Show exactly which files changed for the Wally address/PMA/interrupt adaptation and prove that the three RTL hashes did not. A stronger extension ports this same release to another real host or adds a new supported profile with its own tests. Repeating an existing PASS without justifying boundaries does not demonstrate reusable-IP design.

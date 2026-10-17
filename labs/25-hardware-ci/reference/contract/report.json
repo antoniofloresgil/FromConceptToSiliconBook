@@ -1,0 +1,121 @@
+{
+  "artifacts": {
+    "command-00.txt": "d454ad3f6d8c4cd1a2f3d62a5dabc452e5ca95f0c15217227b43c89a1c7e85d1",
+    "command-01.txt": "b2815d509b893a01b460ea1c2c6df857ac961b83ccfa72c35904de34ed53cd99",
+    "elaborated.json": "40bc42d6ebb59ac64a30ed96a4c13bfaaf2b9fc380135612280b9cf622ca872e",
+    "input/README.md": "c47e94eec7689e86120ce3c624c153781c41b4c26e04e0273cf577653ef8b604",
+    "input/axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "input/axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "input/constraints.sdc": "36c29811148ea7f1a03e3df3cfcefc9886a2b4649abc4003747dd41a9947345c",
+    "input/firmware/link.ld": "7945b9c71c8596dcb5f7a222aa03a84dcfdab101420cf0895a5232fb15a78f69",
+    "input/firmware/main.c": "757394bb95269488693b9d7c01c2258675d4e3cadd15f0a4785ec8a31262a955",
+    "input/firmware/start.S": "1fc8673150b233a14c29249cfba526c262660b3cd4c4e419fa561696da6ef67e",
+    "input/formal/check.py": "185633c6864089e7d4d83bba2653697f64dbf83250201dce3eb07ac4f9ac709b",
+    "input/ip-manifest.json": "d45c79b2b9e63fde3137dae97a2c1fe4c4b30b86f089399d111ab5d4d2c730cc",
+    "input/prepare_wally.py": "ebd9d86a1bc276e62c3573b1dace2d383655363dffdd07cfda246890b14c529c",
+    "input/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e",
+    "input/rtl/dotproduct_axi.sv": "740cdf2c49d99eff455faea3c7c0c3ef0055e313abab83d8a7436be67cf3f6e9",
+    "input/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "input/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "input/tb_bridge.sv": "7bc6c21b80c9a63bb4336d12d4f5a838945c24c4de9aa45d4db306a7a69eb43a",
+    "input/tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "input/tb_wally_dotproduct.sv": "42de8a5d6c868e6bd22b49fab9e066b48bba7b14c4fbe18f22131dcc5f3b6afb",
+    "input/vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "input/verify_negative.py": "6f7c1de2eb34109a54fffe7c2e13e41120554cd99f57593e99ff628799a1041d",
+    "interface.json": "e108e1e5a8b5568c881fc8eaf90f0e10266b049a64e663200ea83b19d471e4f4"
+  },
+  "commands": [
+    {
+      "argv": [
+        "verilator",
+        "--lint-only",
+        "--top-module",
+        "dotproduct_axi",
+        "-Wall",
+        "-Wno-fatal",
+        "/results/negative/contract/run/input/rtl/dotproduct_mac.sv",
+        "/results/negative/contract/run/input/rtl/dotproduct_engine.sv",
+        "/results/negative/contract/run/input/rtl/dotproduct_axi.sv",
+        "/results/negative/contract/run/input/rtl/ahb_to_axil.sv"
+      ],
+      "log": "command-00.txt",
+      "returncode": 0,
+      "seconds": 0.11,
+      "stage": "Lint"
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/results/negative/contract/run/input/rtl/dotproduct_mac.sv\" \"/results/negative/contract/run/input/rtl/dotproduct_engine.sv\" \"/results/negative/contract/run/input/rtl/dotproduct_axi.sv\" \"/results/negative/contract/run/input/rtl/ahb_to_axil.sv\"; hierarchy -check -top dotproduct_axi; proc; check -assert; write_json elaborated.json"
+      ],
+      "log": "command-01.txt",
+      "returncode": 0,
+      "seconds": 0.374,
+      "stage": "Elaboration"
+    }
+  ],
+  "contract_sha256": "ab0426cc8d974e4d62a0796e48ab63f7108fb5b6ad52a6adc5f40ba576b7e0df",
+  "error": "Interface/default-parameter contract changed; explicit ABI review required",
+  "image_id": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "metrics": {},
+  "policy_sha256": "ab6300af0a0da9da1acffb2663118eea287dd81cb5c02fc67ea5da1fbdfa3b23",
+  "revision": "local",
+  "runner_sha256": "3130c0306140af99931fbdfd17fb61c7dbb23bb6cc78f7e5199340fc311e7b83",
+  "seed": 2026,
+  "sources": {
+    "axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "constraints.sdc": "36c29811148ea7f1a03e3df3cfcefc9886a2b4649abc4003747dd41a9947345c",
+    "firmware/link.ld": "7945b9c71c8596dcb5f7a222aa03a84dcfdab101420cf0895a5232fb15a78f69",
+    "firmware/main.c": "757394bb95269488693b9d7c01c2258675d4e3cadd15f0a4785ec8a31262a955",
+    "firmware/start.S": "1fc8673150b233a14c29249cfba526c262660b3cd4c4e419fa561696da6ef67e",
+    "formal/check.py": "185633c6864089e7d4d83bba2653697f64dbf83250201dce3eb07ac4f9ac709b",
+    "ip-manifest.json": "d45c79b2b9e63fde3137dae97a2c1fe4c4b30b86f089399d111ab5d4d2c730cc",
+    "prepare_wally.py": "ebd9d86a1bc276e62c3573b1dace2d383655363dffdd07cfda246890b14c529c",
+    "rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e",
+    "rtl/dotproduct_axi.sv": "740cdf2c49d99eff455faea3c7c0c3ef0055e313abab83d8a7436be67cf3f6e9",
+    "rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "tb_bridge.sv": "7bc6c21b80c9a63bb4336d12d4f5a838945c24c4de9aa45d4db306a7a69eb43a",
+    "tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "tb_wally_dotproduct.sv": "42de8a5d6c868e6bd22b49fab9e066b48bba7b14c4fbe18f22131dcc5f3b6afb",
+    "vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "verify_negative.py": "6f7c1de2eb34109a54fffe7c2e13e41120554cd99f57593e99ff628799a1041d"
+  },
+  "stages": [
+    {
+      "name": "Lint",
+      "status": "pass"
+    },
+    {
+      "name": "Elaboration",
+      "reason": "Interface/default-parameter contract changed; explicit ABI review required",
+      "status": "fail"
+    },
+    {
+      "name": "Simulation",
+      "status": "skipped"
+    },
+    {
+      "name": "Formal",
+      "status": "skipped"
+    },
+    {
+      "name": "Synthesis",
+      "status": "skipped"
+    },
+    {
+      "name": "Reports",
+      "status": "skipped"
+    }
+  ],
+  "status": "fail",
+  "tools": {
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+    "verilator": "Verilator 5.020 2024-01-01 rev (Debian 5.020-1)",
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+  }
+}

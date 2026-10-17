@@ -1,0 +1,154 @@
+module dotproduct_axi #(
+  parameter integer MAX_LENGTH = 256,
+  parameter logic [31:0] DMA_BASE = 32'h80008000,
+  parameter logic [32:0] DMA_LIMIT = 33'h08000c000
+) (
+  input logic clk, reset,
+  input logic [4:0] s_awaddr, input logic s_awvalid, output logic s_awready,
+  input logic [31:0] s_wdata, input logic [3:0] s_wstrb,
+  input logic s_wvalid, output logic s_wready,
+  output logic [1:0] s_bresp, output logic s_bvalid, input logic s_bready,
+  input logic [4:0] s_araddr, input logic s_arvalid, output logic s_arready,
+  output logic [31:0] s_rdata, output logic [1:0] s_rresp,
+  output logic s_rvalid, input logic s_rready, output logic irq,
+  output logic [31:0] m_araddr, output logic m_arvalid, input logic m_arready,
+  output logic [3:0] m_arid, output logic [7:0] m_arlen,
+  output logic [2:0] m_arsize, output logic [1:0] m_arburst,
+  output logic m_arlock, output logic [3:0] m_arcache, m_arqos,
+  output logic [2:0] m_arprot,
+  input logic [31:0] m_rdata, input logic [1:0] m_rresp,
+  input logic [3:0] m_rid, input logic m_rvalid, m_rlast, output logic m_rready,
+  output logic [31:0] m_awaddr, output logic m_awvalid, input logic m_awready,
+  output logic [3:0] m_awid, output logic [7:0] m_awlen,
+  output logic [2:0] m_awsize, output logic [1:0] m_awburst,
+  output logic m_awlock, output logic [3:0] m_awcache, m_awqos,
+  output logic [2:0] m_awprot,
+  output logic [31:0] m_wdata, output logic [3:0] m_wstrb,
+  output logic m_wvalid, output logic m_wlast, input logic m_wready,
+  input logic [1:0] m_bresp, input logic [3:0] m_bid,
+  input logic m_bvalid, output logic m_bready
+);
+  logic [31:0] src_a, src_b, dst, length, active_a, active_b, active_dst, active_n;
+  logic busy, done, error, pending, enable_irq, launch;
+  logic engine_busy, engine_done, engine_failed;
+  logic [31:0] error_code, engine_error;
+  logic aw_full, w_full;
+  logic [4:0] write_addr;
+  logic [31:0] write_data;
+  logic [3:0] write_strobe;
+  logic [32:0] end_a, end_b, end_dst;
+  logic descriptor_ok;
+  assign end_a = {1'b0,src_a} + ({1'b0,length} << 2);
+  assign end_b = {1'b0,src_b} + ({1'b0,length} << 2);
+  assign end_dst = {1'b0,dst} + 33'd8;
+  assign descriptor_ok = length >= 1 && length <= MAX_LENGTH &&
+    src_a[1:0] == 0 && src_b[1:0] == 0 && dst[2:0] == 0 &&
+    src_a >= DMA_BASE && src_b >= DMA_BASE && dst >= DMA_BASE &&
+    end_a <= DMA_LIMIT && end_b <= DMA_LIMIT && end_dst <= DMA_LIMIT &&
+    !end_a[32] && !end_b[32] && !end_dst[32] &&
+    !(dst < end_a && src_a < end_dst) && !(dst < end_b && src_b < end_dst);
+  assign s_awready = !aw_full && !s_bvalid;
+  assign s_wready = !w_full && !s_bvalid;
+  assign s_arready = !s_rvalid;
+  assign irq = pending;
+  assign m_arid=0, m_arlen=0, m_arsize=2, m_arburst=1;
+  assign m_awid=0, m_awlen=0, m_awsize=2, m_awburst=1;
+  assign m_arlock=0, m_arcache=0, m_arprot=0, m_arqos=0;
+  assign m_awlock=0, m_awcache=0, m_awprot=0, m_awqos=0;
+  assign m_wstrb=4'hf, m_wlast=1;
+  function automatic [31:0] merge_bytes(input [31:0] old_value, new_value, input [3:0] mask);
+    integer b;
+    begin
+      merge_bytes=old_value;
+      for (b=0;b<4;b=b+1) if (mask[b]) merge_bytes[b*8+:8]=new_value[b*8+:8];
+    end
+  endfunction
+  dotproduct_engine engine (
+    .clk(clk), .reset(reset), .start(launch), .src_a(active_a), .src_b(active_b),
+    .dst(active_dst), .length(active_n), .busy(engine_busy), .done(engine_done),
+    .failed(engine_failed), .error_code(engine_error),
+    .araddr(m_araddr), .arvalid(m_arvalid), .arready(m_arready),
+    .rdata(m_rdata), .rresp(m_rid == 0 ? m_rresp : 2'b10),
+    .rvalid(m_rvalid), .rlast(m_rlast), .rready(m_rready),
+    .awaddr(m_awaddr), .awvalid(m_awvalid), .awready(m_awready),
+    .wdata(m_wdata), .wvalid(m_wvalid), .wready(m_wready),
+    .bvalid(m_bvalid), .bresp(m_bid == 0 ? m_bresp : 2'b10), .bready(m_bready)
+  );
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      src_a<=0; src_b<=0; dst<=0; length<=0;
+      active_a<=0; active_b<=0; active_dst<=0; active_n<=0;
+      busy<=0; done<=0; error<=0; pending<=0; enable_irq<=0; error_code<=0; launch<=0;
+      aw_full<=0; w_full<=0; write_addr<=0; write_data<=0; write_strobe<=0;
+      s_bvalid<=0; s_bresp<=0; s_rvalid<=0; s_rdata<=0; s_rresp<=0;
+    end else begin
+      launch<=0;
+      if (s_bvalid && s_bready) s_bvalid<=0;
+      if (s_rvalid && s_rready) s_rvalid<=0;
+      if (s_awvalid && s_awready) begin aw_full<=1; write_addr<=s_awaddr; end
+      if (s_wvalid && s_wready) begin w_full<=1; write_data<=s_wdata; write_strobe<=s_wstrb; end
+      if (aw_full && w_full && !s_bvalid) begin
+        aw_full<=0; w_full<=0; s_bvalid<=1; s_bresp<=0;
+        if (write_addr[1:0] != 0) s_bresp<=2;
+        else case (write_addr)
+          @CTRL_OFFSET@: if (busy) s_bresp<=2;
+             else if (write_strobe[0]) begin
+               enable_irq<=write_data[1];
+               if (write_data[0]) begin
+                 done<=0; error<=0; pending<=0; error_code<=0;
+                 if (descriptor_ok) begin
+                   active_a<=src_a; active_b<=src_b; active_dst<=dst; active_n<=length;
+                   busy<=1; launch<=1;
+                 end else begin
+                   error<=1; error_code<=1; pending<=write_data[1];
+                 end
+               end
+             end
+          @SRC_A_OFFSET@: if (busy) s_bresp<=2; else src_a<=merge_bytes(src_a,write_data,write_strobe);
+          @SRC_B_OFFSET@: if (busy) s_bresp<=2; else src_b<=merge_bytes(src_b,write_data,write_strobe);
+          @DST_OFFSET@: if (busy) s_bresp<=2; else dst<=merge_bytes(dst,write_data,write_strobe);
+          @LENGTH_OFFSET@: if (busy) s_bresp<=2; else length<=merge_bytes(length,write_data,write_strobe);
+          @IRQ_ACK_OFFSET@: if (write_strobe[0] && write_data[0]) pending<=0;
+          default: s_bresp<=2;
+        endcase
+      end
+      if (s_arvalid && s_arready) begin
+        s_rvalid<=1; s_rdata<=0; s_rresp<=0;
+        case (s_araddr)
+          @CTRL_OFFSET@: s_rdata<={30'b0, enable_irq,1'b0};
+          @STATUS_OFFSET@: s_rdata<={28'b0,pending,error,done,busy};
+          @SRC_A_OFFSET@: s_rdata<=src_a;
+          @SRC_B_OFFSET@: s_rdata<=src_b;
+          @DST_OFFSET@: s_rdata<=dst;
+          @LENGTH_OFFSET@: s_rdata<=length;
+          @ERROR_CODE_OFFSET@: s_rdata<=error_code;
+          @IRQ_ACK_OFFSET@: s_rdata<=0;
+          default: s_rresp<=2;
+        endcase
+      end
+      // Completion wins over simultaneous IRQ_ACK: a new event is never lost.
+      if (engine_done || engine_failed) begin
+        busy<=0; done<=engine_done; error<=engine_failed;
+        error_code<=engine_error; pending<=enable_irq;
+      end
+    end
+  end
+`ifdef FORMAL
+  logic f_past_valid=0;
+  always @(posedge clk) begin
+    f_past_valid<=1;
+    if(f_past_valid && !reset && !$past(reset)) begin
+      if($past(s_bvalid && !s_bready)) begin assert(s_bvalid);assert(s_bresp==$past(s_bresp));end
+      if($past(s_rvalid && !s_rready)) begin
+        assert(s_rvalid);assert(s_rdata==$past(s_rdata));assert(s_rresp==$past(s_rresp));
+      end
+      if($past(busy) && busy) begin
+        assert(active_a==$past(active_a));assert(active_b==$past(active_b));
+        assert(active_dst==$past(active_dst));assert(active_n==$past(active_n));
+      end
+      if(m_arvalid) begin assert(m_araddr>=DMA_BASE);assert({1'b0,m_araddr}+33'd4<=DMA_LIMIT);end
+      if(m_awvalid) begin assert(m_awaddr>=DMA_BASE);assert({1'b0,m_awaddr}+33'd4<=DMA_LIMIT);end
+    end
+  end
+`endif
+endmodule

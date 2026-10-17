@@ -340,6 +340,116 @@ endmodule
 
 Each clock domain needs its own release synchronizer. The design must tolerate the additional two-cycle delay and prevent protocols from interpreting the release difference between domains as a valid transaction.
 
+## A complete asynchronous FIFO {#sec-async-fifo}
+
+The single-bit synchronizer above cannot preserve a changing word. If a binary value changes from `0111` to `1000`, independent bit synchronizers can present a mixture that the source never produced. Adding stages to every bit reduces propagation risk without establishing word ownership. A streaming link needs storage plus a protocol that tells the receiving domain which complete words it may consume.
+
+[Lab 24](../../labs/24-async-fifo/README.md) provides an executable, power-of-two asynchronous FIFO using registered Gray pointers and synchronized local flag comparisons, the established FIFO Style #1 approach [@cdcCummings2002]. The RTL is original teaching code with local ready/valid interfaces and a common reset contract. Its independent clocks are not replaced by clock enables in the experiment.
+
+### Storage and ownership cross different boundaries
+
+![Original asynchronous-FIFO ownership map. Dashed orange paths carry registered Gray pointers through two destination-clocked stages. The solid data path uses shared storage; payload bits do not pass through individual two-flop synchronizers.](../../figures/async-fifo-ownership.svg){#fig-async-fifo-ownership fig-alt="Writer and reader domains maintain local pointers and flags, exchange Gray pointers through two-stage synchronizers and access shared word storage" width=100%}
+
+The complete [RTL](../../labs/24-async-fifo/async_fifo.sv) separates three responsibilities. The writer stores an accepted word and publishes its new pointer. The reader observes a synchronized publication, presents the oldest word and advances only when its consumer accepts it. A synchronized read pointer returns ownership of freed slots to the writer. Pointer latency can delay permission; it must never invent permission.
+
+| Boundary | Contract in this implementation |
+| --- | --- |
+| Write port | Accept on rising `wclk` when `w_valid && w_ready`; retain a stalled offer |
+| Read port | Accept on rising `rclk` when `r_valid && r_ready`; retain a stalled output |
+| Storage | `DATA_W` bits per slot, `DEPTH = 2**ADDR_BITS`; depth at least two |
+| Reset | Common active-low asynchronous assertion; local synchronized release; unread items discarded |
+| Memory view | Write-clocked array with combinational read; invalid output is zero |
+
+Each side sees only its own ready/valid pair. Do not synchronize `w_ready` back to another source clock or treat `r_valid` as permission in the write domain. If data has tags, byte enables or an end-of-packet marker, include them in the stored word. Crossing metadata independently can break correspondence even when every individual signal is synchronized.
+
+### Binary addresses, Gray publication and wrap
+
+For depth $2^A$, each local pointer has $A+1$ bits. The low $A$ binary bits select a slot; the extra bit distinguishes successive laps around the storage. Binary pointers serve addressing and incrementing. Registered Gray values serve publication:
+
+$$G(B) = B \oplus (B \gg 1).$$
+
+For depth four, the three-bit sequence begins:
+
+| Binary pointer | Gray pointer | Interpretation relative to an initial zero read pointer |
+| --- | --- | --- |
+| `000` | `000` | Empty starting position |
+| `001` | `001` | One accepted write |
+| `010` | `011` | Two accepted writes |
+| `011` | `010` | Three accepted writes |
+| `100` | `110` | Four writes: same slot address, one lap ahead |
+
+The published **source** Gray pointer changes at most one bit per accepted increment, including wrap; it holds when no transfer occurs. Register the encoded value before it crosses. A combinational binary-to-Gray network can glitch while binary bits settle, defeating the intended source-transition property.
+
+The receiver may miss several intermediate source states. Therefore two successive *synchronized observations* can differ in several bits. Assert the one-bit property at the source, not on every destination sample. The experiment records such destination jumps as coverage rather than reporting them as errors.
+
+### Synchronize pointers and calculate local flags
+
+Each pointer has a separate two-stage synchronizer clocked by its receiving domain. The write domain receives the reader's Gray pointer as follows:
+
+```systemverilog
+always_ff @(posedge wclk or negedge wrst_n) begin
+  if (!wrst_n) begin wq1_rgray <= 0; wq2_rgray <= 0; end
+  else begin wq1_rgray <= r_gray; wq2_rgray <= wq1_rgray; end
+end
+```
+
+Only stage two feeds local flag logic. The first stage must not drive a comparator, another consumer or an independent control path. The lab marks the chains with synchronization/retention attributes and checks their actual generic netlist connections after synthesis. Attributes describe intent; the selected implementation flow must preserve and place the structure appropriately.
+
+Flags describe the position *after* the current local acceptance. The essential equations are:
+
+```systemverilog
+assign w_bin_next = w_bin + {{(PTR_W-1){1'b0}}, w_take};
+assign r_bin_next = r_bin + {{(PTR_W-1){1'b0}}, r_take};
+assign w_gray_next = (w_bin_next >> 1) ^ w_bin_next;
+assign r_gray_next = (r_bin_next >> 1) ^ r_bin_next;
+// Inside the respective local clocked processes:
+w_full  <= (w_gray_next == (wq2_rgray ^ FULL_MASK));
+r_empty <= (r_gray_next == rq2_wgray);
+```
+
+`FULL_MASK` inverts the two most significant Gray bits and preserves the others. At depth four, initial read Gray `000` becomes full target `110`. Inverting only one Gray bit confuses the binary wrap test with its Gray representation and admits too many words. The implementation also handles depth two without a negative-width slice. Using the current pointer instead of the next pointer would register the boundary condition too late.
+
+After the final available slot is written, the write-side full flag blocks the following write. After the final available word is read, the read-side empty flag blocks the following read. `w_take` and `r_take` include those local permissions; raw VALID or READY alone never advances a pointer.
+
+Because synchronized pointers are old, full may remain asserted after a read frees space, and empty may remain asserted after a write stores data. The two flags can even be asserted simultaneously as observations in different domains. They are conservative local views, not two outputs of an instantaneous global occupancy counter. A scoreboard should check accepted transactions and eventual recovery under running clocks, rather than require flags to match its instantaneous occupancy every cycle.
+
+### Reset establishes an epoch, not cleared RAM
+
+The FIFO supplies two release pipelines, one per clock. A low `arst_n` asynchronously clears both pipelines, pointers, synchronizer stages and flags. Raising `arst_n` allows each local pipeline to release only after two edges of its own clock. A stopped clock leaves its domain in reset. Ready/valid outputs are gated by the corresponding local release.
+
+The common reset starts a new **empty epoch**. It does not reset every array word or preserve unread items. The testbench flushes its expected queue on that event and counts discarded words separately. Data left in the physical array stays invalid until new writes publish ownership. Clearing memory would add reset fanout without repairing an incorrect pointer or reset protocol.
+
+A writer may fill the FIFO while the reader clock remains stopped after common reset; the reader starts later and observes the published pointer. Conversely, a reader that releases first remains empty while the writer is stopped. Neither case licenses resetting only one pointer while the other side keeps its previous state. Independent warm resets need an additional quiesce/rejoin or epoch-exchange protocol, including treatment of in-flight traffic.
+
+External producers and consumers must participate in the reset contract. A FIFO cannot undo a transfer already accepted by a peripheral, or repair an AXI transaction whose remaining beats were discarded. Minimum reset pulse widths, reset-tree skew and recovery/removal still require implementation review. The local release circuit is not evidence that a complete reset distribution network has been qualified.
+
+### The data array and Gray routes still need physical contracts
+
+The teaching array has one write-clocked port and a combinational read at the current read address. This fall-through interface presents a head word while `r_valid` is high, then moves to the next word after acceptance. The writer cannot overwrite that slot until the returned read pointer grants ownership. The output must remain stable during backpressure.
+
+This is suitable for studying small register/LUTRAM-style storage. It does not imply portable inference of synchronous-read FPGA block RAM or a characterized ASIC SRAM. Adding a read register changes when data exists: adapt prefetch, output-valid state and capacity accounting together. Replacing the memory statement while retaining the original valid logic can associate a new valid indication with an old word.
+
+Gray coding also needs physical bounds. Source transitions separated by one source period can become reordered at the synchronizer input if inter-bit delays are excessive. Review direction-specific maximum delay and bus-skew constraints, with margin against the minimum source period. AMD documents Gray-coded FIFO pointer transfer as a use case for bus-skew constraints [@cdcAmdSkew]. The lab's [XDC template](../../labs/24-async-fifo/constraints/cdc-template.xdc) requires the integrator to bind actual pin collections and budgets.
+
+Do not hide those checks behind a higher-priority blanket clock-group exception. Keep stage-one-to-stage-two paths timed in the destination domain. Review the raw storage-to-reader data path, clock definitions and reset paths separately. The supplied digital run does not execute this XDC or establish routed skew, analog metastability probability or MTBF.
+
+### Reproduce the experiment and diagnose failures
+
+Use the ordinary lab container and [Lab 24's recipes](../../labs/24-async-fifo/README.md). No FPGA is required. The checked matrix combines widths 8/32, depths 2/4/16, four clock schedules and seeds 2026/2027: **48 runs**. It includes fast-writer, fast-reader and coincident-edge cases, randomized backpressure, pointer wrap, stopped-clock startup and three common-reset epochs per run. The independent queue stores accepted input payloads; it never reads the DUT's memory to manufacture expected outputs.
+
+The recorded [results](../../labs/24-async-fifo/reference/results.json) conserve **58,328 accepted writes = 57,744 accepted reads + 584 reset-discarded words**. These are transaction counts across the matrix, not hardware throughput. The tests also observe multi-bit differences between successive destination pointer samples, demonstrating why the source-only Gray assertion matters.
+
+| Evidence | Checked outcome | Remaining boundary |
+| --- | --- | --- |
+| RTL simulations | Ordering, capacity, stall stability, wraps and reset epochs | No analog metastability model |
+| Six synthesized netlists | Registered Gray sources; two destination stages; first-stage fanout only to stage two | No placement, routing or CDC-tool signoff |
+| Wrong full mask | Detected overflow | Fault is a digital capacity bug |
+| Reading while empty | Detected underflow | Tests accepted transfers, not merely flag values |
+| Binary publication | Source Gray assertion rejects the change | Ideal simulation does not prove binary CDC safety |
+| Release bypass | Detected release with stopped clock | No recovery/removal characterization |
+
+For a short design review, explain the three-bit full target, one conservative flag delay and one reset-discarded word. Then propose a synchronous-memory adapter or a packet-level reset policy and identify the new tests it needs. Preserve the original regression before claiming the extension. The compact auditor checks recorded sources, transcripts and generic netlists without rerunning tools; it does not turn these digital checks into physical CDC/RDC qualification.
+
 ## Verification and analysis
 
 ### Simulation answers different questions

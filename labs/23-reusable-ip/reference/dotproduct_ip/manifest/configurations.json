@@ -1,0 +1,12 @@
+{
+  "schema":1,
+  "profiles": {
+    "compact":{"MAX_LENGTH":16,"DMA_BASE":2147516416,"DMA_LIMIT":2147532800},
+    "course":{"MAX_LENGTH":256,"DMA_BASE":2147516416,"DMA_LIMIT":2147532800}
+  },
+  "platforms": {
+    "axi":{"control":"AXI4-Lite bus-functional manager","clock_ns":10,"profile":"compact and course","coherent":false},
+    "wally":{"control":"real RV32 Wally via AHB-to-AXI4-Lite","clock_ns":10,"profile":"course","mmio_base":268959744,"coherent":false,"interrupt":"direct MExtInt, not PLIC"}
+  },
+  "unsupported":"Other parameter tuples require a new qualification record; no bursts, asynchronous domains, cache coherence or independent protocol resets."
+}

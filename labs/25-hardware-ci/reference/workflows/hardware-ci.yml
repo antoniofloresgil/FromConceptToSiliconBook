@@ -1,0 +1,40 @@
+name: Accelerator contract and regression gate
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  accelerator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build the teaching environment
+        run: docker build -f labs/Dockerfile -t from-concept-labs:ci .
+      - name: Lint, elaborate, simulate, prove bounded properties, synthesize and gate reports
+        run: |
+          mkdir -p labs/build/hardware-ci
+          identity=$(docker image inspect --format '{{.Id}}' from-concept-labs:ci)
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --env LAB_IMAGE_ID="$identity" --env GITHUB_SHA="$GITHUB_SHA" \
+            --mount "type=bind,source=$PWD,target=/work,readonly" \
+            --mount "type=bind,source=$PWD/labs/build/hardware-ci,target=/results" \
+            from-concept-labs:ci python labs/25-hardware-ci/run.py --output /results/positive
+      - name: Check that the gate rejects four real RTL mutations
+        run: |
+          identity=$(docker image inspect --format '{{.Id}}' from-concept-labs:ci)
+          docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --env LAB_IMAGE_ID="$identity" --env GITHUB_SHA="$GITHUB_SHA" \
+            --mount "type=bind,source=$PWD,target=/work,readonly" \
+            --mount "type=bind,source=$PWD/labs/build/hardware-ci,target=/results" \
+            from-concept-labs:ci python labs/25-hardware-ci/negative.py --output /results/negative
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: accelerator-ci-evidence
+          if-no-files-found: error
+          path: labs/build/hardware-ci

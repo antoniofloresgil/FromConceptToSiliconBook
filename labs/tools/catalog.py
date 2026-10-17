@@ -68,6 +68,9 @@ LABS = {
     "multicore": {"folder": "20-multicore", "mode": "guided", "goal": "Advanced two-CPU Linux/QEMU DMA ownership/contending callers and separate finite cache/ordering/dependency witnesses"},
     "physical-closure": {"folder": "21-physical-closure", "mode": "guided", "goal": "Measured lower-clock, registered-product and physical-repair candidates; extracted ASIC timing/electrical closure and mapped/routed equivalence"},
     "layout-verification": {"folder": "22-layout-verification", "mode": "guided", "goal": "Actual FreePDK45 GDS DRC/LVS, diagnosed PG/body connectivity, separate physical finish, fresh timing and rejected geometry defects"},
+    "reusable-ip": {"folder": "23-reusable-ip", "mode": "guided", "goal": "Generated register views and autonomous immutable IP packaging; unchanged RTL in AXI and real Wally integrations, supported profiles and rejected release defects"},
+    "async-fifo": {"folder": "24-async-fifo", "mode": "guided", "goal": "Dual-clock Gray-pointer FIFO, local full/empty and coordinated reset epochs; actual clock/phase/backpressure tests, synthesized pointer chains and rejected defects"},
+    "hardware-ci": {"folder": "25-hardware-ci", "mode": "guided", "goal": "Six-stage accelerator contract/regression gate, bounded proof/witness, generic-cell budget and four rejected RTL mutations; separate explicit physical regression"},
 }
 
 WALLY_REVISION = "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c"

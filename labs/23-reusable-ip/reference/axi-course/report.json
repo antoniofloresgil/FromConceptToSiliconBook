@@ -1,0 +1,97 @@
+{
+  "status": "pass",
+  "platform": "axi",
+  "profile": "course",
+  "seed": 2026,
+  "release_sha256": "3c0151ee34537ab69eee3300afafe7efe82bcfb2f5587c1fce8f7384f593e516",
+  "rtl_sha256": {
+    "rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "rtl/dotproduct_axi.sv": "e0518c0f097f4290b2bd288115caf2809cc48a5afd3865752f46e711eabea515"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python",
+        "/ip/sim/vectors.py",
+        "/results/axi-course",
+        "2026"
+      ],
+      "log": "command-01.txt",
+      "returncode": 0,
+      "seconds": 0.118
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-I",
+        "/ip/sim",
+        "-s",
+        "tb_dotproduct",
+        "-DTEST_MAX_LENGTH=256",
+        "-o",
+        "/results/axi-course/dut.vvp",
+        "/ip/rtl/dotproduct_mac.sv",
+        "/ip/rtl/dotproduct_engine.sv",
+        "/ip/rtl/dotproduct_axi.sv",
+        "/ip/sim/axi_ram_model.sv",
+        "/ip/sim/tb_dotproduct.sv"
+      ],
+      "log": "command-02.txt",
+      "returncode": 0,
+      "seconds": 0.121
+    },
+    {
+      "argv": [
+        "vvp",
+        "/results/axi-course/dut.vvp",
+        "+SEED=2026"
+      ],
+      "log": "command-03.txt",
+      "returncode": 0,
+      "seconds": 5.114
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/ip/rtl/dotproduct_mac.sv\" \"/ip/rtl/dotproduct_engine.sv\" \"/ip/rtl/dotproduct_axi.sv\"; chparam -set MAX_LENGTH 256 dotproduct_axi; synth -top dotproduct_axi; check -assert; select -assert-none t:$dlatch; write_json generic.json; stat"
+      ],
+      "log": "command-04.txt",
+      "returncode": 0,
+      "seconds": 3.953
+    },
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python",
+        "/ip/formal/check.py",
+        "/results/axi-course",
+        "/ip/rtl"
+      ],
+      "log": "command-05.txt",
+      "returncode": 0,
+      "seconds": 35.284
+    }
+  ],
+  "artifacts": {
+    "a.hex": "73af6d986d07fc6632872cb9073eef258db0eb47c1eb2593f83ae7a07c76a84d",
+    "b.hex": "085891570ba2a30d133f0b415f3e3f20223894bd8f0d6c4d3204ec63e201b653",
+    "command-01.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-02.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-03.txt": "18fa17e4fea63009de5c0be674430fbb1f019e3efdc1ca01d7ae182836cda130",
+    "command-04.txt": "71aee04c55a3c91631297219c7af4acadb8ef8b136b4368ccd9c3cd1f5086e80",
+    "command-05.txt": "0ec1c5c94384fcf74472a8ba619a5d1c58b6ba7d17c0ad90a6efaee7aa1cfbbd",
+    "done-witness.log": "f5406cc67e9f1bf007b8d9de0137c4a519dbe66c438785fb44de6ece96c1de75",
+    "done-witness.vcd": "91e342764ca4d8c47bb99dc83e70aa8716fc3ce945786ac7049a7ffc688d2b96",
+    "dut.vvp": "2d5d90c4e6072b7649a5a0982edfe69627ab84ebab597ce013460ad500f0d521",
+    "engine-proof.log": "9b79fa87abd38eb21cd1b8678d5e9409324a3445ac7049754dae164a2ec7f1a3",
+    "expected.hex": "ac15d0e474504851a6b99837db401fcc2452167b864ffec10447cce7eb3df7dc",
+    "formal.log": "9ca0cb67b433ab7c8aa64d94617aa1e3d666730c12ecf767a06397f5a459d4cc",
+    "generic.json": "3b8d52a61559fddde8faa1310740384c6804a8e69c2ecbfe114cdcc5ea0daa98",
+    "square.hex": "36cbe8f731e1c93618429722bd42003b61c229006a304c0e15be29250dfedf0f",
+    "vectors.json": "4e78003cce8d00b18ef4c701ba67fa0f450df67a5fd3d090299d96e71ffda2a1"
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "parameters": {
+    "DMA_BASE": "10000000000000001000000000000000",
+    "DMA_LIMIT": "010000000000000001100000000000000",
+    "MAX_LENGTH": "00000000000000000000000100000001"
+  },
+  "ports": {
+    "clk": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "irq": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_araddr": {
+      "direction": "output",
+      "signed": 0,
+      "width": 32
+    },
+    "m_arburst": {
+      "direction": "output",
+      "signed": 0,
+      "width": 2
+    },
+    "m_arcache": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_arid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_arlen": {
+      "direction": "output",
+      "signed": 0,
+      "width": 8
+    },
+    "m_arlock": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_arprot": {
+      "direction": "output",
+      "signed": 0,
+      "width": 3
+    },
+    "m_arqos": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_arready": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_arsize": {
+      "direction": "output",
+      "signed": 0,
+      "width": 3
+    },
+    "m_arvalid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_awaddr": {
+      "direction": "output",
+      "signed": 0,
+      "width": 32
+    },
+    "m_awburst": {
+      "direction": "output",
+      "signed": 0,
+      "width": 2
+    },
+    "m_awcache": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_awid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_awlen": {
+      "direction": "output",
+      "signed": 0,
+      "width": 8
+    },
+    "m_awlock": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_awprot": {
+      "direction": "output",
+      "signed": 0,
+      "width": 3
+    },
+    "m_awqos": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_awready": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_awsize": {
+      "direction": "output",
+      "signed": 0,
+      "width": 3
+    },
+    "m_awvalid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_bid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 4
+    },
+    "m_bready": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_bresp": {
+      "direction": "input",
+      "signed": 0,
+      "width": 2
+    },
+    "m_bvalid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_rdata": {
+      "direction": "input",
+      "signed": 0,
+      "width": 32
+    },
+    "m_rid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 4
+    },
+    "m_rlast": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_rready": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_rresp": {
+      "direction": "input",
+      "signed": 0,
+      "width": 2
+    },
+    "m_rvalid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_wdata": {
+      "direction": "output",
+      "signed": 0,
+      "width": 32
+    },
+    "m_wlast": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "m_wready": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "m_wstrb": {
+      "direction": "output",
+      "signed": 0,
+      "width": 4
+    },
+    "m_wvalid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "reset": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "s_araddr": {
+      "direction": "input",
+      "signed": 0,
+      "width": 5
+    },
+    "s_arready": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "s_arvalid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "s_awaddr": {
+      "direction": "input",
+      "signed": 0,
+      "width": 5
+    },
+    "s_awready": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "s_awvalid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "s_bready": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "s_bresp": {
+      "direction": "output",
+      "signed": 0,
+      "width": 2
+    },
+    "s_bvalid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "s_rdata": {
+      "direction": "output",
+      "signed": 0,
+      "width": 32
+    },
+    "s_rready": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    },
+    "s_rresp": {
+      "direction": "output",
+      "signed": 0,
+      "width": 2
+    },
+    "s_rvalid": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "s_wdata": {
+      "direction": "input",
+      "signed": 0,
+      "width": 32
+    },
+    "s_wready": {
+      "direction": "output",
+      "signed": 0,
+      "width": 1
+    },
+    "s_wstrb": {
+      "direction": "input",
+      "signed": 0,
+      "width": 4
+    },
+    "s_wvalid": {
+      "direction": "input",
+      "signed": 0,
+      "width": 1
+    }
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "artifacts": {
+    "a.hex": "73af6d986d07fc6632872cb9073eef258db0eb47c1eb2593f83ae7a07c76a84d",
+    "b.hex": "085891570ba2a30d133f0b415f3e3f20223894bd8f0d6c4d3204ec63e201b653",
+    "bridge.vvp": "f7580f39ca7281f90e910460057ad519467c392c983f4583a648c3b35c8685da",
+    "command-00.txt": "705bda8f65edb725059b115f673dddce85a3a70ccb9d14b79a46fc44bc299221",
+    "command-01.txt": "a257cebb89368b3237f4170314dd718c4ff15bd9c513543ab6d42953d9797388",
+    "command-02.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-03.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-04.txt": "8734cb529ee1dcc9c490932276b3708ba62c18cc10c607f096da4fd294c7bc49",
+    "command-05.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-06.txt": "5076ccb6cc335319d89677f06a062ceb4502940213aa00836d02d8d2b9818277",
+    "command-07.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command-08.txt": "b6e20819ced7fbeb731c8a7c3a1d7735d2d3cc40a5aec664a23e0d9dbe9c1d11",
+    "command-09.txt": "0ec1c5c94384fcf74472a8ba619a5d1c58b6ba7d17c0ad90a6efaee7aa1cfbbd",
+    "command-10.txt": "57b752fbad4d1d2c12d8200670632ef274fef0875ceadb51d47a388b82b9dd89",
+    "done-witness.log": "81fd039f88fdd17fa7fcb15910e7a7fd7538b8856c19408294a2269565c88f75",
+    "done-witness.vcd": "74d8afbfaf972d991edf28141c3cdc0ebe17967b8c713dcae14648127db9aaf3",
+    "elaborated.json": "d5993dc5566dcf841bbd5153824b7e7eee496a600ef96ebd2b3f7c6417f594a1",
+    "engine-proof.log": "0a978d77ee62d3701f8cfdfc899a3b16d983694a5481586c3eba5e48c04d6af4",
+    "expected.hex": "ac15d0e474504851a6b99837db401fcc2452167b864ffec10447cce7eb3df7dc",
+    "formal.log": "977a051a6456a642f03ea941988f4a684cd1e9dc56b6c2f05f9fba4e5212c362",
+    "input/README.md": "c47e94eec7689e86120ce3c624c153781c41b4c26e04e0273cf577653ef8b604",
+    "input/axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "input/axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "input/constraints.sdc": "36c29811148ea7f1a03e3df3cfcefc9886a2b4649abc4003747dd41a9947345c",
+    "input/firmware/link.ld": "7945b9c71c8596dcb5f7a222aa03a84dcfdab101420cf0895a5232fb15a78f69",
+    "input/firmware/main.c": "757394bb95269488693b9d7c01c2258675d4e3cadd15f0a4785ec8a31262a955",
+    "input/firmware/start.S": "1fc8673150b233a14c29249cfba526c262660b3cd4c4e419fa561696da6ef67e",
+    "input/formal/check.py": "185633c6864089e7d4d83bba2653697f64dbf83250201dce3eb07ac4f9ac709b",
+    "input/ip-manifest.json": "d45c79b2b9e63fde3137dae97a2c1fe4c4b30b86f089399d111ab5d4d2c730cc",
+    "input/prepare_wally.py": "ebd9d86a1bc276e62c3573b1dace2d383655363dffdd07cfda246890b14c529c",
+    "input/rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e",
+    "input/rtl/dotproduct_axi.sv": "73a789a945cb3c8b3ea5d4298d14ffb4bdea19e7fd72a09f26654363f82c6e59",
+    "input/rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "input/rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "input/tb_bridge.sv": "7bc6c21b80c9a63bb4336d12d4f5a838945c24c4de9aa45d4db306a7a69eb43a",
+    "input/tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "input/tb_wally_dotproduct.sv": "42de8a5d6c868e6bd22b49fab9e066b48bba7b14c4fbe18f22131dcc5f3b6afb",
+    "input/vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "input/verify_negative.py": "6f7c1de2eb34109a54fffe7c2e13e41120554cd99f57593e99ff628799a1041d",
+    "interface.json": "c7016ca898130b30dfcb574a5ac0430462043110d5394ea9c8bfe5ea459cf3dd",
+    "square.hex": "36cbe8f731e1c93618429722bd42003b61c229006a304c0e15be29250dfedf0f",
+    "synthesized.json": "16c81cfa29d02505fd9cf8da058f56eff7ab566118859b733fce796cccb307ec",
+    "test.vvp": "46440152d2e3b1401d85791227da47c5cedcc7da854720e6ca937d98f8019e6c",
+    "vectors.json": "4e78003cce8d00b18ef4c701ba67fa0f450df67a5fd3d090299d96e71ffda2a1"
+  },
+  "commands": [
+    {
+      "argv": [
+        "verilator",
+        "--lint-only",
+        "--top-module",
+        "dotproduct_axi",
+        "-Wall",
+        "-Wno-fatal",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv",
+        "/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv"
+      ],
+      "log": "command-00.txt",
+      "returncode": 0,
+      "seconds": 0.104,
+      "stage": "Lint"
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv\" \"/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv\" \"/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv\" \"/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv\"; hierarchy -check -top dotproduct_axi; proc; check -assert; write_json elaborated.json"
+      ],
+      "log": "command-01.txt",
+      "returncode": 0,
+      "seconds": 0.383,
+      "stage": "Elaboration"
+    },
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python",
+        "/results/negative/cell-growth/run/input/vectors.py",
+        "/results/negative/cell-growth/run",
+        "2026"
+      ],
+      "log": "command-02.txt",
+      "returncode": 0,
+      "seconds": 0.104,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-I",
+        "/results/negative/cell-growth/run/input",
+        "-s",
+        "tb_dotproduct",
+        "-DTEST_MAX_LENGTH=256",
+        "-o",
+        "/results/negative/cell-growth/run/test.vvp",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv",
+        "/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv",
+        "/results/negative/cell-growth/run/input/axi_ram_model.sv",
+        "/results/negative/cell-growth/run/input/tb_dotproduct.sv"
+      ],
+      "log": "command-03.txt",
+      "returncode": 0,
+      "seconds": 0.06,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "vvp",
+        "/results/negative/cell-growth/run/test.vvp",
+        "+SEED=2026"
+      ],
+      "log": "command-04.txt",
+      "returncode": 0,
+      "seconds": 4.749,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-I",
+        "/results/negative/cell-growth/run/input",
+        "-s",
+        "tb_dotproduct",
+        "-DTEST_MAX_LENGTH=16",
+        "-o",
+        "/results/negative/cell-growth/run/test.vvp",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv",
+        "/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv",
+        "/results/negative/cell-growth/run/input/axi_ram_model.sv",
+        "/results/negative/cell-growth/run/input/tb_dotproduct.sv"
+      ],
+      "log": "command-05.txt",
+      "returncode": 0,
+      "seconds": 0.05,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "vvp",
+        "/results/negative/cell-growth/run/test.vvp",
+        "+SEED=2026"
+      ],
+      "log": "command-06.txt",
+      "returncode": 0,
+      "seconds": 0.075,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-I",
+        "/results/negative/cell-growth/run/input",
+        "-s",
+        "tb_bridge",
+        "-o",
+        "/results/negative/cell-growth/run/bridge.vvp",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv",
+        "/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv",
+        "/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv",
+        "/results/negative/cell-growth/run/input/axi_ram_model.sv",
+        "/results/negative/cell-growth/run/input/tb_bridge.sv"
+      ],
+      "log": "command-07.txt",
+      "returncode": 0,
+      "seconds": 0.044,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "vvp",
+        "/results/negative/cell-growth/run/bridge.vvp"
+      ],
+      "log": "command-08.txt",
+      "returncode": 0,
+      "seconds": 0.028,
+      "stage": "Simulation"
+    },
+    {
+      "argv": [
+        "/opt/labs-venv/bin/python",
+        "/results/negative/cell-growth/run/input/formal/check.py",
+        "/results/negative/cell-growth/run",
+        "/results/negative/cell-growth/run/input/rtl"
+      ],
+      "log": "command-09.txt",
+      "returncode": 0,
+      "seconds": 24.783,
+      "stage": "Formal"
+    },
+    {
+      "argv": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -sv \"/results/negative/cell-growth/run/input/rtl/dotproduct_mac.sv\" \"/results/negative/cell-growth/run/input/rtl/dotproduct_engine.sv\" \"/results/negative/cell-growth/run/input/rtl/dotproduct_axi.sv\" \"/results/negative/cell-growth/run/input/rtl/ahb_to_axil.sv\"; synth -top dotproduct_axi -flatten; check -assert; select -assert-none t:$dlatch; stat; write_json synthesized.json"
+      ],
+      "log": "command-10.txt",
+      "returncode": 0,
+      "seconds": 4.615,
+      "stage": "Synthesis"
+    }
+  ],
+  "contract_sha256": "ab0426cc8d974e4d62a0796e48ab63f7108fb5b6ad52a6adc5f40ba576b7e0df",
+  "error": "Generic-cell budget exceeded: 6668 > 5946",
+  "formal_scope": "20-cycle control BMC; 24-cycle length-one engine BMC and reachable DONE; not induction or full arithmetic proof",
+  "image_id": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "metrics": {
+    "cell_types": {
+      "$_ANDNOT_": 1985,
+      "$_AND_": 311,
+      "$_DFF_P_": 7,
+      "$_MUX_": 73,
+      "$_NAND_": 570,
+      "$_NOR_": 259,
+      "$_NOT_": 191,
+      "$_ORNOT_": 181,
+      "$_OR_": 927,
+      "$_SDFFE_PP0P_": 459,
+      "$_SDFF_PP0_": 259,
+      "$_XNOR_": 276,
+      "$_XOR_": 1170
+    },
+    "generic_cells": 6668
+  },
+  "policy_sha256": "ab6300af0a0da9da1acffb2663118eea287dd81cb5c02fc67ea5da1fbdfa3b23",
+  "revision": "local",
+  "runner_sha256": "3130c0306140af99931fbdfd17fb61c7dbb23bb6cc78f7e5199340fc311e7b83",
+  "seed": 2026,
+  "sources": {
+    "axi_connections.svh": "d5306bffc49e56ed4fd40f3a13b79a3c23144455814e0f30ee062e2c98e7b528",
+    "axi_ram_model.sv": "d6237f9e4b6493b0b06a20681cbfe885fae96024e289e334d02baa5e3b204b24",
+    "constraints.sdc": "36c29811148ea7f1a03e3df3cfcefc9886a2b4649abc4003747dd41a9947345c",
+    "firmware/link.ld": "7945b9c71c8596dcb5f7a222aa03a84dcfdab101420cf0895a5232fb15a78f69",
+    "firmware/main.c": "757394bb95269488693b9d7c01c2258675d4e3cadd15f0a4785ec8a31262a955",
+    "firmware/start.S": "1fc8673150b233a14c29249cfba526c262660b3cd4c4e419fa561696da6ef67e",
+    "formal/check.py": "185633c6864089e7d4d83bba2653697f64dbf83250201dce3eb07ac4f9ac709b",
+    "ip-manifest.json": "d45c79b2b9e63fde3137dae97a2c1fe4c4b30b86f089399d111ab5d4d2c730cc",
+    "prepare_wally.py": "ebd9d86a1bc276e62c3573b1dace2d383655363dffdd07cfda246890b14c529c",
+    "rtl/ahb_to_axil.sv": "aa6c683a734912914bb9c590c41f7939c00c8468925d77aa1e70f252ae01754e",
+    "rtl/dotproduct_axi.sv": "73a789a945cb3c8b3ea5d4298d14ffb4bdea19e7fd72a09f26654363f82c6e59",
+    "rtl/dotproduct_engine.sv": "ffe4004e55ee4792cffad109a876e556d238b6a202d2f0832fd14f130c4624a3",
+    "rtl/dotproduct_mac.sv": "af6692b2d34600e11a94badb48d77651d9ceaa7c5a7576d92c6e7dc7ce95bf57",
+    "tb_bridge.sv": "7bc6c21b80c9a63bb4336d12d4f5a838945c24c4de9aa45d4db306a7a69eb43a",
+    "tb_dotproduct.sv": "d5d0b39e220c71afedab9e3ad829116b38d929b687dd5bf9452c44a0b98de85e",
+    "tb_wally_dotproduct.sv": "42de8a5d6c868e6bd22b49fab9e066b48bba7b14c4fbe18f22131dcc5f3b6afb",
+    "vectors.py": "cdb8c034ca3f147fe5d8c9ff64c00b1635da5e7ace4490e82ec1a768e54148a4",
+    "verify_negative.py": "6f7c1de2eb34109a54fffe7c2e13e41120554cd99f57593e99ff628799a1041d"
+  },
+  "stages": [
+    {
+      "name": "Lint",
+      "status": "pass"
+    },
+    {
+      "name": "Elaboration",
+      "status": "pass"
+    },
+    {
+      "name": "Simulation",
+      "status": "pass"
+    },
+    {
+      "name": "Formal",
+      "status": "pass"
+    },
+    {
+      "name": "Synthesis",
+      "status": "pass"
+    },
+    {
+      "name": "Reports",
+      "reason": "Generic-cell budget exceeded: 6668 > 5946",
+      "status": "fail"
+    }
+  ],
+  "status": "fail",
+  "tools": {
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+    "verilator": "Verilator 5.020 2024-01-01 rev (Debian 5.020-1)",
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+  }
+}

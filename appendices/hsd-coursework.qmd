@@ -12,7 +12,7 @@ The Linux/driver continuation in @sec-linux-accelerator and [Lab 18](../labs/18-
 
 ### Access for online students
 
-The advanced multicore chapter @sec-multicore and [Lab 20](../labs/20-multicore/README.md) are optional follow-on study. Neither a two-hart coherent RTL system nor its Linux boot is required for P0–P5 or the final project, and the workload table below is unchanged.
+The [multicore integration chapter](../chapters/07-advanced-topics/multicore-integration.qmd) and [Lab 20](../labs/20-multicore/README.md) are optional advanced follow-on study. Neither a two-hart coherent RTL system nor its Linux boot is required for P0–P5 or the final project, and the workload table below is unchanged.
 
 No student needs to purchase an FPGA to complete P0–P5 or the final project. The [route without a board](../labs/NO-FPGA.md) maps the reference labs to activities, evidence and limits. The physical FPGA activities remain available as extensions. Both routes have the same rubric opportunities: assess the requirement, independent checks, analysis and explanation, rather than ownership of hardware.
 
@@ -125,6 +125,8 @@ Submit the threat model, properties, harness/configuration, completed results, r
 Before P4, the instructor validates the supplied bounded harness and reporting convention. `run all` executes the stated bounded checks; it does not prove the accelerator correct for unbounded traces or all configurations. Add assumptions, witnesses and remaining obligations to the common verification plan in @sec-verification-methodology.
 
 ## P5: implementation, analysis and IP strengthening
+
+@sec-reusable-ip and [Lab 23](../labs/23-reusable-ip/README.md) make the RA6 handoff concrete: package the IP with generated register views, name supported profiles and dependencies, and compare two integrations using identical released RTL. Reuse this dossier within the existing P3/P5 workload; a second complete processor SoC or new physical flow is not an additional compulsory assignment.
 
 The measured accumulator study in @sec-openroad-study and [Lab 16](../labs/16-openroad-study/README.md) supplies a concrete report bundle for this analysis: a fixed-netlist clock/utilization sweep, actual placement/CTS/routing/path captures, pre/post-route setup changes, hold/electrical failures and infeasible floorplans. Students can reproduce the separate OpenROAD environment or analyse the identified reference reports within P5's existing hours. Explain their applicability limits for student-modified IP and propose a verified follow-up; no fabricated device is required.
 

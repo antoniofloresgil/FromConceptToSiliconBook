@@ -1,0 +1,19 @@
+{
+  "rtl_files": ["dotproduct_mac.sv", "dotproduct_engine.sv", "dotproduct_axi.sv", "ahb_to_axil.sv"],
+  "baseline_generic_cells": 5662,
+  "maximum_generic_cells": 5946,
+  "budget_rationale": "ceil(5662 * 1.05): a 5% review budget for fixed-configuration generic-cell growth; not physical area, timing or power. Intentional architecture changes require a reviewed new baseline, never automatic ratcheting.",
+  "tool_versions": {
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+    "verilator": "Verilator 5.020 2024-01-01 rev (Debian 5.020-1)",
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+  },
+  "reviewed_lint": [
+    ["WIDTHEXPAND", "dotproduct_axi.sv", "Operator LT expects 33 bits on the LHS, but LHS's VARREF 'dst' generates 32 bits."],
+    ["WIDTHEXPAND", "dotproduct_axi.sv", "Operator LT expects 33 bits on the LHS, but LHS's VARREF 'src_a' generates 32 bits."],
+    ["WIDTHEXPAND", "dotproduct_axi.sv", "Operator LT expects 33 bits on the LHS, but LHS's VARREF 'dst' generates 32 bits."],
+    ["WIDTHEXPAND", "dotproduct_axi.sv", "Operator LT expects 33 bits on the LHS, but LHS's VARREF 'src_b' generates 32 bits."],
+    ["UNUSEDSIGNAL", "dotproduct_axi.sv", "Signal is not used: 'engine_busy'"],
+    ["UNUSEDSIGNAL", "dotproduct_engine.sv", "Bits of signal are not used: 'rdata'[31:16]"]
+  ]
+}

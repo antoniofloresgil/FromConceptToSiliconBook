@@ -1,0 +1,1414 @@
+
+-- Running command `read_verilog -formal -sv "/results/positive/input/rtl/ahb_to_axil.sv" "/results/positive/input/rtl/dotproduct_axi.sv" "/results/positive/input/rtl/dotproduct_engine.sv" "/results/positive/input/rtl/dotproduct_mac.sv"; chparam -set MAX_LENGTH 16 dotproduct_axi; prep -top dotproduct_axi -flatten; opt_clean; sat -seq 20 -set-at 1 reset 1 -set-init-zero -prove-asserts -verify -dump_vcd formal-counterexample.vcd' --
+
+1. Executing Verilog-2005 frontend: /results/positive/input/rtl/ahb_to_axil.sv
+Parsing formal SystemVerilog input from `/results/positive/input/rtl/ahb_to_axil.sv' to AST representation.
+Generating RTLIL representation for module `\ahb_to_axil'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /results/positive/input/rtl/dotproduct_axi.sv
+Parsing formal SystemVerilog input from `/results/positive/input/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /results/positive/input/rtl/dotproduct_engine.sv
+Parsing formal SystemVerilog input from `/results/positive/input/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /results/positive/input/rtl/dotproduct_mac.sv
+Parsing formal SystemVerilog input from `/results/positive/input/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+Parameter \MAX_LENGTH = 16
+
+5. Executing AST frontend in derive mode using pre-parsed AST for module `\dotproduct_axi'.
+Parameter \MAX_LENGTH = 16
+Generating RTLIL representation for module `$paramod\dotproduct_axi\MAX_LENGTH=32'00000000000000000000000000010000'.
+
+6. Executing PREP pass.
+
+6.1. Executing HIERARCHY pass (managing design hierarchy).
+
+6.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+6.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removing unused module `\ahb_to_axil'.
+Removed 1 unused modules.
+Module dotproduct_engine directly or indirectly contains formal properties -> setting "keep" attribute.
+Module dotproduct_axi directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6.2. Executing PROC pass (convert processes to netlists).
+
+6.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402 in module dotproduct_engine.
+Marked 27 switch rules as full_case in process $proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563 in module dotproduct_axi.
+Removed a total of 0 dead cases.
+
+6.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 66 assignments to connections.
+
+6.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$478'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$476'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$474'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$472'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$470'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$468'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$466'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:76$465'.
+  Set init value: \f_past_valid = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:137$784'.
+  Set init value: \f_past_valid = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$785'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$787'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$789'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$791'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$793'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$795'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$797'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$799'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$801'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$803'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$805'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$807'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$809'.
+  Set init value: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_EN = 1'0
+
+6.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~62 debug messages>
+
+6.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$478'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$476'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$474'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$472'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$470'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$468'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$466'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:76$465'.
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+     1/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN[0:0]$427
+     2/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK[0:0]$426
+     3/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_EN[0:0]$429
+     4/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK[0:0]$428
+     5/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN[0:0]$431
+     6/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK[0:0]$430
+     7/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_EN[0:0]$433
+     8/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK[0:0]$432
+     9/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN[0:0]$435
+    10/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK[0:0]$434
+    11/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_EN[0:0]$437
+    12/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK[0:0]$436
+    13/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN[0:0]$439
+    14/14: $0$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK[0:0]$438
+Creating decoders for process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\high_word[0:0]
+     4/10: $0\accumulator[63:0]
+     5/10: $0\operand_a[15:0]
+     6/10: $0\index[31:0]
+     7/10: $0\error_code[31:0]
+     8/10: $0\w_sent[0:0]
+     9/10: $0\aw_sent[0:0]
+    10/10: $0\state[2:0]
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+     1/153: $9\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:24]$707
+     2/153: $8\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[23:16]$706
+     3/153: $7\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[15:8]$705
+     4/153: $6\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[7:0]$704
+     5/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$699 [31:24]
+     6/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$699 [23:16]
+     7/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$699 [15:8]
+     8/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$699 [7:0]
+     9/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask[3:0]$702
+    10/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value[31:0]$701
+    11/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value[31:0]$700
+    12/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b[31:0]$703
+    13/153: $9\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:24]$698
+    14/153: $8\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[23:16]$697
+    15/153: $7\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[15:8]$696
+    16/153: $6\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[7:0]$695
+    17/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$690 [31:24]
+    18/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$690 [23:16]
+    19/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$690 [15:8]
+    20/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$690 [7:0]
+    21/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask[3:0]$693
+    22/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value[31:0]$692
+    23/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value[31:0]$691
+    24/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b[31:0]$694
+    25/153: $9\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:24]$689
+    26/153: $8\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[23:16]$688
+    27/153: $7\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[15:8]$687
+    28/153: $6\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[7:0]$686
+    29/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$681 [31:24]
+    30/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$681 [23:16]
+    31/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$681 [15:8]
+    32/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$681 [7:0]
+    33/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask[3:0]$684
+    34/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value[31:0]$683
+    35/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value[31:0]$682
+    36/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b[31:0]$685
+    37/153: $9\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:24]$680
+    38/153: $8\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[23:16]$679
+    39/153: $7\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[15:8]$678
+    40/153: $6\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[7:0]$677
+    41/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$672 [31:24]
+    42/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$672 [23:16]
+    43/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$672 [15:8]
+    44/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$672 [7:0]
+    45/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask[3:0]$675
+    46/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value[31:0]$674
+    47/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value[31:0]$673
+    48/153: $5\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b[31:0]$676
+    49/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b[31:0]$671
+    50/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask[3:0]$670
+    51/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value[31:0]$669
+    52/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value[31:0]$668
+    53/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$667
+    54/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b[31:0]$666
+    55/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask[3:0]$665
+    56/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value[31:0]$664
+    57/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value[31:0]$663
+    58/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$662
+    59/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b[31:0]$661
+    60/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask[3:0]$660
+    61/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value[31:0]$659
+    62/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value[31:0]$658
+    63/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$657
+    64/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b[31:0]$656
+    65/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask[3:0]$655
+    66/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value[31:0]$654
+    67/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value[31:0]$653
+    68/153: $4\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$652
+    69/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b[31:0]$651
+    70/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask[3:0]$650
+    71/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value[31:0]$649
+    72/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value[31:0]$648
+    73/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$647
+    74/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b[31:0]$646
+    75/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask[3:0]$645
+    76/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value[31:0]$644
+    77/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value[31:0]$643
+    78/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$642
+    79/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b[31:0]$641
+    80/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask[3:0]$640
+    81/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value[31:0]$639
+    82/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value[31:0]$638
+    83/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$637
+    84/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b[31:0]$636
+    85/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask[3:0]$635
+    86/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value[31:0]$634
+    87/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value[31:0]$633
+    88/153: $3\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$632
+    89/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b[31:0]$630
+    90/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask[3:0]$629
+    91/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value[31:0]$628
+    92/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value[31:0]$627
+    93/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$626
+    94/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b[31:0]$625
+    95/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask[3:0]$624
+    96/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value[31:0]$623
+    97/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value[31:0]$622
+    98/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$621
+    99/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b[31:0]$620
+   100/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask[3:0]$619
+   101/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value[31:0]$618
+   102/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value[31:0]$617
+   103/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$616
+   104/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b[31:0]$615
+   105/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask[3:0]$614
+   106/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value[31:0]$613
+   107/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value[31:0]$612
+   108/153: $2\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$611
+   109/153: $0\launch[0:0]
+   110/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b[31:0]$603
+   111/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask[3:0]$602
+   112/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value[31:0]$601
+   113/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value[31:0]$600
+   114/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result[31:0]$599
+   115/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b[31:0]$598
+   116/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask[3:0]$597
+   117/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value[31:0]$596
+   118/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value[31:0]$595
+   119/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result[31:0]$594
+   120/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b[31:0]$593
+   121/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask[3:0]$592
+   122/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value[31:0]$591
+   123/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value[31:0]$590
+   124/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result[31:0]$589
+   125/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b[31:0]$588
+   126/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask[3:0]$587
+   127/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value[31:0]$586
+   128/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value[31:0]$585
+   129/153: $1\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result[31:0]$584
+   130/153: $0\write_strobe[3:0]
+   131/153: $0\write_data[31:0]
+   132/153: $0\write_addr[4:0]
+   133/153: $0\w_full[0:0]
+   134/153: $0\aw_full[0:0]
+   135/153: $0\error_code[31:0]
+   136/153: $0\enable_irq[0:0]
+   137/153: $0\pending[0:0]
+   138/153: $0\error[0:0]
+   139/153: $0\done[0:0]
+   140/153: $0\busy[0:0]
+   141/153: $0\active_n[31:0]
+   142/153: $0\active_dst[31:0]
+   143/153: $0\active_b[31:0]
+   144/153: $0\active_a[31:0]
+   145/153: $0\length[31:0]
+   146/153: $0\dst[31:0]
+   147/153: $0\src_b[31:0]
+   148/153: $0\src_a[31:0]
+   149/153: $0\s_rvalid[0:0]
+   150/153: $0\s_rresp[1:0]
+   151/153: $0\s_rdata[31:0]
+   152/153: $0\s_bvalid[0:0]
+   153/153: $0\s_bresp[1:0]
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+     1/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN[0:0]$724
+     2/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK[0:0]$723
+     3/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_EN[0:0]$726
+     4/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK[0:0]$725
+     5/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN[0:0]$728
+     6/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK[0:0]$727
+     7/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_EN[0:0]$730
+     8/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK[0:0]$729
+     9/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_EN[0:0]$732
+    10/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK[0:0]$731
+    11/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN[0:0]$734
+    12/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK[0:0]$733
+    13/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_EN[0:0]$736
+    14/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK[0:0]$735
+    15/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_EN[0:0]$738
+    16/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK[0:0]$737
+    17/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_EN[0:0]$740
+    18/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK[0:0]$739
+    19/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN[0:0]$742
+    20/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK[0:0]$741
+    21/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_EN[0:0]$744
+    22/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK[0:0]$743
+    23/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN[0:0]$746
+    24/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK[0:0]$745
+    25/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_EN[0:0]$748
+    26/26: $0$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK[0:0]$747
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:137$784'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$785'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$787'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$789'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$791'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$793'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$795'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$797'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$799'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$801'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$803'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$805'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$807'.
+Creating decoders for process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$809'.
+
+6.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\f_past_valid' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3205' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:79$363$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3206' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:80$364$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3207' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:80$365$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3208' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:81$366$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3209' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:81$367$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3210' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:82$368$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3211' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:82$369$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3212' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$370$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3213' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$371$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3214' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$372$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3215' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$373$0' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3216' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3217' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3218' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3219' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3220' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3221' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3222' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3223' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3224' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3225' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3226' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3227' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3228' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3229' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+  created $dff cell `$procdff$3230' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3231' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3232' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3233' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3234' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3235' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3236' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3237' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3238' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3239' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+  created $dff cell `$procdff$3240' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bresp' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3241' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bvalid' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3242' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rdata' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3243' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rresp' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3244' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rvalid' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3245' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_a' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3246' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3247' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\dst' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3248' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\length' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3249' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_a' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3250' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3251' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_dst' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3252' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_n' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3253' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\busy' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3254' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\done' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3255' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3256' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\pending' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3257' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\enable_irq' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3258' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\launch' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3259' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error_code' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3260' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\aw_full' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3261' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\w_full' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3262' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_addr' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3263' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_data' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3264' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_strobe' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3265' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.$result' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3266' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.old_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3267' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.new_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3268' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.mask' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3269' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:107$482.b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3270' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.$result' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3271' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.old_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3272' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.new_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3273' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.mask' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3274' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:108$483.b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3275' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.$result' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3276' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.old_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3277' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.new_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3278' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.mask' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3279' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:109$484.b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3280' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.$result' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3281' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.old_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3282' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.new_value' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3283' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.mask' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3284' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/results/positive/input/rtl/dotproduct_axi.sv:110$485.b' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+  created $dff cell `$procdff$3285' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\f_past_valid' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3286' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:140$486$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3287' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:141$487$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3288' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:141$488$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3289' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:142$489$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3290' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:143$490$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3291' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:143$491$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3292' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:145$492$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3293' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:146$493$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3294' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:146$494$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3295' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:147$495$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3296' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/results/positive/input/rtl/dotproduct_axi.sv:147$496$0' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3297' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3298' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3299' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3300' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3301' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3302' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3303' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3304' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3305' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3306' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3307' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3308' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3309' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3310' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3311' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3312' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3313' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3314' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3315' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3316' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3317' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3318' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3319' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3320' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3321' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3322' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_EN' using process `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+  created $dff cell `$procdff$3323' with positive edge clock.
+
+6.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$478'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$476'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$474'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$472'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$470'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$468'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:0$466'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:76$465'.
+Found and cleaned up 5 empty switches in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:77$414'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+Removing empty process `dotproduct_engine.$proc$/results/positive/input/rtl/dotproduct_engine.sv:34$402'.
+Found and cleaned up 36 empty switches in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:77$563'.
+Found and cleaned up 6 empty switches in `\dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:138$711'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:137$784'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$785'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$787'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$789'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$791'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$793'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$795'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$797'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$799'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$801'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$803'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$805'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$807'.
+Removing empty process `dotproduct_axi.$proc$/results/positive/input/rtl/dotproduct_axi.sv:0$809'.
+Cleaned up 62 empty switches.
+
+6.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+<suppressed ~10 debug messages>
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+Optimizing module dotproduct_mac.
+
+6.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_engine.
+Deleting now unused module dotproduct_mac.
+<suppressed ~2 debug messages>
+
+6.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 433 unused cells and 1373 unused wires.
+<suppressed ~452 debug messages>
+
+6.6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+6.7. Executing OPT pass (performing simple optimizations).
+
+6.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~261 debug messages>
+Removed a total of 87 cells.
+
+6.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $flatten\engine.$procmux$900: \engine.high_word -> 1'1
+      Replacing known input bits on port B of cell $procmux$2832: \busy -> 1'1
+      Replacing known input bits on port A of cell $procmux$2829: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2827: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2825: \busy -> 1'0
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$1095.
+    dead port 2/2 on $mux $procmux$1097.
+    dead port 1/2 on $mux $procmux$1100.
+    dead port 2/2 on $mux $procmux$1102.
+    dead port 1/2 on $mux $procmux$1105.
+    dead port 1/2 on $mux $procmux$1114.
+    dead port 2/2 on $mux $procmux$1116.
+    dead port 1/2 on $mux $procmux$1119.
+    dead port 2/2 on $mux $procmux$1121.
+    dead port 1/2 on $mux $procmux$1124.
+    dead port 1/2 on $mux $procmux$1133.
+    dead port 2/2 on $mux $procmux$1135.
+    dead port 1/2 on $mux $procmux$1138.
+    dead port 2/2 on $mux $procmux$1140.
+    dead port 1/2 on $mux $procmux$1143.
+    dead port 1/2 on $mux $procmux$1152.
+    dead port 2/2 on $mux $procmux$1154.
+    dead port 1/2 on $mux $procmux$1157.
+    dead port 2/2 on $mux $procmux$1159.
+    dead port 1/2 on $mux $procmux$1162.
+    dead port 1/2 on $mux $procmux$1300.
+    dead port 2/2 on $mux $procmux$1302.
+    dead port 1/2 on $mux $procmux$1305.
+    dead port 2/2 on $mux $procmux$1307.
+    dead port 1/2 on $mux $procmux$1310.
+    dead port 1/2 on $mux $procmux$1320.
+    dead port 2/2 on $mux $procmux$1322.
+    dead port 1/2 on $mux $procmux$1325.
+    dead port 2/2 on $mux $procmux$1327.
+    dead port 1/2 on $mux $procmux$1330.
+    dead port 1/2 on $mux $procmux$1340.
+    dead port 2/2 on $mux $procmux$1342.
+    dead port 1/2 on $mux $procmux$1345.
+    dead port 2/2 on $mux $procmux$1347.
+    dead port 1/2 on $mux $procmux$1350.
+    dead port 1/2 on $mux $procmux$1360.
+    dead port 2/2 on $mux $procmux$1362.
+    dead port 1/2 on $mux $procmux$1365.
+    dead port 2/2 on $mux $procmux$1367.
+    dead port 1/2 on $mux $procmux$1370.
+    dead port 1/2 on $mux $procmux$1517.
+    dead port 2/2 on $mux $procmux$1519.
+    dead port 1/2 on $mux $procmux$1522.
+    dead port 2/2 on $mux $procmux$1524.
+    dead port 1/2 on $mux $procmux$1527.
+    dead port 1/2 on $mux $procmux$1538.
+    dead port 2/2 on $mux $procmux$1540.
+    dead port 1/2 on $mux $procmux$1543.
+    dead port 2/2 on $mux $procmux$1545.
+    dead port 1/2 on $mux $procmux$1548.
+    dead port 1/2 on $mux $procmux$1559.
+    dead port 2/2 on $mux $procmux$1561.
+    dead port 1/2 on $mux $procmux$1564.
+    dead port 2/2 on $mux $procmux$1566.
+    dead port 1/2 on $mux $procmux$1569.
+    dead port 1/2 on $mux $procmux$1580.
+    dead port 2/2 on $mux $procmux$1582.
+    dead port 1/2 on $mux $procmux$1585.
+    dead port 2/2 on $mux $procmux$1587.
+    dead port 1/2 on $mux $procmux$1590.
+    dead port 1/2 on $mux $procmux$1746.
+    dead port 2/2 on $mux $procmux$1748.
+    dead port 1/2 on $mux $procmux$1751.
+    dead port 2/2 on $mux $procmux$1753.
+    dead port 1/2 on $mux $procmux$1756.
+    dead port 1/2 on $mux $procmux$1768.
+    dead port 2/2 on $mux $procmux$1770.
+    dead port 1/2 on $mux $procmux$1773.
+    dead port 2/2 on $mux $procmux$1775.
+    dead port 1/2 on $mux $procmux$1778.
+    dead port 1/2 on $mux $procmux$1790.
+    dead port 2/2 on $mux $procmux$1792.
+    dead port 1/2 on $mux $procmux$1795.
+    dead port 2/2 on $mux $procmux$1797.
+    dead port 1/2 on $mux $procmux$1800.
+    dead port 1/2 on $mux $procmux$1812.
+    dead port 2/2 on $mux $procmux$1814.
+    dead port 1/2 on $mux $procmux$1817.
+    dead port 2/2 on $mux $procmux$1819.
+    dead port 1/2 on $mux $procmux$1822.
+Removed 80 multiplexer ports.
+<suppressed ~80 debug messages>
+
+6.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$3032: $auto$opt_reduce.cc:134:opt_pmux$3325
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 2 changes.
+
+6.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~120 debug messages>
+Removed a total of 40 cells.
+
+6.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 199 unused wires.
+<suppressed ~1 debug messages>
+
+6.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~70 debug messages>
+
+6.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$3071: { $auto$opt_reduce.cc:134:opt_pmux$3327 $procmux$2740_CMP }
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 1 changes.
+
+6.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.7.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.7.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~70 debug messages>
+
+6.7.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+6.7.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+6.7.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+6.7.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.7.20. Finished OPT passes. (There is nothing left to do.)
+
+6.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:41$511 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:42$513 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:43$514 ($add).
+Removed top 29 bits (of 33) from port B of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:43$514 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$ge$/results/positive/input/rtl/dotproduct_axi.sv:44$515 ($ge).
+Removed top 27 bits (of 32) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:44$516 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:47$530 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:47$532 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:47$534 ($le).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:149$762 ($add).
+Removed top 30 bits (of 33) from port B of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:149$762 ($add).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:149$763 ($le).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:150$765 ($add).
+Removed top 30 bits (of 33) from port B of cell dotproduct_axi.$add$/results/positive/input/rtl/dotproduct_axi.sv:150$765 ($add).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/results/positive/input/rtl/dotproduct_axi.sv:150$766 ($le).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$1520_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$1749_CMP0 ($eq).
+Removed top 31 bits (of 32) from mux cell dotproduct_axi.$procmux$2692 ($mux).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$3037_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$3038_CMP0 ($eq).
+Removed top 2 bits (of 5) from port B of cell dotproduct_axi.$procmux$3039_CMP0 ($eq).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$flatten\engine.$add$/results/positive/input/rtl/dotproduct_engine.sv:55$407 ($add).
+Removed top 29 bits (of 32) from mux cell dotproduct_axi.$flatten\engine.$ternary$/results/positive/input/rtl/dotproduct_engine.sv:29$392 ($mux).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/results/positive/input/rtl/dotproduct_engine.sv:28$389 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/results/positive/input/rtl/dotproduct_engine.sv:26$383 ($eq).
+Removed top 2 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/results/positive/input/rtl/dotproduct_engine.sv:26$382 ($eq).
+Removed top 29 bits (of 32) from wire dotproduct_axi.$flatten\engine.$ternary$/results/positive/input/rtl/dotproduct_engine.sv:29$392_Y.
+Removed top 31 bits (of 32) from wire dotproduct_axi.$procmux$2692_Y.
+
+6.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+6.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+6.11. Executing OPT pass (performing simple optimizations).
+
+6.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+6.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+6.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+6.11.4. Finished fast OPT passes.
+
+6.12. Printing statistics.
+
+=== dotproduct_axi ===
+
+   Number of wires:                586
+   Number of wire bits:           5427
+   Number of public wires:         126
+   Number of public wire bits:    1464
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                535
+     $add                            9
+     $assert                        20
+     $dff                           87
+     $eq                            30
+     $ge                             6
+     $le                             6
+     $logic_and                     42
+     $logic_not                     29
+     $logic_or                       6
+     $lt                             4
+     $mul                            1
+     $mux                          278
+     $pmux                          11
+     $reduce_bool                    3
+     $reduce_or                      3
+
+6.13. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+8. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint for this timestep: \reset = 1'1
+Final constraint equation: \reset = 1'1
+Imported 535 cells to SAT database.
+Import set-constraint from init attribute: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN = 1'0
+Import set-constraint from init attribute: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN = 1'0
+Import set-constraint from init attribute: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN = 1'0
+Import set-constraint from init attribute: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN = 1'0
+Import set-constraint from init attribute: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN = 1'0
+Import set-constraint from init attribute: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN = 1'0
+Import set-constraint from init attribute: \engine.f_past_valid = 1'0
+Final init constraint equation: { $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK $past$/results/positive/input/rtl/dotproduct_axi.sv:147$496$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:147$495$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:146$494$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:146$493$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:145$492$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:143$491$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:143$490$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:142$489$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:141$488$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:141$487$0 $past$/results/positive/input/rtl/dotproduct_axi.sv:140$486$0 \write_strobe \write_data \write_addr \w_full \aw_full \error_code \launch \enable_irq \pending \error \done \busy \active_n \active_dst \active_b \active_a \length \dst \src_b \src_a \s_rvalid \s_rresp \s_rdata \s_bvalid \s_bresp \engine.high_word \engine.accumulator \engine.operand_a \engine.index \engine.failed \engine.error_code \engine.done \engine.w_sent \engine.aw_sent \engine.state $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$373$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$372$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$371$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:84$370$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:82$369$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:82$368$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:81$367$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:81$366$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:80$365$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:80$364$0 $flatten\engine.$past$/results/positive/input/rtl/dotproduct_engine.sv:79$363$0 \engine.f_past_valid $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN } = 832'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 9:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 10:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 11:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 12:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 13:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 14:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 15:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 16:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 17:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 18:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 19:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Setting up time step 20:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$498_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:141$497_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$500_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:143$501_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:142$499_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$503_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:146$504_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:147$505_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:145$502_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$507_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:149$506_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$509_CHECK when $formal$/results/positive/input/rtl/dotproduct_axi.sv:150$508_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$375_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:80$374_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$377_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:81$376_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$379_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:82$378_EN.
+Import proof for assert: $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_CHECK when $flatten\engine.$formal$/results/positive/input/rtl/dotproduct_engine.sv:83$380_EN.
+
+Solving problem with 908056 variables and 2536683 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+

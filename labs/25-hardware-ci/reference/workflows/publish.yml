@@ -1,0 +1,73 @@
+name: Publish validated Quarto book
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: book-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  hardware:
+    uses: ./.github/workflows/hardware-ci.yml
+  validate:
+    uses: ./.github/workflows/labs.yml
+  build:
+    needs: [validate, hardware]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build pinned publishing environment
+        run: docker build --platform linux/amd64 -f tools/book/Dockerfile -t from-concept-book:2026.10 .
+      - name: Check stale-output rejection and failed-build preservation
+        run: >-
+          docker run --rm --platform linux/amd64 --network none
+          --user "$(id -u):$(id -g)" --env HOME=/tmp
+          --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+          python tools/book/test_build.py
+      - name: Check publication preserves previous and open PDFs
+        run: python tools/book/test_publish.py
+      - name: Render and validate HTML, PDF and figures offline
+        run: |
+          image_id=$(docker image inspect --format '{{.Id}}' from-concept-book:2026.10)
+          docker run --rm --platform linux/amd64 --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --env BOOK_REVISION="$GITHUB_SHA" --env BOOK_IMAGE_ID="$image_id" \
+            --env BOOK_VALIDATION_RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2 (Node.js 24)
+        with:
+          name: book-pdf-and-build-identity
+          if-no-files-found: error
+          path: |
+            _book/release/From-Concept-to-Silicon.pdf
+            _book/release/build-manifest.json
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0 (upload-artifact v7)
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: _book/release
+  deploy:
+    needs: [validate, hardware, build]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0 (Node.js 24)
+      - name: Deploy validated release to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1 (Node.js 24)

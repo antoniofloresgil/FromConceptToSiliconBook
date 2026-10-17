@@ -1,0 +1,3 @@
+METRIC writes=1455 reads=1424 dropped=31 epochs=3 wwrap=90 rwrap=88 wstall=1103 rstall=762 wjump=0 rjump=91 simultaneous=0
+PASS asynchronous FIFO width=8 depth=16 WH=5 RH=7 phase=2 seed=2026
+/work/labs/24-async-fifo/tb_async_fifo.sv:169: $finish called at 31740000 (1ps)

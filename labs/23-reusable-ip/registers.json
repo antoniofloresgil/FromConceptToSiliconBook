@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "ip_version": "1.1.0",
+  "register_abi": "1.0",
+  "data_width": 32,
+  "registers": [
+    {"name":"CTRL","offset":0,"access":"command/rw","reset":0,"fields":[{"name":"START","lsb":0,"width":1},{"name":"IRQ_ENABLE","lsb":1,"width":1}],"behavior":"Byte 0 only; START reads zero. CTRL writes while busy return SLVERR. START clears prior terminal state and latches a valid descriptor."},
+    {"name":"STATUS","offset":4,"access":"ro","reset":0,"fields":[{"name":"BUSY","lsb":0,"width":1},{"name":"DONE","lsb":1,"width":1},{"name":"ERROR","lsb":2,"width":1},{"name":"IRQ_PENDING","lsb":3,"width":1}],"behavior":"Read snapshot retained under R backpressure; writes return SLVERR."},
+    {"name":"SRC_A","offset":8,"access":"rw","reset":0,"fields":[],"behavior":"Byte-strobe merge when idle; writes while busy return SLVERR."},
+    {"name":"SRC_B","offset":12,"access":"rw","reset":0,"fields":[],"behavior":"Byte-strobe merge when idle; writes while busy return SLVERR."},
+    {"name":"DST","offset":16,"access":"rw","reset":0,"fields":[],"behavior":"Byte-strobe merge when idle; destination must be 8-byte aligned and non-overlapping with inputs."},
+    {"name":"LENGTH","offset":20,"access":"rw","reset":0,"fields":[],"behavior":"Byte-strobe merge when idle; accepted job length is 1 through MAX_LENGTH."},
+    {"name":"ERROR_CODE","offset":24,"access":"ro","reset":0,"fields":[],"behavior":"0 none, 1 descriptor, 2 DMA read, 3 DMA write. Writes return SLVERR."},
+    {"name":"IRQ_ACK","offset":28,"access":"w1c","reset":0,"fields":[{"name":"ACK","lsb":0,"width":1}],"behavior":"Byte 0 bit 0 clears pending; reads zero; a simultaneous new terminal event wins."}
+  ]
+}

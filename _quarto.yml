@@ -29,7 +29,7 @@ book:
   title: "From Concept to Silicon"
   subtitle: "A Hands-On Guide to Open-Source SoC Design Using RISC-V"
   author: "Antonio Flores Gil"
-  date: "2026-10-12"
+  date: today
   chapters:
     - index.qmd
     - intro.qmd
@@ -90,6 +90,7 @@ book:
     - appendices/complete-case-study.qmd
 
 bibliography: references.bib
+date-format: iso
 
 format:
   html:
@@ -99,6 +100,12 @@ format:
   pdf:
     documentclass: scrreprt
     latex-auto-install: false
+    include-in-header:
+      - text: |
+          % Size TOC number columns from the actual labels, including 24.10.1.
+          % Keep child indentation in sync when a parent's number column grows.
+          \RedeclareSectionCommands[tocdynnumwidth=true,tocnumsep=.6em]{chapter,section,subsection,subsubsection}
+          \RedeclareSectionCommands[tocdynindent=true]{section,subsection,subsubsection}
     filters:
       - tools/book/part-titles.lua
 

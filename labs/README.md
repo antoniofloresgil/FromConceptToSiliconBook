@@ -57,6 +57,9 @@ Windows mounts use Windows access controls; do not paste POSIX `id` expressions 
 | `multicore` | Two Linux CPUs and the existing DMA accelerator | Pinned-CPU ownership, 96 checked jobs and explicit cache/ordering/dependency models; optional advanced image, outside `run all` | [20](20-multicore/README.md) |
 | `physical-closure` | Original dot-product baseline and separately identified repair candidates | Fresh FPGA/ASIC routes, 75/100 MHz comparison, arithmetic register, extracted ASIC electrical/hold repair and netlist equivalence; outside `run all` | [21](21-physical-closure/README.md) |
 | `layout-verification` | Actual GDS and transistor reference | FreePDK45 DRC/LVS, diagnosed PG/body failure, physical finish, fresh timing and geometry negative controls; reference technology, outside `run all` | [22](22-layout-verification/README.md) |
+| `reusable-ip` | Autonomous packaged dot-product release | Generated register views, AXI/Wally integration with identical RTL, configuration matrix and integrity/negative evidence; outside `run all` | [23](23-reusable-ip/README.md) |
+| `async-fifo` | Independent write/read clocks and a Gray-pointer FIFO | 48 simulated schedules/seeds, reset epochs, six synthesized pointer-chain reviews and four rejected defects; outside `run all` | [24](24-async-fifo/README.md) |
+| `hardware-ci` | Integrated accelerator regression gate | Six stages, interface/default contract, bounded proof/witness, generic-cell budget and four rejected RTL mutations; outside `run all` | [25](25-hardware-ci/README.md) |
 
 ## Commands
 

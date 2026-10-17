@@ -1,0 +1,751 @@
+
+-- Running command `read_verilog -formal -sv "/ip/rtl/dotproduct_axi.sv" "/ip/rtl/dotproduct_engine.sv" "/ip/rtl/dotproduct_mac.sv"; prep -top dotproduct_engine -flatten; opt_clean; sat -seq 24 -set-init-zero -set reset 0 -set-at 1 reset 1 -set src_a 2147516416 -set src_b 2147517440 -set dst 2147518464 -set length 1 -prove-asserts -verify -dump_vcd engine-counterexample.vcd' --
+
+1. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_axi.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_engine.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_mac.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+
+4.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+Removing unused module `\dotproduct_axi'.
+Removed 1 unused modules.
+Module dotproduct_engine directly or indirectly contains formal properties -> setting "keep" attribute.
+
+4.2. Executing PROC pass (convert processes to netlists).
+
+4.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/ip/rtl/dotproduct_engine.sv:34$370 in module dotproduct_engine.
+Removed a total of 0 dead cases.
+
+4.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 20 assignments to connections.
+
+4.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:82$347_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:81$345_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:80$343_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+  Set init value: \f_past_valid = 1'0
+
+4.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+4.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~20 debug messages>
+
+4.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+     1/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN[0:0]$395
+     2/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK[0:0]$394
+     3/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$343_EN[0:0]$397
+     4/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK[0:0]$396
+     5/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN[0:0]$399
+     6/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK[0:0]$398
+     7/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$345_EN[0:0]$401
+     8/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK[0:0]$400
+     9/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN[0:0]$403
+    10/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK[0:0]$402
+    11/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$347_EN[0:0]$405
+    12/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK[0:0]$404
+    13/14: $0$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN[0:0]$407
+    14/14: $0$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK[0:0]$406
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\w_sent[0:0]
+     4/10: $0\aw_sent[0:0]
+     5/10: $0\high_word[0:0]
+     6/10: $0\accumulator[63:0]
+     7/10: $0\operand_a[15:0]
+     8/10: $0\index[31:0]
+     9/10: $0\state[2:0]
+    10/10: $0\error_code[31:0]
+
+4.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\f_past_valid' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$727' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:79$331$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$728' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:80$332$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$729' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:80$333$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$730' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:81$334$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$731' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:81$335$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$732' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:82$336$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$733' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:82$337$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$734' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$338$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$735' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$339$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$736' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$340$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$737' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$341$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$738' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$739' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$740' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$741' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$742' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$743' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$744' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$745' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$746' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$747' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$748' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$749' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$750' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$751' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$752' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$753' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$754' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$755' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$756' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$757' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$758' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$759' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$760' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$761' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$762' with positive edge clock.
+
+4.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+Found and cleaned up 5 empty switches in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+Cleaned up 20 empty switches.
+
+4.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+<suppressed ~10 debug messages>
+Optimizing module dotproduct_mac.
+
+4.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_mac.
+<suppressed ~1 debug messages>
+
+4.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+4.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 149 unused wires.
+<suppressed ~1 debug messages>
+
+4.6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+4.7. Executing OPT pass (performing simple optimizations).
+
+4.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+4.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~129 debug messages>
+Removed a total of 43 cells.
+
+4.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$597: \high_word -> 1'1
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~27 debug messages>
+
+4.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 1 changes.
+
+4.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~27 debug messages>
+Removed a total of 9 cells.
+
+4.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 45 unused wires.
+<suppressed ~1 debug messages>
+
+4.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+4.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~24 debug messages>
+
+4.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 0 changes.
+
+4.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+4.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+4.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+4.7.14. Finished OPT passes. (There is nothing left to do.)
+
+4.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from port B of cell dotproduct_engine.$eq$/ip/rtl/dotproduct_engine.sv:26$350 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/ip/rtl/dotproduct_engine.sv:26$351 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/ip/rtl/dotproduct_engine.sv:28$357 ($eq).
+Removed top 29 bits (of 32) from mux cell dotproduct_engine.$ternary$/ip/rtl/dotproduct_engine.sv:29$360 ($mux).
+Removed top 29 bits (of 32) from port B of cell dotproduct_engine.$add$/ip/rtl/dotproduct_engine.sv:29$361 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_engine.$add$/ip/rtl/dotproduct_engine.sv:55$375 ($add).
+Removed top 29 bits (of 32) from wire dotproduct_engine.$ternary$/ip/rtl/dotproduct_engine.sv:29$360_Y.
+
+4.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+4.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.11. Executing OPT pass (performing simple optimizations).
+
+4.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+4.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+4.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+4.11.4. Finished fast OPT passes.
+
+4.12. Printing statistics.
+
+=== dotproduct_engine ===
+
+   Number of wires:                198
+   Number of wire bits:           1942
+   Number of public wires:          42
+   Number of public wire bits:     684
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                185
+     $add                            4
+     $assert                         7
+     $dff                           33
+     $eq                            11
+     $logic_and                     11
+     $logic_not                     10
+     $logic_or                       5
+     $mul                            1
+     $mux                           91
+     $pmux                           8
+     $reduce_bool                    3
+     $reduce_or                      1
+
+4.13. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+6. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Import set-constraint for this timestep: \reset = 1'1
+Final constraint equation: { \reset \length \dst \src_b \src_a } = 129'100000000000000000000000000000001100000000000000010001000000000001000000000000000100001000000000010000000000000001000000000000000
+Imported 185 cells to SAT database.
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN = 1'0
+Import set-constraint from init attribute: \f_past_valid = 1'0
+Final init constraint equation: { \w_sent \aw_sent \high_word \accumulator \operand_a \index \state \failed \error_code \done $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK $past$/ip/rtl/dotproduct_engine.sv:84$341$0 $past$/ip/rtl/dotproduct_engine.sv:84$340$0 $past$/ip/rtl/dotproduct_engine.sv:84$339$0 $past$/ip/rtl/dotproduct_engine.sv:84$338$0 $past$/ip/rtl/dotproduct_engine.sv:82$337$0 $past$/ip/rtl/dotproduct_engine.sv:82$336$0 $past$/ip/rtl/dotproduct_engine.sv:81$335$0 $past$/ip/rtl/dotproduct_engine.sv:81$334$0 $past$/ip/rtl/dotproduct_engine.sv:80$333$0 $past$/ip/rtl/dotproduct_engine.sv:80$332$0 $past$/ip/rtl/dotproduct_engine.sv:79$331$0 \f_past_valid $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN } = 271'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 2:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 3:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 4:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 5:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 6:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 7:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 8:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 9:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 10:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 11:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 12:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 13:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 14:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 15:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 16:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 17:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 18:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 19:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 20:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 21:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 22:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 23:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 24:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Solving problem with 530678 variables and 1511269 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+

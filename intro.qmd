@@ -60,13 +60,13 @@ The seven parts form a reference library. The weekly itinerary selects sections 
 
 The common methodology in @sec-verification-methodology connects requirement plans, independent checks, coverage, formal scope and release evidence across every design level.
 
-Formal verification and security evaluation are **required** by RA8 and are applied to a small understandable IP. The dedicated chapter @sec-formal-verification develops an executable FIFO example through BMC, induction, counterexample/repair, vacuity detection and equivalence using the existing container. The nine automatic labs supply simulation/synthesis starting points and bounded formal checks for the dot-product IP. The executable project in @sec-executable-project also provides the Wally firmware platform. Larger formal flows need their own environment and assumptions; full-processor proofs remain advanced extensions. The [coursework appendix](appendices/hsd-coursework.qmd) specifies its required evidence within the existing hours.
+Formal verification and security evaluation are **required** by RA8 and are applied to a small understandable IP. The dedicated [formal-verification chapter](chapters/03-simulation-verification/formal-verification.qmd) develops an executable FIFO example through BMC, induction, counterexample/repair, vacuity detection and equivalence using the existing container. The nine automatic labs supply simulation/synthesis starting points and bounded formal checks for the dot-product IP. The executable project in @sec-executable-project also provides the Wally firmware platform. Larger formal flows need their own environment and assumptions; full-processor proofs remain advanced extensions. The [coursework appendix](appendices/hsd-coursework.qmd) specifies its required evidence within the existing hours.
 
 Platform integration can be demonstrated in a simulated bus/memory/peripheral harness. Physical FPGA programming and fabricated silicon are extension milestones. Students still distinguish functional integration, synthesis, routing and fabrication evidence in the required analysis.
 
 ## The 12-week itinerary
 
-The multicore integration chapter @sec-multicore is advanced reading. Its two-CPU/DMA experiment and coherent-subsystem extension are outside the compulsory twelve-week route; they do not add assessed work or change the 150-hour plan.
+The [multicore integration chapter](chapters/07-advanced-topics/multicore-integration.qmd) is advanced reading. Its two-CPU/DMA experiment and coherent-subsystem extension are outside the compulsory twelve-week route; they do not add assessed work or change the 150-hour plan.
 
 Weeks are relative teaching weeks. Selected reading precedes the session, practical work continues autonomously, and project reviews recur throughout the course. The average workload is 12.5 hours per week under the planning budget below.
 

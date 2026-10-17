@@ -1,0 +1,1408 @@
+
+-- Running command `read_verilog -formal -sv "/ip/rtl/dotproduct_axi.sv" "/ip/rtl/dotproduct_engine.sv" "/ip/rtl/dotproduct_mac.sv"; chparam -set MAX_LENGTH 16 dotproduct_axi; prep -top dotproduct_axi -flatten; opt_clean; sat -seq 20 -set-at 1 reset 1 -set-init-zero -prove-asserts -verify -dump_vcd formal-counterexample.vcd' --
+
+1. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_axi.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_engine.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /ip/rtl/dotproduct_mac.sv
+Parsing formal SystemVerilog input from `/ip/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+Parameter \MAX_LENGTH = 16
+
+4. Executing AST frontend in derive mode using pre-parsed AST for module `\dotproduct_axi'.
+Parameter \MAX_LENGTH = 16
+Generating RTLIL representation for module `$paramod\dotproduct_axi\MAX_LENGTH=32'00000000000000000000000000010000'.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removed 0 unused modules.
+Module dotproduct_engine directly or indirectly contains formal properties -> setting "keep" attribute.
+Module dotproduct_axi directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/ip/rtl/dotproduct_engine.sv:34$370 in module dotproduct_engine.
+Marked 27 switch rules as full_case in process $proc$/ip/rtl/dotproduct_axi.sv:77$531 in module dotproduct_axi.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 66 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:83$348_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:82$347_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:82$346_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:81$345_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:81$344_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:80$343_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+  Set init value: $formal$/ip/rtl/dotproduct_engine.sv:80$342_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+  Set init value: \f_past_valid = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:137$752'.
+  Set init value: \f_past_valid = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$753'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$755'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:141$466_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$757'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$759'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:143$468_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$761'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:143$469_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$763'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$765'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:146$471_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$767'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:146$472_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$769'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:147$473_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$771'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$773'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:149$475_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$775'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN = 1'0
+Found init rule in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$777'.
+  Set init value: $formal$/ip/rtl/dotproduct_axi.sv:150$477_EN = 1'0
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~62 debug messages>
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+     1/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN[0:0]$395
+     2/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK[0:0]$394
+     3/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$343_EN[0:0]$397
+     4/14: $0$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK[0:0]$396
+     5/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN[0:0]$399
+     6/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK[0:0]$398
+     7/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$345_EN[0:0]$401
+     8/14: $0$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK[0:0]$400
+     9/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN[0:0]$403
+    10/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK[0:0]$402
+    11/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$347_EN[0:0]$405
+    12/14: $0$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK[0:0]$404
+    13/14: $0$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN[0:0]$407
+    14/14: $0$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK[0:0]$406
+Creating decoders for process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\w_sent[0:0]
+     4/10: $0\aw_sent[0:0]
+     5/10: $0\high_word[0:0]
+     6/10: $0\accumulator[63:0]
+     7/10: $0\operand_a[15:0]
+     8/10: $0\index[31:0]
+     9/10: $0\state[2:0]
+    10/10: $0\error_code[31:0]
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+     1/153: $9\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:24]$675
+     2/153: $8\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[23:16]$674
+     3/153: $7\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[15:8]$673
+     4/153: $6\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[7:0]$672
+     5/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$667 [31:24]
+     6/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$667 [23:16]
+     7/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$667 [15:8]
+     8/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$667 [7:0]
+     9/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask[3:0]$670
+    10/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value[31:0]$669
+    11/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value[31:0]$668
+    12/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b[31:0]$671
+    13/153: $9\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:24]$666
+    14/153: $8\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[23:16]$665
+    15/153: $7\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[15:8]$664
+    16/153: $6\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[7:0]$663
+    17/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$658 [31:24]
+    18/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$658 [23:16]
+    19/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$658 [15:8]
+    20/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$658 [7:0]
+    21/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask[3:0]$661
+    22/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value[31:0]$660
+    23/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value[31:0]$659
+    24/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b[31:0]$662
+    25/153: $9\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:24]$657
+    26/153: $8\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[23:16]$656
+    27/153: $7\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[15:8]$655
+    28/153: $6\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[7:0]$654
+    29/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$649 [31:24]
+    30/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$649 [23:16]
+    31/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$649 [15:8]
+    32/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$649 [7:0]
+    33/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask[3:0]$652
+    34/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value[31:0]$651
+    35/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value[31:0]$650
+    36/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b[31:0]$653
+    37/153: $9\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:24]$648
+    38/153: $8\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[23:16]$647
+    39/153: $7\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[15:8]$646
+    40/153: $6\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[7:0]$645
+    41/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$640 [31:24]
+    42/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$640 [23:16]
+    43/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$640 [15:8]
+    44/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$640 [7:0]
+    45/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask[3:0]$643
+    46/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value[31:0]$642
+    47/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value[31:0]$641
+    48/153: $5\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b[31:0]$644
+    49/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b[31:0]$639
+    50/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask[3:0]$638
+    51/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value[31:0]$637
+    52/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value[31:0]$636
+    53/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$635
+    54/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b[31:0]$634
+    55/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask[3:0]$633
+    56/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value[31:0]$632
+    57/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value[31:0]$631
+    58/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$630
+    59/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b[31:0]$629
+    60/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask[3:0]$628
+    61/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value[31:0]$627
+    62/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value[31:0]$626
+    63/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$625
+    64/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b[31:0]$624
+    65/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask[3:0]$623
+    66/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value[31:0]$622
+    67/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value[31:0]$621
+    68/153: $4\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$620
+    69/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b[31:0]$619
+    70/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask[3:0]$618
+    71/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value[31:0]$617
+    72/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value[31:0]$616
+    73/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$615
+    74/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b[31:0]$614
+    75/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask[3:0]$613
+    76/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value[31:0]$612
+    77/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value[31:0]$611
+    78/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$610
+    79/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b[31:0]$609
+    80/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask[3:0]$608
+    81/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value[31:0]$607
+    82/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value[31:0]$606
+    83/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$605
+    84/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b[31:0]$604
+    85/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask[3:0]$603
+    86/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value[31:0]$602
+    87/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value[31:0]$601
+    88/153: $3\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$600
+    89/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b[31:0]$598
+    90/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask[3:0]$597
+    91/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value[31:0]$596
+    92/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value[31:0]$595
+    93/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$594
+    94/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b[31:0]$593
+    95/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask[3:0]$592
+    96/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value[31:0]$591
+    97/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value[31:0]$590
+    98/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$589
+    99/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b[31:0]$588
+   100/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask[3:0]$587
+   101/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value[31:0]$586
+   102/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value[31:0]$585
+   103/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$584
+   104/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b[31:0]$583
+   105/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask[3:0]$582
+   106/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value[31:0]$581
+   107/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value[31:0]$580
+   108/153: $2\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$579
+   109/153: $0\launch[0:0]
+   110/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b[31:0]$571
+   111/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask[3:0]$570
+   112/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value[31:0]$569
+   113/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value[31:0]$568
+   114/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result[31:0]$567
+   115/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b[31:0]$566
+   116/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask[3:0]$565
+   117/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value[31:0]$564
+   118/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value[31:0]$563
+   119/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result[31:0]$562
+   120/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b[31:0]$561
+   121/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask[3:0]$560
+   122/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value[31:0]$559
+   123/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value[31:0]$558
+   124/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result[31:0]$557
+   125/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b[31:0]$556
+   126/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask[3:0]$555
+   127/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value[31:0]$554
+   128/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value[31:0]$553
+   129/153: $1\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result[31:0]$552
+   130/153: $0\write_strobe[3:0]
+   131/153: $0\write_data[31:0]
+   132/153: $0\write_addr[4:0]
+   133/153: $0\w_full[0:0]
+   134/153: $0\aw_full[0:0]
+   135/153: $0\error_code[31:0]
+   136/153: $0\enable_irq[0:0]
+   137/153: $0\pending[0:0]
+   138/153: $0\error[0:0]
+   139/153: $0\done[0:0]
+   140/153: $0\busy[0:0]
+   141/153: $0\active_n[31:0]
+   142/153: $0\active_dst[31:0]
+   143/153: $0\active_b[31:0]
+   144/153: $0\active_a[31:0]
+   145/153: $0\length[31:0]
+   146/153: $0\dst[31:0]
+   147/153: $0\src_b[31:0]
+   148/153: $0\src_a[31:0]
+   149/153: $0\s_rvalid[0:0]
+   150/153: $0\s_rresp[1:0]
+   151/153: $0\s_rdata[31:0]
+   152/153: $0\s_bvalid[0:0]
+   153/153: $0\s_bresp[1:0]
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+     1/26: $0$formal$/ip/rtl/dotproduct_axi.sv:141$465_EN[0:0]$692
+     2/26: $0$formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK[0:0]$691
+     3/26: $0$formal$/ip/rtl/dotproduct_axi.sv:141$466_EN[0:0]$694
+     4/26: $0$formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK[0:0]$693
+     5/26: $0$formal$/ip/rtl/dotproduct_axi.sv:142$467_EN[0:0]$696
+     6/26: $0$formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK[0:0]$695
+     7/26: $0$formal$/ip/rtl/dotproduct_axi.sv:143$468_EN[0:0]$698
+     8/26: $0$formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK[0:0]$697
+     9/26: $0$formal$/ip/rtl/dotproduct_axi.sv:143$469_EN[0:0]$700
+    10/26: $0$formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK[0:0]$699
+    11/26: $0$formal$/ip/rtl/dotproduct_axi.sv:145$470_EN[0:0]$702
+    12/26: $0$formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK[0:0]$701
+    13/26: $0$formal$/ip/rtl/dotproduct_axi.sv:146$471_EN[0:0]$704
+    14/26: $0$formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK[0:0]$703
+    15/26: $0$formal$/ip/rtl/dotproduct_axi.sv:146$472_EN[0:0]$706
+    16/26: $0$formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK[0:0]$705
+    17/26: $0$formal$/ip/rtl/dotproduct_axi.sv:147$473_EN[0:0]$708
+    18/26: $0$formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK[0:0]$707
+    19/26: $0$formal$/ip/rtl/dotproduct_axi.sv:149$474_EN[0:0]$710
+    20/26: $0$formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK[0:0]$709
+    21/26: $0$formal$/ip/rtl/dotproduct_axi.sv:149$475_EN[0:0]$712
+    22/26: $0$formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK[0:0]$711
+    23/26: $0$formal$/ip/rtl/dotproduct_axi.sv:150$476_EN[0:0]$714
+    24/26: $0$formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK[0:0]$713
+    25/26: $0$formal$/ip/rtl/dotproduct_axi.sv:150$477_EN[0:0]$716
+    26/26: $0$formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK[0:0]$715
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:137$752'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$753'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$755'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$757'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$759'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$761'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$763'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$765'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$767'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$769'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$771'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$773'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$775'.
+Creating decoders for process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$777'.
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\f_past_valid' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3173' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:79$331$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3174' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:80$332$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3175' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:80$333$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3176' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:81$334$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3177' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:81$335$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3178' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:82$336$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3179' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:82$337$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3180' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$338$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3181' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$339$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3182' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$340$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3183' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/ip/rtl/dotproduct_engine.sv:84$341$0' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3184' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3185' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3186' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3187' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3188' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3189' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3190' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3191' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3192' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3193' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3194' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3195' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3196' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3197' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+  created $dff cell `$procdff$3198' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3199' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3200' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3201' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3202' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3203' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3204' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3205' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3206' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3207' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+  created $dff cell `$procdff$3208' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bresp' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3209' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bvalid' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3210' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rdata' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3211' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rresp' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3212' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rvalid' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3213' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_a' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3214' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3215' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\dst' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3216' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\length' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3217' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_a' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3218' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3219' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_dst' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3220' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_n' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3221' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\busy' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3222' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\done' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3223' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3224' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\pending' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3225' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\enable_irq' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3226' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\launch' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3227' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error_code' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3228' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\aw_full' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3229' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\w_full' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3230' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_addr' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3231' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_data' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3232' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_strobe' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3233' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.$result' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3234' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.old_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3235' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.new_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3236' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.mask' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3237' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:107$450.b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3238' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.$result' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3239' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.old_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3240' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.new_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3241' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.mask' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3242' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:108$451.b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3243' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.$result' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3244' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.old_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3245' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.new_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3246' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.mask' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3247' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:109$452.b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3248' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.$result' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3249' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.old_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3250' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.new_value' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3251' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.mask' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3252' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/ip/rtl/dotproduct_axi.sv:110$453.b' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+  created $dff cell `$procdff$3253' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\f_past_valid' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3254' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:140$454$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3255' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:141$455$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3256' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:141$456$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3257' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:142$457$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3258' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:143$458$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3259' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:143$459$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3260' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:145$460$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3261' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:146$461$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3262' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:146$462$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3263' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:147$463$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3264' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$past$/ip/rtl/dotproduct_axi.sv:147$464$0' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3265' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3266' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:141$465_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3267' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3268' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:141$466_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3269' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3270' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:142$467_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3271' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3272' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:143$468_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3273' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3274' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:143$469_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3275' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3276' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:145$470_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3277' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3278' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:146$471_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3279' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3280' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:146$472_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3281' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3282' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:147$473_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3283' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3284' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:149$474_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3285' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3286' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:149$475_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3287' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3288' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:150$476_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3289' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3290' with positive edge clock.
+Creating register for signal `\dotproduct_axi.$formal$/ip/rtl/dotproduct_axi.sv:150$477_EN' using process `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+  created $dff cell `$procdff$3291' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$446'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$444'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$442'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$440'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$438'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$436'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:0$434'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:76$433'.
+Found and cleaned up 5 empty switches in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:77$382'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+Removing empty process `dotproduct_engine.$proc$/ip/rtl/dotproduct_engine.sv:34$370'.
+Found and cleaned up 36 empty switches in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:77$531'.
+Found and cleaned up 6 empty switches in `\dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:138$679'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:137$752'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$753'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$755'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$757'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$759'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$761'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$763'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$765'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$767'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$769'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$771'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$773'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$775'.
+Removing empty process `dotproduct_axi.$proc$/ip/rtl/dotproduct_axi.sv:0$777'.
+Cleaned up 62 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_mac.
+Optimizing module dotproduct_engine.
+<suppressed ~10 debug messages>
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_mac.
+Deleting now unused module dotproduct_engine.
+<suppressed ~2 debug messages>
+
+5.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 433 unused cells and 1373 unused wires.
+<suppressed ~452 debug messages>
+
+5.6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+5.7. Executing OPT pass (performing simple optimizations).
+
+5.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~261 debug messages>
+Removed a total of 87 cells.
+
+5.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $flatten\engine.$procmux$926: \engine.high_word -> 1'1
+      Replacing known input bits on port B of cell $procmux$2800: \busy -> 1'1
+      Replacing known input bits on port A of cell $procmux$2797: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2795: \busy -> 1'0
+      Replacing known input bits on port A of cell $procmux$2793: \busy -> 1'0
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$1063.
+    dead port 2/2 on $mux $procmux$1065.
+    dead port 1/2 on $mux $procmux$1068.
+    dead port 2/2 on $mux $procmux$1070.
+    dead port 1/2 on $mux $procmux$1073.
+    dead port 1/2 on $mux $procmux$1082.
+    dead port 2/2 on $mux $procmux$1084.
+    dead port 1/2 on $mux $procmux$1087.
+    dead port 2/2 on $mux $procmux$1089.
+    dead port 1/2 on $mux $procmux$1092.
+    dead port 1/2 on $mux $procmux$1101.
+    dead port 2/2 on $mux $procmux$1103.
+    dead port 1/2 on $mux $procmux$1106.
+    dead port 2/2 on $mux $procmux$1108.
+    dead port 1/2 on $mux $procmux$1111.
+    dead port 1/2 on $mux $procmux$1120.
+    dead port 2/2 on $mux $procmux$1122.
+    dead port 1/2 on $mux $procmux$1125.
+    dead port 2/2 on $mux $procmux$1127.
+    dead port 1/2 on $mux $procmux$1130.
+    dead port 1/2 on $mux $procmux$1268.
+    dead port 2/2 on $mux $procmux$1270.
+    dead port 1/2 on $mux $procmux$1273.
+    dead port 2/2 on $mux $procmux$1275.
+    dead port 1/2 on $mux $procmux$1278.
+    dead port 1/2 on $mux $procmux$1288.
+    dead port 2/2 on $mux $procmux$1290.
+    dead port 1/2 on $mux $procmux$1293.
+    dead port 2/2 on $mux $procmux$1295.
+    dead port 1/2 on $mux $procmux$1298.
+    dead port 1/2 on $mux $procmux$1308.
+    dead port 2/2 on $mux $procmux$1310.
+    dead port 1/2 on $mux $procmux$1313.
+    dead port 2/2 on $mux $procmux$1315.
+    dead port 1/2 on $mux $procmux$1318.
+    dead port 1/2 on $mux $procmux$1328.
+    dead port 2/2 on $mux $procmux$1330.
+    dead port 1/2 on $mux $procmux$1333.
+    dead port 2/2 on $mux $procmux$1335.
+    dead port 1/2 on $mux $procmux$1338.
+    dead port 1/2 on $mux $procmux$1485.
+    dead port 2/2 on $mux $procmux$1487.
+    dead port 1/2 on $mux $procmux$1490.
+    dead port 2/2 on $mux $procmux$1492.
+    dead port 1/2 on $mux $procmux$1495.
+    dead port 1/2 on $mux $procmux$1506.
+    dead port 2/2 on $mux $procmux$1508.
+    dead port 1/2 on $mux $procmux$1511.
+    dead port 2/2 on $mux $procmux$1513.
+    dead port 1/2 on $mux $procmux$1516.
+    dead port 1/2 on $mux $procmux$1527.
+    dead port 2/2 on $mux $procmux$1529.
+    dead port 1/2 on $mux $procmux$1532.
+    dead port 2/2 on $mux $procmux$1534.
+    dead port 1/2 on $mux $procmux$1537.
+    dead port 1/2 on $mux $procmux$1548.
+    dead port 2/2 on $mux $procmux$1550.
+    dead port 1/2 on $mux $procmux$1553.
+    dead port 2/2 on $mux $procmux$1555.
+    dead port 1/2 on $mux $procmux$1558.
+    dead port 1/2 on $mux $procmux$1714.
+    dead port 2/2 on $mux $procmux$1716.
+    dead port 1/2 on $mux $procmux$1719.
+    dead port 2/2 on $mux $procmux$1721.
+    dead port 1/2 on $mux $procmux$1724.
+    dead port 1/2 on $mux $procmux$1736.
+    dead port 2/2 on $mux $procmux$1738.
+    dead port 1/2 on $mux $procmux$1741.
+    dead port 2/2 on $mux $procmux$1743.
+    dead port 1/2 on $mux $procmux$1746.
+    dead port 1/2 on $mux $procmux$1758.
+    dead port 2/2 on $mux $procmux$1760.
+    dead port 1/2 on $mux $procmux$1763.
+    dead port 2/2 on $mux $procmux$1765.
+    dead port 1/2 on $mux $procmux$1768.
+    dead port 1/2 on $mux $procmux$1780.
+    dead port 2/2 on $mux $procmux$1782.
+    dead port 1/2 on $mux $procmux$1785.
+    dead port 2/2 on $mux $procmux$1787.
+    dead port 1/2 on $mux $procmux$1790.
+Removed 80 multiplexer ports.
+<suppressed ~80 debug messages>
+
+5.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$3000: $auto$opt_reduce.cc:134:opt_pmux$3293
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 2 changes.
+
+5.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~120 debug messages>
+Removed a total of 40 cells.
+
+5.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 199 unused wires.
+<suppressed ~1 debug messages>
+
+5.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~70 debug messages>
+
+5.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+    New ctrl vector for $pmux cell $procmux$3039: { $auto$opt_reduce.cc:134:opt_pmux$3295 $procmux$2708_CMP }
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 1 changes.
+
+5.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+5.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+5.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.7.14. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.7.15. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_axi..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~70 debug messages>
+
+5.7.16. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_axi.
+Performed a total of 0 changes.
+
+5.7.17. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+Removed a total of 0 cells.
+
+5.7.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+5.7.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.7.20. Finished OPT passes. (There is nothing left to do.)
+
+5.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:41$479 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:42$481 ($add).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:43$482 ($add).
+Removed top 29 bits (of 33) from port B of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:43$482 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$ge$/ip/rtl/dotproduct_axi.sv:44$483 ($ge).
+Removed top 27 bits (of 32) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:44$484 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:47$498 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:47$500 ($le).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:47$502 ($le).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:149$730 ($add).
+Removed top 30 bits (of 33) from port B of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:149$730 ($add).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:149$731 ($le).
+Removed top 1 bits (of 33) from port A of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:150$733 ($add).
+Removed top 30 bits (of 33) from port B of cell dotproduct_axi.$add$/ip/rtl/dotproduct_axi.sv:150$733 ($add).
+Removed top 1 bits (of 33) from port B of cell dotproduct_axi.$le$/ip/rtl/dotproduct_axi.sv:150$734 ($le).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$1488_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$1717_CMP0 ($eq).
+Removed top 31 bits (of 32) from mux cell dotproduct_axi.$procmux$2660 ($mux).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$3005_CMP0 ($eq).
+Removed top 1 bits (of 5) from port B of cell dotproduct_axi.$procmux$3006_CMP0 ($eq).
+Removed top 2 bits (of 5) from port B of cell dotproduct_axi.$procmux$3007_CMP0 ($eq).
+Removed top 31 bits (of 32) from port B of cell dotproduct_axi.$flatten\engine.$add$/ip/rtl/dotproduct_engine.sv:55$375 ($add).
+Removed top 29 bits (of 32) from mux cell dotproduct_axi.$flatten\engine.$ternary$/ip/rtl/dotproduct_engine.sv:29$360 ($mux).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/ip/rtl/dotproduct_engine.sv:28$357 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/ip/rtl/dotproduct_engine.sv:26$351 ($eq).
+Removed top 2 bits (of 3) from port B of cell dotproduct_axi.$flatten\engine.$eq$/ip/rtl/dotproduct_engine.sv:26$350 ($eq).
+Removed top 29 bits (of 32) from wire dotproduct_axi.$flatten\engine.$ternary$/ip/rtl/dotproduct_engine.sv:29$360_Y.
+Removed top 31 bits (of 32) from wire dotproduct_axi.$procmux$2660_Y.
+
+5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+5.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.11. Executing OPT pass (performing simple optimizations).
+
+5.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+
+5.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_axi'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+5.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+5.11.4. Finished fast OPT passes.
+
+5.12. Printing statistics.
+
+=== dotproduct_axi ===
+
+   Number of wires:                586
+   Number of wire bits:           5427
+   Number of public wires:         126
+   Number of public wire bits:    1464
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                535
+     $add                            9
+     $assert                        20
+     $dff                           87
+     $eq                            30
+     $ge                             6
+     $le                             6
+     $logic_and                     42
+     $logic_not                     29
+     $logic_or                       6
+     $lt                             4
+     $mul                            1
+     $mux                          278
+     $pmux                          11
+     $reduce_bool                    3
+     $reduce_or                      3
+
+5.13. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Found and reported 0 problems.
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_axi..
+
+7. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint for this timestep: \reset = 1'1
+Final constraint equation: \reset = 1'1
+Imported 535 cells to SAT database.
+Import set-constraint from init attribute: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN = 1'0
+Import set-constraint from init attribute: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN = 1'0
+Import set-constraint from init attribute: $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN = 1'0
+Import set-constraint from init attribute: \engine.f_past_valid = 1'0
+Final init constraint equation: { $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK $past$/ip/rtl/dotproduct_axi.sv:147$464$0 $past$/ip/rtl/dotproduct_axi.sv:147$463$0 $past$/ip/rtl/dotproduct_axi.sv:146$462$0 $past$/ip/rtl/dotproduct_axi.sv:146$461$0 $past$/ip/rtl/dotproduct_axi.sv:145$460$0 $past$/ip/rtl/dotproduct_axi.sv:143$459$0 $past$/ip/rtl/dotproduct_axi.sv:143$458$0 $past$/ip/rtl/dotproduct_axi.sv:142$457$0 $past$/ip/rtl/dotproduct_axi.sv:141$456$0 $past$/ip/rtl/dotproduct_axi.sv:141$455$0 $past$/ip/rtl/dotproduct_axi.sv:140$454$0 \write_strobe \write_data \write_addr \w_full \aw_full \error_code \launch \enable_irq \pending \error \done \busy \active_n \active_dst \active_b \active_a \length \dst \src_b \src_a \s_rvalid \s_rresp \s_rdata \s_bvalid \s_bresp \engine.w_sent \engine.aw_sent \engine.high_word \engine.accumulator \engine.operand_a \engine.index \engine.state \engine.failed \engine.error_code \engine.done $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:84$341$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:84$340$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:84$339$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:84$338$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:82$337$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:82$336$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:81$335$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:81$334$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:80$333$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:80$332$0 $flatten\engine.$past$/ip/rtl/dotproduct_engine.sv:79$331$0 \engine.f_past_valid $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN } = 832'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 9:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 10:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 11:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 12:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 13:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 14:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 15:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 16:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 17:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 18:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 19:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Setting up time step 20:
+Final constraint equation: { } = { }
+Imported 535 cells to SAT database.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$465_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:141$466_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:141$465_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:142$467_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$468_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:143$469_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:142$467_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:145$470_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$471_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:146$472_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:147$473_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:145$470_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$474_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:149$475_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:149$474_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$476_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $formal$/ip/rtl/dotproduct_axi.sv:150$477_CHECK when $formal$/ip/rtl/dotproduct_axi.sv:150$476_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$343_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:80$342_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$345_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:81$344_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$347_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:82$346_EN.
+Import proof for assert: $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_CHECK when $flatten\engine.$formal$/ip/rtl/dotproduct_engine.sv:83$348_EN.
+
+Solving problem with 908056 variables and 2536683 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+

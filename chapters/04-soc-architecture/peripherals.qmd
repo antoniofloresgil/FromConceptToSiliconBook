@@ -632,6 +632,8 @@ Exercise simultaneous button/timer/UART requests, long interrupt-masked interval
 
 ### Deliverables
 
+@sec-reusable-ip continues this integration work with an autonomous IP release: generated register views, a supported configuration matrix, dependency locks and unchanged accelerator RTL used in AXI and Wally environments. It turns the peripheral contract into a third-party handoff rather than adding another device example.
+
 Preserve the register map, clock/divisor calculations, pin ownership, exact Wally configuration and revision, driver assumptions, device models, traces and expected results. Separate RTL simulation, whole-SoC execution and physical board evidence. The resulting peripheral is reviewable when register semantics, external timing and software service agree under normal operation and the declared failure cases.
 
 <!-- chapter-review:peripherals -->

@@ -14,10 +14,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  hardware:
+    uses: ./.github/workflows/hardware-ci.yml
   validate:
     uses: ./.github/workflows/labs.yml
   build:
-    needs: validate
+    needs: [validate, hardware]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -51,7 +53,7 @@ jobs:
         with:
           path: _book/release
   deploy:
-    needs: [validate, build]
+    needs: [validate, hardware, build]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     permissions:

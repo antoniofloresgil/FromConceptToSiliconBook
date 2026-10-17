@@ -1,0 +1,39 @@
+{
+  "status": "pass",
+  "simulations": 48,
+  "netlists": 6,
+  "negative_controls": 4,
+  "widths": [
+    8,
+    32
+  ],
+  "depths": [
+    2,
+    4,
+    16
+  ],
+  "seeds": [
+    2026,
+    2027
+  ],
+  "totals": {
+    "writes": 58328,
+    "reads": 57744,
+    "dropped": 584,
+    "epochs": 144,
+    "wwrap": 12880,
+    "rwrap": 12796,
+    "wstall": 67504,
+    "rstall": 33812,
+    "wjump": 528,
+    "rjump": 1532,
+    "simultaneous": 8108
+  },
+  "image_id": "sha256:995529592338d24ea28263345ce2ac981c46da21a7a0e82664ffe3361f9a923c",
+  "tools": {
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+  },
+  "scope": "Digital dual-clock RTL, shared reset epochs and generic netlist structure; no analog metastability/MTBF or physical signoff",
+  "constraints": "Vivado adaptation template; not physically applied or qualified"
+}

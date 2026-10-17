@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="708" viewBox="0 0 960 708" role="img" aria-labelledby="title desc">
+<title id="title">Asynchronous FIFO: publish ownership, retain the word</title><desc id="desc">Only registered Gray pointers cross through synchronizers; payloads use shared storage</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="708" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Asynchronous FIFO: publish ownership, retain the word</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Only registered Gray pointers cross through synchronizers; payloads use shared storage</text>
+<rect x="28" y="95" width="430" height="365" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="48" y="126" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Write domain: wclk</text>
+<rect x="502" y="95" width="430" height="365" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="522" y="126" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Read domain: rclk</text>
+<rect x="48" y="150" width="390" height="85" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="243.0" y="175.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Write pointer + full flag</text>
+<text x="243.0" y="201.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">binary address / registered Gray</text>
+<text x="243.0" y="227.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">advance only on w_valid &amp;&amp; w_ready</text>
+<rect x="522" y="150" width="390" height="85" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="717.0" y="175.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Read pointer + empty flag</text>
+<text x="717.0" y="201.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">binary address / registered Gray</text>
+<text x="717.0" y="227.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">advance only on r_valid &amp;&amp; r_ready</text>
+<rect x="522" y="275" width="390" height="75" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="717.0" y="307.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">W Gray: stage 1 → stage 2</text>
+<text x="717.0" y="333.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">sampled by rclk; compare for empty</text>
+<rect x="48" y="360" width="390" height="75" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="243.0" y="392.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">R Gray: stage 1 → stage 2</text>
+<text x="243.0" y="418.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">sampled by wclk; compare for full</text>
+<path d="M438 175H485V312H522" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M522 210H472V398H438" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M230 360V235" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M715 275V235" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<rect x="260" y="490" width="440" height="75" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="522.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Shared DATA_W × DEPTH array</text>
+<text x="480.0" y="548.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">write port + combinational read port</text>
+<path d="M48 192H12V527H260" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="140" y="512" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">w_data</text>
+<path d="M700 527H925V194H912" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="795" y="512" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">r_data</text>
+<rect x="28" y="585" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="613" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Full and empty are conservative local views. Common reset starts a new empty epoch.</text>
+<text x="44" y="638" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A synchronous-read RAM needs a different read adapter; Gray coding does not qualify</text>
+<text x="44" y="663" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">physical routing.</text>
+</g></svg>
