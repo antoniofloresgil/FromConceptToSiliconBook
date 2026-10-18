@@ -1,0 +1,226 @@
+{
+  "schema": 1,
+  "method": "Source size screening plus vector/grayscale and final-page inspection; threshold 7 pt is a conservative screening estimate, not physical signoff",
+  "assets": {
+    "figures/complete-case-fpga.png": {
+      "sha256": "c272e05a8a57c19c5437f9b463d58cfc2ed9d0b2b15144794f139329468da7ec",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/complete-case-nexys.png": {
+      "sha256": "e40f4f49d4ef6d5313373b1d0154cf7fa14b7629c0b477f5d19db8ba9d10ee09",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/complete-case-asic.png": {
+      "sha256": "93b3921e8111632395c5c9bf7dfd209508a06fe0e8975487920b2620e7906d5a",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/complete-case-asic-critical.png": {
+      "sha256": "03225f8c96050ce102d120979f3c44bb463c693df89ed93dfe988f2eb1243d3f",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/complete-case-clocktree.png": {
+      "sha256": "320e09c52a68f1a247ffdc2e588578ca056c68cf09ff2cdd5a2d626c78a5257d",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "labs/21-physical-closure/reference/asic-repair/implementation.png": {
+      "sha256": "fe16d3f94f0f876b0a9f2cc336e10d07ebdc73b40f1e5910b25e7820771d69a6",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "labs/21-physical-closure/reference/asic-repair/clocktree.png": {
+      "sha256": "b41ee838a65b8b2af9a4f3a4d113604bb50083f09aa8091b2e4959063db63af4",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/executable-project.svg": {
+      "sha256": "91e9e3bd53788a503a4e35030f86e38c0d0755c4a9af778dfe520d7f48a63004",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/ip-release-boundaries.svg": {
+      "sha256": "5b29f73d8c6a7e122567090778b5302e41d5153c65389c6a205b4288f2dbb712",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/async-fifo-ownership.svg": {
+      "sha256": "1f040669a7142b5b3b53c671fbf97d5306f55f1fbf3260b1e8e4bda306e103b6",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/wally-figure-7-13-editable.svg": {
+      "sha256": "2fb5123322a5ce335d3997598a6553bda9496b94c152b2b66b45d5f82a225045",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Orientation view; signal-name reading uses all three enlarged overlapping details"
+    },
+    "figures/wally-pipeline-detail-1.svg": {
+      "sha256": "eac3c1d179b99ac67f610bc80f1be60adcd8e637357f822a412cfae7ca1df29a",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Overlapping unchanged source crop; retain original attribution and license exception"
+    },
+    "figures/wally-pipeline-detail-2.svg": {
+      "sha256": "b0860627b47ba2b8db38a1fbdee061fb842f7e8ad18bf3ff305d2216ef132c74",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Overlapping unchanged source crop; retain original attribution and license exception"
+    },
+    "figures/wally-pipeline-detail-3.svg": {
+      "sha256": "4f653d47e189e004a3a00184ea52986b7fb7221ebe39f1dfc2fa1878ea94f925",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Overlapping unchanged source crop; retain original attribution and license exception"
+    },
+    "figures/architecture-wally-hierarchy.svg": {
+      "sha256": "70e6d863556e09cac05f110ef9c95887cf1c9b8dbde1f665642502369fd2e6d9",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/wally-soc-overview.svg": {
+      "sha256": "201d0c862b9180733f73c4646285298237d58c1211359964d2057ee60238dc2c",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/wally-soc-three-paths.svg": {
+      "sha256": "66f7917990175420020ada5a94e4031f3efe9712e2ecf51b42074b013d8500a7",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-ooo-window.svg": {
+      "sha256": "803c49f46a88e28879d1b9a3e1f1a18ba13a9523750566464414eb5fc6ae4406",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/riscv-boot-stack.svg": {
+      "sha256": "4f9e46020a66cb4ac2335d74a4aa4991b9aa35aebb19437337d5eba10aa18b04",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-boot-timeline.svg": {
+      "sha256": "f05ee2f641bb33b9d4e59f00ead2a6f8bb82b6dfab221d9edd912b996fabaab5",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-axi-write.svg": {
+      "sha256": "4f273fce29bcc313680d37e517298d97c39f69189232c8f38dac865a18d3d190",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-axi-read.svg": {
+      "sha256": "34f6f874c1b07891fb662f25068a13fb8e3a509463f38af6bcd0dac1c63bed99",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-cache-miss.svg": {
+      "sha256": "51e4049bdba5a4fd2d0592b2d82f62be1423a25255903eecd8b7157a2d072415",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-nexys-domains.svg": {
+      "sha256": "787a3a94e341844ed9e68623b76afbc863769af8da20a76480b41544707f9b34",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/rtl-to-gdsii-flow.svg": {
+      "sha256": "3c318a1f28e31e63b5ffc579be0934f4c6f81d4ef92ff9ad4c6990242d3a8870",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-openroad-checkpoints.svg": {
+      "sha256": "b0cc2b84f7b965e8911fed76edd955a74eccd88974d909538de1c61a3e144b60",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-u45-placed.png": {
+      "sha256": "8d181e4aa5f837c571ef167d0d1fc33329943ea75e47831bd6468d6eb6aeba80",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-u65-placed.png": {
+      "sha256": "034e0dfb7ed39854fe82dc21fc492e6a8a5918e1c4e70796aaecf991eaf5ac82",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-placed.png": {
+      "sha256": "b8602adcbb206dd8dd7f11c68f9f0575d472f399e84813b21299341847e4f61a",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-cts.png": {
+      "sha256": "154a317ca5da35ac0b18c7d22808702b8b590cba99b67e1970fcc25085842f59",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-clocktree.png": {
+      "sha256": "8d7d442f9b5f8235e7b3b1ad031da93332df83f52da42fa85cfd0c02644d8bb0",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-routed.png": {
+      "sha256": "ec83299e5f1823c941188357318140feb93dddcfdde2928c632f41c58e577c6a",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/openroad-study-critical-path.png": {
+      "sha256": "5cd35b62aac4b7d43b1b1bdfd35cf02aef3e4462db9e4dab9ed49c5683220f79",
+      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/asic-validation-evidence.svg": {
+      "sha256": "6a752199e3c1bcac14b6de8e1c538f4265caedc2b6906672e0eedd1034f9d3d2",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/scan-shift-capture.svg": {
+      "sha256": "f2da8f2134c6948d5a8260a04ca1fc9461b294574b7570f98979d9435fff28f5",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/vlsi-cell-abstractions.svg": {
+      "sha256": "8efdedcf882d2448b86e8869a7d0ee732d9aea4ee4e77a66d7aff2b32e13888f",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-dotproduct-dma.svg": {
+      "sha256": "39761f89fca9971f5c8e08017f2e7ef0b8ff17f9a86b4b7064c70eb258a3484e",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/dse-print-pareto.svg": {
+      "sha256": "e4dbf698338accd70e988e108986486de2f830053b00126322b9fd00c4ade3d0",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Labeled filled circles / open squares, independent of color"
+    },
+    "figures/security-trust-boundaries.svg": {
+      "sha256": "5a1e305cfb7bd9a19360147e29040150f4f61a9d3184a875b1958879ab3fbac6",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-security-surfaces.svg": {
+      "sha256": "647334d672f4ab657cc1f943b950320d3ee5c66cbfa8f301d2ae251281910a43",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/multicore-domains.svg": {
+      "sha256": "f7633791ff5f6acf3a3a8d15a0ef027988e1854463389a5dedac3cadb04511b2",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/multicore-dependencies.svg": {
+      "sha256": "336c1a09fb5fa2b6642bb89d8f699385970b89524b319345d7acd81175b36060",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/architecture-rvv-registers.svg": {
+      "sha256": "f7691cd96aa3fba329cf92e61d6643de6f1d4b69aedc2b3b4886c41905ece1c6",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    },
+    "figures/rvv-strip-mining.svg": {
+      "sha256": "f4e3916796ec361d4c6878993e25b91365256eb41c105cf9c807d4831c47cc33",
+      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
+      "treatment": "Inspect at actual PDF size and in grayscale"
+    }
+  }
+}

@@ -5,6 +5,9 @@ function Para(para)
     return nil
   end
   local link = para.content[1]
+  if link.t == "Span" and link.classes:includes("reference-destination") then
+    return {para, pandoc.RawBlock("latex", "\\nopagebreak[4]")}
+  end
   if link.t == "Link" and link.classes:includes("learning-activity") then
     return {para, pandoc.RawBlock("latex", "\\nopagebreak[4]")}
   end

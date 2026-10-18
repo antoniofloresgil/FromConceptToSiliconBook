@@ -1,0 +1,185 @@
+# Index of Terms {.unnumbered}
+
+A selected technical index, rather than a list of every textual occurrence. Entries point to the explanation or worked example; page references in print refer to those destinations. Aliases lead to the same glossary definition.
+
+
+## A {.reference-entry}
+
+- **[ABI](glossary.qmd#gloss-abi)** — [ISA, ABI and platform](chapters/01-foundations/risc-v-isa.qmd#isa-abi-and-platform) `\textnormal{(p.~\pageref{isa-abi-and-platform})}`{=latex}.
+- **[AHB](glossary.qmd#gloss-ahb)** — [AHB: address/data pipelining](chapters/04-soc-architecture/buses-interrupts.qmd#ref-ahb) `\textnormal{(p.~\pageref{ref-ahb})}`{=latex}.
+- **[APB](glossary.qmd#gloss-apb)** — [Wally's APB peripheral organization](chapters/04-soc-architecture/peripherals.qmd#wallys-apb-peripheral-organization) `\textnormal{(p.~\pageref{wallys-apb-peripheral-organization})}`{=latex}.
+- **[ASIC](glossary.qmd#gloss-asic)** — [From SystemVerilog RTL to GDSII](chapters/06-asic-implementation/rtl-to-gdsii.qmd#sec-rtl-gdsii) `\textnormal{(p.~\pageref{sec-rtl-gdsii})}`{=latex}.
+- **[assert](glossary.qmd#gloss-assertion)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[Assertion](glossary.qmd#gloss-assertion)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[assume](glossary.qmd#gloss-assumption)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[Assumption](glossary.qmd#gloss-assumption)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[asynchronous FIFO](glossary.qmd#gloss-fifo)** — [A complete asynchronous FIFO](chapters/01-foundations/clocking-timing.qmd#sec-async-fifo) `\textnormal{(p.~\pageref{sec-async-fifo})}`{=latex}.
+- **[AXI4](glossary.qmd#gloss-axi4)** — [AXI: why independent channels matter](chapters/04-soc-architecture/buses-interrupts.qmd#ref-axi4) `\textnormal{(p.~\pageref{ref-axi4})}`{=latex}.
+- **[AXI4-Lite](glossary.qmd#gloss-axi4-lite)** — [AXI4-Lite for registers](chapters/04-soc-architecture/buses-interrupts.qmd#axi4-lite-for-registers) `\textnormal{(p.~\pageref{axi4-lite-for-registers})}`{=latex}.
+
+## B {.reference-entry}
+
+- **[Backpressure](glossary.qmd#gloss-backpressure)** — [A ready/valid elastic buffer](chapters/01-foundations/systemverilog.qmd#a-readyvalid-elastic-buffer) `\textnormal{(p.~\pageref{a-readyvalid-elastic-buffer})}`{=latex}.
+- **[Bitstream](glossary.qmd#gloss-bitstream)** — [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-bitstream) `\textnormal{(p.~\pageref{ref-bitstream})}`{=latex}.
+- **[BMC](glossary.qmd#gloss-bmc)** — [Bounded checking and induction](chapters/03-simulation-verification/formal-verification.qmd#bounded-checking-and-induction) `\textnormal{(p.~\pageref{bounded-checking-and-induction})}`{=latex}.
+- **[bounded model checking](glossary.qmd#gloss-bmc)** — [Bounded checking and induction](chapters/03-simulation-verification/formal-verification.qmd#bounded-checking-and-induction) `\textnormal{(p.~\pageref{bounded-checking-and-induction})}`{=latex}.
+
+## C {.reference-entry}
+
+- **[Cache coherence](glossary.qmd#gloss-cache-coherence)** — [Coherent and non-coherent agents](chapters/07-advanced-topics/multicore-integration.qmd#coherent-and-non-coherent-agents) `\textnormal{(p.~\pageref{coherent-and-non-coherent-agents})}`{=latex}.
+- **[CDC](glossary.qmd#gloss-cdc)** — [Clock domains](chapters/01-foundations/clocking-timing.qmd#clock-domains) `\textnormal{(p.~\pageref{clock-domains})}`{=latex}.
+- **[Chisel](glossary.qmd#gloss-chisel)** — [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+- **[CIRCT](glossary.qmd#gloss-circt)** — [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+- **[clock domain crossing](glossary.qmd#gloss-cdc)** — [Clock domains](chapters/01-foundations/clocking-timing.qmd#clock-domains) `\textnormal{(p.~\pageref{clock-domains})}`{=latex}.
+- **[Clock-tree synthesis](glossary.qmd#gloss-clock-tree-synthesis)** — [Clock-tree synthesis](chapters/06-asic-implementation/openroad.qmd#ref-clock-tree-synthesis) `\textnormal{(p.~\pageref{ref-clock-tree-synthesis})}`{=latex}.
+- **[coherence](glossary.qmd#gloss-cache-coherence)** — [Coherent and non-coherent agents](chapters/07-advanced-topics/multicore-integration.qmd#coherent-and-non-coherent-agents) `\textnormal{(p.~\pageref{coherent-and-non-coherent-agents})}`{=latex}.
+- **[Counterexample](glossary.qmd#gloss-counterexample)** — [The faulty priority rule](chapters/03-simulation-verification/formal-verification.qmd#the-faulty-priority-rule) `\textnormal{(p.~\pageref{the-faulty-priority-rule})}`{=latex}.
+- **[cover](glossary.qmd#gloss-cover-property)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[Cover property](glossary.qmd#gloss-cover-property)** — [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+- **[CSR](glossary.qmd#gloss-csr)** — [Machine and supervisor trap state](chapters/04-soc-architecture/privileged-mmu.qmd#machine-and-supervisor-trap-state) `\textnormal{(p.~\pageref{machine-and-supervisor-trap-state})}`{=latex}.
+- **[CTS](glossary.qmd#gloss-clock-tree-synthesis)** — [Clock-tree synthesis](chapters/06-asic-implementation/openroad.qmd#ref-clock-tree-synthesis) `\textnormal{(p.~\pageref{ref-clock-tree-synthesis})}`{=latex}.
+
+## D {.reference-entry}
+
+- **[design for test](glossary.qmd#gloss-dft)** — [DFT starts with controllability and observability](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#dft-starts-with-controllability-and-observability) `\textnormal{(p.~\pageref{dft-starts-with-controllability-and-observability})}`{=latex}.
+- **[design rule checking](glossary.qmd#gloss-drc)** — [DRC: manufacturing legality](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#drc-manufacturing-legality) `\textnormal{(p.~\pageref{drc-manufacturing-legality})}`{=latex}.
+- **[Device Tree](glossary.qmd#gloss-device-tree)** — [Device tree is the platform description](chapters/04-soc-architecture/boot-software-stack.qmd#device-tree-is-the-platform-description) `\textnormal{(p.~\pageref{device-tree-is-the-platform-description})}`{=latex}.
+- **[DFT](glossary.qmd#gloss-dft)** — [DFT starts with controllability and observability](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#dft-starts-with-controllability-and-observability) `\textnormal{(p.~\pageref{dft-starts-with-controllability-and-observability})}`{=latex}.
+- **[direct memory access](glossary.qmd#gloss-dma)** — [DMA, Memory, and Coherence](chapters/07-advanced-topics/accelerators-extensions.qmd#dma-memory-and-coherence) `\textnormal{(p.~\pageref{dma-memory-and-coherence})}`{=latex}.
+- **[DMA](glossary.qmd#gloss-dma)** — [DMA, Memory, and Coherence](chapters/07-advanced-topics/accelerators-extensions.qmd#dma-memory-and-coherence) `\textnormal{(p.~\pageref{dma-memory-and-coherence})}`{=latex}.
+- **[DRC](glossary.qmd#gloss-drc)** — [DRC: manufacturing legality](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#drc-manufacturing-legality) `\textnormal{(p.~\pageref{drc-manufacturing-legality})}`{=latex}.
+- **[DTB](glossary.qmd#gloss-device-tree)** — [Device tree is the platform description](chapters/04-soc-architecture/boot-software-stack.qmd#device-tree-is-the-platform-description) `\textnormal{(p.~\pageref{device-tree-is-the-platform-description})}`{=latex}.
+
+## E {.reference-entry}
+
+- **[Elaboration](glossary.qmd#gloss-elaboration)** — [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+- **[Equivalence](glossary.qmd#gloss-equivalence)** — [Equivalence between implementations](chapters/03-simulation-verification/formal-verification.qmd#equivalence-between-implementations) `\textnormal{(p.~\pageref{equivalence-between-implementations})}`{=latex}.
+
+## F {.reference-entry}
+
+- **[False path](glossary.qmd#gloss-false-path)** — [Exceptions are proof obligations](chapters/01-foundations/clocking-timing.qmd#exceptions-are-proof-obligations) `\textnormal{(p.~\pageref{exceptions-are-proof-obligations})}`{=latex}.
+- **[FIFO](glossary.qmd#gloss-fifo)** — [A complete asynchronous FIFO](chapters/01-foundations/clocking-timing.qmd#sec-async-fifo) `\textnormal{(p.~\pageref{sec-async-fifo})}`{=latex}.
+- **[FIRRTL](glossary.qmd#gloss-firrtl)** — [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+- **[Fmax](glossary.qmd#gloss-fmax)** — [Concepts](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-nextpnr-timing-concepts) `\textnormal{(p.~\pageref{ref-nextpnr-timing-concepts})}`{=latex}.
+- **[Formal verification](glossary.qmd#gloss-formal-verification)** — [A finite transition system](chapters/03-simulation-verification/formal-verification.qmd#a-finite-transition-system) `\textnormal{(p.~\pageref{a-finite-transition-system})}`{=latex}.
+- **[FPGA](glossary.qmd#gloss-fpga)** — [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd#ref-fpga) `\textnormal{(p.~\pageref{ref-fpga})}`{=latex}.
+
+## G {.reference-entry}
+
+- **[GDSII](glossary.qmd#gloss-gdsii)** — [Implementation](chapters/06-asic-implementation/rtl-to-gdsii.qmd#ref-rtl-to-gdsii-implementation) `\textnormal{(p.~\pageref{ref-rtl-to-gdsii-implementation})}`{=latex}.
+- **[Gray pointer](glossary.qmd#gloss-gray-pointer)** — [Binary addresses, Gray publication and wrap](chapters/01-foundations/clocking-timing.qmd#binary-addresses-gray-publication-and-wrap) `\textnormal{(p.~\pageref{binary-addresses-gray-publication-and-wrap})}`{=latex}.
+
+## H {.reference-entry}
+
+- **[Hart](glossary.qmd#gloss-hart)** — [Multicore integration challenges](chapters/07-advanced-topics/multicore-integration.qmd#multicore-integration-challenges) `\textnormal{(p.~\pageref{multicore-integration-challenges})}`{=latex}.
+- **[Hold timing](glossary.qmd#gloss-hold-timing)** — [Hold timing](chapters/01-foundations/clocking-timing.qmd#hold-timing) `\textnormal{(p.~\pageref{hold-timing})}`{=latex}.
+
+## I {.reference-entry}
+
+- **[Induction](glossary.qmd#gloss-induction)** — [Bounded checking and induction](chapters/03-simulation-verification/formal-verification.qmd#bounded-checking-and-induction) `\textnormal{(p.~\pageref{bounded-checking-and-induction})}`{=latex}.
+- **[interrupt](glossary.qmd#gloss-irq)** — [Interrupts, exceptions and traps](chapters/04-soc-architecture/buses-interrupts.qmd#ref-irq) `\textnormal{(p.~\pageref{ref-irq})}`{=latex}.
+- **[IP contract](glossary.qmd#gloss-ip-contract)** — [Reusable IP Design and Packaging](appendices/executable-project.qmd#sec-reusable-ip) `\textnormal{(p.~\pageref{sec-reusable-ip})}`{=latex}.
+- **[IRQ](glossary.qmd#gloss-irq)** — [Interrupts, exceptions and traps](chapters/04-soc-architecture/buses-interrupts.qmd#ref-irq) `\textnormal{(p.~\pageref{ref-irq})}`{=latex}.
+
+## L {.reference-entry}
+
+- **[layout versus schematic](glossary.qmd#gloss-lvs)** — [LVS: connectivity and devices](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#lvs-connectivity-and-devices) `\textnormal{(p.~\pageref{lvs-connectivity-and-devices})}`{=latex}.
+- **[LibreLane](glossary.qmd#gloss-librelane)** — [Integrated ASIC Flow with LibreLane](chapters/06-asic-implementation/librelane.qmd#sec-librelane) `\textnormal{(p.~\pageref{sec-librelane})}`{=latex}.
+- **[LiteDRAM](glossary.qmd#gloss-litedram)** — [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd#ref-litedram) `\textnormal{(p.~\pageref{ref-litedram})}`{=latex}.
+- **[Liveness](glossary.qmd#gloss-liveness)** — [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+- **[LMUL](glossary.qmd#gloss-lmul)** — [Register file, grouping and effective grouping](chapters/07-advanced-topics/vector-processing.qmd#register-file-grouping-and-effective-grouping) `\textnormal{(p.~\pageref{register-file-grouping-and-effective-grouping})}`{=latex}.
+- **[LVS](glossary.qmd#gloss-lvs)** — [LVS: connectivity and devices](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#lvs-connectivity-and-devices) `\textnormal{(p.~\pageref{lvs-connectivity-and-devices})}`{=latex}.
+
+## M {.reference-entry}
+
+- **[maximum frequency](glossary.qmd#gloss-fmax)** — [Concepts](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-nextpnr-timing-concepts) `\textnormal{(p.~\pageref{ref-nextpnr-timing-concepts})}`{=latex}.
+- **[memory management unit](glossary.qmd#gloss-mmu)** — [Translation, protection and memory attributes](chapters/04-soc-architecture/privileged-mmu.qmd#translation-protection-and-memory-attributes) `\textnormal{(p.~\pageref{translation-protection-and-memory-attributes})}`{=latex}.
+- **[Memory ordering](glossary.qmd#gloss-memory-ordering)** — [Memory ordering in a real SoC](chapters/07-advanced-topics/multicore-integration.qmd#memory-ordering-in-a-real-soc) `\textnormal{(p.~\pageref{memory-ordering-in-a-real-soc})}`{=latex}.
+- **[memory-mapped I/O](glossary.qmd#gloss-mmio)** — [Registers are not ordinary RAM](chapters/04-soc-architecture/peripherals.qmd#registers-are-not-ordinary-ram) `\textnormal{(p.~\pageref{registers-are-not-ordinary-ram})}`{=latex}.
+- **[MMIO](glossary.qmd#gloss-mmio)** — [Registers are not ordinary RAM](chapters/04-soc-architecture/peripherals.qmd#registers-are-not-ordinary-ram) `\textnormal{(p.~\pageref{registers-are-not-ordinary-ram})}`{=latex}.
+- **[MMU](glossary.qmd#gloss-mmu)** — [Translation, protection and memory attributes](chapters/04-soc-architecture/privileged-mmu.qmd#translation-protection-and-memory-attributes) `\textnormal{(p.~\pageref{translation-protection-and-memory-attributes})}`{=latex}.
+
+## N {.reference-entry}
+
+- **[Netlist](glossary.qmd#gloss-netlist)** — [FPGA Synthesis with Yosys](chapters/05-fpga-implementation/yosys.qmd#ref-netlist) `\textnormal{(p.~\pageref{ref-netlist})}`{=latex}.
+- **[nextpnr](glossary.qmd#gloss-nextpnr)** — [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-nextpnr) `\textnormal{(p.~\pageref{ref-nextpnr})}`{=latex}.
+
+## O {.reference-entry}
+
+- **[OpenROAD](glossary.qmd#gloss-openroad)** — [Physical Design with OpenROAD](chapters/06-asic-implementation/openroad.qmd#sec-openroad) `\textnormal{(p.~\pageref{sec-openroad})}`{=latex}.
+- **[OpenSBI](glossary.qmd#gloss-opensbi)** — [Machine firmware and the supervisor handoff](chapters/04-soc-architecture/boot-software-stack.qmd#machine-firmware-and-the-supervisor-handoff) `\textnormal{(p.~\pageref{machine-firmware-and-the-supervisor-handoff})}`{=latex}.
+
+## P {.reference-entry}
+
+- **[PDK](glossary.qmd#gloss-pdk)** — [The open ASIC stack](chapters/06-asic-implementation/rtl-to-gdsii.qmd#the-open-asic-stack) `\textnormal{(p.~\pageref{the-open-asic-stack})}`{=latex}.
+- **[performance monitoring unit](glossary.qmd#gloss-pmu)** — [Concepts](chapters/07-advanced-topics/pmu.qmd#ref-pmu-concepts) `\textnormal{(p.~\pageref{ref-pmu-concepts})}`{=latex}.
+- **[PMA](glossary.qmd#gloss-pma)** — [Translation, protection and memory attributes](chapters/04-soc-architecture/privileged-mmu.qmd#translation-protection-and-memory-attributes) `\textnormal{(p.~\pageref{translation-protection-and-memory-attributes})}`{=latex}.
+- **[PMP](glossary.qmd#gloss-pmp)** — [PMP policy before supervisor execution](chapters/04-soc-architecture/privileged-mmu.qmd#pmp-policy-before-supervisor-execution) `\textnormal{(p.~\pageref{pmp-policy-before-supervisor-execution})}`{=latex}.
+- **[PMU](glossary.qmd#gloss-pmu)** — [Concepts](chapters/07-advanced-topics/pmu.qmd#ref-pmu-concepts) `\textnormal{(p.~\pageref{ref-pmu-concepts})}`{=latex}.
+- **[power, performance and area](glossary.qmd#gloss-ppa)** — [Dynamic power, leakage and energy](chapters/06-asic-implementation/vlsi-design.qmd#dynamic-power-leakage-and-energy) `\textnormal{(p.~\pageref{dynamic-power-leakage-and-energy})}`{=latex}.
+- **[PPA](glossary.qmd#gloss-ppa)** — [Dynamic power, leakage and energy](chapters/06-asic-implementation/vlsi-design.qmd#dynamic-power-leakage-and-energy) `\textnormal{(p.~\pageref{dynamic-power-leakage-and-energy})}`{=latex}.
+- **[process design kit](glossary.qmd#gloss-pdk)** — [The open ASIC stack](chapters/06-asic-implementation/rtl-to-gdsii.qmd#the-open-asic-stack) `\textnormal{(p.~\pageref{the-open-asic-stack})}`{=latex}.
+- **[process, voltage and temperature](glossary.qmd#gloss-pvt)** — [PVT, RC corners and operating modes](chapters/06-asic-implementation/vlsi-design.qmd#pvt-rc-corners-and-operating-modes) `\textnormal{(p.~\pageref{pvt-rc-corners-and-operating-modes})}`{=latex}.
+- **[progress property](glossary.qmd#gloss-liveness)** — [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+- **[PVT](glossary.qmd#gloss-pvt)** — [PVT, RC corners and operating modes](chapters/06-asic-implementation/vlsi-design.qmd#pvt-rc-corners-and-operating-modes) `\textnormal{(p.~\pageref{pvt-rc-corners-and-operating-modes})}`{=latex}.
+
+## Q {.reference-entry}
+
+- **[QEMU](glossary.qmd#gloss-qemu)** — [Booting a RISC-V SoC: From Reset Vector to Linux](chapters/04-soc-architecture/boot-software-stack.qmd#sec-boot-stack) `\textnormal{(p.~\pageref{sec-boot-stack})}`{=latex}.
+
+## R {.reference-entry}
+
+- **[RDC](glossary.qmd#gloss-rdc)** — [Reset is a clocking problem too](chapters/01-foundations/clocking-timing.qmd#reset-is-a-clocking-problem-too) `\textnormal{(p.~\pageref{reset-is-a-clocking-problem-too})}`{=latex}.
+- **[register-transfer level](glossary.qmd#gloss-rtl)** — [Concepts](chapters/01-foundations/systemverilog.qmd#ref-systemverilog-concepts) `\textnormal{(p.~\pageref{ref-systemverilog-concepts})}`{=latex}.
+- **[reorder buffer](glossary.qmd#gloss-rob)** — [BOOM: A Generator for Out-of-Order Execution](chapters/02-risc-v-cores/other-architectures.qmd#boom-a-generator-for-out-of-order-execution) `\textnormal{(p.~\pageref{boom-a-generator-for-out-of-order-execution})}`{=latex}.
+- **[reset domain crossing](glossary.qmd#gloss-rdc)** — [Reset is a clocking problem too](chapters/01-foundations/clocking-timing.qmd#reset-is-a-clocking-problem-too) `\textnormal{(p.~\pageref{reset-is-a-clocking-problem-too})}`{=latex}.
+- **[reusable IP](glossary.qmd#gloss-ip-contract)** — [Reusable IP Design and Packaging](appendices/executable-project.qmd#sec-reusable-ip) `\textnormal{(p.~\pageref{sec-reusable-ip})}`{=latex}.
+- **[RISC-V vector extension](glossary.qmd#gloss-rvv)** — [Concepts](chapters/07-advanced-topics/vector-processing.qmd#ref-vector-processing-concepts) `\textnormal{(p.~\pageref{ref-vector-processing-concepts})}`{=latex}.
+- **[ROB](glossary.qmd#gloss-rob)** — [BOOM: A Generator for Out-of-Order Execution](chapters/02-risc-v-cores/other-architectures.qmd#boom-a-generator-for-out-of-order-execution) `\textnormal{(p.~\pageref{boom-a-generator-for-out-of-order-execution})}`{=latex}.
+- **[RTL](glossary.qmd#gloss-rtl)** — [Concepts](chapters/01-foundations/systemverilog.qmd#ref-systemverilog-concepts) `\textnormal{(p.~\pageref{ref-systemverilog-concepts})}`{=latex}.
+- **[RVV](glossary.qmd#gloss-rvv)** — [Concepts](chapters/07-advanced-topics/vector-processing.qmd#ref-vector-processing-concepts) `\textnormal{(p.~\pageref{ref-vector-processing-concepts})}`{=latex}.
+- **[RVWMO](glossary.qmd#gloss-rvwmo)** — [Memory ordering in a real SoC](chapters/07-advanced-topics/multicore-integration.qmd#memory-ordering-in-a-real-soc) `\textnormal{(p.~\pageref{memory-ordering-in-a-real-soc})}`{=latex}.
+
+## S {.reference-entry}
+
+- **[Safety](glossary.qmd#gloss-safety)** — [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+- **[safety property](glossary.qmd#gloss-safety)** — [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+- **[Scan chain](glossary.qmd#gloss-scan-chain)** — [Scan shift and capture](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#scan-shift-and-capture) `\textnormal{(p.~\pageref{scan-shift-and-capture})}`{=latex}.
+- **[SDC](glossary.qmd#gloss-sdc)** — [The purpose of SDC](chapters/01-foundations/clocking-timing.qmd#the-purpose-of-sdc) `\textnormal{(p.~\pageref{the-purpose-of-sdc})}`{=latex}.
+- **[Setup timing](glossary.qmd#gloss-setup-timing)** — [Setup timing](chapters/01-foundations/clocking-timing.qmd#setup-timing) `\textnormal{(p.~\pageref{setup-timing})}`{=latex}.
+- **[SEW](glossary.qmd#gloss-sew)** — [The architectural vocabulary](chapters/07-advanced-topics/vector-processing.qmd#the-architectural-vocabulary) `\textnormal{(p.~\pageref{the-architectural-vocabulary})}`{=latex}.
+- **[Slack](glossary.qmd#gloss-slack)** — [Slack, corners and modes](chapters/01-foundations/clocking-timing.qmd#slack-corners-and-modes) `\textnormal{(p.~\pageref{slack-corners-and-modes})}`{=latex}.
+- **[Slew](glossary.qmd#gloss-slew)** — [Read the failure before choosing the repair](chapters/06-asic-implementation/openroad.qmd#read-the-failure-before-choosing-the-repair) `\textnormal{(p.~\pageref{read-the-failure-before-choosing-the-repair})}`{=latex}.
+- **[SoC](glossary.qmd#gloss-soc)** — [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd#sec-core-v-wally) `\textnormal{(p.~\pageref{sec-core-v-wally})}`{=latex}.
+- **[STA](glossary.qmd#gloss-sta)** — [STA answers timing questions](chapters/01-foundations/clocking-timing.qmd#sta-answers-timing-questions) `\textnormal{(p.~\pageref{sta-answers-timing-questions})}`{=latex}.
+- **[static timing analysis](glossary.qmd#gloss-sta)** — [STA answers timing questions](chapters/01-foundations/clocking-timing.qmd#sta-answers-timing-questions) `\textnormal{(p.~\pageref{sta-answers-timing-questions})}`{=latex}.
+- **[Synchronization](glossary.qmd#gloss-synchronization)** — [Coherent and non-coherent agents](chapters/07-advanced-topics/multicore-integration.qmd#coherent-and-non-coherent-agents) `\textnormal{(p.~\pageref{coherent-and-non-coherent-agents})}`{=latex}.
+- **[system on chip](glossary.qmd#gloss-soc)** — [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd#sec-core-v-wally) `\textnormal{(p.~\pageref{sec-core-v-wally})}`{=latex}.
+
+## T {.reference-entry}
+
+- **[TLB](glossary.qmd#gloss-tlb)** — [TLBs, fences and cache interaction](chapters/04-soc-architecture/privileged-mmu.qmd#tlbs-fences-and-cache-interaction) `\textnormal{(p.~\pageref{tlbs-fences-and-cache-interaction})}`{=latex}.
+- **[TNS](glossary.qmd#gloss-tns)** — [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+- **[total negative slack](glossary.qmd#gloss-tns)** — [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+- **[translation lookaside buffer](glossary.qmd#gloss-tlb)** — [TLBs, fences and cache interaction](chapters/04-soc-architecture/privileged-mmu.qmd#tlbs-fences-and-cache-interaction) `\textnormal{(p.~\pageref{tlbs-fences-and-cache-interaction})}`{=latex}.
+
+## U {.reference-entry}
+
+- **[Utilization](glossary.qmd#gloss-utilization)** — [Floorplan and utilization](chapters/06-asic-implementation/openroad.qmd#floorplan-and-utilization) `\textnormal{(p.~\pageref{floorplan-and-utilization})}`{=latex}.
+
+## V {.reference-entry}
+
+- **[Vacuity](glossary.qmd#gloss-vacuity)** — [Detect a vacuous success](chapters/03-simulation-verification/formal-verification.qmd#detect-a-vacuous-success) `\textnormal{(p.~\pageref{detect-a-vacuous-success})}`{=latex}.
+- **[vacuous proof](glossary.qmd#gloss-vacuity)** — [Detect a vacuous success](chapters/03-simulation-verification/formal-verification.qmd#detect-a-vacuous-success) `\textnormal{(p.~\pageref{detect-a-vacuous-success})}`{=latex}.
+- **[Verilator](glossary.qmd#gloss-verilator)** — [Simulation with Verilator](chapters/03-simulation-verification/verilator.qmd#ref-verilator) `\textnormal{(p.~\pageref{ref-verilator})}`{=latex}.
+- **[VLEN](glossary.qmd#gloss-vlen)** — [The architectural vocabulary](chapters/07-advanced-topics/vector-processing.qmd#the-architectural-vocabulary) `\textnormal{(p.~\pageref{the-architectural-vocabulary})}`{=latex}.
+
+## W {.reference-entry}
+
+- **[Wally](glossary.qmd#gloss-wally)** — [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd#sec-core-v-wally) `\textnormal{(p.~\pageref{sec-core-v-wally})}`{=latex}.
+- **[WNS](glossary.qmd#gloss-wns)** — [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+- **[worst negative slack](glossary.qmd#gloss-wns)** — [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+
+## Y {.reference-entry}
+
+- **[Yosys](glossary.qmd#gloss-yosys)** — [FPGA Synthesis with Yosys](chapters/05-fpga-implementation/yosys.qmd#ref-yosys) `\textnormal{(p.~\pageref{ref-yosys})}`{=latex}.

@@ -1,5 +1,10 @@
 # Architectural figures
 
+The [consultation and print-review guide](../../docs/consultation-and-print.md)
+documents the complete figure inventory, font-size screening, grayscale proofs,
+pipeline enlargements and review-hash gate. Run `python tools/figures/print_audit.py
+--check` alongside the generator checks below.
+
 The `architecture-*.svg` series is original editable artwork for *From Concept to
 Silicon*. Generate it with Python's standard library:
 

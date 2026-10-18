@@ -16,7 +16,7 @@ Treat multicore integration as a set of contracts across boundaries. Three quest
 
 The running example has two harts and the book's signed dot-product accelerator. Hart 0 produces a job, hart 1 submits it, and DMA reads operands and writes the result in shared memory. The engineering question is whether every transition has a justified visibility, ordering and lifetime rule. The answer depends on the actual agents and paths, not on the number of CPUs in a configuration file.
 
-## Multicore integration challenges
+## Multicore integration challenges {#multicore-integration-challenges}
 
 ### Draw the platform before connecting the second hart
 
@@ -74,7 +74,7 @@ Two harts contending for one memory bank do not receive twice the single-hart ba
 
 Keep separate limits for accepted requests, pending probes, returned data and completed transactions. An average utilization figure can hide a saturated response queue. A proposed wider link should be evaluated against the queue that is actually blocking progress; it may otherwise increase upstream pressure without improving completion rate. Physical timing and clock-domain costs remain part of the final implementation decision, rather than being inferred from an abstract NoC diagram.
 
-## Coherent and non-coherent agents
+## Coherent and non-coherent agents {#coherent-and-non-coherent-agents}
 
 ### Classify agents by their real access path
 
@@ -137,7 +137,7 @@ The supplied Linux driver uses one device-wide mutex and one DMA allocation. Lab
 
 Timeouts are especially dangerous across harts. A second task must not reuse the buffer merely because the first task stopped waiting. The original IP has no abort/reset register, so the driver quarantines the device and retains its allocation after timeout. A production recovery design needs a way to establish that old DMA and old completions cannot affect a new generation. That lifecycle contract extends to IOMMU mappings, interrupts and any reset of the fabric.
 
-## Memory ordering in a real SoC
+## Memory ordering in a real SoC {#memory-ordering-in-a-real-soc}
 
 ### Put ordering edges on the job lifecycle
 

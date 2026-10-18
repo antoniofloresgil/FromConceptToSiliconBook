@@ -5,12 +5,12 @@
 <rect x="45" y="65" width="230" height="70" rx="8" fill="#fef2f2" stroke="#b91c1c"/>
 <rect x="355" y="65" width="230" height="70" rx="8" fill="#fef2f2" stroke="#b91c1c"/>
 <rect x="665" y="65" width="230" height="70" rx="8" fill="#fef2f2" stroke="#b91c1c"/>
-<text x="77" y="95">Held request resource</text><text x="78" y="120" font-size="14">waiting for a probe slot</text>
-<text x="402" y="95">Held probe resource</text><text x="379" y="120" font-size="14">waiting for response capacity</text>
-<text x="690" y="95">Held response resource</text><text x="689" y="120" font-size="14">waiting for a request credit</text>
+<text x="77" y="95">Held request resource</text><text x="78" y="120" font-size="16">waiting for a probe slot</text>
+<text x="402" y="95">Held probe resource</text><text x="379" y="120" font-size="16">needs response space</text>
+<text x="690" y="95">Held response resource</text><text x="689" y="120" font-size="16">needs request credit</text>
 <path d="M275 100H348" fill="none" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#a)"/>
 <path d="M585 100H658" fill="none" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#a)"/>
 <path d="M780 135V180H160V142" fill="none" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#a)"/>
 <text x="320" y="40">Arrows mean “cannot release until…”</text>
-<text x="100" y="225" font-size="15">A response escape path breaks this example's cycle; complete protocol/routing liveness needs a broader argument.</text>
+<text x="100" y="225" font-size="16">A response escape path breaks this cycle; full liveness needs a broader argument.</text>
 </g></svg>

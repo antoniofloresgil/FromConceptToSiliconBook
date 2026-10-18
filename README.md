@@ -8,6 +8,7 @@ The [learning-path guide](learning-paths.qmd) distinguishes the bounded Core Lea
 
 - [Read the published HTML book](https://antoniofloresgil.github.io/FromConceptToSiliconBook/). The sidebar offers the complete PDF when a validated release has been published.
 - [Choose a route and experiment budget](learning-paths.qmd): technical routes, Core/Advanced selection and compute classes C0–C3.
+- Consult the [glossary](glossary.qmd), [term index](term-index.qmd), [laboratory index](lab-index.qmd) or [experiment/tool/requirement matrix](experiment-index.qmd); the matrix also downloads as CSV.
 - [Coursework and assessment guide](appendices/hsd-coursework.qmd): P0–P5 activities, 12-week workload, review milestones and rubrics.
 - [Executable project](appendices/executable-project.qmd) and [reference source guide](labs/10-dotproduct/README.md): arithmetic IP, AXI4-Lite control, bounded AXI4 DMA and real Wally firmware.
 - [Complete case study](appendices/complete-case-study.qmd): the same locked RTL through verification, Wally simulation, FPGA placement and routing, and ASIC GDSII, with measured results and physical views.

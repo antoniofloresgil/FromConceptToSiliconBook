@@ -1,5 +1,9 @@
 # FPGA Synthesis with Yosys
 
+[]{#ref-yosys .reference-destination}
+
+[]{#ref-netlist .reference-destination}
+
 ## Concepts
 
 An FPGA implementation turns a parameterized RTL design into the configuration bits of a particular device. It is a compilation flow, but the target is not a generic gate library: it has LUTs, flip-flops, block RAMs, DSP blocks, clock networks, IO banks and programmable routing. The device selected for this chapter is the AMD/Xilinx Artix-7 `xc7a200tsbg484-1` on the Digilent Nexys Video board.

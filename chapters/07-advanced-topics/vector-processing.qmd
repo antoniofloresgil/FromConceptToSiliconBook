@@ -8,6 +8,8 @@ The reference is the vector specification [@riscvVectorSpec]. Toolchain and call
 
 ## Concepts
 
+[]{#ref-vector-processing-concepts .reference-destination}
+
 ### SIMD, vector execution and the scalar baseline
 
 Single-instruction, multiple-data execution applies an operation to several data elements. A fixed-width SIMD ISA commonly exposes a fixed number of elements per register operation. A compiler targeting that width must also handle the final partial group, sometimes through a separate scalar loop. Packed arithmetic on subfields of an integer register is another SIMD arrangement; it does not have RVV's separate vector state.
@@ -29,7 +31,7 @@ This loop contains independent products and a reduction dependency. Those two pa
 
 Some workloads resist vectorization. Pointer chasing, short irregular lists and a branch-dependent memory access per element can spend more time discovering operands than computing. Data layout and algorithm selection remain design decisions before any ISA extension is chosen.
 
-### The architectural vocabulary
+### The architectural vocabulary {#the-architectural-vocabulary}
 
 Keep register capacity, active work and execution throughput separate:
 
@@ -48,7 +50,7 @@ The terms describe the software-visible model [@riscvVectorSpec]. A program norm
 
 For VLEN = 128, SEW = 16 and LMUL = 1, VLMAX is eight. Changing SEW to 32 with the same LMUL halves the capacity to four elements. Changing both to SEW = 32 and LMUL = 2 restores capacity to eight, at the cost of grouping two registers. These calculations explain the widening example later.
 
-### Register file, grouping and effective grouping
+### Register file, grouping and effective grouping {#register-file-grouping-and-effective-grouping}
 
 RVV has architectural registers `v0`–`v31`. Their raw payload capacity is `32 × VLEN` bits, before metadata and any implementation-specific organization. At VLEN = 256 this is 1024 bytes of architectural data per hart. It says nothing about the number of read ports, physical banks or execution pipelines.
 

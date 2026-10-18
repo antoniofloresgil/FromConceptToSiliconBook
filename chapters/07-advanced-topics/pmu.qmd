@@ -2,6 +2,8 @@
 
 ## Concepts
 
+[]{#ref-pmu-concepts .reference-destination}
+
 A performance monitoring unit (PMU) converts microarchitectural activity into measurements that software can read. A cycle count answers *how long* a workload ran; instruction-retirement count answers *how much architectural work* completed; event counters explain *why* the ratio changed. Together they make performance work repeatable rather than an exercise in interpreting a waveform.
 
 For a RISC-V core, the architectural interface is a set of Control and Status Registers (CSRs). The privileged architecture defines counters and their access controls, while leaving most event encodings deliberately implementation-defined [@riscvPrivilegedSpec]. This division is important: software can use standard CSR addresses, but it must obtain the meaning of `mhpmevent3` from the selected core's documentation.

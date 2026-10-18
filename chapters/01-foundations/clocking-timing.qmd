@@ -35,7 +35,7 @@ end
 
 This says that `State` changes on rising edges under the stated reset rule. It does **not** specify a 10 ns period, a duty cycle, a clock source, clock uncertainty, skew, or the physical cells that distribute `clk`. Those facts belong to the clock/reset architecture and timing constraints.
 
-### Clock domains
+### Clock domains {#clock-domains}
 
 A clock domain is a collection of sequential elements that share a defined timing relationship. A simple core may have one free-running clock. A realistic SoC commonly has a processor clock, an interconnect clock, peripheral clocks, an external serial clock, PLL-generated clocks and reset domains.
 
@@ -51,7 +51,7 @@ Signals should cross between unrelated domains only through a deliberate clock-d
 
 Metastability cannot be eliminated by RTL. A synchronizer reduces the probability that a metastable first-stage output propagates, but it does not make the first flip-flop magically deterministic. The architecture must tolerate its latency and the verification plan must test the protocol rather than relying on a simulation to display analog metastability.
 
-### Reset is a clocking problem too
+### Reset is a clocking problem too {#reset-is-a-clocking-problem-too}
 
 Reset defines the state from which a domain begins operation. It also crosses physical regions and, sometimes, clock domains. Specify all of the following:
 
@@ -65,7 +65,7 @@ An asynchronous assertion can force a design promptly into a safe state, while a
 
 ## The timing budget
 
-### Setup timing
+### Setup timing {#setup-timing}
 
 For a register-to-register path, a simplified setup requirement is:
 
@@ -86,7 +86,7 @@ Static timing analysis (STA) compares the required arrival time against the calc
 
 The equation is a reasoning model, not a license to add arbitrary margins until a report turns green. Each term should have an engineering basis. On an FPGA, routing and dedicated clock resources dominate different parts of the path than on an ASIC. On an ASIC, library corner, extracted RC, voltage and temperature change the delays. The constraint itself must remain stable enough that results can be compared.
 
-### Hold timing
+### Hold timing {#hold-timing}
 
 Hold timing checks the other direction: data must not arrive at the capture register too early after a clock edge. A simplified form is:
 
@@ -95,7 +95,7 @@ T_{cq,min} + T_{comb,min} + T_{route,min} \geq T_{hold} + T_{uncertainty} + T_{s
 $$
 Hold failures are not repaired by reducing the clock frequency. They are minimum-delay failures caused by paths that are too fast relative to the clock arrival relationship. Typical repairs add delay, buffer the data path, adjust clock skew within the clock methodology, or change logic deliberately. A design can meet setup timing and still fail hold timing; both reports are required.
 
-### Slack, corners and modes
+### Slack, corners and modes {#slack-corners-and-modes}
 
 The same path has different delays across process, voltage and temperature corners. Slow cells at low voltage and high temperature often stress setup; fast cells at high voltage and low temperature can stress hold. Libraries encode relevant timing information, and a complete ASIC flow analyzes the required corners and modes. FPGA tools similarly model the selected device and speed grade.
 
@@ -143,7 +143,7 @@ end
 
 `Tick` is a one-cycle enable in the `clk_sys` domain. It is not a clock and should not drive the clock pin of another general-purpose flip-flop. Use dedicated clock-control resources only when the target FPGA/ASIC methodology permits them and constraints model the resulting clock correctly.
 
-### The purpose of SDC
+### The purpose of SDC {#the-purpose-of-sdc}
 
 Synopsys Design Constraints (SDC) are Tcl commands used by many implementation and timing tools. They make the timing intent machine-readable. The most important commands define clocks, uncertainty and external interface requirements. OpenSTA, embedded in OpenROAD, reads Liberty, netlist and SDC information to calculate timing paths [@openroadApplication].
 
@@ -175,7 +175,7 @@ create_generated_clock -name clk_div2 \
 
 Generated-clock constraints belong with the implementation that produces them. A divide-by-two signal used as a data enable is not a generated clock constraint candidate. Conversely, omitting a real PLL clock can leave an entire domain unconstrained.
 
-### Exceptions are proof obligations
+### Exceptions are proof obligations {#exceptions-are-proof-obligations}
 
 The most common timing exceptions are false paths and multicycle paths. They are valid only when the hardware protocol proves the normal one-cycle relationship does not apply.
 
@@ -364,7 +364,7 @@ The complete [RTL](../../labs/24-async-fifo/async_fifo.sv) separates three respo
 
 Each side sees only its own ready/valid pair. Do not synchronize `w_ready` back to another source clock or treat `r_valid` as permission in the write domain. If data has tags, byte enables or an end-of-packet marker, include them in the stored word. Crossing metadata independently can break correspondence even when every individual signal is synchronized.
 
-### Binary addresses, Gray publication and wrap
+### Binary addresses, Gray publication and wrap {#binary-addresses-gray-publication-and-wrap}
 
 For depth $2^A$, each local pointer has $A+1$ bits. The low $A$ binary bits select a slot; the extra bit distinguishes successive laps around the storage. Binary pointers serve addressing and incrementing. Registered Gray values serve publication:
 
@@ -470,7 +470,7 @@ assert property (sum_holds_when_disabled);
 
 For a ready/valid interface, assert that valid and payload remain stable while valid is high and ready is low. For a CDC handshake, assert that source data stays stable throughout the request/acknowledge transaction. Assertions reveal protocol errors that a timing exception would otherwise hide.
 
-### STA answers timing questions
+### STA answers timing questions {#sta-answers-timing-questions}
 
 Static timing analysis propagates arrival and required times through every relevant path without applying exhaustive input vectors. It requires a linked netlist, timing libraries, clock/IO constraints and, after physical implementation, estimates or extracted parasitics. It reports worst paths and violations such as setup, hold, transition, capacitance and fanout. The OpenROAD flow uses this information before and after physical stages [@openroadApplication].
 

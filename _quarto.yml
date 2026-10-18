@@ -2,6 +2,7 @@ project:
   type: book
   pre-render:
     - python tools/book/learning_paths.py --check --export downloads/learning-activities.csv
+    - python tools/book/reference.py
     - python labs/run.py pack
   resources:
     - README.md
@@ -23,6 +24,7 @@ project:
     - examples/cocotb/requirements.txt
     - downloads/hardware-design-labs.zip
     - downloads/learning-activities.csv
+    - downloads/experiment-matrix.csv
 
 book:
   output-file: From-Concept-to-Silicon
@@ -84,6 +86,10 @@ book:
         - chapters/07-advanced-topics/architecture-exploration.qmd
     - summary.qmd
     - references.qmd
+    - glossary.qmd
+    - term-index.qmd
+    - lab-index.qmd
+    - experiment-index.qmd
   appendices:
     - appendices/wally-style.qmd
     - appendices/systemverilog-cheatsheet.qmd
@@ -112,6 +118,7 @@ format:
     filters:
       - tools/book/part-titles.lua
       - tools/book/activity-labels.lua
+      - tools/book/reference-toc.lua
 
 
 

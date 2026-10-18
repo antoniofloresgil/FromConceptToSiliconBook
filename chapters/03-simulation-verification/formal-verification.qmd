@@ -8,7 +8,7 @@ This chapter develops one small component into a checked communication contract.
 
 The checked backend is Yosys's built-in SAT engine, already installed in the teaching container. SymbiYosys is another driver for Yosys-based formal tasks; its BMC, prove and cover modes are useful vocabulary, but installing it is not a prerequisite for this experiment. Native SAT commands and witness handling are explicit below [@formalYosysSat; @formalSbyOverview]. The methodology in @sec-verification-methodology still governs what each result may claim.
 
-### A finite transition system
+### A finite transition system {#a-finite-transition-system}
 
 Think of synchronous RTL as state $s$, inputs $i$, a next-state function $T$ and observations $O$:
 
@@ -20,7 +20,7 @@ The harness supplies an initial-state predicate $I$ and environment restrictions
 
 Our RTL state is initially unconstrained. The harness assumes reset on the first sampled edge and initializes only its own bookkeeping flags. The FIFO reset establishes empty occupancy and matching pointers; payload storage is not reset. Payload comparisons therefore apply only to occupied entries. We deliberately avoid globally forcing every register to zero, which could conceal missing reset behavior.
 
-### `assert`, `assume` and `cover`
+### `assert`, `assume` and `cover` {#assert-assume-and-cover}
 
 | Construct | Question | FIFO example |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ An assumption is part of the interface contract. Do not assume `out_data` is cor
 
 At an integration boundary, a guarantee can become another block's assumption only after the connection and reset contract have been checked. Assuming every peer behaves correctly is not a substitute for verifying the adapters between them.
 
-### Safety and progress
+### Safety and progress {#safety-and-progress}
 
 Safety excludes a bad finite prefix: overflow, reordered items, a changed stalled payload or a completion before its write response. Progress asks whether an accepted obligation eventually completes. A FIFO cannot guarantee eventual consumption if its consumer may hold `out_ready=0` forever. Reset may also deliberately discard pending items under this contract.
 
@@ -42,7 +42,7 @@ We prove a bounded progress rule: on each non-reset edge with `out_ready=1` and 
 
 An unbounded liveness claim requires a precise fairness condition and an engine/model capable of checking infinite behavior. “Eventually ready” is an environment assumption, not a fact produced by the FIFO. Finite tests or a reachable drain waveform cannot establish all fair infinite executions.
 
-### Bounded checking and induction
+### Bounded checking and induction {#bounded-checking-and-induction}
 
 Bounded model checking (BMC) searches transitions up to a finite horizon. A counterexample within that horizon is useful evidence of failure in the model. A successful twelve-step check means no modeled violation was found within those steps; it supplies no universal horizon by itself.
 
@@ -155,7 +155,7 @@ The source contains `cover(goal)`, where sticky flags record full occupancy, an 
 
 ## Practical case: a counterexample and its repair
 
-### The faulty priority rule
+### The faulty priority rule {#the-faulty-priority-rule}
 
 The `BUG=1` revision replaces the correct case statement with:
 
@@ -184,13 +184,13 @@ The repair restores the four-way accepted-event update. The script reruns BMC an
 
 Never repair this defect by assuming `!(push && pop)`. The interface explicitly permits that combination. Such an assumption changes the environment to exclude the failing legal behavior.
 
-### Detect a vacuous success
+### Detect a vacuous success {#detect-a-vacuous-success}
 
 For `QUIET=1`, the harness adds `assume(!in_valid)`. The twelve-step safety check still passes: no input can enter the FIFO. The same configuration cannot reach the traffic goal within twelve steps, so the reachability task must report no model. This intentionally overconstrained case is a successful *negative control*, not an adequate verification environment.
 
 The default traffic witness establishes that full occupancy, backpressure, exchange and drainage are admitted. The drain-restricted configuration has its own witness as well. These witnesses catch the particular missing-traffic restriction tested here. They do not prove that every assumption is necessary, that every assertion antecedent is reachable, or that the requirement set is complete. In a larger plan, add separate cover obligations for each important antecedent, error path and mode. Failure to reach a goal within a bound can also mean the bound is too short; diagnose it before declaring impossibility.
 
-### Equivalence between implementations
+### Equivalence between implementations {#equivalence-between-implementations}
 
 The joint induction proves that the ring and shift-register designs have the same cycle-level interface and valid payload observations from reset under their common environment. The internal state relation supplies the inductive bridge between different storage layouts. All eight-bit values and permitted ready/valid sequences are symbolic; this is stronger than comparing a finite set of simulations.
 

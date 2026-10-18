@@ -20,12 +20,12 @@
       <text x="907" y="328">Init / application</text><text x="527" y="328">Device tree + image placement</text>
       <text x="520" y="478">Hardware contract: RAM, UART, timer, interrupts, storage, DMA</text>
     </g>
-    <g font-size="16">
+    <g font-size="18">
       <text x="135" y="155">M-mode</text><text x="135" y="179">Local startup / loader</text>
       <text x="397" y="155">Resident M-mode</text><text x="397" y="179">SBI services and policy</text>
-      <text x="665" y="155">Optional S-mode U-Boot</text><text x="665" y="179">Select and load images</text>
+      <text x="665" y="155">Optional U-Boot</text><text x="665" y="179">Load images</text>
       <text x="907" y="155">S-mode</text><text x="907" y="179">MMU and drivers</text>
-      <text x="907" y="359">U-mode / root filesystem</text>
+      <text x="907" y="359">U-mode / rootfs</text>
       <text x="527" y="359">Addresses, hart IDs, clocks, IRQs, reserved memory</text>
       <text x="520" y="508">QEMU virt is a software model; Wally requires a matching integrated SoC</text>
     </g>
@@ -34,7 +34,7 @@
       <path d="M907 200V290"/><path d="M527 290V240H855V200"/>
       <path d="M907 200V245H397V200"/>
     </g>
-    <text x="652" y="270" font-size="15">SBI ecall: S-mode service request to M-mode</text>
-    <text x="907" y="420" font-size="15">System calls: U to S</text>
+    <text x="652" y="270" font-size="18">SBI ecall: S-mode → M-mode</text>
+    <text x="907" y="420" font-size="18">System calls: U to S</text>
   </g>
 </svg>

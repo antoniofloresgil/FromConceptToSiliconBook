@@ -1,0 +1,2064 @@
+{
+  "schema": 1,
+  "terms": [
+    {
+      "id": "abi",
+      "term": "ABI",
+      "definition": "Application binary interface: the calling, data-layout and binary conventions needed for separately compiled software to interoperate.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/risc-v-isa.qmd",
+          "heading": "ISA, ABI and platform",
+          "anchor": "isa-abi-and-platform"
+        }
+      ]
+    },
+    {
+      "id": "ahb",
+      "term": "AHB",
+      "definition": "AMBA bus used by the selected Wally platform to connect the core bus interface to memory and peripheral bridges. Its transactions must be interpreted using the selected platform contract.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "heading": "AHB: address/data pipelining",
+          "anchor": "ref-ahb"
+        }
+      ]
+    },
+    {
+      "id": "apb",
+      "term": "APB",
+      "definition": "AMBA peripheral bus with setup and access phases, suited to register-oriented peripherals. A bridge translates transactions without changing the device register semantics.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/peripherals.qmd",
+          "heading": "Wally's APB peripheral organization",
+          "anchor": "wallys-apb-peripheral-organization"
+        }
+      ]
+    },
+    {
+      "id": "assertion",
+      "term": "Assertion",
+      "definition": "An obligation checked against allowed executions. In formal work an assertion states what the design must guarantee under the harness assumptions.",
+      "aliases": [
+        "assert"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "`assert`, `assume` and `cover`",
+          "anchor": "assert-assume-and-cover"
+        }
+      ]
+    },
+    {
+      "id": "assumption",
+      "term": "Assumption",
+      "definition": "A restriction on the environment or initial state used by a proof. An invalid restriction can hide a real design failure.",
+      "aliases": [
+        "assume"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "`assert`, `assume` and `cover`",
+          "anchor": "assert-assume-and-cover"
+        }
+      ]
+    },
+    {
+      "id": "axi4-lite",
+      "term": "AXI4-Lite",
+      "definition": "Memory-mapped AXI subset used for control/status registers. Address, data and response channels retain independent handshakes.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "heading": "AXI4-Lite for registers",
+          "anchor": "axi4-lite-for-registers"
+        }
+      ]
+    },
+    {
+      "id": "backpressure",
+      "term": "Backpressure",
+      "definition": "A receiver delays acceptance by withdrawing readiness; the sender must retain the pending transfer according to the interface contract.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "A ready/valid elastic buffer",
+          "anchor": "a-readyvalid-elastic-buffer"
+        }
+      ]
+    },
+    {
+      "id": "bmc",
+      "term": "BMC",
+      "definition": "Bounded model checking: search for a violating execution within a finite number of transitions. Passing a bound alone is not an unbounded proof.",
+      "aliases": [
+        "bounded model checking"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Bounded checking and induction",
+          "anchor": "bounded-checking-and-induction"
+        }
+      ]
+    },
+    {
+      "id": "cache-coherence",
+      "term": "Cache coherence",
+      "definition": "Agreement on the visible values of cached memory locations among agents in a declared coherence domain. It does not by itself provide software synchronization or a complete memory-ordering guarantee.",
+      "aliases": [
+        "coherence"
+      ],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "heading": "Coherent and non-coherent agents",
+          "anchor": "coherent-and-non-coherent-agents"
+        }
+      ]
+    },
+    {
+      "id": "cdc",
+      "term": "CDC",
+      "definition": "Clock domain crossing: transfer between independently clocked domains. The transfer mechanism must preserve the intended control or word-level ownership contract.",
+      "aliases": [
+        "clock domain crossing"
+      ],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Clock domains",
+          "anchor": "clock-domains"
+        }
+      ]
+    },
+    {
+      "id": "circt",
+      "term": "CIRCT",
+      "definition": "Compiler infrastructure for hardware intermediate representations and transformations, used here to lower generated hardware to emitted RTL.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "Hardware Generators and Modern HDL Toolchains",
+          "anchor": "sec-hardware-generators"
+        }
+      ]
+    },
+    {
+      "id": "clock-tree-synthesis",
+      "term": "Clock-tree synthesis",
+      "definition": "Implementation step that inserts and connects clock distribution cells to meet clock-network objectives. Timing must then account for propagated clock paths.",
+      "aliases": [
+        "CTS"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "Clock-tree synthesis",
+          "anchor": "ref-clock-tree-synthesis"
+        }
+      ]
+    },
+    {
+      "id": "counterexample",
+      "term": "Counterexample",
+      "definition": "A trace showing a permitted execution that violates a property. It is evidence to diagnose and minimize, rather than a waveform selected only for illustration.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "The faulty priority rule",
+          "anchor": "the-faulty-priority-rule"
+        }
+      ]
+    },
+    {
+      "id": "cover-property",
+      "term": "Cover property",
+      "definition": "A reachability objective that asks the formal engine to exhibit an execution reaching a specified event. Useful witnesses help expose vacuous assertion success.",
+      "aliases": [
+        "cover"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "`assert`, `assume` and `cover`",
+          "anchor": "assert-assume-and-cover"
+        }
+      ]
+    },
+    {
+      "id": "csr",
+      "term": "CSR",
+      "definition": "Control and status register: an architectural register used for processor configuration, counters, privilege or trap management. Access rules depend on the ISA and privilege level.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "heading": "Machine and supervisor trap state",
+          "anchor": "machine-and-supervisor-trap-state"
+        }
+      ]
+    },
+    {
+      "id": "device-tree",
+      "term": "Device Tree",
+      "definition": "Description of platform hardware supplied to software, including devices, MMIO ranges and interrupt connections. It must agree with the implemented address map.",
+      "aliases": [
+        "DTB"
+      ],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+          "heading": "Device tree is the platform description",
+          "anchor": "device-tree-is-the-platform-description"
+        }
+      ]
+    },
+    {
+      "id": "dma",
+      "term": "DMA",
+      "definition": "Direct memory access: a device initiates memory transfers without a CPU instruction for each datum. Buffer ownership, address bounds, ordering and completion still require explicit contracts.",
+      "aliases": [
+        "direct memory access"
+      ],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/accelerators-extensions.qmd",
+          "heading": "DMA, Memory, and Coherence",
+          "anchor": "dma-memory-and-coherence"
+        }
+      ]
+    },
+    {
+      "id": "drc",
+      "term": "DRC",
+      "definition": "Design rule checking: compare layout geometry with a selected rule deck. A clean reference-deck result is not automatically foundry signoff.",
+      "aliases": [
+        "design rule checking"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "heading": "DRC: manufacturing legality",
+          "anchor": "drc-manufacturing-legality"
+        }
+      ]
+    },
+    {
+      "id": "equivalence",
+      "term": "Equivalence",
+      "definition": "Agreement between implementations under an explicitly stated comparison model, input domain, reset treatment and observation boundary.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Equivalence between implementations",
+          "anchor": "equivalence-between-implementations"
+        }
+      ]
+    },
+    {
+      "id": "false-path",
+      "term": "False path",
+      "definition": "A declared timing exception for a path that is not required to meet the ordinary timing relationship. It needs a functional justification; it is not a repair for a slow valid path.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Exceptions are proof obligations",
+          "anchor": "exceptions-are-proof-obligations"
+        }
+      ]
+    },
+    {
+      "id": "fifo",
+      "term": "FIFO",
+      "definition": "First-in, first-out storage preserving accepted transaction order. An asynchronous FIFO separates word storage from synchronized publication of ownership.",
+      "aliases": [
+        "asynchronous FIFO"
+      ],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "A complete asynchronous FIFO",
+          "anchor": "sec-async-fifo"
+        }
+      ]
+    },
+    {
+      "id": "firrtl",
+      "term": "FIRRTL",
+      "definition": "Hardware intermediate representation associated with the Chisel flow; it describes elaborated hardware before later lowering and RTL emission.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "Hardware Generators and Modern HDL Toolchains",
+          "anchor": "sec-hardware-generators"
+        }
+      ]
+    },
+    {
+      "id": "gdsii",
+      "term": "GDSII",
+      "definition": "Layout exchange representation containing physical geometry and hierarchy. Producing it is a flow milestone, separate from qualifying manufacturing checks.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+          "heading": "Implementation",
+          "anchor": "ref-rtl-to-gdsii-implementation"
+        }
+      ]
+    },
+    {
+      "id": "gray-pointer",
+      "term": "Gray pointer",
+      "definition": "Pointer encoding in which adjacent published values change one bit, used by the asynchronous FIFO when synchronizing ownership across domains. Physical routing and reset assumptions remain necessary.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Binary addresses, Gray publication and wrap",
+          "anchor": "binary-addresses-gray-publication-and-wrap"
+        }
+      ]
+    },
+    {
+      "id": "hart",
+      "term": "Hart",
+      "definition": "A RISC-V hardware thread with architectural state. A multicore platform must define how harts start, communicate and share devices and memory.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "heading": "Multicore integration challenges",
+          "anchor": "multicore-integration-challenges"
+        }
+      ]
+    },
+    {
+      "id": "hold-timing",
+      "term": "Hold timing",
+      "definition": "Minimum-delay requirement preventing data from changing too early relative to the capture clock event. Lowering the frequency generally does not repair a same-edge hold failure.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Hold timing",
+          "anchor": "hold-timing"
+        }
+      ]
+    },
+    {
+      "id": "induction",
+      "term": "Induction",
+      "definition": "Proof technique combining a base case with a transition-preservation step, often strengthened by invariants. The induction state space must match the intended property and assumptions.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Bounded checking and induction",
+          "anchor": "bounded-checking-and-induction"
+        }
+      ]
+    },
+    {
+      "id": "ip-contract",
+      "term": "IP contract",
+      "definition": "The supported behavior, parameters, interfaces, dependencies and evidence supplied to an integrator as part of a reusable hardware release.",
+      "aliases": [
+        "reusable IP"
+      ],
+      "locations": [
+        {
+          "page": "appendices/executable-project.qmd",
+          "heading": "Reusable IP Design and Packaging",
+          "anchor": "sec-reusable-ip"
+        }
+      ]
+    },
+    {
+      "id": "irq",
+      "term": "IRQ",
+      "definition": "Interrupt request reporting an event to a processor. Device acknowledgement, interrupt-controller handling and software completion are distinct steps.",
+      "aliases": [
+        "interrupt"
+      ],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "heading": "Interrupts, exceptions and traps",
+          "anchor": "ref-irq"
+        }
+      ]
+    },
+    {
+      "id": "lvs",
+      "term": "LVS",
+      "definition": "Layout versus schematic: compare a netlist extracted from layout with the selected reference circuit. Port, power and hierarchy conventions affect the comparison.",
+      "aliases": [
+        "layout versus schematic"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "heading": "LVS: connectivity and devices",
+          "anchor": "lvs-connectivity-and-devices"
+        }
+      ]
+    },
+    {
+      "id": "memory-ordering",
+      "term": "Memory ordering",
+      "definition": "Constraints on the order in which memory operations may be observed. Coherence and software synchronization address related but distinct requirements.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "heading": "Memory ordering in a real SoC",
+          "anchor": "memory-ordering-in-a-real-soc"
+        }
+      ]
+    },
+    {
+      "id": "mmio",
+      "term": "MMIO",
+      "definition": "Memory-mapped I/O: device registers occupy addresses accessed by software load/store operations. Device semantics, access width and ordering differ from ordinary RAM.",
+      "aliases": [
+        "memory-mapped I/O"
+      ],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/peripherals.qmd",
+          "heading": "Registers are not ordinary RAM",
+          "anchor": "registers-are-not-ordinary-ram"
+        }
+      ]
+    },
+    {
+      "id": "mmu",
+      "term": "MMU",
+      "definition": "Memory management unit: translates virtual addresses and enforces page-level access permissions according to the selected privileged architecture.",
+      "aliases": [
+        "memory management unit"
+      ],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "heading": "Translation, protection and memory attributes",
+          "anchor": "translation-protection-and-memory-attributes"
+        }
+      ]
+    },
+    {
+      "id": "pdk",
+      "term": "PDK",
+      "definition": "Process design kit: technology views and rules used to implement and check a circuit. Reference educational views and qualified manufacturing collateral have different acceptance boundaries.",
+      "aliases": [
+        "process design kit"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+          "heading": "The open ASIC stack",
+          "anchor": "the-open-asic-stack"
+        }
+      ]
+    },
+    {
+      "id": "pma",
+      "term": "PMA",
+      "definition": "Physical memory attributes: properties of a physical address region, such as cacheability and supported access behavior.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "heading": "Translation, protection and memory attributes",
+          "anchor": "translation-protection-and-memory-attributes"
+        }
+      ]
+    },
+    {
+      "id": "pmp",
+      "term": "PMP",
+      "definition": "Physical memory protection: programmable access checks over physical address regions, interpreted according to privilege and platform configuration.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "heading": "PMP policy before supervisor execution",
+          "anchor": "pmp-policy-before-supervisor-execution"
+        }
+      ]
+    },
+    {
+      "id": "pmu",
+      "term": "PMU",
+      "definition": "Performance monitoring unit: counters and event-selection mechanisms used to measure a workload within a stated region and configuration.",
+      "aliases": [
+        "performance monitoring unit"
+      ],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/pmu.qmd",
+          "heading": "Concepts",
+          "anchor": "ref-pmu-concepts"
+        }
+      ]
+    },
+    {
+      "id": "ppa",
+      "term": "PPA",
+      "definition": "Power, performance and area: implementation metrics that must be compared under compatible functionality, constraints, technology and activity assumptions.",
+      "aliases": [
+        "power, performance and area"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/vlsi-design.qmd",
+          "heading": "Dynamic power, leakage and energy",
+          "anchor": "dynamic-power-leakage-and-energy"
+        }
+      ]
+    },
+    {
+      "id": "rdc",
+      "term": "RDC",
+      "definition": "Reset domain crossing: interaction between state whose reset assertion or release relationships differ. A digital simulation pass does not establish metastability safety.",
+      "aliases": [
+        "reset domain crossing"
+      ],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Reset is a clocking problem too",
+          "anchor": "reset-is-a-clocking-problem-too"
+        }
+      ]
+    },
+    {
+      "id": "rob",
+      "term": "ROB",
+      "definition": "Reorder buffer: tracks in-flight instructions and supports architectural retirement in program order even when execution completes out of order.",
+      "aliases": [
+        "reorder buffer"
+      ],
+      "locations": [
+        {
+          "page": "chapters/02-risc-v-cores/other-architectures.qmd",
+          "heading": "BOOM: A Generator for Out-of-Order Execution",
+          "anchor": "boom-a-generator-for-out-of-order-execution"
+        }
+      ]
+    },
+    {
+      "id": "rtl",
+      "term": "RTL",
+      "definition": "Register-transfer level: a behavioral representation of state updates and combinational computation, used here primarily in SystemVerilog. Elaboration and synthesis determine the implemented structure.",
+      "aliases": [
+        "register-transfer level"
+      ],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "Concepts",
+          "anchor": "ref-systemverilog-concepts"
+        }
+      ]
+    },
+    {
+      "id": "rvv",
+      "term": "RVV",
+      "definition": "RISC-V vector extension: architectural vector operations with explicit vector configuration and tail/mask policies. Functional agreement does not imply a particular vector microarchitecture.",
+      "aliases": [
+        "RISC-V vector extension"
+      ],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/vector-processing.qmd",
+          "heading": "Concepts",
+          "anchor": "ref-vector-processing-concepts"
+        }
+      ]
+    },
+    {
+      "id": "rvwmo",
+      "term": "RVWMO",
+      "definition": "RISC-V weak memory ordering model. Platform and software reasoning must distinguish allowed observations from cache-coherence and synchronization guarantees.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "heading": "Memory ordering in a real SoC",
+          "anchor": "memory-ordering-in-a-real-soc"
+        }
+      ]
+    },
+    {
+      "id": "sdc",
+      "term": "SDC",
+      "definition": "Synopsys Design Constraints: timing constraints describing clocks, interfaces and justified exceptions for implementation and analysis.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "The purpose of SDC",
+          "anchor": "the-purpose-of-sdc"
+        }
+      ]
+    },
+    {
+      "id": "setup-timing",
+      "term": "Setup timing",
+      "definition": "Maximum-delay requirement ensuring data arrives sufficiently before the capture clock event, under the stated clock and interface constraints.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Setup timing",
+          "anchor": "setup-timing"
+        }
+      ]
+    },
+    {
+      "id": "slack",
+      "term": "Slack",
+      "definition": "Timing margin relative to a required arrival relationship. Setup and hold slack describe different checks and must be reported with corner, stage and constraint context.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "Slack, corners and modes",
+          "anchor": "slack-corners-and-modes"
+        }
+      ]
+    },
+    {
+      "id": "slew",
+      "term": "Slew",
+      "definition": "Signal transition time. Electrical slew limits constrain an implementation independently of whether its setup slack is positive.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "Read the failure before choosing the repair",
+          "anchor": "read-the-failure-before-choosing-the-repair"
+        }
+      ]
+    },
+    {
+      "id": "soc",
+      "term": "SoC",
+      "definition": "System on chip: integration of processors, memories, interconnects, devices and their control/software contracts within a platform.",
+      "aliases": [
+        "system on chip"
+      ],
+      "locations": [
+        {
+          "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+          "heading": "CORE-V Wally: From a Pipelined Core to a SoC",
+          "anchor": "sec-core-v-wally"
+        }
+      ]
+    },
+    {
+      "id": "sta",
+      "term": "STA",
+      "definition": "Static timing analysis: checks constrained paths using cell and interconnect delay models without enumerating functional simulation vectors.",
+      "aliases": [
+        "static timing analysis"
+      ],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "heading": "STA answers timing questions",
+          "anchor": "sta-answers-timing-questions"
+        }
+      ]
+    },
+    {
+      "id": "synchronization",
+      "term": "Synchronization",
+      "definition": "Software or hardware protocol establishing when shared state may be accessed or ownership transferred. A fence alone does not clean a dirty non-coherent cache line.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "heading": "Coherent and non-coherent agents",
+          "anchor": "coherent-and-non-coherent-agents"
+        }
+      ]
+    },
+    {
+      "id": "tlb",
+      "term": "TLB",
+      "definition": "Translation lookaside buffer: caches translations and permission information. Page-table changes require the architecture-defined invalidation and ordering protocol.",
+      "aliases": [
+        "translation lookaside buffer"
+      ],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "heading": "TLBs, fences and cache interaction",
+          "anchor": "tlbs-fences-and-cache-interaction"
+        }
+      ]
+    },
+    {
+      "id": "vacuity",
+      "term": "Vacuity",
+      "definition": "A property can pass without exercising its intended behavior, for example because its antecedent is unreachable under the assumptions. Reachability witnesses and controlled failures help detect this.",
+      "aliases": [
+        "vacuous proof"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Detect a vacuous success",
+          "anchor": "detect-a-vacuous-success"
+        }
+      ]
+    },
+    {
+      "id": "vlen",
+      "term": "VLEN",
+      "definition": "Architectural vector-register size in bits for a selected RVV implementation, distinct from SEW and from the active vector length.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/vector-processing.qmd",
+          "heading": "The architectural vocabulary",
+          "anchor": "the-architectural-vocabulary"
+        }
+      ]
+    },
+    {
+      "id": "wns",
+      "term": "WNS",
+      "definition": "Worst negative slack: a summary of the worst timing deficit in the reported analysis. Read it with the setup/hold category, units, corner and full path report.",
+      "aliases": [
+        "worst negative slack"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "A measured setup pass before routing becomes a failure after routing",
+          "anchor": "a-measured-setup-pass-before-routing-becomes-a-failure-after-routing"
+        }
+      ]
+    },
+    {
+      "id": "chisel",
+      "term": "Chisel",
+      "definition": "A Scala-embedded hardware construction language. Elaboration produces hardware representations; equivalence to a separately handwritten RTL block still requires a stated comparison.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "Hardware Generators and Modern HDL Toolchains",
+          "anchor": "sec-hardware-generators"
+        }
+      ]
+    },
+    {
+      "id": "dft",
+      "term": "DFT",
+      "definition": "Design for test: structures and modes that improve controllability and observability of manufactured hardware. Functional verification and production fault coverage are different obligations.",
+      "aliases": [
+        "design for test"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "heading": "DFT starts with controllability and observability",
+          "anchor": "dft-starts-with-controllability-and-observability"
+        }
+      ]
+    },
+    {
+      "id": "elaboration",
+      "term": "Elaboration",
+      "definition": "Resolution of hardware hierarchy, parameters and generate constructs into a concrete design configuration before simulation or synthesis.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "heading": "Hardware Generators and Modern HDL Toolchains",
+          "anchor": "sec-hardware-generators"
+        }
+      ]
+    },
+    {
+      "id": "fmax",
+      "term": "Fmax",
+      "definition": "Maximum clock frequency inferred under a stated implementation and timing model. A routed estimate is separate from a board measurement and does not summarize hold or electrical acceptance.",
+      "aliases": [
+        "maximum frequency"
+      ],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/nextpnr-timing.qmd",
+          "heading": "Concepts",
+          "anchor": "ref-nextpnr-timing-concepts"
+        }
+      ]
+    },
+    {
+      "id": "formal-verification",
+      "term": "Formal verification",
+      "definition": "Checking properties over a mathematical model of allowed executions. Its conclusion depends on the property, environment assumptions, model and proof method.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "A finite transition system",
+          "anchor": "a-finite-transition-system"
+        }
+      ]
+    },
+    {
+      "id": "liveness",
+      "term": "Liveness",
+      "definition": "Progress requirement stating that something good eventually occurs. Bounded progress and unbounded liveness have different proof obligations and fairness assumptions.",
+      "aliases": [
+        "progress property"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Safety and progress",
+          "anchor": "safety-and-progress"
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "term": "Safety",
+      "definition": "A property excluding an unwanted event or state, such as loss, duplication or an out-of-bounds write.",
+      "aliases": [
+        "safety property"
+      ],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "heading": "Safety and progress",
+          "anchor": "safety-and-progress"
+        }
+      ]
+    },
+    {
+      "id": "opensbi",
+      "term": "OpenSBI",
+      "definition": "Supervisor binary interface firmware providing a platform handoff and machine-mode services to supervisor software in the selected Linux boot flow.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+          "heading": "Machine firmware and the supervisor handoff",
+          "anchor": "machine-firmware-and-the-supervisor-handoff"
+        }
+      ]
+    },
+    {
+      "id": "scan-chain",
+      "term": "Scan chain",
+      "definition": "Test structure that shifts state through scan-enabled sequential elements and captures a response in a defined test mode.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "heading": "Scan shift and capture",
+          "anchor": "scan-shift-and-capture"
+        }
+      ]
+    },
+    {
+      "id": "sew",
+      "term": "SEW",
+      "definition": "Selected element width for vector operations, interpreted with the active vector configuration. It is distinct from physical vector-register width.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/vector-processing.qmd",
+          "heading": "The architectural vocabulary",
+          "anchor": "the-architectural-vocabulary"
+        }
+      ]
+    },
+    {
+      "id": "lmul",
+      "term": "LMUL",
+      "definition": "Vector register grouping multiplier. Its architectural register grouping does not prescribe the physical banking of a vector implementation.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/07-advanced-topics/vector-processing.qmd",
+          "heading": "Register file, grouping and effective grouping",
+          "anchor": "register-file-grouping-and-effective-grouping"
+        }
+      ]
+    },
+    {
+      "id": "tns",
+      "term": "TNS",
+      "definition": "Total negative slack: an aggregate timing deficit over the reported endpoints. Its meaning depends on the analysis mode and report conventions.",
+      "aliases": [
+        "total negative slack"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "A measured setup pass before routing becomes a failure after routing",
+          "anchor": "a-measured-setup-pass-before-routing-becomes-a-failure-after-routing"
+        }
+      ]
+    },
+    {
+      "id": "utilization",
+      "term": "Utilization",
+      "definition": "Target or achieved use of available placement area. Higher utilization can reduce whitespace while increasing routing pressure; compare actual routed results.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "Floorplan and utilization",
+          "anchor": "floorplan-and-utilization"
+        }
+      ]
+    },
+    {
+      "id": "pvt",
+      "term": "PVT",
+      "definition": "Process, voltage and temperature conditions used to characterize cells and analyze a timing or power scenario.",
+      "aliases": [
+        "process, voltage and temperature"
+      ],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/vlsi-design.qmd",
+          "heading": "PVT, RC corners and operating modes",
+          "anchor": "pvt-rc-corners-and-operating-modes"
+        }
+      ]
+    },
+    {
+      "id": "asic",
+      "term": "ASIC",
+      "definition": "Application-specific integrated circuit: hardware implemented for a selected technology. Layout generation, reference-deck validation and manufacturing qualification are separate milestones.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+          "heading": "From SystemVerilog RTL to GDSII",
+          "anchor": "sec-rtl-gdsii"
+        }
+      ]
+    },
+    {
+      "id": "axi4",
+      "term": "AXI4",
+      "definition": "AMBA memory-mapped interface with independent channels and support for bursts and transaction identifiers. The accelerator in this book implements a deliberately narrower, single-beat DMA contract.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "heading": "AXI: why independent channels matter",
+          "anchor": "ref-axi4"
+        }
+      ]
+    },
+    {
+      "id": "bitstream",
+      "term": "Bitstream",
+      "definition": "Target-specific FPGA programming data produced after implementation. Generating a bitstream and observing the configured board are different evidence boundaries.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/nextpnr-timing.qmd",
+          "heading": "Place, Route, Timing, and Programming with nextpnr",
+          "anchor": "ref-bitstream"
+        }
+      ]
+    },
+    {
+      "id": "fpga",
+      "term": "FPGA",
+      "definition": "Field-programmable gate array: a configurable implementation target with device-specific logic, memory, routing and clock resources.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/fpga-soc.qmd",
+          "heading": "CORE-V Wally on the Nexys Video",
+          "anchor": "ref-fpga"
+        }
+      ]
+    },
+    {
+      "id": "librelane",
+      "term": "LibreLane",
+      "definition": "Integrated open ASIC implementation flow discussed here as an alternative to explicitly driving the individual synthesis and physical-design steps. Its configuration and PDK must match the selected release.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/librelane.qmd",
+          "heading": "Integrated ASIC Flow with LibreLane",
+          "anchor": "sec-librelane"
+        }
+      ]
+    },
+    {
+      "id": "litedram",
+      "term": "LiteDRAM",
+      "definition": "DRAM controller infrastructure used by the selected open Wally FPGA platform, with a PHY, initialization path and clock/reset requirements that need platform-specific validation.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/fpga-soc.qmd",
+          "heading": "CORE-V Wally on the Nexys Video",
+          "anchor": "ref-litedram"
+        }
+      ]
+    },
+    {
+      "id": "netlist",
+      "term": "Netlist",
+      "definition": "An elaborated or transformed description of instances and connections. A generic, technology-mapped or layout-extracted netlist represents a different stage of the flow.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/yosys.qmd",
+          "heading": "FPGA Synthesis with Yosys",
+          "anchor": "ref-netlist"
+        }
+      ]
+    },
+    {
+      "id": "nextpnr",
+      "term": "nextpnr",
+      "definition": "FPGA placement, routing and timing tool used with a supported device database and target constraints. A result applies to that exact device and configuration.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/nextpnr-timing.qmd",
+          "heading": "Place, Route, Timing, and Programming with nextpnr",
+          "anchor": "ref-nextpnr"
+        }
+      ]
+    },
+    {
+      "id": "openroad",
+      "term": "OpenROAD",
+      "definition": "Physical-design tool used here for floorplanning, placement, clock-tree synthesis, routing and analysis. The executable study records stage-specific timing and electrical evidence.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "heading": "Physical Design with OpenROAD",
+          "anchor": "sec-openroad"
+        }
+      ]
+    },
+    {
+      "id": "qemu",
+      "term": "QEMU",
+      "definition": "System emulator used for Linux, driver and firmware experiments. Its accelerator device model validates software-facing behavior, independently of Wally RTL execution.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+          "heading": "Booting a RISC-V SoC: From Reset Vector to Linux",
+          "anchor": "sec-boot-stack"
+        }
+      ]
+    },
+    {
+      "id": "verilator",
+      "term": "Verilator",
+      "definition": "RTL simulation and lint tool used here with compiled C++ harnesses and full-Wally fixtures. A simulator pass must be tied to an independent checker and selected configuration.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/03-simulation-verification/verilator.qmd",
+          "heading": "Simulation with Verilator",
+          "anchor": "ref-verilator"
+        }
+      ]
+    },
+    {
+      "id": "wally",
+      "term": "Wally",
+      "definition": "The open-source RISC-V core and SoC used as the main platform case study. The reading configuration, firmware fixture and FPGA platform have separately identified boundaries.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+          "heading": "CORE-V Wally: From a Pipelined Core to a SoC",
+          "anchor": "sec-core-v-wally"
+        }
+      ]
+    },
+    {
+      "id": "yosys",
+      "term": "Yosys",
+      "definition": "Synthesis framework used to elaborate and transform RTL, map logic, and support selected formal and equivalence tasks. Generic synthesis reports do not establish routed timing.",
+      "aliases": [],
+      "locations": [
+        {
+          "page": "chapters/05-fpga-implementation/yosys.qmd",
+          "heading": "FPGA Synthesis with Yosys",
+          "anchor": "ref-yosys"
+        }
+      ]
+    }
+  ],
+  "profiles": {
+    "chapters/01-foundations/clocking-timing.qmd": {
+      "title": "Clocking, Reset, and Timing Constraints",
+      "tools": "RTL simulator; SDC/STA tools for implementation",
+      "requires": "clock/reset inventory; CDC and reset assumptions",
+      "contract": "setup/hold budgets, word ownership and controlled reset release",
+      "labs": [
+        "01-foundations",
+        "24-async-fifo"
+      ],
+      "requirements": [
+        "DP-CDC",
+        "DP-TIMING"
+      ]
+    },
+    "chapters/01-foundations/microarchitecture.qmd": {
+      "title": "Microarchitecture Fundamentals",
+      "tools": "Icarus Verilog or Verilator; Python",
+      "requires": "fixed widths, signedness and latency contract",
+      "contract": "independent arithmetic results and state transitions",
+      "labs": [
+        "01-foundations"
+      ],
+      "requirements": []
+    },
+    "chapters/01-foundations/risc-v-isa.qmd": {
+      "title": "RISC-V ISA: The Hardware–Software Contract",
+      "tools": "LLVM RISC-V assembler/linker; signature checker",
+      "requires": "RV32 encoding and ABI; linker map",
+      "contract": "decoded immediates and architectural signature",
+      "labs": [
+        "06-isa"
+      ],
+      "requirements": []
+    },
+    "chapters/01-foundations/systemverilog.qmd": {
+      "title": "SystemVerilog for Hardware Design",
+      "tools": "Icarus Verilog or Verilator; Chisel/CIRCT for generator extension",
+      "requires": "legal parameters and ready/valid contract",
+      "contract": "elaboration, reset, arithmetic widths and retained transactions",
+      "labs": [
+        "01-foundations",
+        "19-hardware-generators"
+      ],
+      "requirements": [
+        "DP-RESET",
+        "DP-REUSE"
+      ]
+    },
+    "chapters/02-risc-v-cores/core-v-wally.qmd": {
+      "title": "CORE-V Wally: From a Pipelined Core to a SoC",
+      "tools": "pinned Wally source; Verilator; RISC-V compiler",
+      "requires": "selected configuration and mapped firmware",
+      "contract": "configuration identity and traceable module/platform behavior",
+      "labs": [
+        "08-integration",
+        "10-dotproduct"
+      ],
+      "requirements": []
+    },
+    "chapters/02-risc-v-cores/other-architectures.qmd": {
+      "title": "Other Open-Source RISC-V Architectures",
+      "tools": "source/configuration inspection; selected core toolchain for reruns",
+      "requires": "a pinned core and comparable configuration",
+      "contract": "separate architectural behavior from microarchitecture and measured evidence",
+      "labs": [
+        "08-integration"
+      ],
+      "requirements": []
+    },
+    "chapters/03-simulation-verification/verification-methodology.qmd": {
+      "title": "Verification Methodology Across the Design Hierarchy",
+      "tools": "Python; RTL simulator; Lab 25 CI tools",
+      "requires": "requirements and independent reference model",
+      "contract": "requirement-to-checker traceability, mutations and fresh evidence",
+      "labs": [
+        "05-verification",
+        "25-hardware-ci"
+      ],
+      "requirements": [
+        "DP-COVERAGE",
+        "DP-FORMAL"
+      ]
+    },
+    "chapters/03-simulation-verification/formal-verification.qmd": {
+      "title": "Formal Verification of RTL: Properties, Proofs, and Counterexamples",
+      "tools": "Yosys; SMT solver; executable Lab 15 scripts",
+      "requires": "explicit reset/environment assumptions and proof depth",
+      "contract": "assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope",
+      "labs": [
+        "15-formal"
+      ],
+      "requirements": [
+        "DP-FORMAL",
+        "DP-EQUIV"
+      ]
+    },
+    "chapters/03-simulation-verification/verilator.qmd": {
+      "title": "Simulation with Verilator",
+      "tools": "Verilator; C++ compiler; make; waveform viewer",
+      "requires": "initialized testbench and clock/reset schedule",
+      "contract": "oracle comparison and useful failure waveform",
+      "labs": [
+        "05-verification"
+      ],
+      "requirements": []
+    },
+    "chapters/03-simulation-verification/spike-sail.qmd": {
+      "title": "Reference Models: Spike and Sail",
+      "tools": "Spike or Sail; RISC-V compiler",
+      "requires": "matching ISA, ELF, linker map and signature region",
+      "contract": "architectural result comparison; no cycle-performance claim",
+      "labs": [
+        "06-isa",
+        "09-privileged-mmu"
+      ],
+      "requirements": []
+    },
+    "chapters/03-simulation-verification/cocotb.qmd": {
+      "title": "Verification with cocotb",
+      "tools": "cocotb; Icarus Verilog or Verilator; Python",
+      "requires": "supported simulator/version and sampling phase",
+      "contract": "independent oracle, reset and randomized regression",
+      "labs": [
+        "05-verification"
+      ],
+      "requirements": []
+    },
+    "chapters/04-soc-architecture/boot-software-stack.qmd": {
+      "title": "Booting a RISC-V SoC: From Reset Vector to Linux",
+      "tools": "QEMU; Linux/Buildroot tools; Verilator for Wally extension",
+      "requires": "boot contract, firmware, memory map and Device Tree",
+      "contract": "boot handoff, MMIO/IRQ/DMA ownership and user-visible result",
+      "labs": [
+        "12-boot",
+        "18-linux-accelerator"
+      ],
+      "requirements": [
+        "DP-SYSTEM",
+        "DP-IRQ"
+      ]
+    },
+    "chapters/04-soc-architecture/buses-interrupts.qmd": {
+      "title": "Buses and Interrupts",
+      "tools": "RTL simulator; RISC-V compiler",
+      "requires": "address decode, channel handshake and interrupt contract",
+      "contract": "backpressure, separate AXI channels, register effects and acknowledgement",
+      "labs": [
+        "04-mmio",
+        "10-dotproduct"
+      ],
+      "requirements": [
+        "DP-CTRL",
+        "DP-IRQ"
+      ]
+    },
+    "chapters/04-soc-architecture/memories-caches.qmd": {
+      "title": "Memories and Caches",
+      "tools": "RTL simulator; Python cache model",
+      "requires": "memory latency, line geometry and replacement policy",
+      "contract": "read/write collision rules, dirty eviction and independent hit/miss accounting",
+      "labs": [
+        "02-memory"
+      ],
+      "requirements": []
+    },
+    "chapters/04-soc-architecture/peripherals.qmd": {
+      "title": "Peripherals and SoC Integration",
+      "tools": "RTL simulator; RISC-V compiler",
+      "requires": "register map, reset values and bus access rules",
+      "contract": "MMIO effects, FIFO boundaries and device event handling",
+      "labs": [
+        "04-mmio"
+      ],
+      "requirements": [
+        "DP-CTRL"
+      ]
+    },
+    "chapters/04-soc-architecture/pipelines.qmd": {
+      "title": "Pipelines, Buffering and Backpressure",
+      "tools": "RTL simulator; Python",
+      "requires": "pipeline latency, valid/ready and flush rules",
+      "contract": "retirement/ordering, no loss or duplication under backpressure",
+      "labs": [
+        "03-transport"
+      ],
+      "requirements": []
+    },
+    "chapters/04-soc-architecture/privileged-mmu.qmd": {
+      "title": "Privileged Architecture and the MMU",
+      "tools": "RISC-V compiler; architectural or Wally platform model",
+      "requires": "privilege mode, trap vector and page-table setup",
+      "contract": "translation, permission faults and architectural signatures",
+      "labs": [
+        "09-privileged-mmu"
+      ],
+      "requirements": []
+    },
+    "chapters/05-fpga-implementation/yosys.qmd": {
+      "title": "FPGA Synthesis with Yosys",
+      "tools": "Yosys; supported FPGA technology files",
+      "requires": "elaboratable RTL, top and legal parameter set",
+      "contract": "mapped resource reports and warnings with target identity",
+      "labs": [
+        "07-implementation"
+      ],
+      "requirements": [
+        "DP-SYNTH"
+      ]
+    },
+    "chapters/05-fpga-implementation/nextpnr-timing.qmd": {
+      "title": "Place, Route, Timing, and Programming with nextpnr",
+      "tools": "Yosys; nextpnr; device database",
+      "requires": "mapped netlist, package, pin and clock constraints",
+      "contract": "routed timing and resource use; no board observation implied",
+      "labs": [
+        "07-implementation",
+        "17-complete-case"
+      ],
+      "requirements": [
+        "DP-TIMING",
+        "DP-FPGA"
+      ]
+    },
+    "chapters/05-fpga-implementation/fpga-soc.qmd": {
+      "title": "CORE-V Wally on the Nexys Video",
+      "tools": "Wally FPGA source; target build/programming tools; LiteDRAM",
+      "requires": "selected board, clocks, reset, pins and DDR configuration",
+      "contract": "implementation timing plus separately identified board observations",
+      "labs": [
+        "08-integration",
+        "17-complete-case"
+      ],
+      "requirements": [
+        "DP-FPGA"
+      ]
+    },
+    "chapters/06-asic-implementation/vlsi-design.qmd": {
+      "title": "Digital VLSI Design Fundamentals",
+      "tools": "Python/calculator; library/PDK views",
+      "requires": "units, operating corner and electrical assumptions",
+      "contract": "area/delay/power reasoning with characterized-view limitations",
+      "labs": [
+        "07-implementation"
+      ],
+      "requirements": []
+    },
+    "chapters/06-asic-implementation/rtl-to-gdsii.qmd": {
+      "title": "From SystemVerilog RTL to GDSII",
+      "tools": "Yosys; OpenROAD or LibreLane; PDK",
+      "requires": "verified RTL, SDC, library/LEF and target configuration",
+      "contract": "consistent synthesis-to-layout handoff and explicit acceptance gates",
+      "labs": [
+        "07-implementation",
+        "17-complete-case"
+      ],
+      "requirements": [
+        "DP-SYNTH",
+        "DP-PHYSICAL"
+      ]
+    },
+    "chapters/06-asic-implementation/openroad.qmd": {
+      "title": "Physical Design with OpenROAD",
+      "tools": "OpenROAD; Yosys; STA; Nangate45 reference views",
+      "requires": "identified netlist, SDC, utilization and tool image",
+      "contract": "placement/CTS/routing comparison, extracted timing and electrical checks",
+      "labs": [
+        "16-openroad-study",
+        "21-physical-closure"
+      ],
+      "requirements": [
+        "DP-TIMING",
+        "DP-PHYSICAL"
+      ]
+    },
+    "chapters/06-asic-implementation/librelane.qmd": {
+      "title": "Integrated ASIC Flow with LibreLane",
+      "tools": "LibreLane; technology-specific PDK/tool image",
+      "requires": "pinned flow configuration, top, libraries and constraints",
+      "contract": "flow reports, target-specific checks and reproducible handoff",
+      "labs": [
+        "07-implementation"
+      ],
+      "requirements": [
+        "DP-PHYSICAL"
+      ]
+    },
+    "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd": {
+      "title": "Physical Validation, DFT and Preparation for Fabrication",
+      "tools": "scan model; STA; Magic/Netgen for reference layout checks",
+      "requires": "test mode, PDK decks and explicit signoff boundary",
+      "contract": "scan coverage scope, DRC/LVS and constraints; no implied foundry qualification",
+      "labs": [
+        "07-implementation",
+        "22-layout-verification"
+      ],
+      "requirements": [
+        "DP-PHYSICAL",
+        "DP-DFT",
+        "DP-SILICON",
+        "DP-PRODUCTION"
+      ]
+    },
+    "chapters/07-advanced-topics/pmu.qmd": {
+      "title": "Performance Monitoring Units",
+      "tools": "RISC-V compiler; configured Wally RTL; analysis scripts",
+      "requires": "event definitions, region of interest and fixed workload",
+      "contract": "counter interpretation, overflow and controlled measurement",
+      "labs": [
+        "11-dse"
+      ],
+      "requirements": []
+    },
+    "chapters/07-advanced-topics/debug.qmd": {
+      "title": "Hardware Debug for RISC-V",
+      "tools": "RTL/debug model; debugger/target tools for optional platform",
+      "requires": "reset/halt state and debug authorization policy",
+      "contract": "debug state transitions and privilege/authorization boundaries",
+      "labs": [
+        "14-security"
+      ],
+      "requirements": []
+    },
+    "chapters/07-advanced-topics/hardware-security.qmd": {
+      "title": "Hardware Security: From Threat Models to Secure SoCs",
+      "tools": "RTL simulator; formal solver; Python models",
+      "requires": "threat model, attacker control and protection policy",
+      "contract": "denied DMA, security properties and scoped attack evidence",
+      "labs": [
+        "14-security"
+      ],
+      "requirements": [
+        "DP-POLICY"
+      ]
+    },
+    "chapters/07-advanced-topics/vector-processing.qmd": {
+      "title": "RISC-V Vector Processing: From Scalar Loops to RVV",
+      "tools": "RISC-V vector compiler; QEMU RVV",
+      "requires": "supported ISA/ABI, VLEN assumptions and reference data",
+      "contract": "scalar/vector result agreement, tails and masked-store behavior",
+      "labs": [
+        "13-vector"
+      ],
+      "requirements": []
+    },
+    "chapters/07-advanced-topics/accelerators-extensions.qmd": {
+      "title": "Accelerators and ISA Extensions",
+      "tools": "RTL simulator; Yosys; RISC-V compiler",
+      "requires": "numerical/MMIO/DMA contract and firmware ownership",
+      "contract": "independent result, bounds, completion and integration evidence",
+      "labs": [
+        "10-dotproduct",
+        "23-reusable-ip"
+      ],
+      "requirements": [
+        "DP-NUM",
+        "DP-CTRL",
+        "DP-POLICY",
+        "DP-ERROR"
+      ]
+    },
+    "chapters/07-advanced-topics/multicore-integration.qmd": {
+      "title": "Multicore SoC Integration: Coherence, Interconnects, and Verification",
+      "tools": "two-hart QEMU/Linux; Python subsystem models",
+      "requires": "shared-memory layout and declared coherency/ordering domains",
+      "contract": "DMA ownership, synchronization and explicit limits of model/RTL evidence",
+      "labs": [
+        "20-multicore"
+      ],
+      "requirements": [
+        "DP-SYSTEM",
+        "DP-CDC"
+      ]
+    },
+    "chapters/07-advanced-topics/architecture-exploration.qmd": {
+      "title": "Architectural Design Exploration",
+      "tools": "Wally RTL; compiler; Python analysis; optional gem5",
+      "requires": "locked workloads, seeds, region of interest and configurations",
+      "contract": "correctness before paired metrics and Pareto/acceptance decisions",
+      "labs": [
+        "11-dse"
+      ],
+      "requirements": []
+    },
+    "appendices/complete-case-study.qmd": {
+      "title": "Complete Case Study: From RTL Specification to an Implemented SoC",
+      "tools": "locked RTL/firmware; FPGA and ASIC tool images",
+      "requires": "common manifest, target constraints and technology views",
+      "contract": "same-source functional evidence, PPA, closure and remaining obligations",
+      "labs": [
+        "17-complete-case",
+        "21-physical-closure",
+        "22-layout-verification"
+      ],
+      "requirements": [
+        "DP-EQUIV",
+        "DP-TIMING",
+        "DP-FPGA",
+        "DP-PHYSICAL"
+      ]
+    },
+    "appendices/executable-project.qmd": {
+      "title": "Executable Cross-Course Project: AXI/DMA Accelerator",
+      "tools": "RTL simulator; formal solver; Verilator; RISC-V compiler",
+      "requires": "AXI/DMA contract and pinned Wally platform",
+      "contract": "independent vectors, bounded proofs, real firmware/IRQ and reuse",
+      "labs": [
+        "10-dotproduct",
+        "23-reusable-ip"
+      ],
+      "requirements": [
+        "DP-NUM",
+        "DP-CTRL",
+        "DP-POLICY",
+        "DP-RESET",
+        "DP-REUSE",
+        "DP-BRIDGE",
+        "DP-FORMAL",
+        "DP-SYSTEM",
+        "DP-IRQ"
+      ]
+    },
+    "appendices/hsd-coursework.qmd": {
+      "title": "Hardware System Design Coursework",
+      "tools": "selected reference lab tools",
+      "requires": "agreed P0–P5 selection and provisioned platform access",
+      "contract": "milestone deliverables, independent review and reproducible release",
+      "labs": [
+        "10-dotproduct",
+        "23-reusable-ip",
+        "25-hardware-ci"
+      ],
+      "requirements": [
+        "DP-NUM",
+        "DP-COVERAGE",
+        "DP-TIMING"
+      ]
+    },
+    "appendices/reproducible-labs.qmd": {
+      "title": "Reproducing the Laboratory Package",
+      "tools": "Python; Docker; Lab 25 verification tools",
+      "requires": "pinned images/dependencies and isolated output directories",
+      "contract": "provenance, fresh reports and fast/physical CI separation",
+      "labs": [
+        "25-hardware-ci"
+      ],
+      "requirements": [
+        "DP-COVERAGE",
+        "DP-SYNTH"
+      ]
+    },
+    "intro.qmd": {
+      "title": "Introduction",
+      "tools": "editor and reference artifacts",
+      "requires": "choose a technical route and available compute",
+      "contract": "entry diagnostic and explicit learning/evidence destination",
+      "labs": [
+        "01-foundations"
+      ],
+      "requirements": []
+    },
+    "summary.qmd": {
+      "title": "Final Project Review and Defence",
+      "tools": "release dossier and selected lab checkers",
+      "requires": "consistent manifest and declared executed/unexecuted obligations",
+      "contract": "reviewable final evidence and engineering decision",
+      "labs": [
+        "10-dotproduct",
+        "17-complete-case",
+        "23-reusable-ip"
+      ],
+      "requirements": [
+        "DP-SYSTEM",
+        "DP-TIMING",
+        "DP-PHYSICAL"
+      ]
+    }
+  },
+  "labs": [
+    {
+      "folder": "01-foundations",
+      "title": "RTL and instruction building blocks",
+      "tools": "Icarus Verilog; Python",
+      "requires": "supported widths and deterministic vectors",
+      "contract": "immediates/decode, arithmetic/state, synchronizer and reset models",
+      "reading": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "label": "Clocking, Reset, and Timing Constraints"
+        },
+        {
+          "page": "chapters/01-foundations/microarchitecture.qmd",
+          "label": "Microarchitecture Fundamentals"
+        },
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "label": "SystemVerilog for Hardware Design"
+        },
+        {
+          "page": "intro.qmd",
+          "label": "Introduction"
+        }
+      ]
+    },
+    {
+      "folder": "02-memory",
+      "title": "Memory contracts and cache state",
+      "tools": "RTL simulator; Python cache model",
+      "requires": "memory latency, line geometry and replacement policy",
+      "contract": "read/write collision rules, dirty eviction and independent hit/miss accounting",
+      "reading": [
+        {
+          "page": "chapters/04-soc-architecture/memories-caches.qmd",
+          "label": "Memories and Caches"
+        }
+      ]
+    },
+    {
+      "folder": "03-transport",
+      "title": "Transaction pipelines",
+      "tools": "RTL simulator; Python",
+      "requires": "pipeline latency, valid/ready and flush rules",
+      "contract": "retirement/ordering, no loss or duplication under backpressure",
+      "reading": [
+        {
+          "page": "chapters/04-soc-architecture/pipelines.qmd",
+          "label": "Pipelines, Buffering and Backpressure"
+        }
+      ]
+    },
+    {
+      "folder": "04-mmio",
+      "title": "Buses and peripheral effects",
+      "tools": "RTL simulator; RISC-V compiler",
+      "requires": "address decode, channel handshake and interrupt contract",
+      "contract": "backpressure, separate AXI channels, register effects and acknowledgement",
+      "reading": [
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "label": "Buses and Interrupts"
+        },
+        {
+          "page": "chapters/04-soc-architecture/peripherals.qmd",
+          "label": "Peripherals and SoC Integration"
+        }
+      ]
+    },
+    {
+      "folder": "05-verification",
+      "title": "Two verification environments",
+      "tools": "Verilator; C++ compiler; cocotb; Icarus Verilog",
+      "requires": "simulation accumulator interface and independent oracle",
+      "contract": "C++ and Python tests with reset, edge cases and waveform evidence",
+      "reading": [
+        {
+          "page": "chapters/03-simulation-verification/verification-methodology.qmd",
+          "label": "Verification Methodology Across the Design Hierarchy"
+        },
+        {
+          "page": "chapters/03-simulation-verification/verilator.qmd",
+          "label": "Simulation with Verilator"
+        },
+        {
+          "page": "chapters/03-simulation-verification/cocotb.qmd",
+          "label": "Verification with cocotb"
+        }
+      ]
+    },
+    {
+      "folder": "06-isa",
+      "title": "From assembly to a signature",
+      "tools": "LLVM RISC-V assembler/linker; signature checker",
+      "requires": "RV32 encoding and ABI; linker map",
+      "contract": "decoded immediates and architectural signature",
+      "reading": [
+        {
+          "page": "chapters/01-foundations/risc-v-isa.qmd",
+          "label": "RISC-V ISA: The Hardware–Software Contract"
+        },
+        {
+          "page": "chapters/03-simulation-verification/spike-sail.qmd",
+          "label": "Reference Models: Spike and Sail"
+        }
+      ]
+    },
+    {
+      "folder": "07-implementation",
+      "title": "Synthesis, then physical implementation",
+      "tools": "Icarus Verilog; Yosys; optional OpenROAD or LibreLane",
+      "requires": "implementation accumulator interface; PDK and SDC for physical work",
+      "contract": "generic netlist/latch checks; separately scoped implementation/DFT reports",
+      "reading": [
+        {
+          "page": "chapters/05-fpga-implementation/yosys.qmd",
+          "label": "FPGA Synthesis with Yosys"
+        },
+        {
+          "page": "chapters/05-fpga-implementation/nextpnr-timing.qmd",
+          "label": "Place, Route, Timing, and Programming with nextpnr"
+        },
+        {
+          "page": "chapters/06-asic-implementation/vlsi-design.qmd",
+          "label": "Digital VLSI Design Fundamentals"
+        },
+        {
+          "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+          "label": "From SystemVerilog RTL to GDSII"
+        },
+        {
+          "page": "chapters/06-asic-implementation/librelane.qmd",
+          "label": "Integrated ASIC Flow with LibreLane"
+        },
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "label": "Physical Validation, DFT and Preparation for Fabrication"
+        }
+      ]
+    },
+    {
+      "folder": "08-integration",
+      "title": "Wally observations and an accelerator exercise",
+      "tools": "pinned Wally source; Verilator; RISC-V compiler",
+      "requires": "selected configuration and mapped firmware",
+      "contract": "configuration identity and traceable module/platform behavior",
+      "reading": [
+        {
+          "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+          "label": "CORE-V Wally: From a Pipelined Core to a SoC"
+        },
+        {
+          "page": "chapters/02-risc-v-cores/other-architectures.qmd",
+          "label": "Other Open-Source RISC-V Architectures"
+        },
+        {
+          "page": "chapters/05-fpga-implementation/fpga-soc.qmd",
+          "label": "CORE-V Wally on the Nexys Video"
+        }
+      ]
+    },
+    {
+      "folder": "09-privileged-mmu",
+      "title": "Privileged architecture and MMU",
+      "tools": "Spike; RISC-V compiler; separately provisioned Wally harness",
+      "requires": "RV32/Sv32 ELF, page tables and trap/signature setup",
+      "contract": "privilege/translation signature and denied store; RTL traces are separate",
+      "reading": [
+        {
+          "page": "chapters/03-simulation-verification/spike-sail.qmd",
+          "label": "Reference Models: Spike and Sail"
+        },
+        {
+          "page": "chapters/04-soc-architecture/privileged-mmu.qmd",
+          "label": "Privileged Architecture and the MMU"
+        }
+      ]
+    },
+    {
+      "folder": "10-dotproduct",
+      "title": "Executable HSD project: Wally-controlled AXI/DMA dot product",
+      "tools": "Icarus Verilog; Python; Yosys/SMT; Verilator; RISC-V compiler",
+      "requires": "AXI4-Lite/DMA policy, legal lengths and pinned Wally fixture",
+      "contract": "independent vectors, register/DMA checks, bounded formal and firmware/IRQ",
+      "reading": [
+        {
+          "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+          "label": "CORE-V Wally: From a Pipelined Core to a SoC"
+        },
+        {
+          "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+          "label": "Buses and Interrupts"
+        },
+        {
+          "page": "chapters/07-advanced-topics/accelerators-extensions.qmd",
+          "label": "Accelerators and ISA Extensions"
+        },
+        {
+          "page": "appendices/executable-project.qmd",
+          "label": "Executable Cross-Course Project: AXI/DMA Accelerator"
+        },
+        {
+          "page": "appendices/hsd-coursework.qmd",
+          "label": "Hardware System Design Coursework"
+        },
+        {
+          "page": "summary.qmd",
+          "label": "Final Project Review and Defence"
+        }
+      ]
+    },
+    {
+      "folder": "11-dse",
+      "title": "Architectural exploration: real RTL and controlled analysis",
+      "tools": "Verilator; RISC-V compiler; Python",
+      "requires": "paired workloads, ROI, source and configuration identities",
+      "contract": "correctness, real divider cycle results and separately labeled illustrative Pareto data",
+      "reading": [
+        {
+          "page": "chapters/07-advanced-topics/pmu.qmd",
+          "label": "Performance Monitoring Units"
+        },
+        {
+          "page": "chapters/07-advanced-topics/architecture-exploration.qmd",
+          "label": "Architectural Design Exploration"
+        }
+      ]
+    },
+    {
+      "folder": "12-boot",
+      "title": "Boot and software-stack practice",
+      "tools": "Clang/LLD; QEMU; OpenSBI; device-tree compiler; Linux build tools",
+      "requires": "documented virt platform and firmware path; kernel/rootfs for Linux extension",
+      "contract": "SBI supervisor handoff and separately scoped Linux userspace boot",
+      "reading": [
+        {
+          "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+          "label": "Booting a RISC-V SoC: From Reset Vector to Linux"
+        }
+      ]
+    },
+    {
+      "folder": "13-vector",
+      "title": "RVV 1.0: portable dot product and masked stores",
+      "tools": "RISC-V vector compiler; QEMU",
+      "requires": "supported RVV ISA/ABI and reference vectors",
+      "contract": "scalar/vector agreement, tails and masked stores; no RTL PPA claim",
+      "reading": [
+        {
+          "page": "chapters/07-advanced-topics/vector-processing.qmd",
+          "label": "RISC-V Vector Processing: From Scalar Loops to RVV"
+        }
+      ]
+    },
+    {
+      "folder": "14-security",
+      "title": "Hardware security: five scoped experiments",
+      "tools": "RTL simulator; Python; QEMU/compiler; solver for formal checks",
+      "requires": "threat model and per-experiment image",
+      "contract": "scoped boot authorization, debug, isolation, leakage and DMA denial evidence",
+      "reading": [
+        {
+          "page": "chapters/07-advanced-topics/debug.qmd",
+          "label": "Hardware Debug for RISC-V"
+        },
+        {
+          "page": "chapters/07-advanced-topics/hardware-security.qmd",
+          "label": "Hardware Security: From Threat Models to Secure SoCs"
+        }
+      ]
+    },
+    {
+      "folder": "15-formal",
+      "title": "Formal RTL: FIFO properties, induction and equivalence",
+      "tools": "Yosys; SMT solver; executable Lab 15 scripts",
+      "requires": "explicit reset/environment assumptions and proof depth",
+      "contract": "assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope",
+      "reading": [
+        {
+          "page": "chapters/03-simulation-verification/formal-verification.qmd",
+          "label": "Formal Verification of RTL: Properties, Proofs, and Counterexamples"
+        }
+      ]
+    },
+    {
+      "folder": "16-openroad-study",
+      "title": "OpenROAD: measured clock/utilization study",
+      "tools": "OpenROAD; Yosys; STA; Nangate45 reference views",
+      "requires": "identified netlist, SDC, utilization and tool image",
+      "contract": "placement/CTS/routing comparison, extracted timing and electrical checks",
+      "reading": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "label": "Physical Design with OpenROAD"
+        }
+      ]
+    },
+    {
+      "folder": "17-complete-case",
+      "title": "Complete case: one dot-product RTL release across all stages",
+      "tools": "Yosys; nextpnr; OpenROAD; target FPGA databases; Nangate45",
+      "requires": "one RTL/firmware manifest, interface fixtures and target-specific constraints",
+      "contract": "functional provenance, FPGA placement/routing and ASIC physical reports",
+      "reading": [
+        {
+          "page": "chapters/05-fpga-implementation/nextpnr-timing.qmd",
+          "label": "Place, Route, Timing, and Programming with nextpnr"
+        },
+        {
+          "page": "chapters/05-fpga-implementation/fpga-soc.qmd",
+          "label": "CORE-V Wally on the Nexys Video"
+        },
+        {
+          "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+          "label": "From SystemVerilog RTL to GDSII"
+        },
+        {
+          "page": "appendices/complete-case-study.qmd",
+          "label": "Complete Case Study: From RTL Specification to an Implemented SoC"
+        },
+        {
+          "page": "summary.qmd",
+          "label": "Final Project Review and Defence"
+        }
+      ]
+    },
+    {
+      "folder": "18-linux-accelerator",
+      "title": "Linux driver and advanced Wally platform",
+      "tools": "QEMU/Linux driver tools; Verilator for Wally",
+      "requires": "kernel/DT/device model agreement",
+      "contract": "MMIO, DMA ownership, IRQ and user result",
+      "reading": [
+        {
+          "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+          "label": "Booting a RISC-V SoC: From Reset Vector to Linux"
+        }
+      ]
+    },
+    {
+      "folder": "19-hardware-generators",
+      "title": "Hardware generators",
+      "tools": "Chisel; FIRRTL/CIRCT; Yosys",
+      "requires": "pinned generator toolchain and width configuration",
+      "contract": "trace emitted RTL, compare results and reject priority defect",
+      "reading": [
+        {
+          "page": "chapters/01-foundations/systemverilog.qmd",
+          "label": "SystemVerilog for Hardware Design"
+        }
+      ]
+    },
+    {
+      "folder": "20-multicore",
+      "title": "Multicore integration",
+      "tools": "QEMU/Linux; Python",
+      "requires": "two-hart workload and declared DMA model",
+      "contract": "ownership protocol and separate coherence/ordering models",
+      "reading": [
+        {
+          "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+          "label": "Multicore SoC Integration: Coherence, Interconnects, and Verification"
+        }
+      ]
+    },
+    {
+      "folder": "21-physical-closure",
+      "title": "Physical closure",
+      "tools": "OpenROAD; Yosys; FPGA tools",
+      "requires": "locked baseline and compatible target constraints",
+      "contract": "functional regression plus timing/electrical acceptance",
+      "reading": [
+        {
+          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "label": "Physical Design with OpenROAD"
+        },
+        {
+          "page": "appendices/complete-case-study.qmd",
+          "label": "Complete Case Study: From RTL Specification to an Implemented SoC"
+        }
+      ]
+    },
+    {
+      "folder": "22-layout-verification",
+      "title": "Reference layout checks",
+      "tools": "Magic; Netgen; OpenROAD; FreePDK45",
+      "requires": "reference rule decks and power connectivity",
+      "contract": "DRC, LVS, extracted timing and rejected defects",
+      "reading": [
+        {
+          "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+          "label": "Physical Validation, DFT and Preparation for Fabrication"
+        },
+        {
+          "page": "appendices/complete-case-study.qmd",
+          "label": "Complete Case Study: From RTL Specification to an Implemented SoC"
+        }
+      ]
+    },
+    {
+      "folder": "23-reusable-ip",
+      "title": "Reusable IP release",
+      "tools": "Python; RTL simulator; Wally tools",
+      "requires": "single register description and legal configurations",
+      "contract": "immutable package, two integrations and rejected defects",
+      "reading": [
+        {
+          "page": "chapters/07-advanced-topics/accelerators-extensions.qmd",
+          "label": "Accelerators and ISA Extensions"
+        },
+        {
+          "page": "appendices/executable-project.qmd",
+          "label": "Executable Cross-Course Project: AXI/DMA Accelerator"
+        },
+        {
+          "page": "appendices/hsd-coursework.qmd",
+          "label": "Hardware System Design Coursework"
+        },
+        {
+          "page": "summary.qmd",
+          "label": "Final Project Review and Defence"
+        }
+      ]
+    },
+    {
+      "folder": "24-async-fifo",
+      "title": "Asynchronous FIFO",
+      "tools": "Icarus Verilog; Yosys; Python",
+      "requires": "common reset epoch and supported depth/width",
+      "contract": "dual-clock ordering, pointer structure and negative controls",
+      "reading": [
+        {
+          "page": "chapters/01-foundations/clocking-timing.qmd",
+          "label": "Clocking, Reset, and Timing Constraints"
+        }
+      ]
+    },
+    {
+      "folder": "25-hardware-ci",
+      "title": "Continuous hardware verification",
+      "tools": "Verilator; Icarus Verilog; Yosys; SMT solver",
+      "requires": "locked interface, seeds and justified area threshold",
+      "contract": "lint to reports, freshness and rejected mutations",
+      "reading": [
+        {
+          "page": "chapters/03-simulation-verification/verification-methodology.qmd",
+          "label": "Verification Methodology Across the Design Hierarchy"
+        },
+        {
+          "page": "appendices/hsd-coursework.qmd",
+          "label": "Hardware System Design Coursework"
+        },
+        {
+          "page": "appendices/reproducible-labs.qmd",
+          "label": "Reproducing the Laboratory Package"
+        }
+      ]
+    }
+  ],
+  "overrides": {}
+}

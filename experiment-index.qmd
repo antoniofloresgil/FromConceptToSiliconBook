@@ -1,0 +1,699 @@
+# Experiments, Tools, and Requirements {.unnumbered}
+
+This consultation matrix includes all 229 classified activities, including short reviews and project milestones. Select an activity by its stable ID and follow the link to the instructions and cost label. These are **prerequisites and contracts to check**, not a record of completed proof or tool execution. Page profiles list the tool choices used in that topic; a paper review does not require installing every listed tool. The individual instructions decide which alternative is needed.
+
+Download the [complete experiment matrix as CSV](downloads/experiment-matrix.csv) to filter by tool, requirement, role, compute class or lab. The [laboratory index](lab-index.qmd) gives environment entry points; the [learning-path guide](learning-paths.qmd) explains P0–P5 and C0–C3.
+
+Where relevant, **Related project obligations** reuses the DP identifiers in the [project verification plan](labs/verification/project-plan.json). This is a learning correspondence: a FIFO exercise can teach a method needed for DP-FORMAL without proving the accelerator. Only the plan and fresh execution evidence establish coverage. Manufacturing obligations remain visible even where no execution exists.
+
+## Introduction {#matrix-intro .reference-entry}
+
+**Tools / alternatives:** editor and reference artifacts. **Prerequisites:** choose a technical route and available compute.
+
+**Contract / expected evidence:** entry diagnostic and explicit learning/evidence destination.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [intro-review — Route choice or final release reflection](intro.qmd#act-intro-review) | preparation / C0 |
+
+**Lab entry points:** [01-foundations](lab-index.qmd#lab-01-foundations).
+
+## RISC-V ISA: The Hardware–Software Contract {#matrix-risc-v-isa .reference-entry}
+
+**Tools / alternatives:** LLVM RISC-V assembler/linker; signature checker. **Prerequisites:** RV32 encoding and ABI; linker map.
+
+**Contract / expected evidence:** decoded immediates and architectural signature.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [risc-v-isa-01 — Experiment 1: reconstruct immediate values](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-01) | preparation / C1 |
+| [risc-v-isa-02 — Experiment 2: inspect the linked program](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-02) | preparation / C1 |
+| [risc-v-isa-03 — Experiment 3: observe signedness and zero-register behavior](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-03) | preparation / C1 |
+| [risc-v-isa-04 — Experiment 4: distinguish configuration failures](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-04) | preparation / C1 |
+| [risc-v-isa-05 — Experiment 5: compare models at architectural boundaries](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-05) | advanced / C2 |
+| [risc-v-isa-review — Short chapter reflection](chapters/01-foundations/risc-v-isa.qmd#act-risc-v-isa-review) | preparation / C0 |
+
+**Lab entry points:** [06-isa](lab-index.qmd#lab-06-isa).
+
+## SystemVerilog for Hardware Design {#matrix-systemverilog .reference-entry}
+
+**Tools / alternatives:** Icarus Verilog or Verilator; Chisel/CIRCT for generator extension. **Prerequisites:** legal parameters and ready/valid contract.
+
+**Contract / expected evidence:** elaboration, reset, arithmetic widths and retained transactions.
+
+**Related project obligations:** DP-RESET, DP-REUSE.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [systemverilog-01 — Draw the hardware implied by `word_select`, then test both select values and boundary payloads.](chapters/01-foundations/systemverilog.qmd#act-systemverilog-01) | preparation / C1 |
+| [systemverilog-02 — Simulate `sample_pipeline` with distinct samples](chapters/01-foundations/systemverilog.qmd#act-systemverilog-02) | preparation / C1 |
+| [systemverilog-03 — Test `request_control` against a transition table, including start while busy and reset while active.](chapters/01-foundations/systemverilog.qmd#act-systemverilog-03) | preparation / C1 |
+| [systemverilog-04 — Describe a small RAM with synchronous read and byte writes](chapters/01-foundations/systemverilog.qmd#act-systemverilog-04) | preparation / C1 |
+| [systemverilog-05 — Elaborate two widths and one disabled optional feature](chapters/01-foundations/systemverilog.qmd#act-systemverilog-05) | preparation / C1 |
+| [systemverilog-06 — Ready/valid experiment](chapters/01-foundations/systemverilog.qmd#act-systemverilog-06) | core / C1 |
+| [systemverilog-07 — Decoder and arithmetic integration experiment](chapters/01-foundations/systemverilog.qmd#act-systemverilog-07) | option / C1 |
+| [systemverilog-review — Short chapter reflection](chapters/01-foundations/systemverilog.qmd#act-systemverilog-review) | preparation / C1 |
+| [generator-comparison — A small executable comparison](chapters/01-foundations/systemverilog.qmd#act-generator-comparison) | advanced / C2 build / C1 run |
+
+**Lab entry points:** [01-foundations](lab-index.qmd#lab-01-foundations), [19-hardware-generators](lab-index.qmd#lab-19-hardware-generators).
+
+## Microarchitecture Fundamentals {#matrix-microarchitecture .reference-entry}
+
+**Tools / alternatives:** Icarus Verilog or Verilator; Python. **Prerequisites:** fixed widths, signedness and latency contract.
+
+**Contract / expected evidence:** independent arithmetic results and state transitions.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [microarchitecture-01 — Experiment 1: derive an effect table](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-01) | preparation / C0 |
+| [microarchitecture-02 — Experiment 2: ALU boundary tests](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-02) | option / C1 |
+| [microarchitecture-03 — Experiment 3: register-file collisions](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-03) | option / C1 |
+| [microarchitecture-04 — Experiment 4: iterative arithmetic under backpressure](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-04) | core / C1 |
+| [microarchitecture-05 — Experiment 5: change scheduling without changing results](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-05) | advanced / C1 |
+| [microarchitecture-06 — Experiment 6: prepare to read Wally](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-06) | preparation / C0 |
+| [microarchitecture-review — Short chapter reflection](chapters/01-foundations/microarchitecture.qmd#act-microarchitecture-review) | preparation / C0 |
+
+**Lab entry points:** [01-foundations](lab-index.qmd#lab-01-foundations).
+
+## Clocking, Reset, and Timing Constraints {#matrix-clocking-timing .reference-entry}
+
+**Tools / alternatives:** RTL simulator; SDC/STA tools for implementation. **Prerequisites:** clock/reset inventory; CDC and reset assumptions.
+
+**Contract / expected evidence:** setup/hold budgets, word ownership and controlled reset release.
+
+**Related project obligations:** DP-CDC, DP-TIMING.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [clocking-timing-01 — Experiment 1: create and audit an SDC file](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-01) | core / C0 review / C3 rerun |
+| [clocking-timing-02 — Experiment 2: distinguish enable from clock](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-02) | option / C1 |
+| [clocking-timing-03 — Experiment 3: review a crossing](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-03) | option / C1 |
+| [clocking-timing-04 — Experiment 4: reset release and timing evidence](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-04) | option / C1 |
+| [clocking-timing-05 — Experiment 5: a long operation with short timing paths](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-05) | option / C1 local / C3 system |
+| [clocking-timing-review — Short chapter reflection](chapters/01-foundations/clocking-timing.qmd#act-clocking-timing-review) | preparation / C0 |
+| [async-fifo — A complete asynchronous FIFO](chapters/01-foundations/clocking-timing.qmd#act-async-fifo) | advanced / C1 |
+
+**Lab entry points:** [01-foundations](lab-index.qmd#lab-01-foundations), [24-async-fifo](lab-index.qmd#lab-24-async-fifo).
+
+## CORE-V Wally: From a Pipelined Core to a SoC {#matrix-core-v-wally .reference-entry}
+
+**Tools / alternatives:** pinned Wally source; Verilator; RISC-V compiler. **Prerequisites:** selected configuration and mapped firmware.
+
+**Contract / expected evidence:** configuration identity and traceable module/platform behavior.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [core-v-wally-01 — Run a five-instruction dependency chain and annotate which forwarding path supplies each operand.](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-01) | option / C1 |
+| [core-v-wally-02 — Change the data-memory model from combinational to synchronous](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-02) | advanced / C1 |
+| [core-v-wally-03 — Measure the clock period of a single-cycle datapath and the maximum frequency of the pipelined datapath a](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-03) | advanced / C3 |
+| [core-v-wally-04 — Add a simple branch predictor only after branch flush behavior is fully verified; use the PMU counters to](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-04) | advanced / C2 |
+| [core-v-wally-05 — Configuration audit](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-05) | core / C0 |
+| [core-v-wally-06 — Cold versus warm RAM load](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-06) | advanced / C2 |
+| [core-v-wally-07 — Exactly-once GPIO write](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-07) | option / C2 |
+| [core-v-wally-08 — Timer interrupt and resumption](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-08) | option / C2 |
+| [core-v-wally-09 — PLIC contrast](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-09) | advanced / C2 |
+| [core-v-wally-review — Short chapter reflection](chapters/02-risc-v-cores/core-v-wally.qmd#act-core-v-wally-review) | preparation / C0 |
+
+**Lab entry points:** [08-integration](lab-index.qmd#lab-08-integration), [10-dotproduct](lab-index.qmd#lab-10-dotproduct).
+
+## Other Open-Source RISC-V Architectures {#matrix-other-architectures .reference-entry}
+
+**Tools / alternatives:** source/configuration inspection; selected core toolchain for reruns. **Prerequisites:** a pinned core and comparable configuration.
+
+**Contract / expected evidence:** separate architectural behavior from microarchitecture and measured evidence.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [other-architectures-01 — Experiment 1: compact versus pipelined](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-01) | advanced / C1 local / C2 system |
+| [other-architectures-02 — Experiment 2: two versus four stages](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-02) | advanced / C0 |
+| [other-architectures-03 — Experiment 3: issue, completion and commit](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-03) | advanced / C0 |
+| [other-architectures-04 — Experiment 4: rename and recovery](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-04) | advanced / C0 |
+| [other-architectures-05 — Experiment 5: decision report](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-05) | advanced / C0 review / C2 run |
+| [other-architectures-review — Short chapter reflection](chapters/02-risc-v-cores/other-architectures.qmd#act-other-architectures-review) | advanced / C0 |
+| [other-memory-waits — Experiment: memory wait states](chapters/02-risc-v-cores/other-architectures.qmd#act-other-memory-waits) | advanced / C2 |
+| [other-rv32 — A controlled RV32 experiment](chapters/02-risc-v-cores/other-architectures.qmd#act-other-rv32) | advanced / C2 run / C3 build |
+
+**Lab entry points:** [08-integration](lab-index.qmd#lab-08-integration).
+
+## Verification Methodology Across the Design Hierarchy {#matrix-verification-methodology .reference-entry}
+
+**Tools / alternatives:** Python; RTL simulator; Lab 25 CI tools. **Prerequisites:** requirements and independent reference model.
+
+**Contract / expected evidence:** requirement-to-checker traceability, mutations and fresh evidence.
+
+**Related project obligations:** DP-COVERAGE, DP-FORMAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [verification-methodology-01 — Experiment 1: write and challenge the plan](chapters/03-simulation-verification/verification-methodology.qmd#act-verification-methodology-01) | core / C0 |
+| [verification-methodology-02 — Experiment 2: demonstrate checker sensitivity and explain a witness](chapters/03-simulation-verification/verification-methodology.qmd#act-verification-methodology-02) | core / C1 |
+| [verification-methodology-03 — Experiment 3: compare evidence at different boundaries](chapters/03-simulation-verification/verification-methodology.qmd#act-verification-methodology-03) | option / C2 |
+| [verification-methodology-04 — Experiment 4: assemble an honest evidence dossier](chapters/03-simulation-verification/verification-methodology.qmd#act-verification-methodology-04) | core / C1 |
+| [verification-methodology-review — Short chapter reflection](chapters/03-simulation-verification/verification-methodology.qmd#act-verification-methodology-review) | preparation / C0 |
+
+**Lab entry points:** [05-verification](lab-index.qmd#lab-05-verification), [25-hardware-ci](lab-index.qmd#lab-25-hardware-ci).
+
+## Formal Verification of RTL: Properties, Proofs, and Counterexamples {#matrix-formal-verification .reference-entry}
+
+**Tools / alternatives:** Yosys; SMT solver; executable Lab 15 scripts. **Prerequisites:** explicit reset/environment assumptions and proof depth.
+
+**Contract / expected evidence:** assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope.
+
+**Related project obligations:** DP-FORMAL, DP-EQUIV.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [formal-verification-01 — Reproduce all tasks and identify which outputs are bounded results, unbounded safety/equivalence results,](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-01) | core / C1 |
+| [formal-verification-02 — Remove one representation invariant in a student copy](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-02) | option / C1 |
+| [formal-verification-03 — Remove the output-stability assertion while retaining the ordering checks](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-03) | option / C1 |
+| [formal-verification-04 — Add separate coverage goals for reset during a stall and a particular accepted byte](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-04) | option / C1 |
+| [formal-verification-05 — Increase capacity to three in both implementations](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-05) | advanced / C2 |
+| [formal-verification-06 — Apply a retained-response property to the course AXI4-Lite endpoint](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-06) | core / C1 |
+| [formal-verification-review — Short chapter reflection](chapters/03-simulation-verification/formal-verification.qmd#act-formal-verification-review) | preparation / C0 |
+| [formal-baseline — Execute the complete experiment](chapters/03-simulation-verification/formal-verification.qmd#act-formal-baseline) | core / C1 |
+
+**Lab entry points:** [15-formal](lab-index.qmd#lab-15-formal).
+
+## Simulation with Verilator {#matrix-verilator .reference-entry}
+
+**Tools / alternatives:** Verilator; C++ compiler; make; waveform viewer. **Prerequisites:** initialized testbench and clock/reset schedule.
+
+**Contract / expected evidence:** oracle comparison and useful failure waveform.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [verilator-01 — Change the RTL overflow test deliberately so that exactly 65535 reports overflow](chapters/03-simulation-verification/verilator.qmd#act-verilator-01) | option / C1 |
+| [verilator-02 — Add consecutive disabled cycles after a wrap and check that overflow never becomes sticky.](chapters/03-simulation-verification/verilator.qmd#act-verilator-02) | option / C1 |
+| [verilator-03 — Replace the fixed stimulus with a deterministic pseudo-random sequence while retaining the reference calc](chapters/03-simulation-verification/verilator.qmd#act-verilator-03) | option / C1 |
+| [verilator-04 — Add a test that changes inputs while the clock remains low](chapters/03-simulation-verification/verilator.qmd#act-verilator-04) | option / C1 |
+| [verilator-05 — Parameterize the width and update the C++ interface/reference arithmetic accordingly](chapters/03-simulation-verification/verilator.qmd#act-verilator-05) | option / C1 |
+| [verilator-review — Short chapter reflection](chapters/03-simulation-verification/verilator.qmd#act-verilator-review) | preparation / C1 |
+| [verilator-baseline — 5. Compile the model and harness](chapters/03-simulation-verification/verilator.qmd#act-verilator-baseline) | option / C1 |
+
+**Lab entry points:** [05-verification](lab-index.qmd#lab-05-verification).
+
+## Reference Models: Spike and Sail {#matrix-spike-sail .reference-entry}
+
+**Tools / alternatives:** Spike or Sail; RISC-V compiler. **Prerequisites:** matching ISA, ELF, linker map and signature region.
+
+**Contract / expected evidence:** architectural result comparison; no cycle-performance claim.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [spike-sail-review — Short chapter reflection](chapters/03-simulation-verification/spike-sail.qmd#act-spike-sail-review) | preparation / C0 |
+| [spike-example — Example 1: run and debug with Spike](chapters/03-simulation-verification/spike-sail.qmd#act-spike-example) | option / C2 build / C1 run |
+| [sail-example — Example 2: run and trace with Sail](chapters/03-simulation-verification/spike-sail.qmd#act-sail-example) | advanced / C2 build / C1 run |
+| [isa-differential — Diagnose and extend the experiment](chapters/03-simulation-verification/spike-sail.qmd#act-isa-differential) | advanced / C1 local / C2 system |
+
+**Lab entry points:** [06-isa](lab-index.qmd#lab-06-isa), [09-privileged-mmu](lab-index.qmd#lab-09-privileged-mmu).
+
+## Verification with cocotb {#matrix-cocotb .reference-entry}
+
+**Tools / alternatives:** cocotb; Icarus Verilog or Verilator; Python. **Prerequisites:** supported simulator/version and sampling phase.
+
+**Contract / expected evidence:** independent oracle, reset and randomized regression.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [cocotb-01 — Deliberately make overflow sticky in the RTL](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-01) | option / C1 |
+| [cocotb-02 — Add consecutive reset and clear cases while enable is active, documenting their priority.](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-02) | option / C1 |
+| [cocotb-03 — Add directed vectors that produce exactly 65535, 65536, and the maximum possible sum of two operands.](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-03) | option / C1 |
+| [cocotb-04 — Change the local seed and record it with any failure; retain a minimized directed case for the regression](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-04) | option / C1 |
+| [cocotb-05 — Split stimulus driving and output monitoring into concurrent tasks](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-05) | option / C1 |
+| [cocotb-review — Short chapter reflection](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-review) | preparation / C1 |
+| [cocotb-baseline — 5. Run the test](chapters/03-simulation-verification/cocotb.qmd#act-cocotb-baseline) | option / C1 |
+
+**Lab entry points:** [05-verification](lab-index.qmd#lab-05-verification).
+
+## Pipelines, Buffering and Backpressure {#matrix-pipelines .reference-entry}
+
+**Tools / alternatives:** RTL simulator; Python. **Prerequisites:** pipeline latency, valid/ready and flush rules.
+
+**Contract / expected evidence:** retirement/ordering, no loss or duplication under backpressure.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [pipelines-01 — Experiment 1: FIFO conservation and ordering](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-01) | core / C1 |
+| [pipelines-02 — Experiment 2: End-to-end memory correspondence](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-02) | option / C1 |
+| [pipelines-03 — Experiment 3: Response-path backpressure](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-03) | option / C1 |
+| [pipelines-04 — Experiment 4: Measure latency and throughput](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-04) | option / C1 |
+| [pipelines-05 — Experiment 5: Reset and persistent side effects](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-05) | core / C1 |
+| [pipelines-06 — Experiment 6: Build a pipelined target](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-06) | advanced / C1 |
+| [pipelines-review — Short chapter reflection](chapters/04-soc-architecture/pipelines.qmd#act-pipelines-review) | preparation / C0 |
+
+**Lab entry points:** [03-transport](lab-index.qmd#lab-03-transport).
+
+## Memories and Caches {#matrix-memories-caches .reference-entry}
+
+**Tools / alternatives:** RTL simulator; Python cache model. **Prerequisites:** memory latency, line geometry and replacement policy.
+
+**Contract / expected evidence:** read/write collision rules, dirty eviction and independent hit/miss accounting.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [memories-caches-01 — Experiment 1: validate synchronous memory semantics](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-01) | option / C1 |
+| [memories-caches-02 — Experiment 2: check physical memory inference](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-02) | option / C1 local / C3 system |
+| [memories-caches-03 — Experiment 3: geometry and adversarial traces](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-03) | option / C1 |
+| [memories-caches-04 — Experiment 4: Wally hit and miss waveforms](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-04) | advanced / C2 |
+| [memories-caches-05 — Experiment 5: a bare-metal conflict workload](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-05) | advanced / C2 |
+| [memories-caches-06 — Experiment 6: instruction visibility and precise side effects](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-06) | advanced / C2 |
+| [memories-caches-review — Short chapter reflection](chapters/04-soc-architecture/memories-caches.qmd#act-memories-caches-review) | preparation / C0 |
+
+**Lab entry points:** [02-memory](lab-index.qmd#lab-02-memory).
+
+## Privileged Architecture and the MMU {#matrix-privileged-mmu .reference-entry}
+
+**Tools / alternatives:** RISC-V compiler; architectural or Wally platform model. **Prerequisites:** privilege mode, trap vector and page-table setup.
+
+**Contract / expected evidence:** translation, permission faults and architectural signatures.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [privileged-mmu-01 — Experiment 1: calculate before executing](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-01) | advanced / C2 build / C1 run |
+| [privileged-mmu-02 — Experiment 2: prove that the checks detect a change](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-02) | advanced / C1 |
+| [privileged-mmu-03 — Experiment 3: revoke and restore a mapping](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-03) | advanced / C1 |
+| [privileged-mmu-04 — Experiment 4: effective privilege and physical denial](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-04) | advanced / C1 |
+| [privileged-mmu-05 — Experiment 5: user permissions and A/D](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-05) | advanced / C1 |
+| [privileged-mmu-06 — Experiment 6: trace full Wally](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-06) | advanced / C2 |
+| [privileged-mmu-review — Short chapter reflection](chapters/04-soc-architecture/privileged-mmu.qmd#act-privileged-mmu-review) | advanced / C0 |
+
+**Lab entry points:** [09-privileged-mmu](lab-index.qmd#lab-09-privileged-mmu).
+
+## Buses and Interrupts {#matrix-buses-interrupts .reference-entry}
+
+**Tools / alternatives:** RTL simulator; RISC-V compiler. **Prerequisites:** address decode, channel handshake and interrupt contract.
+
+**Contract / expected evidence:** backpressure, separate AXI channels, register effects and acknowledgement.
+
+**Related project obligations:** DP-CTRL, DP-IRQ.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [buses-interrupts-01 — Experiment 1: verify the register bank](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-01) | core / C1 |
+| [buses-interrupts-02 — Experiment 2: independent channels and response stalls](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-02) | core / C1 |
+| [buses-interrupts-03 — Experiment 3: APB and AHB phase tracing](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-03) | option / C1 |
+| [buses-interrupts-04 — Experiment 4: AXI4 bursts and outstanding depth](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-04) | advanced / C1 |
+| [buses-interrupts-05 — Experiment 5: timer and external interrupts on Wally](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-05) | advanced / C2 |
+| [buses-interrupts-review — Short chapter reflection](chapters/04-soc-architecture/buses-interrupts.qmd#act-buses-interrupts-review) | preparation / C0 |
+
+**Lab entry points:** [04-mmio](lab-index.qmd#lab-04-mmio), [10-dotproduct](lab-index.qmd#lab-10-dotproduct).
+
+## Peripherals and SoC Integration {#matrix-peripherals .reference-entry}
+
+**Tools / alternatives:** RTL simulator; RISC-V compiler. **Prerequisites:** register map, reset values and bus access rules.
+
+**Contract / expected evidence:** MMIO effects, FIFO boundaries and device event handling.
+
+**Related project obligations:** DP-CTRL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [peripherals-01 — Experiment 1: register and GPIO contract](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-01) | option / C1 |
+| [peripherals-02 — Experiment 2: FIFO boundaries and sustained traffic](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-02) | option / C1 |
+| [peripherals-03 — Experiment 3: UART loopback and independent timing](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-03) | option / C1 |
+| [peripherals-04 — Experiment 4: SPI modes and whole commands](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-04) | option / C1 |
+| [peripherals-05 — Experiment 5: PWM and coherent updates](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-05) | option / C1 |
+| [peripherals-06 — Experiment 6: an integrated event-driven application](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-06) | advanced / C2 |
+| [peripherals-review — Short chapter reflection](chapters/04-soc-architecture/peripherals.qmd#act-peripherals-review) | preparation / C0 |
+
+**Lab entry points:** [04-mmio](lab-index.qmd#lab-04-mmio).
+
+## Booting a RISC-V SoC: From Reset Vector to Linux {#matrix-boot-software-stack .reference-entry}
+
+**Tools / alternatives:** QEMU; Linux/Buildroot tools; Verilator for Wally extension. **Prerequisites:** boot contract, firmware, memory map and Device Tree.
+
+**Contract / expected evidence:** boot handoff, MMIO/IRQ/DMA ownership and user-visible result.
+
+**Related project obligations:** DP-SYSTEM, DP-IRQ.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [boot-software-stack-01 — Experiment 1: checked QEMU → OpenSBI → supervisor payload](chapters/04-soc-architecture/boot-software-stack.qmd#act-boot-software-stack-01) | advanced / C2 build / C1 run |
+| [boot-software-stack-02 — Experiment 2: a complete Linux userspace boot](chapters/04-soc-architecture/boot-software-stack.qmd#act-boot-software-stack-02) | advanced / C2 |
+| [boot-software-stack-03 — Experiment 3: Linux, a driver and the accelerator](chapters/04-soc-architecture/boot-software-stack.qmd#act-boot-software-stack-03) | advanced / C2 |
+| [boot-software-stack-review — Short chapter reflection](chapters/04-soc-architecture/boot-software-stack.qmd#act-boot-software-stack-review) | advanced / C0 |
+
+**Lab entry points:** [12-boot](lab-index.qmd#lab-12-boot), [18-linux-accelerator](lab-index.qmd#lab-18-linux-accelerator).
+
+## FPGA Synthesis with Yosys {#matrix-yosys .reference-entry}
+
+**Tools / alternatives:** Yosys; supported FPGA technology files. **Prerequisites:** elaboratable RTL, top and legal parameter set.
+
+**Contract / expected evidence:** mapped resource reports and warnings with target identity.
+
+**Related project obligations:** DP-SYNTH.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [yosys-01 — Run `make FLOW=opensource nexysvideo` from `fpga/generator` after loading the CVW environment](chapters/05-fpga-implementation/yosys.qmd#act-yosys-01) | advanced / C3 |
+| [yosys-02 — Change only a benign Wally configuration option or a small GPIO width](chapters/05-fpga-implementation/yosys.qmd#act-yosys-02) | advanced / C3 |
+| [yosys-03 — Remove a reset assignment in a controlled test module](chapters/05-fpga-implementation/yosys.qmd#act-yosys-03) | option / C1 |
+| [yosys-04 — Replace a small register array with a synchronous memory coding pattern](chapters/05-fpga-implementation/yosys.qmd#act-yosys-04) | option / C1 local / C3 system |
+| [yosys-05 — Deliberately introduce an incomplete combinational assignment in an isolated exercise](chapters/05-fpga-implementation/yosys.qmd#act-yosys-05) | core / C1 |
+| [yosys-review — Short chapter reflection](chapters/05-fpga-implementation/yosys.qmd#act-yosys-review) | preparation / C0 |
+| [small-synthesis — A small standalone synthesis experiment](chapters/05-fpga-implementation/yosys.qmd#act-small-synthesis) | core / C1 |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation).
+
+## Place, Route, Timing, and Programming with nextpnr {#matrix-nextpnr-timing .reference-entry}
+
+**Tools / alternatives:** Yosys; nextpnr; device database. **Prerequisites:** mapped netlist, package, pin and clock constraints.
+
+**Contract / expected evidence:** routed timing and resource use; no board observation implied.
+
+**Related project obligations:** DP-TIMING, DP-FPGA.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [nextpnr-timing-01 — Build the Nexys Video configuration and identify the generated JSON, routed JSON, report, FASM, frames an](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-01) | advanced / C3 |
+| [nextpnr-timing-02 — Request 50 MHz instead of 40 MHz without changing RTL](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-02) | advanced / C3 |
+| [nextpnr-timing-03 — Add an LED heartbeat generated from the synchronized system clock](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-03) | advanced / C3 |
+| [nextpnr-timing-04 — Disconnect or rename one XDC port in a copy of the exercise](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-04) | advanced / C3 |
+| [nextpnr-timing-05 — Program only SRAM, power-cycle the board and confirm that the configuration vanishes](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-05) | advanced / C0 |
+| [nextpnr-timing-06 — Create a bring-up record containing commands, board revision, programmer version, UART settings, bitstrea](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-06) | advanced / C0 |
+| [nextpnr-timing-review — Short chapter reflection](chapters/05-fpga-implementation/nextpnr-timing.qmd#act-nextpnr-timing-review) | advanced / C0 |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation), [17-complete-case](lab-index.qmd#lab-17-complete-case).
+
+## CORE-V Wally on the Nexys Video {#matrix-fpga-soc .reference-entry}
+
+**Tools / alternatives:** Wally FPGA source; target build/programming tools; LiteDRAM. **Prerequisites:** selected board, clocks, reset, pins and DDR configuration.
+
+**Contract / expected evidence:** implementation timing plus separately identified board observations.
+
+**Related project obligations:** DP-FPGA.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [fpga-soc-01 — Reproduce the bitstream](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-01) | advanced / C3 |
+| [fpga-soc-02 — Prove the board wrapper](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-02) | advanced / C3 |
+| [fpga-soc-03 — Prove Wally boot](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-03) | advanced / C2 run / C3 build |
+| [fpga-soc-04 — Audit the bridge](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-04) | advanced / C2 |
+| [fpga-soc-05 — Use LED telemetry](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-05) | advanced / C0 |
+| [fpga-soc-06 — Timing discipline](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-06) | advanced / C3 |
+| [fpga-soc-07 — State limitations honestly](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-07) | core / C0 |
+| [fpga-soc-review — Short chapter reflection](chapters/05-fpga-implementation/fpga-soc.qmd#act-fpga-soc-review) | advanced / C0 |
+
+**Lab entry points:** [08-integration](lab-index.qmd#lab-08-integration), [17-complete-case](lab-index.qmd#lab-17-complete-case).
+
+## Digital VLSI Design Fundamentals {#matrix-vlsi-design .reference-entry}
+
+**Tools / alternatives:** Python/calculator; library/PDK views. **Prerequisites:** units, operating corner and electrical assumptions.
+
+**Contract / expected evidence:** area/delay/power reasoning with characterized-view limitations.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [vlsi-design-01 — Experiment 1: electrical load and cell size](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-01) | core / C0 |
+| [vlsi-design-02 — Experiment 2: effort and wire length](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-02) | option / C0 review / C3 rerun |
+| [vlsi-design-03 — Experiment 3: timing closure at more than one corner](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-03) | advanced / C3 |
+| [vlsi-design-04 — Experiment 4: active and idle energy](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-04) | advanced / C3 |
+| [vlsi-design-05 — Experiment 5: a macro-aware Wally floorplan](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-05) | advanced / C3 |
+| [vlsi-design-review — Short chapter reflection](chapters/06-asic-implementation/vlsi-design.qmd#act-vlsi-design-review) | preparation / C0 |
+| [physical-experiment-plan — Define a physical experiment](chapters/06-asic-implementation/vlsi-design.qmd#act-physical-experiment-plan) | option / C0 review / C3 rerun |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation).
+
+## From SystemVerilog RTL to GDSII {#matrix-rtl-to-gdsii .reference-entry}
+
+**Tools / alternatives:** Yosys; OpenROAD or LibreLane; PDK. **Prerequisites:** verified RTL, SDC, library/LEF and target configuration.
+
+**Contract / expected evidence:** consistent synthesis-to-layout handoff and explicit acceptance gates.
+
+**Related project obligations:** DP-SYNTH, DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [rtl-to-gdsii-01 — Experiment: harden a small SystemVerilog block](chapters/06-asic-implementation/rtl-to-gdsii.qmd#act-rtl-to-gdsii-01) | advanced / C3 |
+| [rtl-to-gdsii-review — Short chapter reflection](chapters/06-asic-implementation/rtl-to-gdsii.qmd#act-rtl-to-gdsii-review) | advanced / C0 |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation), [17-complete-case](lab-index.qmd#lab-17-complete-case).
+
+## Physical Design with OpenROAD {#matrix-openroad .reference-entry}
+
+**Tools / alternatives:** OpenROAD; Yosys; STA; Nangate45 reference views. **Prerequisites:** identified netlist, SDC, utilization and tool image.
+
+**Contract / expected evidence:** placement/CTS/routing comparison, extracted timing and electrical checks.
+
+**Related project obligations:** DP-TIMING, DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [openroad-01 — Experiment 1: run and inspect the baseline](chapters/06-asic-implementation/openroad.qmd#act-openroad-01) | advanced / C3 |
+| [openroad-02 — Experiment 2: utilization sweep](chapters/06-asic-implementation/openroad.qmd#act-openroad-02) | advanced / C3 |
+| [openroad-03 — Experiment 3: timing sweep](chapters/06-asic-implementation/openroad.qmd#act-openroad-03) | advanced / C3 |
+| [openroad-04 — Experiment 4: reproducible handoff](chapters/06-asic-implementation/openroad.qmd#act-openroad-04) | advanced / C3 |
+| [openroad-review — Short chapter reflection](chapters/06-asic-implementation/openroad.qmd#act-openroad-review) | preparation / C0 |
+| [physical-study-review — Measured study: frequency, utilization and the cost of wires](chapters/06-asic-implementation/openroad.qmd#act-physical-study-review) | core / C0 review / C3 rerun |
+| [openroad-reproduction — Reproduce, inspect and submit](chapters/06-asic-implementation/openroad.qmd#act-openroad-reproduction) | advanced / C3 |
+
+**Lab entry points:** [16-openroad-study](lab-index.qmd#lab-16-openroad-study), [21-physical-closure](lab-index.qmd#lab-21-physical-closure).
+
+## Integrated ASIC Flow with LibreLane {#matrix-librelane .reference-entry}
+
+**Tools / alternatives:** LibreLane; technology-specific PDK/tool image. **Prerequisites:** pinned flow configuration, top, libraries and constraints.
+
+**Contract / expected evidence:** flow reports, target-specific checks and reproducible handoff.
+
+**Related project obligations:** DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [librelane-01 — Experiment 1: validate the baseline](chapters/06-asic-implementation/librelane.qmd#act-librelane-01) | advanced / C3 |
+| [librelane-02 — Experiment 2: sweep placement density](chapters/06-asic-implementation/librelane.qmd#act-librelane-02) | advanced / C3 |
+| [librelane-03 — Experiment 3: make the run suitable for CI](chapters/06-asic-implementation/librelane.qmd#act-librelane-03) | advanced / C3 |
+| [librelane-04 — Experiment 4: compare direct and managed implementation](chapters/06-asic-implementation/librelane.qmd#act-librelane-04) | advanced / C3 |
+| [librelane-review — Short chapter reflection](chapters/06-asic-implementation/librelane.qmd#act-librelane-review) | advanced / C0 |
+| [librelane-controlled — Step 6: compare a controlled experiment](chapters/06-asic-implementation/librelane.qmd#act-librelane-controlled) | advanced / C3 |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation).
+
+## Physical Validation, DFT and Preparation for Fabrication {#matrix-physical-validation-dft-tapeout .reference-entry}
+
+**Tools / alternatives:** scan model; STA; Magic/Netgen for reference layout checks. **Prerequisites:** test mode, PDK decks and explicit signoff boundary.
+
+**Contract / expected evidence:** scan coverage scope, DRC/LVS and constraints; no implied foundry qualification.
+
+**Related project obligations:** DP-PHYSICAL, DP-DFT, DP-SILICON, DP-PRODUCTION.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [physical-validation-dft-tapeout-01 — Experiment 1: a validation dossier](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-01) | core / C0 review / C3 rerun |
+| [physical-validation-dft-tapeout-02 — Experiment 2: verify scan ordering](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-02) | core / C1 |
+| [physical-validation-dft-tapeout-03 — Experiment 3: evaluate a scan-enabled physical variant](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-03) | advanced / C3 |
+| [physical-validation-dft-tapeout-04 — Experiment 4: memory-test ownership](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-04) | option / C1 |
+| [physical-validation-dft-tapeout-05 — Experiment 5: prepare a Wally prototype review](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-05) | option / C0 |
+| [physical-validation-dft-tapeout-review — Short chapter reflection](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#act-physical-validation-dft-tapeout-review) | preparation / C0 |
+
+**Lab entry points:** [07-implementation](lab-index.qmd#lab-07-implementation), [22-layout-verification](lab-index.qmd#lab-22-layout-verification).
+
+## Performance Monitoring Units {#matrix-pmu .reference-entry}
+
+**Tools / alternatives:** RISC-V compiler; configured Wally RTL; analysis scripts. **Prerequisites:** event definitions, region of interest and fixed workload.
+
+**Contract / expected evidence:** counter interpretation, overflow and controlled measurement.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [pmu-01 — Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache eve](chapters/07-advanced-topics/pmu.qmd#act-pmu-01) | advanced / C2 |
+| [pmu-02 — Build an RV32 program that reads `mcycle` using the high-low-high sequence](chapters/07-advanced-topics/pmu.qmd#act-pmu-02) | advanced / C2 |
+| [pmu-03 — Define a five-counter FPGA PMU profile and write its event-ID table before changing RTL.](chapters/07-advanced-topics/pmu.qmd#act-pmu-03) | advanced / C0 |
+| [pmu-04 — Implement one selector, one counter and one UART report first](chapters/07-advanced-topics/pmu.qmd#act-pmu-04) | advanced / C1 local / C2 system |
+| [pmu-05 — Synthesize the PMU-enabled configuration for Nexys Video](chapters/07-advanced-topics/pmu.qmd#act-pmu-05) | advanced / C3 |
+| [pmu-06 — Run the same microbenchmark five times on the FPGA, report min/median/max and explain any spread.](chapters/07-advanced-topics/pmu.qmd#act-pmu-06) | advanced / C2 |
+| [pmu-07 — Decide whether user-mode reads are appropriate for the target, then test permitted and prohibited CSR rea](chapters/07-advanced-topics/pmu.qmd#act-pmu-07) | advanced / C2 |
+| [pmu-review — Short chapter reflection](chapters/07-advanced-topics/pmu.qmd#act-pmu-review) | advanced / C0 |
+
+**Lab entry points:** [11-dse](lab-index.qmd#lab-11-dse).
+
+## Hardware Debug for RISC-V {#matrix-debug .reference-entry}
+
+**Tools / alternatives:** RTL/debug model; debugger/target tools for optional platform. **Prerequisites:** reset/halt state and debug authorization policy.
+
+**Contract / expected evidence:** debug state transitions and privilege/authorization boundaries.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [debug-01 — Experiment 1: capability inventory](chapters/07-advanced-topics/debug.qmd#act-debug-01) | option / C0 |
+| [debug-02 — Experiment 2: halt, inspect and resume](chapters/07-advanced-topics/debug.qmd#act-debug-02) | advanced / C2 |
+| [debug-03 — Experiment 3: breakpoint and trigger behavior](chapters/07-advanced-topics/debug.qmd#act-debug-03) | advanced / C2 |
+| [debug-04 — Experiment 4: system-bus access and policy](chapters/07-advanced-topics/debug.qmd#act-debug-04) | option / C1 local / C2 system |
+| [debug-05 — Experiment 5: debug lock verification](chapters/07-advanced-topics/debug.qmd#act-debug-05) | option / C1 local / C2 system |
+| [debug-review — Short chapter reflection](chapters/07-advanced-topics/debug.qmd#act-debug-review) | preparation / C0 |
+
+**Lab entry points:** [14-security](lab-index.qmd#lab-14-security).
+
+## Hardware Security: From Threat Models to Secure SoCs {#matrix-hardware-security .reference-entry}
+
+**Tools / alternatives:** RTL simulator; formal solver; Python models. **Prerequisites:** threat model, attacker control and protection policy.
+
+**Contract / expected evidence:** denied DMA, security properties and scoped attack evidence.
+
+**Related project obligations:** DP-POLICY.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [hardware-security-01 — Experiment 1: PMP isolation and access violations](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-01) | option / C2 build / C1 run |
+| [hardware-security-02 — Experiment 2: unauthorized DMA access](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-02) | core / C1 |
+| [hardware-security-03 — Experiment 3: debug interface locking](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-03) | option / C1 |
+| [hardware-security-04 — Experiment 4: timing side-channel demonstration](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-04) | advanced / C1 |
+| [hardware-security-05 — Experiment 5: formal verification of a security property](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-05) | core / C1 |
+| [hardware-security-review — Short chapter reflection](chapters/07-advanced-topics/hardware-security.qmd#act-hardware-security-review) | preparation / C0 |
+
+**Lab entry points:** [14-security](lab-index.qmd#lab-14-security).
+
+## RISC-V Vector Processing: From Scalar Loops to RVV {#matrix-vector-processing .reference-entry}
+
+**Tools / alternatives:** RISC-V vector compiler; QEMU RVV. **Prerequisites:** supported ISA/ABI, VLEN assumptions and reference data.
+
+**Contract / expected evidence:** scalar/vector result agreement, tails and masked-store behavior.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [vector-processing-review — Short chapter reflection](chapters/07-advanced-topics/vector-processing.qmd#act-vector-processing-review) | advanced / C2 build / C1 run |
+| [rvv-example — Reproduce the checked functional example](chapters/07-advanced-topics/vector-processing.qmd#act-rvv-example) | advanced / C2 build / C1 run |
+| [rvv-comparison — Comparing RVV with the AXI/DMA accelerator](chapters/07-advanced-topics/vector-processing.qmd#act-rvv-comparison) | advanced / C2 |
+| [rvv-review-design — Design review and follow-on exercises](chapters/07-advanced-topics/vector-processing.qmd#act-rvv-review-design) | advanced / C0 |
+
+**Lab entry points:** [13-vector](lab-index.qmd#lab-13-vector).
+
+## Accelerators and ISA Extensions {#matrix-accelerators-extensions .reference-entry}
+
+**Tools / alternatives:** RTL simulator; Yosys; RISC-V compiler. **Prerequisites:** numerical/MMIO/DMA contract and firmware ownership.
+
+**Contract / expected evidence:** independent result, bounds, completion and integration evidence.
+
+**Related project obligations:** DP-NUM, DP-CTRL, DP-POLICY, DP-ERROR.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [accelerators-extensions-01 — Profile a scalar FIR in Wally simulation](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-01) | advanced / C2 |
+| [accelerators-extensions-02 — Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-02) | advanced / C1 |
+| [accelerators-extensions-03 — Add only the MMIO register block and a no-DMA local-memory mode](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-03) | advanced / C1 |
+| [accelerators-extensions-04 — Add the single-outstanding-request DMA adapter](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-04) | advanced / C1 |
+| [accelerators-extensions-05 — Integrate the peripheral into a Wally configuration at a documented address and route its interrupt](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-05) | advanced / C2 |
+| [accelerators-extensions-06 — Synthesize for Nexys Video](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-06) | advanced / C3 |
+| [accelerators-extensions-07 — Evaluate an alternative custom packed-dot-product instruction](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-07) | advanced / C2 |
+| [accelerators-extensions-review — Short chapter reflection](chapters/07-advanced-topics/accelerators-extensions.qmd#act-accelerators-extensions-review) | advanced / C0 |
+
+**Lab entry points:** [10-dotproduct](lab-index.qmd#lab-10-dotproduct), [23-reusable-ip](lab-index.qmd#lab-23-reusable-ip).
+
+## Multicore SoC Integration: Coherence, Interconnects, and Verification {#matrix-multicore-integration .reference-entry}
+
+**Tools / alternatives:** two-hart QEMU/Linux; Python subsystem models. **Prerequisites:** shared-memory layout and declared coherency/ordering domains.
+
+**Contract / expected evidence:** DMA ownership, synchronization and explicit limits of model/RTL evidence.
+
+**Related project obligations:** DP-SYSTEM, DP-CDC.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [multicore-integration-01 — Experiment A: two Linux CPUs and the existing DMA accelerator](chapters/07-advanced-topics/multicore-integration.qmd#act-multicore-integration-01) | advanced / C2 build / C1 run |
+| [multicore-integration-02 — Experiment B: produce stale-data and ordering witnesses](chapters/07-advanced-topics/multicore-integration.qmd#act-multicore-integration-02) | advanced / C1 |
+| [multicore-integration-03 — Experiment C: integrate or study a coherent RTL subsystem](chapters/07-advanced-topics/multicore-integration.qmd#act-multicore-integration-03) | advanced / C2 |
+| [multicore-integration-review — Short chapter reflection](chapters/07-advanced-topics/multicore-integration.qmd#act-multicore-integration-review) | advanced / C0 |
+
+**Lab entry points:** [20-multicore](lab-index.qmd#lab-20-multicore).
+
+## Architectural Design Exploration {#matrix-architecture-exploration .reference-entry}
+
+**Tools / alternatives:** Wally RTL; compiler; Python analysis; optional gem5. **Prerequisites:** locked workloads, seeds, region of interest and configurations.
+
+**Contract / expected evidence:** correctness before paired metrics and Pareto/acceptance decisions.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [architecture-exploration-01 — Experiment 1: reproduce and challenge the divider result](chapters/07-advanced-topics/architecture-exploration.qmd#act-architecture-exploration-01) | advanced / C2 |
+| [architecture-exploration-02 — Experiment 2: analyse the trade-off honestly](chapters/07-advanced-topics/architecture-exploration.qmd#act-architecture-exploration-02) | option / C1 |
+| [architecture-exploration-03 — Experiment 3: define a cache/predictor campaign](chapters/07-advanced-topics/architecture-exploration.qmd#act-architecture-exploration-03) | advanced / C2 |
+| [architecture-exploration-04 — Experiment 4: confirm a candidate](chapters/07-advanced-topics/architecture-exploration.qmd#act-architecture-exploration-04) | advanced / C3 |
+| [architecture-exploration-review — Short chapter reflection](chapters/07-advanced-topics/architecture-exploration.qmd#act-architecture-exploration-review) | advanced / C0 |
+| [divider-reproduction — Reproduce the experiment](chapters/07-advanced-topics/architecture-exploration.qmd#act-divider-reproduction) | advanced / C2 |
+
+**Lab entry points:** [11-dse](lab-index.qmd#lab-11-dse).
+
+## Final Project Review and Defence {#matrix-summary .reference-entry}
+
+**Tools / alternatives:** release dossier and selected lab checkers. **Prerequisites:** consistent manifest and declared executed/unexecuted obligations.
+
+**Contract / expected evidence:** reviewable final evidence and engineering decision.
+
+**Related project obligations:** DP-SYSTEM, DP-TIMING, DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [summary-review — Route choice or final release reflection](summary.qmd#act-summary-review) | core / C0 |
+
+**Lab entry points:** [10-dotproduct](lab-index.qmd#lab-10-dotproduct), [17-complete-case](lab-index.qmd#lab-17-complete-case), [23-reusable-ip](lab-index.qmd#lab-23-reusable-ip).
+
+## Reproducing the Laboratory Package {#matrix-reproducible-labs .reference-entry}
+
+**Tools / alternatives:** Python; Docker; Lab 25 verification tools. **Prerequisites:** pinned images/dependencies and isolated output directories.
+
+**Contract / expected evidence:** provenance, fresh reports and fast/physical CI separation.
+
+**Related project obligations:** DP-COVERAGE, DP-SYNTH.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [hardware-ci — Continuous hardware verification of the accelerator](appendices/reproducible-labs.qmd#act-hardware-ci) | core / C1 |
+
+**Lab entry points:** [25-hardware-ci](lab-index.qmd#lab-25-hardware-ci).
+
+## Hardware System Design Coursework {#matrix-hsd-coursework .reference-entry}
+
+**Tools / alternatives:** selected reference lab tools. **Prerequisites:** agreed P0–P5 selection and provisioned platform access.
+
+**Contract / expected evidence:** milestone deliverables, independent review and reproducible release.
+
+**Related project obligations:** DP-NUM, DP-COVERAGE, DP-TIMING.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [course-p0 — P0: diagnostic and reproducibility](appendices/hsd-coursework.qmd#act-course-p0) | core / C1 |
+| [course-p1 — P1: specification and reusable arithmetic RTL](appendices/hsd-coursework.qmd#act-course-p1) | core / C1 |
+| [course-p2 — P2: independent tests and failure diagnosis](appendices/hsd-coursework.qmd#act-course-p2) | core / C1 |
+| [course-p3 — P3: AXI control and DMA integration](appendices/hsd-coursework.qmd#act-course-p3) | core / C1 local / C2 system |
+| [course-p4 — P4: formal verification and security evaluation](appendices/hsd-coursework.qmd#act-course-p4) | core / C1 |
+| [course-p5 — P5: implementation, analysis and IP strengthening](appendices/hsd-coursework.qmd#act-course-p5) | core / C0 review / C1 local / C3 rerun |
+| [course-project — Final project: a Wally-controlled AXI/DMA accelerator](appendices/hsd-coursework.qmd#act-course-project) | core / C1 local / C2 system |
+
+**Lab entry points:** [10-dotproduct](lab-index.qmd#lab-10-dotproduct), [23-reusable-ip](lab-index.qmd#lab-23-reusable-ip), [25-hardware-ci](lab-index.qmd#lab-25-hardware-ci).
+
+## Executable Cross-Course Project: AXI/DMA Accelerator {#matrix-executable-project .reference-entry}
+
+**Tools / alternatives:** RTL simulator; formal solver; Verilator; RISC-V compiler. **Prerequisites:** AXI/DMA contract and pinned Wally platform.
+
+**Contract / expected evidence:** independent vectors, bounded proofs, real firmware/IRQ and reuse.
+
+**Related project obligations:** DP-NUM, DP-CTRL, DP-POLICY, DP-RESET, DP-REUSE, DP-BRIDGE, DP-FORMAL, DP-SYSTEM, DP-IRQ.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [project-ip — First run: the IP boundary](appendices/executable-project.qmd#act-project-ip) | core / C1 |
+| [project-wally — Second run: real Wally, firmware and interrupts](appendices/executable-project.qmd#act-project-wally) | core / C2 |
+| [ip-release — Reproduce and review the release](appendices/executable-project.qmd#act-ip-release) | option / C1 local / C2 system |
+
+**Lab entry points:** [10-dotproduct](lab-index.qmd#lab-10-dotproduct), [23-reusable-ip](lab-index.qmd#lab-23-reusable-ip).
+
+## Complete Case Study: From RTL Specification to an Implemented SoC {#matrix-complete-case-study .reference-entry}
+
+**Tools / alternatives:** locked RTL/firmware; FPGA and ASIC tool images. **Prerequisites:** common manifest, target constraints and technology views.
+
+**Contract / expected evidence:** same-source functional evidence, PPA, closure and remaining obligations.
+
+**Related project obligations:** DP-EQUIV, DP-TIMING, DP-FPGA, DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [case-specification — Stage 1: specification and an independent reference model](appendices/complete-case-study.qmd#act-case-specification) | core / C1 |
+| [case-rtl — Stage 2: SystemVerilog RTL and reusable boundaries](appendices/complete-case-study.qmd#act-case-rtl) | core / C1 |
+| [case-verification — Stage 3: independent tests, bounded formal checks and counterexamples](appendices/complete-case-study.qmd#act-case-verification) | core / C1 |
+| [case-wally — Stage 4: real Wally SoC integration](appendices/complete-case-study.qmd#act-case-wally) | core / C2 |
+| [case-fpga — Stage 5: FPGA mapping, placement, routing and frequency](appendices/complete-case-study.qmd#act-case-fpga) | core / C0 review / C3 rerun |
+| [case-asic — Stage 6: ASIC mapping through GDSII](appendices/complete-case-study.qmd#act-case-asic) | core / C0 review / C3 rerun |
+| [case-closure — From Timing Violations to a Qualified Implementation](appendices/complete-case-study.qmd#act-case-closure) | advanced / C0 review / C3 rerun |
+| [case-drc-lvs — Actual GDS DRC/LVS and power/body finishing](appendices/complete-case-study.qmd#act-case-drc-lvs) | advanced / C0 review / C3 rerun |
+
+**Lab entry points:** [17-complete-case](lab-index.qmd#lab-17-complete-case), [21-physical-closure](lab-index.qmd#lab-21-physical-closure), [22-layout-verification](lab-index.qmd#lab-22-layout-verification).
+

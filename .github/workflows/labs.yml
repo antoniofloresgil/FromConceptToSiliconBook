@@ -17,10 +17,14 @@ jobs:
         run: |
           python tools/book/learning_paths.py --check
           python tools/book/test_learning_paths.py
+          python tools/book/reference.py
+          python tools/book/test_reference.py
           python labs/tools/check_recipes.py
           python labs/tools/test_recipes.py
           python labs/tools/test_package.py
           python tools/figures/architecture.py --check
+          python tools/figures/print_details.py --check
+          python tools/figures/print_audit.py --check
           python labs/16-openroad-study/verify_reference.py
           python labs/17-complete-case/verify_reference.py
           python labs/17-complete-case/verify_nexys.py

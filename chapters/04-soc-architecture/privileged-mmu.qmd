@@ -32,7 +32,7 @@ Trap entry records architectural information and redirects execution, but does n
 
 An `ecall` requests service from the execution environment. Its synchronous exception code depends on the source mode: 8 from U, 9 from S and 11 from M. The destination handler depends on delegation. An OS system call and an SBI call can therefore both use `ecall` while crossing different trust boundaries. A page fault is another synchronous trap, not a request arriving from the PLIC.
 
-### Machine and supervisor trap state
+### Machine and supervisor trap state {#machine-and-supervisor-trap-state}
 
 | Machine state | Supervisor counterpart | Purpose |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ For example, setting `medeleg[15]` allows an S-mode store page fault to enter S-
 
 Delegation is not an interrupt enable. An interrupt additionally depends on the applicable pending and enable state and the current privilege. Use the CLINT/PLIC discussion in @sec-buses-interrupts for its origin and acknowledgement protocol. The current experiment delegates only the store page fault; its final S-mode `ecall` remains a machine-handled event.
 
-### Translation, protection and memory attributes
+### Translation, protection and memory attributes {#translation-protection-and-memory-attributes}
 
 A virtual address is the address in a process's memory-access contract. A physical address identifies a location in the system memory map. Software supplies page-table policy, while hardware performs translation and the required access checks. An address space can map two virtual pages to the same physical page, or give two processes different physical storage at the same virtual address.
 
@@ -151,7 +151,7 @@ The architecture supports fault-based A/D handling and hardware updates under th
 
 A hardware PTE update must be coordinated with competing modification of the entry. A naive independent byte store to the A bit is not a complete architectural implementation. Fault-based software similarly needs to distinguish a missing A/D flag from a real permission denial before deciding to repair and retry.
 
-### TLBs, fences and cache interaction
+### TLBs, fences and cache interaction {#tlbs-fences-and-cache-interaction}
 
 A TLB caches translations and permission information. A TLB miss can cause a hardware walk without any software trap. The page-table reads can hit the D-cache, and the translated data access can independently hit or miss in that cache. Measure these events separately.
 
@@ -171,7 +171,7 @@ A page fault can result from an invalid entry, denied virtual permissions, misal
 
 Recovering software has several choices: repair a mapping and retry the faulting instruction, emulate an operation where legal, reject a request, or terminate the affected process. Retrying normally leaves the saved PC at the faulting instruction. The example instead skips one deliberately denied, known four-byte store after validating its identity. That is a test convention, not a general page-fault handler. Blindly adding four fails for compressed instructions and can hide a real fault.
 
-### PMP policy before supervisor execution
+### PMP policy before supervisor execution {#pmp-policy-before-supervisor-execution}
 
 PMP entries can describe TOR or naturally aligned regions, subject to the implementation. In the ordinary baseline without enhanced PMP extensions, lower modes can be denied unmatched accesses when PMP entries are implemented, while M-mode normally bypasses unlocked permission restrictions. Locked entries and MPRV change the relevant conditions [@harrisRiscvSoc, Chapter 11].
 

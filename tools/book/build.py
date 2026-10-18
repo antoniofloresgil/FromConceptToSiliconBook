@@ -70,6 +70,8 @@ def main():
             shutil.copyfile(figure, output / 'figures' / figure.name)
         required = ['index.html', 'From-Concept-to-Silicon.pdf', 'downloads/hardware-design-labs.zip']
         required += ['learning-paths.html', 'downloads/learning-activities.csv']
+        required += ['glossary.html', 'term-index.html', 'lab-index.html',
+                     'experiment-index.html', 'downloads/experiment-matrix.csv']
         required += [p.relative_to(source).with_suffix('.html').as_posix()
                      for folder in ['chapters', 'appendices'] for p in (source / folder).rglob('*.qmd')]
         for name in required:

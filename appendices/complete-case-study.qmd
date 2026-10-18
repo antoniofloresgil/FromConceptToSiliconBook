@@ -178,9 +178,11 @@ The manifest profile requests a 10 ns clock and 45% core utilization. Its SDC st
 
 KLayout then reads the routed DEF with the matching LEF/layer mapping, merges the actual standard-cell GDS shapes and writes `dotproduct_axi.gds`. The stream-out script rejects empty unresolved cells and reopens the GDS to check the expected top-level hierarchy. This establishes a generated/readable layout with resolved cell geometry. It does not perform foundry DRC/LVS or prove that the layout implements the intended logic.
 
-![Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator.](../figures/complete-case-asic.png){#fig-complete-case-asic fig-alt="Actual routed Nangate45 physical implementation of the same dot-product accelerator" width=85%}
+![Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator.](../figures/complete-case-asic.png){#fig-complete-case-asic fig-alt="Actual routed Nangate45 physical implementation of the same dot-product accelerator" width=95%}
 
-![Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions.](../figures/complete-case-asic-critical.png){#fig-complete-case-critical fig-alt="Critical path highlighted in the actual OpenROAD dot-product implementation" width=85%}
+For grayscale printing, read these captures as geometry and topology overviews. Layer identity and exact critical-path pins come from the linked reports and original full-resolution captures; a colored highlight is not the timing evidence. The numeric result tables remain the basis for the acceptance decision.
+
+![Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions.](../figures/complete-case-asic-critical.png){#fig-complete-case-critical fig-alt="Critical path highlighted in the actual OpenROAD dot-product implementation" width=95%}
 
 ![Actual clock-tree topology from the routed accelerator. This clock network belongs to the accelerator block and does not include Wally or a chip-level clock tree.](../figures/complete-case-clocktree.png){#fig-complete-case-clocktree fig-alt="Clock-tree viewer export for the physically implemented dot-product IP" width=95%}
 

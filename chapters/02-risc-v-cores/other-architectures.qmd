@@ -168,7 +168,7 @@ Virtual memory changes the meaning of a load's “address.” It begins with a v
 
 CVA6 introduces a scoreboard and ordered retirement without requiring the reader to understand a full rename map, free list and reorder buffer at once. Trace a dependent load/add chain and then an independent add in a waveform or design document. Identify issue, result return and commit separately. This prepares the transition to BOOM and XiangShan.
 
-## BOOM: A Generator for Out-of-Order Execution
+## BOOM: A Generator for Out-of-Order Execution {#boom-a-generator-for-out-of-order-execution}
 
 BOOM (Berkeley Out-of-Order Machine) is a RISC-V core generator written in Chisel. It uses the Rocket Chip ecosystem for parts of its SoC environment, including memory-system structures. Its documentation describes fetch, decode, rename, dispatch, issue, register read, execution, memory, writeback and commit concepts, though physical pipeline registers may combine conceptual stages [@boomOverview; @boomPipeline].
 

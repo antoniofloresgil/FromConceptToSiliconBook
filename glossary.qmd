@@ -1,0 +1,490 @@
+# Technical Glossary {.unnumbered}
+
+Concise definitions for consultation. Follow **Read in context** for the assumptions, examples and limitations. The [term index](term-index.qmd) also includes aliases; the [lab index](lab-index.qmd) and [experiment matrix](experiment-index.qmd) lead to executable work.
+
+## ABI {#gloss-abi .reference-entry}
+
+Application binary interface: the calling, data-layout and binary conventions needed for separately compiled software to interoperate.
+
+**Read in context:** [ISA, ABI and platform](chapters/01-foundations/risc-v-isa.qmd#isa-abi-and-platform) `\textnormal{(p.~\pageref{isa-abi-and-platform})}`{=latex}.
+
+## AHB {#gloss-ahb .reference-entry}
+
+AMBA bus used by the selected Wally platform to connect the core bus interface to memory and peripheral bridges. Its transactions must be interpreted using the selected platform contract.
+
+**Read in context:** [AHB: address/data pipelining](chapters/04-soc-architecture/buses-interrupts.qmd#ref-ahb) `\textnormal{(p.~\pageref{ref-ahb})}`{=latex}.
+
+## APB {#gloss-apb .reference-entry}
+
+AMBA peripheral bus with setup and access phases, suited to register-oriented peripherals. A bridge translates transactions without changing the device register semantics.
+
+**Read in context:** [Wally's APB peripheral organization](chapters/04-soc-architecture/peripherals.qmd#wallys-apb-peripheral-organization) `\textnormal{(p.~\pageref{wallys-apb-peripheral-organization})}`{=latex}.
+
+## ASIC {#gloss-asic .reference-entry}
+
+Application-specific integrated circuit: hardware implemented for a selected technology. Layout generation, reference-deck validation and manufacturing qualification are separate milestones.
+
+**Read in context:** [From SystemVerilog RTL to GDSII](chapters/06-asic-implementation/rtl-to-gdsii.qmd#sec-rtl-gdsii) `\textnormal{(p.~\pageref{sec-rtl-gdsii})}`{=latex}.
+
+## Assertion {#gloss-assertion .reference-entry}
+
+An obligation checked against allowed executions. In formal work an assertion states what the design must guarantee under the harness assumptions.
+
+**Read in context:** [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+
+## Assumption {#gloss-assumption .reference-entry}
+
+A restriction on the environment or initial state used by a proof. An invalid restriction can hide a real design failure.
+
+**Read in context:** [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+
+## AXI4 {#gloss-axi4 .reference-entry}
+
+AMBA memory-mapped interface with independent channels and support for bursts and transaction identifiers. The accelerator in this book implements a deliberately narrower, single-beat DMA contract.
+
+**Read in context:** [AXI: why independent channels matter](chapters/04-soc-architecture/buses-interrupts.qmd#ref-axi4) `\textnormal{(p.~\pageref{ref-axi4})}`{=latex}.
+
+## AXI4-Lite {#gloss-axi4-lite .reference-entry}
+
+Memory-mapped AXI subset used for control/status registers. Address, data and response channels retain independent handshakes.
+
+**Read in context:** [AXI4-Lite for registers](chapters/04-soc-architecture/buses-interrupts.qmd#axi4-lite-for-registers) `\textnormal{(p.~\pageref{axi4-lite-for-registers})}`{=latex}.
+
+## Backpressure {#gloss-backpressure .reference-entry}
+
+A receiver delays acceptance by withdrawing readiness; the sender must retain the pending transfer according to the interface contract.
+
+**Read in context:** [A ready/valid elastic buffer](chapters/01-foundations/systemverilog.qmd#a-readyvalid-elastic-buffer) `\textnormal{(p.~\pageref{a-readyvalid-elastic-buffer})}`{=latex}.
+
+## Bitstream {#gloss-bitstream .reference-entry}
+
+Target-specific FPGA programming data produced after implementation. Generating a bitstream and observing the configured board are different evidence boundaries.
+
+**Read in context:** [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-bitstream) `\textnormal{(p.~\pageref{ref-bitstream})}`{=latex}.
+
+## BMC {#gloss-bmc .reference-entry}
+
+Bounded model checking: search for a violating execution within a finite number of transitions. Passing a bound alone is not an unbounded proof.
+
+**Read in context:** [Bounded checking and induction](chapters/03-simulation-verification/formal-verification.qmd#bounded-checking-and-induction) `\textnormal{(p.~\pageref{bounded-checking-and-induction})}`{=latex}.
+
+## Cache coherence {#gloss-cache-coherence .reference-entry}
+
+Agreement on the visible values of cached memory locations among agents in a declared coherence domain. It does not by itself provide software synchronization or a complete memory-ordering guarantee.
+
+**Read in context:** [Coherent and non-coherent agents](chapters/07-advanced-topics/multicore-integration.qmd#coherent-and-non-coherent-agents) `\textnormal{(p.~\pageref{coherent-and-non-coherent-agents})}`{=latex}.
+
+## CDC {#gloss-cdc .reference-entry}
+
+Clock domain crossing: transfer between independently clocked domains. The transfer mechanism must preserve the intended control or word-level ownership contract.
+
+**Read in context:** [Clock domains](chapters/01-foundations/clocking-timing.qmd#clock-domains) `\textnormal{(p.~\pageref{clock-domains})}`{=latex}.
+
+## Chisel {#gloss-chisel .reference-entry}
+
+A Scala-embedded hardware construction language. Elaboration produces hardware representations; equivalence to a separately handwritten RTL block still requires a stated comparison.
+
+**Read in context:** [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+
+## CIRCT {#gloss-circt .reference-entry}
+
+Compiler infrastructure for hardware intermediate representations and transformations, used here to lower generated hardware to emitted RTL.
+
+**Read in context:** [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+
+## Clock-tree synthesis {#gloss-clock-tree-synthesis .reference-entry}
+
+Implementation step that inserts and connects clock distribution cells to meet clock-network objectives. Timing must then account for propagated clock paths.
+
+**Read in context:** [Clock-tree synthesis](chapters/06-asic-implementation/openroad.qmd#ref-clock-tree-synthesis) `\textnormal{(p.~\pageref{ref-clock-tree-synthesis})}`{=latex}.
+
+## Counterexample {#gloss-counterexample .reference-entry}
+
+A trace showing a permitted execution that violates a property. It is evidence to diagnose and minimize, rather than a waveform selected only for illustration.
+
+**Read in context:** [The faulty priority rule](chapters/03-simulation-verification/formal-verification.qmd#the-faulty-priority-rule) `\textnormal{(p.~\pageref{the-faulty-priority-rule})}`{=latex}.
+
+## Cover property {#gloss-cover-property .reference-entry}
+
+A reachability objective that asks the formal engine to exhibit an execution reaching a specified event. Useful witnesses help expose vacuous assertion success.
+
+**Read in context:** [assert, assume and cover](chapters/03-simulation-verification/formal-verification.qmd#assert-assume-and-cover) `\textnormal{(p.~\pageref{assert-assume-and-cover})}`{=latex}.
+
+## CSR {#gloss-csr .reference-entry}
+
+Control and status register: an architectural register used for processor configuration, counters, privilege or trap management. Access rules depend on the ISA and privilege level.
+
+**Read in context:** [Machine and supervisor trap state](chapters/04-soc-architecture/privileged-mmu.qmd#machine-and-supervisor-trap-state) `\textnormal{(p.~\pageref{machine-and-supervisor-trap-state})}`{=latex}.
+
+## Device Tree {#gloss-device-tree .reference-entry}
+
+Description of platform hardware supplied to software, including devices, MMIO ranges and interrupt connections. It must agree with the implemented address map.
+
+**Read in context:** [Device tree is the platform description](chapters/04-soc-architecture/boot-software-stack.qmd#device-tree-is-the-platform-description) `\textnormal{(p.~\pageref{device-tree-is-the-platform-description})}`{=latex}.
+
+## DFT {#gloss-dft .reference-entry}
+
+Design for test: structures and modes that improve controllability and observability of manufactured hardware. Functional verification and production fault coverage are different obligations.
+
+**Read in context:** [DFT starts with controllability and observability](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#dft-starts-with-controllability-and-observability) `\textnormal{(p.~\pageref{dft-starts-with-controllability-and-observability})}`{=latex}.
+
+## DMA {#gloss-dma .reference-entry}
+
+Direct memory access: a device initiates memory transfers without a CPU instruction for each datum. Buffer ownership, address bounds, ordering and completion still require explicit contracts.
+
+**Read in context:** [DMA, Memory, and Coherence](chapters/07-advanced-topics/accelerators-extensions.qmd#dma-memory-and-coherence) `\textnormal{(p.~\pageref{dma-memory-and-coherence})}`{=latex}.
+
+## DRC {#gloss-drc .reference-entry}
+
+Design rule checking: compare layout geometry with a selected rule deck. A clean reference-deck result is not automatically foundry signoff.
+
+**Read in context:** [DRC: manufacturing legality](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#drc-manufacturing-legality) `\textnormal{(p.~\pageref{drc-manufacturing-legality})}`{=latex}.
+
+## Elaboration {#gloss-elaboration .reference-entry}
+
+Resolution of hardware hierarchy, parameters and generate constructs into a concrete design configuration before simulation or synthesis.
+
+**Read in context:** [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+
+## Equivalence {#gloss-equivalence .reference-entry}
+
+Agreement between implementations under an explicitly stated comparison model, input domain, reset treatment and observation boundary.
+
+**Read in context:** [Equivalence between implementations](chapters/03-simulation-verification/formal-verification.qmd#equivalence-between-implementations) `\textnormal{(p.~\pageref{equivalence-between-implementations})}`{=latex}.
+
+## False path {#gloss-false-path .reference-entry}
+
+A declared timing exception for a path that is not required to meet the ordinary timing relationship. It needs a functional justification; it is not a repair for a slow valid path.
+
+**Read in context:** [Exceptions are proof obligations](chapters/01-foundations/clocking-timing.qmd#exceptions-are-proof-obligations) `\textnormal{(p.~\pageref{exceptions-are-proof-obligations})}`{=latex}.
+
+## FIFO {#gloss-fifo .reference-entry}
+
+First-in, first-out storage preserving accepted transaction order. An asynchronous FIFO separates word storage from synchronized publication of ownership.
+
+**Read in context:** [A complete asynchronous FIFO](chapters/01-foundations/clocking-timing.qmd#sec-async-fifo) `\textnormal{(p.~\pageref{sec-async-fifo})}`{=latex}.
+
+## FIRRTL {#gloss-firrtl .reference-entry}
+
+Hardware intermediate representation associated with the Chisel flow; it describes elaborated hardware before later lowering and RTL emission.
+
+**Read in context:** [Hardware Generators and Modern HDL Toolchains](chapters/01-foundations/systemverilog.qmd#sec-hardware-generators) `\textnormal{(p.~\pageref{sec-hardware-generators})}`{=latex}.
+
+## Fmax {#gloss-fmax .reference-entry}
+
+Maximum clock frequency inferred under a stated implementation and timing model. A routed estimate is separate from a board measurement and does not summarize hold or electrical acceptance.
+
+**Read in context:** [Concepts](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-nextpnr-timing-concepts) `\textnormal{(p.~\pageref{ref-nextpnr-timing-concepts})}`{=latex}.
+
+## Formal verification {#gloss-formal-verification .reference-entry}
+
+Checking properties over a mathematical model of allowed executions. Its conclusion depends on the property, environment assumptions, model and proof method.
+
+**Read in context:** [A finite transition system](chapters/03-simulation-verification/formal-verification.qmd#a-finite-transition-system) `\textnormal{(p.~\pageref{a-finite-transition-system})}`{=latex}.
+
+## FPGA {#gloss-fpga .reference-entry}
+
+Field-programmable gate array: a configurable implementation target with device-specific logic, memory, routing and clock resources.
+
+**Read in context:** [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd#ref-fpga) `\textnormal{(p.~\pageref{ref-fpga})}`{=latex}.
+
+## GDSII {#gloss-gdsii .reference-entry}
+
+Layout exchange representation containing physical geometry and hierarchy. Producing it is a flow milestone, separate from qualifying manufacturing checks.
+
+**Read in context:** [Implementation](chapters/06-asic-implementation/rtl-to-gdsii.qmd#ref-rtl-to-gdsii-implementation) `\textnormal{(p.~\pageref{ref-rtl-to-gdsii-implementation})}`{=latex}.
+
+## Gray pointer {#gloss-gray-pointer .reference-entry}
+
+Pointer encoding in which adjacent published values change one bit, used by the asynchronous FIFO when synchronizing ownership across domains. Physical routing and reset assumptions remain necessary.
+
+**Read in context:** [Binary addresses, Gray publication and wrap](chapters/01-foundations/clocking-timing.qmd#binary-addresses-gray-publication-and-wrap) `\textnormal{(p.~\pageref{binary-addresses-gray-publication-and-wrap})}`{=latex}.
+
+## Hart {#gloss-hart .reference-entry}
+
+A RISC-V hardware thread with architectural state. A multicore platform must define how harts start, communicate and share devices and memory.
+
+**Read in context:** [Multicore integration challenges](chapters/07-advanced-topics/multicore-integration.qmd#multicore-integration-challenges) `\textnormal{(p.~\pageref{multicore-integration-challenges})}`{=latex}.
+
+## Hold timing {#gloss-hold-timing .reference-entry}
+
+Minimum-delay requirement preventing data from changing too early relative to the capture clock event. Lowering the frequency generally does not repair a same-edge hold failure.
+
+**Read in context:** [Hold timing](chapters/01-foundations/clocking-timing.qmd#hold-timing) `\textnormal{(p.~\pageref{hold-timing})}`{=latex}.
+
+## Induction {#gloss-induction .reference-entry}
+
+Proof technique combining a base case with a transition-preservation step, often strengthened by invariants. The induction state space must match the intended property and assumptions.
+
+**Read in context:** [Bounded checking and induction](chapters/03-simulation-verification/formal-verification.qmd#bounded-checking-and-induction) `\textnormal{(p.~\pageref{bounded-checking-and-induction})}`{=latex}.
+
+## IP contract {#gloss-ip-contract .reference-entry}
+
+The supported behavior, parameters, interfaces, dependencies and evidence supplied to an integrator as part of a reusable hardware release.
+
+**Read in context:** [Reusable IP Design and Packaging](appendices/executable-project.qmd#sec-reusable-ip) `\textnormal{(p.~\pageref{sec-reusable-ip})}`{=latex}.
+
+## IRQ {#gloss-irq .reference-entry}
+
+Interrupt request reporting an event to a processor. Device acknowledgement, interrupt-controller handling and software completion are distinct steps.
+
+**Read in context:** [Interrupts, exceptions and traps](chapters/04-soc-architecture/buses-interrupts.qmd#ref-irq) `\textnormal{(p.~\pageref{ref-irq})}`{=latex}.
+
+## LibreLane {#gloss-librelane .reference-entry}
+
+Integrated open ASIC implementation flow discussed here as an alternative to explicitly driving the individual synthesis and physical-design steps. Its configuration and PDK must match the selected release.
+
+**Read in context:** [Integrated ASIC Flow with LibreLane](chapters/06-asic-implementation/librelane.qmd#sec-librelane) `\textnormal{(p.~\pageref{sec-librelane})}`{=latex}.
+
+## LiteDRAM {#gloss-litedram .reference-entry}
+
+DRAM controller infrastructure used by the selected open Wally FPGA platform, with a PHY, initialization path and clock/reset requirements that need platform-specific validation.
+
+**Read in context:** [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd#ref-litedram) `\textnormal{(p.~\pageref{ref-litedram})}`{=latex}.
+
+## Liveness {#gloss-liveness .reference-entry}
+
+Progress requirement stating that something good eventually occurs. Bounded progress and unbounded liveness have different proof obligations and fairness assumptions.
+
+**Read in context:** [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+
+## LMUL {#gloss-lmul .reference-entry}
+
+Vector register grouping multiplier. Its architectural register grouping does not prescribe the physical banking of a vector implementation.
+
+**Read in context:** [Register file, grouping and effective grouping](chapters/07-advanced-topics/vector-processing.qmd#register-file-grouping-and-effective-grouping) `\textnormal{(p.~\pageref{register-file-grouping-and-effective-grouping})}`{=latex}.
+
+## LVS {#gloss-lvs .reference-entry}
+
+Layout versus schematic: compare a netlist extracted from layout with the selected reference circuit. Port, power and hierarchy conventions affect the comparison.
+
+**Read in context:** [LVS: connectivity and devices](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#lvs-connectivity-and-devices) `\textnormal{(p.~\pageref{lvs-connectivity-and-devices})}`{=latex}.
+
+## Memory ordering {#gloss-memory-ordering .reference-entry}
+
+Constraints on the order in which memory operations may be observed. Coherence and software synchronization address related but distinct requirements.
+
+**Read in context:** [Memory ordering in a real SoC](chapters/07-advanced-topics/multicore-integration.qmd#memory-ordering-in-a-real-soc) `\textnormal{(p.~\pageref{memory-ordering-in-a-real-soc})}`{=latex}.
+
+## MMIO {#gloss-mmio .reference-entry}
+
+Memory-mapped I/O: device registers occupy addresses accessed by software load/store operations. Device semantics, access width and ordering differ from ordinary RAM.
+
+**Read in context:** [Registers are not ordinary RAM](chapters/04-soc-architecture/peripherals.qmd#registers-are-not-ordinary-ram) `\textnormal{(p.~\pageref{registers-are-not-ordinary-ram})}`{=latex}.
+
+## MMU {#gloss-mmu .reference-entry}
+
+Memory management unit: translates virtual addresses and enforces page-level access permissions according to the selected privileged architecture.
+
+**Read in context:** [Translation, protection and memory attributes](chapters/04-soc-architecture/privileged-mmu.qmd#translation-protection-and-memory-attributes) `\textnormal{(p.~\pageref{translation-protection-and-memory-attributes})}`{=latex}.
+
+## Netlist {#gloss-netlist .reference-entry}
+
+An elaborated or transformed description of instances and connections. A generic, technology-mapped or layout-extracted netlist represents a different stage of the flow.
+
+**Read in context:** [FPGA Synthesis with Yosys](chapters/05-fpga-implementation/yosys.qmd#ref-netlist) `\textnormal{(p.~\pageref{ref-netlist})}`{=latex}.
+
+## nextpnr {#gloss-nextpnr .reference-entry}
+
+FPGA placement, routing and timing tool used with a supported device database and target constraints. A result applies to that exact device and configuration.
+
+**Read in context:** [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd#ref-nextpnr) `\textnormal{(p.~\pageref{ref-nextpnr})}`{=latex}.
+
+## OpenROAD {#gloss-openroad .reference-entry}
+
+Physical-design tool used here for floorplanning, placement, clock-tree synthesis, routing and analysis. The executable study records stage-specific timing and electrical evidence.
+
+**Read in context:** [Physical Design with OpenROAD](chapters/06-asic-implementation/openroad.qmd#sec-openroad) `\textnormal{(p.~\pageref{sec-openroad})}`{=latex}.
+
+## OpenSBI {#gloss-opensbi .reference-entry}
+
+Supervisor binary interface firmware providing a platform handoff and machine-mode services to supervisor software in the selected Linux boot flow.
+
+**Read in context:** [Machine firmware and the supervisor handoff](chapters/04-soc-architecture/boot-software-stack.qmd#machine-firmware-and-the-supervisor-handoff) `\textnormal{(p.~\pageref{machine-firmware-and-the-supervisor-handoff})}`{=latex}.
+
+## PDK {#gloss-pdk .reference-entry}
+
+Process design kit: technology views and rules used to implement and check a circuit. Reference educational views and qualified manufacturing collateral have different acceptance boundaries.
+
+**Read in context:** [The open ASIC stack](chapters/06-asic-implementation/rtl-to-gdsii.qmd#the-open-asic-stack) `\textnormal{(p.~\pageref{the-open-asic-stack})}`{=latex}.
+
+## PMA {#gloss-pma .reference-entry}
+
+Physical memory attributes: properties of a physical address region, such as cacheability and supported access behavior.
+
+**Read in context:** [Translation, protection and memory attributes](chapters/04-soc-architecture/privileged-mmu.qmd#translation-protection-and-memory-attributes) `\textnormal{(p.~\pageref{translation-protection-and-memory-attributes})}`{=latex}.
+
+## PMP {#gloss-pmp .reference-entry}
+
+Physical memory protection: programmable access checks over physical address regions, interpreted according to privilege and platform configuration.
+
+**Read in context:** [PMP policy before supervisor execution](chapters/04-soc-architecture/privileged-mmu.qmd#pmp-policy-before-supervisor-execution) `\textnormal{(p.~\pageref{pmp-policy-before-supervisor-execution})}`{=latex}.
+
+## PMU {#gloss-pmu .reference-entry}
+
+Performance monitoring unit: counters and event-selection mechanisms used to measure a workload within a stated region and configuration.
+
+**Read in context:** [Concepts](chapters/07-advanced-topics/pmu.qmd#ref-pmu-concepts) `\textnormal{(p.~\pageref{ref-pmu-concepts})}`{=latex}.
+
+## PPA {#gloss-ppa .reference-entry}
+
+Power, performance and area: implementation metrics that must be compared under compatible functionality, constraints, technology and activity assumptions.
+
+**Read in context:** [Dynamic power, leakage and energy](chapters/06-asic-implementation/vlsi-design.qmd#dynamic-power-leakage-and-energy) `\textnormal{(p.~\pageref{dynamic-power-leakage-and-energy})}`{=latex}.
+
+## PVT {#gloss-pvt .reference-entry}
+
+Process, voltage and temperature conditions used to characterize cells and analyze a timing or power scenario.
+
+**Read in context:** [PVT, RC corners and operating modes](chapters/06-asic-implementation/vlsi-design.qmd#pvt-rc-corners-and-operating-modes) `\textnormal{(p.~\pageref{pvt-rc-corners-and-operating-modes})}`{=latex}.
+
+## QEMU {#gloss-qemu .reference-entry}
+
+System emulator used for Linux, driver and firmware experiments. Its accelerator device model validates software-facing behavior, independently of Wally RTL execution.
+
+**Read in context:** [Booting a RISC-V SoC: From Reset Vector to Linux](chapters/04-soc-architecture/boot-software-stack.qmd#sec-boot-stack) `\textnormal{(p.~\pageref{sec-boot-stack})}`{=latex}.
+
+## RDC {#gloss-rdc .reference-entry}
+
+Reset domain crossing: interaction between state whose reset assertion or release relationships differ. A digital simulation pass does not establish metastability safety.
+
+**Read in context:** [Reset is a clocking problem too](chapters/01-foundations/clocking-timing.qmd#reset-is-a-clocking-problem-too) `\textnormal{(p.~\pageref{reset-is-a-clocking-problem-too})}`{=latex}.
+
+## ROB {#gloss-rob .reference-entry}
+
+Reorder buffer: tracks in-flight instructions and supports architectural retirement in program order even when execution completes out of order.
+
+**Read in context:** [BOOM: A Generator for Out-of-Order Execution](chapters/02-risc-v-cores/other-architectures.qmd#boom-a-generator-for-out-of-order-execution) `\textnormal{(p.~\pageref{boom-a-generator-for-out-of-order-execution})}`{=latex}.
+
+## RTL {#gloss-rtl .reference-entry}
+
+Register-transfer level: a behavioral representation of state updates and combinational computation, used here primarily in SystemVerilog. Elaboration and synthesis determine the implemented structure.
+
+**Read in context:** [Concepts](chapters/01-foundations/systemverilog.qmd#ref-systemverilog-concepts) `\textnormal{(p.~\pageref{ref-systemverilog-concepts})}`{=latex}.
+
+## RVV {#gloss-rvv .reference-entry}
+
+RISC-V vector extension: architectural vector operations with explicit vector configuration and tail/mask policies. Functional agreement does not imply a particular vector microarchitecture.
+
+**Read in context:** [Concepts](chapters/07-advanced-topics/vector-processing.qmd#ref-vector-processing-concepts) `\textnormal{(p.~\pageref{ref-vector-processing-concepts})}`{=latex}.
+
+## RVWMO {#gloss-rvwmo .reference-entry}
+
+RISC-V weak memory ordering model. Platform and software reasoning must distinguish allowed observations from cache-coherence and synchronization guarantees.
+
+**Read in context:** [Memory ordering in a real SoC](chapters/07-advanced-topics/multicore-integration.qmd#memory-ordering-in-a-real-soc) `\textnormal{(p.~\pageref{memory-ordering-in-a-real-soc})}`{=latex}.
+
+## Safety {#gloss-safety .reference-entry}
+
+A property excluding an unwanted event or state, such as loss, duplication or an out-of-bounds write.
+
+**Read in context:** [Safety and progress](chapters/03-simulation-verification/formal-verification.qmd#safety-and-progress) `\textnormal{(p.~\pageref{safety-and-progress})}`{=latex}.
+
+## Scan chain {#gloss-scan-chain .reference-entry}
+
+Test structure that shifts state through scan-enabled sequential elements and captures a response in a defined test mode.
+
+**Read in context:** [Scan shift and capture](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd#scan-shift-and-capture) `\textnormal{(p.~\pageref{scan-shift-and-capture})}`{=latex}.
+
+## SDC {#gloss-sdc .reference-entry}
+
+Synopsys Design Constraints: timing constraints describing clocks, interfaces and justified exceptions for implementation and analysis.
+
+**Read in context:** [The purpose of SDC](chapters/01-foundations/clocking-timing.qmd#the-purpose-of-sdc) `\textnormal{(p.~\pageref{the-purpose-of-sdc})}`{=latex}.
+
+## Setup timing {#gloss-setup-timing .reference-entry}
+
+Maximum-delay requirement ensuring data arrives sufficiently before the capture clock event, under the stated clock and interface constraints.
+
+**Read in context:** [Setup timing](chapters/01-foundations/clocking-timing.qmd#setup-timing) `\textnormal{(p.~\pageref{setup-timing})}`{=latex}.
+
+## SEW {#gloss-sew .reference-entry}
+
+Selected element width for vector operations, interpreted with the active vector configuration. It is distinct from physical vector-register width.
+
+**Read in context:** [The architectural vocabulary](chapters/07-advanced-topics/vector-processing.qmd#the-architectural-vocabulary) `\textnormal{(p.~\pageref{the-architectural-vocabulary})}`{=latex}.
+
+## Slack {#gloss-slack .reference-entry}
+
+Timing margin relative to a required arrival relationship. Setup and hold slack describe different checks and must be reported with corner, stage and constraint context.
+
+**Read in context:** [Slack, corners and modes](chapters/01-foundations/clocking-timing.qmd#slack-corners-and-modes) `\textnormal{(p.~\pageref{slack-corners-and-modes})}`{=latex}.
+
+## Slew {#gloss-slew .reference-entry}
+
+Signal transition time. Electrical slew limits constrain an implementation independently of whether its setup slack is positive.
+
+**Read in context:** [Read the failure before choosing the repair](chapters/06-asic-implementation/openroad.qmd#read-the-failure-before-choosing-the-repair) `\textnormal{(p.~\pageref{read-the-failure-before-choosing-the-repair})}`{=latex}.
+
+## SoC {#gloss-soc .reference-entry}
+
+System on chip: integration of processors, memories, interconnects, devices and their control/software contracts within a platform.
+
+**Read in context:** [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd#sec-core-v-wally) `\textnormal{(p.~\pageref{sec-core-v-wally})}`{=latex}.
+
+## STA {#gloss-sta .reference-entry}
+
+Static timing analysis: checks constrained paths using cell and interconnect delay models without enumerating functional simulation vectors.
+
+**Read in context:** [STA answers timing questions](chapters/01-foundations/clocking-timing.qmd#sta-answers-timing-questions) `\textnormal{(p.~\pageref{sta-answers-timing-questions})}`{=latex}.
+
+## Synchronization {#gloss-synchronization .reference-entry}
+
+Software or hardware protocol establishing when shared state may be accessed or ownership transferred. A fence alone does not clean a dirty non-coherent cache line.
+
+**Read in context:** [Coherent and non-coherent agents](chapters/07-advanced-topics/multicore-integration.qmd#coherent-and-non-coherent-agents) `\textnormal{(p.~\pageref{coherent-and-non-coherent-agents})}`{=latex}.
+
+## TLB {#gloss-tlb .reference-entry}
+
+Translation lookaside buffer: caches translations and permission information. Page-table changes require the architecture-defined invalidation and ordering protocol.
+
+**Read in context:** [TLBs, fences and cache interaction](chapters/04-soc-architecture/privileged-mmu.qmd#tlbs-fences-and-cache-interaction) `\textnormal{(p.~\pageref{tlbs-fences-and-cache-interaction})}`{=latex}.
+
+## TNS {#gloss-tns .reference-entry}
+
+Total negative slack: an aggregate timing deficit over the reported endpoints. Its meaning depends on the analysis mode and report conventions.
+
+**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+
+## Utilization {#gloss-utilization .reference-entry}
+
+Target or achieved use of available placement area. Higher utilization can reduce whitespace while increasing routing pressure; compare actual routed results.
+
+**Read in context:** [Floorplan and utilization](chapters/06-asic-implementation/openroad.qmd#floorplan-and-utilization) `\textnormal{(p.~\pageref{floorplan-and-utilization})}`{=latex}.
+
+## Vacuity {#gloss-vacuity .reference-entry}
+
+A property can pass without exercising its intended behavior, for example because its antecedent is unreachable under the assumptions. Reachability witnesses and controlled failures help detect this.
+
+**Read in context:** [Detect a vacuous success](chapters/03-simulation-verification/formal-verification.qmd#detect-a-vacuous-success) `\textnormal{(p.~\pageref{detect-a-vacuous-success})}`{=latex}.
+
+## Verilator {#gloss-verilator .reference-entry}
+
+RTL simulation and lint tool used here with compiled C++ harnesses and full-Wally fixtures. A simulator pass must be tied to an independent checker and selected configuration.
+
+**Read in context:** [Simulation with Verilator](chapters/03-simulation-verification/verilator.qmd#ref-verilator) `\textnormal{(p.~\pageref{ref-verilator})}`{=latex}.
+
+## VLEN {#gloss-vlen .reference-entry}
+
+Architectural vector-register size in bits for a selected RVV implementation, distinct from SEW and from the active vector length.
+
+**Read in context:** [The architectural vocabulary](chapters/07-advanced-topics/vector-processing.qmd#the-architectural-vocabulary) `\textnormal{(p.~\pageref{the-architectural-vocabulary})}`{=latex}.
+
+## Wally {#gloss-wally .reference-entry}
+
+The open-source RISC-V core and SoC used as the main platform case study. The reading configuration, firmware fixture and FPGA platform have separately identified boundaries.
+
+**Read in context:** [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd#sec-core-v-wally) `\textnormal{(p.~\pageref{sec-core-v-wally})}`{=latex}.
+
+## WNS {#gloss-wns .reference-entry}
+
+Worst negative slack: a summary of the worst timing deficit in the reported analysis. Read it with the setup/hold category, units, corner and full path report.
+
+**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+
+## Yosys {#gloss-yosys .reference-entry}
+
+Synthesis framework used to elaborate and transform RTL, map logic, and support selected formal and equivalence tasks. Generic synthesis reports do not establish routed timing.
+
+**Read in context:** [FPGA Synthesis with Yosys](chapters/05-fpga-implementation/yosys.qmd#ref-yosys) `\textnormal{(p.~\pageref{ref-yosys})}`{=latex}.
+

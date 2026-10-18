@@ -100,7 +100,7 @@ CTS distributes the clock through legal buffers and routes. It trades insertion 
 
 For a RISC-V SoC, clocks, resets and test controls also cross subsystem boundaries. Physical placement cannot turn an unsafe multi-bit crossing into a valid CDC protocol. Synchronizers, asynchronous FIFOs and reset-domain handling remain architectural obligations before layout, followed by structural and timing review after implementation.
 
-### PVT, RC corners and operating modes
+### PVT, RC corners and operating modes {#pvt-rc-corners-and-operating-modes}
 
 Manufactured devices differ from nominal models. Voltage and temperature change delay and leakage; metal variation changes route resistance and capacitance. A corner defines a modelled combination of these conditions. A mode defines behavior and constraints, such as functional operation or scan shift. Multi-mode, multi-corner analysis evaluates the required combinations rather than a single typical-condition run.
 
@@ -114,7 +114,7 @@ Manufactured devices differ from nominal models. Voltage and temperature change 
 
 Do not assume that one named slow corner always governs setup or that one fast corner always governs hold. Actual paths combine clock and data behavior, cell types and wires. Temperature dependence can also vary with technology and voltage. Analyze the combinations required by the selected methodology. Larger industrial flows may use on-chip variation models and common-clock-path pessimism removal; support and qualification must be verified for the chosen tools.
 
-### Dynamic power, leakage and energy
+### Dynamic power, leakage and energy {#dynamic-power-leakage-and-energy}
 
 The first-order capacitive switching estimate is
 

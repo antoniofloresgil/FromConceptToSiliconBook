@@ -1,0 +1,256 @@
+# Laboratory Index {.unnumbered}
+
+Directory of all numbered practice folders. A lab is a maintained package; an experiment is an individual learning activity and may use more than one package. The [experiment matrix](experiment-index.qmd) provides the reverse lookup. The README is the authority for commands, pinned versions and outputs; tools below are dependencies, not claims that every extension has been run.
+
+The [no-board guide](labs/NO-FPGA.md) gives hardware alternatives. Role and C0–C3 compute labels belong to individual [activities](learning-paths.qmd#sec-path-labels), not to a whole folder.
+
+## 01-foundations {#lab-01-foundations .reference-entry}
+
+[RTL and instruction building blocks](labs/01-foundations/README.md).
+
+**Tools:** Icarus Verilog; Python. **Prerequisites:** supported widths and deterministic vectors.
+
+**Contract / evidence to inspect:** immediates/decode, arithmetic/state, synchronizer and reset models.
+
+**Book activities:** [Clocking, Reset, and Timing Constraints](chapters/01-foundations/clocking-timing.qmd), [Microarchitecture Fundamentals](chapters/01-foundations/microarchitecture.qmd), [SystemVerilog for Hardware Design](chapters/01-foundations/systemverilog.qmd), [Introduction](intro.qmd).
+
+## 02-memory {#lab-02-memory .reference-entry}
+
+[Memory contracts and cache state](labs/02-memory/README.md).
+
+**Tools:** RTL simulator; Python cache model. **Prerequisites:** memory latency, line geometry and replacement policy.
+
+**Contract / evidence to inspect:** read/write collision rules, dirty eviction and independent hit/miss accounting.
+
+**Book activities:** [Memories and Caches](chapters/04-soc-architecture/memories-caches.qmd).
+
+## 03-transport {#lab-03-transport .reference-entry}
+
+[Transaction pipelines](labs/03-transport/README.md).
+
+**Tools:** RTL simulator; Python. **Prerequisites:** pipeline latency, valid/ready and flush rules.
+
+**Contract / evidence to inspect:** retirement/ordering, no loss or duplication under backpressure.
+
+**Book activities:** [Pipelines, Buffering and Backpressure](chapters/04-soc-architecture/pipelines.qmd).
+
+## 04-mmio {#lab-04-mmio .reference-entry}
+
+[Buses and peripheral effects](labs/04-mmio/README.md).
+
+**Tools:** RTL simulator; RISC-V compiler. **Prerequisites:** address decode, channel handshake and interrupt contract.
+
+**Contract / evidence to inspect:** backpressure, separate AXI channels, register effects and acknowledgement.
+
+**Book activities:** [Buses and Interrupts](chapters/04-soc-architecture/buses-interrupts.qmd), [Peripherals and SoC Integration](chapters/04-soc-architecture/peripherals.qmd).
+
+## 05-verification {#lab-05-verification .reference-entry}
+
+[Two verification environments](labs/05-verification/README.md).
+
+**Tools:** Verilator; C++ compiler; cocotb; Icarus Verilog. **Prerequisites:** simulation accumulator interface and independent oracle.
+
+**Contract / evidence to inspect:** C++ and Python tests with reset, edge cases and waveform evidence.
+
+**Book activities:** [Verification Methodology Across the Design Hierarchy](chapters/03-simulation-verification/verification-methodology.qmd), [Simulation with Verilator](chapters/03-simulation-verification/verilator.qmd), [Verification with cocotb](chapters/03-simulation-verification/cocotb.qmd).
+
+## 06-isa {#lab-06-isa .reference-entry}
+
+[From assembly to a signature](labs/06-isa/README.md).
+
+**Tools:** LLVM RISC-V assembler/linker; signature checker. **Prerequisites:** RV32 encoding and ABI; linker map.
+
+**Contract / evidence to inspect:** decoded immediates and architectural signature.
+
+**Book activities:** [RISC-V ISA: The Hardware–Software Contract](chapters/01-foundations/risc-v-isa.qmd), [Reference Models: Spike and Sail](chapters/03-simulation-verification/spike-sail.qmd).
+
+## 07-implementation {#lab-07-implementation .reference-entry}
+
+[Synthesis, then physical implementation](labs/07-implementation/README.md).
+
+**Tools:** Icarus Verilog; Yosys; optional OpenROAD or LibreLane. **Prerequisites:** implementation accumulator interface; PDK and SDC for physical work.
+
+**Contract / evidence to inspect:** generic netlist/latch checks; separately scoped implementation/DFT reports.
+
+**Book activities:** [FPGA Synthesis with Yosys](chapters/05-fpga-implementation/yosys.qmd), [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd), [Digital VLSI Design Fundamentals](chapters/06-asic-implementation/vlsi-design.qmd), [From SystemVerilog RTL to GDSII](chapters/06-asic-implementation/rtl-to-gdsii.qmd), [Integrated ASIC Flow with LibreLane](chapters/06-asic-implementation/librelane.qmd), [Physical Validation, DFT and Preparation for Fabrication](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd).
+
+## 08-integration {#lab-08-integration .reference-entry}
+
+[Wally observations and an accelerator exercise](labs/08-integration/README.md).
+
+**Tools:** pinned Wally source; Verilator; RISC-V compiler. **Prerequisites:** selected configuration and mapped firmware.
+
+**Contract / evidence to inspect:** configuration identity and traceable module/platform behavior.
+
+**Book activities:** [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd), [Other Open-Source RISC-V Architectures](chapters/02-risc-v-cores/other-architectures.qmd), [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd).
+
+## 09-privileged-mmu {#lab-09-privileged-mmu .reference-entry}
+
+[Privileged architecture and MMU](labs/09-privileged-mmu/README.md).
+
+**Tools:** Spike; RISC-V compiler; separately provisioned Wally harness. **Prerequisites:** RV32/Sv32 ELF, page tables and trap/signature setup.
+
+**Contract / evidence to inspect:** privilege/translation signature and denied store; RTL traces are separate.
+
+**Book activities:** [Reference Models: Spike and Sail](chapters/03-simulation-verification/spike-sail.qmd), [Privileged Architecture and the MMU](chapters/04-soc-architecture/privileged-mmu.qmd).
+
+## 10-dotproduct {#lab-10-dotproduct .reference-entry}
+
+[Executable HSD project: Wally-controlled AXI/DMA dot product](labs/10-dotproduct/README.md).
+
+**Tools:** Icarus Verilog; Python; Yosys/SMT; Verilator; RISC-V compiler. **Prerequisites:** AXI4-Lite/DMA policy, legal lengths and pinned Wally fixture.
+
+**Contract / evidence to inspect:** independent vectors, register/DMA checks, bounded formal and firmware/IRQ.
+
+**Book activities:** [CORE-V Wally: From a Pipelined Core to a SoC](chapters/02-risc-v-cores/core-v-wally.qmd), [Buses and Interrupts](chapters/04-soc-architecture/buses-interrupts.qmd), [Accelerators and ISA Extensions](chapters/07-advanced-topics/accelerators-extensions.qmd), [Executable Cross-Course Project: AXI/DMA Accelerator](appendices/executable-project.qmd), [Hardware System Design Coursework](appendices/hsd-coursework.qmd), [Final Project Review and Defence](summary.qmd).
+
+## 11-dse {#lab-11-dse .reference-entry}
+
+[Architectural exploration: real RTL and controlled analysis](labs/11-dse/README.md).
+
+**Tools:** Verilator; RISC-V compiler; Python. **Prerequisites:** paired workloads, ROI, source and configuration identities.
+
+**Contract / evidence to inspect:** correctness, real divider cycle results and separately labeled illustrative Pareto data.
+
+**Book activities:** [Performance Monitoring Units](chapters/07-advanced-topics/pmu.qmd), [Architectural Design Exploration](chapters/07-advanced-topics/architecture-exploration.qmd).
+
+## 12-boot {#lab-12-boot .reference-entry}
+
+[Boot and software-stack practice](labs/12-boot/README.md).
+
+**Tools:** Clang/LLD; QEMU; OpenSBI; device-tree compiler; Linux build tools. **Prerequisites:** documented virt platform and firmware path; kernel/rootfs for Linux extension.
+
+**Contract / evidence to inspect:** SBI supervisor handoff and separately scoped Linux userspace boot.
+
+**Book activities:** [Booting a RISC-V SoC: From Reset Vector to Linux](chapters/04-soc-architecture/boot-software-stack.qmd).
+
+## 13-vector {#lab-13-vector .reference-entry}
+
+[RVV 1.0: portable dot product and masked stores](labs/13-vector/README.md).
+
+**Tools:** RISC-V vector compiler; QEMU. **Prerequisites:** supported RVV ISA/ABI and reference vectors.
+
+**Contract / evidence to inspect:** scalar/vector agreement, tails and masked stores; no RTL PPA claim.
+
+**Book activities:** [RISC-V Vector Processing: From Scalar Loops to RVV](chapters/07-advanced-topics/vector-processing.qmd).
+
+## 14-security {#lab-14-security .reference-entry}
+
+[Hardware security: five scoped experiments](labs/14-security/README.md).
+
+**Tools:** RTL simulator; Python; QEMU/compiler; solver for formal checks. **Prerequisites:** threat model and per-experiment image.
+
+**Contract / evidence to inspect:** scoped boot authorization, debug, isolation, leakage and DMA denial evidence.
+
+**Book activities:** [Hardware Debug for RISC-V](chapters/07-advanced-topics/debug.qmd), [Hardware Security: From Threat Models to Secure SoCs](chapters/07-advanced-topics/hardware-security.qmd).
+
+## 15-formal {#lab-15-formal .reference-entry}
+
+[Formal RTL: FIFO properties, induction and equivalence](labs/15-formal/README.md).
+
+**Tools:** Yosys; SMT solver; executable Lab 15 scripts. **Prerequisites:** explicit reset/environment assumptions and proof depth.
+
+**Contract / evidence to inspect:** assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope.
+
+**Book activities:** [Formal Verification of RTL: Properties, Proofs, and Counterexamples](chapters/03-simulation-verification/formal-verification.qmd).
+
+## 16-openroad-study {#lab-16-openroad-study .reference-entry}
+
+[OpenROAD: measured clock/utilization study](labs/16-openroad-study/README.md).
+
+**Tools:** OpenROAD; Yosys; STA; Nangate45 reference views. **Prerequisites:** identified netlist, SDC, utilization and tool image.
+
+**Contract / evidence to inspect:** placement/CTS/routing comparison, extracted timing and electrical checks.
+
+**Book activities:** [Physical Design with OpenROAD](chapters/06-asic-implementation/openroad.qmd).
+
+## 17-complete-case {#lab-17-complete-case .reference-entry}
+
+[Complete case: one dot-product RTL release across all stages](labs/17-complete-case/README.md).
+
+**Tools:** Yosys; nextpnr; OpenROAD; target FPGA databases; Nangate45. **Prerequisites:** one RTL/firmware manifest, interface fixtures and target-specific constraints.
+
+**Contract / evidence to inspect:** functional provenance, FPGA placement/routing and ASIC physical reports.
+
+**Book activities:** [Place, Route, Timing, and Programming with nextpnr](chapters/05-fpga-implementation/nextpnr-timing.qmd), [CORE-V Wally on the Nexys Video](chapters/05-fpga-implementation/fpga-soc.qmd), [From SystemVerilog RTL to GDSII](chapters/06-asic-implementation/rtl-to-gdsii.qmd), [Complete Case Study: From RTL Specification to an Implemented SoC](appendices/complete-case-study.qmd), [Final Project Review and Defence](summary.qmd).
+
+## 18-linux-accelerator {#lab-18-linux-accelerator .reference-entry}
+
+[Linux driver and advanced Wally platform](labs/18-linux-accelerator/README.md).
+
+**Tools:** QEMU/Linux driver tools; Verilator for Wally. **Prerequisites:** kernel/DT/device model agreement.
+
+**Contract / evidence to inspect:** MMIO, DMA ownership, IRQ and user result.
+
+**Book activities:** [Booting a RISC-V SoC: From Reset Vector to Linux](chapters/04-soc-architecture/boot-software-stack.qmd).
+
+## 19-hardware-generators {#lab-19-hardware-generators .reference-entry}
+
+[Hardware generators](labs/19-hardware-generators/README.md).
+
+**Tools:** Chisel; FIRRTL/CIRCT; Yosys. **Prerequisites:** pinned generator toolchain and width configuration.
+
+**Contract / evidence to inspect:** trace emitted RTL, compare results and reject priority defect.
+
+**Book activities:** [SystemVerilog for Hardware Design](chapters/01-foundations/systemverilog.qmd).
+
+## 20-multicore {#lab-20-multicore .reference-entry}
+
+[Multicore integration](labs/20-multicore/README.md).
+
+**Tools:** QEMU/Linux; Python. **Prerequisites:** two-hart workload and declared DMA model.
+
+**Contract / evidence to inspect:** ownership protocol and separate coherence/ordering models.
+
+**Book activities:** [Multicore SoC Integration: Coherence, Interconnects, and Verification](chapters/07-advanced-topics/multicore-integration.qmd).
+
+## 21-physical-closure {#lab-21-physical-closure .reference-entry}
+
+[Physical closure](labs/21-physical-closure/README.md).
+
+**Tools:** OpenROAD; Yosys; FPGA tools. **Prerequisites:** locked baseline and compatible target constraints.
+
+**Contract / evidence to inspect:** functional regression plus timing/electrical acceptance.
+
+**Book activities:** [Physical Design with OpenROAD](chapters/06-asic-implementation/openroad.qmd), [Complete Case Study: From RTL Specification to an Implemented SoC](appendices/complete-case-study.qmd).
+
+## 22-layout-verification {#lab-22-layout-verification .reference-entry}
+
+[Reference layout checks](labs/22-layout-verification/README.md).
+
+**Tools:** Magic; Netgen; OpenROAD; FreePDK45. **Prerequisites:** reference rule decks and power connectivity.
+
+**Contract / evidence to inspect:** DRC, LVS, extracted timing and rejected defects.
+
+**Book activities:** [Physical Validation, DFT and Preparation for Fabrication](chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd), [Complete Case Study: From RTL Specification to an Implemented SoC](appendices/complete-case-study.qmd).
+
+## 23-reusable-ip {#lab-23-reusable-ip .reference-entry}
+
+[Reusable IP release](labs/23-reusable-ip/README.md).
+
+**Tools:** Python; RTL simulator; Wally tools. **Prerequisites:** single register description and legal configurations.
+
+**Contract / evidence to inspect:** immutable package, two integrations and rejected defects.
+
+**Book activities:** [Accelerators and ISA Extensions](chapters/07-advanced-topics/accelerators-extensions.qmd), [Executable Cross-Course Project: AXI/DMA Accelerator](appendices/executable-project.qmd), [Hardware System Design Coursework](appendices/hsd-coursework.qmd), [Final Project Review and Defence](summary.qmd).
+
+## 24-async-fifo {#lab-24-async-fifo .reference-entry}
+
+[Asynchronous FIFO](labs/24-async-fifo/README.md).
+
+**Tools:** Icarus Verilog; Yosys; Python. **Prerequisites:** common reset epoch and supported depth/width.
+
+**Contract / evidence to inspect:** dual-clock ordering, pointer structure and negative controls.
+
+**Book activities:** [Clocking, Reset, and Timing Constraints](chapters/01-foundations/clocking-timing.qmd).
+
+## 25-hardware-ci {#lab-25-hardware-ci .reference-entry}
+
+[Continuous hardware verification](labs/25-hardware-ci/README.md).
+
+**Tools:** Verilator; Icarus Verilog; Yosys; SMT solver. **Prerequisites:** locked interface, seeds and justified area threshold.
+
+**Contract / evidence to inspect:** lint to reports, freshness and rejected mutations.
+
+**Book activities:** [Verification Methodology Across the Design Hierarchy](chapters/03-simulation-verification/verification-methodology.qmd), [Hardware System Design Coursework](appendices/hsd-coursework.qmd), [Reproducing the Laboratory Package](appendices/reproducible-labs.qmd).
+

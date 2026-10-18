@@ -4,6 +4,8 @@ Executable reference sources and tests are included in the [laboratory package](
 
 ## Concepts
 
+[]{#ref-systemverilog-concepts .reference-destination}
+
 This chapter follows the hardware-design topics in Chapter 4 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc]. The explanations and examples below are written for this book. The [Wally coding-style appendix](../../appendices/wally-style.qmd) summarizes Section 4.3 of the supplied edition; the [keyword cheat sheet](../../appendices/systemverilog-cheatsheet.qmd) provides a quick reference.
 
 ### From Verilog to SystemVerilog
@@ -247,7 +249,7 @@ endmodule
 
 `Busy` is a Moore output. `Start` while active is ignored in this contract, and reset returns the controller to idle. These decisions belong in its tests.
 
-### A ready/valid elastic buffer
+### A ready/valid elastic buffer {#a-readyvalid-elastic-buffer}
 
 Consider a one-entry elastic buffer, `rv_slice`. It stores a payload and a valid bit:
 

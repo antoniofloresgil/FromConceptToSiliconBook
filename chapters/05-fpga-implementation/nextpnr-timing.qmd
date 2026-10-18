@@ -1,6 +1,12 @@
 # Place, Route, Timing, and Programming with nextpnr
 
+[]{#ref-nextpnr .reference-destination}
+
+[]{#ref-bitstream .reference-destination}
+
 ## Concepts
+
+[]{#ref-nextpnr-timing-concepts .reference-destination}
 
 Yosys establishes which FPGA primitives implement the design. Physical implementation decides where they go, which programmable wires connect them and whether signals can arrive within the available clock period. For Xilinx 7-series devices, the open stack combines `nextpnr-xilinx` with Project X-Ray device data. nextpnr is timing-driven free and open-source place-and-route software; XC7 support is marked experimental, so each bitstream needs explicit report review and hardware validation [@nextpnrRepository].
 

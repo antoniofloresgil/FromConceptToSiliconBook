@@ -67,7 +67,7 @@ That is enough for this one-hart supervisor payload. A reusable startup also def
 
 ## Implementation
 
-### Machine firmware and the supervisor handoff
+### Machine firmware and the supervisor handoff {#machine-firmware-and-the-supervisor-handoff}
 
 OpenSBI is an implementation of the Supervisor Binary Interface. In the ordinary native configuration it remains resident in M-mode, initializes platform state and services requests from S-mode. The SBI is the interface; OpenSBI is one implementation. A bootloader has a different role: finding images, loading them and selecting what to boot.
 
@@ -128,7 +128,7 @@ These devices were introduced in the buses chapter. Here the question is whether
 
 For early bring-up, use one hart, one UART and a known timer source. Add SMP only after the single-hart handoff is stable. Coherent memory, per-hart stacks, startup synchronization, IPIs and remote fences then become explicit acceptance criteria, rather than incidental consequences of increasing `-smp`.
 
-### Device tree is the platform description
+### Device tree is the platform description {#device-tree-is-the-platform-description}
 
 A device tree describes hardware that software cannot discover automatically. A textual DTS is compiled into a binary DTB. It describes CPU/hart information, usable RAM, bus address translation, clocks, interrupt connections, device compatibility and chosen boot settings. It does not contain the device driver implementation [@bootDeviceTree].
 

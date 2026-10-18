@@ -6,13 +6,13 @@
  <style><![CDATA[
  text {font-family:Arial,Helvetica,sans-serif;fill:#172a42}
  .heading {font-size:43px;font-weight:700;letter-spacing:.4px}
- .subtitle {font-size:18px;fill:#536782}
- .section {font-size:19px;font-weight:700;fill:#244f79}
+ .subtitle {font-size:20px;fill:#536782}
+ .section {font-size:20px;font-weight:700;fill:#244f79}
  .stage {fill:#fff;stroke:#51799c;stroke-width:2}
  .physical {fill:#ecf5fb;stroke:#3981af;stroke-width:2}
  .utility {fill:#f5f8fc;stroke:#829ab1;stroke-width:2;stroke-dasharray:6 5}
- .txt {font-size:19px;font-weight:600;text-anchor:middle}
- .detail {font-size:15px;font-weight:400;fill:#536782;text-anchor:middle}
+ .txt {font-size:20px;font-weight:600;text-anchor:middle}
+ .detail {font-size:20px;font-weight:400;fill:#536782;text-anchor:middle}
  .arrow {stroke:#304966;stroke-width:2.8;fill:none;marker-end:url(#arr);stroke-linejoin:round}
  .line {stroke:#304966;stroke-width:2.8;fill:none;stroke-linejoin:round}
  ]]></style>
@@ -38,7 +38,7 @@
 <text x="600" y="581" class="txt">Design for test (DFT)</text><text x="600" y="604" class="detail">Fault</text>
 <!-- auxiliary -->
 <rect x="115" y="345" width="230" height="95" rx="12" class="utility"/>
-<text x="230" y="379" class="txt" style="font-size:17px">Synthesis exploration</text><text x="230" y="404" class="detail">Iterate on RTL / constraints</text>
+<text x="230" y="379" class="txt" style="font-size:20px">Synthesis exploration</text><text x="230" y="404" class="detail">Iterate on RTL / constraints</text>
 <path d="M410 369 H367" class="arrow"/>
 <path d="M345 412 H375 V478 H410" class="arrow"/>
 <rect x="855" y="341" width="226" height="110" rx="13" class="utility"/>
@@ -62,21 +62,21 @@
 <!-- post physical flow -->
 <path d="M810 963 H850 V719 H865" class="arrow"/>
 <rect x="865" y="699" width="215" height="75" rx="11" class="stage"/>
-<text x="972" y="728" class="txt" style="font-size:17px">Antenna diode</text><text x="972" y="750" class="txt" style="font-size:17px">insertion</text>
+<text x="972" y="728" class="txt" style="font-size:20px">Antenna diode</text><text x="972" y="750" class="txt" style="font-size:20px">insertion</text>
 <path d="M972 774 V800" class="arrow"/>
 <rect x="865" y="800" width="215" height="75" rx="11" class="stage"/>
-<text x="972" y="828" class="txt" style="font-size:17px">Logic equivalence</text><text x="972" y="850" class="detail">Yosys</text>
+<text x="972" y="828" class="txt" style="font-size:20px">Logic equivalence</text><text x="972" y="850" class="detail">Yosys</text>
 <path d="M972 875 V901" class="arrow"/>
 <rect x="865" y="901" width="215" height="75" rx="11" class="stage"/>
-<text x="972" y="929" class="txt" style="font-size:17px">Detailed routing</text><text x="972" y="953" class="detail">TritonRoute</text>
+<text x="972" y="929" class="txt" style="font-size:20px">Detailed routing</text><text x="972" y="953" class="detail">TritonRoute</text>
 <!-- design exploration -->
 <rect x="115" y="810" width="230" height="86" rx="12" class="utility"/>
-<text x="230" y="844" class="txt" style="font-size:17px">Design exploration</text><text x="230" y="867" class="detail">PPA iterations</text>
+<text x="230" y="844" class="txt" style="font-size:20px">Design exploration</text><text x="230" y="867" class="detail">PPA iterations</text>
 <path d="M865 946 H826 V1036 H230 V896" class="arrow"/>
 <path d="M230 810 V682 H390" class="arrow"/>
 <!-- outputs -->
 <path d="M972 976 V1135 H600" class="arrow"/>
 <rect x="354" y="1108" width="492" height="96" rx="14" fill="#eaf5ed" stroke="#4b9272" stroke-width="2.5"/>
-<text x="600" y="1147" class="txt" style="font-size:22px">Manufacturing-ready files</text>
-<text x="600" y="1177" class="detail" style="font-size:19px">GDSII / LEF</text>
+<text x="600" y="1147" class="txt" style="font-size:22px">Layout exchange files</text>
+<text x="600" y="1177" class="detail" style="font-size:20px">GDSII / LEF</text>
 </svg>

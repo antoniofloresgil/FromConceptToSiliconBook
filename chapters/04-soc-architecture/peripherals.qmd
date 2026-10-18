@@ -44,7 +44,7 @@ The bus connects the processor to a controller; UART or SPI connects that contro
 
 Start with a register specification and timing diagrams before integrating a processor. A standalone bus testbench and external-device model make defects easier to localize than a full software workload that fails silently.
 
-### Registers are not ordinary RAM
+### Registers are not ordinary RAM {#registers-are-not-ordinary-ram}
 
 Control registers configure future behavior. Status registers expose device state. Data registers can enqueue or dequeue a byte. Command registers can start a transaction. Reading all addresses to inspect the device can therefore change it.
 
@@ -214,7 +214,7 @@ Following @sec-verification-methodology, test register semantics, side effects a
 
 ## Implementation
 
-### Wally's APB peripheral organization
+### Wally's APB peripheral organization {#wallys-apb-peripheral-organization}
 
 The uncore decodes physical regions and connects its AHB–APB bridge to enabled peripherals. It routes peripheral interrupts to the PLIC, while CLINT's timer/software requests have their local hart paths. GPIO alternate-function wiring can route PWM output to pins [@cvwUncore].
 

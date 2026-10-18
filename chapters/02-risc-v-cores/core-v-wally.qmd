@@ -26,6 +26,14 @@ The following improved pipeline is reproduced from Figure 7.13 of *RISC-V System
 
 ![Improved pipelined RISC-V datapath with synchronous memories. Source: Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Chapter 7, Figure 7.13.](../../figures/wally-figure-7-13-editable.svg){#fig-wally-pipeline-synchronous fig-alt="Improved five-stage Wally-style pipeline with synchronous instruction and data memories"}
 
+The complete datapath is an orientation view. For signal names in print, use the following three overlapping enlargements, read from left to right. A wire crossing a crop edge continues in the neighboring view; the crops do not introduce new circuit boundaries. The [original vector figure](../../figures/wally-figure-7-13-editable.svg) remains available for unrestricted zoom.
+
+![Left detail of the synchronous-memory datapath; overlaps the central view. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.](../../figures/wally-pipeline-detail-1.svg){#fig-wally-pipeline-left width=100%}
+
+![Central detail of the same datapath; overlaps both neighbors. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.](../../figures/wally-pipeline-detail-2.svg){#fig-wally-pipeline-center width=100%}
+
+![Right detail of the same datapath; overlaps the central view. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.](../../figures/wally-pipeline-detail-3.svg){#fig-wally-pipeline-right width=100%}
+
 The picture should be read as a timing contract. An instruction enters Fetch with a PC. It crosses each vertical stage boundary only when the corresponding pipeline register enables it. Values displayed in later stages belong to older instructions; several instructions are active at once. In a waveform, always identify an instruction by its pipeline register and program counter rather than by a signal name alone.
 
 ### Fetch and synchronous instruction memory

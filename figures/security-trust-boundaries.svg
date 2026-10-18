@@ -21,9 +21,9 @@
       <text x="165" y="382">MMU + PMP</text><text x="500" y="382">DMA access control</text><text x="835" y="382">Debug admission</text>
       <text x="500" y="524">Interconnect, protected RAM, firmware storage and peripherals</text>
     </g>
-    <g font-size="15">
+    <g font-size="18">
       <text x="500" y="132">Policy inputs must be trusted, reset-safe and protected from unprivileged writes</text>
-      <text x="165" y="409">CPU permissions and translation</text><text x="500" y="409">Range / identity / firewall</text><text x="835" y="409">Lifecycle / auth / bus firewall</text>
+      <text x="165" y="409">CPU access policy</text><text x="500" y="409">Range / identity / firewall</text><text x="835" y="409">Lifecycle / authorization</text>
     </g>
     <g stroke="#34465d" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
       <path d="M165 290V350"/><path d="M500 290V350"/><path d="M835 290V350"/>
@@ -34,6 +34,6 @@
       <path d="M500 155V200H350V390H375"/>
       <path d="M835 155V200H685V390H710"/>
     </g>
-    <text x="500" y="573" font-size="14">Original architecture proposal for teaching; these controls are not all implemented in stock Wally.</text>
+    <text x="500" y="573" font-size="18">Original architecture proposal for teaching; these controls are not all implemented in stock Wally.</text>
   </g>
 </svg>

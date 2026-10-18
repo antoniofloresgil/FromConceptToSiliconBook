@@ -23,7 +23,7 @@ Passing one row cannot substitute for the others. A booting RISC-V program prove
 
 ![Evidence needed between implementation and fabricated silicon. Original diagram for this chapter, organized using the verification and test distinctions in Weste and Harris, Chapters 14 and 15.](../../figures/asic-validation-evidence.svg){#fig-asic-validation-evidence fig-alt="A release layout is checked for geometry, connectivity, timing and power, then reviewed with DFT, package and test information before fabrication and silicon bring-up"}
 
-### DRC: manufacturing legality
+### DRC: manufacturing legality {#drc-manufacturing-legality}
 
 Design-rule checking applies the technology's geometric constraints to the layout. Width and spacing checks are familiar starting points, but a usable deck also handles enclosure, via placement, well relationships and other requirements. The exact rule set depends on process options and the integration level. KLayout provides geometry-checking primitives and marker reports; the technology deck determines what is actually checked [@klayoutDrcGuide].
 
@@ -31,7 +31,7 @@ A violation report needs a rule identifier, cell or hierarchy context and coordi
 
 Router DRC is valuable during detailed routing but usually works with the router's model and abstract views. Final layout checking sees the assembled GDS, including the detailed geometries of cells, macros and chip structures. Retain both sets of results and state their scope. A zero router violation count is not a claim that every manufacturing rule was tested.
 
-### LVS: connectivity and devices
+### LVS: connectivity and devices {#lvs-connectivity-and-devices}
 
 LVS extracts devices and connections from layout and compares them with a reference circuit. Depending on the flow and hierarchy, that comparison can use transistor-level extraction, recognized subcircuits or hierarchical macro models. Read the PDK's extraction and matching methodology before choosing the reference netlist [@klayoutLvsGuide].
 
@@ -93,7 +93,7 @@ Use the earliest invalid stage to narrow the cause. For an LVS open on a supply,
 
 Make a controlled correction and rerun affected stages. A changed clock period affects STA and implementation objectives. A changed route affects parasitics and physical checks. A scan transformation changes the netlist, placement needs, test modes and possibly the clock structure. Record these dependencies rather than copying an earlier passing summary into a new candidate.
 
-### DFT starts with controllability and observability
+### DFT starts with controllability and observability {#dft-starts-with-controllability-and-observability}
 
 A manufacturing defect can be detected only if a test excites it and observes its effect. Controllability describes the ability to establish the required internal conditions; observability describes the ability to see the resulting difference. Deep state and inaccessible buses can make both difficult. DFT adds structures that expose state or stimulate otherwise hard-to-reach circuitry [@westeCmosVlsi, Sections 15.5–15.6].
 
@@ -101,7 +101,7 @@ Stuck-at faults model a node permanently at zero or one. Transition faults model
 
 Fault coverage is the fraction of faults detected under a defined model and classification. It differs from statement coverage, instruction coverage and passing application tests. Record detected, untestable and unresolved faults with the denominator convention. A reported percentage without its model, exclusions and pattern constraints cannot be interpreted reliably.
 
-### Scan shift and capture
+### Scan shift and capture {#scan-shift-and-capture}
 
 A scan register selects between functional data and serial test data. With scan enabled, registers form one or more shift chains. A test loads an internal state, switches to functional capture to exercise logic, and shifts the resulting state out. Scan makes a sequential block easier to test by exposing its state boundary.
 

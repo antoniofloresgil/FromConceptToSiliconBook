@@ -194,7 +194,7 @@ software reads status, clears W1C bits, releases buffer
 
 Test the race where an interrupt arrives exactly as software enables it, and the case where software clears `DONE` while a new completion occurs. A single `done` flip-flop with poorly ordered writes is a common source of lost work.
 
-## DMA, Memory, and Coherence
+## DMA, Memory, and Coherence {#dma-memory-and-coherence}
 
 ### Why DMA changes the problem
 

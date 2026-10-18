@@ -274,7 +274,7 @@ python labs/11-dse/test_analysis.py
 
 Geometric-mean speedups are about 1.000, 1.303 and 1.046. Small-cache dominates large-cache in aggregate time/LUT/BRAM/DSP. Base and small-cache remain on the frontier. Small-cache still slows compute by about 4.17%; the mean does not erase that regression.
 
-![Illustrative design trade-offs, calculated from the supplied teaching CSV. These are invented example values, not measured Wally FPGA results. The frontier uses time, LUT, BRAM and DSP; this projection shows time versus LUT.](../../figures/dse-illustrative-pareto.svg){#fig-dse-illustrative-pareto fig-alt="Base and small-cache are nondominated; large-cache is dominated despite its lower workload cycle counts"}
+![Illustrative design trade-offs, calculated from the supplied teaching CSV. These are invented example values, not measured Wally FPGA results. The frontier uses time, LUT, BRAM and DSP; this projection shows time versus LUT.](../../figures/dse-print-pareto.svg){#fig-dse-illustrative-pareto fig-alt="Base and small-cache are nondominated; large-cache is dominated despite its lower workload cycle counts"}
 
 The SVG is labelled illustrative. Analysis refuses unmatched binary/input/ROI/target/origin and requested-clock substitution, retains rejected cases, and requires positive qualified frequency. Its schema has one aggregate observation per workload/candidate. Raw repeated trials and physical evidence are separate inputs to a real selection.
 
