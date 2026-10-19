@@ -78,3 +78,14 @@ different category: update it through its documented collection/integrity proces
 Preserve unrelated working-tree changes, including existing untracked renders.
 The current automatic lab set, CI tiers and separate output directories are
 defined by the catalogue/contracts/workflows, not by an assumed `run all` scope.
+
+Lab 25 also checks exact workflow snapshots under
+`labs/25-hardware-ci/reference/workflows/`. After a reviewed change to a recorded
+workflow, update its snapshot and the corresponding `sources` and `artifacts`
+entries in `reference/inventory.json`, then run
+`python labs/25-hardware-ci/verify_reference.py` in both the repository and the
+extracted practice ZIP. For publication-only changes, this records the current
+publication recipe; it does not establish a new hardware run. Preserve the
+recorded hardware reports and policy. Changes affecting hardware execution or
+acceptance require fresh applicable runs and evidence collection as documented
+in the [Lab 25 guide](../labs/25-hardware-ci/README.md).
