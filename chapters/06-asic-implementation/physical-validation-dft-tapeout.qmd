@@ -23,6 +23,8 @@ Passing one row cannot substitute for the others. A booting RISC-V program prove
 
 ![Evidence needed between implementation and fabricated silicon. Original diagram for this chapter, organized using the verification and test distinctions in Weste and Harris, Chapters 14 and 15.](../../figures/asic-validation-evidence.svg){#fig-asic-validation-evidence fig-alt="A release layout is checked for geometry, connectivity, timing and power, then reviewed with DFT, package and test information before fabrication and silicon bring-up"}
 
+Read @fig-asic-validation-evidence as separate evidence obligations: connectivity, geometry, timing, supply and manufacturing tests do not substitute for one another.
+
 ### DRC: manufacturing legality {#drc-manufacturing-legality}
 
 Design-rule checking applies the technology's geometric constraints to the layout. Width and spacing checks are familiar starting points, but a usable deck also handles enclosure, via placement, well relationships and other requirements. The exact rule set depends on process options and the integration level. KLayout provides geometry-checking primitives and marker reports; the technology deck determines what is actually checked [@klayoutDrcGuide].
@@ -106,6 +108,8 @@ Fault coverage is the fraction of faults detected under a defined model and clas
 A scan register selects between functional data and serial test data. With scan enabled, registers form one or more shift chains. A test loads an internal state, switches to functional capture to exercise logic, and shifts the resulting state out. Scan makes a sequential block easier to test by exposing its state boundary.
 
 ![Scan loading, functional capture and response unloading. Original pedagogical diagram; scan principles are discussed in Weste and Harris, Section 15.6.2.](../../figures/scan-shift-capture.svg){#fig-scan-shift-capture fig-alt="Three scan registers form a serial chain in shift mode and capture combinational results in functional mode; a test sequence loads state, captures and unloads the response"}
+
+In @fig-scan-shift-capture, follow the serial shift path, then distinguish that test configuration from the functional capture path controlled by scan enable.
 
 The following small model demonstrates serial ordering. It is not a replacement for a characterized scan cell or automatic DFT insertion. A four-bit chain enters through bit zero and exits through bit three. Functional reset affects capture; scan shift has priority so state can still be loaded during the teaching experiment.
 

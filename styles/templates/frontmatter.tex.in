@@ -1,0 +1,59 @@
+% Generated editorial preliminaries; chapter content is independent.
+\AtBeginDocument{%
+  \hypersetup{pageanchor=false,colorlinks=true,linkcolor=BookLink,urlcolor=BookLink,citecolor=BookLink,bookmarksdepth=1,bookmarksopen=false}%
+  \includepdf[pages=1,pagecommand={\thispagestyle{empty}\thispdfpagelabel{Cover}},fitpaper=false]{.quarto/identity/front.pdf}%
+  \hypersetup{pageanchor=true}%
+  \raggedbottom
+}
+\makeatletter
+\newcommand{\BookPreliminaries}{%
+  \pagenumbering{roman}\pagestyle{plain.scrheadings}%
+  \thispagestyle{empty}\null\vfill
+  {\sffamily\bfseries\color{BookNight}\fontsize{28}{34}\selectfont\raggedright\@title\par}
+  \vfill\null\clearpage
+  \thispagestyle{empty}\pdfbookmark[0]{Title}{book-title}%
+  \vspace*{.12\textheight}
+  {\sffamily\bfseries\color{BookNight}\fontsize{32}{38}\selectfont\raggedright\@title\par}
+  \vspace{1em}{\color{BookAmber}\rule{.22\textwidth}{3pt}}\par\vspace{1.5em}
+  {\sffamily\Large\raggedright\@subtitle\par}
+  \vspace{2em}{\Large\@author\par}
+  \vfill{\sffamily\small DIGITAL EDITION\par\medskip\@date\par}\clearpage
+  \thispagestyle{empty}\pdfbookmark[0]{Credits and license}{book-credits}%
+  \null\vfill\begingroup\small\setlength{\parskip}{.8em}
+  {\sffamily\bfseries\large Publication and licensing\par}
+  Copyright \textcopyright\ \the\year\ \@author\ and the respective credited contributors.
+
+  Original book text and original illustrations are licensed under Creative Commons
+  Attribution--ShareAlike 4.0 International (CC BY-SA 4.0). Original software,
+  RTL, firmware and executable examples use the MIT license.
+
+  Third-party material retains its own terms. These grants do not relicense
+  external RTL, fonts, tool binaries or PDKs. The Harris Figure 7.13 material
+  is excluded from the project's original-illustration license; consult the
+  repository's licensing scope and third-party notices.
+
+  Digital edition: \@date. Source and tool identities for this build are supplied
+  in the accompanying \texttt{build-manifest.json}. Rendering the book does not
+  rerun its hardware experiments.
+
+  \url{https://antoniofloresgil.github.io/FromConceptToSiliconBook/}\par
+  \url{https://github.com/antoniofloresgil/FromConceptToSiliconBook}\par
+  \href{https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/LICENSE.md}{Licensing scope}
+  \quad\href{https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/NOTICE.md}{Third-party notices}
+  \endgroup\clearpage
+}
+\makeatother
+\newcommand{\BookContents}{%
+  \clearpage\pagestyle{plain.scrheadings}%
+  \renewcommand*{\contentsname}{Contents}%
+  \setcounter{tocdepth}{@toc_counter@}%
+  \pdfbookmark[0]{Contents}{book-contents}\tableofcontents\clearpage
+}
+\newcommand{\BookMainMatter}{%
+  \clearpage\pagenumbering{arabic}\pagestyle{scrheadings}\markboth{}{}%
+}
+\AtEndDocument{%
+  \clearpage
+  \hypersetup{pageanchor=false}%
+  \includepdf[pages=1,pagecommand={\thispagestyle{empty}\thispdfpagelabel{Back cover}},fitpaper=false]{.quarto/identity/back.pdf}%
+}

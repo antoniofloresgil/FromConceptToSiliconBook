@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="688" viewBox="0 0 960 688" role="img" aria-labelledby="title desc">
+<title id="title">Decode the address before interpreting the register offset</title><desc id="desc">Selected platform bases only; omitted regions and gaps are not to scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="688" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Decode the address before interpreting the register offset</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Selected platform bases only; omitted regions and gaps are not to scale</text>
+<rect x="28" y="115" width="230" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="33" y="120" width="220" height="80" rx="7" fill="none" stroke="#24577a"/>
+<text x="143.0" y="155.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU / load-store</text>
+<text x="143.0" y="181.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">physical address</text>
+<rect x="350" y="115" width="230" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M357 122H573" stroke="#24577a" stroke-width="5"/>
+<text x="465.0" y="155.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Address decoder</text>
+<text x="465.0" y="181.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">region + offset</text>
+<path d="M258 160H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="680" y="95" width="252" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="677" y="107" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="677" y="119" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="677" y="131" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="806.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">UART</text>
+<text x="806.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x10000000</text>
+<path d="M580 160H620V140H680" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="680" y="210" width="252" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="677" y="222" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="677" y="234" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="677" y="246" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="806.0" y="250.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">GPIO</text>
+<text x="806.0" y="276.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x10060000</text>
+<path d="M580 160H620V255H680" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="680" y="325" width="252" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M690 332l10 7l-10 7M702 332l10 7l-10 7" fill="none" stroke="#24577a" stroke-width="2"/>
+<text x="806.0" y="365.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Dot-product MMIO</text>
+<text x="806.0" y="391.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x10080000</text>
+<path d="M580 160H620V370H680" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="680" y="440" width="252" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M688 523H710" stroke="#28705c" stroke-width="2"/>
+<path d="M688 516H710" stroke="#28705c" stroke-width="2"/>
+<text x="806.0" y="480.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">RAM base</text>
+<text x="806.0" y="506.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x80000000</text>
+<path d="M580 160H620V485H680" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="565" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="593" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The accelerator IP receives offsets; the platform supplies its base and decode window.</text>
+<text x="44" y="618" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">DMA accesses shared RAM through a separate port. This is not a complete Wally or QEMU</text>
+<text x="44" y="643" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">memory map.</text>
+</g></svg>

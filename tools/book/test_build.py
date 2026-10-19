@@ -1,5 +1,6 @@
 """Regression checks for stale-output rejection and failure-safe release handling."""
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import tempfile
@@ -16,7 +17,7 @@ class ReleaseSafety(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
-        for folder in ['chapters', 'appendices', 'figures', '_book/release']:
+        for folder in ['chapters', 'appendices', 'figures', 'styles', '_book/release']:
             (self.root / folder).mkdir(parents=True)
         (self.root / 'index.qmd').write_text('# Test book\n')
         self.previous = self.root / '_book/release/previous.txt'
@@ -24,6 +25,14 @@ class ReleaseSafety(unittest.TestCase):
         # An old source-directory render must never satisfy release checks.
         (self.root / 'index.html').write_text('Old HTML')
         (self.root / 'From-Concept-to-Silicon.pdf').write_bytes(b'Old PDF')
+        (self.root / 'styles/book.tex').write_text('% Maintained editorial header\n')
+        (self.root / 'index.tex').write_text('% Stale rendered TeX\n')
+        (self.root / 'tools/book').mkdir(parents=True)
+        (self.root / 'docs/audits').mkdir(parents=True)
+        (self.root / 'docs/audits/retained.vcd').write_text('Retained proof input')
+        (self.root / 'scratch.vcd').write_text('Unretained simulation output')
+        (self.root / 'tools/book/retained-resources.json').write_text(json.dumps({
+            'files': [{'path': 'docs/audits/retained.vcd', 'reason': 'Fixture'}]}))
         self.addCleanup(patch.stopall)
         patch.object(builder, 'ROOT', self.root).start()
         patch.object(builder, 'command', return_value='test-tool-version').start()
@@ -42,6 +51,10 @@ class ReleaseSafety(unittest.TestCase):
         def html_only(args, cwd, check, env):
             self.assertFalse((cwd / 'index.html').exists())
             self.assertFalse((cwd / 'From-Concept-to-Silicon.pdf').exists())
+            self.assertFalse((cwd / 'index.tex').exists())
+            self.assertEqual((cwd / 'docs/audits/retained.vcd').read_text(), 'Retained proof input')
+            self.assertFalse((cwd / 'scratch.vcd').exists())
+            self.assertEqual((cwd / 'styles/book.tex').read_text(), '% Maintained editorial header\n')
             output = cwd / '_book'
             output.mkdir()
             (output / 'index.html').write_text('From-Concept-to-Silicon.pdf')

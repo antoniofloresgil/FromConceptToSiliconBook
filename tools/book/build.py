@@ -23,7 +23,37 @@ def command(args, cwd=ROOT):
     return subprocess.check_output(args, cwd=cwd, text=True, stderr=subprocess.STDOUT).strip()
 
 
+def validate_structure(pdf):
+    entries = []
+    def visit(outline, depth=1):
+        for entry in outline:
+            if isinstance(entry, list):
+                visit(entry, depth + 1)
+            else:
+                entries.append((entry.title, pdf.get_destination_page_number(entry), depth))
+    visit(pdf.outline)
+    positions = {}
+    for title in ['Credits and license', 'Preface', 'Contents', 'Introduction']:
+        matches = [page for name, page, depth in entries if name == title and depth == 1]
+        if len(matches) != 1:
+            raise RuntimeError('Missing or duplicate PDF navigation landmark: ' + title)
+        positions[title] = matches[0]
+    if not (positions['Credits and license'] == 3 < positions['Preface'] <
+            positions['Contents'] < positions['Introduction']):
+        raise RuntimeError('PDF preliminaries are out of order')
+    labels = pdf.page_labels
+    if labels[1:5] != ['i', 'ii', 'iii', 'iv'] or labels[positions['Introduction']] != '1':
+        raise RuntimeError('PDF Roman/Arabic pagination is incorrect')
+    if max(depth for _, _, depth in entries) > 3:
+        raise RuntimeError('PDF outline exceeds parts, chapters and main sections')
+    return {'contents_pages': positions['Introduction'] - positions['Contents'],
+            'outline_entries': len(entries), 'landmark_pages':
+            {title: page + 1 for title, page in positions.items()}}
+
+
 def main():
+    retained_file = ROOT / 'tools/book/retained-resources.json'
+    retained = {entry['path'] for entry in json.loads(retained_file.read_text(encoding='utf-8'))['files']} if retained_file.exists() else set()
     versions = {tool: command([tool, '--version']).splitlines()[0]
                 for tool in ['quarto', 'rsvg-convert', 'lualatex', 'python']}
     revision = os.environ.get('BOOK_REVISION')
@@ -49,12 +79,16 @@ def main():
             relative = path.relative_to(ROOT)
             if any(part in EXCLUDED for part in relative.parts):
                 continue
-            if not path.is_file() or path.is_symlink() or path.suffix in GENERATED:
+            # Maintained TeX style includes are sources, unlike render-generated TeX.
+            style_tex = relative.parent == Path('styles') and path.suffix == '.tex'
+            if not path.is_file() or path.is_symlink() or (path.suffix in GENERATED and not style_tex and relative.as_posix() not in retained):
                 continue
             target = source / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(path, target)
             inputs[relative.as_posix()] = digest(path)
+        if retained - inputs.keys():
+            raise RuntimeError('Missing declared retained resources: ' + ', '.join(sorted(retained - inputs.keys())))
         converted = Path(directory) / 'vector-pdf'
         converted.mkdir()
         for svg in sorted((source / 'figures').glob('*.svg')):
@@ -83,10 +117,25 @@ def main():
         pdf = PdfReader(output / 'From-Concept-to-Silicon.pdf')
         if len(pdf.pages) < 2:
             raise RuntimeError('The PDF is not a complete book')
+        layout = json.loads((source / 'design/identity/pdf-layout.json').read_text(encoding='utf-8'))
+        page_width, page_height = (layout['width_mm'] * 72 / 25.4, layout['height_mm'] * 72 / 25.4)
+        if any(abs(float(page.mediabox.width) - page_width) > .1 or
+               abs(float(page.mediabox.height) - page_height) > .1 for page in pdf.pages):
+            raise RuntimeError('PDF pages do not match the maintained print dimensions')
+        structure = validate_structure(pdf)
+        for name, page, required_text in [('front', pdf.pages[0], ['From', 'Concept', 'Silicon', 'Antonio Flores Gil']),
+                                           ('back', pdf.pages[-1], ['Design. Verify. Integrate.', 'Foundations', 'ASIC Design'])]:
+            text = page.extract_text()
+            if any(item not in text for item in required_text):
+                raise RuntimeError('Missing editorial cover or back cover in the PDF')
+            expected = PdfReader(source / '.quarto/identity' / (name + '.pdf')).pages[0].extract_text()
+            if ' '.join(text.split()) != ' '.join(expected.split()):
+                raise RuntimeError('Editorial cover text changed or page furniture was overlaid')
         manifest = {'schema': 1, 'revision': revision, 'tracked_worktree_dirty': dirty,
                     'image_id': os.environ.get('BOOK_IMAGE_ID', 'not-recorded'),
                     'laboratory_validation_run': os.environ.get('BOOK_VALIDATION_RUN_URL'),
-                    'tools': versions, 'pdf_pages': len(pdf.pages), 'sources': inputs,
+                    'tools': versions, 'pdf_pages': len(pdf.pages), 'pdf_structure': structure,
+                    'sources': inputs,
                     'artifacts': {p.relative_to(output).as_posix(): digest(p)
                                   for p in sorted(output.rglob('*')) if p.is_file()}}
         packages = Path('/opt/book-packages.tsv')

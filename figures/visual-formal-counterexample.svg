@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="693" viewBox="0 0 960 693" role="img" aria-labelledby="title desc">
+<title id="title">A real counterexample: exchange creates a phantom item</title><desc id="desc">Derived from the retained Lab 15 VCD; observations 3, 4 and 5 are formal steps, not nanoseconds</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="693" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A real counterexample: exchange creates a phantom item</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Derived from the retained Lab 15 VCD; observations 3, 4 and 5 are formal steps, not nanoseconds</text>
+<text x="425" y="115" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Step 3</text>
+<text x="625" y="115" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Step 4</text>
+<text x="825" y="115" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Step 5</text>
+<text x="28" y="165" font-size="21" text-anchor="start" fill="#172b3a" font-weight="normal">Reset</text>
+<text x="425" y="165" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<text x="625" y="165" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<text x="825" y="165" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<text x="28" y="219" font-size="21" text-anchor="start" fill="#172b3a" font-weight="normal">Input valid / ready</text>
+<text x="425" y="219" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">1 / 1</text>
+<text x="625" y="219" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">1 / 1</text>
+<text x="825" y="219" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0 / 0</text>
+<text x="28" y="273" font-size="21" text-anchor="start" fill="#172b3a" font-weight="normal">Output valid / ready</text>
+<text x="425" y="273" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0 / 0</text>
+<text x="625" y="273" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">1 / 1</text>
+<text x="825" y="273" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0 / 0</text>
+<text x="28" y="327" font-size="21" text-anchor="start" fill="#172b3a" font-weight="normal">Input byte</text>
+<text x="425" y="327" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0xfb</text>
+<text x="625" y="327" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0x7b</text>
+<text x="825" y="327" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0xff</text>
+<text x="28" y="381" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Observed occupancy</text>
+<text x="425" y="381" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<text x="625" y="381" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<text x="825" y="381" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M625 420V460H825V420" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="28" y="480" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">At step 4: push = pop = 1; required next occupancy = 1.</text>
+<rect x="28" y="520" width="904" height="153" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="548" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">BUG=1 prioritizes push and increments the count to two. Reset at the following</text>
+<text x="44" y="573" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">observation</text>
+<text x="44" y="598" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">masks the interface but does not erase the already observed invariant failure.</text>
+<text x="44" y="623" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">This figure rereads preserved evidence; it does not run a new proof or predict another</text>
+<text x="44" y="648" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">solver trace.</text>
+</g></svg>

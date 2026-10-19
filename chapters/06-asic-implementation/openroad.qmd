@@ -22,7 +22,9 @@ There are two practical ways to harden a SystemVerilog block with this ecosystem
 
 For a small block, direct OpenROAD is the best way to learn why a floorplan, PDN or clock tree is needed. For a larger design, the LibreLane option reduces accidental variation. A robust project can use both: develop and debug a Tcl experiment directly, then transfer the justified parameters into the managed configuration. The LibreLane chapter describes its project structure and commands; neither approach removes the need to check timing, routing and physical-verification reports.
 
-![The direct OpenROAD flow: SystemVerilog and PDK views enter a Tcl-controlled sequence of synthesis, floorplanning, placement, CTS, routing, extraction and checks.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="SystemVerilog RTL and a PDK enter a direct OpenROAD physical implementation flow and produce GDSII"}
+![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-openroad-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter a direct OpenROAD physical implementation flow and produce GDSII"}
+
+Follow @fig-openroad-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
 
 ### What OpenROAD does and does not provide
 
@@ -502,11 +504,17 @@ Writing a SPEF without importing it into the timing analysis would leave an earl
 
 ![Four views of the same accumulator configuration: an actual replay of the original floorplan prefix followed by the recorded placement, CTS and detailed-route captures. The panels share a graphical frame, while their contents are exported OpenROAD geometry.](../../figures/architecture-openroad-checkpoints.svg){#fig-openroad-four-checkpoints fig-alt="Four actual OpenROAD views show floorplan rows and pins, placed logic, inserted clock buffers and detailed routing for the 55 percent accumulator case" width=100%}
 
+For @fig-openroad-four-checkpoints, open the original [floorplan](../../figures/architecture-floorplan.png), [placement](../../figures/openroad-study-placed.png), [CTS](../../figures/openroad-study-cts.png) and [routing](../../figures/openroad-study-routed.png) captures for unrestricted inspection. The [floorplan capture record](../../figures/architecture-floorplan.json) identifies the prefix replay; the later checkpoints retain the Lab 16 evidence. The panel annotations do not create a new timing run.
+
 Read @fig-openroad-four-checkpoints as a sequence of newly introduced obligations. The floorplan fixes rows, pins and supply geometry; placement fixes cell locations; CTS introduces clock delay and skew; routing supplies wire geometry for extracted timing. The first panel is a new prefix replay using the same mapped netlist, constraints and pinned image as Lab 16. Its [capture provenance](../../figures/architecture-floorplan.json) records inputs and hashes. The other panels are the existing measured run, whose timing reports below remain authoritative. The overview does not introduce a new timing result or replace the larger diagnostic captures.
 
-![Actual OpenROAD placement export at 45% target utilization and a 1 ns requested period. Cell positions and row whitespace are the outcome of the recorded run.](../../figures/openroad-study-u45-placed.png){#fig-openroad-study-low fig-alt="Actual Nangate45 accumulator placement at 45 percent target utilization" width=90%}
+![Actual OpenROAD placement export at 45% target utilization and a 1 ns requested period. Cell positions and row whitespace are the outcome of the recorded run. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-u45-placed.svg){#fig-openroad-study-low fig-alt="Actual Nangate45 accumulator placement at 45 percent target utilization" width=100%}
 
-![Actual placement at 65% target utilization, with the same mapped netlist and 1 ns period. The smaller core changes adjacency, pin distances and available routing space.](../../figures/openroad-study-u65-placed.png){#fig-openroad-study-dense fig-alt="Actual Nangate45 accumulator placement at 65 percent target utilization" width=90%}
+Use @fig-openroad-study-low with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-u45-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
+
+![Actual placement at 65% target utilization, with the same mapped netlist and 1 ns period. The smaller core changes adjacency, pin distances and available routing space. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-u65-placed.svg){#fig-openroad-study-dense fig-alt="Actual Nangate45 accumulator placement at 65 percent target utilization" width=100%}
+
+Use @fig-openroad-study-dense with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-u65-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 These images are GUI exports of the actual OpenDB checkpoints, generated with `images.tcl`; they are not illustrative cell arrangements. Compare core dimensions and whitespace before comparing apparent visual density: each image is fitted to its own die. The core areas are approximately 601.43 µm² at 45%, 478.80 µm² at 55%, and 409.64 µm² at 65%. The routed standard-cell area is reported separately from core area and includes the inserted clock cells.
 
@@ -534,11 +542,17 @@ At either feasible utilization, adding 150 ps to the period adds approximately 1
 
 ### Clock-tree synthesis: setup improves while hold becomes worse {#clock-tree-synthesis-setup-improves-while-hold-becomes-worse}
 
-![Actual 55% placement before CTS for the diagnostic case; compare it with the next checkpoint to locate the inserted clock cells.](../../figures/openroad-study-placed.png){#fig-openroad-study-placed fig-alt="Actual pre-CTS placement at 55 percent utilization" width=90%}
+![Actual 55% placement before CTS for the diagnostic case; compare it with the next checkpoint to locate the inserted clock cells. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-placed.svg){#fig-openroad-study-placed fig-alt="Actual pre-CTS placement at 55 percent utilization" width=100%}
 
-![Placement after CTS for the 55%, 0.91 ns diagnostic case. Clock cells have been inserted into the existing rows.](../../figures/openroad-study-cts.png){#fig-openroad-study-cts fig-alt="Actual post-CTS placement of the accumulator at 55 percent utilization" width=90%}
+Use @fig-openroad-study-placed with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
-![The actual clock-tree topology exported from OpenROAD: one root, three CLKBUF_X3 buffers and 18 register sinks.](../../figures/openroad-study-clocktree.png){#fig-openroad-study-clocktree fig-alt="OpenROAD clock-tree viewer export with three clock buffers and eighteen sinks" width=95%}
+![Placement after CTS for the 55%, 0.91 ns diagnostic case. Clock cells have been inserted into the existing rows. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-cts.svg){#fig-openroad-study-cts fig-alt="Actual post-CTS placement of the accumulator at 55 percent utilization" width=100%}
+
+Use @fig-openroad-study-cts with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-cts.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
+
+![The actual clock-tree topology exported from OpenROAD: one root, three CLKBUF_X3 buffers and 18 register sinks. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-clocktree.svg){#fig-openroad-study-clocktree fig-alt="OpenROAD clock-tree viewer export with three clock buffers and eighteen sinks" width=100%}
+
+Use @fig-openroad-study-clocktree with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-clocktree.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 The [CTS report](../../labs/16-openroad-study/reference/u55-p0.91/cts-tree.rpt) reports one clock root, three inserted `CLKBUF_X3` buffers, three clock subnets and 18 sinks. These are the 16 sum bits plus `Valid` and `Overflow`. The topology image explains how the clock is distributed; the timing reports quantify arrival times at the sinks.
 
@@ -546,9 +560,13 @@ In the diagnostic case, the worst setup path starts at `A[1]`, timed relative to
 
 ### A measured setup pass before routing becomes a failure after routing {#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing}
 
-![Actual detailed routing of the 55%, 0.91 ns case. Layer colors show connected signal and supply shapes; geometry alone does not establish timing closure.](../../figures/openroad-study-routed.png){#fig-openroad-study-routing fig-alt="Actual detailed-route layout of the accumulator" width=90%}
+![Actual detailed routing of the 55%, 0.91 ns case. Layer colors show connected signal and supply shapes; geometry alone does not establish timing closure. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-routed.svg){#fig-openroad-study-routing fig-alt="Actual detailed-route layout of the accumulator" width=100%}
 
-![The same routed database with the cells and nets of the worst setup path highlighted. The path-pin list and expanded timing report identify the highlighted objects.](../../figures/openroad-study-critical-path.png){#fig-openroad-study-critical fig-alt="Worst accumulator setup path highlighted in the actual OpenROAD routed layout" width=90%}
+Use @fig-openroad-study-routing with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-routed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
+
+![The same routed database with the cells and nets of the worst setup path highlighted. The path-pin list and expanded timing report identify the highlighted objects. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-critical-path.svg){#fig-openroad-study-critical fig-alt="Worst accumulator setup path highlighted in the actual OpenROAD routed layout" width=100%}
+
+Use @fig-openroad-study-critical with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-critical-path.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 Use the [post-CTS setup report](../../labs/16-openroad-study/reference/u55-p0.91/cts-setup.rpt) and [extracted post-route setup report](../../labs/16-openroad-study/reference/u55-p0.91/routed-setup.rpt) together. They identify the same `A[1]` to `Overflow` endpoint and expose both the data path and capture-clock path. The change is small enough that reporting only two decimal places in nanoseconds would conceal its sign.
 

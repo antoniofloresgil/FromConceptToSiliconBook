@@ -352,6 +352,8 @@ The single-bit synchronizer above cannot preserve a changing word. If a binary v
 
 ![Original asynchronous-FIFO ownership map. Dashed orange paths carry registered Gray pointers through two destination-clocked stages. The solid data path uses shared storage; payload bits do not pass through individual two-flop synchronizers.](../../figures/async-fifo-ownership.svg){#fig-async-fifo-ownership fig-alt="Writer and reader domains maintain local pointers and flags, exchange Gray pointers through two-stage synchronizers and access shared word storage" width=100%}
 
+In @fig-async-fifo-ownership, trace ownership metadata through both synchronizer stages; payload words use the shared array rather than independent bit synchronizers.
+
 The complete [RTL](../../labs/24-async-fifo/async_fifo.sv) separates three responsibilities. The writer stores an accepted word and publishes its new pointer. The reader observes a synchronized publication, presents the oldest word and advances only when its consumer accepts it. A synchronized read pointer returns ownership of freed slots to the writer. Pointer latency can delay permission; it must never invent permission.
 
 | Boundary | Contract in this implementation |

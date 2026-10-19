@@ -18,5 +18,9 @@ d.note(465,'A platform changes adapters, addresses and policies. An IP change cr
        'Passing integration tests qualify these boundaries; technology-specific physical views need their own run.')
 d.save()
 target = Path(__file__).resolve().parents[2]/'figures/ip-release-boundaries.svg'
-target.write_bytes(outputs['ip-release-boundaries.svg'])
-print('GENERATED',target)
+args=__import__('argparse').ArgumentParser();args.add_argument('--check',action='store_true');options=args.parse_args()
+data=outputs['ip-release-boundaries.svg']
+if options.check:
+    if target.read_bytes()!=data:raise ValueError('Stale figure: '+str(target))
+else:target.write_bytes(data)
+print('CHECKED' if options.check else 'GENERATED',target)

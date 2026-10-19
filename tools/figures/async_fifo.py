@@ -26,5 +26,9 @@ d.note(585,'Full and empty are conservative local views. Common reset starts a n
        'A synchronous-read RAM needs a different read adapter; Gray coding does not qualify physical routing.')
 d.save()
 target=Path(__file__).resolve().parents[2]/'figures/async-fifo-ownership.svg'
-target.write_bytes(outputs['async-fifo-ownership.svg'])
-print('GENERATED',target)
+args=__import__('argparse').ArgumentParser();args.add_argument('--check',action='store_true');options=args.parse_args()
+data=outputs['async-fifo-ownership.svg']
+if options.check:
+    if target.read_bytes()!=data:raise ValueError('Stale figure: '+str(target))
+else:target.write_bytes(data)
+print('CHECKED' if options.check else 'GENERATED',target)

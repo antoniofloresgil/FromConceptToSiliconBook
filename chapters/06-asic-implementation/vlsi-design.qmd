@@ -18,6 +18,8 @@ The output transition takes time because the conducting device must charge or di
 
 ![Logical, electrical and physical interpretations of an inverter. Original diagram for this chapter; the CMOS and RC models are discussed in Weste and Harris, Chapters 1, 2 and 4.](../../figures/vlsi-cell-abstractions.svg){#fig-vlsi-cell-abstractions fig-alt="Three views of an inverter: logical inversion, a resistive driver with a capacitive load, and a standard cell with physical pins and supply rails"}
 
+Compare the logical, electrical and physical views in @fig-vlsi-cell-abstractions; none alone supplies the other views needed for implementation and checking.
+
 Static complementary gates generalize this arrangement. A two-input NAND has series nMOS devices in its pull-down network and parallel pMOS devices in its pull-up network. A NOR exchanges the series and parallel roles. Series devices increase effective resistance and introduce internal nodes. Therefore, two functions with similar Boolean complexity need not have identical rise/fall delays or cell sizes. Compound AOI/OAI gates can implement a useful logic expression with fewer stages than a decomposition into elementary gates, but their input arcs can have different delays.
 
 For a standard-cell ASIC, the RTL designer normally does not choose individual transistor dimensions. Library designers characterize legal cells, and synthesis chooses among their functions and sizes. Full-custom design is appropriate for structures requiring specific electrical optimization, such as SRAM bit cells, sense amplifiers or analog circuits. The open digital flow in this book primarily uses standard cells and predesigned macros.

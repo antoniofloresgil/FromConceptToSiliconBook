@@ -78,6 +78,44 @@ parameters and tested configurations are specified in
 [Lab 24](../labs/24-async-fifo/README.md). Simulation and synthesized structure
 reviews do not establish physical CDC/RDC signoff.
 
+## Editorial identity
+
+The approved Design Flow identity uses the author's selected, unmodified layered
+SoC illustration, a black cover, night blue, cyan and amber accents, and a pale
+reading surface. `design/identity/palette.json` owns colors and the DejaVu
+Serif/Sans/Sans Mono font choices; `tools/design/identity.py` generates the
+editable covers and PDF/HTML styles. Preserve the selected artwork's recorded
+identity rather than silently regenerating or retouching it. The illustration
+is conceptual cover art, not a validated SoC diagram or implementation capture.
+
+The editorial PDF uses the standard A4 (210 × 297 mm) format, superseding Letter.
+`design/identity/pdf-layout.json` owns page dimensions, mirrored margins, text
+size and numbered contents depth. An 11 pt body and mirrored 26/24 mm inner/outer
+margins preserve a comfortable reading width for RTL and architectural artwork.
+Chapter openings need not force empty verso pages. Prepare cover PDFs offline inside the isolated source snapshot,
+extending the canvas without distorting or cropping the artwork.
+
+The PDF order is exterior cover, half-title, interior title, credits/license,
+Preface, reduced Contents, Introduction and the existing chapter sequence, ending
+with the back cover. Preliminaries use Roman page labels; Arabic numbering starts
+at Introduction. The contents and collapsed PDF outline retain chapters and main
+sections under the parts; all deeper headings and their link destinations remain
+in the body. The HTML retains its detailed navigation and uses the same cover and
+palette. The PDF-only structure filter relocates the contents without moving or
+duplicating the Preface/Introduction source chapters.
+Production bleed, spine and press qualification are outside this digital book
+edition. Source ownership and preview commands live in
+[the identity guide](../design/identity/README.md).
+
+The editorial runtime has three layers: `_quarto.yml` owns metadata, structure,
+references and output wiring; `styles/book.tex` owns PDF typography and furniture;
+`styles/book.scss` owns the equivalent HTML identity. Their editable rules live
+in `styles/templates/`; the identity generator substitutes the shared configuration.
+`styles/frontmatter.tex` separately owns covers and preliminaries. Original SVGs
+remain in `figures/`, and measured captures retain their lab provenance paths.
+A cover change must not require chapter edits. The maintained component specimen
+and authoring conventions are described in [styles/README.md](../styles/README.md).
+
 ## Consultation data and generated pages
 
 - `tools/book/learning-paths.json` owns stable activity IDs, roles and compute
@@ -147,3 +185,10 @@ hosted run or enable branch protection. The policies and boundaries live in
 For navigation maintenance and visual-review procedures, see
 [consultation-and-print.md](consultation-and-print.md). Accessibility requirements
 are maintained separately in [accessibility.md](accessibility.md).
+
+Original schematic figures share labelled, monochrome-readable component marks
+from the architectural drawing primitive. Conceptual diagrams, retained-trace
+visualizations and experimental captures have distinct evidence categories.
+Capture reading panels preserve original image bytes and link to full resolution;
+all embedded figures require unique IDs and automatic prose references. Source
+ownership and the detailed rules live in [illustrations.md](illustrations.md).

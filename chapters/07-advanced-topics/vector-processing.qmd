@@ -93,6 +93,8 @@ while remaining != 0:
 
 ![Original illustration of one legal partition for a 19-element loop. The middle iteration could use a different legal `vl`; the algorithm advances by the value actually returned.](../../figures/rvv-strip-mining.svg){#fig-rvv-strip-mining width=100%}
 
+Follow the successive active element intervals in @fig-rvv-strip-mining. Their lengths reflect the stated example and remaining work, not the number of physical vector lanes.
+
 For 19 int16 elements on VLEN = 128, e16/m1, one legal partition is 8, 8 and 3. The last instruction processes three elements without a separate scalar cleanup loop. For a different VLEN or permitted middle-iteration choice, the partition changes while the arithmetic result remains the same. That is the central portability property exercised by the lab.
 
 ### Masks, tails and observable results

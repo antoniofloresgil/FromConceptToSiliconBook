@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+<title id="title">One vocabulary for SoC diagrams</title><desc id="desc">Conceptual symbols; category comes from shape marks and labels, never hue alone</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="520" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">One vocabulary for SoC diagrams</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conceptual symbols; category comes from shape marks and labels, never hue alone</text>
+<rect x="28" y="105" width="284" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="33" y="110" width="274" height="95" rx="7" fill="none" stroke="#24577a"/>
+<text x="170.0" y="152.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU / core</text>
+<text x="170.0" y="178.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">double outline</text>
+<rect x="338" y="105" width="284" height="105" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M346 204H368" stroke="#28705c" stroke-width="2"/>
+<path d="M346 199H368" stroke="#28705c" stroke-width="2"/>
+<path d="M346 194H368" stroke="#28705c" stroke-width="2"/>
+<text x="480.0" y="152.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Cache</text>
+<text x="480.0" y="178.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">three short rules</text>
+<rect x="648" y="105" width="284" height="105" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M656 203H678" stroke="#28705c" stroke-width="2"/>
+<path d="M656 196H678" stroke="#28705c" stroke-width="2"/>
+<text x="790.0" y="152.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Memory</text>
+<text x="790.0" y="178.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">two short rules</text>
+<rect x="28" y="240" width="284" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M35 247H305" stroke="#24577a" stroke-width="5"/>
+<text x="170.0" y="287.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Interconnect</text>
+<text x="170.0" y="313.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">heavy top spine</text>
+<rect x="338" y="240" width="284" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="335" y="252" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="335" y="264" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="335" y="276" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="480.0" y="287.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Peripheral</text>
+<text x="480.0" y="313.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">edge ports</text>
+<rect x="648" y="240" width="284" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M658 247l10 7l-10 7M670 247l10 7l-10 7" fill="none" stroke="#24577a" stroke-width="2"/>
+<text x="790.0" y="287.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Accelerator</text>
+<text x="790.0" y="313.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">compute chevrons</text>
+<path d="M45 415H245" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="270" y="422" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Solid arrow: stated data / request direction</text>
+<path d="M45 452H245" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="270" y="459" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Dashed arrow: event / control / dependency</text>
+<text x="28" y="500" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Containment is ownership; timing and coherence require their own explicit contracts.</text>
+</g></svg>

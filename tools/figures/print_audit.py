@@ -27,16 +27,20 @@ def inventory():
             row=dict(page=page.relative_to(ROOT).as_posix(),line=text[:m.start()].count('\n')+1,
                 image=image.relative_to(ROOT).as_posix(),caption=caption,
                 sha256=hashlib.sha256(image.read_bytes()).hexdigest())
+            identity=re.search(r'#(fig-[\w-]+)',attrs)
+            row['figure_id']=identity[1] if identity else None
+            row['category']='experimental-capture' if image.suffix=='.png' else ('retained-counterexample' if image.stem=='visual-formal-counterexample' else 'attributed-datapath' if image.stem.startswith(('wally-figure-7-13','wally-pipeline-detail')) else 'conceptual')
             match=re.search(r'width=(\d+)%',attrs);fraction=int(match[1])/100 if match else 1.0
             if image.suffix=='.svg':
                 svg=ET.parse(image).getroot();box=svg.get('viewBox','').split()
                 w,h=map(float,box[2:]) if box else (float(svg.get('width')),float(svg.get('height')))
                 raw=image.read_text(encoding='utf-8')
+                if 'data:image/png' in raw:row['category']='experimental-capture-with-editorial-notes'
                 fonts=[float(x) for x in re.findall(r'font-size[=:]["\s]*([\d.]+)',raw)]
                 # Some original figures use only inherited CSS font declarations.
                 fonts += [float(x) for x in re.findall(r'font-size="([\d.]+)',raw)]
                 scale=min(430*fraction/w,610/h)
-                row.update(kind='vector',width=w,height=h,min_source_font=min(fonts) if fonts else None,
+                row.update(kind='capture-panel' if 'data:image/png' in raw else 'vector',width=w,height=h,min_source_font=min(fonts) if fonts else None,
                     estimated_min_pt=round(min(fonts)*scale,2) if fonts else None)
                 row['review']='small-label review' if fonts and min(fonts)*scale<7 else 'inspect grayscale and line styles'
             elif image.suffix=='.png':
@@ -46,6 +50,18 @@ def inventory():
             else: raise ValueError('Unreviewed image format: '+str(image))
             rows.append(row)
     return rows
+
+
+def check_navigation(rows, text):
+    identities=set()
+    for row in rows:
+        identity=row['figure_id']
+        if not identity or identity in identities:
+            raise ValueError('Missing or duplicate figure ID: '+str(identity))
+        identities.add(identity)
+        if not re.search('@'+re.escape(identity)+r'(?![\w-])',text):
+            raise ValueError('Figure has no automatic prose reference: '+identity)
+        if not row['caption'].strip():raise ValueError('Empty figure caption: '+identity)
 
 
 def proofs(pdf,output,rows):
@@ -90,6 +106,8 @@ def main():
     p.add_argument('--pdf',type=Path);p.add_argument('--output',type=Path,default=ROOT/'labs/build/figure-print-audit')
     args=p.parse_args();args.output.mkdir(parents=True,exist_ok=True);rows=inventory()
     if args.check:
+        text='\n'.join(p.read_text(encoding='utf-8') for p in [*ROOT.glob('chapters/**/*.qmd'),*ROOT.glob('appendices/*.qmd')])
+        check_navigation(rows,text)
         review=json.loads(Path(__file__).with_name('print-review.json').read_text(encoding='utf-8'))['assets']
         if set(review)!={r['image'] for r in rows}:raise ValueError('Figure review coverage changed')
         for row in rows:

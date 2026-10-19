@@ -1,0 +1,94 @@
+# Editorial Components
+
+This is a layout specimen, not a laboratory or a complete book edition. All
+numbers in its tables are synthetic formatting examples.
+
+## Titles and running heads
+
+Body prose uses the reading face; headings and navigation use the sans-serif
+face. A section can contain **emphasis**, *terminology*, a [descriptive link](https://antoniofloresgil.github.io/FromConceptToSiliconBook/),
+and an inline identifier such as `accelerator_configuration_and_status_register`.
+The following levels remain available in the body even when the PDF contents
+omit them.
+
+### Subsection hierarchy
+
+Keep a heading with its following paragraph. Use semantic Markdown headings
+rather than manual font sizes, numbering, or page breaks inside a chapter.
+
+#### A fourth heading level
+
+This level is subordinate to the subsection and remains visually distinct.
+
+## Figures and captions
+
+![Original ownership diagram used here to check vector labels, proportions, and caption layout.](figures/async-fifo-ownership.svg){#fig-specimen-fifo width=100%}
+
+@fig-specimen-fifo retains its original SVG proportions. Its caption and alternative
+description remain text; neither is baked into a screenshot.
+
+## Tables and numerical alignment
+
+| Format-only field | Before | After |
+| --- | ---: | ---: |
+| Synthetic count | 120 | 128 |
+| Synthetic interval (ns) | 12.50 | 10.00 |
+| Review status | Open | Reviewed |
+
+: Synthetic examples for typography; these are not implementation results. {#tbl-specimen-metrics tbl-colwidths="[50,25,25]"}
+
+@tbl-specimen-metrics aligns numerical columns to the right. Use explicit column
+widths for long descriptions; keep units in headings and preserve original
+precision. Long tables repeat their headers when they cross a PDF page.
+
+## Code and long lines
+
+The following snippet demonstrates formatting only; it is not an executable lab.
+
+```systemverilog
+always_ff @(posedge clk) begin
+  if (reset) accumulator <= '0;
+  else if (enable) accumulator <= accumulator + operand;
+end
+```
+
+```bash
+python tools/design/preview_editorial.py --output-dir labs/build/editorial-template-preview
+```
+
+Long inline identity: `sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef`.
+Line wrapping must preserve every character; HTML code blocks retain horizontal
+scrolling and their copy controls.
+
+## Notes, warnings, and footnotes
+
+::: {.callout-note title="Evidence boundary"}
+An integrity check validates recorded artifacts; it does not rerun the experiment.
+:::
+
+::: {.callout-tip title="Reading suggestion"}
+Read the interface contract before changing the implementation.
+:::
+
+::: {.callout-warning title="Unverified configuration"}
+Changing a parameter does not qualify the resulting hardware.
+:::
+
+::: {.callout-important title="Preserve the reference"}
+Keep retained results separate from student work and fresh executions.
+:::
+
+::: {.callout-caution title="Physical checks remain separate"}
+Timing closure does not establish manufacturing qualification.
+:::
+
+A footnote adds supporting detail without interrupting the main argument.[^detail]
+
+[^detail]: This specimen checks the footnote marker, text size, separation, and
+    return link. The note is not a new technical requirement or measured result.
+
+> A quotation remains readable in grayscale and is distinguished by its layout.
+
+## Repeated table headers
+
+The preview runner appends a synthetic long table here to exercise page breaks.

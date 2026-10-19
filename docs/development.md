@@ -10,13 +10,15 @@ duplicating those decisions or the executable recipes.
 | Change | Source to inspect or update |
 | --- | --- |
 | Book order, formats, resources, date and PDF download | [`_quarto.yml`](../_quarto.yml); retain `date: today` and the HTML PDF-download entry |
+| Editorial identity, page layout, selected artwork and generated PDF/HTML styles | [`palette.json`](../design/identity/palette.json), [`pdf-layout.json`](../design/identity/pdf-layout.json), [`selected-artwork.json`](../design/identity/selected-artwork.json) and [`styles/templates/`](../styles/templates/) via [`identity.py`](../tools/design/identity.py); see the [template guide](../styles/README.md). PDF structure uses the maintained `styles/` template partials and [`pdf-structure.lua`](../tools/book/pdf-structure.lua). See the [identity guide](../design/identity/README.md) |
 | Activity IDs, visible role/compute labels and activity CSV | [`learning-paths.json`](../tools/book/learning-paths.json) and [`learning_paths.py`](../tools/book/learning_paths.py) |
 | Glossary, term/lab indexes and experiment matrix | [`reference-data.json`](../tools/book/reference-data.json) and [`reference.py`](../tools/book/reference.py) |
 | Runnable chapter listings and lab catalogue | [`catalog.py`](../labs/tools/catalog.py), referenced QMD listings and lab source files |
 | Shell recipes, simulation/implementation interfaces and output namespaces | [`recipe-contracts.json`](../labs/recipe-contracts.json) and [`check_recipes.py`](../labs/tools/check_recipes.py) |
 | Required project evidence and completeness | [`project-plan.json`](../labs/verification/project-plan.json) and the evidence collector in that directory |
 | Fast hardware interface, lint/tool policy and synthesis budget | Lab 25's [`contract.json`](../labs/25-hardware-ci/contract.json), [`policy.json`](../labs/25-hardware-ci/policy.json), runner and README |
-| Figure source, provenance and visual review | SVG/generators, [`print-review.json`](../tools/figures/print-review.json), `NOTICE.md` and the [review procedure](consultation-and-print.md) |
+| Figure source, provenance and visual review | [Illustration conventions](illustrations.md), SVG/generators, [`print-review.json`](../tools/figures/print-review.json), `NOTICE.md` and the [review procedure](consultation-and-print.md) |
+| Declared retained waveform inputs/downloads | [`tools/book/retained-resources.json`](../tools/book/retained-resources.json); the snapshot excludes other generated waveforms |
 | Publication environment | [`tools/book/Dockerfile`](../tools/book/Dockerfile), package lock and [publisher guide](../tools/book/README.md) |
 
 Do not duplicate tool pins, release hashes, report metrics, lab counts or page

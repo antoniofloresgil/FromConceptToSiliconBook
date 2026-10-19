@@ -224,7 +224,7 @@ B itself may stall. A pending response cannot disappear or be replaced while BRE
 
 #### Read snapshots and side effects
 
-![Original AXI4 single-beat write timing. Each value occupies the interval immediately before the numbered rising edge. Green dots identify handshakes; address, data and response are accepted at different edges. Payload boxes marked with a dash have no valid information.](../../figures/architecture-axi-write.svg){#fig-axi-write-backpressure fig-alt="AXI write address accepted at edge two, data held until edge five and response retained until edge eight" width=100%}
+![Original AXI4 single-beat write timing. Each value occupies the interval immediately before the numbered rising edge. Filled dots identify handshakes; address, data and response are accepted at different edges. Payload boxes marked with a dash have no valid information.](../../figures/architecture-axi-write.svg){#fig-axi-write-backpressure fig-alt="AXI write address accepted at edge two, data held until edge five and response retained until edge eight" width=100%}
 
 In @fig-axi-write-backpressure, neither address acceptance nor an asserted READY on its own completes the write. Track the three acceptance edges separately, and retain the accepted AW information while W waits. The same channel independence applies when W arrives first.
 

@@ -16,6 +16,8 @@ The job computes an exact signed 64-bit dot product over 1–256 operand pairs. 
 
 ![Executable accelerator platform. Original vector diagram for this book; the CPU control path, DMA memory path and completion interrupt are distinct.](../figures/executable-project.svg){#fig-executable-project fig-alt="RV32 firmware runs on Wally; AHB control accesses cross an AXI-Lite bridge to the accelerator; the AXI DMA engine and CPU share RAM, and the accelerator reports a level interrupt"}
 
+In @fig-executable-project, follow a firmware load/store through the real Wally core and AHB adapter before following the separate accelerator DMA request into the shared simulation RAM.
+
 The arithmetic module `dotproduct_mac.sv` has no bus policy. `dotproduct_engine.sv` sequences reads, accumulation and result writes. `dotproduct_axi.sv` owns the AXI4-Lite endpoint, validates descriptors, locks active configuration and reports completion. `ahb_to_axil.sv` belongs to the CPU integration platform. Those boundaries make protocol and numerical changes separately reviewable.
 
 The CPU interface is AHB, so the adapter preserves its address and data phases instead of treating signals as AXI names. It stalls the CPU until the AXI response is available and supports aligned 32-bit control transfers. DMA uses a separate AXI4 interface. AXI4-Lite controls a job; it does not transfer the job's operand arrays.

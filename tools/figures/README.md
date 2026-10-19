@@ -19,7 +19,7 @@ The physical overview embeds raster GUI captures inside vector frames.
 
 ## Graphic vocabulary
 
-- White background, Arial/sans-serif, dark text; rounded boxes and 2 px outlines.
+- White background, DejaVu Sans/sans-serif, dark text; marked component boxes and 2 px outlines.
 - Blue `#24577a`: compute, control and ordinary request paths.
 - Green `#28705c`: memory, service or policy paths, identified by text.
 - Orange `#a34624`, dashed arrows: events, dependencies or external influences.
@@ -29,7 +29,7 @@ The physical overview embeds raster GUI captures inside vector frames.
 - 960-unit canvas; titles 26, block labels 21 and supporting text generally 18–19.
 
 The local meaning of arrows is stated in each caption. Timing diagrams show the
-interval immediately before each numbered rising edge; green dots mark accepted
+interval immediately before each numbered rising edge; filled dots mark accepted
 transfers. They are protocol examples, not recorded simulation waveforms.
 
 ## Technical anchors
@@ -68,3 +68,14 @@ input/output hashes. The raw OpenDB and capture log stay under
 `labs/build/architecture-floorplan/`. There is no new timing claim. The generator
 embeds the new PNG and the three existing OpenROAD study PNGs without repainting
 their implementation geometry. The original Lab 16 provenance remains intact.
+
+## Unified diagrams and reading panels
+
+See [illustration conventions](../../docs/illustrations.md) for the common CPU,
+cache, memory, interconnect, peripheral and accelerator marks, evidence categories,
+captions, automatic references and full-resolution links. The new series is
+regenerated with `python tools/figures/visual_language.py`; `--check` rejects stale
+SVGs or provenance. It rereads the preserved Lab 15 counterexample rather than
+executing a proof. Capture panels retain the exact source PNG bytes and put their
+numbered reading notes outside the experimental image. The imported Harris
+pipeline and its detail crops retain their geometry and attribution.

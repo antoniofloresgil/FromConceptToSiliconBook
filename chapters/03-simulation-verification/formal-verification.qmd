@@ -178,6 +178,10 @@ The tool is allowed to assert reset after exposing the bad state. Reset masks th
 
 ### Minimize, repair and regress
 
+![Visualization derived from the preserved Lab 15 fault-counterexample VCD, observations 3–5. The simultaneous exchange incorrectly changes occupancy from one to two; the following reset masks handshakes but leaves the sampled invariant failure observable. These are formal observations, not nanoseconds or a new proof run.](../../figures/visual-formal-counterexample.svg){#fig-formal-recorded-counterexample width=100%}
+
+Compare @fig-formal-recorded-counterexample with the table above. Only displayed trace values come from the [retained VCD](../../docs/audits/2026-10-19/evidence/raw/formal/fault-counterexample.vcd); the required next occupancy of one follows from the FIFO contract. [The visual manifest](../../figures/visual-manifest.json) records the input hash.
+
 The [simulation regression](../../labs/15-formal/tb_regression.sv) retains the essential sequence with readable fixed bytes: reset; enqueue `0x31`; simultaneously consume it and enqueue `0xa7`; consume the replacement. The correct FIFO must now be empty. The buggy revision still advertises a valid phantom item and the testbench terminates with a failure.
 
 The repair restores the four-way accepted-event update. The script reruns BMC and induction on `BUG=0`, then executes the same directed test on both revisions. The repaired revision must pass and the faulty revision must fail with the expected diagnostic. The formal counterexample and executable regression serve different purposes: one finds an admitted failing trace, and the other preserves the diagnosed scenario in the simulation suite.

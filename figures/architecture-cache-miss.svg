@@ -6,19 +6,26 @@
 <marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
 </defs>
 <rect width="960" height="658" fill="white"/>
-<g font-family="Arial, sans-serif" fill="#172b3a">
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
 <text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A dirty cache miss: follow ownership of a line</text>
 <text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Blocking write-back example • translation/protection already completed successfully</text>
 <rect x="29" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="34" y="97" width="182" height="40" rx="7" fill="none" stroke="#24577a"/>
 <text x="125.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU / LSU</text>
 <path d="M125 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
 <rect x="269" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M277 136H299" stroke="#24577a" stroke-width="2"/>
+<path d="M277 131H299" stroke="#24577a" stroke-width="2"/>
+<path d="M277 126H299" stroke="#24577a" stroke-width="2"/>
 <text x="365.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">D-cache</text>
 <path d="M365 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
 <rect x="509" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M516 99H694" stroke="#24577a" stroke-width="5"/>
 <text x="605.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">EBU / bus</text>
 <path d="M605 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
 <rect x="739" y="92" width="192" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M747 135H769" stroke="#24577a" stroke-width="2"/>
+<path d="M747 128H769" stroke="#24577a" stroke-width="2"/>
 <text x="835.0" y="124.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">RAM</text>
 <path d="M835 145V515" fill="none" stroke="#24577a" stroke-width="1.2"/>
 <path d="M125 185H365" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>

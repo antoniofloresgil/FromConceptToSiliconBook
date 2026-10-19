@@ -2,6 +2,10 @@
 
 ## Concepts
 
+![Conceptual verification flow separates the independent model from the RTL and compares only observed accepted transactions. The formal harness constrains the environment and checks guarantees; coverage and counterexamples remain separate evidence.](../../figures/visual-verification-flow.svg){#fig-verification-evidence-flow width=100%}
+
+Follow @fig-verification-evidence-flow from the contract to both the scoreboard and formal harness. A mismatch must retain the configuration and stimulus that produced it; a passing bounded task does not establish an arbitrary execution horizon.
+
 A hardware verification result is a claim about a particular requirement, representation, configuration and environment. It becomes useful engineering evidence when another person can identify what was exercised, how correctness was checked and which assumptions limit the conclusion. A program printing PASS, a solver finding no counterexample, and a clean layout report answer different questions.
 
 This chapter develops a common methodology for Hardware System Design. Its functional foundation is Harris et al., *RISC-V System-on-Chip Design*, Chapter 5, particularly the verification plan, self-checking testbenches, lock-step comparison, assertions, coverage and Wally regression in Sections 5.1–5.11. The system's performance also needs the separate checks discussed in Chapter 21 [@harrisRiscvSoc]. The hierarchy of behavioral, RTL, gate and circuit representations, implementation flows and the distinction between logic verification, silicon debugging and manufacturing test follow Weste and Harris, *CMOS VLSI Design*, fourth edition, Sections 14.4 and 15.1–15.7 [@westeCmosVlsi]. This chapter adapts those ideas to the open tools and executable project provided here; it does not imply that every check described below has already been run on Wally or on a fabricated chip.

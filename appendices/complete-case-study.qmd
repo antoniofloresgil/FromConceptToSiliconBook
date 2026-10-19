@@ -127,7 +127,9 @@ The IP is routed **out of context**: no board I/O buffers, package pin assignmen
 
 The runner explicitly allows a timing failure so that the routed design and reports are retained. It records tool completion separately from `setup_target_met=false`. That option must not become permission to accept an unmet architectural clock. An initial engineering response is to examine the critical path and evaluate a lower target with margin or an RTL change, then repeat the relevant integration checks.
 
-![Actual occupied ECP5 BEL coordinates extracted from the final nextpnr routed JSON. Blue intensity counts combinational and register BELs sharing a coordinate; the red diamond marks the DSP BEL anchor. The view is the occupied coordinate window, not a drawing of the complete FPGA or routed wires.](../figures/complete-case-fpga.png){#fig-complete-case-fpga fig-alt="Actual post-route ECP5 placement map of the manifest-locked dot-product accelerator" width=100%}
+![Actual occupied ECP5 BEL coordinates extracted from the final nextpnr routed JSON. Cell intensity counts combinational and register BELs sharing a coordinate; the diamond marks the DSP BEL anchor. The view is the occupied coordinate window, not a drawing of the complete FPGA or routed wires. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-complete-case-fpga.svg){#fig-complete-case-fpga fig-alt="Actual post-route ECP5 placement map of the manifest-locked dot-product accelerator" width=100%}
+
+Use @fig-complete-case-fpga with its numbered reading notes and the [original full-resolution capture](../figures/complete-case-fpga.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 `fpga_plot.py` derives this spatial map from `NEXTPNR_BEL` attributes and checks every plotted resource has a placement. It preserves the source JSON hash, plot-script hash, resource counts and Matplotlib version. The tool's raw placement SVG is also generated during reproduction. The image demonstrates actual implementation placement without claiming to show physical transistor dimensions or a board's electrical connections.
 
@@ -158,7 +160,9 @@ The backend's `SLICE_LUTX` count is not interchangeable with a vendor LUT6 utili
 
 Likewise, the two FPGA Fmax figures compare different mappings and boundaries: ECP5 uses a DSP and no board fixture, whereas this XC7 run uses LUT arithmetic and includes the fixture. They do not establish an intrinsic speed ranking between the FPGA families.
 
-![Actual Nexys Video Artix-7 placement after routing, including the serial boundary fixture. Site locations are translated through the pinned Project X-Ray tile grid; the right panel crops the dense logic region. The image shows placed resources, not routed wires or a physically observed board.](../figures/complete-case-nexys.png){#fig-complete-case-nexys fig-alt="Actual post-route placement of the dot-product accelerator and serial fixture on the Nexys Video XC7A200T" width=100%}
+![Actual Nexys Video Artix-7 placement after routing, including the serial boundary fixture. Site locations are translated through the pinned Project X-Ray tile grid; the right panel crops the dense logic region. The image shows placed resources, not routed wires or a physically observed board. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-complete-case-nexys.svg){#fig-complete-case-nexys fig-alt="Actual post-route placement of the dot-product accelerator and serial fixture on the Nexys Video XC7A200T" width=100%}
+
+Use @fig-complete-case-nexys with its numbered reading notes and the [original full-resolution capture](../figures/complete-case-nexys.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 The [routing/timing log](../labs/17-complete-case/reference/nexys/command-04.txt) reports a path from registered `operand_a` through the LUT multiplier and the long 64-bit carry chain to a `next_sum` capture register. Its rounded breakdown is 4.3 ns logic plus 7.4 ns routing, approximately 11.7 ns total. The clock target therefore fails even though the design occupies only a small part of the device. Inspect the carry-chain column in the placement map and the per-net path report before proposing a pipelined product/add operation. That change would also require revisiting engine state, latency and reset/error regressions under a new release.
 
@@ -178,13 +182,19 @@ The manifest profile requests a 10 ns clock and 45% core utilization. Its SDC st
 
 KLayout then reads the routed DEF with the matching LEF/layer mapping, merges the actual standard-cell GDS shapes and writes `dotproduct_axi.gds`. The stream-out script rejects empty unresolved cells and reopens the GDS to check the expected top-level hierarchy. This establishes a generated/readable layout with resolved cell geometry. It does not perform foundry DRC/LVS or prove that the layout implements the intended logic.
 
-![Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator.](../figures/complete-case-asic.png){#fig-complete-case-asic fig-alt="Actual routed Nangate45 physical implementation of the same dot-product accelerator" width=95%}
+![Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-complete-case-asic.svg){#fig-complete-case-asic fig-alt="Actual routed Nangate45 physical implementation of the same dot-product accelerator" width=100%}
+
+Use @fig-complete-case-asic with its numbered reading notes and the [original full-resolution capture](../figures/complete-case-asic.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 For grayscale printing, read these captures as geometry and topology overviews. Layer identity and exact critical-path pins come from the linked reports and original full-resolution captures; a colored highlight is not the timing evidence. The numeric result tables remain the basis for the acceptance decision.
 
-![Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions.](../figures/complete-case-asic-critical.png){#fig-complete-case-critical fig-alt="Critical path highlighted in the actual OpenROAD dot-product implementation" width=95%}
+![Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-complete-case-asic-critical.svg){#fig-complete-case-critical fig-alt="Critical path highlighted in the actual OpenROAD dot-product implementation" width=100%}
 
-![Actual clock-tree topology from the routed accelerator. This clock network belongs to the accelerator block and does not include Wally or a chip-level clock tree.](../figures/complete-case-clocktree.png){#fig-complete-case-clocktree fig-alt="Clock-tree viewer export for the physically implemented dot-product IP" width=95%}
+Use @fig-complete-case-critical with its numbered reading notes and the [original full-resolution capture](../figures/complete-case-asic-critical.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
+
+![Actual clock-tree topology from the routed accelerator. This clock network belongs to the accelerator block and does not include Wally or a chip-level clock tree. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-complete-case-clocktree.svg){#fig-complete-case-clocktree fig-alt="Clock-tree viewer export for the physically implemented dot-product IP" width=100%}
+
+Use @fig-complete-case-clocktree with its numbered reading notes and the [original full-resolution capture](../figures/complete-case-clocktree.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 | Geometry/timing result | Extracted ASIC result |
 | --- | ---: |
@@ -317,9 +327,13 @@ The vectorless power estimate is **0.860 mW at 100 MHz**, split into approximate
 
 The final worst setup path now starts at `m_rdata[2]`, so its interpretation includes the external input budget as well as the internal logic and capture clock. The worst hold path is register-to-register. Read the [extracted setup report](../labs/21-physical-closure/reference/asic-repair/routed-setup.rpt), [hold report](../labs/21-physical-closure/reference/asic-repair/routed-hold.rpt), [electrical report](../labs/21-physical-closure/reference/asic-repair/routed-limits.rpt) and [constraint report](../labs/21-physical-closure/reference/asic-repair/routed-constraints.rpt) together. A blank violations report is meaningful here because its generating command and successful completion are preserved.
 
-![Actual repaired 100 MHz ASIC routing, exported from the final OpenROAD database after extraction. The floorplan is unchanged; buffering, sizing and routing differ from the original implementation.](../labs/21-physical-closure/reference/asic-repair/implementation.png){#fig-complete-closure-routing width=80%}
+![Actual repaired 100 MHz ASIC routing, exported from the final OpenROAD database after extraction. The floorplan is unchanged; buffering, sizing and routing differ from the original implementation. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-implementation-repaired.svg){#fig-complete-closure-routing width=100%}
 
-![Clock tree of the repaired block, with insertion-delay scale in ns. This is an actual OpenROAD clock-tree export; hold acceptance also depends on the data paths in the extracted reports.](../labs/21-physical-closure/reference/asic-repair/clocktree.png){#fig-complete-closure-clock width=95%}
+Use @fig-complete-closure-routing with its numbered reading notes and the [original full-resolution capture](../labs/21-physical-closure/reference/asic-repair/implementation.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
+
+![Clock tree of the repaired block, with insertion-delay scale in ns. This is an actual OpenROAD clock-tree export; hold acceptance also depends on the data paths in the extracted reports. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../figures/visual-capture-clocktree-repaired.svg){#fig-complete-closure-clock width=100%}
+
+Use @fig-complete-closure-clock with its numbered reading notes and the [original full-resolution capture](../labs/21-physical-closure/reference/asic-repair/clocktree.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
 
 The [capture record](../labs/21-physical-closure/reference/asic-repair/capture.json) binds these images and the separate [critical-path export](../labs/21-physical-closure/reference/asic-repair/critical-path.png) to the final ODB, SDC and SPEF hashes. The layout is streamed to GDSII using actual library cell geometry and reopened successfully. Stream-out/readback and the router's own DRC report do not replace foundry rule decks or extracted LVS.
 
@@ -355,6 +369,8 @@ The finishing candidate reruns `global_connect`, fills free sites conservatively
 
 The flow re-extracts SPEF from the finished database, reruns timing/electrical/constraint checks and streams a new GDS. The historical Lab 21 artifacts remain intact. The [collected result](../labs/22-layout-verification/reference/results.json), [power-terminal audit](../labs/22-layout-verification/reference/power-connectivity.json), [fresh timing report](../labs/22-layout-verification/reference/timing.json) and [command/technology record](../labs/22-layout-verification/reference/report.json) bind this continuation to the original repaired block.
 
+::: {tbl-colwidths="[48,30,22]"}
+
 | Obligation | Original timing-repaired layout | Finished candidate |
 | --- | ---: | ---: |
 | DRC categories reported | 129 | 129 |
@@ -367,6 +383,8 @@ The flow re-extracts SPEF from the finished database, reruns timing/electrical/c
 | Extracted hold slack | +0.02968 ns | **+0.02968 ns** |
 | Reported electrical violations | 0 | **0** |
 | Foundry manufacturing qualification | Open | **Open** |
+
+:::
 
 The matched finished circuits contain **44,471 MOS devices**, with the same device-class counts, 23,394 nets and 293 retained pins on both sides after consistent simplification. Device extraction follows active/poly/wells, contacts and metal/via geometry; the reference is the exported CDL plus the actual cell CDL. The unchanged timing values are fresh extracted results under the same single-corner model, not a transfer of a number from the older report. The physical-only finish leaves the functional signal implementation unchanged.
 

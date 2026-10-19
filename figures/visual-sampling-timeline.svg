@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="458" viewBox="0 0 960 458" role="img" aria-labelledby="title desc">
+<title id="title">Simulation: an edge is not the end of the time step</title><desc id="desc">Conceptual event ordering for the cocotb example; horizontal spacing is not measured time</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="458" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Simulation: an edge is not the end of the time step</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conceptual event ordering for the cocotb example; horizontal spacing is not measured time</text>
+<rect x="28" y="140" width="205" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="130.5" y="187.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Drive inputs</text>
+<text x="130.5" y="213.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">before active edge</text>
+<path d="M233 192H261" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="261" y="140" width="205" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="363.5" y="187.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">RisingEdge(clk)</text>
+<text x="363.5" y="213.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">wake sequential logic</text>
+<path d="M466 192H494" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="494" y="140" width="205" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.5" y="187.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">RTL settles</text>
+<text x="596.5" y="213.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">NBA + combinational</text>
+<path d="M699 192H727" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="727" y="140" width="205" height="105" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="829.5" y="187.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">ReadOnly()</text>
+<text x="829.5" y="213.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">sample stable results</text>
+<path d="M830 245V305H133V245" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="225" y="295" font-size="19" text-anchor="start" fill="#a34624" font-weight="normal">Advance to a writable phase / next drive opportunity</text>
+<rect x="28" y="335" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="363" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">RisingEdge alone need not observe the final nonblocking-assignment result.</text>
+<text x="44" y="388" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Do not drive new inputs during ReadOnly; the next transfer still needs a legal clock</text>
+<text x="44" y="413" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">handshake.</text>
+</g></svg>

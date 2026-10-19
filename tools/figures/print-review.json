@@ -2,40 +2,40 @@
   "schema": 1,
   "method": "Source size screening plus vector/grayscale and final-page inspection; threshold 7 pt is a conservative screening estimate, not physical signoff",
   "assets": {
-    "figures/complete-case-fpga.png": {
-      "sha256": "c272e05a8a57c19c5437f9b463d58cfc2ed9d0b2b15144794f139329468da7ec",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-complete-case-fpga.svg": {
+      "sha256": "42f0ecda473241440f4d269a008657bd459d2cebd82b9a53746775d8de5628fc",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/complete-case-nexys.png": {
-      "sha256": "e40f4f49d4ef6d5313373b1d0154cf7fa14b7629c0b477f5d19db8ba9d10ee09",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-complete-case-nexys.svg": {
+      "sha256": "3ce9b1bad9ebece738f15c926f3f4e387f509392d87960c08099c2bfbecfe0b5",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/complete-case-asic.png": {
-      "sha256": "93b3921e8111632395c5c9bf7dfd209508a06fe0e8975487920b2620e7906d5a",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-complete-case-asic.svg": {
+      "sha256": "212ba841755ac06de886b7360fdc82a289e61d2860b706fcb61d573ff92740ca",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/complete-case-asic-critical.png": {
-      "sha256": "03225f8c96050ce102d120979f3c44bb463c693df89ed93dfe988f2eb1243d3f",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-complete-case-asic-critical.svg": {
+      "sha256": "abd068082c0a084e0c65ff69f9db9abaad2b01369a6066b1a10cd796e13ae082",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/complete-case-clocktree.png": {
-      "sha256": "320e09c52a68f1a247ffdc2e588578ca056c68cf09ff2cdd5a2d626c78a5257d",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-complete-case-clocktree.svg": {
+      "sha256": "8df1d06bcdebba33fc72479fddeab6e05bf9fde5d9b0e42e9a3ac5ab4e801064",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "labs/21-physical-closure/reference/asic-repair/implementation.png": {
-      "sha256": "fe16d3f94f0f876b0a9f2cc336e10d07ebdc73b40f1e5910b25e7820771d69a6",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-implementation-repaired.svg": {
+      "sha256": "05b9b47e885698b32f845d59a84f83a5f91bf9caf171052c47d2903e4c2b0518",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "labs/21-physical-closure/reference/asic-repair/clocktree.png": {
-      "sha256": "b41ee838a65b8b2af9a4f3a4d113604bb50083f09aa8091b2e4959063db63af4",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-clocktree-repaired.svg": {
+      "sha256": "c43a19e800073a38dbfb358adb284d4fba3e3fa85fabd01304c24057a1e4d4f5",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/executable-project.svg": {
       "sha256": "91e9e3bd53788a503a4e35030f86e38c0d0755c4a9af778dfe520d7f48a63004",
@@ -43,14 +43,24 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/ip-release-boundaries.svg": {
-      "sha256": "5b29f73d8c6a7e122567090778b5302e41d5153c65389c6a205b4288f2dbb712",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "71e345e4395317eae280f5b15401098a707efcc11e79516952824171a59b4184",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/async-fifo-ownership.svg": {
-      "sha256": "1f040669a7142b5b3b53c671fbf97d5306f55f1fbf3260b1e8e4bda306e103b6",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "a2dcac24a40648f79ee204d034bbe94e260c251c2976d0aaffc0941521de010f",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-component-language.svg": {
+      "sha256": "bf71962dd6b740a3896e78b92ce38bac012c234bab6470f54f557386fcf277e9",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-wally-datapath.svg": {
+      "sha256": "7b615a9cb064d21637a013943535c101e1b83c65f4812da5ecf932cc9cfef73f",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/wally-figure-7-13-editable.svg": {
       "sha256": "2fb5123322a5ce335d3997598a6553bda9496b94c152b2b66b45d5f82a225045",
@@ -73,9 +83,9 @@
       "treatment": "Overlapping unchanged source crop; retain original attribution and license exception"
     },
     "figures/architecture-wally-hierarchy.svg": {
-      "sha256": "70e6d863556e09cac05f110ef9c95887cf1c9b8dbde1f665642502369fd2e6d9",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "375e853194668c398d9c7d1521c5850e0f0c3aa6332334d1c5c57b3ae9e25d5f",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/wally-soc-overview.svg": {
       "sha256": "201d0c862b9180733f73c4646285298237d58c1211359964d2057ee60238dc2c",
@@ -87,10 +97,30 @@
       "reading": "Text labels and structural/line/marker cues retain meaning without hue",
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
+    "figures/visual-core-organizations.svg": {
+      "sha256": "910038c740d60872425db5c3cfef31569ddb1eece085a404837e0e33e9a8caf3",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
     "figures/architecture-ooo-window.svg": {
-      "sha256": "803c49f46a88e28879d1b9a3e1f1a18ba13a9523750566464414eb5fc6ae4406",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "ee0c33c8db0745562b7f30258017ad9dbcc8ab6fe8f34d9b5a9f04f1cc965aa5",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-sampling-timeline.svg": {
+      "sha256": "a3a7587e8fbeac4b7ea2bc9c4cb9d2ad066c08cec3d94f9aa51f5a743407c64a",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-formal-counterexample.svg": {
+      "sha256": "19eca2e27c7042ffcf4b76a19afd5349612da1964b8729e5e66a2198b37766d5",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-verification-flow.svg": {
+      "sha256": "36424bff7f7ba04cd7c95de17f2918e9529e5b58741f9b42b6c8772db08b1086",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/riscv-boot-stack.svg": {
       "sha256": "4f9e46020a66cb4ac2335d74a4aa4991b9aa35aebb19437337d5eba10aa18b04",
@@ -98,29 +128,34 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/architecture-boot-timeline.svg": {
-      "sha256": "f05ee2f641bb33b9d4e59f00ead2a6f8bb82b6dfab221d9edd912b996fabaab5",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "8389e3651ebc5a091affb38185caa9c766908afbd321454ef39bf4be70f2ab97",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/architecture-axi-write.svg": {
-      "sha256": "4f273fce29bcc313680d37e517298d97c39f69189232c8f38dac865a18d3d190",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "192b4f0b49313a87e893a1067664ed551bff2a3c5732468f47de491fb5bc1536",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/architecture-axi-read.svg": {
-      "sha256": "34f6f874c1b07891fb662f25068a13fb8e3a509463f38af6bcd0dac1c63bed99",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "fb1f433fcac15efbeb12a1526bcba6877245f52ff2788abf28fd33c980cc8b81",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/architecture-cache-miss.svg": {
-      "sha256": "51e4049bdba5a4fd2d0592b2d82f62be1423a25255903eecd8b7157a2d072415",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "bcbb67ca5d69c72bd340b5af69ce01159a6f7324d5f2abf9a0197a83b1301bc6",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
+    },
+    "figures/visual-mmio-map.svg": {
+      "sha256": "725a6be4d776283e8e0a1e6f15d7f7a70eff189d8df71dbd9708f84bfe97ab99",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/architecture-nexys-domains.svg": {
-      "sha256": "787a3a94e341844ed9e68623b76afbc863769af8da20a76480b41544707f9b34",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "69875e60755f618db6da33e865c958b9de0d843e77338b1fe1feb39c6258cfa9",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/rtl-to-gdsii-flow.svg": {
       "sha256": "3c318a1f28e31e63b5ffc579be0934f4c6f81d4ef92ff9ad4c6990242d3a8870",
@@ -128,44 +163,44 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/architecture-openroad-checkpoints.svg": {
-      "sha256": "b0cc2b84f7b965e8911fed76edd955a74eccd88974d909538de1c61a3e144b60",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "fe7613ebb54e42532b412c5df5858e6d989dcb3f19831cb812ee8844965d3831",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-u45-placed.png": {
-      "sha256": "8d181e4aa5f837c571ef167d0d1fc33329943ea75e47831bd6468d6eb6aeba80",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-u45-placed.svg": {
+      "sha256": "a41751e7dd97d6ecb5aad43f6628cd66741b65f04ae716acb12549c796b90439",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-u65-placed.png": {
-      "sha256": "034e0dfb7ed39854fe82dc21fc492e6a8a5918e1c4e70796aaecf991eaf5ac82",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-u65-placed.svg": {
+      "sha256": "c9fb4e7a9391f04e3e0a83e2838e2a24149d24a8728c663d9ebe324b2df3c79e",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-placed.png": {
-      "sha256": "b8602adcbb206dd8dd7f11c68f9f0575d472f399e84813b21299341847e4f61a",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-placed.svg": {
+      "sha256": "2d5a582432362e651fbd3752f567402b8f80b4674ee9533707bb0efa3e0e1c53",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-cts.png": {
-      "sha256": "154a317ca5da35ac0b18c7d22808702b8b590cba99b67e1970fcc25085842f59",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-cts.svg": {
+      "sha256": "b7d4845f4d6a3f3204de24bfc978b6877c6af01b4e05e9b1239d19b1bbddc46e",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-clocktree.png": {
-      "sha256": "8d7d442f9b5f8235e7b3b1ad031da93332df83f52da42fa85cfd0c02644d8bb0",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-clocktree.svg": {
+      "sha256": "b1bfebd7004212cd259eebc27383576377058fad1325475ce11011c2fa92b52f",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-routed.png": {
-      "sha256": "ec83299e5f1823c941188357318140feb93dddcfdde2928c632f41c58e577c6a",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-routed.svg": {
+      "sha256": "41f9d29bace2c00de36bc9d260eab713a724fba3d88491cc8e14019387a2d399",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
-    "figures/openroad-study-critical-path.png": {
-      "sha256": "5cd35b62aac4b7d43b1b1bdfd35cf02aef3e4462db9e4dab9ed49c5683220f79",
-      "reading": "Geometry/topology overview; read exact layers, pins and values in the linked report or full-resolution source",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+    "figures/visual-capture-openroad-study-critical-path.svg": {
+      "sha256": "603e0cf6a1feaf9fa82f3ba9f0261eef5ea10975bbc428ac2f23452c44459a48",
+      "reading": "Unaltered experimental image with separate numbered reading notes; original-resolution source and reports are linked",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/asic-validation-evidence.svg": {
       "sha256": "6a752199e3c1bcac14b6de8e1c538f4265caedc2b6906672e0eedd1034f9d3d2",
@@ -183,9 +218,9 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/architecture-dotproduct-dma.svg": {
-      "sha256": "39761f89fca9971f5c8e08017f2e7ef0b8ff17f9a86b4b7064c70eb258a3484e",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "12f3a040f0d87358bb457c721ac4c6d92f2b38eb0855f3c3ef057407040bb3d6",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/dse-print-pareto.svg": {
       "sha256": "e4dbf698338accd70e988e108986486de2f830053b00126322b9fd00c4ade3d0",
@@ -198,9 +233,9 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/architecture-security-surfaces.svg": {
-      "sha256": "647334d672f4ab657cc1f943b950320d3ee5c66cbfa8f301d2ae251281910a43",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "5d886d044288b58f57e3b799554dec24264becaf494126c6775bcc3255fa7ffb",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/multicore-domains.svg": {
       "sha256": "f7633791ff5f6acf3a3a8d15a0ef027988e1854463389a5dedac3cadb04511b2",
@@ -213,9 +248,9 @@
       "treatment": "Inspect at actual PDF size and in grayscale"
     },
     "figures/architecture-rvv-registers.svg": {
-      "sha256": "f7691cd96aa3fba329cf92e61d6643de6f1d4b69aedc2b3b4886c41905ece1c6",
-      "reading": "Text labels and structural/line/marker cues retain meaning without hue",
-      "treatment": "Inspect at actual PDF size and in grayscale"
+      "sha256": "b5ba5b4ee8b3d0c7491c663bc19174e7baaff199dbd3d0afc96e540c991ef2ad",
+      "reading": "Labelled conceptual diagram or retained-trace view; scope and arrow semantics are stated in its caption",
+      "treatment": "Source vector layout inspected in color; final A4/grayscale page inspection required on release"
     },
     "figures/rvv-strip-mining.svg": {
       "sha256": "f4e3916796ec361d4c6878993e25b91365256eb41c105cf9c807d4831c47cc33",

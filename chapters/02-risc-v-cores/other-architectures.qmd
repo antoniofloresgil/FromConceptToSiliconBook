@@ -45,6 +45,10 @@ where the instruction count, CPI and achievable clock frequency all depend on co
 
 ### A map of the examples
 
+![Conceptual organizations motivated by compact, short-pipeline and in-order-pipeline cores. The rows do not prescribe exact PicoRV32, Ibex or CV32E40P stages, configuration options or cycle counts.](../../figures/visual-core-organizations.svg){#fig-core-organizations width=100%}
+
+In @fig-core-organizations, locate where an instruction waits for operands or memory before comparing frequency. The OoO organization in @fig-ooo-window adds readiness-based issue and ordered retirement; it is not another row with directly comparable stage latency.
+
 The following table gives **design intent**, not a benchmark result. Exact supported features depend on the selected commit and configuration.
 
 | Core | Main design intent | Execution style | RTL description | What it teaches |

@@ -50,6 +50,8 @@ A trust boundary is the point where an untrusted action requires a trusted decis
 
 ![Original proposal showing separate CPU, DMA and debug access paths. Dotted lines carry trusted policy; solid lines carry requests. CPU PMP does not automatically constrain other masters.](../../figures/security-trust-boundaries.svg){#fig-security-boundaries width=100%}
 
+In @fig-security-boundaries, trace each CPU, DMA and debug access through its proposed enforcement point. The diagram is a policy design, not evidence that all guards exist in the pinned RTL.
+
 The trusted computing base (TCB) contains the hardware, firmware and configuration whose correctness is required by the claim. Minimizing its size helps review, but a small firmware image is not a small TCB if it relies on an undocumented interconnect, debug controller and key store. Conversely, a large driver outside the trusted boundary can be acceptable if it cannot escape the hardware policy.
 
 For each boundary, state the decision inputs, their owner, the point of enforcement and the response to denial. A CPU permission check in the retirement stage can be too late if an earlier request already reached a side-effecting device. A DMA descriptor check can be sufficient for a trusted engine, but not for an engine whose RTL or control state can generate unrelated addresses.

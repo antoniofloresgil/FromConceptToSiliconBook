@@ -34,6 +34,12 @@ Use headings and meaningful captions/alternative descriptions so the material
 can be navigated without depending on a figure's visual appearance. Keep HTML
 local heading navigation while avoiding hundreds of redundant PDF contents rows.
 
+The HTML reading column must shrink on narrow screens. Contain horizontal
+scrolling within wide tables and code blocks rather than clipping ordinary prose.
+Preserve visible keyboard focus, descriptive callout titles and footnote return
+links. Review the maintained editorial specimen in desktop and narrow layouts;
+its recipe lives in [the template guide](../styles/README.md).
+
 ## Figures and grayscale printing
 
 - Meaning must survive loss of hue: use explicit labels, shapes, containment,

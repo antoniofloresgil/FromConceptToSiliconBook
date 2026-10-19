@@ -20,7 +20,9 @@ The result is a useful division of responsibilities:
 
 LibreLane therefore makes a flow repeatable; it does not make an incorrect specification correct or make a PDK production-qualified. Every timing constraint, macro view, I/O assumption, physical-verification result and tapeout requirement still needs engineering review.
 
-![LibreLane can manage the same RTL-to-GDSII flow that was exposed command by command in the OpenROAD chapter.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="SystemVerilog RTL and a PDK enter the managed ASIC implementation flow and produce GDSII"}
+![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-librelane-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter the managed ASIC implementation flow and produce GDSII"}
+
+Follow @fig-librelane-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
 
 ### Direct OpenROAD or LibreLane?
 

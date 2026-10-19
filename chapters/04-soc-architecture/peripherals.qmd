@@ -12,6 +12,10 @@ The examples distinguish Wally's actual register interfaces from small teaching 
 
 ## Concepts
 
+![Selected representative platform base addresses, not a complete memory map or a scale drawing. UART and GPIO retain distinct bases; the accelerator platform extension decodes 0x10080000 and forwards register offsets to the unchanged IP. RAM is a separate target.](../../figures/visual-mmio-map.svg){#fig-platform-mmio-map width=100%}
+
+Use @fig-platform-mmio-map to separate region decode from register offset. UART and GPIO bases follow this chapter; accelerator and RAM bases come from the [Linux accelerator profile](../../labs/18-linux-accelerator/manifest.json). A driver must still use the Device Tree and decode window of the selected platform.
+
 ### The layers of a peripheral
 
 A useful decomposition separates the processor interface, register semantics, transport/datapath and external pins. Changes to one layer can affect another: deeper FIFOs change service deadlines, a slower clock changes UART divisors, and a read side effect changes the driver.

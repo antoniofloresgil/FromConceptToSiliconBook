@@ -6,6 +6,10 @@ The first part deliberately studies a simplified processor. It implements the or
 
 ## From a Single-Cycle Datapath to a Pipeline
 
+![Conceptual graphic vocabulary used by the new block diagrams: CPU double outline, cache and memory rules, interconnect spine, peripheral ports and accelerator chevrons. Shape marks and labels retain meaning in monochrome.](../../figures/visual-component-language.svg){#fig-component-language width=100%}
+
+Use @fig-component-language as the reading key: containment denotes ownership, a solid arrow carries the stated request or data, and a dashed arrow denotes the stated control or dependency. These symbols do not imply cache coherence or measured implementation status.
+
 A single-cycle processor completes fetch, decode, register read, ALU operation, memory access and register writeback in one clock period. Its simplicity is attractive, but the period must accommodate the slowest instruction: instruction memory, register file, ALU, data memory and writeback. Most instructions leave part of that long period unused.
 
 Pipelining divides the work into stages separated by registers. Once filled, the pipeline can retire approximately one instruction per cycle even though each instruction takes several cycles to traverse the machine. The latency of an instruction and the throughput of the processor are therefore different quantities.
@@ -22,9 +26,15 @@ Pipeline registers preserve both data and its meaning. For example, a load instr
 
 ## The Simplified Wally Pipeline
 
+![Original conceptual orientation of the five-stage teaching datapath. Instruction memory, data memory, writeback and redirect feedback are shown; stalls, flush enables and bypass details are intentionally omitted. Arrow length does not encode latency.](../../figures/visual-wally-datapath.svg){#fig-wally-orientation width=100%}
+
+Trace the destination register and write-enable alongside the result in @fig-wally-orientation. Then use @fig-wally-pipeline-synchronous and the enlarged views below to identify the actual pipeline registers and control signals; the orientation diagram is not a replacement netlist.
+
 The following improved pipeline is reproduced from Figure 7.13 of *RISC-V System-on-Chip Design*, Chapter 7. It illustrates the datapath after adapting the simple pipeline to synchronous instruction and data memories.
 
 ![Improved pipelined RISC-V datapath with synchronous memories. Source: Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Chapter 7, Figure 7.13.](../../figures/wally-figure-7-13-editable.svg){#fig-wally-pipeline-synchronous fig-alt="Improved five-stage Wally-style pipeline with synchronous instruction and data memories"}
+
+Use @fig-wally-pipeline-left for fetch/decode, @fig-wally-pipeline-center for execute/hazard paths, and @fig-wally-pipeline-right for memory/writeback.
 
 The complete datapath is an orientation view. For signal names in print, use the following three overlapping enlargements, read from left to right. A wire crossing a crop edge continues in the neighboring view; the crops do not introduce new circuit boundaries. The [original vector figure](../../figures/wally-figure-7-13-editable.svg) remains available for unrestricted zoom.
 
@@ -139,6 +149,8 @@ This baseline permits following cache misses, MMIO and interrupts in one configu
 ![Original module ownership map for the pinned rv32gc reading baseline. Solid blue arrows show selected requests; the dashed orange arrow returns interrupt events. Names follow the inspected Wally RTL [@cvwBridgeSoc; @cvwBridgeCore].](../../figures/architecture-wally-hierarchy.svg){#fig-wally-module-hierarchy fig-alt="Nested Wally SoC, core and uncore blocks with IFU, IEU, LSU, arithmetic, privileged and hazard logic, EBU, memories and peripherals" width=100%}
 
 ![Wally core-to-SoC organization. Original editable vector redraw informed by Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Figure 2.13, and the CVW repository's `wallyriscvTopAll.png`. The layout groups functions and makes the AHB/APB and interrupt paths explicit; it is not a verbatim reproduction or a pipeline-stage diagram.](../../figures/wally-soc-overview.svg){#fig-wally-soc-overview fig-alt="Wally IFU, execution units, LSU and privileged control connect through EBU and AHB to RAM and APB peripherals; separate interrupt paths return from CLINT and PLIC"}
+
+Read @fig-wally-soc-overview from the core through the transport interface to the uncore. Nested frames describe ownership; dashed return paths identify events rather than another processor pipeline.
 
 The repository diagram provides a complementary stage-oriented view [@cvwRepositoryDiagram]. The new SVG reorganizes those functions for system integration. In particular, it separates outward requests from inward events: a peripheral write and an interrupt are not two directions of one bus transaction.
 
@@ -275,6 +287,8 @@ This contrasts with the timer path: a timer handler reprograms CLINT compare sta
 ### Compare the three paths side by side
 
 ![Three causal journeys in the selected Wally SoC: a cache-miss RAM load, an uncached GPIO write and a machine timer interrupt. Original teaching diagram based on the inspected configuration and RTL. Arrows indicate causality, not fixed cycle counts.](../../figures/wally-soc-three-paths.svg){#fig-wally-soc-three-paths fig-alt="RAM refill ends in load writeback, GPIO MMIO ends in a device register update, and a timer event ends in trap service and architectural return"}
+
+Compare the instruction-fetch, load-miss and interrupt journeys in @fig-wally-soc-three-paths. They cross different interfaces and must not be inferred from the same timing waveform.
 
 A RAM load consumes a returned value. A device write commits a side effect. An interrupt preserves foreground execution while transferring control to service code. All three can stall or require bus activity, but their correctness conditions differ.
 

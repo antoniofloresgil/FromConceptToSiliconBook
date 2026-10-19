@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="653" viewBox="0 0 960 653" role="img" aria-labelledby="title desc">
+<title id="title">Core organizations: where instructions wait</title><desc id="desc">Conceptual comparison; no fixed configuration, widths or performance numbers are implied</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="653" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Core organizations: where instructions wait</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conceptual comparison; no fixed configuration, widths or performance numbers are implied</text>
+<text x="28" y="110" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Time-shared</text>
+<rect x="28" y="130" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="130.5" y="169.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Fetch</text>
+<path d="M233 162H261" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="261" y="130" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="363.5" y="169.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Decode / RF</text>
+<path d="M466 162H494" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="494" y="130" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.5" y="169.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">ALU / memory</text>
+<path d="M699 162H727" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="727" y="130" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="829.5" y="169.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Writeback</text>
+<text x="28" y="240" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Short pipeline</text>
+<rect x="28" y="260" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="130.5" y="299.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Fetch + buffer</text>
+<path d="M233 292H261" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="261" y="260" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="363.5" y="299.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Decode / ALU</text>
+<path d="M466 292H494" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="494" y="260" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.5" y="299.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Memory wait</text>
+<path d="M699 292H727" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="727" y="260" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="829.5" y="299.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Retire</text>
+<text x="28" y="370" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">In-order pipeline</text>
+<rect x="28" y="390" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="130.5" y="429.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Fetch</text>
+<path d="M233 422H261" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="261" y="390" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="363.5" y="429.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Decode / RF</text>
+<path d="M466 422H494" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="494" y="390" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.5" y="429.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Execute</text>
+<path d="M699 422H727" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="727" y="390" width="205" height="65" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="829.5" y="429.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Memory / WB</text>
+<rect x="28" y="505" width="904" height="128" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="533" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Rows are organizations, not matched cycle-by-cycle timelines or exact processor</text>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">schematics.</text>
+<text x="44" y="583" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">PicoRV32, Ibex and CV32E40P motivate different points; inspect the selected core</text>
+<text x="44" y="608" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">configuration.</text>
+</g></svg>

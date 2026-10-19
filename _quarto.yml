@@ -1,6 +1,12 @@
 project:
   type: book
   pre-render:
+    - python tools/design/prepare_book.py
+    - python tools/figures/architecture.py --check
+    - python tools/figures/visual_language.py --check
+    - python tools/figures/async_fifo.py --check
+    - python tools/figures/reusable_ip.py --check
+    - python tools/figures/print_audit.py --check
     - python tools/book/learning_paths.py --check --export downloads/learning-activities.csv
     - python tools/book/reference.py
     - python labs/run.py pack
@@ -25,6 +31,26 @@ project:
     - downloads/hardware-design-labs.zip
     - downloads/learning-activities.csv
     - downloads/experiment-matrix.csv
+    - figures/complete-case-asic-critical.png
+    - figures/complete-case-asic.png
+    - figures/complete-case-clocktree.png
+    - figures/complete-case-fpga.png
+    - figures/complete-case-nexys.png
+    - figures/openroad-study-clocktree.png
+    - figures/openroad-study-critical-path.png
+    - figures/openroad-study-cts.png
+    - figures/openroad-study-placed.png
+    - figures/openroad-study-routed.png
+    - figures/openroad-study-u45-placed.png
+    - figures/openroad-study-u65-placed.png
+    - labs/21-physical-closure/reference/asic-repair/clocktree.png
+    - labs/21-physical-closure/reference/asic-repair/implementation.png
+    - figures/architecture-floorplan.png
+    - figures/architecture-floorplan.json
+    - figures/visual-manifest.json
+    - figures/architecture-manifest.json
+    - docs/audits/2026-10-19/evidence/raw/formal/fault-counterexample.vcd
+    - labs/18-linux-accelerator/manifest.json
 
 book:
   output-file: From-Concept-to-Silicon
@@ -33,6 +59,8 @@ book:
   title: "From Concept to Silicon"
   subtitle: "A Hands-On Guide to Open-Source SoC Design Using RISC-V"
   author: "Antonio Flores Gil"
+  cover-image: design/identity/front.svg
+  cover-image-alt: "From Concept to Silicon, by Antonio Flores Gil. Four layers connect SoC architecture, RTL, physical routing and silicon."
   date: today
   chapters:
     - index.qmd
@@ -106,19 +134,24 @@ format:
     theme:
       - cosmo
       - brand
+      - styles/book.scss
   pdf:
     documentclass: scrreprt
+    papersize: a4
+    toc-depth: 2
+    template-partials:
+      - styles/before-body.tex
+      - styles/toc.tex
     latex-auto-install: false
     include-in-header:
-      - text: |
-          % Size TOC number columns from the actual labels, including 24.10.1.
-          % Keep child indentation in sync when a parent's number column grows.
-          \RedeclareSectionCommands[tocdynnumwidth=true,tocnumsep=.6em]{chapter,section,subsection,subsubsection}
-          \RedeclareSectionCommands[tocdynindent=true]{section,subsection,subsubsection}
+      - styles/book.tex
+      - styles/frontmatter.tex
     filters:
       - tools/book/part-titles.lua
       - tools/book/activity-labels.lua
       - tools/book/reference-toc.lua
+      - tools/book/inline-code.lua
+      - tools/book/pdf-structure.lua
 
 
 

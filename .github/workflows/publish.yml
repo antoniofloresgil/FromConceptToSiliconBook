@@ -34,6 +34,16 @@ jobs:
           python tools/book/test_build.py
       - name: Check publication preserves previous and open PDFs
         run: python tools/book/test_publish.py
+      - name: Check selected cover identity and generated styles
+        run: |
+          python tools/design/test_identity.py
+          python tools/design/identity.py --check
+      - name: Check PDF content, navigation and publishing regressions
+        run: >-
+          docker run --rm --platform linux/amd64 --network none
+          --user "$(id -u):$(id -g)" --env HOME=/tmp
+          --mount "type=bind,source=$PWD,target=/work" from-concept-book:2026.10
+          python -m unittest discover -s tools/book -p 'test_*.py'
       - name: Render and validate HTML, PDF and figures offline
         run: |
           image_id=$(docker image inspect --format '{{.Id}}' from-concept-book:2026.10)

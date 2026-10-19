@@ -31,6 +31,8 @@ A practical boot contract lists the reset address, initial privilege, executable
 
 ![Original diagram of the conventional OpenSBI/Linux path. The bootloader is optional; resident firmware continues serving SBI calls after kernel entry.](../../figures/riscv-boot-stack.svg){#fig-riscv-boot-stack width=100%}
 
+Use @fig-riscv-boot-stack to distinguish the optional loader from resident firmware, and compare its software layers with the explicit handoff sequence in @fig-boot-handoff-timeline.
+
 ### ROM, SRAM and DRAM have different jobs
 
 ![Original boot timeline with privilege and handoff contracts. OpenSBI initialization ends before Linux entry, but its resident M-mode runtime remains available to service SBI calls. Horizontal distance does not represent elapsed boot time.](../../figures/architecture-boot-timeline.svg){#fig-boot-handoff-timeline fig-alt="ROM loader enters OpenSBI in M-mode, firmware hands hart ID and DTB to Linux in S-mode, and Linux starts U-mode applications while resident firmware handles SBI calls" width=100%}

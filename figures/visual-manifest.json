@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "kind": "Conceptual SVGs, one retained-trace visualization, and editorial capture wrappers",
+  "inputs": {
+    "tools/figures/visual_language.py": "1accc18a2f64f2efafd70832bed5d2812b2578a9827c26df4534afeea0208606",
+    "tools/figures/architecture.py": "d597d8bd81d6ac36ae30026b8e359d6ee0c892399fa339bc0b408761b9609959",
+    "docs/audits/2026-10-19/evidence/raw/formal/fault-counterexample.vcd": "a730683214926f751817396a79a39b7daa177db0e5fedb9ad8e3bd508608db6b",
+    "labs/18-linux-accelerator/manifest.json": "63dea2f555323e226f576ce0f5c551b933c15f016bed0f66a50b63144b368633"
+  },
+  "captures": [
+    {
+      "source": "figures/complete-case-asic-critical.png",
+      "sha256": "03225f8c96050ce102d120979f3c44bb463c693df89ed93dfe988f2eb1243d3f",
+      "output": "visual-capture-complete-case-asic-critical.svg",
+      "observations": [
+        "1  Locate the highlighted path in the retained routing context.",
+        "2  Identify launch, capture and interface budgets in the linked timing report."
+      ]
+    },
+    {
+      "source": "figures/complete-case-asic.png",
+      "sha256": "93b3921e8111632395c5c9bf7dfd209508a06fe0e8975487920b2620e7906d5a",
+      "output": "visual-capture-complete-case-asic.svg",
+      "observations": [
+        "1  Inspect the distribution of routed connections and the implementation boundary.",
+        "2  Dense geometry is not a timing, DRC/LVS or power acceptance report."
+      ]
+    },
+    {
+      "source": "figures/complete-case-clocktree.png",
+      "sha256": "320e09c52a68f1a247ffdc2e588578ca056c68cf09ff2cdd5a2d626c78a5257d",
+      "output": "visual-capture-complete-case-clocktree.svg",
+      "observations": [
+        "1  Follow the root-to-leaf topology and the insertion-delay scale in ns.",
+        "2  Hold acceptance also needs data-path delays and the extracted hold report."
+      ]
+    },
+    {
+      "source": "figures/complete-case-fpga.png",
+      "sha256": "c272e05a8a57c19c5437f9b463d58cfc2ed9d0b2b15144794f139329468da7ec",
+      "output": "visual-capture-complete-case-fpga.svg",
+      "observations": [
+        "1  Read coordinates / resource categories from the axes, not as a die photograph.",
+        "2  Occupied resources do not establish routed timing or measured power."
+      ]
+    },
+    {
+      "source": "figures/complete-case-nexys.png",
+      "sha256": "e40f4f49d4ef6d5313373b1d0154cf7fa14b7629c0b477f5d19db8ba9d10ee09",
+      "output": "visual-capture-complete-case-nexys.svg",
+      "observations": [
+        "1  Read coordinates / resource categories from the axes, not as a die photograph.",
+        "2  Occupied resources do not establish routed timing or measured power."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-clocktree.png",
+      "sha256": "8d7d442f9b5f8235e7b3b1ad031da93332df83f52da42fa85cfd0c02644d8bb0",
+      "output": "visual-capture-openroad-study-clocktree.svg",
+      "observations": [
+        "1  Follow the root-to-leaf topology and the insertion-delay scale in ns.",
+        "2  Hold acceptance also needs data-path delays and the extracted hold report."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-critical-path.png",
+      "sha256": "5cd35b62aac4b7d43b1b1bdfd35cf02aef3e4462db9e4dab9ed49c5683220f79",
+      "output": "visual-capture-openroad-study-critical-path.svg",
+      "observations": [
+        "1  Locate the highlighted path in the retained routing context.",
+        "2  Identify launch, capture and interface budgets in the linked timing report."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-cts.png",
+      "sha256": "154a317ca5da35ac0b18c7d22808702b8b590cba99b67e1970fcc25085842f59",
+      "output": "visual-capture-openroad-study-cts.svg",
+      "observations": [
+        "1  Inspect rows, cell distribution and free space; compare the stated utilization.",
+        "2  Placement alone does not include the final signal-wire RC or prove timing."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-placed.png",
+      "sha256": "b8602adcbb206dd8dd7f11c68f9f0575d472f399e84813b21299341847e4f61a",
+      "output": "visual-capture-openroad-study-placed.svg",
+      "observations": [
+        "1  Inspect rows, cell distribution and free space; compare the stated utilization.",
+        "2  Placement alone does not include the final signal-wire RC or prove timing."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-routed.png",
+      "sha256": "ec83299e5f1823c941188357318140feb93dddcfdde2928c632f41c58e577c6a",
+      "output": "visual-capture-openroad-study-routed.svg",
+      "observations": [
+        "1  Inspect the distribution of routed connections and the implementation boundary.",
+        "2  Dense geometry is not a timing, DRC/LVS or power acceptance report."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-u45-placed.png",
+      "sha256": "8d181e4aa5f837c571ef167d0d1fc33329943ea75e47831bd6468d6eb6aeba80",
+      "output": "visual-capture-openroad-study-u45-placed.svg",
+      "observations": [
+        "1  Inspect rows, cell distribution and free space; compare the stated utilization.",
+        "2  Placement alone does not include the final signal-wire RC or prove timing."
+      ]
+    },
+    {
+      "source": "figures/openroad-study-u65-placed.png",
+      "sha256": "034e0dfb7ed39854fe82dc21fc492e6a8a5918e1c4e70796aaecf991eaf5ac82",
+      "output": "visual-capture-openroad-study-u65-placed.svg",
+      "observations": [
+        "1  Inspect rows, cell distribution and free space; compare the stated utilization.",
+        "2  Placement alone does not include the final signal-wire RC or prove timing."
+      ]
+    },
+    {
+      "source": "labs/21-physical-closure/reference/asic-repair/clocktree.png",
+      "sha256": "b41ee838a65b8b2af9a4f3a4d113604bb50083f09aa8091b2e4959063db63af4",
+      "output": "visual-capture-clocktree-repaired.svg",
+      "observations": [
+        "1  Follow the root-to-leaf topology and the insertion-delay scale in ns.",
+        "2  Hold acceptance also needs data-path delays and the extracted hold report."
+      ]
+    },
+    {
+      "source": "labs/21-physical-closure/reference/asic-repair/implementation.png",
+      "sha256": "fe16d3f94f0f876b0a9f2cc336e10d07ebdc73b40f1e5910b25e7820771d69a6",
+      "output": "visual-capture-implementation-repaired.svg",
+      "observations": [
+        "1  Inspect the distribution of routed connections and the implementation boundary.",
+        "2  Dense geometry is not a timing, DRC/LVS or power acceptance report."
+      ]
+    }
+  ],
+  "outputs": {
+    "visual-component-language.svg": "bf71962dd6b740a3896e78b92ce38bac012c234bab6470f54f557386fcf277e9",
+    "visual-wally-datapath.svg": "7b615a9cb064d21637a013943535c101e1b83c65f4812da5ecf932cc9cfef73f",
+    "visual-core-organizations.svg": "910038c740d60872425db5c3cfef31569ddb1eece085a404837e0e33e9a8caf3",
+    "visual-verification-flow.svg": "36424bff7f7ba04cd7c95de17f2918e9529e5b58741f9b42b6c8772db08b1086",
+    "visual-sampling-timeline.svg": "a3a7587e8fbeac4b7ea2bc9c4cb9d2ad066c08cec3d94f9aa51f5a743407c64a",
+    "visual-formal-counterexample.svg": "19eca2e27c7042ffcf4b76a19afd5349612da1964b8729e5e66a2198b37766d5",
+    "visual-mmio-map.svg": "725a6be4d776283e8e0a1e6f15d7f7a70eff189d8df71dbd9708f84bfe97ab99",
+    "visual-capture-complete-case-asic-critical.svg": "abd068082c0a084e0c65ff69f9db9abaad2b01369a6066b1a10cd796e13ae082",
+    "visual-capture-complete-case-asic.svg": "212ba841755ac06de886b7360fdc82a289e61d2860b706fcb61d573ff92740ca",
+    "visual-capture-complete-case-clocktree.svg": "8df1d06bcdebba33fc72479fddeab6e05bf9fde5d9b0e42e9a3ac5ab4e801064",
+    "visual-capture-complete-case-fpga.svg": "42f0ecda473241440f4d269a008657bd459d2cebd82b9a53746775d8de5628fc",
+    "visual-capture-complete-case-nexys.svg": "3ce9b1bad9ebece738f15c926f3f4e387f509392d87960c08099c2bfbecfe0b5",
+    "visual-capture-openroad-study-clocktree.svg": "b1bfebd7004212cd259eebc27383576377058fad1325475ce11011c2fa92b52f",
+    "visual-capture-openroad-study-critical-path.svg": "603e0cf6a1feaf9fa82f3ba9f0261eef5ea10975bbc428ac2f23452c44459a48",
+    "visual-capture-openroad-study-cts.svg": "b7d4845f4d6a3f3204de24bfc978b6877c6af01b4e05e9b1239d19b1bbddc46e",
+    "visual-capture-openroad-study-placed.svg": "2d5a582432362e651fbd3752f567402b8f80b4674ee9533707bb0efa3e0e1c53",
+    "visual-capture-openroad-study-routed.svg": "41f9d29bace2c00de36bc9d260eab713a724fba3d88491cc8e14019387a2d399",
+    "visual-capture-openroad-study-u45-placed.svg": "a41751e7dd97d6ecb5aad43f6628cd66741b65f04ae716acb12549c796b90439",
+    "visual-capture-openroad-study-u65-placed.svg": "c9fb4e7a9391f04e3e0a83e2838e2a24149d24a8728c663d9ebe324b2df3c79e",
+    "visual-capture-clocktree-repaired.svg": "c43a19e800073a38dbfb358adb284d4fba3e3fa85fabd01304c24057a1e4d4f5",
+    "visual-capture-implementation-repaired.svg": "05b9b47e885698b32f845d59a84f83a5f91bf9caf171052c47d2903e4c2b0518"
+  }
+}

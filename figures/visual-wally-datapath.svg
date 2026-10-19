@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="683" viewBox="0 0 960 683" role="img" aria-labelledby="title desc">
+<title id="title">Five stages: follow an instruction and its result</title><desc id="desc">Conceptual orientation for the simplified pipeline; arrows are dependencies, not cycle counts</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="683" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Five stages: follow an instruction and its result</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conceptual orientation for the simplified pipeline; arrows are dependencies, not cycle counts</text>
+<rect x="28" y="205" width="170" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="113.0" y="247.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">F: fetch</text>
+<text x="113.0" y="273.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">PC / instruction</text>
+<path d="M198 252H211" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="211" y="205" width="170" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="296.0" y="247.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">D: decode</text>
+<text x="296.0" y="273.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">RF / operands</text>
+<path d="M381 252H394" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="394" y="205" width="170" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="479.0" y="247.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">E: execute</text>
+<text x="479.0" y="273.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ALU / branch</text>
+<path d="M564 252H577" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="577" y="205" width="170" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="662.0" y="247.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">M: memory</text>
+<text x="662.0" y="273.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">load / store</text>
+<path d="M747 252H760" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="760" y="205" width="170" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="247.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">W: writeback</text>
+<text x="845.0" y="273.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rd / write enable</text>
+<rect x="28" y="95" width="250" height="65" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M36 153H58" stroke="#28705c" stroke-width="2"/>
+<path d="M36 146H58" stroke="#28705c" stroke-width="2"/>
+<text x="153.0" y="122.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Instruction memory</text>
+<text x="153.0" y="148.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">synchronous read</text>
+<path d="M113 205V160" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M278 128H296V205" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<rect x="545" y="370" width="225" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M553 443H575" stroke="#28705c" stroke-width="2"/>
+<path d="M553 436H575" stroke="#28705c" stroke-width="2"/>
+<text x="657.5" y="405.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Data memory</text>
+<text x="657.5" y="431.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">request / response</text>
+<path d="M620 300V370" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M770 410H845V300" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M845 300V492H296V300" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="325" y="480" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Writeback returns the selected value to the register file</text>
+<path d="M479 205V182H113V205" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="400" y="150" font-size="19" text-anchor="start" fill="#a34624" font-weight="normal">Branch / redirect control</text>
+<rect x="28" y="535" width="904" height="128" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="563" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Carry PC, destination, validity and control with the payload across every stage</text>
+<text x="44" y="588" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">boundary.</text>
+<text x="44" y="613" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Stall, flush and bypass logic are omitted here; use the enlarged attributed datapath for</text>
+<text x="44" y="638" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">exact signals.</text>
+</g></svg>

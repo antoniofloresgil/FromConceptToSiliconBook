@@ -30,7 +30,7 @@ class Drawing:
             self.parts.append(f'<marker id="{key}" markerWidth="9" markerHeight="9" '
                               f'refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="{color}"/></marker>')
         self.parts += ['</defs>', f'<rect width="960" height="{height}" fill="white"/>',
-                       '<g font-family="Arial, sans-serif" fill="#172b3a">']
+                       '<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">']
         self.text(28, 33, title, size=26, bold=True)
         self.text(28, 62, subtitle, size=18)
 
@@ -43,8 +43,24 @@ class Drawing:
                           f'fill="{fill or PALE[color]}" stroke="{color}" stroke-width="2" '
                           f'stroke-dasharray="{"8 5" if dash else "none"}"/>')
 
-    def box(self, x, y, w, h, title, *lines, color=BLUE):
+    def box(self, x, y, w, h, title, *lines, color=BLUE, kind=None):
         self.rect(x, y, w, h, color)
+        if kind:
+            # Shape marks remain legible without color; titles identify the block.
+            if kind == 'cpu':
+                self.parts.append(f'<rect x="{x+5}" y="{y+5}" width="{w-10}" height="{h-10}" rx="7" fill="none" stroke="{color}"/>')
+            elif kind in ['cache', 'memory']:
+                for offset in ([6, 11, 16] if kind == 'cache' else [7, 14]):
+                    self.parts.append(f'<path d="M{x+8} {y+h-offset}H{x+30}" stroke="{color}" stroke-width="2"/>')
+            elif kind == 'interconnect':
+                self.parts.append(f'<path d="M{x+7} {y+7}H{x+w-7}" stroke="{color}" stroke-width="5"/>')
+            elif kind == 'peripheral':
+                for offset in [12,24,36]:
+                    self.parts.append(f'<rect x="{x-3}" y="{y+offset}" width="6" height="6" fill="white" stroke="{color}"/>')
+            elif kind == 'accelerator':
+                self.parts.append(f'<path d="M{x+10} {y+7}l10 7l-10 7M{x+22} {y+7}l10 7l-10 7" fill="none" stroke="{color}" stroke-width="2"/>')
+            else:
+                raise ValueError('Unknown component kind: ' + kind)
         start = y + h / 2 - len(lines) * 12 + 7
         self.text(x+w/2, start, title, bold=True, anchor='middle')
         for i, line in enumerate(lines):
@@ -90,7 +106,7 @@ def hierarchy():
     d.rect(565, 160, 345, 365, GREEN)
     d.text(582, 190, 'uncoregen.uncore', bold=True)
     d.box(585, 215, 305, 68, 'Decode / response mux', 'RAM / ROM / external target', color=GREEN)
-    d.box(585, 310, 305, 68, 'APB bridge / devices', 'UART / GPIO / SPI / PWM / SD', color=GREEN)
+    d.box(585, 310, 305, 68, 'APB bridge / devices', 'UART / GPIO / SPI / PWM / SD', color=GREEN, kind='peripheral')
     d.box(585, 408, 305, 80, 'CLINT / PLIC', 'timer / software / external IRQs', color=ORANGE)
     d.path('M508 445H548V250H585')
     d.path('M585 485H548V514H278V458', ORANGE, dashed=True)
@@ -120,7 +136,7 @@ def ooo():
     d.box(742, 392, 190, 96, 'Commit', 'architectural state', 'release old registers')
     d.path('M628 440H742')
     d.path('M837 488V514H12V205H361V190', ORANGE, dashed=True)
-    d.text(385, 535, 'Recovery restores rename state and discards younger work', size=19, color=ORANGE)
+    d.text(385, 535, 'Recovery restores the map; discard younger work', size=19, color=ORANGE)
     d.note(550, 'Issue follows readiness; commit follows program order. A finished instruction may still wait.')
     d.save()
 
@@ -130,7 +146,7 @@ def miss():
                 'Blocking write-back example • translation/protection already completed successfully', 610)
     xs = [125, 365, 605, 835]
     for x, title in zip(xs, ['CPU / LSU', 'D-cache', 'EBU / bus', 'RAM']):
-        d.box(x-96, 92, 192, 50, title)
+        d.box(x-96, 92, 192, 50, title, kind=['cpu','cache','interconnect','memory'][xs.index(x)])
         d.path(f'M{x} 145V515', arrow=False)
     def event(a, b, y, label, color=BLUE):
         d.path(f'M{xs[a]} {y}H{xs[b]}', color)
@@ -181,7 +197,7 @@ def wave(name, title, subtitle, rows, notes, transfers):
 
 def axi():
     wave('architecture-axi-write', 'AXI4 write: independent channels and retained response',
-         'Single-beat example • green dots mark acceptance at rising edges; dash = no valid payload',
+         'Single-beat example • filled dots mark acceptance at rising edges; dash = no valid payload',
          [('AWVALID', [1,1,0,0,0,0,0,0]), ('AWREADY', [0,1,1,1,1,1,1,1]),
           ('AWADDR', ['A','A','—','—','—','—','—','—']),
           ('WVALID', [0,0,1,1,1,0,0,0]), ('WREADY', [0,0,0,0,1,1,1,1]),
@@ -231,8 +247,8 @@ def nexys():
     d.path('M238 136H310')
     d.rect(28, 217, 904, 290)
     d.text(48, 247, 'Shared system-clock domain', bold=True)
-    d.box(48, 272, 238, 90, 'Wally SoC', 'IROM / DTIM', 'CLINT / UART / GPIO')
-    d.box(325, 272, 255, 90, 'AHB → Wishbone', 'single NONSEQ transfers', 'registered region select')
+    d.box(48, 272, 238, 90, 'Wally SoC', 'IROM / DTIM', 'CLINT / UART / GPIO', kind='cpu')
+    d.box(325, 272, 255, 90, 'AHB → Wishbone', 'single NONSEQ transfers', 'registered region select', kind='interconnect')
     d.box(625, 272, 287, 90, 'LiteDRAM controller', 'user port + DDR scheduling')
     d.path('M286 315H325'); d.path('M580 315H625')
     d.box(325, 398, 255, 85, 'DDR service CPU', 'VexRiscv / ROM / CSRs', 'DDR init / calibration', color=GREEN)
@@ -293,8 +309,8 @@ def rvv():
 def accelerator():
     d = Drawing('architecture-dotproduct-dma', 'AXI/DMA dot product: control, computation and memory',
                 'Executable Lab 10 / Wally integration • signed 16-bit operands in 32-bit words; 64-bit sum', 665)
-    d.box(28, 95, 265, 80, 'CPU / firmware', 'program descriptors; START', 'poll status or service IRQ')
-    d.box(355, 95, 285, 80, 'AHB → AXI4-Lite', 'CPU control adapter')
+    d.box(28, 95, 265, 80, 'CPU / firmware', 'program descriptors; START', 'poll status or service IRQ', kind='cpu')
+    d.box(355, 95, 285, 80, 'AHB → AXI4-Lite', 'CPU control adapter', kind='interconnect')
     d.path('M293 136H355')
     d.rect(28, 225, 612, 315)
     d.text(48, 258, 'dotproduct_axi', bold=True)
@@ -302,16 +318,16 @@ def accelerator():
     d.box(355, 285, 265, 96, 'Descriptor validation', 'bounds / length / alignment', 'latch active A / B / dst / N')
     d.path('M313 330H355')
     d.path('M495 175V205H181V285')
-    d.box(48, 415, 265, 98, 'dotproduct_mac', 'signed 16 × 16 product', 'sign-extend + 64-bit add')
+    d.box(48, 415, 265, 98, 'dotproduct_mac', 'signed 16 × 16 product', 'sign-extend + 64-bit add', kind='accelerator')
     d.box(355, 415, 265, 98, 'Engine FSM', 'read A; read B; accumulate', 'write low / high; check B')
     d.path('M488 381V415')
     d.path('M355 442H313'); d.path('M313 490H355')
     d.box(710, 285, 222, 100, 'AXI4 memory port', 'single-beat, ID 0', 'one outstanding access', color=GREEN)
-    d.box(710, 435, 222, 78, 'Shared memory', 'input A / B; result dst', color=GREEN)
+    d.box(710, 435, 222, 78, 'Shared memory', 'input A / B; result dst', color=GREEN, kind='memory')
     d.path('M620 466H666V335H710', GREEN)
     d.path('M821 385V435', GREEN)
     d.path('M48 355H12V195H161V175', ORANGE, dashed=True)
-    d.text(38, 211, 'IRQ → platform completion path', size=18, color=ORANGE)
+    d.text(38, 220, 'IRQ completion event', size=18, color=ORANGE)
     d.note(565, 'Linux/Wally extension decodes MMIO at 0x10080000; the IP itself receives register offsets.',
            'Driver-managed buffers / ordering remain separate from the DMA bounds checked by the RTL.')
     d.save()

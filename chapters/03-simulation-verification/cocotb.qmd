@@ -20,6 +20,10 @@ The framework does not prove correctness or synthesize the design. Random stimul
 
 ### Read signals at the correct simulation phase
 
+![Conceptual scheduling timeline: drive before the edge, wait for the active edge, allow RTL updates to settle, then sample in ReadOnly. Horizontal intervals are simulation phases rather than measured delays.](../../figures/visual-sampling-timeline.svg){#fig-cocotb-sampling-phases width=100%}
+
+In @fig-cocotb-sampling-phases, the edge wait and stable observation are distinct. Resume in a writable phase before changing inputs; the annotation does not add a hardware cycle or replace the ready/valid contract.
+
 A rising-edge event indicates that the clock changed; in an event-driven simulator, the triggered clocked RTL may not yet have updated its outputs. The test below waits for `RisingEdge` and then `ReadOnly` before comparing results. The latter reaches the end of the time step, when settled outputs can be read.
 
 Inputs are driven on the falling edge, leaving them stable before the next rising edge. After checking in the read-only phase, the test waits for the next falling edge before writing again. This avoids attempts to modify signals in a phase that forbids writes. These rules follow the [cocotb timing model](https://docs.cocotb.org/en/v2.0.1/timing_model.html).

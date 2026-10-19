@@ -6,7 +6,9 @@ The circuit and technology foundations for this flow are developed in @sec-vlsi-
 
 An ASIC flow translates a verified hardware description into the geometric layers from which a foundry makes masks and wafers. The source is ordinary **SystemVerilog RTL**: modules, parameters, clock/reset contracts, assertions and a top-level interface. Unlike an FPGA implementation, it must be mapped to the transistors and interconnect layers of one specific manufacturing process.
 
-![Open-source ASIC flow from SystemVerilog RTL to GDSII.](../../figures/rtl-to-gdsii-flow.svg){fig-alt="Flow from SystemVerilog RTL and the PDK to LibreLane, OpenROAD, physical verification and GDSII"}
+![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-rtl-to-gdsii-rtl-to-gdsii-flow fig-alt="Flow from SystemVerilog RTL and the PDK to LibreLane, OpenROAD, physical verification and GDSII"}
+
+Follow @fig-rtl-to-gdsii-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
 
 The process design kit (PDK) is the contract between the designer and the foundry. It supplies design rules, layer definitions, transistor and parasitic models, standard-cell libraries, I/O cells, and technology views for each tool. Digital flows consume the same technology through several representations: Liberty (`.lib`) for timing and power, LEF for abstract physical geometry, Verilog models for simulation, and GDSII for the actual cell layouts. Constraints in SDC specify the clocks and the I/O timing environment; without credible constraints, a timing result has no engineering meaning.
 
