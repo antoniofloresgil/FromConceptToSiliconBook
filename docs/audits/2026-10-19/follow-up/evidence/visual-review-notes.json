@@ -1,0 +1,35 @@
+{
+  "pdf_sha256": "8146f6b809f90078bf72d7ce8b2860acfb2bead439fb032fb010b1153a2bb59b",
+  "reviewer": "Codex visual inspection",
+  "contact_sheets_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "sample_pages_inspected": {
+    "cover": 1,
+    "term-index": 653,
+    "lab-index": 659,
+    "experiment-matrix": 668,
+    "appendix-c-audit": 711,
+    "cdc": 102,
+    "pipeline-detail": 117,
+    "contents-24-10": 18
+  },
+  "observations": [
+    "Cover prints 2026-10-19.",
+    "Contents page 18 separates 24.10 and 24.11 from their titles; nested indentation remains visible.",
+    "Term-index page references are resolved; lab-index and experiment-matrix samples are readable in grayscale.",
+    "The new appendix C audit section and its activity label render correctly after the encoding correction.",
+    "CDC dashed/solid paths remain distinguishable; the enlarged Wally pipeline sample is readable.",
+    "No clipping or missing diagrams was apparent in the reviewed contact sheets and samples."
+  ],
+  "known_limits": [
+    "The dense Wally pipeline overview retains the declared 3.43 pt screening exception and its three enlarged detail views.",
+    "Physical GUI captures are geometry overviews; numerical interpretation uses the accompanying reports.",
+    "This is an agent screen review, not an independent human print or full accessibility certification."
+  ]
+}

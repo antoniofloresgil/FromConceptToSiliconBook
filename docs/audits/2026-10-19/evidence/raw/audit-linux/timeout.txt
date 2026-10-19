@@ -1,0 +1,191 @@
+
+OpenSBI v1.7
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name               : riscv-virtio,qemu
+Platform Features           : medeleg
+Platform HART Count         : 1
+Platform IPI Device         : aclint-mswi
+Platform Timer Device       : aclint-mtimer @ 10000000Hz
+Platform Console Device     : uart8250
+Platform HSM Device         : ---
+Platform PMU Device         : ---
+Platform Reboot Device      : syscon-reboot
+Platform Shutdown Device    : syscon-poweroff
+Platform Suspend Device     : ---
+Platform CPPC Device        : ---
+Firmware Base               : 0x80000000
+Firmware Size               : 317 KB
+Firmware RW Offset          : 0x40000
+Firmware RW Size            : 61 KB
+Firmware Heap Offset        : 0x46000
+Firmware Heap Size          : 37 KB (total), 2 KB (reserved), 11 KB (used), 23 KB (free)
+Firmware Scratch Size       : 4096 B (total), 1400 B (used), 2696 B (free)
+Runtime SBI Version         : 3.0
+Standard SBI Extensions     : ipi,pmu,srst,sse,hsm,rfnc,fwft,time,base,legacy,dbcn,dbtr
+Experimental SBI Extensions : none
+
+Domain0 Name                : root
+Domain0 Boot HART           : 0
+Domain0 HARTs               : 0*
+Domain0 Region00            : 0x0000000000100000-0x0000000000100fff M: (I,R,W) S/U: (R,W)
+Domain0 Region01            : 0x0000000010000000-0x0000000010000fff M: (I,R,W) S/U: (R,W)
+Domain0 Region02            : 0x0000000002000000-0x000000000200ffff M: (I,R,W) S/U: ()
+Domain0 Region03            : 0x0000000080040000-0x000000008004ffff M: (R,W) S/U: ()
+Domain0 Region04            : 0x0000000080000000-0x000000008003ffff M: (R,X) S/U: ()
+Domain0 Region05            : 0x000000000c400000-0x000000000c5fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region06            : 0x000000000c000000-0x000000000c3fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region07            : 0x0000000000000000-0xffffffffffffffff M: () S/U: (R,W,X)
+Domain0 Next Address        : 0x0000000080200000
+Domain0 Next Arg1           : 0x000000008fe00000
+Domain0 Next Mode           : S-mode
+Domain0 SysReset            : yes
+Domain0 SysSuspend          : yes
+
+Boot HART ID                : 0
+Boot HART Domain            : root
+Boot HART Priv Version      : v1.12
+Boot HART Base ISA          : rv64imafdch
+Boot HART ISA Extensions    : sstc,zicntr,zihpm,zicboz,zicbom,sdtrig,svadu
+Boot HART PMP Count         : 16
+Boot HART PMP Granularity   : 2 bits
+Boot HART PMP Address Bits  : 54
+Boot HART MHPM Info         : 16 (0x0007fff8)
+Boot HART Debug Triggers    : 2 triggers
+Boot HART MIDELEG           : 0x0000000000001666
+Boot HART MEDELEG           : 0x0000000000f0b509
+[    0.000000] Linux version 6.12.0 (root@buildkitsandbox) (riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #1 SMP Sun Oct 18 22:59:31 UTC 2026
+[    0.000000] random: crng init done
+[    0.000000] Machine model: riscv-virtio,qemu
+[    0.000000] SBI specification v3.0 detected
+[    0.000000] SBI implementation ID=0x1 Version=0x10007
+[    0.000000] SBI TIME extension detected
+[    0.000000] SBI IPI extension detected
+[    0.000000] SBI RFENCE extension detected
+[    0.000000] SBI SRST extension detected
+[    0.000000] SBI DBCN extension detected
+[    0.000000] earlycon: uart8250 at MMIO 0x0000000010000000 (options '')
+[    0.000000] printk: legacy bootconsole [uart8250] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000080000000..0x000000008003ffff (256 KiB) nomap non-reusable mmode_resv1@80000000
+[    0.000000] OF: reserved mem: 0x0000000080040000..0x000000008004ffff (64 KiB) nomap non-reusable mmode_resv0@80040000
+[    0.000000] Reserved memory: created DMA memory pool at 0x0000000088000000, size 0 MiB
+[    0.000000] OF: reserved mem: initialized node dma-pool@88000000, compatible id shared-dma-pool
+[    0.000000] OF: reserved mem: 0x0000000088000000..0x0000000088003fff (16 KiB) nomap non-reusable dma-pool@88000000
+[    0.000000] Zone ranges:
+[    0.000000]   DMA32    [mem 0x0000000080000000-0x000000008fffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000008004ffff]
+[    0.000000]   node   0: [mem 0x0000000080050000-0x0000000087ffffff]
+[    0.000000]   node   0: [mem 0x0000000088000000-0x0000000088003fff]
+[    0.000000]   node   0: [mem 0x0000000088004000-0x000000008fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000008fffffff]
+[    0.000000] SBI HSM extension detected
+[    0.000000] Falling back to deprecated "riscv,isa"
+[    0.000000] riscv: base ISA extensions acdfhim
+[    0.000000] riscv: ELF capabilities acdfim
+[    0.000000] percpu: Embedded 20 pages/cpu s41120 r8192 d32608 u81920
+[    0.000000] Kernel command line: console=ttyS0 earlycon=uart8250,mmio,0x10000000 rdinit=/init nokaslr pty.legacy_count=0 initcall_blacklist=plist_test,debug_vm_pgtable hsd.test=timeout
+[    0.000000] Unknown kernel command line parameters "nokaslr", will be passed to user space.
+[    0.000000] Dentry cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 65536
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] software IO TLB: SWIOTLB bounce buffer size adjusted to 0MB
+[    0.000000] software IO TLB: area num 1.
+[    0.000000] software IO TLB: mapped [mem 0x000000008ff36000-0x000000008ff76000] (0MB)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]       fixmap : 0xff1bfffffea00000 - 0xff1bffffff000000   (6144 kB)
+[    0.000000]       pci io : 0xff1bffffff000000 - 0xff1c000000000000   (  16 MB)
+[    0.000000]      vmemmap : 0xff1c000000000000 - 0xff20000000000000   (1024 TB)
+[    0.000000]      vmalloc : 0xff20000000000000 - 0xff60000000000000   (16384 TB)
+[    0.000000]      modules : 0xffffffff00f40000 - 0xffffffff80000000   (2032 MB)
+[    0.000000]       lowmem : 0xff60000000000000 - 0xff60000010000000   ( 256 MB)
+[    0.000000]       kernel : 0xffffffff80000000 - 0xffffffffffffffff   (2047 MB)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=1.
+[    0.000000] rcu: 	RCU debug extended QS entry/exit.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 64 local interrupts mapped
+[    0.000000] riscv: providing IPIs using SBI IPI extension
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: riscv_clocksource: mask: 0xffffffffffffffff max_cycles: 0x24e6a1710, max_idle_ns: 440795202120 ns
+[    0.000104] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+[    0.000549] riscv-timer: Timer interrupt in S-mode is available via sstc extension
+[    0.013636] Console: colour dummy device 80x25
+[    0.016447] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+[    0.017150] pid_max: default: 32768 minimum: 301
+[    0.019941] LSM: initializing lsm=capability
+[    0.022561] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.023318] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.072275] riscv: ELF compat mode supported
+[    0.072982] ASID allocator using 16 bits (65536 entries)
+[    0.076640] rcu: Hierarchical SRCU implementation.
+[    0.077009] rcu: 	Max phase no-delay instances is 1000.
+[    0.083637] EFI services will not be available.
+[    0.088437] smp: Bringing up secondary CPUs ...
+[    0.089371] smp: Brought up 1 node, 1 CPU
+[    0.094023] Memory: 221812K/262144K available (4718K kernel code, 4814K rwdata, 2048K rodata, 2241K init, 366K bss, 38568K reserved, 0K cma-reserved)
+[    0.105024] devtmpfs: initialized
+[    0.130581] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.131537] futex hash table entries: 256 (order: 2, 16384 bytes, linear)
+[    0.136582] pinctrl core: initialized pinctrl subsystem
+[    0.143955] DMI not present or invalid.
+[    0.151404] DMA: preallocated 128 KiB GFP_KERNEL pool for atomic allocations
+[    0.151992] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.155950] thermal_sys: Registered thermal governor 'step_wise'
+[    0.156927] cpuidle: using governor menu
+[    0.183225] cpu0: Ratio of byte access time to unaligned word access is 7.10, unaligned accesses are fast
+[    0.212953] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.213472] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.225385] iommu: Default domain type: Translated
+[    0.225764] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.231212] SCSI subsystem initialized
+[    0.242113] clocksource: Switched to clocksource riscv_clocksource
+[    0.308765] Unpacking initramfs...
+[    0.310806] workingset: timestamp_bits=46 max_order=16 bucket_order=0
+[    0.383535] Freeing initrd memory: 548K
+[    0.385744] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
+[    0.387019] io scheduler mq-deadline registered
+[    0.387445] io scheduler kyber registered
+[    0.387949] io scheduler bfq registered
+[    0.393056] riscv-plic: plic@c000000: mapped 95 interrupts with 1 handlers for 2 contexts.
+[    0.401889] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    0.417375] printk: legacy console [ttyS0] disabled
+[    0.422399] 10000000.serial: ttyS0 at MMIO 0x10000000 (irq = 12, base_baud = 230400) is a 16550A
+[    0.427238] printk: legacy console [ttyS0] enabled
+[    0.427238] printk: legacy console [ttyS0] enabled
+[    0.428216] printk: legacy bootconsole [uart8250] disabled
+[    0.428216] printk: legacy bootconsole [uart8250] disabled
+[    0.453623] loop: module loaded
+[    0.456353] hsd-dotproduct 10080000.dotproduct: assigned reserved memory node dma-pool@88000000
+[    0.458730] hsd-dotproduct 10080000.dotproduct: HSD_DRIVER_READY dma=0x0000000088000000 irq=13
+[    0.463589] mousedev: PS/2 mouse device common for all mice
+[    0.467568] goldfish_rtc 101000.rtc: registered as rtc0
+[    0.468480] goldfish_rtc 101000.rtc: setting system clock to 2026-10-18T23:01:46 UTC (1792364506)
+[    0.475670] sdhci: Secure Digital Host Controller Interface driver
+[    0.475981] sdhci: Copyright(c) Pierre Ossman
+[    0.476272] Synopsys Designware Multimedia Card Interface Driver
+[    0.477081] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.478710] riscv-pmu-sbi: SBI PMU extension is available
+[    0.479564] riscv-pmu-sbi: 16 firmware and 18 hardware counters
+[    0.479860] riscv-pmu-sbi: Perf sampling/filtering is not supported as sscof extension is not available
+[    0.515481] clk: Disabling unused clocks
+[    0.515926] PM: genpd: Disabling unused power domains
+[    0.563485] Freeing unused kernel image (initmem) memory: 2240K
+[    0.564410] Run /init as init process
+HSD_MODEL n=32 error=0 reads=64 writes=2
+HSD_TIMEOUT_QUARANTINE_PASS
+[    0.752319] reboot: Power down

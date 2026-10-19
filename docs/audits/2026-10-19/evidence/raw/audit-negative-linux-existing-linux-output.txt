@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/work/labs/18-linux-accelerator/run.py", line 82, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/work/labs/18-linux-accelerator/run.py", line 21, in main
+    if out.exists() and any(out.iterdir()):raise ValueError('Preserve evidence: select a fresh output directory')
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Preserve evidence: select a fresh output directory

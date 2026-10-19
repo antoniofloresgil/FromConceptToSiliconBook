@@ -1,0 +1,29 @@
+{
+  "setup_ns": 5.204097744481942,
+  "hold_ns": 0.029677428021741278,
+  "core_um2": 15743.21,
+  "model": "openrcx_propagated_clock",
+  "cell_um2": 7811.0,
+  "electrical_violations": 0,
+  "router_drc_empty": true,
+  "unconstrained_report_empty": true,
+  "power_w": 0.00086,
+  "requested_mhz": 100,
+  "gds_readback": {
+    "top": "dotproduct_axi",
+    "cells": 58,
+    "dbu_um": 0.0001,
+    "bbox_um": [
+      0.0,
+      0.0,
+      136.505,
+      136.505
+    ],
+    "empty_cells": [],
+    "validation": "readback and nonempty cell geometry; no DRC/LVS claim"
+  },
+  "timing_electrical_pass": true,
+  "accepted": true,
+  "manufacturing_qualified": false,
+  "scope": "Nangate45 typical, 100 MHz accelerator block; no manufacturing or whole-SoC signoff"
+}

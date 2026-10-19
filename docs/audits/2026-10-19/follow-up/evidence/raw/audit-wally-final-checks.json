@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "revision": "3b30ba6b6519bd2c26c1437e6d61f632a35cef6c",
+  "stages": {
+    "prepare": "pass",
+    "compile": "pass",
+    "run": "pass",
+    "smoke": "pass"
+  },
+  "bundle_matches_fresh_qemu": true,
+  "upstream_checkout_unchanged": true,
+  "upstream_tracked_files_checked": 992,
+  "upstream_gitlinks_recorded_not_used": 10,
+  "original_export_files_checked": 237,
+  "book_sources_and_references_unchanged": true,
+  "wally_cycles": 99358876,
+  "metric_rows": 10,
+  "manufacturing_or_board_qualification": false,
+  "historical_comparison": {
+    "original_rtl_export_equal": true,
+    "patched_rtl_config_equal": true,
+    "boot_cycle_count_equal": false,
+    "metric_values_equal": false,
+    "bundle_hashes_equal": {
+      "Image": false,
+      "rootfs.cpio": false,
+      "kernel.config": true,
+      "fw_dynamic.bin": true
+    }
+  }
+}

@@ -1,0 +1,274 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.fpga
+#1 transferring dockerfile:
+#1 transferring dockerfile: 822B 0.2s done
+#1 DONE 3.0s
+
+#2 [internal] load metadata for docker.io/library/ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+#2 DONE 3.9s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 172B 0.0s done
+#3 DONE 2.4s
+
+#4 [1/4] FROM docker.io/library/ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+#4 resolve docker.io/library/ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+#4 resolve docker.io/library/ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b 0.9s done
+#4 DONE 1.0s
+
+#5 [2/4] RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends     python3 ca-certificates curl && rm -rf /var/lib/apt/lists/*
+#5 5.966 Get:1 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+#5 5.969 Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#5 6.343 Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+#5 6.471 Get:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+#5 6.558 Get:5 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1549 kB]
+#5 6.691 Get:6 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+#5 7.402 Get:7 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1409 kB]
+#5 7.580 Get:8 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+#5 8.157 Get:9 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2122 kB]
+#5 9.112 Get:10 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+#5 13.31 Get:11 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+#5 13.32 Get:12 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+#5 13.38 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1729 kB]
+#5 13.62 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [61.7 kB]
+#5 13.62 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2168 kB]
+#5 13.97 Get:16 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2231 kB]
+#5 14.29 Get:17 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [36.0 kB]
+#5 14.29 Get:18 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [49.0 kB]
+#5 14.31 Get:19 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [669 B]
+#5 15.35 Fetched 33.6 MB in 10s (3475 kB/s)
+#5 15.35 Reading package lists...
+#5 16.47 Reading package lists...
+#5 17.65 Building dependency tree...
+#5 17.89 Reading state information...
+#5 18.24 The following additional packages will be installed:
+#5 18.24   libbrotli1 libcurl4t64 libexpat1 libgssapi-krb5-2 libk5crypto3 libkeyutils1
+#5 18.24   libkrb5-3 libkrb5support0 libldap2 libnghttp2-14 libpsl5t64
+#5 18.24   libpython3-stdlib libpython3.12-minimal libpython3.12-stdlib libreadline8t64
+#5 18.24   librtmp1 libsasl2-2 libsasl2-modules-db libsqlite3-0 libssh-4 libssl3t64
+#5 18.24   media-types netbase openssl python3-minimal python3.12 python3.12-minimal
+#5 18.24   readline-common tzdata
+#5 18.24 Suggested packages:
+#5 18.24   krb5-doc krb5-user python3-doc python3-tk python3-venv python3.12-venv
+#5 18.24   python3.12-doc binutils binfmt-support readline-doc
+#5 18.24 Recommended packages:
+#5 18.24   krb5-locales libldap-common publicsuffix libsasl2-modules
+#5 18.34 The following NEW packages will be installed:
+#5 18.34   ca-certificates curl libbrotli1 libcurl4t64 libexpat1 libgssapi-krb5-2
+#5 18.34   libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap2 libnghttp2-14
+#5 18.34   libpsl5t64 libpython3-stdlib libpython3.12-minimal libpython3.12-stdlib
+#5 18.34   libreadline8t64 librtmp1 libsasl2-2 libsasl2-modules-db libsqlite3-0
+#5 18.34   libssh-4 media-types netbase openssl python3 python3-minimal python3.12
+#5 18.34   python3.12-minimal readline-common tzdata
+#5 18.35 The following packages will be upgraded:
+#5 18.35   libssl3t64
+#5 18.54 1 upgraded, 31 newly installed, 0 to remove and 40 not upgraded.
+#5 18.54 Need to get 12.5 MB of archives.
+#5 18.54 After this operation, 36.2 MB of additional disk space will be used.
+#5 18.54 Get:1 http://security.ubuntu.com/ubuntu noble-security/main amd64 libcurl4t64 amd64 8.5.0-2ubuntu10.16 [344 kB]
+#5 18.62 Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libssl3t64 amd64 3.0.13-0ubuntu3.16 [1945 kB]
+#5 19.06 Get:3 http://security.ubuntu.com/ubuntu noble-security/main amd64 curl amd64 8.5.0-2ubuntu10.16 [226 kB]
+#5 19.86 Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3.12-minimal amd64 3.12.3-1ubuntu0.17 [839 kB]
+#5 20.02 Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libexpat1 amd64 2.6.1-2ubuntu0.6 [98.9 kB]
+#5 20.07 Get:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3.12-minimal amd64 3.12.3-1ubuntu0.17 [2335 kB]
+#5 21.04 Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3-minimal amd64 3.12.3-0ubuntu2.1 [27.4 kB]
+#5 21.05 Get:8 http://archive.ubuntu.com/ubuntu noble/main amd64 media-types all 10.1.0 [27.5 kB]
+#5 21.05 Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 netbase all 6.4 [13.1 kB]
+#5 21.05 Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 tzdata all 2026e-0ubuntu0.24.04.1 [282 kB]
+#5 21.07 Get:11 http://archive.ubuntu.com/ubuntu noble/main amd64 readline-common all 8.2-4build1 [56.5 kB]
+#5 21.07 Get:12 http://archive.ubuntu.com/ubuntu noble/main amd64 libreadline8t64 amd64 8.2-4build1 [153 kB]
+#5 21.11 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsqlite3-0 amd64 3.45.1-1ubuntu2.8 [702 kB]
+#5 21.35 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3.12-stdlib amd64 3.12.3-1ubuntu0.17 [2071 kB]
+#5 22.19 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3.12 amd64 3.12.3-1ubuntu0.17 [651 kB]
+#5 22.39 Get:16 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3-stdlib amd64 3.12.3-0ubuntu2.1 [10.1 kB]
+#5 22.40 Get:17 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3 amd64 3.12.3-0ubuntu2.1 [23.0 kB]
+#5 22.40 Get:18 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 openssl amd64 3.0.13-0ubuntu3.16 [1004 kB]
+#5 22.87 Get:19 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 ca-certificates all 20260601~24.04.1 [139 kB]
+#5 23.00 Get:20 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libkrb5support0 amd64 1.20.1-6ubuntu2.10 [34.9 kB]
+#5 23.00 Get:21 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libk5crypto3 amd64 1.20.1-6ubuntu2.10 [81.9 kB]
+#5 23.01 Get:22 http://archive.ubuntu.com/ubuntu noble/main amd64 libkeyutils1 amd64 1.6.3-3build1 [9490 B]
+#5 23.01 Get:23 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libkrb5-3 amd64 1.20.1-6ubuntu2.10 [348 kB]
+#5 23.03 Get:24 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libgssapi-krb5-2 amd64 1.20.1-6ubuntu2.10 [143 kB]
+#5 23.05 Get:25 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libnghttp2-14 amd64 1.59.0-1ubuntu0.4 [74.6 kB]
+#5 23.05 Get:26 http://archive.ubuntu.com/ubuntu noble/main amd64 libpsl5t64 amd64 0.21.2-1.1build1 [57.1 kB]
+#5 23.06 Get:27 http://archive.ubuntu.com/ubuntu noble/main amd64 libbrotli1 amd64 1.1.0-2build2 [331 kB]
+#5 23.08 Get:28 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-5ubuntu3.1 [20.4 kB]
+#5 23.13 Get:29 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-5ubuntu3.1 [53.2 kB]
+#5 23.26 Get:30 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libldap2 amd64 2.6.10+dfsg-0ubuntu0.24.04.1 [198 kB]
+#5 23.32 Get:31 http://archive.ubuntu.com/ubuntu noble/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2build7 [56.3 kB]
+#5 23.33 Get:32 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libssh-4 amd64 0.10.6-2ubuntu0.5 [191 kB]
+#5 24.29 debconf: delaying package configuration, since apt-utils is not installed
+#5 24.41 Fetched 12.5 MB in 5s (2498 kB/s)
+#5 25.02 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4381 files and directories currently installed.)
+#5 25.08 Preparing to unpack .../libssl3t64_3.0.13-0ubuntu3.16_amd64.deb ...
+#5 25.73 Unpacking libssl3t64:amd64 (3.0.13-0ubuntu3.16) over (3.0.13-0ubuntu3.7) ...
+#5 28.37 Setting up libssl3t64:amd64 (3.0.13-0ubuntu3.16) ...
+#5 29.78 Selecting previously unselected package libpython3.12-minimal:amd64.
+#5 29.78 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4381 files and directories currently installed.)
+#5 30.20 Preparing to unpack .../libpython3.12-minimal_3.12.3-1ubuntu0.17_amd64.deb ...
+#5 30.46 Unpacking libpython3.12-minimal:amd64 (3.12.3-1ubuntu0.17) ...
+#5 32.43 Selecting previously unselected package libexpat1:amd64.
+#5 32.43 Preparing to unpack .../libexpat1_2.6.1-2ubuntu0.6_amd64.deb ...
+#5 32.59 Unpacking libexpat1:amd64 (2.6.1-2ubuntu0.6) ...
+#5 33.85 Selecting previously unselected package python3.12-minimal.
+#5 33.85 Preparing to unpack .../python3.12-minimal_3.12.3-1ubuntu0.17_amd64.deb ...
+#5 34.02 Unpacking python3.12-minimal (3.12.3-1ubuntu0.17) ...
+#5 38.69 Setting up libpython3.12-minimal:amd64 (3.12.3-1ubuntu0.17) ...
+#5 39.56 Setting up libexpat1:amd64 (2.6.1-2ubuntu0.6) ...
+#5 40.02 Setting up python3.12-minimal (3.12.3-1ubuntu0.17) ...
+#5 45.82 Selecting previously unselected package python3-minimal.
+#5 45.82 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4700 files and directories currently installed.)
+#5 46.99 Preparing to unpack .../0-python3-minimal_3.12.3-0ubuntu2.1_amd64.deb ...
+#5 47.49 Unpacking python3-minimal (3.12.3-0ubuntu2.1) ...
+#5 49.45 Selecting previously unselected package media-types.
+#5 49.46 Preparing to unpack .../1-media-types_10.1.0_all.deb ...
+#5 49.67 Unpacking media-types (10.1.0) ...
+#5 51.72 Selecting previously unselected package netbase.
+#5 51.72 Preparing to unpack .../2-netbase_6.4_all.deb ...
+#5 51.95 Unpacking netbase (6.4) ...
+#5 53.48 Selecting previously unselected package tzdata.
+#5 53.48 Preparing to unpack .../3-tzdata_2026e-0ubuntu0.24.04.1_all.deb ...
+#5 53.64 Unpacking tzdata (2026e-0ubuntu0.24.04.1) ...
+#5 57.15 Selecting previously unselected package readline-common.
+#5 57.15 Preparing to unpack .../4-readline-common_8.2-4build1_all.deb ...
+#5 57.38 Unpacking readline-common (8.2-4build1) ...
+#5 58.86 Selecting previously unselected package libreadline8t64:amd64.
+#5 58.86 Preparing to unpack .../5-libreadline8t64_8.2-4build1_amd64.deb ...
+#5 59.19 Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8 to /lib/x86_64-linux-gnu/libhistory.so.8.usr-is-merged by libreadline8t64'
+#5 59.63 Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8.2 to /lib/x86_64-linux-gnu/libhistory.so.8.2.usr-is-merged by libreadline8t64'
+#5 59.72 Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8 to /lib/x86_64-linux-gnu/libreadline.so.8.usr-is-merged by libreadline8t64'
+#5 59.89 Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8.2 to /lib/x86_64-linux-gnu/libreadline.so.8.2.usr-is-merged by libreadline8t64'
+#5 59.97 Unpacking libreadline8t64:amd64 (8.2-4build1) ...
+#5 61.27 Selecting previously unselected package libsqlite3-0:amd64.
+#5 61.28 Preparing to unpack .../6-libsqlite3-0_3.45.1-1ubuntu2.8_amd64.deb ...
+#5 61.58 Unpacking libsqlite3-0:amd64 (3.45.1-1ubuntu2.8) ...
+#5 63.66 Selecting previously unselected package libpython3.12-stdlib:amd64.
+#5 63.67 Preparing to unpack .../7-libpython3.12-stdlib_3.12.3-1ubuntu0.17_amd64.deb ...
+#5 63.82 Unpacking libpython3.12-stdlib:amd64 (3.12.3-1ubuntu0.17) ...
+#5 66.38 Selecting previously unselected package python3.12.
+#5 66.38 Preparing to unpack .../8-python3.12_3.12.3-1ubuntu0.17_amd64.deb ...
+#5 66.75 Unpacking python3.12 (3.12.3-1ubuntu0.17) ...
+#5 68.05 Selecting previously unselected package libpython3-stdlib:amd64.
+#5 68.05 Preparing to unpack .../9-libpython3-stdlib_3.12.3-0ubuntu2.1_amd64.deb ...
+#5 68.20 Unpacking libpython3-stdlib:amd64 (3.12.3-0ubuntu2.1) ...
+#5 69.51 Setting up python3-minimal (3.12.3-0ubuntu2.1) ...
+#5 76.43 Selecting previously unselected package python3.
+#5 76.43 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5706 files and directories currently installed.)
+#5 76.85 Preparing to unpack .../00-python3_3.12.3-0ubuntu2.1_amd64.deb ...
+#5 77.16 Unpacking python3 (3.12.3-0ubuntu2.1) ...
+#5 78.94 Selecting previously unselected package openssl.
+#5 78.95 Preparing to unpack .../01-openssl_3.0.13-0ubuntu3.16_amd64.deb ...
+#5 79.30 Unpacking openssl (3.0.13-0ubuntu3.16) ...
+#5 82.60 Selecting previously unselected package ca-certificates.
+#5 82.60 Preparing to unpack .../02-ca-certificates_20260601~24.04.1_all.deb ...
+#5 82.79 Unpacking ca-certificates (20260601~24.04.1) ...
+#5 86.09 Selecting previously unselected package libkrb5support0:amd64.
+#5 86.09 Preparing to unpack .../03-libkrb5support0_1.20.1-6ubuntu2.10_amd64.deb ...
+#5 86.39 Unpacking libkrb5support0:amd64 (1.20.1-6ubuntu2.10) ...
+#5 88.18 Selecting previously unselected package libk5crypto3:amd64.
+#5 88.18 Preparing to unpack .../04-libk5crypto3_1.20.1-6ubuntu2.10_amd64.deb ...
+#5 88.40 Unpacking libk5crypto3:amd64 (1.20.1-6ubuntu2.10) ...
+#5 90.28 Selecting previously unselected package libkeyutils1:amd64.
+#5 90.28 Preparing to unpack .../05-libkeyutils1_1.6.3-3build1_amd64.deb ...
+#5 90.58 Unpacking libkeyutils1:amd64 (1.6.3-3build1) ...
+#5 92.33 Selecting previously unselected package libkrb5-3:amd64.
+#5 92.33 Preparing to unpack .../06-libkrb5-3_1.20.1-6ubuntu2.10_amd64.deb ...
+#5 92.62 Unpacking libkrb5-3:amd64 (1.20.1-6ubuntu2.10) ...
+#5 97.87 Selecting previously unselected package libgssapi-krb5-2:amd64.
+#5 97.87 Preparing to unpack .../07-libgssapi-krb5-2_1.20.1-6ubuntu2.10_amd64.deb ...
+#5 98.33 Unpacking libgssapi-krb5-2:amd64 (1.20.1-6ubuntu2.10) ...
+#5 100.4 Selecting previously unselected package libnghttp2-14:amd64.
+#5 100.4 Preparing to unpack .../08-libnghttp2-14_1.59.0-1ubuntu0.4_amd64.deb ...
+#5 100.7 Unpacking libnghttp2-14:amd64 (1.59.0-1ubuntu0.4) ...
+#5 103.3 Selecting previously unselected package libpsl5t64:amd64.
+#5 103.4 Preparing to unpack .../09-libpsl5t64_0.21.2-1.1build1_amd64.deb ...
+#5 103.5 Unpacking libpsl5t64:amd64 (0.21.2-1.1build1) ...
+#5 105.5 Selecting previously unselected package libbrotli1:amd64.
+#5 105.5 Preparing to unpack .../10-libbrotli1_1.1.0-2build2_amd64.deb ...
+#5 105.8 Unpacking libbrotli1:amd64 (1.1.0-2build2) ...
+#5 107.3 Selecting previously unselected package libsasl2-modules-db:amd64.
+#5 107.3 Preparing to unpack .../11-libsasl2-modules-db_2.1.28+dfsg1-5ubuntu3.1_amd64.deb ...
+#5 107.6 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
+#5 109.3 Selecting previously unselected package libsasl2-2:amd64.
+#5 109.3 Preparing to unpack .../12-libsasl2-2_2.1.28+dfsg1-5ubuntu3.1_amd64.deb ...
+#5 109.6 Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
+#5 112.9 Selecting previously unselected package libldap2:amd64.
+#5 112.9 Preparing to unpack .../13-libldap2_2.6.10+dfsg-0ubuntu0.24.04.1_amd64.deb ...
+#5 113.2 Unpacking libldap2:amd64 (2.6.10+dfsg-0ubuntu0.24.04.1) ...
+#5 115.2 Selecting previously unselected package librtmp1:amd64.
+#5 115.2 Preparing to unpack .../14-librtmp1_2.4+20151223.gitfa8646d.1-2build7_amd64.deb ...
+#5 115.5 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build7) ...
+#5 117.5 Selecting previously unselected package libssh-4:amd64.
+#5 117.5 Preparing to unpack .../15-libssh-4_0.10.6-2ubuntu0.5_amd64.deb ...
+#5 117.8 Unpacking libssh-4:amd64 (0.10.6-2ubuntu0.5) ...
+#5 119.6 Selecting previously unselected package libcurl4t64:amd64.
+#5 119.6 Preparing to unpack .../16-libcurl4t64_8.5.0-2ubuntu10.16_amd64.deb ...
+#5 120.0 Unpacking libcurl4t64:amd64 (8.5.0-2ubuntu10.16) ...
+#5 121.6 Selecting previously unselected package curl.
+#5 121.7 Preparing to unpack .../17-curl_8.5.0-2ubuntu10.16_amd64.deb ...
+#5 121.9 Unpacking curl (8.5.0-2ubuntu10.16) ...
+#5 123.7 Setting up media-types (10.1.0) ...
+#5 124.9 Setting up libkeyutils1:amd64 (1.6.3-3build1) ...
+#5 125.9 Setting up libbrotli1:amd64 (1.1.0-2build2) ...
+#5 126.8 Setting up libsqlite3-0:amd64 (3.45.1-1ubuntu2.8) ...
+#5 127.8 Setting up libpsl5t64:amd64 (0.21.2-1.1build1) ...
+#5 128.7 Setting up libnghttp2-14:amd64 (1.59.0-1ubuntu0.4) ...
+#5 129.7 Setting up libkrb5support0:amd64 (1.20.1-6ubuntu2.10) ...
+#5 130.8 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
+#5 131.8 Setting up tzdata (2026e-0ubuntu0.24.04.1) ...
+#5 132.9 
+#5 132.9 Current default time zone: 'Etc/UTC'
+#5 133.0 Local time is now:      Sun Oct 18 22:14:42 UTC 2026.
+#5 133.0 Universal Time is now:  Sun Oct 18 22:14:42 UTC 2026.
+#5 133.0 Run 'dpkg-reconfigure tzdata' if you wish to change it.
+#5 133.0 
+#5 133.8 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build7) ...
+#5 134.6 Setting up libk5crypto3:amd64 (1.20.1-6ubuntu2.10) ...
+#5 135.7 Setting up libsasl2-2:amd64 (2.1.28+dfsg1-5ubuntu3.1) ...
+#5 136.7 Setting up netbase (6.4) ...
+#5 139.5 Setting up libkrb5-3:amd64 (1.20.1-6ubuntu2.10) ...
+#5 140.5 Setting up openssl (3.0.13-0ubuntu3.16) ...
+#5 141.9 Setting up readline-common (8.2-4build1) ...
+#5 143.2 Setting up libldap2:amd64 (2.6.10+dfsg-0ubuntu0.24.04.1) ...
+#5 144.2 Setting up ca-certificates (20260601~24.04.1) ...
+#5 146.0 Updating certificates in /etc/ssl/certs...
+#5 147.8 121 added, 0 removed; done.
+#5 149.2 Setting up libgssapi-krb5-2:amd64 (1.20.1-6ubuntu2.10) ...
+#5 150.2 Setting up libssh-4:amd64 (0.10.6-2ubuntu0.5) ...
+#5 151.1 Setting up libreadline8t64:amd64 (8.2-4build1) ...
+#5 152.1 Setting up libpython3.12-stdlib:amd64 (3.12.3-1ubuntu0.17) ...
+#5 153.0 Setting up libcurl4t64:amd64 (8.5.0-2ubuntu10.16) ...
+#5 154.0 Setting up python3.12 (3.12.3-1ubuntu0.17) ...
+#5 157.1 Setting up curl (8.5.0-2ubuntu10.16) ...
+#5 158.2 Setting up libpython3-stdlib:amd64 (3.12.3-0ubuntu2.1) ...
+#5 159.1 Setting up python3 (3.12.3-0ubuntu2.1) ...
+#5 160.4 Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+#5 162.4 Processing triggers for ca-certificates (20260601~24.04.1) ...
+#5 163.2 Updating certificates in /etc/ssl/certs...
+#5 165.0 0 added, 0 removed; done.
+#5 165.0 Running hooks in /etc/ca-certificates/update.d...
+#5 165.1 done.
+#5 DONE 168.0s
+
+#6 [3/4] RUN curl --fail --location --retry 3     https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-10-14/oss-cad-suite-linux-x64-20261014.tgz     -o /tmp/oss-cad-suite.tgz &&     echo 'a6ccc6b96b2d985336a1061c78b2fd2bdd73e0f68690da17db88e00457881a11  /tmp/oss-cad-suite.tgz' | sha256sum -c - &&     tar -xzf /tmp/oss-cad-suite.tgz -C /opt && rm /tmp/oss-cad-suite.tgz
+#6 5.706   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#6 5.706                                  Dload  Upload   Total   Spent    Left  Speed
+#6 5.706   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+#6 6.895   0  713M    0 1423k    0     0  1190k      0  0:10:13  0:00:01  0:10:12 1190k  1  713M    1 10.0M    0     0  4559k      0  0:02:40  0:00:02  0:02:38 8396k  2  713M    2 17.8M    0     0  5760k      0  0:02:06  0:00:03  0:02:03 8534k  3  713M    3 28.2M    0     0  6934k      0  0:01:45  0:00:04  0:01:41 9247k  4  713M    4 35.0M    0     0  6945k      0  0:01:45  0:00:05  0:01:40 8673k  6  713M    6 45.5M    0     0  7573k      0  0:01:36  0:00:06  0:01:30 9108k  7  713M    7 54.6M    0     0  7805k      0  0:01:33  0:00:07  0:01:26 9285k  9  713M    9 65.9M    0     0  8270k      0  0:01:28  0:00:08  0:01:20 9858k 11  713M   11 78.4M    0     0  8766k      0  0:01:23  0:00:09  0:01:14 10.0M 12  713M   12 89.3M    0     0  8997k      0  0:01:21  0:00:10  0:01:11 10.8M 14  713M   14  101M    0     0  9351k      0  0:01:18  0:00:11  0:01:07 11.2M 16  713M   16  114M    0     0  9615k      0  0:01:15  0:00:12  0:01:03 11.9M 17  713M   17  127M    0     0  9882k      0  0:01:13  0:00:13  0:01:00 12.2M 19  713M   19  139M    0     0   9.8M      0  0:01:12  0:00:14  0:00:58 12.2M 21  713M   21  151M    0     0   9.9M      0  0:01:11  0:00:15  0:00:56 12.3M 22  713M   22  162M    0     0  10.0M      0  0:01:10  0:00:16  0:00:54 12.1M 24  713M   24  174M    0     0  10.1M      0  0:01:10  0:00:17  0:00:53 12.0M 26  713M   26  186M    0     0  10.2M      0  0:01:09  0:00:18  0:00:51 11.8M 27  713M   27  195M    0     0  10.2M      0  0:01:09  0:00:19  0:00:50 11.1M 28  713M   28  204M    0     0  10.1M      0  0:01:10  0:00:20  0:00:50 10.6M 29  713M   29  210M    0     0   9.9M      0  0:01:11  0:00:21  0:00:50 9777k 30  713M   30  220M    0     0   9.8M      0  0:01:12  0:00:22  0:00:50 9136k 31  713M   31  226M    0     0   9.7M      0  0:01:12  0:00:23  0:00:49 8282k 33  713M   33  236M    0     0   9.7M      0  0:01:12  0:00:24  0:00:48 8369k 34  713M   34  248M    0     0   9.8M      0  0:01:12  0:00:25  0:00:47 9058k 36  713M   36  259M    0     0   9.9M      0  0:01:12  0:00:26  0:00:46 9938k 37  713M   37  270M    0     0   9.9M      0  0:01:11  0:00:27  0:00:44 10.3M 39  713M   39  280M    0     0   9.9M      0  0:01:11  0:00:28  0:00:43 10.7M 40  713M   40  291M    0     0   9.9M      0  0:01:11  0:00:29  0:00:42 10.9M 42  713M   42  303M    0     0  10.0M      0  0:01:10  0:00:30  0:00:40 10.8M 44  713M   44  315M    0     0  10.1M      0  0:01:10  0:00:31  0:00:39 11.2M 45  713M   45  327M    0     0  10.1M      0  0:01:10  0:00:32  0:00:38 11.3M 47  713M   47  338M    0     0  10.2M      0  0:01:09  0:00:33  0:00:36 11.6M 48  713M   48  348M    0     0  10.1M      0  0:01:09  0:00:34  0:00:35 11.3M 50  713M   50  360M    0     0  10.2M      0  0:01:09  0:00:35  0:00:34 11.3M 51  713M   51  370M    0     0  10.2M      0  0:01:09  0:00:36  0:00:33 11.0M 53  713M   53  381M    0     0  10.2M      0  0:01:09  0:00:37  0:00:32 10.8M 55  713M   55  393M    0     0  10.3M      0  0:01:09  0:00:38  0:00:31 10.9M 56  713M   56  404M    0     0  10.3M      0  0:01:09  0:00:39  0:00:30 11.1M 58  713M   58  413M    0     0  10.3M      0  0:01:09  0:00:40  0:00:29 10.7M 59  713M   59  424M    0     0  10.3M      0  0:01:09  0:00:41  0:00:28 10.8M 61  713M   61  436M    0     0  10.3M      0  0:01:08  0:00:42  0:00:26 10.8M 62  713M   62  446M    0     0  10.3M      0  0:01:08  0:00:43  0:00:25 10.5M 63  713M   63  455M    0     0  10.3M      0  0:01:09  0:00:44  0:00:25 10.2M 65  713M   65  467M    0     0  10.3M      0  0:01:08  0:00:45  0:00:23 10.6M 66  713M   66  475M    0     0  10.2M      0  0:01:09  0:00:46  0:00:23 10.1M 67  713M   67  482M    0     0  10.2M      0  0:01:09  0:00:47  0:00:22 9483k 69  713M   69  494M    0     0  10.2M      0  0:01:09  0:00:48  0:00:21 9835k 70  713M   70  505M    0     0  10.2M      0  0:01:09  0:00:49  0:00:20 10.0M 72  713M   72  516M    0     0  10.2M      0  0:01:09  0:00:50  0:00:19  9.8M 73  713M   73  527M    0     0  10.3M      0  0:01:09  0:00:51  0:00:18 10.3M 74  713M   74  532M    0     0  10.1M      0  0:01:09  0:00:52  0:00:17  9.9M 75  713M   75  539M    0     0  10.1M      0  0:01:10  0:00:53  0:00:17 9053k 76  713M   76  543M    0     0   9.9M      0  0:01:11  0:00:54  0:00:17 7264k 77  713M   77  553M    0     0   9.8M      0  0:01:12  0:00:56  0:00:16 6255k 79  713M   79  567M    0     0   9.8M      0  0:01:12  0:00:57  0:00:15 6678k 80  713M   80  574M    0     0   9.8M      0  0:01:12  0:00:58  0:00:14 7277k 82  713M   82  586M    0     0   9.8M      0  0:01:12  0:00:59  0:00:13 7835k 83  713M   83  592M    0     0   9.8M      0  0:01:12  0:01:00  0:00:12 8959k 84  713M   84  601M    0     0   9.8M      0  0:01:12  0:01:01  0:00:11 9906k 85  713M   85  609M    0     0   9.7M      0  0:01:12  0:01:02  0:00:10 8701k 86  713M   86  617M    0     0   9.7M      0  0:01:12  0:01:03  0:00:09 8835k 87  713M   87  626M    0     0  9994k      0  0:01:13  0:01:04  0:00:09 8528k 89  713M   89  635M    0     0  9967k      0  0:01:13  0:01:05  0:00:08 8518k 90  713M   90  644M    0     0  9970k      0  0:01:13  0:01:06  0:00:07 8746k 91  713M   91  654M    0     0  9971k      0  0:01:13  0:01:07  0:00:06 9321k 92  713M   92  663M    0     0  9961k      0  0:01:13  0:01:08  0:00:05 9284k 94  713M   94  674M    0     0  9986k      0  0:01:13  0:01:09  0:00:04 9890k 95  713M   95  683M    0     0  9969k      0  0:01:13  0:01:10  0:00:03 9995k 97  713M   97  695M    0     0   9.7M      0  0:01:12  0:01:11  0:00:01 10.2M 98  713M   98  705M    0     0   9.7M      0  0:01:12  0:01:12 --:--:-- 10.2M 99  713M   99  712M    0     0  9975k      0  0:01:13  0:01:13 --:--:--  9.9M100  713M  100  713M    0     0  9974k      0  0:01:13  0:01:13 --:--:-- 9770k
+#6 106.1 /tmp/oss-cad-suite.tgz: OK
+#6 DONE 378.0s
+
+#7 [4/4] WORKDIR /work
+#7 DONE 4.3s
+
+#8 exporting to image
+#8 exporting layers
+#8 exporting layers 541.7s done
+#8 writing image sha256:71235aaf4e37483103b40089260c194bf125faafbb4d302792f8db422da848c8 0.1s done
+#8 naming to docker.io/library/from-concept-audit-fpga:20261019
+#8 naming to docker.io/library/from-concept-audit-fpga:20261019 0.2s done
+#8 DONE 542.6s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/v3yu1wrdxwcuw71eyowt2khpc

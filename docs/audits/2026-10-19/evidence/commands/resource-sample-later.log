@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-18T23:06:47.271162+00:00",
+  "processes": [
+    {
+      "pid": "1516",
+      "command": "/opt/xray-python/bin/python xilinx/python/bbaexport.py --device xc7a200tsbg484-1 --bba /tmp/xc7a200t.bba ",
+      "status": {
+        "Name": "python",
+        "State": "R (running)",
+        "VmRSS": "6276828 kB",
+        "VmSwap": "268968 kB",
+        "Threads": "1"
+      },
+      "user_ticks": 49924,
+      "system_ticks": 6581,
+      "clock_ticks": 100
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "existing-linux-output",
+    "argv": [
+      "/usr/bin/python3",
+      "/work/labs/18-linux-accelerator/run.py",
+      "--output-dir",
+      "labs/build/audit-linux"
+    ],
+    "exit_code": 1,
+    "marker": "Preserve evidence",
+    "log": "audit-negative-linux-existing-linux-output.txt",
+    "log_sha256": "7febf6a7be4351794002e7ea9085adb8eb667cd0a26d7d4d1bf18e6d3db7342b",
+    "protected_sha256": {
+      "/work/labs/build/audit-linux/report.json": "be3177d4984955bc6fa79e12b67ac8d9543ec557ecefee52cf5d69c7057c34c8"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": true
+  }
+]

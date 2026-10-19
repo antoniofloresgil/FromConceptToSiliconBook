@@ -1,0 +1,757 @@
+
+-- Running command `read_verilog -formal -sv "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv"; prep -top dotproduct_engine -flatten; opt_clean; sat -seq 24 -set-init-zero -set reset 0 -set-at 1 reset 1 -set src_a 2147516416 -set src_b 2147517440 -set dst 2147518464 -set length 1 -prove-asserts -verify -dump_vcd engine-counterexample.vcd' --
+
+1. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv' to AST representation.
+Generating RTLIL representation for module `\ahb_to_axil'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+Removing unused module `\dotproduct_axi'.
+Removing unused module `\ahb_to_axil'.
+Removed 2 unused modules.
+Module dotproduct_engine directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404 in module dotproduct_engine.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 20 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+  Set init value: \f_past_valid = 1'0
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~20 debug messages>
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+     1/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN[0:0]$429
+     2/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK[0:0]$428
+     3/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN[0:0]$431
+     4/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK[0:0]$430
+     5/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN[0:0]$433
+     6/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK[0:0]$432
+     7/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN[0:0]$435
+     8/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK[0:0]$434
+     9/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN[0:0]$437
+    10/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK[0:0]$436
+    11/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN[0:0]$439
+    12/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK[0:0]$438
+    13/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN[0:0]$441
+    14/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK[0:0]$440
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\high_word[0:0]
+     4/10: $0\accumulator[63:0]
+     5/10: $0\operand_a[15:0]
+     6/10: $0\index[31:0]
+     7/10: $0\error_code[31:0]
+     8/10: $0\w_sent[0:0]
+     9/10: $0\aw_sent[0:0]
+    10/10: $0\state[2:0]
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\f_past_valid' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$761' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:79$365$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$762' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$366$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$763' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$367$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$764' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$368$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$765' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$369$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$766' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$370$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$767' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$371$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$768' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$372$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$769' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$373$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$770' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$374$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$771' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$375$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$772' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$773' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$774' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$775' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$776' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$777' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$778' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$779' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$780' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$781' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$782' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$783' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$784' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$785' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$786' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$787' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$788' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$789' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$790' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$791' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$792' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$793' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$794' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$795' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$796' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+Found and cleaned up 5 empty switches in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+Cleaned up 20 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_mac.
+Optimizing module dotproduct_engine.
+<suppressed ~10 debug messages>
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_mac.
+<suppressed ~1 debug messages>
+
+5.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 149 unused wires.
+<suppressed ~1 debug messages>
+
+5.6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+5.7. Executing OPT pass (performing simple optimizations).
+
+5.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~129 debug messages>
+Removed a total of 43 cells.
+
+5.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$573: \high_word -> 1'1
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~27 debug messages>
+
+5.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 1 changes.
+
+5.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~27 debug messages>
+Removed a total of 9 cells.
+
+5.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 45 unused wires.
+<suppressed ~1 debug messages>
+
+5.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~24 debug messages>
+
+5.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 0 changes.
+
+5.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+5.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+5.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.14. Finished OPT passes. (There is nothing left to do.)
+
+5.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:26$384 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:26$385 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:28$391 ($eq).
+Removed top 29 bits (of 32) from mux cell dotproduct_engine.$ternary$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$394 ($mux).
+Removed top 29 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$395 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:55$409 ($add).
+Removed top 29 bits (of 32) from wire dotproduct_engine.$ternary$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$394_Y.
+
+5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+5.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.11. Executing OPT pass (performing simple optimizations).
+
+5.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+5.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+5.11.4. Finished fast OPT passes.
+
+5.12. Printing statistics.
+
+=== dotproduct_engine ===
+
+   Number of wires:                198
+   Number of wire bits:           1942
+   Number of public wires:          42
+   Number of public wire bits:     684
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                185
+     $add                            4
+     $assert                         7
+     $dff                           33
+     $eq                            11
+     $logic_and                     11
+     $logic_not                     10
+     $logic_or                       5
+     $mul                            1
+     $mux                           91
+     $pmux                           8
+     $reduce_bool                    3
+     $reduce_or                      1
+
+5.13. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+7. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Import set-constraint for this timestep: \reset = 1'1
+Final constraint equation: { \reset \length \dst \src_b \src_a } = 129'100000000000000000000000000000001100000000000000010001000000000001000000000000000100001000000000010000000000000001000000000000000
+Imported 185 cells to SAT database.
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN = 1'0
+Import set-constraint from init attribute: \f_past_valid = 1'0
+Final init constraint equation: { \high_word \accumulator \operand_a \index \failed \error_code \done \w_sent \aw_sent \state $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$375$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$374$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$373$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$372$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$371$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$370$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$369$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$368$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$367$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$366$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:79$365$0 \f_past_valid $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN } = 271'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 2:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 3:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 4:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 5:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 6:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 7:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 8:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 9:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 10:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 11:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 12:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 13:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 14:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 15:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 16:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 17:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 18:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 19:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 20:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 21:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 22:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 23:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Setting up time step 24:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN.
+Import proof for assert: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK when $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN.
+
+Solving problem with 530678 variables and 1511269 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+

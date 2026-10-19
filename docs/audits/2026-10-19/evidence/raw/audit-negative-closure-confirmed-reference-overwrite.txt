@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/work/labs/21-physical-closure/collect.py", line 103, in <module>
+    if __name__=='__main__':main()
+  File "/work/labs/21-physical-closure/collect.py", line 51, in main
+    if ref.exists(): raise ValueError('Preserve reference; use a reviewed replacement')
+ValueError: Preserve reference; use a reviewed replacement

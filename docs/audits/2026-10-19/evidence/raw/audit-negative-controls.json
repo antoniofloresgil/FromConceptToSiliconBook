@@ -1,0 +1,81 @@
+[
+  {
+    "name": "existing-asic-output",
+    "argv": [
+      "/usr/bin/python3",
+      "/work/labs/21-physical-closure/run.py",
+      "asic",
+      "--candidate",
+      "repair",
+      "--output-dir",
+      "labs/build/audit-asic-repair"
+    ],
+    "exit_code": 1,
+    "marker": "Use a fresh directory",
+    "log": "audit-negative-existing-asic-output.txt",
+    "log_sha256": "e379824341fc75d7dd18adbff2e2a93b5dc58861dead9b50119665588a791274",
+    "protected_sha256": {
+      "/work/labs/build/audit-asic-repair/report.json": "8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004",
+      "/work/labs/build/audit-asic-repair/routed-limits.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/work/labs/build/audit-asic-repair/equivalence.json": "91f81fe01f9e8ef968724b666217b156929467daa88013967bb759693f4bc6b5"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": true
+  },
+  {
+    "name": "reference-overwrite",
+    "argv": [
+      "/usr/bin/python3",
+      "/work/labs/21-physical-closure/collect.py"
+    ],
+    "exit_code": 1,
+    "marker": "Preserve reference",
+    "log": "audit-negative-reference-overwrite.txt",
+    "log_sha256": "30791b5f89c81a8bfe6a3ec753f5e35ba6ad0acbd774b3219f83a887717549a0",
+    "protected_sha256": {
+      "/work/labs/21-physical-closure/reference/results.json": "e49e054b18a51f3b0655c5614c4e4941b6465362f44e1d40d854714dec125311"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": true
+  },
+  {
+    "name": "tampered-physical-gate",
+    "argv": [
+      "/usr/bin/python3",
+      "/work/labs/25-hardware-ci/physical_gate.py",
+      "/work/labs/build/audit-tampered-asic"
+    ],
+    "exit_code": 1,
+    "marker": "changed artifact",
+    "log": "audit-negative-tampered-physical-gate.txt",
+    "log_sha256": "0eac080ea83a217b06aed10015a84a3e27a73708e61c8878b5773acd6ebda2d5",
+    "protected_sha256": {
+      "/work/labs/build/audit-asic-repair/report.json": "8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004",
+      "/work/labs/build/audit-asic-repair/routed-limits.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/work/labs/build/audit-asic-repair/equivalence.json": "91f81fe01f9e8ef968724b666217b156929467daa88013967bb759693f4bc6b5"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": true
+  },
+  {
+    "name": "tampered-integrity",
+    "argv": [
+      "/usr/bin/python3",
+      "/audit-tools/verify.py",
+      "report",
+      "closure",
+      "/work/labs/build/audit-tampered-asic"
+    ],
+    "exit_code": 1,
+    "marker": "Checksum mismatch",
+    "log": "audit-negative-tampered-integrity.txt",
+    "log_sha256": "814500ffa85a759af08eec5229413b51519f931bc369d3eb0f29ce501095bb66",
+    "protected_sha256": {
+      "/work/labs/build/audit-asic-repair/report.json": "8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004",
+      "/work/labs/build/audit-asic-repair/routed-limits.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/work/labs/build/audit-asic-repair/equivalence.json": "91f81fe01f9e8ef968724b666217b156929467daa88013967bb759693f4bc6b5"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": false
+  }
+]

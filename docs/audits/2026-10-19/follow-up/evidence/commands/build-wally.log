@@ -1,0 +1,87 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.wally
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile.wally
+#1 transferring dockerfile:
+#1 transferring dockerfile: 344B 0.0s done
+#1 DONE 0.7s
+
+#2 [internal] load metadata for docker.io/library/from-concept-audit-labs:20261019
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 172B 0.0s done
+#3 DONE 0.7s
+
+#4 [1/3] FROM docker.io/library/from-concept-audit-labs:20261019
+#4 DONE 5.8s
+
+#5 [2/3] RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends     device-tree-compiler && rm -rf /var/lib/apt/lists/*
+#5 9.187 Get:1 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#5 9.525 Get:2 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+#5 10.05 Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+#5 10.17 Get:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+#5 10.24 Get:5 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1409 kB]
+#5 10.37 Get:6 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+#5 11.09 Get:7 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2122 kB]
+#5 11.70 Get:8 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1549 kB]
+#5 12.17 Get:9 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+#5 14.26 Get:10 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+#5 14.57 Get:11 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+#5 14.66 Get:12 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+#5 14.68 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1729 kB]
+#5 14.92 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2168 kB]
+#5 15.13 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2231 kB]
+#5 15.51 Get:16 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [61.7 kB]
+#5 15.51 Get:17 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [49.0 kB]
+#5 15.55 Get:18 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [669 B]
+#5 15.55 Get:19 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [36.0 kB]
+#5 16.21 Fetched 33.6 MB in 7s (4496 kB/s)
+#5 16.21 Reading package lists...
+#5 17.84 Reading package lists...
+#5 19.41 Building dependency tree...
+#5 19.79 Reading state information...
+#5 20.20 The following additional packages will be installed:
+#5 20.21   libfdt1 libyaml-0-2
+#5 20.25 The following NEW packages will be installed:
+#5 20.26   device-tree-compiler libfdt1 libyaml-0-2
+#5 21.04 0 upgraded, 3 newly installed, 0 to remove and 36 not upgraded.
+#5 21.04 Need to get 300 kB of archives.
+#5 21.04 After this operation, 632 kB of additional disk space will be used.
+#5 21.04 Get:1 http://archive.ubuntu.com/ubuntu noble/main amd64 libyaml-0-2 amd64 0.2.5-1build1 [51.5 kB]
+#5 21.35 Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libfdt1 amd64 1.7.0-2build1 [20.1 kB]
+#5 21.38 Get:3 http://archive.ubuntu.com/ubuntu noble/main amd64 device-tree-compiler amd64 1.7.0-2build1 [228 kB]
+#5 22.39 debconf: delaying package configuration, since apt-utils is not installed
+#5 22.59 Fetched 300 kB in 1s (231 kB/s)
+#5 23.14 Selecting previously unselected package libyaml-0-2:amd64.
+#5 23.14 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15354 files and directories currently installed.)
+#5 23.71 Preparing to unpack .../libyaml-0-2_0.2.5-1build1_amd64.deb ...
+#5 24.04 Unpacking libyaml-0-2:amd64 (0.2.5-1build1) ...
+#5 25.01 Selecting previously unselected package libfdt1:amd64.
+#5 25.01 Preparing to unpack .../libfdt1_1.7.0-2build1_amd64.deb ...
+#5 25.15 Unpacking libfdt1:amd64 (1.7.0-2build1) ...
+#5 25.89 Selecting previously unselected package device-tree-compiler.
+#5 25.89 Preparing to unpack .../device-tree-compiler_1.7.0-2build1_amd64.deb ...
+#5 26.07 Unpacking device-tree-compiler (1.7.0-2build1) ...
+#5 26.98 Setting up libyaml-0-2:amd64 (0.2.5-1build1) ...
+#5 27.41 Setting up libfdt1:amd64 (1.7.0-2build1) ...
+#5 28.04 Setting up device-tree-compiler (1.7.0-2build1) ...
+#5 28.47 Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+#5 DONE 31.8s
+
+#6 [3/3] WORKDIR /work
+#6 DONE 2.0s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 1.8s done
+#7 writing image sha256:0df94fe81e316ddcbe10a534799376e5e0606592a3f49009ecabc4e053490aec
+#7 writing image sha256:0df94fe81e316ddcbe10a534799376e5e0606592a3f49009ecabc4e053490aec 0.2s done
+#7 naming to docker.io/library/from-concept-audit-wally:20261019
+#7 naming to docker.io/library/from-concept-audit-wally:20261019 0.3s done
+#7 DONE 3.2s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/wqtusuvx4ow1q8mk5gy60xybd

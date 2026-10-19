@@ -1,0 +1,1340 @@
+
+-- Running command `read_verilog -formal -sv "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv" "/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv"; prep -top dotproduct_engine -flatten; opt_clean; sat -seq 24 -set-init-zero -set reset 0 -set-at 1 reset 1 -set src_a 2147516416 -set src_b 2147517440 -set dst 2147518464 -set length 1 -set-at 24 done 1 -show-inputs -show-outputs -dump_vcd done-witness.vcd' --
+
+1. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/ahb_to_axil.sv' to AST representation.
+Generating RTLIL representation for module `\ahb_to_axil'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv
+Parsing formal SystemVerilog input from `/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+
+5.1.2. Analyzing design hierarchy..
+Top module:  \dotproduct_engine
+Used module:     \dotproduct_mac
+Removing unused module `\dotproduct_axi'.
+Removing unused module `\ahb_to_axil'.
+Removed 2 unused modules.
+Module dotproduct_engine directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404 in module dotproduct_engine.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 20 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+  Set init value: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN = 1'0
+Found init rule in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+  Set init value: \f_past_valid = 1'0
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~20 debug messages>
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+     1/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN[0:0]$429
+     2/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK[0:0]$428
+     3/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN[0:0]$431
+     4/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK[0:0]$430
+     5/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN[0:0]$433
+     6/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK[0:0]$432
+     7/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN[0:0]$435
+     8/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK[0:0]$434
+     9/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN[0:0]$437
+    10/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK[0:0]$436
+    11/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN[0:0]$439
+    12/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK[0:0]$438
+    13/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN[0:0]$441
+    14/14: $0$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK[0:0]$440
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\high_word[0:0]
+     4/10: $0\accumulator[63:0]
+     5/10: $0\operand_a[15:0]
+     6/10: $0\index[31:0]
+     7/10: $0\error_code[31:0]
+     8/10: $0\w_sent[0:0]
+     9/10: $0\aw_sent[0:0]
+    10/10: $0\state[2:0]
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_engine.\f_past_valid' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$761' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:79$365$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$762' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$366$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$763' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$367$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$764' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$368$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$765' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$369$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$766' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$370$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$767' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$371$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$768' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$372$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$769' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$373$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$770' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$374$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$771' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$375$0' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$772' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$773' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$774' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$775' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$776' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$777' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$778' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$779' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$780' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$781' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$782' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$783' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$784' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$785' with positive edge clock.
+Creating register for signal `\dotproduct_engine.$formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+  created $dff cell `$procdff$786' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$787' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$788' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$789' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$790' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$791' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$792' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$793' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$794' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$795' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+  created $dff cell `$procdff$796' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$480'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$478'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$476'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$474'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$472'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$470'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:0$468'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:76$467'.
+Found and cleaned up 5 empty switches in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:77$416'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:34$404'.
+Cleaned up 20 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_mac.
+Optimizing module dotproduct_engine.
+<suppressed ~10 debug messages>
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module dotproduct_mac.
+<suppressed ~1 debug messages>
+
+5.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 149 unused wires.
+<suppressed ~1 debug messages>
+
+5.6. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+5.7. Executing OPT pass (performing simple optimizations).
+
+5.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~129 debug messages>
+Removed a total of 43 cells.
+
+5.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell $procmux$573: \high_word -> 1'1
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~27 debug messages>
+
+5.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 1 changes.
+
+5.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+<suppressed ~27 debug messages>
+Removed a total of 9 cells.
+
+5.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 45 unused wires.
+<suppressed ~1 debug messages>
+
+5.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \dotproduct_engine..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~24 debug messages>
+
+5.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \dotproduct_engine.
+Performed a total of 0 changes.
+
+5.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+5.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+5.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.7.14. Finished OPT passes. (There is nothing left to do.)
+
+5.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:26$384 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:26$385 ($eq).
+Removed top 1 bits (of 3) from port B of cell dotproduct_engine.$eq$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:28$391 ($eq).
+Removed top 29 bits (of 32) from mux cell dotproduct_engine.$ternary$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$394 ($mux).
+Removed top 29 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$395 ($add).
+Removed top 31 bits (of 32) from port B of cell dotproduct_engine.$add$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:55$409 ($add).
+Removed top 29 bits (of 32) from wire dotproduct_engine.$ternary$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:29$394_Y.
+
+5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+5.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.11. Executing OPT pass (performing simple optimizations).
+
+5.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_engine.
+
+5.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\dotproduct_engine'.
+Removed a total of 0 cells.
+
+5.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+5.11.4. Finished fast OPT passes.
+
+5.12. Printing statistics.
+
+=== dotproduct_engine ===
+
+   Number of wires:                198
+   Number of wire bits:           1942
+   Number of public wires:          42
+   Number of public wire bits:     684
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                185
+     $add                            4
+     $assert                         7
+     $dff                           33
+     $eq                            11
+     $logic_and                     11
+     $logic_not                     10
+     $logic_or                       5
+     $mul                            1
+     $mux                           91
+     $pmux                           8
+     $reduce_bool                    3
+     $reduce_or                      1
+
+5.13. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_engine...
+Found and reported 0 problems.
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \dotproduct_engine..
+
+7. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Import set-constraint for this timestep: \reset = 1'1
+Final constraint equation: { \reset \length \dst \src_b \src_a } = 129'100000000000000000000000000000001100000000000000010001000000000001000000000000000100001000000000010000000000000001000000000000000
+Imported 185 cells to SAT database.
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN = 1'0
+Import set-constraint from init attribute: \f_past_valid = 1'0
+Final init constraint equation: { \high_word \accumulator \operand_a \index \failed \error_code \done \w_sent \aw_sent \state $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$375$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$374$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$373$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$372$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$371$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$370$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$369$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$368$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$367$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$366$0 $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:79$365$0 \f_past_valid $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN } = 271'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+Setting up time step 2:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 3:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 4:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 5:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 6:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 7:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 8:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 9:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 10:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 11:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 12:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 13:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 14:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 15:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 16:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 17:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 18:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 19:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 20:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 21:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 22:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 23:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Final constraint equation: { \length \dst \src_b \src_a \reset } = 129'000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+
+Setting up time step 24:
+Import set-constraint: \reset = 1'0
+Import set-constraint: \src_a = 32'10000000000000001000000000000000
+Import set-constraint: \src_b = 32'10000000000000001000010000000000
+Import set-constraint: \dst = 32'10000000000000001000100000000000
+Import set-constraint: \length = 1
+Import set-constraint for this timestep: \done = 1'1
+Final constraint equation: { \done \length \dst \src_b \src_a \reset } = 130'1000000000000000000000000000000011000000000000000100010000000000010000000000000001000010000000000100000000000000010000000000000000
+Imported 185 cells to SAT database.
+Import show expression: \arready
+Import show expression: \awready
+Import show expression: \bresp
+Import show expression: \bvalid
+Import show expression: \clk
+Import show expression: \dst
+Import show expression: \length
+Import show expression: \rdata
+Import show expression: \reset
+Import show expression: \rlast
+Import show expression: \rresp
+Import show expression: \rvalid
+Import show expression: \src_a
+Import show expression: \src_b
+Import show expression: \start
+Import show expression: \wready
+Import show expression: \araddr
+Import show expression: \arvalid
+Import show expression: \awaddr
+Import show expression: \awvalid
+Import show expression: \bready
+Import show expression: \busy
+Import show expression: \done
+Import show expression: \error_code
+Import show expression: \failed
+Import show expression: \rready
+Import show expression: \wdata
+Import show expression: \wvalid
+
+Solving problem with 530893 variables and 1510548 clauses..
+SAT solving finished - model found:
+
+  Time Signal Name                                                                                                            Dec       Hex                                                                 Bin
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$376_EN                   0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$377_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$378_EN                   0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$379_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$380_EN                   0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$381_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_CHECK                0         0                                                                   0
+  init $formal$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:83$382_EN                   0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:79$365$0                      0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$366$0                      0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:80$367$0                      0         0                                    00000000000000000000000000000000
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$368$0                      0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:81$369$0                      0         0                                    00000000000000000000000000000000
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$370$0                      0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:82$371$0                      0         0                                    00000000000000000000000000000000
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$372$0                      0         0                                                                 000
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$373$0                      0         0                                                                   0
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$374$0                      0         0                                                                  00
+  init $past$/work/labs/build/audit-fast-mutations/cell-growth/run/input/rtl/dotproduct_engine.sv:84$375$0                      0         0                                                                   0
+  init \accumulator                                                                                                            --        --    0000000000000000000000000000000000000000000000000000000000000000
+  init \aw_sent                                                                                                                 0         0                                                                   0
+  init \done                                                                                                                    0         0                                                                   0
+  init \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+  init \f_past_valid                                                                                                            0         0                                                                   0
+  init \failed                                                                                                                  0         0                                                                   0
+  init \high_word                                                                                                               0         0                                                                   0
+  init \index                                                                                                                   0         0                                    00000000000000000000000000000000
+  init \operand_a                                                                                                               0         0                                                    0000000000000000
+  init \state                                                                                                                   0         0                                                                 000
+  init \w_sent                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     1 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+     1 \arready                                                                                                                 1         1                                                                   1
+     1 \arvalid                                                                                                                 0         0                                                                   0
+     1 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     1 \awready                                                                                                                 1         1                                                                   1
+     1 \awvalid                                                                                                                 0         0                                                                   0
+     1 \bready                                                                                                                  0         0                                                                   0
+     1 \bresp                                                                                                                   0         0                                                                  00
+     1 \busy                                                                                                                    0         0                                                                   0
+     1 \bvalid                                                                                                                  0         0                                                                   0
+     1 \clk                                                                                                                     0         0                                                                   0
+     1 \done                                                                                                                    0         0                                                                   0
+     1 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     1 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     1 \failed                                                                                                                  0         0                                                                   0
+     1 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     1 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     1 \reset                                                                                                                   1         1                                                                   1
+     1 \rlast                                                                                                                   0         0                                                                   0
+     1 \rready                                                                                                                  0         0                                                                   0
+     1 \rresp                                                                                                                   0         0                                                                  00
+     1 \rvalid                                                                                                                  0         0                                                                   0
+     1 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     1 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     1 \start                                                                                                                   0         0                                                                   0
+     1 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     1 \wready                                                                                                                  0         0                                                                   0
+     1 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     2 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+     2 \arready                                                                                                                 1         1                                                                   1
+     2 \arvalid                                                                                                                 0         0                                                                   0
+     2 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     2 \awready                                                                                                                 0         0                                                                   0
+     2 \awvalid                                                                                                                 0         0                                                                   0
+     2 \bready                                                                                                                  0         0                                                                   0
+     2 \bresp                                                                                                                   0         0                                                                  00
+     2 \busy                                                                                                                    0         0                                                                   0
+     2 \bvalid                                                                                                                  0         0                                                                   0
+     2 \clk                                                                                                                     0         0                                                                   0
+     2 \done                                                                                                                    0         0                                                                   0
+     2 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     2 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     2 \failed                                                                                                                  0         0                                                                   0
+     2 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     2 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     2 \reset                                                                                                                   0         0                                                                   0
+     2 \rlast                                                                                                                   1         1                                                                   1
+     2 \rready                                                                                                                  0         0                                                                   0
+     2 \rresp                                                                                                                   0         0                                                                  00
+     2 \rvalid                                                                                                                  0         0                                                                   0
+     2 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     2 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     2 \start                                                                                                                   0         0                                                                   0
+     2 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     2 \wready                                                                                                                  1         1                                                                   1
+     2 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     3 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+     3 \arready                                                                                                                 0         0                                                                   0
+     3 \arvalid                                                                                                                 0         0                                                                   0
+     3 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     3 \awready                                                                                                                 0         0                                                                   0
+     3 \awvalid                                                                                                                 0         0                                                                   0
+     3 \bready                                                                                                                  0         0                                                                   0
+     3 \bresp                                                                                                                   0         0                                                                  00
+     3 \busy                                                                                                                    0         0                                                                   0
+     3 \bvalid                                                                                                                  0         0                                                                   0
+     3 \clk                                                                                                                     0         0                                                                   0
+     3 \done                                                                                                                    0         0                                                                   0
+     3 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     3 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     3 \failed                                                                                                                  0         0                                                                   0
+     3 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     3 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     3 \reset                                                                                                                   0         0                                                                   0
+     3 \rlast                                                                                                                   0         0                                                                   0
+     3 \rready                                                                                                                  0         0                                                                   0
+     3 \rresp                                                                                                                   0         0                                                                  00
+     3 \rvalid                                                                                                                  0         0                                                                   0
+     3 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     3 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     3 \start                                                                                                                   1         1                                                                   1
+     3 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     3 \wready                                                                                                                  1         1                                                                   1
+     3 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     4 \araddr                                                                                                        -2147450880  80008000                                    10000000000000001000000000000000
+     4 \arready                                                                                                                 0         0                                                                   0
+     4 \arvalid                                                                                                                 1         1                                                                   1
+     4 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     4 \awready                                                                                                                 0         0                                                                   0
+     4 \awvalid                                                                                                                 0         0                                                                   0
+     4 \bready                                                                                                                  0         0                                                                   0
+     4 \bresp                                                                                                                   0         0                                                                  00
+     4 \busy                                                                                                                    1         1                                                                   1
+     4 \bvalid                                                                                                                  0         0                                                                   0
+     4 \clk                                                                                                                     0         0                                                                   0
+     4 \done                                                                                                                    0         0                                                                   0
+     4 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     4 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     4 \failed                                                                                                                  0         0                                                                   0
+     4 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     4 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     4 \reset                                                                                                                   0         0                                                                   0
+     4 \rlast                                                                                                                   0         0                                                                   0
+     4 \rready                                                                                                                  0         0                                                                   0
+     4 \rresp                                                                                                                   0         0                                                                  00
+     4 \rvalid                                                                                                                  1         1                                                                   1
+     4 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     4 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     4 \start                                                                                                                   0         0                                                                   0
+     4 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     4 \wready                                                                                                                  0         0                                                                   0
+     4 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     5 \araddr                                                                                                        -2147450880  80008000                                    10000000000000001000000000000000
+     5 \arready                                                                                                                 0         0                                                                   0
+     5 \arvalid                                                                                                                 1         1                                                                   1
+     5 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     5 \awready                                                                                                                 1         1                                                                   1
+     5 \awvalid                                                                                                                 0         0                                                                   0
+     5 \bready                                                                                                                  0         0                                                                   0
+     5 \bresp                                                                                                                   1         1                                                                  01
+     5 \busy                                                                                                                    1         1                                                                   1
+     5 \bvalid                                                                                                                  1         1                                                                   1
+     5 \clk                                                                                                                     0         0                                                                   0
+     5 \done                                                                                                                    0         0                                                                   0
+     5 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     5 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     5 \failed                                                                                                                  0         0                                                                   0
+     5 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     5 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     5 \reset                                                                                                                   0         0                                                                   0
+     5 \rlast                                                                                                                   0         0                                                                   0
+     5 \rready                                                                                                                  0         0                                                                   0
+     5 \rresp                                                                                                                   0         0                                                                  00
+     5 \rvalid                                                                                                                  0         0                                                                   0
+     5 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     5 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     5 \start                                                                                                                   0         0                                                                   0
+     5 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     5 \wready                                                                                                                  1         1                                                                   1
+     5 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     6 \araddr                                                                                                        -2147450880  80008000                                    10000000000000001000000000000000
+     6 \arready                                                                                                                 0         0                                                                   0
+     6 \arvalid                                                                                                                 1         1                                                                   1
+     6 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     6 \awready                                                                                                                 0         0                                                                   0
+     6 \awvalid                                                                                                                 0         0                                                                   0
+     6 \bready                                                                                                                  0         0                                                                   0
+     6 \bresp                                                                                                                   1         1                                                                  01
+     6 \busy                                                                                                                    1         1                                                                   1
+     6 \bvalid                                                                                                                  1         1                                                                   1
+     6 \clk                                                                                                                     0         0                                                                   0
+     6 \done                                                                                                                    0         0                                                                   0
+     6 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     6 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     6 \failed                                                                                                                  0         0                                                                   0
+     6 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     6 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     6 \reset                                                                                                                   0         0                                                                   0
+     6 \rlast                                                                                                                   1         1                                                                   1
+     6 \rready                                                                                                                  0         0                                                                   0
+     6 \rresp                                                                                                                   0         0                                                                  00
+     6 \rvalid                                                                                                                  1         1                                                                   1
+     6 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     6 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     6 \start                                                                                                                   0         0                                                                   0
+     6 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     6 \wready                                                                                                                  0         0                                                                   0
+     6 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     7 \araddr                                                                                                        -2147450880  80008000                                    10000000000000001000000000000000
+     7 \arready                                                                                                                 1         1                                                                   1
+     7 \arvalid                                                                                                                 1         1                                                                   1
+     7 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     7 \awready                                                                                                                 1         1                                                                   1
+     7 \awvalid                                                                                                                 0         0                                                                   0
+     7 \bready                                                                                                                  0         0                                                                   0
+     7 \bresp                                                                                                                   2         2                                                                  10
+     7 \busy                                                                                                                    1         1                                                                   1
+     7 \bvalid                                                                                                                  1         1                                                                   1
+     7 \clk                                                                                                                     0         0                                                                   0
+     7 \done                                                                                                                    0         0                                                                   0
+     7 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     7 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     7 \failed                                                                                                                  0         0                                                                   0
+     7 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     7 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     7 \reset                                                                                                                   0         0                                                                   0
+     7 \rlast                                                                                                                   1         1                                                                   1
+     7 \rready                                                                                                                  0         0                                                                   0
+     7 \rresp                                                                                                                   0         0                                                                  00
+     7 \rvalid                                                                                                                  1         1                                                                   1
+     7 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     7 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     7 \start                                                                                                                   1         1                                                                   1
+     7 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     7 \wready                                                                                                                  1         1                                                                   1
+     7 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     8 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+     8 \arready                                                                                                                 1         1                                                                   1
+     8 \arvalid                                                                                                                 0         0                                                                   0
+     8 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     8 \awready                                                                                                                 1         1                                                                   1
+     8 \awvalid                                                                                                                 0         0                                                                   0
+     8 \bready                                                                                                                  0         0                                                                   0
+     8 \bresp                                                                                                                   0         0                                                                  00
+     8 \busy                                                                                                                    1         1                                                                   1
+     8 \bvalid                                                                                                                  1         1                                                                   1
+     8 \clk                                                                                                                     0         0                                                                   0
+     8 \done                                                                                                                    0         0                                                                   0
+     8 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     8 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     8 \failed                                                                                                                  0         0                                                                   0
+     8 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     8 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     8 \reset                                                                                                                   0         0                                                                   0
+     8 \rlast                                                                                                                   1         1                                                                   1
+     8 \rready                                                                                                                  1         1                                                                   1
+     8 \rresp                                                                                                                   0         0                                                                  00
+     8 \rvalid                                                                                                                  1         1                                                                   1
+     8 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     8 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     8 \start                                                                                                                   1         1                                                                   1
+     8 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     8 \wready                                                                                                                  1         1                                                                   1
+     8 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+     9 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+     9 \arready                                                                                                                 1         1                                                                   1
+     9 \arvalid                                                                                                                 1         1                                                                   1
+     9 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+     9 \awready                                                                                                                 1         1                                                                   1
+     9 \awvalid                                                                                                                 0         0                                                                   0
+     9 \bready                                                                                                                  0         0                                                                   0
+     9 \bresp                                                                                                                   0         0                                                                  00
+     9 \busy                                                                                                                    1         1                                                                   1
+     9 \bvalid                                                                                                                  1         1                                                                   1
+     9 \clk                                                                                                                     0         0                                                                   0
+     9 \done                                                                                                                    0         0                                                                   0
+     9 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+     9 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+     9 \failed                                                                                                                  0         0                                                                   0
+     9 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+     9 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     9 \reset                                                                                                                   0         0                                                                   0
+     9 \rlast                                                                                                                   1         1                                                                   1
+     9 \rready                                                                                                                  0         0                                                                   0
+     9 \rresp                                                                                                                   0         0                                                                  00
+     9 \rvalid                                                                                                                  1         1                                                                   1
+     9 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+     9 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+     9 \start                                                                                                                   1         1                                                                   1
+     9 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+     9 \wready                                                                                                                  1         1                                                                   1
+     9 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    10 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    10 \arready                                                                                                                 1         1                                                                   1
+    10 \arvalid                                                                                                                 0         0                                                                   0
+    10 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    10 \awready                                                                                                                 0         0                                                                   0
+    10 \awvalid                                                                                                                 0         0                                                                   0
+    10 \bready                                                                                                                  0         0                                                                   0
+    10 \bresp                                                                                                                   1         1                                                                  01
+    10 \busy                                                                                                                    1         1                                                                   1
+    10 \bvalid                                                                                                                  1         1                                                                   1
+    10 \clk                                                                                                                     0         0                                                                   0
+    10 \done                                                                                                                    0         0                                                                   0
+    10 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    10 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    10 \failed                                                                                                                  0         0                                                                   0
+    10 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    10 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    10 \reset                                                                                                                   0         0                                                                   0
+    10 \rlast                                                                                                                   0         0                                                                   0
+    10 \rready                                                                                                                  1         1                                                                   1
+    10 \rresp                                                                                                                   0         0                                                                  00
+    10 \rvalid                                                                                                                  0         0                                                                   0
+    10 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    10 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    10 \start                                                                                                                   1         1                                                                   1
+    10 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    10 \wready                                                                                                                  0         0                                                                   0
+    10 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    11 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    11 \arready                                                                                                                 1         1                                                                   1
+    11 \arvalid                                                                                                                 0         0                                                                   0
+    11 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    11 \awready                                                                                                                 1         1                                                                   1
+    11 \awvalid                                                                                                                 0         0                                                                   0
+    11 \bready                                                                                                                  0         0                                                                   0
+    11 \bresp                                                                                                                   1         1                                                                  01
+    11 \busy                                                                                                                    1         1                                                                   1
+    11 \bvalid                                                                                                                  1         1                                                                   1
+    11 \clk                                                                                                                     0         0                                                                   0
+    11 \done                                                                                                                    0         0                                                                   0
+    11 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    11 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    11 \failed                                                                                                                  0         0                                                                   0
+    11 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    11 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    11 \reset                                                                                                                   0         0                                                                   0
+    11 \rlast                                                                                                                   0         0                                                                   0
+    11 \rready                                                                                                                  1         1                                                                   1
+    11 \rresp                                                                                                                   0         0                                                                  00
+    11 \rvalid                                                                                                                  0         0                                                                   0
+    11 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    11 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    11 \start                                                                                                                   1         1                                                                   1
+    11 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    11 \wready                                                                                                                  1         1                                                                   1
+    11 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    12 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    12 \arready                                                                                                                 1         1                                                                   1
+    12 \arvalid                                                                                                                 0         0                                                                   0
+    12 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    12 \awready                                                                                                                 0         0                                                                   0
+    12 \awvalid                                                                                                                 0         0                                                                   0
+    12 \bready                                                                                                                  0         0                                                                   0
+    12 \bresp                                                                                                                   1         1                                                                  01
+    12 \busy                                                                                                                    1         1                                                                   1
+    12 \bvalid                                                                                                                  1         1                                                                   1
+    12 \clk                                                                                                                     0         0                                                                   0
+    12 \done                                                                                                                    0         0                                                                   0
+    12 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    12 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    12 \failed                                                                                                                  0         0                                                                   0
+    12 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    12 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    12 \reset                                                                                                                   0         0                                                                   0
+    12 \rlast                                                                                                                   1         1                                                                   1
+    12 \rready                                                                                                                  1         1                                                                   1
+    12 \rresp                                                                                                                   0         0                                                                  00
+    12 \rvalid                                                                                                                  0         0                                                                   0
+    12 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    12 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    12 \start                                                                                                                   1         1                                                                   1
+    12 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    12 \wready                                                                                                                  0         0                                                                   0
+    12 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    13 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    13 \arready                                                                                                                 1         1                                                                   1
+    13 \arvalid                                                                                                                 0         0                                                                   0
+    13 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    13 \awready                                                                                                                 1         1                                                                   1
+    13 \awvalid                                                                                                                 0         0                                                                   0
+    13 \bready                                                                                                                  0         0                                                                   0
+    13 \bresp                                                                                                                   1         1                                                                  01
+    13 \busy                                                                                                                    1         1                                                                   1
+    13 \bvalid                                                                                                                  0         0                                                                   0
+    13 \clk                                                                                                                     0         0                                                                   0
+    13 \done                                                                                                                    0         0                                                                   0
+    13 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    13 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    13 \failed                                                                                                                  0         0                                                                   0
+    13 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    13 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    13 \reset                                                                                                                   0         0                                                                   0
+    13 \rlast                                                                                                                   0         0                                                                   0
+    13 \rready                                                                                                                  1         1                                                                   1
+    13 \rresp                                                                                                                   0         0                                                                  00
+    13 \rvalid                                                                                                                  0         0                                                                   0
+    13 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    13 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    13 \start                                                                                                                   1         1                                                                   1
+    13 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    13 \wready                                                                                                                  1         1                                                                   1
+    13 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    14 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    14 \arready                                                                                                                 1         1                                                                   1
+    14 \arvalid                                                                                                                 0         0                                                                   0
+    14 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    14 \awready                                                                                                                 0         0                                                                   0
+    14 \awvalid                                                                                                                 0         0                                                                   0
+    14 \bready                                                                                                                  0         0                                                                   0
+    14 \bresp                                                                                                                   0         0                                                                  00
+    14 \busy                                                                                                                    1         1                                                                   1
+    14 \bvalid                                                                                                                  0         0                                                                   0
+    14 \clk                                                                                                                     0         0                                                                   0
+    14 \done                                                                                                                    0         0                                                                   0
+    14 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    14 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    14 \failed                                                                                                                  0         0                                                                   0
+    14 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    14 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    14 \reset                                                                                                                   0         0                                                                   0
+    14 \rlast                                                                                                                   1         1                                                                   1
+    14 \rready                                                                                                                  1         1                                                                   1
+    14 \rresp                                                                                                                   0         0                                                                  00
+    14 \rvalid                                                                                                                  1         1                                                                   1
+    14 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    14 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    14 \start                                                                                                                   1         1                                                                   1
+    14 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    14 \wready                                                                                                                  0         0                                                                   0
+    14 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    15 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    15 \arready                                                                                                                 1         1                                                                   1
+    15 \arvalid                                                                                                                 0         0                                                                   0
+    15 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    15 \awready                                                                                                                 0         0                                                                   0
+    15 \awvalid                                                                                                                 1         1                                                                   1
+    15 \bready                                                                                                                  0         0                                                                   0
+    15 \bresp                                                                                                                   1         1                                                                  01
+    15 \busy                                                                                                                    1         1                                                                   1
+    15 \bvalid                                                                                                                  1         1                                                                   1
+    15 \clk                                                                                                                     0         0                                                                   0
+    15 \done                                                                                                                    0         0                                                                   0
+    15 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    15 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    15 \failed                                                                                                                  0         0                                                                   0
+    15 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    15 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    15 \reset                                                                                                                   0         0                                                                   0
+    15 \rlast                                                                                                                   1         1                                                                   1
+    15 \rready                                                                                                                  0         0                                                                   0
+    15 \rresp                                                                                                                   0         0                                                                  00
+    15 \rvalid                                                                                                                  1         1                                                                   1
+    15 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    15 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    15 \start                                                                                                                   1         1                                                                   1
+    15 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    15 \wready                                                                                                                  1         1                                                                   1
+    15 \wvalid                                                                                                                  1         1                                                                   1
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    16 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    16 \arready                                                                                                                 0         0                                                                   0
+    16 \arvalid                                                                                                                 0         0                                                                   0
+    16 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    16 \awready                                                                                                                 0         0                                                                   0
+    16 \awvalid                                                                                                                 1         1                                                                   1
+    16 \bready                                                                                                                  0         0                                                                   0
+    16 \bresp                                                                                                                   2         2                                                                  10
+    16 \busy                                                                                                                    1         1                                                                   1
+    16 \bvalid                                                                                                                  1         1                                                                   1
+    16 \clk                                                                                                                     0         0                                                                   0
+    16 \done                                                                                                                    0         0                                                                   0
+    16 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    16 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    16 \failed                                                                                                                  0         0                                                                   0
+    16 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    16 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    16 \reset                                                                                                                   0         0                                                                   0
+    16 \rlast                                                                                                                   0         0                                                                   0
+    16 \rready                                                                                                                  0         0                                                                   0
+    16 \rresp                                                                                                                   0         0                                                                  00
+    16 \rvalid                                                                                                                  0         0                                                                   0
+    16 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    16 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    16 \start                                                                                                                   0         0                                                                   0
+    16 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    16 \wready                                                                                                                  0         0                                                                   0
+    16 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    17 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    17 \arready                                                                                                                 1         1                                                                   1
+    17 \arvalid                                                                                                                 0         0                                                                   0
+    17 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    17 \awready                                                                                                                 1         1                                                                   1
+    17 \awvalid                                                                                                                 1         1                                                                   1
+    17 \bready                                                                                                                  0         0                                                                   0
+    17 \bresp                                                                                                                   0         0                                                                  00
+    17 \busy                                                                                                                    1         1                                                                   1
+    17 \bvalid                                                                                                                  1         1                                                                   1
+    17 \clk                                                                                                                     0         0                                                                   0
+    17 \done                                                                                                                    0         0                                                                   0
+    17 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    17 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    17 \failed                                                                                                                  0         0                                                                   0
+    17 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    17 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    17 \reset                                                                                                                   0         0                                                                   0
+    17 \rlast                                                                                                                   0         0                                                                   0
+    17 \rready                                                                                                                  0         0                                                                   0
+    17 \rresp                                                                                                                   0         0                                                                  00
+    17 \rvalid                                                                                                                  1         1                                                                   1
+    17 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    17 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    17 \start                                                                                                                   1         1                                                                   1
+    17 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    17 \wready                                                                                                                  0         0                                                                   0
+    17 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    18 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    18 \arready                                                                                                                 1         1                                                                   1
+    18 \arvalid                                                                                                                 0         0                                                                   0
+    18 \awaddr                                                                                                        -2147448832  80008800                                    10000000000000001000100000000000
+    18 \awready                                                                                                                 0         0                                                                   0
+    18 \awvalid                                                                                                                 0         0                                                                   0
+    18 \bready                                                                                                                  1         1                                                                   1
+    18 \bresp                                                                                                                   0         0                                                                  00
+    18 \busy                                                                                                                    1         1                                                                   1
+    18 \bvalid                                                                                                                  1         1                                                                   1
+    18 \clk                                                                                                                     0         0                                                                   0
+    18 \done                                                                                                                    0         0                                                                   0
+    18 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    18 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    18 \failed                                                                                                                  0         0                                                                   0
+    18 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    18 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    18 \reset                                                                                                                   0         0                                                                   0
+    18 \rlast                                                                                                                   0         0                                                                   0
+    18 \rready                                                                                                                  0         0                                                                   0
+    18 \rresp                                                                                                                   0         0                                                                  00
+    18 \rvalid                                                                                                                  1         1                                                                   1
+    18 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    18 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    18 \start                                                                                                                   1         1                                                                   1
+    18 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    18 \wready                                                                                                                  0         0                                                                   0
+    18 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    19 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    19 \arready                                                                                                                 1         1                                                                   1
+    19 \arvalid                                                                                                                 0         0                                                                   0
+    19 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    19 \awready                                                                                                                 1         1                                                                   1
+    19 \awvalid                                                                                                                 1         1                                                                   1
+    19 \bready                                                                                                                  0         0                                                                   0
+    19 \bresp                                                                                                                   0         0                                                                  00
+    19 \busy                                                                                                                    1         1                                                                   1
+    19 \bvalid                                                                                                                  1         1                                                                   1
+    19 \clk                                                                                                                     0         0                                                                   0
+    19 \done                                                                                                                    0         0                                                                   0
+    19 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    19 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    19 \failed                                                                                                                  0         0                                                                   0
+    19 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    19 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    19 \reset                                                                                                                   0         0                                                                   0
+    19 \rlast                                                                                                                   1         1                                                                   1
+    19 \rready                                                                                                                  0         0                                                                   0
+    19 \rresp                                                                                                                   0         0                                                                  00
+    19 \rvalid                                                                                                                  1         1                                                                   1
+    19 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    19 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    19 \start                                                                                                                   1         1                                                                   1
+    19 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    19 \wready                                                                                                                  0         0                                                                   0
+    19 \wvalid                                                                                                                  1         1                                                                   1
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    20 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    20 \arready                                                                                                                 1         1                                                                   1
+    20 \arvalid                                                                                                                 0         0                                                                   0
+    20 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    20 \awready                                                                                                                 0         0                                                                   0
+    20 \awvalid                                                                                                                 0         0                                                                   0
+    20 \bready                                                                                                                  0         0                                                                   0
+    20 \bresp                                                                                                                   0         0                                                                  00
+    20 \busy                                                                                                                    1         1                                                                   1
+    20 \bvalid                                                                                                                  0         0                                                                   0
+    20 \clk                                                                                                                     0         0                                                                   0
+    20 \done                                                                                                                    0         0                                                                   0
+    20 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    20 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    20 \failed                                                                                                                  0         0                                                                   0
+    20 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    20 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    20 \reset                                                                                                                   0         0                                                                   0
+    20 \rlast                                                                                                                   1         1                                                                   1
+    20 \rready                                                                                                                  0         0                                                                   0
+    20 \rresp                                                                                                                   0         0                                                                  00
+    20 \rvalid                                                                                                                  1         1                                                                   1
+    20 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    20 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    20 \start                                                                                                                   1         1                                                                   1
+    20 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    20 \wready                                                                                                                  1         1                                                                   1
+    20 \wvalid                                                                                                                  1         1                                                                   1
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    21 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    21 \arready                                                                                                                 0         0                                                                   0
+    21 \arvalid                                                                                                                 0         0                                                                   0
+    21 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    21 \awready                                                                                                                 0         0                                                                   0
+    21 \awvalid                                                                                                                 0         0                                                                   0
+    21 \bready                                                                                                                  1         1                                                                   1
+    21 \bresp                                                                                                                   0         0                                                                  00
+    21 \busy                                                                                                                    1         1                                                                   1
+    21 \bvalid                                                                                                                  0         0                                                                   0
+    21 \clk                                                                                                                     0         0                                                                   0
+    21 \done                                                                                                                    0         0                                                                   0
+    21 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    21 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    21 \failed                                                                                                                  0         0                                                                   0
+    21 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    21 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    21 \reset                                                                                                                   0         0                                                                   0
+    21 \rlast                                                                                                                   0         0                                                                   0
+    21 \rready                                                                                                                  0         0                                                                   0
+    21 \rresp                                                                                                                   0         0                                                                  00
+    21 \rvalid                                                                                                                  1         1                                                                   1
+    21 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    21 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    21 \start                                                                                                                   1         1                                                                   1
+    21 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    21 \wready                                                                                                                  0         0                                                                   0
+    21 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    22 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    22 \arready                                                                                                                 1         1                                                                   1
+    22 \arvalid                                                                                                                 0         0                                                                   0
+    22 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    22 \awready                                                                                                                 0         0                                                                   0
+    22 \awvalid                                                                                                                 0         0                                                                   0
+    22 \bready                                                                                                                  1         1                                                                   1
+    22 \bresp                                                                                                                   0         0                                                                  00
+    22 \busy                                                                                                                    1         1                                                                   1
+    22 \bvalid                                                                                                                  0         0                                                                   0
+    22 \clk                                                                                                                     0         0                                                                   0
+    22 \done                                                                                                                    0         0                                                                   0
+    22 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    22 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    22 \failed                                                                                                                  0         0                                                                   0
+    22 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    22 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    22 \reset                                                                                                                   0         0                                                                   0
+    22 \rlast                                                                                                                   1         1                                                                   1
+    22 \rready                                                                                                                  0         0                                                                   0
+    22 \rresp                                                                                                                   0         0                                                                  00
+    22 \rvalid                                                                                                                  1         1                                                                   1
+    22 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    22 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    22 \start                                                                                                                   1         1                                                                   1
+    22 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    22 \wready                                                                                                                  0         0                                                                   0
+    22 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    23 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    23 \arready                                                                                                                 1         1                                                                   1
+    23 \arvalid                                                                                                                 0         0                                                                   0
+    23 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    23 \awready                                                                                                                 0         0                                                                   0
+    23 \awvalid                                                                                                                 0         0                                                                   0
+    23 \bready                                                                                                                  1         1                                                                   1
+    23 \bresp                                                                                                                   0         0                                                                  00
+    23 \busy                                                                                                                    1         1                                                                   1
+    23 \bvalid                                                                                                                  1         1                                                                   1
+    23 \clk                                                                                                                     0         0                                                                   0
+    23 \done                                                                                                                    0         0                                                                   0
+    23 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    23 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    23 \failed                                                                                                                  0         0                                                                   0
+    23 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    23 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    23 \reset                                                                                                                   0         0                                                                   0
+    23 \rlast                                                                                                                   1         1                                                                   1
+    23 \rready                                                                                                                  0         0                                                                   0
+    23 \rresp                                                                                                                   0         0                                                                  00
+    23 \rvalid                                                                                                                  1         1                                                                   1
+    23 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    23 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    23 \start                                                                                                                   1         1                                                                   1
+    23 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    23 \wready                                                                                                                  0         0                                                                   0
+    23 \wvalid                                                                                                                  0         0                                                                   0
+  ---- -------------------------------------------------------------------------------------------------------------- ----------- --------- -------------------------------------------------------------------
+    24 \araddr                                                                                                        -2147449856  80008400                                    10000000000000001000010000000000
+    24 \arready                                                                                                                 0         0                                                                   0
+    24 \arvalid                                                                                                                 0         0                                                                   0
+    24 \awaddr                                                                                                        -2147448828  80008804                                    10000000000000001000100000000100
+    24 \awready                                                                                                                 0         0                                                                   0
+    24 \awvalid                                                                                                                 0         0                                                                   0
+    24 \bready                                                                                                                  0         0                                                                   0
+    24 \bresp                                                                                                                   0         0                                                                  00
+    24 \busy                                                                                                                    0         0                                                                   0
+    24 \bvalid                                                                                                                  1         1                                                                   1
+    24 \clk                                                                                                                     0         0                                                                   0
+    24 \done                                                                                                                    1         1                                                                   1
+    24 \dst                                                                                                           -2147448832  80008800                                    10000000000000001000100000000000
+    24 \error_code                                                                                                              0         0                                    00000000000000000000000000000000
+    24 \failed                                                                                                                  0         0                                                                   0
+    24 \length                                                                                                                  1         1                                    00000000000000000000000000000001
+    24 \rdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    24 \reset                                                                                                                   0         0                                                                   0
+    24 \rlast                                                                                                                   0         0                                                                   0
+    24 \rready                                                                                                                  0         0                                                                   0
+    24 \rresp                                                                                                                   0         0                                                                  00
+    24 \rvalid                                                                                                                  1         1                                                                   1
+    24 \src_a                                                                                                         -2147450880  80008000                                    10000000000000001000000000000000
+    24 \src_b                                                                                                         -2147449856  80008400                                    10000000000000001000010000000000
+    24 \start                                                                                                                   0         0                                                                   0
+    24 \wdata                                                                                                                   0         0                                    00000000000000000000000000000000
+    24 \wready                                                                                                                  0         0                                                                   0
+    24 \wvalid                                                                                                                  0         0                                                                   0
+Dumping SAT model to VCD file done-witness.vcd

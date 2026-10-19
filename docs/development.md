@@ -28,8 +28,9 @@ details; do not infer its actual tools from a broad book discussion.
 
 - Use UTF-8 and LF according to `.editorconfig`/`.gitattributes`; Windows command
   scripts have their declared CRLF exception. `labs/** -text` preserves exact
-  source/evidence bytes for hashes across Windows and Linux. Do not normalize
-  these files as an incidental formatting change.
+  source/evidence bytes for hashes across Windows and Linux. The same protection
+  applies to retained `docs/audits/**/evidence/**` files. Do not normalize these
+  files as an incidental formatting change.
 - Keep chapter listings and executable references synchronized. Review the
   authoritative edit before using `labs/run.py sync`; never use synchronization
   to conceal a mismatch. Student variants belong under `labs/work/`.
@@ -56,6 +57,12 @@ affected simulations/proofs/synthesis or platform regression. For consultation
 and figure changes, follow [consultation-and-print.md](consultation-and-print.md).
 When packaging changes, run `python labs/tools/test_package.py` to test the actual
 extracted ZIP without chapter sources. A report verifier alone is not a rerun.
+
+For a clean-environment reproduction review, follow the
+[audit protocol](../tools/reproducibility/README.md). It specifies fresh-source
+and environment setup, representative tool executions, source/artifact integrity
+checks and deliberate rejection cases. Keep its run-specific evidence outside
+permanent project-knowledge documents.
 
 For publication changes, use the pinned book environment and its builder/tests
 as documented in [tools/book/README.md](../tools/book/README.md). Review a fresh

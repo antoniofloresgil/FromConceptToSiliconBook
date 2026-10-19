@@ -1,0 +1,16 @@
+{
+  "status_equal": true,
+  "sources_equal": true,
+  "manifest_equal": true,
+  "qemu_version_equal": true,
+  "boot_results_equal": true,
+  "metric_modes_lengths_equal": true,
+  "metric_times_equal": false,
+  "bundle_hashes_equal": {
+    "Image": false,
+    "rootfs.cpio": false,
+    "kernel.config": true,
+    "fw_dynamic.bin": true
+  },
+  "scope": "Functional/model/configuration comparison; wall-time metrics and kernel/initramfs binary identity are not acceptance gates. Current bundle hashes independently verified against the fresh raw files."
+}

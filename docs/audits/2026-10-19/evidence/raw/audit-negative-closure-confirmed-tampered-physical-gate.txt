@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/work/labs/25-hardware-ci/physical_gate.py", line 17, in <module>
+    for name,digest in r['artifacts'].items(): assert sha(out/name)==digest,('changed artifact',name)
+AssertionError: ('changed artifact', 'routed-limits.rpt')

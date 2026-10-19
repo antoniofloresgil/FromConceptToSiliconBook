@@ -1,0 +1,23 @@
+[
+  {
+    "name": "existing-fpga-output",
+    "argv": [
+      "/usr/bin/python3",
+      "/work/labs/21-physical-closure/run.py",
+      "ecp5",
+      "--candidate",
+      "pipeline",
+      "--output-dir",
+      "labs/build/audit-ecp5-pipeline"
+    ],
+    "exit_code": 1,
+    "marker": "Use a fresh directory",
+    "log": "audit-negative-existing-fpga-output.txt",
+    "log_sha256": "b9a6db0d445ccc571eba3649f509d1ee2a9be125274969a65036a2ebdb3e85f7",
+    "protected_sha256": {
+      "/work/labs/build/audit-ecp5-pipeline/report.json": "3976a8499543d433862c8a6ff701aae164d9d4a37709b82a126c3b58bf132aec"
+    },
+    "protected_unchanged": true,
+    "expected_rejection": true
+  }
+]

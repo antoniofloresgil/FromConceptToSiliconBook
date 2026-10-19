@@ -19,6 +19,7 @@ jobs:
           python tools/book/test_learning_paths.py
           python tools/book/reference.py
           python tools/book/test_reference.py
+          python tools/reproducibility/test_verify.py
           python labs/tools/check_recipes.py
           python labs/tools/test_recipes.py
           python labs/tools/test_package.py

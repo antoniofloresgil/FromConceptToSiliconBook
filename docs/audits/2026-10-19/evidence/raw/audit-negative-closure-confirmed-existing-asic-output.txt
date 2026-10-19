@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/work/labs/21-physical-closure/run.py", line 94, in <module>
+    if __name__=='__main__': main()
+  File "/work/labs/21-physical-closure/run.py", line 30, in main
+    raise ValueError('Use a fresh directory under labs/build')
+ValueError: Use a fresh directory under labs/build

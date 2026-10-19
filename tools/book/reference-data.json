@@ -1209,7 +1209,7 @@
     },
     "chapters/03-simulation-verification/formal-verification.qmd": {
       "title": "Formal Verification of RTL: Properties, Proofs, and Counterexamples",
-      "tools": "Yosys; SMT solver; executable Lab 15 scripts",
+      "tools": "Yosys built-in SAT; Icarus Verilog; Python (Lab 15); SMT tools only for alternate flows",
       "requires": "explicit reset/environment assumptions and proof depth",
       "contract": "assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope",
       "labs": [
@@ -1412,7 +1412,7 @@
     },
     "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd": {
       "title": "Physical Validation, DFT and Preparation for Fabrication",
-      "tools": "scan model; STA; Magic/Netgen for reference layout checks",
+      "tools": "scan model; STA; KLayout/OpenROAD for the retained reference layout checks",
       "requires": "test mode, PDK decks and explicit signoff boundary",
       "contract": "scan coverage scope, DRC/LVS and constraints; no implied foundry qualification",
       "labs": [
@@ -1782,7 +1782,7 @@
     {
       "folder": "10-dotproduct",
       "title": "Executable HSD project: Wally-controlled AXI/DMA dot product",
-      "tools": "Icarus Verilog; Python; Yosys/SMT; Verilator; RISC-V compiler",
+      "tools": "Icarus Verilog; Python; Yosys built-in SAT; Verilator; RISC-V compiler",
       "requires": "AXI4-Lite/DMA policy, legal lengths and pinned Wally fixture",
       "contract": "independent vectors, register/DMA checks, bounded formal and firmware/IRQ",
       "reading": [
@@ -1875,7 +1875,7 @@
     {
       "folder": "15-formal",
       "title": "Formal RTL: FIFO properties, induction and equivalence",
-      "tools": "Yosys; SMT solver; executable Lab 15 scripts",
+      "tools": "Yosys built-in SAT; Icarus Verilog; Python",
       "requires": "explicit reset/environment assumptions and proof depth",
       "contract": "assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope",
       "reading": [
@@ -1986,7 +1986,7 @@
     {
       "folder": "22-layout-verification",
       "title": "Reference layout checks",
-      "tools": "Magic; Netgen; OpenROAD; FreePDK45",
+      "tools": "KLayout; OpenROAD; FreePDK45/Nangate45",
       "requires": "reference rule decks and power connectivity",
       "contract": "DRC, LVS, extracted timing and rejected defects",
       "reading": [
@@ -2041,7 +2041,7 @@
     {
       "folder": "25-hardware-ci",
       "title": "Continuous hardware verification",
-      "tools": "Verilator; Icarus Verilog; Yosys; SMT solver",
+      "tools": "Verilator; Icarus Verilog; Yosys built-in SAT; Python",
       "requires": "locked interface, seeds and justified area threshold",
       "contract": "lint to reports, freshness and rejected mutations",
       "reading": [

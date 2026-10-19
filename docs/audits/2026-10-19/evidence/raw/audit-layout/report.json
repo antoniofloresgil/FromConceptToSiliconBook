@@ -1,0 +1,230 @@
+{
+  "status": "completed",
+  "image": "sha256:e05f28d06032f16d5121b2476b6d4277598506972254142fa5470eb0d70557d3",
+  "input_report_sha256": "8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004",
+  "sources": {
+    "labs/22-layout-verification/run.py": "c3376beed71fed201790e25f804f9233bce2cf83cf9a9f3dc5c71e8d50659604",
+    "labs/22-layout-verification/finish.tcl": "af59f083e391b219d6db9b224831308648a5996bf0845812ed08acab6d797ade",
+    "labs/22-layout-verification/lvs.lvs": "67209b20baa62af8f5c441da31756c18627b1c9d3141481c6b97298c8fe54180",
+    "labs/22-layout-verification/layout.py": "9cb4be6d5cf29831e0eb4380f60fc42920f4457344f77078c397ed0e1bd13806",
+    "labs/17-complete-case/streamout.py": "2e3bb98a45dccd5e96178a0d6ae72ca7541224c5aa6354b8fdd56193d773497c"
+  },
+  "input_artifacts": {
+    "routed.odb": "4f1e0af1fc6b0c8ca200877900d730f601ee2f0cf27913fb1a90fa75c1808fb7",
+    "routed.sdc": "d2ee749a1fef6895bd234fb7b01151b4e3d060e9724d7456f42ffa89b45dc91f",
+    "routed.def": "86956551b8f37167e296d7bf5a30e16701551077dd88fc17ec1a3a2259325760",
+    "dotproduct_axi.gds": "58651d2c484d768bfd4a17458170f0aead54ba6b064ec763cb1d4c917602b3c6"
+  },
+  "technology": {
+    "drc/FreePDK45.lydrc": "4e35cad6786f21c6e233fb606bea59bb44e1a12713008cf7367d65a1a3de2147",
+    "cdl/NangateOpenCellLibrary.cdl": "457f0e3836b369f56d2cb04aab2a16d0e40b56d32bf2c62f19475b0abca2f6b3",
+    "gds/NangateOpenCellLibrary.gds": "7fdbd7f4e46283fdd9b9a369e1cae1a7f6f742c8e75cfe943c17f451626fe8e8",
+    "rcx_patterns.rules": "2f65fafbe2c704b378563c53a680b93cef080c2799997019d43df7d1e5a563e9",
+    "lib/NangateOpenCellLibrary_typical.lib": "8d540a4d4cf6d09d27c87ad067857a9c0c2eeb023ab7a56e058cd3113db4e9b1",
+    "lef/NangateOpenCellLibrary.macro.mod.lef": "a43aea339f12a57a63497783e508ba16f3da2dc056d3247dec7d99707c2dedef"
+  },
+  "tools": {
+    "openroad": "24Q3-11382-g61879bec53",
+    "klayout": "KLayout 0.30.3"
+  },
+  "commands": [
+    {
+      "argv": [
+        "openroad",
+        "-no_init",
+        "-exit",
+        "-threads",
+        "2",
+        "/work/labs/22-layout-verification/finish.tcl"
+      ],
+      "log": "command-01.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/audit-layout",
+        "-rm",
+        "/work/labs/17-complete-case/streamout.py"
+      ],
+      "log": "command-02.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "out=/work/labs/build/audit-layout",
+        "-rd",
+        "source=/work/labs/build/audit-layout/dotproduct_axi.gds",
+        "-rm",
+        "/work/labs/22-layout-verification/layout.py"
+      ],
+      "log": "command-03.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/audit-asic-repair/dotproduct_axi.gds",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/baseline-drc.lyrdb",
+        "-r",
+        "/work/labs/build/audit-layout/flat.lydrc"
+      ],
+      "log": "command-04.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/audit-asic-repair/dotproduct_axi.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/audit-layout/baseline-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/baseline-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/audit-layout/baseline-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/audit-layout/baseline-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/audit-layout/baseline-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-05.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/audit-layout/dotproduct_axi.gds",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/finished-drc.lyrdb",
+        "-r",
+        "/work/labs/build/audit-layout/flat.lydrc"
+      ],
+      "log": "command-06.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/audit-layout/dotproduct_axi.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/audit-layout/finished-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/finished-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/audit-layout/finished-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/audit-layout/finished-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/audit-layout/finished-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-07.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-zz",
+        "-rd",
+        "in_gds=/work/labs/build/audit-layout/bad-drc.gds",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/negative-drc.lyrdb",
+        "-r",
+        "/work/labs/build/audit-layout/flat.lydrc"
+      ],
+      "log": "command-08.txt",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "klayout",
+        "-b",
+        "-rd",
+        "in_gds=/work/labs/build/audit-layout/bad-lvs.gds",
+        "-rd",
+        "cdl_file=/work/labs/build/audit-layout/finished-reference.cdl",
+        "-rd",
+        "report_file=/work/labs/build/audit-layout/negative-lvs.lvsdb",
+        "-rd",
+        "l2n_file=/work/labs/build/audit-layout/negative-lvs.l2n",
+        "-rd",
+        "extracted_file=/work/labs/build/audit-layout/negative-lvs.cir",
+        "-rd",
+        "summary_file=/work/labs/build/audit-layout/negative-lvs.json",
+        "-r",
+        "/work/labs/22-layout-verification/lvs.lvs"
+      ],
+      "log": "command-09.txt",
+      "exit_code": 0
+    }
+  ],
+  "manufacturing_qualified": false,
+  "artifacts": {
+    "negative-drc.lyrdb": "1c480bff73d02e238343fad6b1c506753aa3ab72095f1435669d9a9defd054b3",
+    "finished-drc.lyrdb": "c6d95f4540c74cf5fd666b88e8accfa800075c5f44c7c703214b24f19b5c7749",
+    "setup.rpt": "5d5654512f0c4bd45b0c29833d8a122bdd64099c905e3509d8ce1bed04ea1e02",
+    "command-01.txt": "08efa26a99b198d81379618d51220efaa9ff8d22d06af623c1a66039cad32c78",
+    "bad-drc.gds": "cb00a9a82815518d5c6b19f7aac050c35a11289330a769b1bc422d7676bee1a2",
+    "routed.spef": "6347a3611a3adbb8ba3e1b40769ffc3d90cc0e4d986e32e9d3ff771fc5697581",
+    "routed.sdc": "c9f514c32816a4f6d396cbbeef4f9de9dfe316d4555f9969781b190041d77c3c",
+    "gds-readback.json": "5a1be776f7855b8539bf2b051c5851fe32bcec054a6196619b171d78f26354ac",
+    "command-09.txt": "1541dce287d0663d9ef76879cb3e799e43061f7028cce19249b49a9a46f648c4",
+    "negative-lvs.json": "48a89e0213813e8e896970c11172caf512e7409237e144e53071c2cc907e5291",
+    "negative-lvs.l2n": "129b0e30cabe2dfa11224c1ae358121165ccdb0b074bdc36457999f967235759",
+    "routed.odb": "7e9cc5f82a26537fa34472edc53880be320fa923dd695648bca1c8b757869461",
+    "command-03.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline-lvs.l2n": "6979d5b0d4f80177dc1590e063c18bf8cb59783a56ed89fa81b9ba51e3fedd1b",
+    "bad-lvs.gds": "8581a02d6edab01827aaa7bf3a97e48312afffe6df14cb5a5bf85e696621a5a6",
+    "command-02.txt": "51c97a437f0fda47f1281d04e52de63e56c279786cb331052b8437686889751f",
+    "functional-before.txt": "8c50366f8e6148d90c336c5a9eda8882cd15ff3a75c513dc72bb641daa4b7024",
+    "baseline-reference.cdl": "e27002a15fcfbc7a1db400a1ba344a5ecde773690b08fd31628d0c974e61ee40",
+    "hold.rpt": "2d24b118aa05635210b594daa132ba0f5d7a04f25895e02ac5aa9afa85205561",
+    "finished-lvs.json": "288ebae4091bd41bfd273d56138f65e33652d6f9b8ea3ac4268e118af430cc71",
+    "finished-lvs.l2n": "3fad16feccda6e9ff6cecf7ad13137fbb49e4516582fd28db23cc98cc71fb224",
+    "finished-lvs.cir": "07adf18230517c6c619208cd4dd7f18165ad884e3da04e4475812bff6c1c6f5d",
+    "power-connectivity.json": "fbc8d46f578d75a5a4097c8e306acf10df9123423fea758579a40181b62f9ecb",
+    "command-07.txt": "cfca81fa7f43f192a2754ae0e031ef2d7e944f900cd268153d9492c7c37c0b67",
+    "functional-after.txt": "8c50366f8e6148d90c336c5a9eda8882cd15ff3a75c513dc72bb641daa4b7024",
+    "command-06.txt": "e9f32404c1c532324a7784c5686625336efd17030a43ba91c22c40efb1f11120",
+    "finished.cdl": "07ae09d54f09fa82567ecc1807b0d53f403e7a3c747d3cb58fe3e5e3b72808b8",
+    "layout-preflight.json": "707f144d53422f1e58f06951b688cbf0810445de3e1938b1063b11c7748e08cb",
+    "flat.lydrc": "0a2402fcc826abe57ef652c31442d52ca5e7984800082501d9ae47d24390e1c7",
+    "negative-lvs.lvsdb": "a62a449149673d8b0ff57b4219a931056521b229c5d999c2e2660ef76cfc7238",
+    "finished-reference.cdl": "b28b0fa27125f012b9ecdfdcb107550bc37ab2489dc78b2eeacaab4c7a2a6462",
+    "negative-lvs.cir": "53ebd15cde8d700a2f5516eef2525b9a52d7b598a98e036ecec17d671e5c4095",
+    "baseline-lvs.lvsdb": "c31c883c201ce6a65652192847e7682ad735afdca6d24fceeb6c3d1a0348c95f",
+    "constraints.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "finished-lvs.lvsdb": "eff7de638a0ebc9aa41cbd1d94401ff6385aeeb2d4de0381adb6cdca139059dd",
+    "limits.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline-lvs.json": "569c2b7df935d2ac4e6f0b243cbe65a4ffdd213993ddccf82bcf09331bf645bd",
+    "command-04.txt": "962fdb91aa3fa1daa0b26d0a6721227f17cbd42b0510b12400eb963d2ce07b28",
+    "routed.def": "73642b5adb413350cc744662356955778099257c53a79fe58cd19c526ab210fe",
+    "dotproduct_axi.gds": "6c9bc2d96034f593fadc91c60f52a12b55e2a9b574c474b8c087a7293c31ff9e",
+    "reconnected.cdl": "46f6e466cc2db0934b7ed9b1e82251260a24931d0397183e18b8e2ba0781f701",
+    "results.json": "e96186c9ba3e38ed8e2f0655208ab99b404c871b11986bd7c83ece47b89bb536",
+    "command-05.txt": "1541dce287d0663d9ef76879cb3e799e43061f7028cce19249b49a9a46f648c4",
+    "baseline.cdl": "fd32901d4779818ac6e21e7c73ab4a64d000388b2798284ccc32d922cbf549b0",
+    "baseline-lvs.cir": "7e0c47def4d06de6d8d1b52860ea046b19b270dbaeab46b5cc2dde866868727e",
+    "reconnected-reference.cdl": "fffc47affb1a91ecea2290d1af2cb395205e548856c177feeb966a1943816363",
+    "baseline-drc.lyrdb": "c6d95f4540c74cf5fd666b88e8accfa800075c5f44c7c703214b24f19b5c7749",
+    "timing.json": "eb6b4d4316e9609ceba4e34d8efd7062c328aa722c7ce7e91c7ee97a084177ba",
+    "command-08.txt": "f868fcced5ee93c4aed91d654ca05cfd352a1910cf34f2f96b6e1471ee99be63"
+  }
+}

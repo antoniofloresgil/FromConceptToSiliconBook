@@ -1,0 +1,9 @@
+PASS intended rejection: existing-asic-output exit 1
+PASS intended rejection: reference-overwrite exit 1
+PASS intended rejection: tampered-physical-gate exit 1
+Traceback (most recent call last):
+  File "/audit/negatives.py", line 25, in <module>
+    probe('tampered-integrity',[sys.executable,'/audit-tools/verify.py','report','closure',str(copied)],'Checksum mismatch',protected)
+  File "/audit/negatives.py", line 14, in probe
+    assert result['expected_rejection'] and result['protected_unchanged'],result
+AssertionError: {'name': 'tampered-integrity', 'argv': ['/usr/bin/python3', '/audit-tools/verify.py', 'report', 'closure', '/work/labs/build/audit-tampered-asic'], 'exit_code': 1, 'marker': 'Checksum mismatch', 'log': 'audit-negative-tampered-integrity.txt', 'log_sha256': '814500ffa85a759af08eec5229413b51519f931bc369d3eb0f29ce501095bb66', 'protected_sha256': {'/work/labs/build/audit-asic-repair/report.json': '8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004', '/work/labs/build/audit-asic-repair/routed-limits.rpt': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', '/work/labs/build/audit-asic-repair/equivalence.json': '91f81fe01f9e8ef968724b666217b156929467daa88013967bb759693f4bc6b5'}, 'protected_unchanged': True, 'expected_rejection': False}

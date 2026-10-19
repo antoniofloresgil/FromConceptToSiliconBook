@@ -1,0 +1,363 @@
+
+-- Running command `read_verilog -sv "/work/labs/build/audit-fast-gate/input/rtl/dotproduct_mac.sv" "/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv" "/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv" "/work/labs/build/audit-fast-gate/input/rtl/ahb_to_axil.sv"; hierarchy -check -top dotproduct_axi; proc; check -assert; write_json elaborated.json' --
+
+1. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-gate/input/rtl/dotproduct_mac.sv
+Parsing SystemVerilog input from `/work/labs/build/audit-fast-gate/input/rtl/dotproduct_mac.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_mac'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv
+Parsing SystemVerilog input from `/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_engine'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv
+Parsing SystemVerilog input from `/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv' to AST representation.
+Generating RTLIL representation for module `\dotproduct_axi'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: /work/labs/build/audit-fast-gate/input/rtl/ahb_to_axil.sv
+Parsing SystemVerilog input from `/work/labs/build/audit-fast-gate/input/rtl/ahb_to_axil.sv' to AST representation.
+Generating RTLIL representation for module `\ahb_to_axil'.
+Successfully finished Verilog frontend.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+
+5.2. Analyzing design hierarchy..
+Top module:  \dotproduct_axi
+Used module:     \dotproduct_engine
+Used module:         \dotproduct_mac
+Removing unused module `\ahb_to_axil'.
+Removed 1 unused modules.
+
+6. Executing PROC pass (convert processes to netlists).
+
+6.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+6.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 27 switch rules as full_case in process $proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94 in module dotproduct_axi.
+Marked 7 switch rules as full_case in process $proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24 in module dotproduct_engine.
+Removed a total of 0 dead cases.
+
+6.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 20 assignments to connections.
+
+6.4. Executing PROC_INIT pass (extract init attributes).
+
+6.5. Executing PROC_ARST pass (detect async resets in processes).
+
+6.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~51 debug messages>
+
+6.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+     1/153: $9\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:24]$238
+     2/153: $8\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[23:16]$237
+     3/153: $7\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[15:8]$236
+     4/153: $6\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[7:0]$235
+     5/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$230 [31:24]
+     6/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$230 [23:16]
+     7/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$230 [15:8]
+     8/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$230 [7:0]
+     9/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask[3:0]$233
+    10/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value[31:0]$232
+    11/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value[31:0]$231
+    12/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b[31:0]$234
+    13/153: $9\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:24]$229
+    14/153: $8\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[23:16]$228
+    15/153: $7\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[15:8]$227
+    16/153: $6\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[7:0]$226
+    17/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$221 [31:24]
+    18/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$221 [23:16]
+    19/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$221 [15:8]
+    20/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$221 [7:0]
+    21/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask[3:0]$224
+    22/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value[31:0]$223
+    23/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value[31:0]$222
+    24/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b[31:0]$225
+    25/153: $9\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:24]$220
+    26/153: $8\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[23:16]$219
+    27/153: $7\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[15:8]$218
+    28/153: $6\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[7:0]$217
+    29/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$212 [31:24]
+    30/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$212 [23:16]
+    31/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$212 [15:8]
+    32/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$212 [7:0]
+    33/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask[3:0]$215
+    34/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value[31:0]$214
+    35/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value[31:0]$213
+    36/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b[31:0]$216
+    37/153: $9\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:24]$211
+    38/153: $8\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[23:16]$210
+    39/153: $7\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[15:8]$209
+    40/153: $6\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[7:0]$208
+    41/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$203 [31:24]
+    42/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$203 [23:16]
+    43/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$203 [15:8]
+    44/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$203 [7:0]
+    45/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask[3:0]$206
+    46/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value[31:0]$205
+    47/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value[31:0]$204
+    48/153: $5\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b[31:0]$207
+    49/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b[31:0]$202
+    50/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask[3:0]$201
+    51/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value[31:0]$200
+    52/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value[31:0]$199
+    53/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$198
+    54/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b[31:0]$197
+    55/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask[3:0]$196
+    56/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value[31:0]$195
+    57/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value[31:0]$194
+    58/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$193
+    59/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b[31:0]$192
+    60/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask[3:0]$191
+    61/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value[31:0]$190
+    62/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value[31:0]$189
+    63/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$188
+    64/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b[31:0]$187
+    65/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask[3:0]$186
+    66/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value[31:0]$185
+    67/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value[31:0]$184
+    68/153: $4\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$183
+    69/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b[31:0]$182
+    70/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask[3:0]$181
+    71/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value[31:0]$180
+    72/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value[31:0]$179
+    73/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$178
+    74/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b[31:0]$177
+    75/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask[3:0]$176
+    76/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value[31:0]$175
+    77/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value[31:0]$174
+    78/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$173
+    79/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b[31:0]$172
+    80/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask[3:0]$171
+    81/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value[31:0]$170
+    82/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value[31:0]$169
+    83/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$168
+    84/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b[31:0]$167
+    85/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask[3:0]$166
+    86/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value[31:0]$165
+    87/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value[31:0]$164
+    88/153: $3\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$163
+    89/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b[31:0]$161
+    90/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask[3:0]$160
+    91/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value[31:0]$159
+    92/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value[31:0]$158
+    93/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$157
+    94/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b[31:0]$156
+    95/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask[3:0]$155
+    96/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value[31:0]$154
+    97/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value[31:0]$153
+    98/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$152
+    99/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b[31:0]$151
+   100/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask[3:0]$150
+   101/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value[31:0]$149
+   102/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value[31:0]$148
+   103/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$147
+   104/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b[31:0]$146
+   105/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask[3:0]$145
+   106/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value[31:0]$144
+   107/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value[31:0]$143
+   108/153: $2\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$142
+   109/153: $0\launch[0:0]
+   110/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b[31:0]$134
+   111/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask[3:0]$133
+   112/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value[31:0]$132
+   113/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value[31:0]$131
+   114/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result[31:0]$130
+   115/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b[31:0]$129
+   116/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask[3:0]$128
+   117/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value[31:0]$127
+   118/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value[31:0]$126
+   119/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result[31:0]$125
+   120/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b[31:0]$124
+   121/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask[3:0]$123
+   122/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value[31:0]$122
+   123/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value[31:0]$121
+   124/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result[31:0]$120
+   125/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b[31:0]$119
+   126/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask[3:0]$118
+   127/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value[31:0]$117
+   128/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value[31:0]$116
+   129/153: $1\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result[31:0]$115
+   130/153: $0\write_strobe[3:0]
+   131/153: $0\write_data[31:0]
+   132/153: $0\write_addr[4:0]
+   133/153: $0\w_full[0:0]
+   134/153: $0\aw_full[0:0]
+   135/153: $0\enable_irq[0:0]
+   136/153: $0\pending[0:0]
+   137/153: $0\error[0:0]
+   138/153: $0\active_n[31:0]
+   139/153: $0\active_dst[31:0]
+   140/153: $0\active_b[31:0]
+   141/153: $0\active_a[31:0]
+   142/153: $0\s_rvalid[0:0]
+   143/153: $0\s_rresp[1:0]
+   144/153: $0\s_rdata[31:0]
+   145/153: $0\s_bvalid[0:0]
+   146/153: $0\s_bresp[1:0]
+   147/153: $0\error_code[31:0]
+   148/153: $0\done[0:0]
+   149/153: $0\busy[0:0]
+   150/153: $0\length[31:0]
+   151/153: $0\dst[31:0]
+   152/153: $0\src_b[31:0]
+   153/153: $0\src_a[31:0]
+Creating decoders for process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+     1/10: $0\failed[0:0]
+     2/10: $0\done[0:0]
+     3/10: $0\w_sent[0:0]
+     4/10: $0\aw_sent[0:0]
+     5/10: $0\high_word[0:0]
+     6/10: $0\operand_a[15:0]
+     7/10: $0\index[31:0]
+     8/10: $0\state[2:0]
+     9/10: $0\error_code[31:0]
+    10/10: $0\accumulator[63:0]
+
+6.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+6.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\dotproduct_axi.\src_a' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2508' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\src_b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2509' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\dst' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2510' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\length' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2511' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\busy' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2512' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\done' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2513' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error_code' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2514' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bresp' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2515' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_bvalid' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2516' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rdata' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2517' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rresp' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2518' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\s_rvalid' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2519' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_a' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2520' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2521' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_dst' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2522' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\active_n' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2523' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\error' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2524' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\pending' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2525' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\enable_irq' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2526' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\launch' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2527' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\aw_full' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2528' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\w_full' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2529' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_addr' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2530' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_data' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2531' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\write_strobe' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2532' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.$result' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2533' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.old_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2534' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.new_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2535' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.mask' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2536' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:107$37.b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2537' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.$result' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2538' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.old_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2539' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.new_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2540' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.mask' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2541' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:108$38.b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2542' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.$result' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2543' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.old_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2544' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.new_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2545' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.mask' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2546' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:109$39.b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2547' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.$result' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2548' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.old_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2549' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.new_value' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2550' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.mask' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2551' with positive edge clock.
+Creating register for signal `\dotproduct_axi.\merge_bytes$func$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:110$40.b' using process `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+  created $dff cell `$procdff$2552' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\accumulator' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2553' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\done' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2554' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\failed' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2555' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\error_code' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2556' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\state' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2557' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\index' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2558' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\operand_a' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2559' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\high_word' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2560' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\aw_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2561' with positive edge clock.
+Creating register for signal `\dotproduct_engine.\w_sent' using process `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+  created $dff cell `$procdff$2562' with positive edge clock.
+
+6.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+6.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 36 empty switches in `\dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+Removing empty process `dotproduct_axi.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_axi.sv:77$94'.
+Found and cleaned up 15 empty switches in `\dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+Removing empty process `dotproduct_engine.$proc$/work/labs/build/audit-fast-gate/input/rtl/dotproduct_engine.sv:34$24'.
+Cleaned up 51 empty switches.
+
+6.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module dotproduct_axi.
+<suppressed ~22 debug messages>
+Optimizing module dotproduct_engine.
+<suppressed ~9 debug messages>
+Optimizing module dotproduct_mac.
+
+7. Executing CHECK pass (checking for obvious problems).
+Checking module dotproduct_axi...
+Checking module dotproduct_engine...
+Checking module dotproduct_mac...
+Found and reported 0 problems.
+
+8. Executing JSON backend.

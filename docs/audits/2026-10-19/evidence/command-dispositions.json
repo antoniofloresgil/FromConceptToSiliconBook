@@ -1,0 +1,19 @@
+{
+  "inventory-before": {
+    "kind": "audit setup correction",
+    "superseded_by": "inventory-before-owned"
+  },
+  "reject-closure": {
+    "kind": "audit probe argument correction",
+    "superseded_by": "reject-closure-confirmed"
+  },
+  "environment-asic": {
+    "kind": "audit headless version-query correction",
+    "superseded_by": "environment-asic-headless"
+  },
+  "missing-tools": {
+    "kind": "expected rejection",
+    "confirmed_by": "confirm-missing-tools",
+    "expected_exit_code": 1
+  }
+}

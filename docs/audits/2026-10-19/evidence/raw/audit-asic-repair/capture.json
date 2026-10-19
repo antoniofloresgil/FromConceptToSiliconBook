@@ -1,0 +1,22 @@
+{
+  "command": [
+    "openroad",
+    "-gui",
+    "-no_init",
+    "-exit",
+    "/work/labs/17-complete-case/asic-images.tcl"
+  ],
+  "recipe_sha256": "19d186c391082714232a57e98a4e0813e2e3c27fa1ad400416bb767fc942b15a",
+  "capture_sha256": "14d8e6c63410c142dda3b0c5001086042e80f05804e8b2d5612a3d59586c181f",
+  "inputs": {
+    "report.json": "8ca9fe74a6bd6b331089be2bc3abddb900f3ebf87836142bd6c841952c3fb004",
+    "routed.odb": "4f1e0af1fc6b0c8ca200877900d730f601ee2f0cf27913fb1a90fa75c1808fb7",
+    "routed.sdc": "d2ee749a1fef6895bd234fb7b01151b4e3d060e9724d7456f42ffa89b45dc91f",
+    "routed.spef": "c1c126a5a3c44e2762cf4d92a3b30c10707a2a4e7d96522409771acbeee51a4b"
+  },
+  "images": {
+    "implementation.png": "fe16d3f94f0f876b0a9f2cc336e10d07ebdc73b40f1e5910b25e7820771d69a6",
+    "critical-path.png": "91538551f444e1576cc1b4a0cf89ca294500627b578db1714de1a4bdbf949d41",
+    "clocktree.png": "b41ee838a65b8b2af9a4f3a4d113604bb50083f09aa8091b2e4959063db63af4"
+  }
+}

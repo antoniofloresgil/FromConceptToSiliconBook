@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/work/labs/18-linux-accelerator/wally.py", line 165, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/work/labs/18-linux-accelerator/wally.py", line 132, in main
+    if record['stages'].get('prepare')!='pass':raise ValueError('Run prepare first')
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Run prepare first

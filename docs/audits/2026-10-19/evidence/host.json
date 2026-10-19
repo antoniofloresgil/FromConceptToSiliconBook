@@ -1,0 +1,19 @@
+{
+  "ServerVersion": "29.8.2",
+  "OperatingSystem": "Docker Desktop",
+  "OSType": "linux",
+  "Architecture": "x86_64",
+  "NCPU": 12,
+  "MemTotal": 8215691264,
+  "KernelVersion": "6.6.114.1-microsoft-standard-WSL2",
+  "Driver": "overlay2",
+  "host_platform": "Windows-11-10.0.26300-SP0",
+  "scope": "Docker Desktop clean lab containers on an existing Windows host; daemon resources shared with unrelated pre-existing Wally container, left untouched.",
+  "xc7_exporter_memory_sample": {
+    "phase": "overlapping cold Linux/XC7 builds",
+    "vm_rss_kb": 5525664,
+    "vm_swap_kb": 473280,
+    "threads": 1,
+    "scope": "one /proc sample, not a peak or minimum requirement"
+  }
+}

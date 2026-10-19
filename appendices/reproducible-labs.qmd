@@ -170,6 +170,12 @@ Copy the complete RTL directory, preserving module names and dependencies. On Wi
 
 A minimized waveform and an explained requirement should accompany a failure report. A repaired design needs a new passing run and a retained regression case. CI executes the automatic suite on pushes and pull requests and preserves logs and reports as an artifact; it does not physically program a board or sign off an ASIC.
 
+## Cold-environment reproduction audits {#sec-cold-reproduction-audit}
+
+Checking retained reports establishes their internal integrity; reproducing a result requires executing its tools again. The repository's [cold-audit protocol](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/tools/reproducibility/README.md) starts from a fresh public clone and rebuilds the documented environments, then selects formal, Linux/QEMU, FPGA and ASIC experiments. It requires read-only source/reference protection, fresh outputs, recorded image identities, artifact hashes and deliberate rejection tests. A physical runner's `completed` status must still be distinguished from passing its timing or layout acceptance criteria.
+
+The [19 October 2026 audit record](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/docs/audits/2026-10-19/README.md) identifies the audited revision, execution evidence and limits of an agent-executed clean-container review. It does not replace an independent human review, board validation or foundry qualification. The accompanying integrity helper checks source snapshots and raw report hashes without invoking EDA tools; it cannot substitute for rerunning a laboratory.
+
 ## Continuous hardware verification of the accelerator {#sec-hardware-ci}
 
 [Core · P5 · C1](../learning-paths.qmd#sec-path-labels){#act-hardware-ci .learning-activity}

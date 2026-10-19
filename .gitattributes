@@ -19,3 +19,6 @@
 
 # Lab provenance hashes exact source and evidence bytes across platforms.
 labs/** -text
+
+# Preserve raw audit bytes, including original whitespace, for their hashes.
+docs/audits/**/evidence/** -text -whitespace

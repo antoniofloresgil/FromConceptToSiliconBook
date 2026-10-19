@@ -98,7 +98,7 @@ The [no-board guide](labs/NO-FPGA.md) gives hardware alternatives. Role and C0â€
 
 [Executable HSD project: Wally-controlled AXI/DMA dot product](labs/10-dotproduct/README.md).
 
-**Tools:** Icarus Verilog; Python; Yosys/SMT; Verilator; RISC-V compiler. **Prerequisites:** AXI4-Lite/DMA policy, legal lengths and pinned Wally fixture.
+**Tools:** Icarus Verilog; Python; Yosys built-in SAT; Verilator; RISC-V compiler. **Prerequisites:** AXI4-Lite/DMA policy, legal lengths and pinned Wally fixture.
 
 **Contract / evidence to inspect:** independent vectors, register/DMA checks, bounded formal and firmware/IRQ.
 
@@ -148,7 +148,7 @@ The [no-board guide](labs/NO-FPGA.md) gives hardware alternatives. Role and C0â€
 
 [Formal RTL: FIFO properties, induction and equivalence](labs/15-formal/README.md).
 
-**Tools:** Yosys; SMT solver; executable Lab 15 scripts. **Prerequisites:** explicit reset/environment assumptions and proof depth.
+**Tools:** Yosys built-in SAT; Icarus Verilog; Python. **Prerequisites:** explicit reset/environment assumptions and proof depth.
 
 **Contract / evidence to inspect:** assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope.
 
@@ -218,7 +218,7 @@ The [no-board guide](labs/NO-FPGA.md) gives hardware alternatives. Role and C0â€
 
 [Reference layout checks](labs/22-layout-verification/README.md).
 
-**Tools:** Magic; Netgen; OpenROAD; FreePDK45. **Prerequisites:** reference rule decks and power connectivity.
+**Tools:** KLayout; OpenROAD; FreePDK45/Nangate45. **Prerequisites:** reference rule decks and power connectivity.
 
 **Contract / evidence to inspect:** DRC, LVS, extracted timing and rejected defects.
 
@@ -248,7 +248,7 @@ The [no-board guide](labs/NO-FPGA.md) gives hardware alternatives. Role and C0â€
 
 [Continuous hardware verification](labs/25-hardware-ci/README.md).
 
-**Tools:** Verilator; Icarus Verilog; Yosys; SMT solver. **Prerequisites:** locked interface, seeds and justified area threshold.
+**Tools:** Verilator; Icarus Verilog; Yosys built-in SAT; Python. **Prerequisites:** locked interface, seeds and justified area threshold.
 
 **Contract / evidence to inspect:** lint to reports, freshness and rejected mutations.
 

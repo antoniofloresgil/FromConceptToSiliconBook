@@ -1,0 +1,65 @@
+{
+  "retained": {
+    "audit-wally-rtl/report.json": {
+      "bytes": 101213,
+      "sha256": "697bb61b1993ff02db9cecd04fb6c808a04f2aebda841f5bd4d410190747f851"
+    },
+    "audit-wally-rtl/uart.txt": {
+      "bytes": 13906,
+      "sha256": "076e21e190bb3125300928ee0757f517a7de1b2229ba164c3bf123c90f812ef9"
+    },
+    "audit-wally-rtl/smoke.txt": {
+      "bytes": 315,
+      "sha256": "4feffd09f3a0b14f1f882837c40ea7c6abd2470f35b1e438ddce7846195716b6"
+    },
+    "audit-wally-rtl/progress.txt": {
+      "bytes": 66927,
+      "sha256": "4b599a5a818fefade791b475fd08636cf45cc779733e89a188a7e3a53c40ccf2"
+    },
+    "audit-wally-rtl/wally-linux.dts": {
+      "bytes": 2249,
+      "sha256": "ffbd5c99dbb191a514e5180b75a1dd3d6018c8836d9fdc91b1b38e5484922321"
+    },
+    "audit-wally-rtl/dtc.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "audit-wally-rtl/boot-build.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "audit-wally-rtl/smoke-build.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "audit-wally-rtl/compile.txt": {
+      "bytes": 34143,
+      "sha256": "618ce4cfaf77d232bcb2318ce4d854536e998324ce278383a3556267debf4ad7"
+    },
+    "audit-wally-rtl/address-map.json": {
+      "bytes": 1438,
+      "sha256": "09714e441d6a0a3b6c4034a45f96e75a4bf7d3f9327d1c6a18b525fa62eeea93"
+    },
+    "audit-wally-external-before.json": {
+      "bytes": 157689,
+      "sha256": "0ac8356c5f14fea7010887ea5294899c181015b52c5097897e94c46262848aa4"
+    },
+    "audit-wally-external-after.json": {
+      "bytes": 157689,
+      "sha256": "0ac8356c5f14fea7010887ea5294899c181015b52c5097897e94c46262848aa4"
+    },
+    "audit-wally-collection.json": {
+      "bytes": 3471,
+      "sha256": "f47c3065a6941de14873c116a3a520fa9fe95671d276ea336da02ec572605756"
+    },
+    "audit-wally-final-checks.json": {
+      "bytes": 859,
+      "sha256": "65d0e655b559f0439efa90d4b932bcdfde812ec24827793530034fd56617a16a"
+    },
+    "audit-wally-environment.json": {
+      "bytes": 8287,
+      "sha256": "332d580681b26d51c654e6135fd6719925e165c2dbb8eee9d29e8dc54ab55fa2"
+    }
+  },
+  "omitted": "Compiled simulator, boot ELF/binary/hex, exported upstream source and kernel/initramfs binaries are not copied. Full hashes and current acceptance checks were evaluated before export; raw outputs remain in the audit volumes."
+}

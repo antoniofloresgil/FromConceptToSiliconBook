@@ -1,0 +1,95 @@
+{
+  "status": "pass",
+  "revision": "ee1fc8ed9e9d132247846379fb634be16377b559",
+  "integrity": {
+    "test-baseline": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 14,
+      "commands": 7,
+      "qualification": "not determined by this integrity check"
+    },
+    "test-pipeline": {
+      "kind": "closure",
+      "sources": 17,
+      "artifacts": 14,
+      "commands": 7,
+      "qualification": "not determined by this integrity check"
+    },
+    "asic-baseline": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 45,
+      "commands": 3,
+      "qualification": "not determined by this integrity check"
+    },
+    "asic-slow": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 45,
+      "commands": 3,
+      "qualification": "not determined by this integrity check"
+    },
+    "asic-repair": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 53,
+      "commands": 3,
+      "qualification": "not determined by this integrity check"
+    },
+    "ecp5-slow": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 5,
+      "commands": 2,
+      "qualification": "not determined by this integrity check"
+    },
+    "ecp5-pipeline": {
+      "kind": "closure",
+      "sources": 17,
+      "artifacts": 5,
+      "commands": 2,
+      "qualification": "not determined by this integrity check"
+    },
+    "nexys-slow": {
+      "kind": "closure",
+      "sources": 18,
+      "artifacts": 6,
+      "commands": 2,
+      "qualification": "not determined by this integrity check"
+    },
+    "nexys-pipeline": {
+      "kind": "closure",
+      "sources": 17,
+      "artifacts": 6,
+      "commands": 2,
+      "qualification": "not determined by this integrity check"
+    },
+    "formal": {
+      "kind": "formal",
+      "sources": 5,
+      "artifacts": 17,
+      "commands": 12,
+      "qualification": "not determined by this integrity check"
+    },
+    "linux": {
+      "kind": "linux",
+      "sources": 6,
+      "artifacts": 13,
+      "commands": 6,
+      "qualification": "not determined by this integrity check"
+    },
+    "layout": {
+      "kind": "layout",
+      "sources": 5,
+      "artifacts": 49,
+      "commands": 9,
+      "qualification": "not determined by this integrity check"
+    }
+  },
+  "closure_comparison_cases": 9,
+  "tracked_files": 1312,
+  "retained_reference_files": 899,
+  "unchanged_sources_and_references": true,
+  "identical_three_asic_mapped_netlists": true
+}

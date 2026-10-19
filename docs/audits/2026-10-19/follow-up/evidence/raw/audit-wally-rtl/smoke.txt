@@ -1,0 +1,6 @@
+WALLY_DMA_READ address=88000000 word=00000000dead8000
+WALLY_DMA_READ address=88000400 word=00000000beef8000
+WALLY_DMA_WRITE address=88000800 data=40000000 strobe=f
+WALLY_DMA_WRITE address=88000804 data=00000000 strobe=f
+WALLY_MMIO_SMOKE_PASS- /work/labs/18-linux-accelerator/tb_wally_linux.sv:128: Verilog $finish
+

@@ -102,7 +102,13 @@ docker run --rm --platform linux/amd64 --network none --env HOME=/tmp `
 
 The real Wally run requires a clone of antoniofloresgil/cvw (the fork containing the validated commit, rather than upstream openhwgroup/cvw) containing commit `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` and a read-only `/cvw` mount. Follow the [project guide](labs/10-dotproduct/README.md), preserving the separate `labs/build/wally-platform/report.json`. It boots firmware on actual Wally RTL; the core uses AHB control accesses through an AXI4-Lite adapter, while the accelerator supplies AXI4 DMA. The reference disables caches and uses a simplified direct interrupt route. A complete PLIC, cached DMA integration and physical implementation need additional evidence.
 
-FPGA boards, device databases, PDKs, OpenROAD/LibreLane installations and Spike/Sail are separate guided dependencies, not automatic-suite prerequisites. See the [lab catalog](labs/README.md), [DSE guide](labs/11-dse/README.md) and reproduction appendix for their exact scopes. Keep student RTL in `labs/work/` or a separate branch; `labs/run.py sync` and book packaging regenerate exported reference listings.
+FPGA boards, device databases, PDKs, OpenROAD/LibreLane installations and Spike/Sail are separate guided dependencies, not automatic-suite prerequisites. See the [lab catalog](labs/README.md), [DSE guide](labs/11-dse/README.md) and reproduction appendix for their exact scopes. Keep student RTL in `labs/work/` or a separate branch. Use `labs/run.py sync` only for reviewed authoring changes; packaging checks listing equality and creates the ZIP without rewriting reference sources.
+
+## Audit reproduction from a clean environment
+
+Follow the [reproducibility audit protocol](tools/reproducibility/README.md) to rebuild environments without cached build layers and execute a representative formal, Linux/QEMU, FPGA and ASIC selection. It covers source/reference immutability, artifact hashes, acceptance checks and deliberately rejected commands. Checking preserved reports and reproducing an experiment are separate activities.
+
+See the [19 October 2026 audit record](docs/audits/2026-10-19/README.md) for the audited revision, execution evidence and limitations.
 
 ## Repository map and publication
 

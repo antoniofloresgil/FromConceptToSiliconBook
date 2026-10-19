@@ -1,0 +1,489 @@
+
+
+Info: Logic utilisation before packing:
+Info:     Total LUT4s:      1014/24288     4%
+Info:         logic LUTs:    478/24288     1%
+Info:         carry LUTs:    536/24288     2%
+Info:           RAM LUTs:      0/ 3036     0%
+Info:          RAMW LUTs:      0/ 6072     0%
+
+Info:      Total DFFs:       469/24288     1%
+
+Info: Packing IOs..
+Info: Packing constants..
+Info: Packing carries...
+Info: Packing LUTs...
+Info: Packing LUT5-7s...
+Info: Packing FFs...
+Info:     112 FFs paired with LUTs.
+Info: Generating derived timing constraints...
+Info: Promoting globals...
+Info: Checksum: 0x874dbf2c
+
+Info: Device utilisation:
+Info: 	          TRELLIS_IO:       0/    197     0%
+Info: 	                DCCA:       0/     56     0%
+Info: 	              DP16KD:       0/     56     0%
+Info: 	          MULT18X18D:       1/     28     3%
+Info: 	              ALU54B:       0/     14     0%
+Info: 	             EHXPLLL:       0/      2     0%
+Info: 	             EXTREFB:       0/      1     0%
+Info: 	                DCUA:       0/      1     0%
+Info: 	           PCSCLKDIV:       0/      2     0%
+Info: 	             IOLOGIC:       0/    128     0%
+Info: 	            SIOLOGIC:       0/     69     0%
+Info: 	                 GSR:       0/      1     0%
+Info: 	               JTAGG:       0/      1     0%
+Info: 	                OSCG:       0/      1     0%
+Info: 	               SEDGA:       0/      1     0%
+Info: 	                 DTR:       0/      1     0%
+Info: 	             USRMCLK:       0/      1     0%
+Info: 	             CLKDIVF:       0/      4     0%
+Info: 	           ECLKSYNCB:       0/     10     0%
+Info: 	             DLLDELD:       0/      8     0%
+Info: 	              DDRDLL:       0/      4     0%
+Info: 	             DQSBUFM:       0/      8     0%
+Info: 	     TRELLIS_ECLKBUF:       0/      8     0%
+Info: 	        ECLKBRIDGECS:       0/      2     0%
+Info: 	                DCSC:       0/      2     0%
+Info: 	          TRELLIS_FF:     469/  24288     1%
+Info: 	        TRELLIS_COMB:    1092/  24288     4%
+Info: 	        TRELLIS_RAMW:       0/   3036     0%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 781 cells, random placement wirelen = 50258.
+Info:     at initial placer iter 0, wirelen = 556
+Info:     at initial placer iter 1, wirelen = 514
+Info:     at initial placer iter 2, wirelen = 579
+Info:     at initial placer iter 3, wirelen = 582
+Info: Running main analytical placer, max placement attempts per cell = 304980.
+Info:     at iteration #1, type ALL: wirelen solved = 519, spread = 12027, legal = 12143; time = 0.02s
+Info:     at iteration #2, type ALL: wirelen solved = 661, spread = 9106, legal = 9116; time = 0.02s
+Info:     at iteration #3, type ALL: wirelen solved = 989, spread = 7021, legal = 7800; time = 0.02s
+Info:     at iteration #4, type ALL: wirelen solved = 1177, spread = 6536, legal = 6863; time = 0.02s
+Info:     at iteration #5, type ALL: wirelen solved = 1409, spread = 6067, legal = 6919; time = 0.03s
+Info:     at iteration #6, type ALL: wirelen solved = 1666, spread = 5960, legal = 6625; time = 0.03s
+Info:     at iteration #7, type ALL: wirelen solved = 2090, spread = 5113, legal = 6180; time = 0.03s
+Info:     at iteration #8, type ALL: wirelen solved = 2187, spread = 5926, legal = 6453; time = 0.02s
+Info:     at iteration #9, type ALL: wirelen solved = 2379, spread = 5372, legal = 6388; time = 0.02s
+Info:     at iteration #10, type ALL: wirelen solved = 2376, spread = 5450, legal = 6387; time = 0.02s
+Info:     at iteration #11, type ALL: wirelen solved = 2608, spread = 5383, legal = 6207; time = 0.02s
+Info:     at iteration #12, type ALL: wirelen solved = 2683, spread = 5354, legal = 6058; time = 0.02s
+Info:     at iteration #13, type ALL: wirelen solved = 2887, spread = 5563, legal = 6197; time = 0.02s
+Info:     at iteration #14, type ALL: wirelen solved = 2998, spread = 5641, legal = 6233; time = 0.02s
+Info:     at iteration #15, type ALL: wirelen solved = 3367, spread = 5828, legal = 6886; time = 0.02s
+Info:     at iteration #16, type ALL: wirelen solved = 3518, spread = 5832, legal = 6920; time = 0.02s
+Info:     at iteration #17, type ALL: wirelen solved = 3494, spread = 5766, legal = 6767; time = 0.02s
+Info: HeAP Placer Time: 0.70s
+Info:   of which solving equations: 0.39s
+Info:   of which spreading cells: 0.05s
+Info:   of which strict legalisation: 0.06s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 630, wirelen = 6058
+Info:   at iteration #5: temp = 0.000000, timing cost = 437, wirelen = 4861
+Info:   at iteration #10: temp = 0.000000, timing cost = 457, wirelen = 4496
+Info:   at iteration #15: temp = 0.000000, timing cost = 415, wirelen = 4393
+Info:   at iteration #20: temp = 0.000000, timing cost = 423, wirelen = 4315
+Info:   at iteration #24: temp = 0.000000, timing cost = 439, wirelen = 4287 
+Info: SA placement time 4.05s
+
+Info: Max frequency for clock 'clk': 90.88 MHz (PASS at 75.00 MHz)
+
+Info: Slack histogram:
+Info:  legend: times are in ps
+Info:          * represents 1 endpoint(s)
+Info:          + represents [1,1) endpoint(s)
+Info: [  2330,   2843) |*******************+
+Info: [  2843,   3356) |******************************************************+
+Info: [  3356,   3869) |************+
+Info: [  3869,   4382) |************+
+Info: [  4382,   4895) |*******************+
+Info: [  4895,   5408) |+
+Info: [  5408,   5921) |+
+Info: [  5921,   6434) | 
+Info: [  6434,   6947) |************+
+Info: [  6947,   7460) |********************+
+Info: [  7460,   7973) |*****************+
+Info: [  7973,   8486) |***************+
+Info: [  8486,   8999) |**************+
+Info: [  8999,   9512) |******************************************************+
+Info: [  9512,  10025) |*******************************+
+Info: [ 10025,  10538) |***************+
+Info: [ 10538,  11051) |**********************+
+Info: [ 11051,  11564) |*************************************+
+Info: [ 11564,  12077) |************************************************************ 
+Info: [ 12077,  12590) |*************************+
+Info: Checksum: 0xff5a0105
+Info: Routing globals...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 3578 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:       1000 |      372        627 |  372   627 |      3035|       0.90       0.90|
+Info:       2000 |      893       1106 |  521   479 |      2694|       0.99       1.88|
+Info:       3000 |     1413       1586 |  520   480 |      2346|       0.88       2.76|
+Info:       4000 |     1737       2034 |  324   448 |      1728|       0.40       3.16|
+Info:       5000 |     2000       2736 |  263   702 |      1049|       0.67       3.83|
+Info:       6000 |     2374       3304 |  374   568 |       507|       1.57       5.41|
+Info:       6679 |     2511       3798 |  137   494 |         0|       0.41       5.82|
+Info: Routing complete.
+Info: Router1 time 5.82s
+Info: Checksum: 0xd044ed0d
+
+Info: Critical path report for clock 'clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-to-q  0.52  0.52 Source engine.arithmetic.a_TRELLIS_FF_Q_13.Q
+Info:    routing  1.26  1.78 Net engine.arithmetic.a[11] (51,12) -> (51,13)
+Info:                          Sink engine.arithmetic.product_MULT18X18D_P9.A11
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:3.28-3.29
+Info:      logic  3.93  5.71 Source engine.arithmetic.product_MULT18X18D_P9.P0
+Info:    routing  1.72  7.43 Net engine.arithmetic.product[0] (51,13) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.A
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:7.22-7.29
+Info:      logic  0.45  7.88 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  7.88 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (49,8) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  7.88 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  7.88 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_29_DI_LUT4_Z_D_CCU2C_S1_COUT (49,8) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  7.95 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  7.95 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (49,8) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  7.95 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  7.95 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_31_DI_LUT4_Z_D_CCU2C_S1_COUT (49,8) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.02 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.02 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (49,8) -> (49,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.02 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.02 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_33_DI_LUT4_Z_D_CCU2C_S1_COUT (49,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.10 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.10 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.10 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.10 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_6_DI_LUT4_Z_D_CCU2C_S1_COUT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.17 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.17 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.17 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.17 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_26_DI_LUT4_Z_D_CCU2C_S1_COUT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.24 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.24 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.24 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.24 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_28_DI_LUT4_Z_D_CCU2C_S1_COUT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.31 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCO
+Info:    routing  0.00  8.31 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0$CCU2_FCI_INT (50,8) -> (50,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCI
+Info:      logic  0.00  8.31 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCO
+Info:    routing  0.00  8.31 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_1_DI_LUT4_Z_D_CCU2C_S0_COUT (50,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.38 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.38 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.38 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.38 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_DI_LUT4_Z_D_CCU2C_S1_COUT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.45 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCO
+Info:    routing  0.00  8.45 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0$CCU2_FCI_INT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCI
+Info:      logic  0.00  8.45 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCO
+Info:    routing  0.00  8.45 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_2_DI_LUT4_Z_D_CCU2C_S0_COUT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.52 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.52 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.52 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.52 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_4_DI_LUT4_Z_D_CCU2C_S1_COUT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.59 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.59 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (51,8) -> (51,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.59 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.59 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_7_DI_LUT4_Z_D_CCU2C_S1_COUT (51,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.66 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.66 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.66 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.66 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_5_DI_LUT4_Z_D_CCU2C_S1_COUT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.73 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.73 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.73 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.73 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_11_DI_LUT4_Z_D_CCU2C_S1_COUT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.81 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.81 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.81 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.81 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_13_DI_LUT4_Z_D_CCU2C_S1_COUT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.88 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.88 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (52,8) -> (52,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.88 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.88 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_12_DI_LUT4_Z_D_CCU2C_S1_COUT (52,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  8.95 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  8.95 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  8.95 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  8.95 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_17_DI_LUT4_Z_D_CCU2C_S1_COUT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.02 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.02 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.02 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.02 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_19_DI_LUT4_Z_D_CCU2C_S1_COUT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.09 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.09 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.09 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.09 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_18_DI_LUT4_Z_D_CCU2C_S1_COUT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.16 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.16 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (53,8) -> (53,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.16 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.16 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_35_DI_LUT4_Z_D_CCU2C_S1_COUT (53,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.23 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.23 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.23 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.23 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_37_DI_LUT4_Z_D_CCU2C_S1_COUT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.30 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.30 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.30 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.30 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_39_DI_LUT4_Z_D_CCU2C_S1_COUT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.37 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.37 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.37 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.37 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_41_DI_LUT4_Z_D_CCU2C_S1_COUT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.44 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.44 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (54,8) -> (54,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.44 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.44 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_43_DI_LUT4_Z_D_CCU2C_S1_COUT (54,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.52 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.52 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.52 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.52 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_45_DI_LUT4_Z_D_CCU2C_S1_COUT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.59 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.59 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.59 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.59 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_47_DI_LUT4_Z_D_CCU2C_S1_COUT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.66 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.66 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.66 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.66 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_49_DI_LUT4_Z_D_CCU2C_S1_COUT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.73 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.73 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (55,8) -> (55,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.73 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.73 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_51_DI_LUT4_Z_D_CCU2C_S1_COUT (55,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.80 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.80 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.80 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.80 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_53_DI_LUT4_Z_D_CCU2C_S1_COUT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.87 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  9.87 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.00  9.87 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCO
+Info:    routing  0.00  9.87 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_55_DI_LUT4_Z_D_CCU2C_S1_COUT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  9.94 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB0.FCO
+Info:    routing  0.00  9.94 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0$CCU2_FCI_INT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCI
+Info:      logic  0.00  9.94 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0$CCU2_COMB1.FCO
+Info:    routing  0.00  9.94 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_56_DI_LUT4_Z_D_CCU2C_S0_COUT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCI
+Info:                          Defined in:
+Info:                               /work/labs/10-dotproduct/rtl/dotproduct_mac.sv:9.20-9.61
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/arith_map_ccu2c.v:74.7-80.4
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/ccu2c_sim.vh:9.9-9.13
+Info:      logic  0.07  10.01 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB0.FCO
+Info:    routing  0.00  10.01 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D_CCU2C_S1$CCU2_FCI_INT (56,8) -> (56,8)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.FCI
+Info:      logic  0.40  10.41 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D_CCU2C_S1$CCU2_COMB1.F
+Info:    routing  0.71  11.13 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z_D[1] (56,8) -> (56,7)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z.D
+Info:                          Defined in:
+Info:                               /opt/oss-cad-suite/lib/../share/yosys/lattice/cells_map_trellis.v:108.23-108.24
+Info:      logic  0.24  11.36 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI_LUT4_Z.F
+Info:    routing  0.13  11.49 Net engine.arithmetic.accumulator_TRELLIS_FF_Q_59_DI (56,7) -> (56,7)
+Info:                          Sink engine.arithmetic.accumulator_TRELLIS_FF_Q_59.DI
+Info:      setup  0.00  11.49 Source engine.arithmetic.accumulator_TRELLIS_FF_Q_59.DI
+Info: 7.67 ns logic, 3.83 ns routing
+
+Info: Max frequency for clock 'clk': 86.99 MHz (PASS at 75.00 MHz)
+
+Info: Slack histogram:
+Info:  legend: times are in ps
+Info:          * represents 2 endpoint(s)
+Info:          + represents [1,2) endpoint(s)
+Info: [  1838,   2366) |*****+
+Info: [  2366,   2894) |****+
+Info: [  2894,   3422) |*******+
+Info: [  3422,   3950) |************************************************************ 
+Info: [  3950,   4478) |*******+
+Info: [  4478,   5006) |**********+
+Info: [  5006,   5534) |+
+Info: [  5534,   6062) | 
+Info: [  6062,   6590) |+
+Info: [  6590,   7118) |****+
+Info: [  7118,   7646) |**********+
+Info: [  7646,   8174) |************************************+
+Info: [  8174,   8702) |****************************+
+Info: [  8702,   9230) |************+
+Info: [  9230,   9758) |******************** 
+Info: [  9758,  10286) |***************************+
+Info: [ 10286,  10814) |****************+
+Info: [ 10814,  11342) |********************************+
+Info: [ 11342,  11870) |****************************************************+
+Info: [ 11870,  12398) |************************+
+
+Info: Program finished normally.

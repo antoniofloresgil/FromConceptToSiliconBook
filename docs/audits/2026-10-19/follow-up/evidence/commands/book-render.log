@@ -1,0 +1,17 @@
+[1m[34mRunning script 'python'[39m[22m
+Traceback (most recent call last):
+  File "/tmp/book-release-ruafc9k4/source/tools/book/learning_paths.py", line 111, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/tmp/book-release-ruafc9k4/source/tools/book/learning_paths.py", line 98, in main
+    if args.check:raise ValueError('Stale/missing activity labels: '+page)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Stale/missing activity labels: appendices/reproducible-labs.qmd
+Traceback (most recent call last):
+  File "/work/tools/book/build.py", line 103, in <module>
+    main()
+  File "/work/tools/book/build.py", line 65, in main
+    subprocess.run(['quarto', 'render', '--to', 'all'], cwd=source, env=render_env, check=True)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['quarto', 'render', '--to', 'all']' returned non-zero exit status 1.

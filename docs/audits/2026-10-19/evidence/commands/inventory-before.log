@@ -1,0 +1,12 @@
+fatal: detected dubious ownership in repository at '/work'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /work
+Traceback (most recent call last):
+  File "/audit/inspect.py", line 5, in <module>
+    names=subprocess.check_output(['git','-c','safe.directory=/work','ls-files','-z'],cwd=ROOT).decode().split('\0')
+  File "/usr/lib/python3.10/subprocess.py", line 421, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-c', 'safe.directory=/work', 'ls-files', '-z']' returned non-zero exit status 128.

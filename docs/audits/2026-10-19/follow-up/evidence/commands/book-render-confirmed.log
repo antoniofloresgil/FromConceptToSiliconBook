@@ -1,0 +1,108 @@
+[1m[34mRunning script 'python'[39m[22m
+PASS learning paths: 229 classified activities; every chapter covered; labels agree with the reviewed catalogue
+[1m[34mRunning script 'python'[39m[22m
+PASS consultation navigation: 81 terms, 25 labs, 229 activities
+[1m[34mRunning script 'python'[39m[22m
+PASS source provenance: 26 exported files and 3 existing examples
+Package: /tmp/book-release-6b9ujn55/source/downloads/hardware-design-labs.zip sha256=76238be882a03db17d1f3b301598c5d7080ec2d06a27d4eb15c29cb6723b53a9; 1172 files, no book text
+
+[1m[34m[ 1/47] index.qmd[39m[22m
+[1m[34m[ 2/47] intro.qmd[39m[22m
+[1m[34m[ 3/47] learning-paths.qmd[39m[22m
+[1m[34m[ 4/47] chapters/01-foundations/risc-v-isa.qmd[39m[22m
+[1m[34m[ 5/47] chapters/01-foundations/systemverilog.qmd[39m[22m
+[1m[34m[ 6/47] chapters/01-foundations/microarchitecture.qmd[39m[22m
+[1m[34m[ 7/47] chapters/01-foundations/clocking-timing.qmd[39m[22m
+[1m[34m[ 8/47] chapters/02-risc-v-cores/core-v-wally.qmd[39m[22m
+[1m[34m[ 9/47] chapters/02-risc-v-cores/other-architectures.qmd[39m[22m
+[1m[34m[10/47] chapters/03-simulation-verification/verification-methodology.qmd[39m[22m
+[1m[34m[11/47] chapters/03-simulation-verification/formal-verification.qmd[39m[22m
+[1m[34m[12/47] chapters/03-simulation-verification/verilator.qmd[39m[22m
+[1m[34m[13/47] chapters/03-simulation-verification/spike-sail.qmd[39m[22m
+[1m[34m[14/47] chapters/03-simulation-verification/cocotb.qmd[39m[22m
+[1m[34m[15/47] chapters/04-soc-architecture/pipelines.qmd[39m[22m
+[1m[34m[16/47] chapters/04-soc-architecture/memories-caches.qmd[39m[22m
+[1m[34m[17/47] chapters/04-soc-architecture/privileged-mmu.qmd[39m[22m
+[1m[34m[18/47] chapters/04-soc-architecture/buses-interrupts.qmd[39m[22m
+[1m[34m[19/47] chapters/04-soc-architecture/peripherals.qmd[39m[22m
+[1m[34m[20/47] chapters/04-soc-architecture/boot-software-stack.qmd[39m[22m
+[1m[34m[21/47] chapters/05-fpga-implementation/yosys.qmd[39m[22m
+[1m[34m[22/47] chapters/05-fpga-implementation/nextpnr-timing.qmd[39m[22m
+[1m[34m[23/47] chapters/05-fpga-implementation/fpga-soc.qmd[39m[22m
+[1m[34m[24/47] chapters/06-asic-implementation/vlsi-design.qmd[39m[22m
+[1m[34m[25/47] chapters/06-asic-implementation/rtl-to-gdsii.qmd[39m[22m
+[1m[34m[26/47] chapters/06-asic-implementation/openroad.qmd[39m[22m
+[1m[34m[27/47] chapters/06-asic-implementation/librelane.qmd[39m[22m
+[1m[34m[28/47] chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd[39m[22m
+[1m[34m[29/47] chapters/07-advanced-topics/pmu.qmd[39m[22m
+[1m[34m[30/47] chapters/07-advanced-topics/debug.qmd[39m[22m
+[1m[34m[31/47] chapters/07-advanced-topics/hardware-security.qmd[39m[22m
+[1m[34m[32/47] chapters/07-advanced-topics/vector-processing.qmd[39m[22m
+[1m[34m[33/47] chapters/07-advanced-topics/accelerators-extensions.qmd[39m[22m
+[1m[34m[34/47] chapters/07-advanced-topics/multicore-integration.qmd[39m[22m
+[1m[34m[35/47] chapters/07-advanced-topics/architecture-exploration.qmd[39m[22m
+[1m[34m[36/47] summary.qmd[39m[22m
+[1m[34m[37/47] references.qmd[39m[22m
+[1m[34m[38/47] glossary.qmd[39m[22m
+[1m[34m[39/47] term-index.qmd[39m[22m
+[1m[34m[40/47] lab-index.qmd[39m[22m
+[1m[34m[41/47] experiment-index.qmd[39m[22m
+[1m[34m[42/47] appendices/wally-style.qmd[39m[22m
+[1m[34m[43/47] appendices/systemverilog-cheatsheet.qmd[39m[22m
+[1m[34m[44/47] appendices/reproducible-labs.qmd[39m[22m
+[1m[34m[45/47] appendices/hsd-coursework.qmd[39m[22m
+[1m[34m[46/47] appendices/executable-project.qmd[39m[22m
+[1m[34m[47/47] appendices/complete-case-study.qmd[39m[22m
+
+[1mpandoc [22m
+  to: latex
+  output-file: index.tex
+  standalone: true
+  toc: true
+  number-sections: true
+  top-level-division: chapter
+  pdf-engine: lualatex
+  variables:
+    graphics: true
+    tables: true
+  default-image-extension: pdf
+  
+[1mmetadata[22m
+  crossref:
+    chapters: true
+  documentclass: scrreprt
+  papersize: letter
+  classoption:
+    - DIV=11
+    - numbers=noendperiod
+  header-includes:
+    - \KOMAoption{captions}{tableheading}
+  block-headings: true
+  bibliography:
+    - references.bib
+  date-format: iso
+  title: From Concept to Silicon
+  subtitle: A Hands-On Guide to Open-Source SoC Design Using RISC-V
+  author: Antonio Flores Gil
+  date: '2026-10-19T00:00:00+00:00'
+  
+[1m[34m
+Rendering PDF[39m[22m
+[1m[34mrunning lualatex - 1[39m[22m
+  This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian) 
+   restricted system commands enabled.
+  
+  luaotfload | db : Font names database not found, generating new one.
+  luaotfload | db : This can take several minutes; please be patient.
+[1m[34mrunning lualatex - 2[39m[22m
+  This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian) 
+   restricted system commands enabled.
+  
+[1m[34mrunning lualatex - 3[39m[22m
+  This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian) 
+   restricted system commands enabled.
+  
+
+Output created: _book/index.html
+
+Validated release: /work/_book/release-ebdd44c5be; 782 PDF pages; revision ee1fc8ed9e9d132247846379fb634be16377b559

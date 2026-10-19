@@ -1,0 +1,186 @@
+{
+  "asic-baseline": {
+    "metrics": {
+      "setup_ns": 4.5640226223490785,
+      "hold_ns": -0.01844807692158239,
+      "cell_um2": 7350.0,
+      "electrical_violations": 48,
+      "power_w": 0.000846,
+      "router_drc_empty": true,
+      "unconstrained_report_empty": true,
+      "timing_electrical_pass": false
+    },
+    "reference_metrics_equal": {
+      "setup_ns": true,
+      "hold_ns": true,
+      "cell_um2": true,
+      "electrical_violations": true,
+      "power_w": true,
+      "router_drc_empty": true,
+      "unconstrained_report_empty": true,
+      "timing_electrical_pass": true
+    },
+    "exact_mapped_netlist": true,
+    "tools_equal": true,
+    "technology_equal": true
+  },
+  "asic-repair": {
+    "metrics": {
+      "setup_ns": 5.204097744481942,
+      "hold_ns": 0.029677428021741278,
+      "cell_um2": 7811.0,
+      "electrical_violations": 0,
+      "power_w": 0.00086,
+      "router_drc_empty": true,
+      "unconstrained_report_empty": true,
+      "timing_electrical_pass": true
+    },
+    "reference_metrics_equal": {
+      "setup_ns": true,
+      "hold_ns": true,
+      "cell_um2": true,
+      "electrical_violations": true,
+      "power_w": true,
+      "router_drc_empty": true,
+      "unconstrained_report_empty": true,
+      "timing_electrical_pass": true
+    },
+    "exact_mapped_netlist": true,
+    "tools_equal": true,
+    "technology_equal": true
+  },
+  "ecp5-pipeline": {
+    "metrics": {
+      "requested_mhz": 100,
+      "achieved_mhz": 98.19324493408203,
+      "accepted": false,
+      "utilization": {
+        "ALU54B": {
+          "available": 14,
+          "used": 0
+        },
+        "CLKDIVF": {
+          "available": 4,
+          "used": 0
+        },
+        "DCCA": {
+          "available": 56,
+          "used": 0
+        },
+        "DCSC": {
+          "available": 2,
+          "used": 0
+        },
+        "DCUA": {
+          "available": 1,
+          "used": 0
+        },
+        "DDRDLL": {
+          "available": 4,
+          "used": 0
+        },
+        "DLLDELD": {
+          "available": 8,
+          "used": 0
+        },
+        "DP16KD": {
+          "available": 56,
+          "used": 0
+        },
+        "DQSBUFM": {
+          "available": 8,
+          "used": 0
+        },
+        "DTR": {
+          "available": 1,
+          "used": 0
+        },
+        "ECLKBRIDGECS": {
+          "available": 2,
+          "used": 0
+        },
+        "ECLKSYNCB": {
+          "available": 10,
+          "used": 0
+        },
+        "EHXPLLL": {
+          "available": 2,
+          "used": 0
+        },
+        "EXTREFB": {
+          "available": 1,
+          "used": 0
+        },
+        "GSR": {
+          "available": 1,
+          "used": 0
+        },
+        "IOLOGIC": {
+          "available": 128,
+          "used": 0
+        },
+        "JTAGG": {
+          "available": 1,
+          "used": 0
+        },
+        "MULT18X18D": {
+          "available": 28,
+          "used": 1
+        },
+        "OSCG": {
+          "available": 1,
+          "used": 0
+        },
+        "PCSCLKDIV": {
+          "available": 2,
+          "used": 0
+        },
+        "SEDGA": {
+          "available": 1,
+          "used": 0
+        },
+        "SIOLOGIC": {
+          "available": 69,
+          "used": 0
+        },
+        "TRELLIS_COMB": {
+          "available": 24288,
+          "used": 1097
+        },
+        "TRELLIS_ECLKBUF": {
+          "available": 8,
+          "used": 0
+        },
+        "TRELLIS_FF": {
+          "available": 24288,
+          "used": 502
+        },
+        "TRELLIS_IO": {
+          "available": 197,
+          "used": 0
+        },
+        "TRELLIS_RAMW": {
+          "available": 3036,
+          "used": 0
+        },
+        "USRMCLK": {
+          "available": 1,
+          "used": 0
+        }
+      },
+      "critical_logic_ns": 3.6219999939203262,
+      "critical_route_ns": 6.036999940872192
+    },
+    "reference_metrics_equal": {
+      "requested_mhz": true,
+      "achieved_mhz": true,
+      "accepted": true,
+      "utilization": true,
+      "critical_logic_ns": true,
+      "critical_route_ns": true
+    },
+    "exact_mapped_netlist": true,
+    "tools_equal": true,
+    "technology_equal": true
+  }
+}

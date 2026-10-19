@@ -1,0 +1,738 @@
+[
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 130,
+    "image": "figures/complete-case-fpga.png",
+    "caption": "Actual occupied ECP5 BEL coordinates extracted from the final nextpnr routed JSON. Blue intensity counts combinational and register BELs sharing a coordinate; the red diamond marks the DSP BEL anchor. The view is the occupied coordinate window, not a drawing of the complete FPGA or routed wires.",
+    "sha256": "c272e05a8a57c19c5437f9b463d58cfc2ed9d0b2b15144794f139329468da7ec",
+    "kind": "capture",
+    "width": 2160,
+    "height": 1080,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      764
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 161,
+    "image": "figures/complete-case-nexys.png",
+    "caption": "Actual Nexys Video Artix-7 placement after routing, including the serial boundary fixture. Site locations are translated through the pinned Project X-Ray tile grid; the right panel crops the dense logic region. The image shows placed resources, not routed wires or a physically observed board.",
+    "sha256": "e40f4f49d4ef6d5313373b1d0154cf7fa14b7629c0b477f5d19db8ba9d10ee09",
+    "kind": "capture",
+    "width": 2340,
+    "height": 1080,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      765
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 181,
+    "image": "figures/complete-case-asic.png",
+    "caption": "Actual OpenROAD detailed-route GUI export for the same dot-product IP. Standard cells, power grid and routed signals belong to the manifest-locked maximum-256 accelerator.",
+    "sha256": "93b3921e8111632395c5c9bf7dfd209508a06fe0e8975487920b2620e7906d5a",
+    "kind": "capture",
+    "width": 1800,
+    "height": 1800,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      767
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 185,
+    "image": "figures/complete-case-asic-critical.png",
+    "caption": "Actual worst setup path highlighted in the routed accelerator database. Use the expanded timing report to distinguish launch/capture clocks, cell arcs and net contributions.",
+    "sha256": "03225f8c96050ce102d120979f3c44bb463c693df89ed93dfe988f2eb1243d3f",
+    "kind": "capture",
+    "width": 1800,
+    "height": 1800,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      771
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 187,
+    "image": "figures/complete-case-clocktree.png",
+    "caption": "Actual clock-tree topology from the routed accelerator. This clock network belongs to the accelerator block and does not include Wally or a chip-level clock tree.",
+    "sha256": "320e09c52a68f1a247ffdc2e588578ca056c68cf09ff2cdd5a2d626c78a5257d",
+    "kind": "capture",
+    "width": 1398,
+    "height": 848,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      772
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 320,
+    "image": "labs/21-physical-closure/reference/asic-repair/implementation.png",
+    "caption": "Actual repaired 100 MHz ASIC routing, exported from the final OpenROAD database after extraction. The floorplan is unchanged; buffering, sizing and routing differ from the original implementation.",
+    "sha256": "fe16d3f94f0f876b0a9f2cc336e10d07ebdc73b40f1e5910b25e7820771d69a6",
+    "kind": "capture",
+    "width": 1800,
+    "height": 1800,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      777
+    ]
+  },
+  {
+    "page": "appendices/complete-case-study.qmd",
+    "line": 322,
+    "image": "labs/21-physical-closure/reference/asic-repair/clocktree.png",
+    "caption": "Clock tree of the repaired block, with insertion-delay scale in ns. This is an actual OpenROAD clock-tree export; hold acceptance also depends on the data paths in the extracted reports.",
+    "sha256": "b41ee838a65b8b2af9a4f3a4d113604bb50083f09aa8091b2e4959063db63af4",
+    "kind": "capture",
+    "width": 1398,
+    "height": 848,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      778
+    ]
+  },
+  {
+    "page": "appendices/executable-project.qmd",
+    "line": 17,
+    "image": "figures/executable-project.svg",
+    "caption": "Executable accelerator platform. Original vector diagram for this book; the CPU control path, DMA memory path and completion interrupt are distinct.",
+    "sha256": "91e9e3bd53788a503a4e35030f86e38c0d0755c4a9af778dfe520d7f48a63004",
+    "kind": "vector",
+    "width": 1100.0,
+    "height": 790.0,
+    "min_source_font": 19.0,
+    "estimated_min_pt": 7.43,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      744
+    ]
+  },
+  {
+    "page": "appendices/executable-project.qmd",
+    "line": 124,
+    "image": "figures/ip-release-boundaries.svg",
+    "caption": "Original release/integration map. Blue identifies integration clients, green the common released IP, and dashed orange the Wally platform policy. Address decode, PMA, interrupt routing and firmware are platform responsibilities.",
+    "sha256": "5b29f73d8c6a7e122567090778b5302e41d5153c65389c6a205b4288f2dbb712",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 588.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      750
+    ]
+  },
+  {
+    "page": "chapters/01-foundations/clocking-timing.qmd",
+    "line": 353,
+    "image": "figures/async-fifo-ownership.svg",
+    "caption": "Original asynchronous-FIFO ownership map. Dashed orange paths carry registered Gray pointers through two destination-clocked stages. The solid data path uses shared storage; payload bits do not pass through individual two-flop synchronizers.",
+    "sha256": "1f040669a7142b5b3b53c671fbf97d5306f55f1fbf3260b1e8e4bda306e103b6",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 708.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      102
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 27,
+    "image": "figures/wally-figure-7-13-editable.svg",
+    "caption": "Improved pipelined RISC-V datapath with synchronous memories. Source: Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Chapter 7, Figure 7.13.",
+    "sha256": "2fb5123322a5ce335d3997598a6553bda9496b94c152b2b66b45d5f82a225045",
+    "kind": "vector",
+    "width": 512.0,
+    "height": 306.0,
+    "min_source_font": 4.0824,
+    "estimated_min_pt": 3.43,
+    "review": "small-label review",
+    "pdf_pages": [
+      116
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 31,
+    "image": "figures/wally-pipeline-detail-1.svg",
+    "caption": "Left detail of the synchronous-memory datapath; overlaps the central view. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.",
+    "sha256": "eac3c1d179b99ac67f610bc80f1be60adcd8e637357f822a412cfae7ca1df29a",
+    "kind": "vector",
+    "width": 190.0,
+    "height": 306.0,
+    "min_source_font": 4.0824,
+    "estimated_min_pt": 8.14,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      117
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 33,
+    "image": "figures/wally-pipeline-detail-2.svg",
+    "caption": "Central detail of the same datapath; overlaps both neighbors. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.",
+    "sha256": "b0860627b47ba2b8db38a1fbdee061fb842f7e8ad18bf3ff305d2216ef132c74",
+    "kind": "vector",
+    "width": 190.0,
+    "height": 306.0,
+    "min_source_font": 4.0824,
+    "estimated_min_pt": 8.14,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      118
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 35,
+    "image": "figures/wally-pipeline-detail-3.svg",
+    "caption": "Right detail of the same datapath; overlaps the central view. Source: Harris et al., Chapter 7, Figure 7.13; unchanged source geometry, enlarged crop.",
+    "sha256": "4f653d47e189e004a3a00184ea52986b7fb7221ebe39f1dfc2fa1878ea94f925",
+    "kind": "vector",
+    "width": 184.0,
+    "height": 306.0,
+    "min_source_font": 4.0824,
+    "estimated_min_pt": 8.14,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      119
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 139,
+    "image": "figures/architecture-wally-hierarchy.svg",
+    "caption": "Original module ownership map for the pinned rv32gc reading baseline. Solid blue arrows show selected requests; the dashed orange arrow returns interrupt events. Names follow the inspected Wally RTL [@cvwBridgeSoc; @cvwBridgeCore].",
+    "sha256": "70e6d863556e09cac05f110ef9c95887cf1c9b8dbde1f665642502369fd2e6d9",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 688.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      125
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 141,
+    "image": "figures/wally-soc-overview.svg",
+    "caption": "Wally core-to-SoC organization. Original editable vector redraw informed by Harris, Stine, Thompson and Harris, *RISC-V System-on-Chip Design*, Figure 2.13, and the CVW repository's `wallyriscvTopAll.png`. The layout groups functions and makes the AHB/APB and interrupt paths explicit; it is not a verbatim reproduction or a pipeline-stage diagram.",
+    "sha256": "201d0c862b9180733f73c4646285298237d58c1211359964d2057ee60238dc2c",
+    "kind": "vector",
+    "width": 1200.0,
+    "height": 930.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      126
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/core-v-wally.qmd",
+    "line": 277,
+    "image": "figures/wally-soc-three-paths.svg",
+    "caption": "Three causal journeys in the selected Wally SoC: a cache-miss RAM load, an uncached GPIO write and a machine timer interrupt. Original teaching diagram based on the inspected configuration and RTL. Arrows indicate causality, not fixed cycle counts.",
+    "sha256": "66f7917990175420020ada5a94e4031f3efe9712e2ecf51b42074b013d8500a7",
+    "kind": "vector",
+    "width": 1200.0,
+    "height": 700.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      133
+    ]
+  },
+  {
+    "page": "chapters/02-risc-v-cores/other-architectures.qmd",
+    "line": 189,
+    "image": "figures/architecture-ooo-window.svg",
+    "caption": "Original conceptual OoO pipeline: rename maps architectural to physical registers, dispatch allocates window and ROB entries, issue follows readiness, and commit retires the oldest completed instruction. This is a teaching organization, not a particular BOOM or XiangShan configuration.",
+    "sha256": "803c49f46a88e28879d1b9a3e1f1a18ba13a9523750566464414eb5fc6ae4406",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 648.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      146
+    ]
+  },
+  {
+    "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+    "line": 32,
+    "image": "figures/riscv-boot-stack.svg",
+    "caption": "Original diagram of the conventional OpenSBI/Linux path. The bootloader is optional; resident firmware continues serving SBI calls after kernel entry.",
+    "sha256": "4f9e46020a66cb4ac2335d74a4aa4991b9aa35aebb19437337d5eba10aa18b04",
+    "kind": "vector",
+    "width": 1040.0,
+    "height": 570.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 7.44,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      335
+    ]
+  },
+  {
+    "page": "chapters/04-soc-architecture/boot-software-stack.qmd",
+    "line": 36,
+    "image": "figures/architecture-boot-timeline.svg",
+    "caption": "Original boot timeline with privilege and handoff contracts. OpenSBI initialization ends before Linux entry, but its resident M-mode runtime remains available to service SBI calls. Horizontal distance does not represent elapsed boot time.",
+    "sha256": "f05ee2f641bb33b9d4e59f00ead2a6f8bb82b6dfab221d9edd912b996fabaab5",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 653.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      336
+    ]
+  },
+  {
+    "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+    "line": 227,
+    "image": "figures/architecture-axi-write.svg",
+    "caption": "Original AXI4 single-beat write timing. Each value occupies the interval immediately before the numbered rising edge. Green dots identify handshakes; address, data and response are accepted at different edges. Payload boxes marked with a dash have no valid information.",
+    "sha256": "4f273fce29bcc313680d37e517298d97c39f69189232c8f38dac865a18d3d190",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 601.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      288
+    ]
+  },
+  {
+    "page": "chapters/04-soc-architecture/buses-interrupts.qmd",
+    "line": 265,
+    "image": "figures/architecture-axi-read.svg",
+    "caption": "Original four-beat AXI4 read timing with response backpressure. Data D1 stays valid through two stalled edges; D3 carries RLAST. Timing values are illustrative protocol stimulus, not measurements of the project accelerator, which uses single-beat transfers.",
+    "sha256": "34f6f874c1b07891fb662f25068a13fb8e3a509463f38af6bcd0dac1c63bed99",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 511.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      291
+    ]
+  },
+  {
+    "page": "chapters/04-soc-architecture/memories-caches.qmd",
+    "line": 395,
+    "image": "figures/architecture-cache-miss.svg",
+    "caption": "Original transaction sequence for a blocking, write-back cache miss with a dirty victim. Vertical lifelines identify the owner of each step; arrow spacing expresses order rather than measured cycles.",
+    "sha256": "51e4049bdba5a4fd2d0592b2d82f62be1423a25255903eecd8b7157a2d072415",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 658.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      254
+    ]
+  },
+  {
+    "page": "chapters/05-fpga-implementation/fpga-soc.qmd",
+    "line": 112,
+    "image": "figures/architecture-nexys-domains.svg",
+    "caption": "Original architecture of the open Nexys Video target described in this chapter [@cvwOpenSourceFpga; @cvwLiteDram]. Blue follows Wally's memory requests, green follows DDR service and memory paths, and dashed orange shows the reset-release dependency. PHY clocks are a separate constraint obligation.",
+    "sha256": "787a3a94e341844ed9e68623b76afbc863769af8da20a76480b41544707f9b34",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 660.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      383
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/librelane.qmd",
+    "line": 23,
+    "image": "figures/rtl-to-gdsii-flow.svg",
+    "caption": "LibreLane can manage the same RTL-to-GDSII flow that was exposed command by command in the OpenROAD chapter.",
+    "sha256": "3c318a1f28e31e63b5ffc579be0934f4c6f81d4ef92ff9ad4c6990242d3a8870",
+    "kind": "vector",
+    "width": 1200.0,
+    "height": 1240.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      455
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 25,
+    "image": "figures/rtl-to-gdsii-flow.svg",
+    "caption": "The direct OpenROAD flow: SystemVerilog and PDK views enter a Tcl-controlled sequence of synthesis, floorplanning, placement, CTS, routing, extraction and checks.",
+    "sha256": "3c318a1f28e31e63b5ffc579be0934f4c6f81d4ef92ff9ad4c6990242d3a8870",
+    "kind": "vector",
+    "width": 1200.0,
+    "height": 1240.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      416
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 503,
+    "image": "figures/architecture-openroad-checkpoints.svg",
+    "caption": "Four views of the same accumulator configuration: an actual replay of the original floorplan prefix followed by the recorded placement, CTS and detailed-route captures. The panels share a graphical frame, while their contents are exported OpenROAD geometry.",
+    "sha256": "b0cc2b84f7b965e8911fed76edd955a74eccd88974d909538de1c61a3e144b60",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 855.0,
+    "min_source_font": 17.0,
+    "estimated_min_pt": 7.61,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      433
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 507,
+    "image": "figures/openroad-study-u45-placed.png",
+    "caption": "Actual OpenROAD placement export at 45% target utilization and a 1 ns requested period. Cell positions and row whitespace are the outcome of the recorded run.",
+    "sha256": "8d181e4aa5f837c571ef167d0d1fc33329943ea75e47831bd6468d6eb6aeba80",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      434
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 509,
+    "image": "figures/openroad-study-u65-placed.png",
+    "caption": "Actual placement at 65% target utilization, with the same mapped netlist and 1 ns period. The smaller core changes adjacency, pin distances and available routing space.",
+    "sha256": "034e0dfb7ed39854fe82dc21fc492e6a8a5918e1c4e70796aaecf991eaf5ac82",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      435
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 537,
+    "image": "figures/openroad-study-placed.png",
+    "caption": "Actual 55% placement before CTS for the diagnostic case; compare it with the next checkpoint to locate the inserted clock cells.",
+    "sha256": "b8602adcbb206dd8dd7f11c68f9f0575d472f399e84813b21299341847e4f61a",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      437
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 539,
+    "image": "figures/openroad-study-cts.png",
+    "caption": "Placement after CTS for the 55%, 0.91 ns diagnostic case. Clock cells have been inserted into the existing rows.",
+    "sha256": "154a317ca5da35ac0b18c7d22808702b8b590cba99b67e1970fcc25085842f59",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      438
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 541,
+    "image": "figures/openroad-study-clocktree.png",
+    "caption": "The actual clock-tree topology exported from OpenROAD: one root, three CLKBUF_X3 buffers and 18 register sinks.",
+    "sha256": "8d7d442f9b5f8235e7b3b1ad031da93332df83f52da42fa85cfd0c02644d8bb0",
+    "kind": "capture",
+    "width": 1398,
+    "height": 848,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      439
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 549,
+    "image": "figures/openroad-study-routed.png",
+    "caption": "Actual detailed routing of the 55%, 0.91 ns case. Layer colors show connected signal and supply shapes; geometry alone does not establish timing closure.",
+    "sha256": "ec83299e5f1823c941188357318140feb93dddcfdde2928c632f41c58e577c6a",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      440
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/openroad.qmd",
+    "line": 551,
+    "image": "figures/openroad-study-critical-path.png",
+    "caption": "The same routed database with the cells and nets of the worst setup path highlighted. The path-pin list and expanded timing report identify the highlighted objects.",
+    "sha256": "5cd35b62aac4b7d43b1b1bdfd35cf02aef3e4462db9e4dab9ed49c5683220f79",
+    "kind": "capture",
+    "width": 1400,
+    "height": 1400,
+    "min_source_font": null,
+    "estimated_min_pt": null,
+    "review": "inspect at print scale; geometry overview, not readable GUI text",
+    "pdf_pages": [
+      441
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+    "line": 24,
+    "image": "figures/asic-validation-evidence.svg",
+    "caption": "Evidence needed between implementation and fabricated silicon. Original diagram for this chapter, organized using the verification and test distinctions in Weste and Harris, Chapters 14 and 15.",
+    "sha256": "6a752199e3c1bcac14b6de8e1c538f4265caedc2b6906672e0eedd1034f9d3d2",
+    "kind": "vector",
+    "width": 1080.0,
+    "height": 510.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      475
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/physical-validation-dft-tapeout.qmd",
+    "line": 108,
+    "image": "figures/scan-shift-capture.svg",
+    "caption": "Scan loading, functional capture and response unloading. Original pedagogical diagram; scan principles are discussed in Weste and Harris, Section 15.6.2.",
+    "sha256": "f2da8f2134c6948d5a8260a04ca1fc9461b294574b7570f98979d9435fff28f5",
+    "kind": "vector",
+    "width": 1080.0,
+    "height": 430.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      480
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/rtl-to-gdsii.qmd",
+    "line": 9,
+    "image": "figures/rtl-to-gdsii-flow.svg",
+    "caption": "Open-source ASIC flow from SystemVerilog RTL to GDSII.",
+    "sha256": "3c318a1f28e31e63b5ffc579be0934f4c6f81d4ef92ff9ad4c6990242d3a8870",
+    "kind": "vector",
+    "width": 1200.0,
+    "height": 1240.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      407
+    ]
+  },
+  {
+    "page": "chapters/06-asic-implementation/vlsi-design.qmd",
+    "line": 19,
+    "image": "figures/vlsi-cell-abstractions.svg",
+    "caption": "Logical, electrical and physical interpretations of an inverter. Original diagram for this chapter; the CMOS and RC models are discussed in Weste and Harris, Chapters 1, 2 and 4.",
+    "sha256": "8efdedcf882d2448b86e8869a7d0ee732d9aea4ee4e77a66d7aff2b32e13888f",
+    "kind": "vector",
+    "width": 1080.0,
+    "height": 380.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      394
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/accelerators-extensions.qmd",
+    "line": 476,
+    "image": "figures/architecture-dotproduct-dma.svg",
+    "caption": "Original architecture mapped to the executable dot-product RTL. Control writes are validated and latched before the engine issues single-beat AXI4 accesses; the MAC accumulates signed products and the engine checks both result-write responses before completion.",
+    "sha256": "39761f89fca9971f5c8e08017f2e7ef0b8ff17f9a86b4b7064c70eb258a3484e",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 713.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      572
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/architecture-exploration.qmd",
+    "line": 277,
+    "image": "figures/dse-print-pareto.svg",
+    "caption": "Illustrative design trade-offs, calculated from the supplied teaching CSV. These are invented example values, not measured Wally FPGA results. The frontier uses time, LUT, BRAM and DSP; this projection shows time versus LUT.",
+    "sha256": "e4dbf698338accd70e988e108986486de2f830053b00126322b9fd00c4ade3d0",
+    "kind": "vector",
+    "width": 800.0,
+    "height": 500.0,
+    "min_source_font": 20.0,
+    "estimated_min_pt": 10.75,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      605
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/hardware-security.qmd",
+    "line": 51,
+    "image": "figures/security-trust-boundaries.svg",
+    "caption": "Original proposal showing separate CPU, DMA and debug access paths. Dotted lines carry trusted policy; solid lines carry requests. CPU PMP does not automatically constrain other masters.",
+    "sha256": "5a1e305cfb7bd9a19360147e29040150f4f61a9d3184a875b1958879ab3fbac6",
+    "kind": "vector",
+    "width": 1000.0,
+    "height": 580.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 7.74,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      519
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/hardware-security.qmd",
+    "line": 59,
+    "image": "figures/architecture-security-surfaces.svg",
+    "caption": "Original attack-surface map for the proposed security architecture. The dashed enclosure is an integration boundary, not a claim that everything inside is trusted. Dashed orange arrows identify external entry paths and physical influences; blue and green identify internal access and policy paths.",
+    "sha256": "647334d672f4ab657cc1f943b950320d3ee5c66cbfa8f301d2ae251281910a43",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 698.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      520
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+    "line": 25,
+    "image": "figures/multicore-domains.svg",
+    "caption": "An integration contract with coherent CPUs and a non-snooping DMA path. This is a design to review, not a claim that QEMU or the supplied Wally fixture implements these cache structures.",
+    "sha256": "f7633791ff5f6acf3a3a8d15a0ef027988e1854463389a5dedac3cadb04511b2",
+    "kind": "vector",
+    "width": 940.0,
+    "height": 410.0,
+    "min_source_font": 16.0,
+    "estimated_min_pt": 7.32,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      575
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/multicore-integration.qmd",
+    "line": 240,
+    "image": "figures/multicore-dependencies.svg",
+    "caption": "A finite resource-dependency example. The graph is a diagnostic abstraction; a complete fabric argument must also cover routing, protocol states and fairness assumptions.",
+    "sha256": "336c1a09fb5fa2b6642bb89d8f699385970b89524b319345d7acd81175b36060",
+    "kind": "vector",
+    "width": 940.0,
+    "height": 250.0,
+    "min_source_font": 16.0,
+    "estimated_min_pt": 7.32,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      587
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/vector-processing.qmd",
+    "line": 65,
+    "image": "figures/architecture-rvv-registers.svg",
+    "caption": "Original separation of RVV architectural register grouping and a possible banked implementation. With VLEN=128, e16/m2 groups v8 and v9 into sixteen element positions. The four banks below are an illustrative implementation choice, not a Wally vector unit or a required RVV organization.",
+    "sha256": "f7691cd96aa3fba329cf92e61d6643de6f1d4b69aedc2b3b4886c41905ece1c6",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 646.0,
+    "min_source_font": 18.0,
+    "estimated_min_pt": 8.06,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      542
+    ]
+  },
+  {
+    "page": "chapters/07-advanced-topics/vector-processing.qmd",
+    "line": 94,
+    "image": "figures/rvv-strip-mining.svg",
+    "caption": "Original illustration of one legal partition for a 19-element loop. The middle iteration could use a different legal `vl`; the algorithm advances by the value actually returned.",
+    "sha256": "f4e3916796ec361d4c6878993e25b91365256eb41c105cf9c807d4831c47cc33",
+    "kind": "vector",
+    "width": 960.0,
+    "height": 390.0,
+    "min_source_font": 16.0,
+    "estimated_min_pt": 7.17,
+    "review": "inspect grayscale and line styles",
+    "pdf_pages": [
+      544
+    ]
+  }
+]

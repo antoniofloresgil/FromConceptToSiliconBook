@@ -1,0 +1,15 @@
+OPENROAD: /OpenROAD-flow-scripts/tools/OpenROAD
+Traceback (most recent call last):
+  File "/audit/environment.py", line 10, in <module>
+    if shutil.which(exe):tools[exe]=output([exe,arg])
+  File "/audit/environment.py", line 4, in output
+    r=subprocess.run(argv,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60)
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1154, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 2022, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.10/subprocess.py", line 1198, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['klayout', '-v']' timed out after 60 seconds

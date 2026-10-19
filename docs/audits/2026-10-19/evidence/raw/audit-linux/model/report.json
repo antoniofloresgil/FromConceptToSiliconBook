@@ -1,0 +1,286 @@
+{
+  "status": "pass",
+  "argv": [
+    "qemu-system-riscv64",
+    "-machine",
+    "virt",
+    "-m",
+    "256M",
+    "-smp",
+    "1",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-bios",
+    "none",
+    "-accel",
+    "qtest",
+    "-qtest",
+    "unix:/tmp/hsd-qtest-mraids8p/qtest.sock,server=on,wait=off",
+    "-qtest-log",
+    "/dev/null"
+  ],
+  "checks": [
+    "signed result, ignored upper bits, asynchronous completion, busy descriptor and IRQ acknowledgement",
+    "zero",
+    "excess",
+    "unaligned",
+    "out-of-window",
+    "overlap",
+    "wrap"
+  ],
+  "transcript": [
+    [
+      "writel 0x88000000 0xdead8000",
+      "OK"
+    ],
+    [
+      "writel 0x88000400 0xbeef7fff",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0x88000000",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x10080014 0x100",
+      "OK"
+    ],
+    [
+      "clock_step 10001",
+      "OK 10001"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000a"
+    ],
+    [
+      "readl 0x88000800",
+      "OK 0x00000000c0008000"
+    ],
+    [
+      "readl 0x88000804",
+      "OK 0x00000000ffffffff"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x0000000000000002"
+    ],
+    [
+      "writel 0x10080008 0x88000000",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x0",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0x88000000",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x101",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0x88000001",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0x87fffffc",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0x88000000",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000000",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ],
+    [
+      "writel 0x10080008 0xfffffffc",
+      "OK"
+    ],
+    [
+      "writel 0x1008000c 0x88000400",
+      "OK"
+    ],
+    [
+      "writel 0x10080010 0x88000800",
+      "OK"
+    ],
+    [
+      "writel 0x10080014 0x2",
+      "OK"
+    ],
+    [
+      "writel 0x10080000 0x3",
+      "OK"
+    ],
+    [
+      "readl 0x10080004",
+      "OK 0x000000000000000c"
+    ],
+    [
+      "readl 0x10080018",
+      "OK 0x0000000000000001"
+    ],
+    [
+      "writel 0x1008001c 0x1",
+      "OK"
+    ]
+  ]
+}

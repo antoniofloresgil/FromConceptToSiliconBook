@@ -1,0 +1,779 @@
+
+-- Running command `read_verilog -formal -sv "/work/labs/15-formal/fifo2.sv" "/work/labs/15-formal/shift_fifo2.sv" "/work/labs/15-formal/harness.sv"; chparam -set BUG 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 6 -prove-asserts -falsify -dump_vcd fault-counterexample.vcd' --
+
+1. Executing Verilog-2005 frontend: /work/labs/15-formal/fifo2.sv
+Parsing formal SystemVerilog input from `/work/labs/15-formal/fifo2.sv' to AST representation.
+Generating RTLIL representation for module `\fifo2'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: /work/labs/15-formal/shift_fifo2.sv
+Parsing formal SystemVerilog input from `/work/labs/15-formal/shift_fifo2.sv' to AST representation.
+Generating RTLIL representation for module `\shift_fifo2'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /work/labs/15-formal/harness.sv
+Parsing formal SystemVerilog input from `/work/labs/15-formal/harness.sv' to AST representation.
+Generating RTLIL representation for module `\harness'.
+Successfully finished Verilog frontend.
+Parameter \BUG = 1
+
+4. Executing AST frontend in derive mode using pre-parsed AST for module `\harness'.
+Parameter \BUG = 1
+Generating RTLIL representation for module `$paramod\harness\BUG=32'00000000000000000000000000000001'.
+
+5. Executing PREP pass.
+
+5.1. Executing HIERARCHY pass (managing design hierarchy).
+
+5.1.1. Analyzing design hierarchy..
+Top module:  \harness
+Used module:     \fifo2
+Used module:     \shift_fifo2
+Parameter \BUG = 1
+
+5.1.2. Executing AST frontend in derive mode using pre-parsed AST for module `\fifo2'.
+Parameter \BUG = 1
+Generating RTLIL representation for module `$paramod\fifo2\BUG=32'00000000000000000000000000000001'.
+
+5.1.3. Analyzing design hierarchy..
+Top module:  \harness
+Used module:     $paramod\fifo2\BUG=32'00000000000000000000000000000001
+Used module:     \shift_fifo2
+
+5.1.4. Analyzing design hierarchy..
+Top module:  \harness
+Used module:     $paramod\fifo2\BUG=32'00000000000000000000000000000001
+Used module:     \shift_fifo2
+Removing unused module `\fifo2'.
+Removed 1 unused modules.
+Module harness directly or indirectly contains formal properties -> setting "keep" attribute.
+
+5.2. Executing PROC pass (convert processes to netlists).
+
+5.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+Cleaned up 1 empty switch.
+
+5.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$/work/labs/15-formal/harness.sv:30$244 in module harness.
+Marked 3 switch rules as full_case in process $proc$/work/labs/15-formal/shift_fifo2.sv:15$23 in module shift_fifo2.
+Marked 4 switch rules as full_case in process $proc$/work/labs/15-formal/fifo2.sv:21$406 in module $paramod\fifo2\BUG=32'00000000000000000000000000000001.
+Removed a total of 0 dead cases.
+
+5.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 35 assignments to connections.
+
+5.2.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:25$357'.
+  Set init value: \past_valid = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:26$358'.
+  Set init value: \seen_full = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:26$359'.
+  Set init value: \seen_exchange = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:26$360'.
+  Set init value: \seen_drained = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$361'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:33$222_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$363'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:35$223_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$365'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:36$224_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$367'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:40$225_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$369'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:41$226_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$371'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:53$227_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$373'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:55$228_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$375'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:56$229_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$377'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:57$230_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$379'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:58$231_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$381'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:60$232_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$383'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:61$233_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$385'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:63$234_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$387'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:64$235_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$389'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:65$236_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$391'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:70$237_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$393'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:71$238_EN = 1'0
+Found init rule in `\harness.$proc$/work/labs/15-formal/harness.sv:0$395'.
+  Set init value: $formal$/work/labs/15-formal/harness.sv:73$239_EN = 1'0
+
+5.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+5.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~24 debug messages>
+
+5.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+     1/37: $0$formal$/work/labs/15-formal/harness.sv:33$222_EN[0:0]$256
+     2/37: $0$formal$/work/labs/15-formal/harness.sv:33$222_CHECK[0:0]$255
+     3/37: $0$formal$/work/labs/15-formal/harness.sv:35$223_EN[0:0]$258
+     4/37: $0$formal$/work/labs/15-formal/harness.sv:35$223_CHECK[0:0]$257
+     5/37: $0$formal$/work/labs/15-formal/harness.sv:36$224_EN[0:0]$260
+     6/37: $0$formal$/work/labs/15-formal/harness.sv:36$224_CHECK[0:0]$259
+     7/37: $0$formal$/work/labs/15-formal/harness.sv:40$225_EN[0:0]$262
+     8/37: $0$formal$/work/labs/15-formal/harness.sv:40$225_CHECK[0:0]$261
+     9/37: $0$formal$/work/labs/15-formal/harness.sv:41$226_EN[0:0]$264
+    10/37: $0$formal$/work/labs/15-formal/harness.sv:41$226_CHECK[0:0]$263
+    11/37: $0$formal$/work/labs/15-formal/harness.sv:53$227_EN[0:0]$266
+    12/37: $0$formal$/work/labs/15-formal/harness.sv:53$227_CHECK[0:0]$265
+    13/37: $0$formal$/work/labs/15-formal/harness.sv:55$228_EN[0:0]$268
+    14/37: $0$formal$/work/labs/15-formal/harness.sv:55$228_CHECK[0:0]$267
+    15/37: $0$formal$/work/labs/15-formal/harness.sv:56$229_EN[0:0]$270
+    16/37: $0$formal$/work/labs/15-formal/harness.sv:56$229_CHECK[0:0]$269
+    17/37: $0$formal$/work/labs/15-formal/harness.sv:57$230_EN[0:0]$272
+    18/37: $0$formal$/work/labs/15-formal/harness.sv:57$230_CHECK[0:0]$271
+    19/37: $0$formal$/work/labs/15-formal/harness.sv:58$231_EN[0:0]$274
+    20/37: $0$formal$/work/labs/15-formal/harness.sv:58$231_CHECK[0:0]$273
+    21/37: $0$formal$/work/labs/15-formal/harness.sv:60$232_EN[0:0]$276
+    22/37: $0$formal$/work/labs/15-formal/harness.sv:60$232_CHECK[0:0]$275
+    23/37: $0$formal$/work/labs/15-formal/harness.sv:61$233_EN[0:0]$278
+    24/37: $0$formal$/work/labs/15-formal/harness.sv:61$233_CHECK[0:0]$277
+    25/37: $0$formal$/work/labs/15-formal/harness.sv:63$234_EN[0:0]$280
+    26/37: $0$formal$/work/labs/15-formal/harness.sv:63$234_CHECK[0:0]$279
+    27/37: $0$formal$/work/labs/15-formal/harness.sv:64$235_EN[0:0]$282
+    28/37: $0$formal$/work/labs/15-formal/harness.sv:64$235_CHECK[0:0]$281
+    29/37: $0$formal$/work/labs/15-formal/harness.sv:65$236_EN[0:0]$284
+    30/37: $0$formal$/work/labs/15-formal/harness.sv:65$236_CHECK[0:0]$283
+    31/37: $0$formal$/work/labs/15-formal/harness.sv:70$237_EN[0:0]$286
+    32/37: $0$formal$/work/labs/15-formal/harness.sv:70$237_CHECK[0:0]$285
+    33/37: $0$formal$/work/labs/15-formal/harness.sv:71$238_EN[0:0]$288
+    34/37: $0$formal$/work/labs/15-formal/harness.sv:71$238_CHECK[0:0]$287
+    35/37: $0\seen_drained[0:0]
+    36/37: $0\seen_exchange[0:0]
+    37/37: $0\seen_full[0:0]
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:25$357'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:26$358'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:26$359'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:26$360'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$361'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$363'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$365'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$367'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$369'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$371'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$373'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$375'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$377'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$379'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$381'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$383'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$385'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$387'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$389'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$391'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$393'.
+Creating decoders for process `\harness.$proc$/work/labs/15-formal/harness.sv:0$395'.
+Creating decoders for process `\shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+     1/3: $0\second[7:0]
+     2/3: $0\first[7:0]
+     3/3: $0\count[1:0]
+Creating decoders for process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+     1/5: $0\count[1:0]
+     2/5: $0\tail[0:0]
+     3/5: $0\head[0:0]
+     4/5: $0\slot1[7:0]
+     5/5: $0\slot0[7:0]
+
+5.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\harness.\past_valid' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$599' with positive edge clock.
+Creating register for signal `\harness.\seen_full' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$600' with positive edge clock.
+Creating register for signal `\harness.\seen_exchange' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$601' with positive edge clock.
+Creating register for signal `\harness.\seen_drained' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$602' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:35$212$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$603' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:35$213$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$604' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:37$214$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$605' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:64$215$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$606' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:64$216$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$607' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:66$217$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$608' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:69$218$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$609' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:69$219$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$610' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:70$220$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$611' with positive edge clock.
+Creating register for signal `\harness.$past$/work/labs/15-formal/harness.sv:70$221$0' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$612' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:33$222_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$613' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:33$222_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$614' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:35$223_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$615' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:35$223_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$616' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:36$224_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$617' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:36$224_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$618' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:40$225_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$619' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:40$225_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$620' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:41$226_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$621' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:41$226_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$622' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:53$227_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$623' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:53$227_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$624' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:55$228_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$625' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:55$228_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$626' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:56$229_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$627' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:56$229_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$628' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:57$230_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$629' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:57$230_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$630' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:58$231_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$631' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:58$231_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$632' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:60$232_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$633' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:60$232_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$634' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:61$233_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$635' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:61$233_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$636' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:63$234_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$637' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:63$234_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$638' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:64$235_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$639' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:64$235_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$640' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:65$236_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$641' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:65$236_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$642' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:70$237_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$643' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:70$237_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$644' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:71$238_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$645' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:71$238_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$646' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:73$239_CHECK' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$647' with positive edge clock.
+Creating register for signal `\harness.$formal$/work/labs/15-formal/harness.sv:73$239_EN' using process `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+  created $dff cell `$procdff$648' with positive edge clock.
+Creating register for signal `\shift_fifo2.\count' using process `\shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+  created $dff cell `$procdff$649' with positive edge clock.
+Creating register for signal `\shift_fifo2.\first' using process `\shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+  created $dff cell `$procdff$650' with positive edge clock.
+Creating register for signal `\shift_fifo2.\second' using process `\shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+  created $dff cell `$procdff$651' with positive edge clock.
+Creating register for signal `$paramod\fifo2\BUG=32'00000000000000000000000000000001.\slot0' using process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+  created $dff cell `$procdff$652' with positive edge clock.
+Creating register for signal `$paramod\fifo2\BUG=32'00000000000000000000000000000001.\slot1' using process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+  created $dff cell `$procdff$653' with positive edge clock.
+Creating register for signal `$paramod\fifo2\BUG=32'00000000000000000000000000000001.\head' using process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+  created $dff cell `$procdff$654' with positive edge clock.
+Creating register for signal `$paramod\fifo2\BUG=32'00000000000000000000000000000001.\tail' using process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+  created $dff cell `$procdff$655' with positive edge clock.
+Creating register for signal `$paramod\fifo2\BUG=32'00000000000000000000000000000001.\count' using process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+  created $dff cell `$procdff$656' with positive edge clock.
+
+5.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 14 empty switches in `\harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:30$244'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:25$357'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:26$358'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:26$359'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:26$360'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$361'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$363'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$365'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$367'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$369'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$371'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$373'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$375'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$377'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$379'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$381'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$383'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$385'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$387'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$389'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$391'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$393'.
+Removing empty process `harness.$proc$/work/labs/15-formal/harness.sv:0$395'.
+Found and cleaned up 3 empty switches in `\shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+Removing empty process `shift_fifo2.$proc$/work/labs/15-formal/shift_fifo2.sv:15$23'.
+Found and cleaned up 7 empty switches in `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+Removing empty process `$paramod\fifo2\BUG=32'00000000000000000000000000000001.$proc$/work/labs/15-formal/fifo2.sv:21$406'.
+Cleaned up 24 empty switches.
+
+5.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+<suppressed ~4 debug messages>
+Optimizing module shift_fifo2.
+<suppressed ~2 debug messages>
+Optimizing module $paramod\fifo2\BUG=32'00000000000000000000000000000001.
+<suppressed ~1 debug messages>
+
+5.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module shift_fifo2.
+Deleting now unused module $paramod\fifo2\BUG=32'00000000000000000000000000000001.
+<suppressed ~2 debug messages>
+
+5.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+
+5.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+Removed 1 unused cells and 169 unused wires.
+<suppressed ~2 debug messages>
+
+5.6. Executing CHECK pass (checking for obvious problems).
+Checking module harness...
+Found and reported 0 problems.
+
+5.7. Executing OPT pass (performing simple optimizations).
+
+5.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+
+5.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\harness'.
+<suppressed ~48 debug messages>
+Removed a total of 16 cells.
+
+5.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \harness..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~48 debug messages>
+
+5.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \harness.
+Performed a total of 0 changes.
+
+5.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\harness'.
+<suppressed ~51 debug messages>
+Removed a total of 17 cells.
+
+5.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+Removed 0 unused cells and 31 unused wires.
+<suppressed ~1 debug messages>
+
+5.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+
+5.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \harness..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~40 debug messages>
+
+5.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \harness.
+Performed a total of 0 changes.
+
+5.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\harness'.
+Removed a total of 0 cells.
+
+5.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+
+5.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+
+5.7.14. Finished OPT passes. (There is nothing left to do.)
+
+5.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 30 bits (of 32) from port B of cell harness.$le$/work/labs/15-formal/harness.sv:55$306 ($le).
+Removed top 1 bits (of 2) from port B of cell harness.$ne$/work/labs/15-formal/harness.sv:57$309 ($ne).
+Removed top 31 bits (of 32) from port B of cell harness.$gt$/work/labs/15-formal/harness.sv:60$313 ($gt).
+Removed top 31 bits (of 32) from port B of cell harness.$gt$/work/labs/15-formal/harness.sv:70$329 ($gt).
+Removed top 31 bits (of 32) from port B of cell harness.$sub$/work/labs/15-formal/harness.sv:70$330 ($sub).
+Removed top 29 bits (of 32) from port Y of cell harness.$sub$/work/labs/15-formal/harness.sv:70$330 ($sub).
+Removed top 1 bits (of 2) from port B of cell harness.$flatten\reference.$procmux$548_CMP0 ($eq).
+Removed top 30 bits (of 32) from port B of cell harness.$flatten\reference.$lt$/work/labs/15-formal/shift_fifo2.sv:12$18 ($lt).
+Removed top 30 bits (of 32) from port B of cell harness.$flatten\dut.$lt$/work/labs/15-formal/fifo2.sv:18$400 ($lt).
+
+5.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+
+5.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+5.11. Executing OPT pass (performing simple optimizations).
+
+5.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module harness.
+
+5.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\harness'.
+Removed a total of 0 cells.
+
+5.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+
+5.11.4. Finished fast OPT passes.
+
+5.12. Printing statistics.
+
+=== harness ===
+
+   Number of wires:                222
+   Number of wire bits:            493
+   Number of public wires:          59
+   Number of public wire bits:     183
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                203
+     $add                            2
+     $assert                        12
+     $assume                         5
+     $cover                          1
+     $dff                           50
+     $eq                            14
+     $gt                             2
+     $le                             1
+     $logic_and                     24
+     $logic_not                     11
+     $lt                             2
+     $mux                           71
+     $ne                             1
+     $pmux                           2
+     $reduce_bool                    2
+     $sub                            3
+
+5.13. Executing CHECK pass (checking for obvious problems).
+Checking module harness...
+Found and reported 0 problems.
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \harness..
+Removed 1 unused cells and 1 unused wires.
+<suppressed ~2 debug messages>
+
+7. Executing SAT pass (solving SAT problems in the circuit).
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:33$222_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:35$223_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:40$225_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:53$227_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:60$232_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:61$233_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:63$234_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:64$235_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:70$237_EN = 1'0
+Import set-constraint from init attribute: $formal$/work/labs/15-formal/harness.sv:71$238_EN = 1'0
+Import set-constraint from init attribute: \past_valid = 1'0
+Import set-constraint from init attribute: \seen_drained = 1'0
+Import set-constraint from init attribute: \seen_exchange = 1'0
+Import set-constraint from init attribute: \seen_full = 1'0
+Final init constraint equation: { \seen_full \seen_exchange \seen_drained \past_valid $formal$/work/labs/15-formal/harness.sv:71$238_EN $formal$/work/labs/15-formal/harness.sv:70$237_EN $formal$/work/labs/15-formal/harness.sv:64$235_EN $formal$/work/labs/15-formal/harness.sv:63$234_EN $formal$/work/labs/15-formal/harness.sv:61$233_EN $formal$/work/labs/15-formal/harness.sv:60$232_EN $formal$/work/labs/15-formal/harness.sv:53$227_EN $formal$/work/labs/15-formal/harness.sv:40$225_EN $formal$/work/labs/15-formal/harness.sv:35$223_EN $formal$/work/labs/15-formal/harness.sv:33$222_EN } = 14'00000000000000
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 201 cells to SAT database.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:33$222_CHECK when $formal$/work/labs/15-formal/harness.sv:33$222_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:35$223_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:36$224_CHECK when $formal$/work/labs/15-formal/harness.sv:35$223_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:40$225_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import constraint from assume cell: $formal$/work/labs/15-formal/harness.sv:41$226_CHECK when $formal$/work/labs/15-formal/harness.sv:40$225_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:53$227_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:55$228_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:56$229_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:57$230_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:58$231_CHECK when $formal$/work/labs/15-formal/harness.sv:53$227_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:60$232_CHECK when $formal$/work/labs/15-formal/harness.sv:60$232_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:61$233_CHECK when $formal$/work/labs/15-formal/harness.sv:61$233_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:63$234_CHECK when $formal$/work/labs/15-formal/harness.sv:63$234_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:64$235_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:65$236_CHECK when $formal$/work/labs/15-formal/harness.sv:64$235_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:70$237_CHECK when $formal$/work/labs/15-formal/harness.sv:70$237_EN.
+Import proof for assert: $formal$/work/labs/15-formal/harness.sv:71$238_CHECK when $formal$/work/labs/15-formal/harness.sv:71$238_EN.
+Import show expression: \clk
+Import show expression: \in_data
+Import show expression: \in_valid
+Import show expression: \out_ready
+Import show expression: \reset
+Import show expression: \goal
+Import show expression: \in_ready
+Import show expression: \occupancy
+Import show expression: \out_data
+Import show expression: \out_valid
+
+Solving problem with 12562 variables and 33568 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                                       Dec       Hex           Bin
+  ---- --------------------------------------------------------- ----------- --------- -------------
+  init $formal$/work/labs/15-formal/harness.sv:33$222_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:33$222_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:35$223_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:35$223_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:36$224_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:40$225_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:40$225_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:41$226_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:53$227_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:53$227_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:55$228_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:56$229_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:57$230_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:58$231_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:60$232_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:60$232_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:61$233_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:61$233_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:63$234_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:63$234_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:64$235_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:64$235_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:65$236_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:70$237_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:70$237_EN                   0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:71$238_CHECK                0         0             0
+  init $formal$/work/labs/15-formal/harness.sv:71$238_EN                   0         0             0
+  init $past$/work/labs/15-formal/harness.sv:35$212$0                      1         1             1
+  init $past$/work/labs/15-formal/harness.sv:35$213$0                      0         0             0
+  init $past$/work/labs/15-formal/harness.sv:37$214$0                     69        45      01000101
+  init $past$/work/labs/15-formal/harness.sv:64$215$0                      0         0             0
+  init $past$/work/labs/15-formal/harness.sv:64$216$0                      0         0             0
+  init $past$/work/labs/15-formal/harness.sv:66$217$0                    192        c0      11000000
+  init $past$/work/labs/15-formal/harness.sv:69$218$0                      0         0             0
+  init $past$/work/labs/15-formal/harness.sv:69$219$0                      0         0             0
+  init $past$/work/labs/15-formal/harness.sv:70$220$0                      1         1            01
+  init $past$/work/labs/15-formal/harness.sv:70$221$0                      1         1            01
+  init \dut.count                                                          3         3            11
+  init \dut.head                                                           0         0             0
+  init \dut.slot0                                                         47        2f      00101111
+  init \dut.slot1                                                        188        bc      10111100
+  init \dut.tail                                                           0         0             0
+  init \past_valid                                                         0         0             0
+  init \reference.count                                                    1         1            01
+  init \reference.first                                                   47        2f      00101111
+  init \reference.second                                                 251        fb      11111011
+  init \seen_drained                                                       0         0             0
+  init \seen_exchange                                                      0         0             0
+  init \seen_full                                                          0         0             0
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     1 \clk                                                                0         0             0
+     1 \goal                                                               0         0             0
+     1 \in_data                                                           16        10      00010000
+     1 \in_ready                                                           0         0             0
+     1 \in_valid                                                           1         1             1
+     1 \occupancy                                                          3         3            11
+     1 \out_data                                                          47        2f      00101111
+     1 \out_ready                                                          1         1             1
+     1 \out_valid                                                          0         0             0
+     1 \reset                                                              1         1             1
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     2 \clk                                                                0         0             0
+     2 \goal                                                               0         0             0
+     2 \in_data                                                           47        2f      00101111
+     2 \in_ready                                                           0         0             0
+     2 \in_valid                                                           1         1             1
+     2 \occupancy                                                          0         0            00
+     2 \out_data                                                          47        2f      00101111
+     2 \out_ready                                                          0         0             0
+     2 \out_valid                                                          0         0             0
+     2 \reset                                                              1         1             1
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     3 \clk                                                                0         0             0
+     3 \goal                                                               0         0             0
+     3 \in_data                                                          251        fb      11111011
+     3 \in_ready                                                           1         1             1
+     3 \in_valid                                                           1         1             1
+     3 \occupancy                                                          0         0            00
+     3 \out_data                                                          47        2f      00101111
+     3 \out_ready                                                          0         0             0
+     3 \out_valid                                                          0         0             0
+     3 \reset                                                              0         0             0
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     4 \clk                                                                0         0             0
+     4 \goal                                                               0         0             0
+     4 \in_data                                                          123        7b      01111011
+     4 \in_ready                                                           1         1             1
+     4 \in_valid                                                           1         1             1
+     4 \occupancy                                                          1         1            01
+     4 \out_data                                                         251        fb      11111011
+     4 \out_ready                                                          1         1             1
+     4 \out_valid                                                          1         1             1
+     4 \reset                                                              0         0             0
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     5 \clk                                                                0         0             0
+     5 \goal                                                               0         0             0
+     5 \in_data                                                          255        ff      11111111
+     5 \in_ready                                                           0         0             0
+     5 \in_valid                                                           0         0             0
+     5 \occupancy                                                          2         2            10
+     5 \out_data                                                         123        7b      01111011
+     5 \out_ready                                                          0         0             0
+     5 \out_valid                                                          0         0             0
+     5 \reset                                                              1         1             1
+  ---- --------------------------------------------------------- ----------- --------- -------------
+     6 \clk                                                                0         0             0
+     6 \goal                                                               0         0             0
+     6 \in_data                                                           38        26      00100110
+     6 \in_ready                                                           1         1             1
+     6 \in_valid                                                           1         1             1
+     6 \occupancy                                                          0         0            00
+     6 \out_data                                                         251        fb      11111011
+     6 \out_ready                                                          1         1             1
+     6 \out_valid                                                          0         0             0
+     6 \reset                                                              0         0             0
+Dumping SAT model to VCD file fault-counterexample.vcd

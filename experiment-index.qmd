@@ -155,7 +155,7 @@ Where relevant, **Related project obligations** reuses the DP identifiers in the
 
 ## Formal Verification of RTL: Properties, Proofs, and Counterexamples {#matrix-formal-verification .reference-entry}
 
-**Tools / alternatives:** Yosys; SMT solver; executable Lab 15 scripts. **Prerequisites:** explicit reset/environment assumptions and proof depth.
+**Tools / alternatives:** Yosys built-in SAT; Icarus Verilog; Python (Lab 15); SMT tools only for alternate flows. **Prerequisites:** explicit reset/environment assumptions and proof depth.
 
 **Contract / expected evidence:** assert/assume/cover, reachable witnesses, counterexample repair and equivalence scope.
 
@@ -470,7 +470,7 @@ Where relevant, **Related project obligations** reuses the DP identifiers in the
 
 ## Physical Validation, DFT and Preparation for Fabrication {#matrix-physical-validation-dft-tapeout .reference-entry}
 
-**Tools / alternatives:** scan model; STA; Magic/Netgen for reference layout checks. **Prerequisites:** test mode, PDK decks and explicit signoff boundary.
+**Tools / alternatives:** scan model; STA; KLayout/OpenROAD for the retained reference layout checks. **Prerequisites:** test mode, PDK decks and explicit signoff boundary.
 
 **Contract / expected evidence:** scan coverage scope, DRC/LVS and constraints; no implied foundry qualification.
 

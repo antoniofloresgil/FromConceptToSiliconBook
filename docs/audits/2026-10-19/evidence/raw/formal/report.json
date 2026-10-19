@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "jobs": [
+    {
+      "name": "bmc",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\";  prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 12 -prove-asserts -verify -dump_vcd bmc.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT proof finished - no model found: SUCCESS!",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/bmc.log"
+    },
+    {
+      "name": "induction-equivalence",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\";  prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 2 -tempinduct -maxsteps 12 -prove-asserts -verify -dump_vcd induction-equivalence.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "Induction step proven: SUCCESS!",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/induction-equivalence.log"
+    },
+    {
+      "name": "traffic-witness",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\";  prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 12 -set-at 12 goal 1 -dump_vcd traffic-witness.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT solving finished - model found:",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/traffic-witness.log"
+    },
+    {
+      "name": "drain-proof",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\"; chparam -set DRAIN 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 2 -tempinduct -maxsteps 12 -prove-asserts -verify -dump_vcd drain-proof.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "Induction step proven: SUCCESS!",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/drain-proof.log"
+    },
+    {
+      "name": "drain-witness",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\"; chparam -set DRAIN 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 12 -set-at 12 goal 1 -dump_vcd drain-witness.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT solving finished - model found:",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/drain-witness.log"
+    },
+    {
+      "name": "fault-counterexample",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\"; chparam -set BUG 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 6 -prove-asserts -falsify -dump_vcd fault-counterexample.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT proof finished - model found: FAIL!",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/fault-counterexample.log"
+    },
+    {
+      "name": "vacuous-proof",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\"; chparam -set QUIET 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 12 -prove-asserts -verify -dump_vcd vacuous-proof.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT proof finished - no model found: SUCCESS!",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/vacuous-proof.log"
+    },
+    {
+      "name": "unreachable-traffic",
+      "command": [
+        "yosys",
+        "-Q",
+        "-T",
+        "-p",
+        "read_verilog -formal -sv \"/work/labs/15-formal/fifo2.sv\" \"/work/labs/15-formal/shift_fifo2.sv\" \"/work/labs/15-formal/harness.sv\"; chparam -set QUIET 1 harness; prep -top harness -flatten; chformal -cover -remove; opt_clean; sat -set-assumes -show-ports -seq 12 -set-at 12 goal 1 -dump_vcd unreachable-traffic.vcd"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "SAT solving finished - no model found.",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/unreachable-traffic.log"
+    },
+    {
+      "name": "repaired-regression-compile",
+      "command": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_regression",
+        "-o",
+        "/work/labs/build/formal/repaired-regression.vvp",
+        "/work/labs/15-formal/fifo2.sv",
+        "/work/labs/15-formal/tb_regression.sv"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/repaired-regression-compile.log"
+    },
+    {
+      "name": "repaired-regression",
+      "command": [
+        "vvp",
+        "/work/labs/build/formal/repaired-regression.vvp"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "PASS FIFO regression",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/repaired-regression.log"
+    },
+    {
+      "name": "faulty-regression-compile",
+      "command": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_regression",
+        "-o",
+        "/work/labs/build/formal/faulty-regression.vvp",
+        "-DFAULTY",
+        "/work/labs/15-formal/fifo2.sv",
+        "/work/labs/15-formal/tb_regression.sv"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 0,
+      "required_marker": "",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "labs/build/formal/faulty-regression-compile.log"
+    },
+    {
+      "name": "faulty-regression",
+      "command": [
+        "vvp",
+        "/work/labs/build/formal/faulty-regression.vvp"
+      ],
+      "cwd": "labs/build/formal",
+      "expected_exit": 1,
+      "required_marker": "phantom item",
+      "status": "pass",
+      "exit_code": 1,
+      "log": "labs/build/formal/faulty-regression.log"
+    }
+  ],
+  "scope": "8-bit, depth-two, single-clock FIFO; reset and producer contract",
+  "sources": {
+    "labs/15-formal/fifo2.sv": "d0b3b611be1e97b0256fbc472a7e2c1b0c18abc358d8f954eb315d20d1f4171a",
+    "labs/15-formal/harness.sv": "2d11637e9f1e04ab143318754f13a4b3c874e6f2d25c5029b744e7a53490ebba",
+    "labs/15-formal/run.py": "b448d306721b5d927b0ebb2e849d9572eceae03709b2633dfffae7e7a4f5ec4b",
+    "labs/15-formal/shift_fifo2.sv": "3c5827dec510f8f632d6411cca545e69e0cf7c4952ac7e56fa0094095f21c376",
+    "labs/15-formal/tb_regression.sv": "6becec7ae4b501e845a5d1d288b47ea965f90b2bcb3808886b93b0ed6567a2bf"
+  },
+  "tools": {
+    "yosys": "Yosys 0.33 (git sha1 2584903a060)",
+    "iverilog": "Icarus Verilog version 12.0 (stable) ()"
+  },
+  "artifacts": {
+    "labs/build/formal/bmc.log": "36901c5bdb71e8062673d4b668e620f5938e7a7d624fff8ac424a243a5502497",
+    "labs/build/formal/drain-proof.log": "3d6cc2a24df0214449c797a01a9d6f26f6ca5cfaf0fab5d54c094065cee9e571",
+    "labs/build/formal/drain-witness.log": "a38b66ce5d9f1abcfd309f8d045998b0711610a60962302f06603fb27b7b9841",
+    "labs/build/formal/drain-witness.vcd": "95d73ed5f283e862e02205463b28103d27e43c97a08e2bc449e53bb7a09bef3d",
+    "labs/build/formal/fault-counterexample.log": "2756e99b00f4c9abe236bd2f4747d4e4932a85f121a43d2f5e3a8d01257480b1",
+    "labs/build/formal/fault-counterexample.vcd": "a730683214926f751817396a79a39b7daa177db0e5fedb9ad8e3bd508608db6b",
+    "labs/build/formal/faulty-regression-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "labs/build/formal/faulty-regression.log": "d343f97ca6a9c2e7c679874f65021d4528f62cc1c55aa010159670a6b602443b",
+    "labs/build/formal/faulty-regression.vvp": "ea6a1b0e9a4274895e8c4a3daf899ed936f505fb23dae421c07f8f24dde87a58",
+    "labs/build/formal/induction-equivalence.log": "d45f108af46918639e96583ad3e616ee284dade478d3ef1f9672c2fd238b86fd",
+    "labs/build/formal/repaired-regression-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "labs/build/formal/repaired-regression.log": "2570e9fd540af94a51c5b4faf01b5a14bcf75d026f57dd1c1aa491a5f1726356",
+    "labs/build/formal/repaired-regression.vvp": "027abd3a4321527fdb28607308ad193269e0fef71072140504a7ea727abdfe9c",
+    "labs/build/formal/traffic-witness.log": "ce17050666c80709bd9bb9c7deac20bcba8d9a75915d6fe55520a61d4bf667da",
+    "labs/build/formal/traffic-witness.vcd": "f881d48f891f8136a2bd3eff6bf045a36dee1d369a374b46995e5435190a72af",
+    "labs/build/formal/unreachable-traffic.log": "897b5b24b3faa10ccb55bd609ca791302042b4caa472a75dc071814d9d457b99",
+    "labs/build/formal/vacuous-proof.log": "f33a52fb639178211b7bc639ce3e3231a84e3910edd59454f1b5f2ad7c5f92fd"
+  }
+}
