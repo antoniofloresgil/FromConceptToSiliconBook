@@ -4,7 +4,17 @@
 
 CORE-V Wally provides a concrete RISC-V processor and SoC hierarchy. Small components make design decisions tractable before they appear inside a larger platform. A signed dot-product accelerator connects specification, independent models, interfaces, firmware, verification and implementation evidence across the book. The objective is to explain the engineering decisions between these stages and make their assumptions inspectable.
 
-The book can be read as a reference or followed through one of the routes below. It does not require enrolment in a particular degree. A twelve-week **Hardware System Design** adoption, including its 6 ECTS planning assumptions, RA5–RA8 outcomes and assessment proposals, is documented separately in @sec-hsd-coursework.
+The book can be read as a reference or followed through one of three routes. It does not require enrolment in a particular degree; an optional twelve-week course built on it is documented separately in @sec-hsd-coursework.
+
+## Choose your route {#sec-choose-route}
+
+| Route | Choose it if you want to… | Start with | You finish with |
+| --- | --- | --- | --- |
+| **[Foundations](#sec-foundations-route)** | learn or refresh RTL, verification and basic synthesis on small blocks | [The RISC-V ISA](chapters/01-foundations/risc-v-isa.qmd) | A parameterized block with independent tests, an explained failure and repair, a scoped formal result and a generic synthesis report |
+| **[Complete SoC](#sec-complete-soc-route)** | integrate a processor, peripherals and firmware, then take the design to an FPGA | [CORE-V Wally](chapters/02-risc-v-cores/core-v-wally.qmd), after the Foundations chapters | A software-controlled system with firmware and interrupt evidence, plus an FPGA implementation dossier at a stated boundary |
+| **[ASIC Design](#sec-asic-design-route)** | follow a verified block through placement, routing and physical checks | [VLSI design](chapters/06-asic-implementation/vlsi-design.qmd), with a verified RTL block in hand | A block taken to GDSII, with its configuration, reports and an acceptance decision |
+
+No route needs a physical FPGA; the [route without a board](labs/NO-FPGA.md) keeps the simulation and report-analysis work. Each route is described below, and the [route map](learning-paths.qmd#sec-route-map) gives a step-by-step sequence for each.
 
 ## Prerequisites and working approach
 
@@ -38,11 +48,9 @@ Start from a verified RTL block and the synthesis/constraint material. Study the
 
 **Destination:** a reproducible block implementation through GDSII, its configuration/technology manifest, physical views and reports, and a precise acceptance decision. Reading supplied results can precede running the larger tools. Producing GDSII is not by itself a complete manufacturing release, and this book does not physically implement the complete Wally SoC.
 
-## Core Learning Path and Advanced Reference Path
+## Depth and activity labels
 
-These three technical routes describe **what** to study. The **Core Learning Path** and **Advanced Reference Path** describe how to select depth and workload within them. They share one complete edition, one set of source examples and stable chapter links.
-
-The Core Learning Path is the bounded twelve-week reusable-IP adoption in Appendix D. It retains formal verification, security evaluation, reuse, integration and physical/DFT reasoning. It selects experiments and reuses their evidence; it does not assign every exercise in the book. The [learning-path guide](learning-paths.qmd) maps its milestones and identifies which larger platform resources an instructor must provision.
+These three technical routes describe **what** to study. The **Core Learning Path** and **Advanced Reference Path** describe how to select depth and workload within them. They share one complete edition, one set of source examples and stable chapter links. The Core Learning Path is the bounded twelve-week course adoption described in @sec-hsd-coursework.
 
 The Advanced Reference Path includes optional deeper studies of RVV, multicore, PMU design, out-of-order processors, Linux integration, security mechanisms, architectural exploration and extended physical closure. Advanced describes curricular scope, not a universal compute cost: a small security or memory-ordering model may run cheaply, while a full FPGA implementation can demand substantial resources.
 
