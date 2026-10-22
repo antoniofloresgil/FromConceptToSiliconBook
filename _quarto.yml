@@ -2,6 +2,7 @@ project:
   type: book
   pre-render:
     - python tools/design/prepare_book.py
+    - python tools/book/revision_footer.py
     - python tools/figures/architecture.py --check
     - python tools/figures/visual_language.py --check
     - python tools/figures/async_fifo.py --check
@@ -136,6 +137,7 @@ format:
       - cosmo
       - brand
       - styles/book.scss
+    include-after-body: .quarto/revision-footer.html
   pdf:
     documentclass: scrreprt
     papersize: a4

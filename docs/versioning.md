@@ -46,27 +46,27 @@ Review the upstream releases of the tools the book names once a year, before the
 course is offered. Adopt a new release only when step 1 applies; staying on a
 validated baseline is a normal outcome.
 
-## Course editions
+## Editions: the live web edition and the course edition
 
-Students need text that does not shift during the term. The following is the
-adopted policy; the automation it mentions is not yet built.
+The **HTML edition is the reference and stays live**: it follows `main`, so a
+correction reaches every reader without a download. It is not frozen. What a
+course needs fixed is the text it cites, and that is the PDF.
 
-- **Freeze.** Before a term, choose a validated commit on `main` (all checks
-  pass, release built) and tag it `course-YYYY-YY`. Keep that tag for the life
-  of the repository.
-- **Offer.** The PDF built from the tagged commit is the stable download for that
-  course. Its build manifest identifies the revision, so a page number a student
-  cites can be matched to a version.
-- **Corrections during the term.** Only fixes that do not change meaning (typos,
-  broken links, a wrong number backed by regenerated evidence) go into the
-  frozen edition. Anything else waits for the next edition.
-- **The live HTML.** The published site follows `main`. Until an
-  edition-specific site exists, it may differ from the tagged PDF. Tell students
-  which one the course uses, and cite section identifiers (`sec-…`) rather than
-  page numbers when pointing at the HTML.
+- **Live HTML.** Every page ends with a note naming the revision and build date,
+  so a reader always knows which build they are reading; a build from modified
+  sources is marked as a preview. Cite sections by their identifiers (`sec-…`),
+  which stay stable when text is corrected or moved, and not by page number.
+- **Course PDF.** Before a term, choose a validated commit on `main` (all checks
+  pass, release built) and tag it `course-YYYY-YY`. Keep that tag for the life of
+  the repository. The PDF built from it is the dated edition for that course; its
+  build manifest identifies the revision, so a cited page can be matched to a
+  version.
+- **Corrections during the term.** They reach the live HTML at once. A fix that
+  does not change meaning (typo, broken link, a number backed by regenerated
+  evidence) can also go into a new build of the course PDF; anything else waits
+  for the next edition. Changes that alter an assigned exercise are announced to
+  the course.
 
-### Open decision
-
-Serving the HTML of a tagged edition separately from `main` needs a second
-deployment target and has not been decided. Until it is, the tagged PDF and the
-release archive are the only stable form of an edition.
+The tag and the release PDF are made by hand for now; no automation creates them.
+There is no separate frozen copy of the HTML: it would need a second deployment
+per course, and the revision note and stable identifiers address the same need.

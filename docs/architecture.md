@@ -78,6 +78,16 @@ parameters and tested configurations are specified in
 [Lab 24](../labs/24-async-fifo/README.md). Simulation and synthesized structure
 reviews do not establish physical CDC/RDC signoff.
 
+## Reference edition
+
+The HTML edition is the reference edition and stays live; it follows `main` and
+shows its revision and build date on every page. The PDF is a dated companion
+that readers download for printing and offline use, and it is the form a course
+fixes by tagging a commit. Table and figure design is therefore done for the
+screen first; PDF legibility is checked against a checklist and does not dictate
+how text is written. Do not maintain a separate frozen HTML copy per course. See
+[versioning.md](versioning.md).
+
 ## Editorial identity
 
 The approved Design Flow identity uses the author's selected, unmodified layered
