@@ -414,7 +414,7 @@ Timing margin relative to a required arrival relationship. Setup and hold slack 
 
 Signal transition time. Electrical slew limits constrain an implementation independently of whether its setup slack is positive.
 
-**Read in context:** [Read the failure before choosing the repair](chapters/06-asic-implementation/openroad.qmd#read-the-failure-before-choosing-the-repair) `\textnormal{(p.~\pageref{read-the-failure-before-choosing-the-repair})}`{=latex}.
+**Read in context:** [Read the failure before choosing the repair](chapters/06-asic-implementation/openroad-study.qmd#read-the-failure-before-choosing-the-repair) `\textnormal{(p.~\pageref{read-the-failure-before-choosing-the-repair})}`{=latex}.
 
 ## SoC {#gloss-soc .reference-entry}
 
@@ -444,7 +444,7 @@ Translation lookaside buffer: caches translations and permission information. Pa
 
 Total negative slack: an aggregate timing deficit over the reported endpoints. Its meaning depends on the analysis mode and report conventions.
 
-**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad-study.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
 
 ## Utilization {#gloss-utilization .reference-entry}
 
@@ -480,7 +480,7 @@ The open-source RISC-V core and SoC used as the main platform case study. The re
 
 Worst negative slack: a summary of the worst timing deficit in the reported analysis. Read it with the setup/hold category, units, corner and full path report.
 
-**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
+**Read in context:** [A measured setup pass before routing becomes a failure after routing](chapters/06-asic-implementation/openroad-study.qmd#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing) `\textnormal{(p.~\pageref{a-measured-setup-pass-before-routing-becomes-a-failure-after-routing})}`{=latex}.
 
 ## Yosys {#gloss-yosys .reference-entry}
 

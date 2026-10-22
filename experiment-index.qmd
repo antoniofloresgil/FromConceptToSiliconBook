@@ -1,6 +1,6 @@
 # Experiments, Tools, and Requirements {.unnumbered}
 
-This consultation matrix includes all 229 classified activities, including short reviews and project milestones. Select an activity by its stable ID and follow the link to the instructions and cost label. These are **prerequisites and contracts to check**, not a record of completed proof or tool execution. Page profiles list the tool choices used in that topic; a paper review does not require installing every listed tool. The individual instructions decide which alternative is needed.
+This consultation matrix includes all 230 classified activities, including short reviews and project milestones. Select an activity by its stable ID and follow the link to the instructions and cost label. These are **prerequisites and contracts to check**, not a record of completed proof or tool execution. Page profiles list the tool choices used in that topic; a paper review does not require installing every listed tool. The individual instructions decide which alternative is needed.
 
 Download the [complete experiment matrix as CSV](downloads/experiment-matrix.csv) to filter by tool, requirement, role, compute class or lab. The [laboratory index](lab-index.qmd) gives environment entry points; the [learning-path guide](learning-paths.qmd) explains P0–P5 and C0–C3.
 
@@ -444,8 +444,22 @@ Where relevant, **Related project obligations** reuses the DP identifiers in the
 | [openroad-03 — Experiment 3: timing sweep](chapters/06-asic-implementation/openroad.qmd#act-openroad-03) | advanced / C3 |
 | [openroad-04 — Experiment 4: reproducible handoff](chapters/06-asic-implementation/openroad.qmd#act-openroad-04) | advanced / C3 |
 | [openroad-review — Short chapter reflection](chapters/06-asic-implementation/openroad.qmd#act-openroad-review) | preparation / C0 |
-| [physical-study-review — Measured study: frequency, utilization and the cost of wires](chapters/06-asic-implementation/openroad.qmd#act-physical-study-review) | core / C0 review / C3 rerun |
-| [openroad-reproduction — Reproduce, inspect and submit](chapters/06-asic-implementation/openroad.qmd#act-openroad-reproduction) | advanced / C3 |
+
+**Lab entry points:** [16-openroad-study](lab-index.qmd#lab-16-openroad-study).
+
+## A Measured OpenROAD Study: Frequency, Utilization and the Cost of Wires {#matrix-openroad-study .reference-entry}
+
+**Tools / alternatives:** OpenROAD; Yosys; STA; Nangate45 reference views. **Prerequisites:** identified netlist, SDC, utilization and tool image.
+
+**Contract / expected evidence:** placement/CTS/routing comparison, extracted timing and electrical checks.
+
+**Related project obligations:** DP-TIMING, DP-PHYSICAL.
+
+| Activity | Role / compute |
+| :--- | :--- |
+| [physical-study-review — A Measured OpenROAD Study: Frequency, Utilization and the Cost of Wires](chapters/06-asic-implementation/openroad-study.qmd#act-physical-study-review) | core / C0 review / C3 rerun |
+| [openroad-reproduction — Reproduce, inspect and submit](chapters/06-asic-implementation/openroad-study.qmd#act-openroad-reproduction) | advanced / C3 |
+| [openroad-study-review — Short chapter reflection](chapters/06-asic-implementation/openroad-study.qmd#act-openroad-study-review) | preparation / C0 |
 
 **Lab entry points:** [16-openroad-study](lab-index.qmd#lab-16-openroad-study), [21-physical-closure](lab-index.qmd#lab-21-physical-closure).
 

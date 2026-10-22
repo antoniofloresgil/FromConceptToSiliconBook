@@ -80,7 +80,7 @@ This is no one-way conveyor belt. A failed endpoint after routing may call for a
 
 ## Installing OpenROAD
 
-**Recipe status:** the technology-neutral installation and hardening listings below are adaptation templates. The separate measured Nangate45 study in this chapter supplies an executed direct flow through placement, CTS, detailed routing and OpenRCX/SPEF timing. It is an educational implementation experiment with explicit timing/electrical failures, not a qualified manufacturing flow.
+**Recipe status:** the technology-neutral installation and hardening listings below are adaptation templates. The separate measured Nangate45 study in @sec-openroad-study supplies an executed direct flow through placement, CTS, detailed routing and OpenRCX/SPEF timing. It is an educational implementation experiment with explicit timing/electrical failures, not a qualified manufacturing flow.
 
 The project currently recommends, in order, prebuilt binaries, Docker images, source builds using Bazel, and only then the legacy CMake build. CMake is deprecated for new installations. The following choices separate a quick learning environment from a development environment [@openroadInstall].
 
@@ -467,164 +467,6 @@ Launch `openroad -gui -db results/accumulator_final.odb` and inspect the core bo
 
 Producing GDSII requires a stream-out path that combines the routed design with the technology and cell GDS data, often through KLayout or Magic as prescribed by the PDK. Run the PDK/foundry DRC, LVS and density/fill procedure on that GDSII. The result is ready for a tapeout review only when the physical, timing, power, integration and documentation criteria for the chosen programme are satisfied.
 
-## Measured study: frequency, utilization and the cost of wires {#sec-openroad-study}
-
-[Core · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-physical-study-review .learning-activity}
-
-The scripts and recorded reports in [Lab 16](../../labs/16-openroad-study/README.md) turn the preceding decisions into an executed experiment. They use the same 16-bit accumulator, one common Nangate45 mapped netlist, a fixed typical Liberty view, and direct OpenROAD Tcl. The ORFS image supplies the binaries and matching technology files; its Make-based flow does not orchestrate these runs. Nangate45 is an open teaching/reference technology, not a fabrication offer.
-
-The recorded container digest is `openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699`. It contains OpenROAD `24Q3-11382-g61879bec53` and Yosys 0.60. The [reference manifest](../../labs/16-openroad-study/reference/manifest.json) records input, technology, extraction-rule, report and image hashes. The image contains no usable ORFS Git metadata, so the record uses its immutable image identity and individual technology-file hashes in place of an invented source revision.
-
-### Experiment design and observation boundaries
-
-The main sweep requests core utilizations of 45%, 65% and 80% at periods 0.85, 1.00 and 1.15 ns. These are requested frequencies of approximately 1176, 1000 and 870 MHz, not demonstrated silicon operating frequencies. Two 55% cases at 0.91 and 1.00 ns examine a small margin near a setup boundary. Both synthesis and all other settings remain fixed. Pin placement, the power grid, signal layers `metal2..metal6`, clock layers `metal4..metal6`, two tool threads and the density-selection rule are recorded in `flow.tcl`.
-
-This experiment measures sensitivity of one mapped design. It deliberately omits setup/hold repair and frequency-driven remapping so that a failing case remains observable. Changing the period therefore principally changes the required time, while changing utilization changes geometry and routing. An optimizing flow could also resize cells, insert buffers or choose a different netlist as constraints change; that is a subsequent controlled experiment, and these measurements do not speak for it.
-
-The study SDC uses 20 ps clock uncertainty, input delays of 100 ps maximum and 20 ps minimum, output delays of 100 ps maximum and 20 ps minimum, 20 ps input transition and 5 fF output loads. These are explicit block-level teaching budgets, not the earlier 10 ns illustrative SDC. The chosen Liberty uses fF; `set_load 5.0` specifies five femtofarads. Changing the SDC for this study does not overwrite the reference accumulator's original constraints.
-
-| Checkpoint | Clock model | Interconnect model | Evidence retained |
-| --- | --- | --- | --- |
-| `placed` | Ideal | Placement estimate | Legal placement, setup/hold, constraint/electrical checks, ODB/SDC |
-| `cts` | Propagated | Placement estimate | Three clock buffers, 18 sinks, clock-tree report and timing |
-| `global` | Propagated | Global-route estimate | Routing guides, estimated setup/hold |
-| `routed` | Propagated | Detailed-route OpenRCX extraction imported through SPEF | Detailed-route DRC report, extracted timing, SPEF, DEF, ODB |
-
-The extraction sequence is explicit:
-
-```tcl
-extract_parasitics -ext_model_file $platform/rcx_patterns.rules
-write_spef $out/routed.spef
-read_spef $out/routed.spef
-```
-
-Writing a SPEF without importing it into the timing analysis would leave an earlier estimated model in use in this recipe. The recorded post-route reports are produced after `read_spef`. OpenRCX and the supplied extraction rules model routed geometry, and a foundry-qualified multi-corner sign-off result needs more [@openroadStudyRcx].
-
-### Placement: inspect geometry before interpreting the table
-
-![Four views of the same accumulator configuration: an actual replay of the original floorplan prefix followed by the recorded placement, CTS and detailed-route captures. The panels share a graphical frame, while their contents are exported OpenROAD geometry.](../../figures/architecture-openroad-checkpoints.svg){#fig-openroad-four-checkpoints fig-alt="Four actual OpenROAD views show floorplan rows and pins, placed logic, inserted clock buffers and detailed routing for the 55 percent accumulator case" width=100%}
-
-For @fig-openroad-four-checkpoints, open the original [floorplan](../../figures/architecture-floorplan.png), [placement](../../figures/openroad-study-placed.png), [CTS](../../figures/openroad-study-cts.png) and [routing](../../figures/openroad-study-routed.png) captures for unrestricted inspection. The [floorplan capture record](../../figures/architecture-floorplan.json) identifies the prefix replay; the later checkpoints retain the Lab 16 evidence. The panel annotations do not create a new timing run.
-
-Read @fig-openroad-four-checkpoints as a sequence of newly introduced obligations. The floorplan fixes rows, pins and supply geometry; placement fixes cell locations; CTS introduces clock delay and skew; routing supplies wire geometry for extracted timing. The first panel is a new prefix replay using the same mapped netlist, constraints and pinned image as Lab 16. Its [capture provenance](../../figures/architecture-floorplan.json) records inputs and hashes. The other panels are the existing measured run, whose timing reports below remain authoritative. The overview does not introduce a new timing result or replace the larger diagnostic captures.
-
-![Actual OpenROAD placement export at 45% target utilization and a 1 ns requested period. Cell positions and row whitespace are the outcome of the recorded run. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-u45-placed.svg){#fig-openroad-study-low fig-alt="Actual Nangate45 accumulator placement at 45 percent target utilization" width=100%}
-
-Use @fig-openroad-study-low with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-u45-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-![Actual placement at 65% target utilization, with the same mapped netlist and 1 ns period. The smaller core changes adjacency, pin distances and available routing space. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-u65-placed.svg){#fig-openroad-study-dense fig-alt="Actual Nangate45 accumulator placement at 65 percent target utilization" width=100%}
-
-Use @fig-openroad-study-dense with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-u65-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-These images are GUI exports of the actual OpenDB checkpoints, generated with `images.tcl`; they are not illustrative cell arrangements. Compare core dimensions and whitespace before comparing apparent visual density: each image is fitted to its own die. The core areas are approximately 601.43 µm² at 45%, 478.80 µm² at 55%, and 409.64 µm² at 65%. The routed standard-cell area is reported separately from core area and includes the inserted clock cells.
-
-Requested floorplan utilization, the global placer's effective movable-area ratio, and the final reported cell/core ratio are different quantities. Row/site snapping and the placer's area accounting matter especially for this small block. At 80%, the floorplan contains only 316.008 µm² of core area, while the placer reports 324.886 µm² of effective movable area and rejects the run at 102.809%. The three 80% cases stop at placement; there is no routed timing or DRC result to place in their missing cells. The [raw failure log](../../labs/16-openroad-study/reference/u80-p1.00/flow.txt) preserves `GPL-0301`.
-
-### Read the measured sweep
-
-The complete [CSV](../../labs/16-openroad-study/reference/summary.csv) and [JSON](../../labs/16-openroad-study/reference/summary.json) retain every case, including failed ones. Positive and negative entries below refer to worst setup slack; hold is discussed separately. All timing values are in picoseconds.
-
-<!-- openroad-study-results -->
-| Target utilization | Period (ns) | Core (µm²) | Placed setup (ps) | CTS setup (ps) | Routed setup (ps) | Routed hold (ps) |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 45% | 0.85 | 601.43 | −117.22 | −49.20 | −55.71 | −50.63 |
-| 45% | 1.00 | 601.43 | +32.78 | +100.80 | +94.29 | −50.63 |
-| 45% | 1.15 | 601.43 | +182.78 | +250.80 | +244.29 | −50.63 |
-| 65% | 0.85 | 409.64 | −121.31 | −54.66 | −62.05 | −49.26 |
-| 65% | 1.00 | 409.64 | +28.69 | +95.34 | +87.95 | −49.26 |
-| 65% | 1.15 | 409.64 | +178.69 | +245.34 | +237.95 | −49.26 |
-| 55% | 0.91 | 478.80 | −59.36 | +6.17 | **−1.46** | −48.10 |
-| 55% | 1.00 | 478.80 | +30.64 | +96.17 | +88.54 | −48.10 |
-| 80% | 0.85 / 1.00 / 1.15 | 316.01 | Placement rejected | — | — | — |
-<!-- /openroad-study-results -->
-
-At either feasible utilization, adding 150 ps to the period adds approximately 150 ps to setup slack. It leaves hold essentially unchanged because hold checks the same-edge minimum-delay relation. At a common period, the smaller 65% core is not automatically faster than the 45% core. The path, routing and loading determine the result; area reduction alone cannot establish a performance improvement. This is one fixed-netlist study, not a statistical conclusion across placement seeds, technologies or architectures.
-
-### Clock-tree synthesis: setup improves while hold becomes worse {#clock-tree-synthesis-setup-improves-while-hold-becomes-worse}
-
-![Actual 55% placement before CTS for the diagnostic case; compare it with the next checkpoint to locate the inserted clock cells. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-placed.svg){#fig-openroad-study-placed fig-alt="Actual pre-CTS placement at 55 percent utilization" width=100%}
-
-Use @fig-openroad-study-placed with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-placed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-![Placement after CTS for the 55%, 0.91 ns diagnostic case. Clock cells have been inserted into the existing rows. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-cts.svg){#fig-openroad-study-cts fig-alt="Actual post-CTS placement of the accumulator at 55 percent utilization" width=100%}
-
-Use @fig-openroad-study-cts with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-cts.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-![The actual clock-tree topology exported from OpenROAD: one root, three CLKBUF_X3 buffers and 18 register sinks. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-clocktree.svg){#fig-openroad-study-clocktree fig-alt="OpenROAD clock-tree viewer export with three clock buffers and eighteen sinks" width=100%}
-
-Use @fig-openroad-study-clocktree with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-clocktree.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-The [CTS report](../../labs/16-openroad-study/reference/u55-p0.91/cts-tree.rpt) reports one clock root, three inserted `CLKBUF_X3` buffers, three clock subnets and 18 sinks. These are the 16 sum bits plus `Valid` and `Overflow`. The topology image explains how the clock is distributed; the timing reports quantify arrival times at the sinks.
-
-In the diagnostic case, the worst setup path starts at `A[1]`, timed relative to the external clock, and ends at `_389_/D`, whose Q output drives `Overflow`. Positive capture-clock insertion delay increases its available setup time. The same late capture clock reduces hold margin for a short input-to-register path. Thus CTS can make an input setup check look better while introducing a hold failure. For a register-to-register path, the launch-clock delay must also be included; the beneficial-input-path interpretation cannot be transferred to every path.
-
-### A measured setup pass before routing becomes a failure after routing {#a-measured-setup-pass-before-routing-becomes-a-failure-after-routing}
-
-![Actual detailed routing of the 55%, 0.91 ns case. Layer colors show connected signal and supply shapes; geometry alone does not establish timing closure. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-routed.svg){#fig-openroad-study-routing fig-alt="Actual detailed-route layout of the accumulator" width=100%}
-
-Use @fig-openroad-study-routing with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-routed.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-![The same routed database with the cells and nets of the worst setup path highlighted. The path-pin list and expanded timing report identify the highlighted objects. Numbered reading notes are editorial; the embedded experimental image is unchanged.](../../figures/visual-capture-openroad-study-critical-path.svg){#fig-openroad-study-critical fig-alt="Worst accumulator setup path highlighted in the actual OpenROAD routed layout" width=100%}
-
-Use @fig-openroad-study-critical with its numbered reading notes and the [original full-resolution capture](../../figures/openroad-study-critical-path.png). The panel explains what to inspect; acceptance values remain in the accompanying implementation reports.
-
-Use the [post-CTS setup report](../../labs/16-openroad-study/reference/u55-p0.91/cts-setup.rpt) and [extracted post-route setup report](../../labs/16-openroad-study/reference/u55-p0.91/routed-setup.rpt) together. They identify the same `A[1]` to `Overflow` endpoint and expose both the data path and capture-clock path. The change is small enough that reporting only two decimal places in nanoseconds would conceal its sign.
-
-<!-- openroad-study-path -->
-| Quantity for the worst setup path | Post-CTS estimate | Post-route extraction | Change |
-| --- | ---: | ---: | ---: |
-| Input external maximum delay | 100.00 ps | 100.00 ps | 0.00 ps |
-| Sum of 17 reported cell-arc increments, approximately | 808.34 ps | 815.12 ps | +6.78 ps |
-| Sum of reported data-net increments, approximately | 1.06 ps | 2.09 ps | +1.03 ps |
-| Data arrival at `_389_/D` | 909.43 ps | 917.20 ps | +7.77 ps |
-| Capture required time after uncertainty/setup | 915.60 ps | 915.74 ps | +0.14 ps |
-| Setup slack | **+6.17 ps** | **−1.46 ps** | **−7.63 ps** |
-
-The per-arc sums use the printed five-decimal-place nanosecond values and therefore have rounding error relative to the timer's accumulated arrival. The extracted budget is `915.74 − 917.20 = −1.46 ps`. The capture budget includes the 910 ps period, approximately 62.43 ps clock insertion, 20 ps uncertainty and 36.69 ps library setup time. The [path-pin list](../../labs/16-openroad-study/reference/u55-p0.91/critical-path-pins.txt) identifies the objects highlighted in the image.
-<!-- /openroad-study-path -->
-
-The route adds delay directly through interconnect and indirectly by changing the capacitance/slew seen by cell arcs. In this small case, most total data delay is in the 17 combinational cell arcs, and not in the reported pin-to-pin wire increments. It would be misleading to call the entire arrival-time change “wire delay” or to conclude that the bottleneck is a long wire solely from the picture. Trace the XOR/carry and AOI/OAI chain from the low input bit toward the overflow register; correlate cell names with the [mapped netlist](../../labs/16-openroad-study/reference/mapped.v).
-
-The global-route estimate is also useful: it predicts a larger setup loss than the final extracted result. Detailed routing and extraction need not monotonically worsen an estimate. Keep the model label on every number and compare the same endpoint as well as the worst endpoint, which can change between stages.
-
-The precise conclusion is **setup met at the post-CTS estimated checkpoint and failed after route/extraction**. It is not “all timing passed before routing”: hold was already negative after CTS. The [extracted hold report](../../labs/16-openroad-study/reference/u55-p0.91/routed-hold.rpt) identifies a short `Enable`-to-register path. The [electrical report](../../labs/16-openroad-study/reference/u55-p0.91/routed-limits.rpt) also retains a max-capacitance violation on `_199_/ZN`, the mapped `NOR2_X1` combining `Clear` and `Reset`. A slower clock does not repair either problem.
-
-### Decide on the next change
-
-The evidence supports several different experiments, each addressing a different mechanism:
-
-| Observation | Candidate change | What must be checked again |
-| --- | --- | --- |
-| Long carry/logic chain on the setup path | Evaluate a carry-save/compressor structure or a different adder mapping, keeping arithmetic widths explicit | Functional/equivalence regression, mapped logic depth, all setup/hold and electrical checks after implementation |
-| Insufficient setup margin with the current architecture | Relax the architectural clock if the system latency/throughput budget permits it | Workload time, interface budgets and unchanged hold/electrical obligations |
-| A pre-add pipeline is architecturally acceptable | Register `A+B` and its validity before the feedback accumulation stage | Added latency, reset/clear flushing, enable gaps, sum/overflow alignment, cycle-aware checker and a new physical run |
-| Short `Enable` path fails hold | Use a controlled hold-repair pass with legal delay cells/buffering and placement/routing updates | Every affected setup/hold endpoint; adding delay can consume setup margin |
-| Shared reset/clear control exceeds capacitance | Buffer/resize or restructure the control fanout while preserving synchronous reset/clear priority | Slew, fanout/capacitance, setup/hold, logic correctness and added placement area |
-| Requested 80% floorplan cannot place | Increase whitespace or reduce the cell demand, then inspect the new density and routing | First successful placement, routing completion and fresh extracted timing |
-
-A pipeline is a proposed architectural modification here, not an already measured repair. The accumulator contains feedback; inserting a register into that feedback without a new recurrence changes its result sequence. A safer candidate separates input pre-addition from accumulation and defines the additional latency explicitly. A carry-save accumulator also changes the stored representation and may require a final carry-propagate step; it needs a new contract if results are no longer visible every cycle. Check whether synthesis already performs the proposed compression before claiming that an RTL rewrite improves the hardware.
-
-The study therefore diagnoses the physical behavior and leaves the fix unexecuted. To complete a repair exercise, rerun simulation/equivalence as applicable, map the revised RTL, retain a new source/netlist identity, and repeat placement through extracted timing. Keep the reference reports as they are, and never mix the old geometry with the new RTL.
-
-### Reproduce, inspect and submit
-
-[Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-openroad-reproduction .learning-activity}
-
-The [Lab 16 guide](../../labs/16-openroad-study/README.md) gives digest-pinned Linux/WSL and PowerShell recipes, the small baseline option, the complete sweep, image export and report summarization. It needs the separate ORFS image, not the unit-lab container. The script refuses a nonempty output directory; select a new one for a new campaign. The full sweep exits nonzero when the deliberately tight 80% cases fail, while retaining their status and logs in `study.json`. A failed tool stage is never converted into a routed PASS.
-
-Students without local physical-design resources can analyse the supplied report bundle and captures under the same P5 approach as @sec-hsd-coursework. They must still explain the source/constraint identities, compute the timing budget and identify unexecuted checks. No fabricated ASIC or FPGA board is needed to perform this reasoning.
-
-Answer the following using particular report lines, cell/pin names and calculations:
-
-1. Why does the 0.91 ns case have positive setup slack after CTS and negative setup slack after routing? Separate the change in data arrival from the change in capture required time.
-2. Which part of the critical path is arithmetic logic, which is net delay, and which is clock distribution? Does the report justify calling the design congestion-limited?
-3. Why do the same runs still fail hold at 1.15 ns? Derive the worst hold margin from the input arrival, clock arrival, uncertainty and library hold time.
-4. Why does 80% requested utilization produce a placement rejection rather than an 80% final routed design? Which reported areas are being compared?
-5. Propose one RTL modification for the setup bottleneck. State whether it preserves cycle-level behavior; define the regression or equivalence relation and the new timing measurement needed.
-6. Would you first change utilization, clock budget, adder structure or hold repair? Give the expected benefit, the possible regression and the acceptance criterion for that experiment.
-
-Submit the hypothesis, configuration/constraint inventory, complete per-stage reports, labelled placement/CTS/routing/path captures, the path-budget calculation and a one-change follow-up plan. The router's empty final DRC report is a result for its own rule checks; the study does not perform foundry DRC/LVS, multi-corner qualification, IR/EM closure, pad/package integration or manufacturing test. The remaining hold/electrical failures already prevent a timing-closure claim, irrespective of whether routing completes.
-
 ## Understanding every physical step
 
 ### Floorplan and utilization {#floorplan-and-utilization}
@@ -674,62 +516,6 @@ Physical-design failures are information. The correct response is to locate the 
 | Repeated antenna/DRC markers | Routing/resource or rule issue | Detailed-route report and GUI markers | Use PDK-approved repair, change route/floorplan |
 | Great reports but no fabrication path | Missing sign-off, pads, package, or accepted PDK flow | Tapeout checklist | Complete integration and foundry requirements |
 
-## From Timing Violations to a Qualified Implementation {#sec-physical-closure}
-
-The next step after producing a routed block is to decide which requirements it actually satisfies, repair the failures, and repeat the checks that the repair can invalidate. The dot-product continuation in @sec-complete-closure executes this process on the implementation already preserved in @sec-complete-case. Its original ASIC has positive setup slack, negative hold slack and electrical-limit violations. Its original ECP5 and Nexys Video implementations both miss 100 MHz. [Lab 21](../../labs/21-physical-closure/README.md) retains that baseline and records new candidates separately.
-
-Here, a **qualified implementation** means a candidate accepted against a named, limited set of checks. For the Nangate45 block, the acceptance gate requires extracted setup and hold slack of at least zero, no reported slew/capacitance/fanout violations, no unconstrained-path warnings, an empty final detailed-router DRC report, a successful mapped-to-repaired netlist equivalence check and GDS stream-out/readback. The result covers the supplied single typical corner and block interface budgets. Manufacturing DRC/LVS, multi-corner analysis, integration into Wally, pads and package remain separate open obligations. A report must state this boundary next to its acceptance decision.
-
-### Read the failure before choosing the repair {#read-the-failure-before-choosing-the-repair}
-
-A maximum-delay report answers whether data reaches its endpoint before the next relevant capture edge. A minimum-delay report answers whether data remains stable long enough around the relevant capture edge. Read the launch and capture clocks, clock insertion delays, external delays, uncertainty, cell arcs and net contributions before looking at the final slack. Check whether the path is register-to-register, input-to-register or register-to-output: a repair that helps one class can leave another untouched.
-
-The original ASIC's worst hold report starts at the `m_bvalid` input and ends at a clocked register. Its minimum input budget is 0.2 ns, while the propagated capture clock and hold uncertainty leave a small negative margin. Other short paths start at reset; the report shows reset driving 419 loads. The electrical report also includes an internal output transition of 3.41 ns against a 0.20 ns limit. These observations lead to two specific actions: build appropriate buffering for heavily loaded signals and add controlled delay to short data paths after CTS. They do not justify declaring reset or every input path false.
-
-The FPGA diagnosis is different. The preserved critical paths cross the arithmetic network. In ECP5, the path includes the unregistered DSP multiplier followed by the accumulation carry chain; in Nexys Video, the chosen open flow maps multiplication into LUTs and carry logic. The target is therefore a long combinational calculation between state elements. Improving the ASIC clock tree would leave that FPGA path unchanged.
-
-Use electrical reports together with timing reports. A cell operating beyond its characterized transition/load limits weakens the interpretation of an apparently attractive timing result. Repairing a maximum-capacitance violation may insert a buffer, change placement and alter both setup and hold. A new worst path after repair is useful evidence that the bottleneck has moved.
-
-### Three candidates, three different contracts
-
-| Candidate | What changes | Expected benefit | Obligation introduced or retained |
-| --- | --- | --- | --- |
-| Lower frequency | 100 MHz becomes 75 MHz; original RTL, seed and implementation recipe remain fixed | More setup time without changing job cycle semantics | Slower wall-clock service; minimum-delay and electrical checks still apply |
-| Register the product | Separate multiplication from accumulation; target remains 100 MHz | Remove multiplier-plus-adder from one cycle | Extra state/registers and one extra serial cycle per element; repeat arithmetic, protocol, error and reset tests |
-| Physical repair | Original ASIC RTL and 100 MHz remain fixed; add electrical and timing repair | Fix load/slew and short data paths without changing architectural latency | Added cells/routing/power; repeat legalization, routing, extraction, timing and equivalence |
-
-Lowering frequency is a valid engineering decision when the application permits it. It changes the requirement: a 75 MHz acceptance does not close the original 100 MHz requirement. It also generally leaves a same-edge hold failure in place, because the period gives no extra time between the data and clock edges involved in that check. Lab 21 reruns the ASIC at 75 MHz to make this distinction measurable.
-
-The RTL candidate registers a signed 32-bit product when the second operand response is accepted, enters `ACCUMULATE`, and updates the 64-bit accumulator on the following edge. It issues no new DMA request in between. The register map, signed arithmetic, transaction count, error responses and completion-after-write-response rule stay intact. It is a serial multicycle engine: this change adds latency and does not establish a one-element-per-cycle pipeline. A result at a higher clock must be evaluated against the extra cycles, memory latency and application workload.
-
-The candidate's evidence column holds the candidate's own results, never a known result copied from the original source revision. In this experiment the new engine passes the independent integer-oracle regression for lengths 1–256 at two seeds and the Nexys serial-boundary fixture. A negative control deliberately zero-extends a negative product and must fail that same scoreboard. These are candidate-specific simulation checks. They do not transfer the original bounded proof or real-Wally firmware cycle measurements to the modified engine, and they do not prove the two state machines cycle-equivalent.
-
-### Repair the physical implementation in the right order
-
-The executable [repair recipe](../../labs/21-physical-closure/repair.tcl) keeps the original synthesis, floorplan, utilization, clock and interface constraints. After placement, it estimates parasitics and calls `repair_design` with 20% slew and capacitance margins. After CTS, it propagates clocks, repairs setup, then repairs hold with a 0.03 ns target margin. After global routing, it repeats electrical/setup/hold repair against routing-based estimates, legalizes the cells, reroutes and updates the estimates. The margins are optimization targets; final acceptance uses fresh extracted reports.
-
-This command sequence follows the resizer's documented distinction between electrical repair and timing repair. The installed release's `help` output remains authoritative for supported options; the [official Gate Resizer documentation](https://openroad.readthedocs.io/en/latest/main/src/rsz/README.html) explains the underlying operations. In particular, hold repair follows CTS with propagated clocks, and setup repair precedes hold repair.
-
-The exploratory 0.10 ns hold-margin run exhausted its buffer allowance. Increasing an optimization target therefore has a cost: it can consume cells and whitespace without addressing a release requirement. The retained candidate uses the smaller 0.03 ns margin and an explicit maximum hold-buffer percentage. A buffer allowance is a stopping condition for the optimizer, and the resulting slack and area still have to be read. The final repaired database must still be legalized and routed.
-
-After detailed routing, OpenRCX extracts parasitics into SPEF. The flow reloads those parasitics and regenerates setup, hold, electrical-limit, constraint and power reports. A clean placement estimate or global-route report is an earlier checkpoint, and only the extracted result passes this final gate. If extracted hold becomes negative again, preserve that failed candidate, choose a justified larger margin or local repair, reroute and repeat extraction. Avoid editing an already collected report or treating an intermediate checkpoint as the final layout.
-
-### Recheck function and keep the acceptance gate executable
-
-Physical buffering and resizing should preserve the digital function, but the result must be checked. Lab 21 reads the original mapped cell netlist and repaired routed cell netlist with the same Liberty functional models, flattens them and uses Yosys equivalence passes with an asserting completion check. This is a zero-delay sequential netlist equivalence obligation for the original RTL's physical repair. It does not establish timing correctness, layout-versus-schematic connectivity, analog behavior or equivalence to the separately pipelined engine.
-
-The collector rejects incomplete commands, stale source hashes, altered raw artifacts and an equivalence record tied to a different netlist. It derives the published results from preserved reports, including failed candidates. Large ODB, SPEF, GDS and routed FPGA JSON files remain reproduction outputs with recorded hashes. Actual OpenROAD exports show the repaired layout, critical path and clock tree; they are associated with the routed database through a capture record.
-
-For a review, write an acceptance sentence that another engineer can check: “This block meets the specified 100 MHz setup/hold and reported electrical checks at Nangate45 typical with the supplied interface budgets, and its repaired netlist passed functional equivalence.” Then state the open manufacturing and integration obligations. For FPGA, the corresponding claim is restricted to the routed clock model and target boundary, since the experiment supplies neither complete board I/O timing nor vendor timing/power signoff.
-
-The numerical comparison and engineering decisions in @sec-complete-closure show why all three candidates are useful. A lower clock can release the original FPGA block under a revised requirement; a register can restore 100 MHz on one target while exposing a different bottleneck on another; physical optimization can close the ASIC's short paths and electrical limits without changing RTL. The choice follows the diagnosed failure and the application's constraints.
-
-### Continue from timing closure to actual GDS verification
-
-The next executed stage, @sec-layout-verification and [Lab 22](../../labs/22-layout-verification/README.md), checks the actual GDS with the available FreePDK45 DRC deck and a reviewed Nangate45 transistor-extraction adapter. It exposes a failure that the earlier digital equivalence proof cannot see: cells added by CTS and timing repair can have unconnected power terminals in OpenDB when global power connections were applied only before those cells existed. This block had **1,408** such POWER/GROUND terminals, despite its positive setup/hold reports.
-
-The continuation reruns `global_connect` under the declared power-net rules, inserts physical well-contact/filler cells, checks all power-terminal connections and legal placement, and re-extracts timing. It then requires the actual GDS extraction to match the CDL, including body connections. No implicit/global power join is introduced into the LVS deck to bypass the missing geometry. A copy of the original GDS remains the failed LVS case; deliberate narrow-metal and supply-short defects test the checkers themselves. This extends the block's acceptance evidence to the implemented public reference checks. The reference PDK, its incomplete rule coverage and the absence of foundry qualification remain explicit.
-
 ## Hands-on Experiments
 
 After the accumulator study, follow @sec-complete-case to implement the same dot-product IP used by the book's verification and Wally firmware activities. It has its own locked maximum-256 configuration, Nangate45 placement/CTS/routing, extracted timing/vectorless power and KLayout GDSII stream-out/readback. Use those actual block results to distinguish an implemented layout from timing/foundry qualification.
@@ -762,7 +548,7 @@ Make a `README` for the run containing the OpenROAD version, host/container iden
 
 ## Further reading
 
-The official OpenROAD documentation is the command reference for the installed release. Its built-in `man` pages and online module pages should take priority over old blog posts and command snippets. The project documents examples from synthesizable RTL through detailed routing for Nangate45 and SKY130HD technologies, which are useful references when adapting a direct Tcl flow [@openroadApplication]. The next chapter returns to a managed flow and explains how LibreLane can package a similar sequence for repeated runs.
+The official OpenROAD documentation is the command reference for the installed release. Its built-in `man` pages and online module pages should take priority over old blog posts and command snippets. The project documents examples from synthesizable RTL through detailed routing for Nangate45 and SKY130HD technologies, which are useful references when adapting a direct Tcl flow [@openroadApplication]. The next chapter, @sec-openroad-study, runs a measured campaign on the same accumulator and turns its failures into a closure method; the LibreLane chapter then returns to a managed flow that packages a similar sequence for repeated runs.
 
 ### A verification plan for the direct flow
 

@@ -1,6 +1,6 @@
 # Lab 21 — From Timing Violations to a Qualified Implementation
 
-This explicit, optional continuation implements the **same maximum-256 dot-product block** as [Lab 17](../17-complete-case/README.md). It preserves that common release and its failed physical results. No FPGA purchase or fabrication is required. See the [OpenROAD chapter](../../chapters/06-asic-implementation/openroad.qmd#sec-physical-closure) and [case-study continuation](../../appendices/complete-case-study.qmd#sec-complete-closure).
+This explicit, optional continuation implements the **same maximum-256 dot-product block** as [Lab 17](../17-complete-case/README.md). It preserves that common release and its failed physical results. No FPGA purchase or fabrication is required. See the [OpenROAD chapter](../../chapters/06-asic-implementation/openroad-study.qmd#sec-physical-closure) and [case-study continuation](../../appendices/complete-case-study.qmd#sec-complete-closure).
 
 `manifest.json` defines three interventions: a 75 MHz target using the original RTL, a registered-product engine at 100 MHz, and electrical/hold repair of the original ASIC at 100 MHz. The new engine is a separate source file; the original sources remain immutable. The physical repair keeps the original SDC budgets, 45% floorplan utilization, technology and synthesis recipe.
 

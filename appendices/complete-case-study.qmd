@@ -279,6 +279,10 @@ The acceptance gate requires nonnegative extracted setup/hold, zero reported sle
 
 The last three rows have the same mapped-input hash. Their identical negative hold result before repair makes the distinction particularly clear: the longer period helps setup while leaving the minimum-delay problem intact. Relative to the comparable baseline, repair adds 461 µm² of cells, approximately 6.3%, within the same core. Power remains a vectorless model estimate with the limitations discussed below.
 
+Read these failures before choosing a repair, as @sec-physical-closure describes. The original ASIC's worst hold report starts at the `m_bvalid` input and ends at a clocked register. Its minimum input budget is 0.2 ns, while the propagated capture clock and hold uncertainty leave a small negative margin. Other short paths start at reset; the report shows reset driving 419 loads. The electrical report also includes an internal output transition of 3.41 ns against a 0.20 ns limit. These observations lead to two specific actions: build appropriate buffering for heavily loaded signals and add controlled delay to short data paths after CTS. They do not justify declaring reset or every input path false.
+
+The FPGA diagnosis is different. The preserved critical paths cross the arithmetic network. In ECP5, the path includes the unregistered DSP multiplier followed by the accumulation carry chain; in Nexys Video, the chosen open flow maps multiplication into LUTs and carry logic. The target is therefore a long combinational calculation between state elements. Improving the ASIC clock tree would leave that FPGA path unchanged.
+
 ### Candidate 1: reduce the requested frequency
 
 Both FPGA targets are resynthesized and placed/routed at **75 MHz**, keeping the original RTL and seed. The resulting clock limits equal the original reported limits in these runs: 86.99 MHz for ECP5 and 85.42 MHz for Nexys Video. The positive period margins are approximately 1.84 ns and 1.63 ns respectively. This accepts a revised 75 MHz requirement; the 100 MHz requirement still fails.

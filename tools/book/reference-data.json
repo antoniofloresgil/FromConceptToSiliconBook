@@ -652,7 +652,7 @@
       "aliases": [],
       "locations": [
         {
-          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "page": "chapters/06-asic-implementation/openroad-study.qmd",
           "heading": "Read the failure before choosing the repair",
           "anchor": "read-the-failure-before-choosing-the-repair"
         }
@@ -753,7 +753,7 @@
       ],
       "locations": [
         {
-          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "page": "chapters/06-asic-implementation/openroad-study.qmd",
           "heading": "A measured setup pass before routing becomes a failure after routing",
           "anchor": "a-measured-setup-pass-before-routing-becomes-a-failure-after-routing"
         }
@@ -919,7 +919,7 @@
       ],
       "locations": [
         {
-          "page": "chapters/06-asic-implementation/openroad.qmd",
+          "page": "chapters/06-asic-implementation/openroad-study.qmd",
           "heading": "A measured setup pass before routing becomes a failure after routing",
           "anchor": "a-measured-setup-pass-before-routing-becomes-a-failure-after-routing"
         }
@@ -1386,6 +1386,19 @@
     },
     "chapters/06-asic-implementation/openroad.qmd": {
       "title": "Physical Design with OpenROAD",
+      "tools": "OpenROAD; Yosys; STA; Nangate45 reference views",
+      "requires": "identified netlist, SDC, utilization and tool image",
+      "contract": "placement/CTS/routing comparison, extracted timing and electrical checks",
+      "labs": [
+        "16-openroad-study"
+      ],
+      "requirements": [
+        "DP-TIMING",
+        "DP-PHYSICAL"
+      ]
+    },
+    "chapters/06-asic-implementation/openroad-study.qmd": {
+      "title": "A Measured OpenROAD Study: Frequency, Utilization and the Cost of Wires",
       "tools": "OpenROAD; Yosys; STA; Nangate45 reference views",
       "requires": "identified netlist, SDC, utilization and tool image",
       "contract": "placement/CTS/routing comparison, extracted timing and electrical checks",

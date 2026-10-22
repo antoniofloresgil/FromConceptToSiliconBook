@@ -2577,11 +2577,11 @@
     },
     {
       "id": "physical-study-review",
-      "page": "chapters/06-asic-implementation/openroad.qmd",
+      "page": "chapters/06-asic-implementation/openroad-study.qmd",
       "kind": "heading",
-      "anchor": "## Measured study: frequency, utilization and the cost of wires {#sec-openroad-study}",
+      "anchor": "# A Measured OpenROAD Study: Frequency, Utilization and the Cost of Wires {#sec-openroad-study}",
       "group": "guided",
-      "title": "Measured study: frequency, utilization and the cost of wires",
+      "title": "A Measured OpenROAD Study: Frequency, Utilization and the Cost of Wires",
       "role": "core",
       "practice": "P5",
       "cost": "C0 review / C3 rerun",
@@ -2967,9 +2967,9 @@
     },
     {
       "id": "openroad-reproduction",
-      "page": "chapters/06-asic-implementation/openroad.qmd",
+      "page": "chapters/06-asic-implementation/openroad-study.qmd",
       "kind": "heading",
-      "anchor": "### Reproduce, inspect and submit",
+      "anchor": "## Reproduce, inspect and submit",
       "group": "guided",
       "title": "Reproduce, inspect and submit",
       "role": "advanced",
@@ -2977,6 +2977,19 @@
       "cost": "C3",
       "hardware": "none",
       "notes": "Actual reproduction is distinct from the core supplied-report review."
+    },
+    {
+      "id": "openroad-study-review",
+      "page": "chapters/06-asic-implementation/openroad-study.qmd",
+      "kind": "heading",
+      "anchor": "## Try it yourself {#review-openroad-study-try .unnumbered .unlisted}",
+      "group": "review",
+      "title": "Short chapter reflection",
+      "role": "preparation",
+      "practice": "",
+      "cost": "C0",
+      "hardware": "none",
+      "notes": "Short reasoning task on the supplied measured reports."
     }
   ]
 }

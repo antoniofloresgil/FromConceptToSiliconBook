@@ -1,6 +1,6 @@
 # 16 — OpenROAD: measured clock/utilization study
 
-Read [Physical Design with OpenROAD](../../chapters/06-asic-implementation/openroad.qmd#sec-openroad-study). This practice runs the book's uppercase-`Clk`/`Reset`, two-input accumulator through a direct Tcl flow using the Nangate45 teaching platform bundled in a separate ORFS image. It needs no fabricated ASIC or FPGA board. The unit-lab image does not contain these physical tools.
+Read [Physical Design with OpenROAD](../../chapters/06-asic-implementation/openroad-study.qmd#sec-openroad-study). This practice runs the book's uppercase-`Clk`/`Reset`, two-input accumulator through a direct Tcl flow using the Nangate45 teaching platform bundled in a separate ORFS image. It needs no fabricated ASIC or FPGA board. The unit-lab image does not contain these physical tools.
 
 ## Recorded environment and scope
 
