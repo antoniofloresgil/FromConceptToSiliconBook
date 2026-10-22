@@ -68,6 +68,9 @@ and figure changes, follow [consultation-and-print.md](consultation-and-print.md
 When packaging changes, run `python labs/tools/test_package.py` to test the actual
 extracted ZIP without chapter sources. A report verifier alone is not a rerun.
 
+Version identities, tool-version changes and the course-edition policy are in
+[versioning.md](versioning.md).
+
 For a clean-environment reproduction review, follow the
 [audit protocol](../tools/reproducibility/README.md). It specifies fresh-source
 and environment setup, representative tool executions, source/artifact integrity
