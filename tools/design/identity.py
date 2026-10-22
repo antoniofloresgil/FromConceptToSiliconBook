@@ -34,8 +34,7 @@ def line(x1, y1, x2, y2, color="line", width=1):
 
 def flow():
     """Concept artwork, with no claim of schematic or implementation accuracy."""
-    artwork = json.loads((DEST / "selected-artwork.json").read_text(encoding="utf-8"))["file"]
-    data = base64.b64encode((DEST / artwork).read_bytes()).decode("ascii")
+    data = base64.b64encode((DEST / "selected-layered-soc.png").read_bytes()).decode("ascii")
     return ('<defs><filter id="art-gray" color-interpolation-filters="linearRGB">'
             '<feColorMatrix type="saturate" values="0"/></filter></defs>'
             '<g aria-label="Four floating layers: architecture, RTL, routing with a highlighted clock tree, and silicon">'

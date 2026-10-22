@@ -80,14 +80,12 @@ reviews do not establish physical CDC/RDC signoff.
 
 ## Editorial identity
 
-The approved Design Flow identity uses the author's selected layered SoC
-illustration, perspective-corrected at the author's request (the original is kept
-unmodified for provenance), a black cover, night blue, cyan and amber accents, and a pale
+The approved Design Flow identity uses the author's selected, unmodified layered
+SoC illustration, a black cover, night blue, cyan and amber accents, and a pale
 reading surface. `design/identity/palette.json` owns colors and the DejaVu
 Serif/Sans/Sans Mono font choices; `tools/design/identity.py` generates the
 editable covers and PDF/HTML styles. Preserve the selected artwork's recorded
-identity (`selected-artwork.json`) rather than silently regenerating or retouching
-it; any further change supersedes it explicitly and updates that record. The illustration
+identity rather than silently regenerating or retouching it. The illustration
 is conceptual cover art, not a validated SoC diagram or implementation capture.
 
 The editorial PDF uses the standard A4 (210 × 297 mm) format, superseding Letter.
