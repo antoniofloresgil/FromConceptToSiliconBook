@@ -9,8 +9,9 @@ takes precedence over its optional institutional teaching adoption.
 
 The front cover pairs a large, left-aligned title with the exact layered image
 selected and supplied by the author: architecture, RTL, physical routing with a
-highlighted clock tree, and silicon. The supplied image is copied byte for byte
-and embedded at its original aspect ratio, without retouching or cropping.
+highlighted clock tree, and silicon. The supplied image, with the perspective
+correction described under *Sources and preview*, is embedded at its original
+aspect ratio, without cropping.
 Its dark background is integrated with a black cover surface. Cyan and amber
 accents echo its routing and clock highlights; night blue supports secondary
 panels, with a pale reading surface and dark text on the back.
@@ -48,9 +49,16 @@ geometry carry meaning independently of hue. See the project's permanent
 - `front.svg`, `back.svg`, `identity.svg`: editable SVG compositions. The front
   embeds the raster illustration so the file is self-contained; its typography
   remains vector text.
-- `selected-layered-soc.png`: the author's selected 1536 × 1024 attachment.
-  `selected-artwork.json` records its identity. The original pixels are preserved;
-  the separate grayscale proof applies an SVG filter without modifying the PNG.
+- `selected-layered-soc-aligned.png`: the cover illustration, 1536 × 1024. It is
+  the author's selected attachment with a perspective correction the author
+  requested: the architecture and RTL sheets were warped onto the same plane as
+  the routing sheet and the die, and the orange pillars were redrawn from the
+  original pixels. The routing sheet and the die are unchanged. This supersedes
+  the earlier "unmodified attachment" decision for the cover only.
+  `selected-artwork.json` records its identity and the original's. The separate
+  grayscale proof applies an SVG filter without modifying the PNG.
+- `selected-layered-soc.png`: the unmodified original attachment, kept for
+  provenance. It is no longer an input to the cover.
 - `layered-soc.png`, `artwork-prompt.txt`, `artwork-routing-edit.txt` and
   `artwork-perspective-edit.txt`: superseded generated-art exploration and its
   built-in generation/edit prompts. They are not inputs to the current cover.
