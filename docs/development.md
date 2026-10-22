@@ -75,7 +75,9 @@ reviewed dependency locks, environment identity and fresh applicable validation.
 Keep generated HTML/PDF, `downloads/`, `_book/` and local build/work outputs out of
 commits. Retained, deliberately versioned `labs/*/reference/` evidence is a
 different category: update it through its documented collection/integrity process.
-Preserve unrelated working-tree changes, including existing untracked renders.
+Quarto single-file previews write `.html` next to the `.qmd` sources; `.gitignore`
+excludes them at the root, `chapters/` and `appendices/`. Preserve unrelated
+working-tree changes.
 The current automatic lab set, CI tiers and separate output directories are
 defined by the catalogue/contracts/workflows, not by an assumed `run all` scope.
 

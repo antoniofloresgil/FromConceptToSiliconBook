@@ -5,6 +5,11 @@
 /.quarto/
 **/*.quarto_ipynb
 
+# Quarto single-file previews written next to the sources
+/*.html
+/chapters/**/*.html
+/appendices/*.html
+
 # Execution caches
 **/*_cache/
 **/__pycache__/
