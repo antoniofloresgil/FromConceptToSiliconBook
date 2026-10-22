@@ -23,7 +23,7 @@ Maintain persistent project knowledge across sessions.
 - Keep AGENTS.md concise and focused on permanent
   project rules, conventions, and constraints.
 - Record significant architectural decisions in
-  docs/architecture.md or docs/decisions.md.
+  docs/architecture.md.
 - Maintain accessibility requirements in
   docs/accessibility.md.
 - After substantial changes, review whether any
