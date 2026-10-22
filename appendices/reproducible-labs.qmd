@@ -48,17 +48,17 @@ Start at the repository/extracted-package root unless stated otherwise. `cd` cha
 | `mmu` | Sv32 aliases, S-mode and a delegated store page fault | Separate Spike test with expected signature; guided Wally trace |
 | `dse` | Controlled actual Wally divider sweep and illustrative Pareto analysis | Checked explicit script with external clone; outside `run all` |
 
-`run all` executes the nine automatic entries. It does not silently count a missing board, PDK or unfinished accelerator as a pass. An automatic result proves the tested boundary, rather than every requirement of the corresponding subsystem.
+`run all` executes the nine automatic entries. A missing board, PDK or unfinished accelerator is never counted as a pass. An automatic result covers the tested boundary, and the other requirements of the subsystem need their own checks.
 
 The optional [hardware-generators practice](../labs/19-hardware-generators/README.md), introduced in @sec-hardware-generators, compares a Chisel accumulator with direct SystemVerilog through an independent scoreboard and a deliberately faulty generator. Its separate image supplies Scala/Chisel and CIRCT; it requires no FPGA and remains outside the nine automatic entries. The compact reference preserves generated RTL, intermediate representations and separately scoped generic synthesis statistics.
 
-The advanced [multicore practice](../labs/20-multicore/README.md) in @sec-multicore executes Linux on two QEMU CPUs with the existing DMA driver/model. It checks pinned-CPU publication, 64 handoffs and 32 contending jobs. Separate finite cache/visibility/dependency models expose stale-data and progress mistakes; they do not supply coherent Wally RTL or physical performance evidence. This practice is outside the nine automatic entries and the compulsory twelve-week workload.
+The advanced [multicore practice](../labs/20-multicore/README.md) in @sec-multicore executes Linux on two QEMU CPUs with the existing DMA driver/model. It checks pinned-CPU publication, 64 handoffs and 32 contending jobs. Separate finite cache/visibility/dependency models expose stale-data and progress mistakes; they stop short of coherent Wally RTL and physical performance evidence. This practice is outside the nine automatic entries and the compulsory twelve-week workload.
 
 The optional [physical-closure continuation](../labs/21-physical-closure/README.md) in @sec-complete-closure preserves the complete-case baseline and executes lower-clock, registered-product and physical-repair candidates. It supplies fresh routed FPGA results, extracted ASIC setup/hold/electrical reports, functional mapped/routed equivalence and actual geometry captures. Its qualified result is restricted to the declared single-corner block gate; manufacturing DRC/LVS and full-SoC/board acceptance remain open. It requires no physical FPGA and remains outside `run all` and the compulsory workload.
 
 The optional [layout-verification continuation](../labs/22-layout-verification/README.md) in @sec-layout-verification executes actual GDS DRC and transistor-level LVS with the available FreePDK45 reference technology. It diagnoses missing power/body connectivity, finishes a separate layout, re-extracts timing and rejects deliberately faulty geometry. Passing public-reference checks is distinct from foundry manufacturing qualification. The compact dossier is auditable without EDA tools; actual reproduction uses the same pinned ORFS image and remains outside `run all`.
 
-The `mmu` guide uses the complete files in `examples/privileged-mmu/` and the commands in @sec-privileged-mmu. Its architectural test was checked with GCC 13.2.0 and Spike 1.1.1-dev; the reference suite also rejects a variant that makes the intentionally read-only alias writable. Spike and the cross toolchain are separate dependencies. This activity is not included in the small container's nine automatic labs, and its Spike pass does not claim a Wally RTL execution.
+The `mmu` guide uses the complete files in `examples/privileged-mmu/` and the commands in @sec-privileged-mmu. Its architectural test was checked with GCC 13.2.0 and Spike 1.1.1-dev; the reference suite also rejects a variant that makes the intentionally read-only alias writable. Spike and the cross toolchain are separate dependencies. This activity sits outside the small container's nine automatic labs, and its Spike pass does not claim a Wally RTL execution.
 
 ## The supplied simulation and synthesis container
 
@@ -99,7 +99,7 @@ docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --moun
 
 Use the PowerShell mount form above on Windows. Python-only `list`, `check` and `pack` also run on a native Windows Python installation. Linux hardware tools can run in this container or an appropriately configured WSL environment.
 
-The cocotb baseline explicitly chooses Icarus. cocotb 2.0.1 supports Icarus 11.0 or later, while its Verilator backend needs 5.036 or later; the standalone C++ Verilator example has a different compatibility boundary [@cocotbLabSupport]. Do not infer that a working standalone Verilator installation can necessarily host this cocotb version.
+The cocotb baseline explicitly chooses Icarus. cocotb 2.0.1 supports Icarus 11.0 or later, while its Verilator backend needs 5.036 or later; the standalone C++ Verilator example has a different compatibility boundary [@cocotbLabSupport]. A working standalone Verilator installation may not be able to host this cocotb version.
 
 ## Native Linux execution
 
@@ -112,7 +112,7 @@ ls -ld labs/build
 sudo chown -R --no-dereference "$(id -u):$(id -g)" -- labs/build
 ```
 
-This is a **conditional repair**, requiring permission to change ownership and this project's existing `labs/build/`. Do not substitute the whole repository or a system directory. Rerun the corrected recipe and check that the host user can append to a generated result. Global permissive modes are unnecessary.
+This is a **conditional repair**, requiring permission to change ownership and this project's existing `labs/build/`. Limit the repair to that directory, since a whole repository or a system directory is far too broad. Rerun the corrected recipe and check that the host user can append to a generated result. Global permissive modes are unnecessary.
 
 ### Native installation template
 
@@ -130,7 +130,7 @@ python labs/run.py doctor
 python labs/run.py run all
 ```
 
-The Python development package supplies the shared library cocotb embeds. If `find_libpython` cannot find that library, fix the installation before running the simulator. The native package versions need not match an earlier container build. Include the resulting environment report in comparisons. Do not use an unrelated local development image as evidence of a reproducible student environment unless its recipe and identity are also available.
+The Python development package supplies the shared library cocotb embeds. If `find_libpython` cannot find that library, fix the installation before running the simulator. The native package versions need not match an earlier container build. Include the resulting environment report in comparisons. An unrelated local development image is not evidence of a reproducible student environment unless its recipe and identity are also available.
 
 ## Sources, seeds and result records
 
@@ -168,13 +168,13 @@ Copy the complete RTL directory, preserving module names and dependencies. On Wi
 
 `labs/build/report.json` records source hashes, actual per-lab seed, environment, commands, exit codes, logs and artifact hashes. The original Verilator/cocotb stimuli retain fixed seed 2026. New randomized tests use the selected seed. Compile failure, timeout, a failing assertion, missing dependency or an empty/failed cocotb suite produces a failing command and nonzero overall exit code.
 
-A minimized waveform and an explained requirement should accompany a failure report. A repaired design needs a new passing run and a retained regression case. CI executes the automatic suite on pushes and pull requests and preserves logs and reports as an artifact; it does not physically program a board or sign off an ASIC.
+A minimized waveform and an explained requirement should accompany a failure report. A repaired design needs a new passing run and a retained regression case. CI executes the automatic suite on pushes and pull requests and preserves logs and reports as an artifact; board programming and ASIC signoff stay outside it.
 
 ## Cold-environment reproduction audits {#sec-cold-reproduction-audit}
 
-Checking retained reports establishes their internal integrity; reproducing a result requires executing its tools again. The repository's [cold-audit protocol](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/tools/reproducibility/README.md) starts from a fresh public clone and rebuilds the documented environments, then selects formal, Linux/QEMU, FPGA and ASIC experiments. It requires read-only source/reference protection, fresh outputs, recorded image identities, artifact hashes and deliberate rejection tests. A physical runner's `completed` status must still be distinguished from passing its timing or layout acceptance criteria.
+Checking retained reports confirms their internal integrity, and reproducing a result means executing its tools again. The repository's [cold-audit protocol](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/tools/reproducibility/README.md) starts from a fresh public clone and rebuilds the documented environments, then selects formal, Linux/QEMU, FPGA and ASIC experiments. It requires read-only source/reference protection, fresh outputs, recorded image identities, artifact hashes and deliberate rejection tests. A physical runner's `completed` status must still be distinguished from passing its timing or layout acceptance criteria.
 
-The [19 October 2026 audit record](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/docs/audits/2026-10-19/README.md) identifies the audited revision, execution evidence and limits of an agent-executed clean-container review. It does not replace an independent human review, board validation or foundry qualification. The accompanying integrity helper checks source snapshots and raw report hashes without invoking EDA tools; it cannot substitute for rerunning a laboratory.
+The [19 October 2026 audit record](https://github.com/antoniofloresgil/FromConceptToSiliconBook/blob/main/docs/audits/2026-10-19/README.md) identifies the audited revision, execution evidence and limits of an agent-executed clean-container review. An independent human review, board validation and foundry qualification remain separate steps. The accompanying integrity helper checks source snapshots and raw report hashes without invoking EDA tools; it cannot substitute for rerunning a laboratory.
 
 ## Continuous hardware verification of the accelerator {#sec-hardware-ci}
 
@@ -203,7 +203,7 @@ The elaborated [contract](../labs/25-hardware-ci/contract.json) records port nam
 
 Lint also needs an explicit policy. The preserved RTL produces six reviewed diagnostics: four implicit unsigned address extensions in 33-bit range comparisons, the unused engine-busy indication, and the unused upper half of a 32-bit DMA operand. The runner uses `-Wno-fatal` to collect diagnostics, then compares the **exact reviewed multiset** of warning codes, source filenames and messages. Additional, changed or missing messages fail. It does not globally accept a warning category. Logs retain all six observations, and an intentional cleanup requires updating the reviewed expectation.
 
-The formal stage retains its original boundary: 20-cycle symbolic control BMC and a 24-cycle engine check with a fixed valid length-one descriptor and a reachable DONE witness. The witness helps expose a vacuous completion argument. These checks do not establish induction, unrestricted AXI compliance, full arithmetic correctness or unbounded progress. The standalone FIFO chapter in @sec-formal-verification develops those proof distinctions more fully.
+The formal stage retains its original boundary: 20-cycle symbolic control BMC and a 24-cycle engine check with a fixed valid length-one descriptor and a reachable DONE witness. The witness helps expose a vacuous completion argument. Induction, unrestricted AXI compliance, full arithmetic correctness and unbounded progress remain outside these checks. The standalone FIFO chapter in @sec-formal-verification develops those proof distinctions more fully.
 
 ### A metric gate needs a stable denominator
 
@@ -287,7 +287,7 @@ git rev-parse HEAD
 
 Obtain toolchains, chip databases and board support using that revision's instructions and the FPGA chapters. The small container includes the Clang/LLD and ELF-loading helpers used by its checked virtual-platform recipes; it does not include the complete Wally board/cross toolchain, nextpnr-Xilinx databases, DDR controller environment or a physical board firmware loader. Keep the build script, selected parameters, images and constraint files alongside the revision.
 
-Use on-chip-memory firmware for the first board milestone. At the documented branch snapshot, DDR3 service initialization is an additional unresolved bring-up activity. A generated bitstream is not evidence that every external-memory path works.
+Use on-chip-memory firmware for the first board milestone. At the documented branch snapshot, DDR3 service initialization is an additional unresolved bring-up activity. A generated bitstream does not show that every external-memory path works.
 
 **Adaptation template (checked tool discovery only):** for ASIC work, use the separately installed ORFS environment [@orfsLabContainers]. A local `openroad/orfs:latest` was inspected while preparing the package. Its `/OpenROAD-flow-scripts/env.sh` puts the installed OpenROAD and Yosys binaries on PATH. A checked tool-discovery command is:
 
@@ -377,7 +377,7 @@ The results are `_book/release/index.html`, `_book/release/From-Concept-to-Silic
 2. **Build:** the offline environment produces and checks HTML, PDF and figures from that revision. Actions retains the PDF and build manifest as a downloadable artifact.
 3. **Deploy:** only a successful build and validation on `main` can upload the complete release to GitHub Pages. Pull requests run validation and construction without deploying. Manual publication also requires validation; it does not bypass the gate.
 
-Select **GitHub Actions** as the repository's Pages source. If a check fails, inspect the failed job and its laboratory evidence or render log; fix the source and rerun the workflow. Do not publish an old output directory to conceal the failure. The Docker build may take several minutes on a fresh runner because it installs the PDF toolchain. The publication gate checks the supplied executable experiments, not completion of every guided FPGA, ASIC or manufacturing exercise.
+Select **GitHub Actions** as the repository's Pages source. If a check fails, inspect the failed job and its laboratory evidence or render log; fix the source and rerun the workflow. Publishing an old output directory would only conceal the failure. The Docker build may take several minutes on a fresh runner because it installs the PDF toolchain. The publication gate checks the supplied executable experiments, not completion of every guided FPGA, ASIC or manufacturing exercise.
 
 The workflow mechanism and book download settings follow the [GitHub reusable-workflow documentation](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) and [Quarto book-output documentation](https://quarto.org/docs/books/book-output.html). SVG conversion follows [Quarto's PDF guidance](https://quarto.org/docs/output-formats/pdf-basics).
 
@@ -395,4 +395,4 @@ The [boot chapter](../chapters/04-soc-architecture/boot-software-stack.qmd) and 
 
 This checked one-hart RV64 practice runs QEMU `virt`, explicit OpenSBI dynamic firmware and a compiled supervisor ELF offline. It records the DTB/DTS, linker map, UART log, package versions and firmware/source/output hashes under `labs/build/boot/`. It tests the supervisor handoff and selected SBI calls, then shuts down through SRST. It is optional, outside the nine automatic labs and current publication gate.
 
-The image pins its Ubuntu base but installs available package versions; archive the image and its report to reproduce that installation. The Linux kernel/initramfs sequence has its own source version and evidence. QEMU success does not establish a bootable Wally FPGA platform. OpenSBI, Linux and QEMU remain external projects with their own licenses; their source trees and guest images are not bundled in the practice ZIP.
+The image pins its Ubuntu base but installs available package versions; archive the image and its report to reproduce that installation. The Linux kernel/initramfs sequence has its own source version and evidence. QEMU success says nothing about a bootable Wally FPGA platform. OpenSBI, Linux and QEMU remain external projects with their own licenses; their source trees and guest images are not bundled in the practice ZIP.

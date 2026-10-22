@@ -12,7 +12,7 @@ Start with combinational/sequential logic, finite-state machines, basic processo
 
 SystemVerilog remains the principal RTL language. The generator example introduces Chisel and CIRCT as an optional comparison. Shell commands, Git, Python and containers support reproducibility; a container image supplies tools rather than replacing the design contract. The [reproduction appendix](appendices/reproducible-labs.qmd) distinguishes checked recipes, adaptation templates and student design exercises.
 
-At each stage, keep four things together: the requirement, implementation/configuration, independent check and observed result. An unchanged reference run establishes a baseline. A new design or claim needs its own evidence, including failures and unfinished obligations. The common methodology in @sec-verification-methodology applies from a small RTL unit to platform and physical implementation.
+A hardware result is only as useful as the story behind it. At each stage, keep four things together: the requirement, the implementation and configuration, an independent check, and the observed result. That is what lets a colleague rerun your work and see the same thing. An unchanged reference run gives you a baseline to compare against; when you change the design, collect new evidence, including the failures, because that is where most of the learning happens. The common methodology in @sec-verification-methodology applies from a small RTL unit to platform and physical implementation.
 
 ## A Foundations Route {#sec-foundations-route}
 
@@ -52,7 +52,7 @@ Each labelled activity states its role and compute class. A `C0 review / C3 reru
 
 The common dot-product project makes the transitions comparable. Its manifest connects numerical behavior, RTL, independent tests, bounded formal checks, real-Wally firmware/interrupts, FPGA placement/routing and ASIC block implementation. The source lock and evidence records let a reader ask which stage changed and which results remain applicable.
 
-The physical boundary matters: the complete Wally system is exercised in RTL simulation, while FPGA/ASIC case-study implementation results describe the accelerator IP or the explicitly named fixture. Functional evidence, generic synthesis, routed timing, power estimates and manufacturing checks answer different questions. Preserve that distinction when replacing an algorithm, memory interface, platform or technology.
+The case study is explicit about scale, and that is what makes its numbers useful. The complete Wally system runs in RTL simulation, while the FPGA and ASIC results describe the accelerator IP or a named fixture. Functional evidence, generic synthesis, routed timing, power estimates and manufacturing checks each answer a different question; knowing which one you are holding tells you what to do next when you replace an algorithm, memory interface, platform or technology.
 
 The reusable-IP continuation packages supported configurations, generated register views, dependencies, models and constraints for another integrator. The CI experiment then checks contracts, independent tests, bounded properties and a reviewed logical-cost budget on each candidate. These practices are useful whether the reader follows a taught course, a professional project or an independent study plan.
 
@@ -70,7 +70,7 @@ Choose a technical route, identify its next deliverable and distinguish a local 
 
 ## Common mistakes {#review-intro-mistakes .unnumbered .unlisted}
 
-Treating every experiment as required coursework; assuming an advanced topic always needs expensive tools; transferring a reference result to modified RTL without new evidence.
+It is tempting to treat every experiment as required coursework, but the book is a reference to select from. Advanced topics are not always expensive, so check the compute label before ruling one out. And a reference result belongs to the RTL that produced it: once you modify the design, collect new evidence.
 
 ## Try it yourself {#review-intro-try .unnumbered .unlisted}
 

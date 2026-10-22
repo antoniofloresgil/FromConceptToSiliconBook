@@ -8,7 +8,7 @@ The first part deliberately studies a simplified processor. It implements the or
 
 ![Conceptual graphic vocabulary used by the new block diagrams: CPU double outline, cache and memory rules, interconnect spine, peripheral ports and accelerator chevrons. Shape marks and labels retain meaning in monochrome.](../../figures/visual-component-language.svg){#fig-component-language width=100%}
 
-Use @fig-component-language as the reading key: containment denotes ownership, a solid arrow carries the stated request or data, and a dashed arrow denotes the stated control or dependency. These symbols do not imply cache coherence or measured implementation status.
+Use @fig-component-language as the reading key: containment denotes ownership, a solid arrow carries the stated request or data, and a dashed arrow denotes the stated control or dependency. The symbols describe structure only: they carry no claim about cache coherence or measured implementation status.
 
 A single-cycle processor completes fetch, decode, register read, ALU operation, memory access and register writeback in one clock period. Its simplicity is attractive, but the period must accommodate the slowest instruction: instruction memory, register file, ALU, data memory and writeback. Most instructions leave part of that long period unused.
 
@@ -62,7 +62,7 @@ The immediate generator is an important boundary. I-, S-, B-, U- and J-type enco
 
 Execute selects register or immediate operands and performs integer arithmetic, comparisons and address generation. For a load/store, the ALU result is the effective address. For a conditional branch, it produces the comparison result and target address. The control path chooses whether the next fetch should continue sequentially or redirect to the target.
 
-The main pipeline hazard at this point is a data dependence. If instruction `i+1` needs the value written by instruction `i`, waiting until Writeback would insert unnecessary bubbles. Forwarding paths return an ALU or writeback result directly to later Execute operands. The forwarding logic must prefer the youngest matching producer and must never forward a value for register `x0`.
+The main pipeline hazard at this point is a data dependence. If instruction `i+1` needs the value written by instruction `i`, waiting until Writeback would insert unnecessary bubbles. Forwarding paths return an ALU or writeback result directly to later Execute operands. The forwarding logic prefers the youngest matching producer, and it always leaves register `x0` alone.
 
 ### Memory and synchronous data memory
 
@@ -81,7 +81,7 @@ Pipelining creates hazards because stages overlap.
 | Control hazard | Conditional branch changes PC | Flush wrong-path instruction(s), redirect Fetch |
 | Structural hazard | One memory port serves fetch and load/store | Separate memories/ports or explicit arbitration |
 
-A stall holds selected pipeline registers and prevents side effects from being duplicated. A flush replaces an instruction with a benign bubble by clearing its controls. These two actions are different: holding a wrong-path instruction preserves the bug, while flushing a valid load response loses data. Define enables and clears per pipeline register and verify them with short instruction sequences before running large programs.
+A stall holds selected pipeline registers and prevents side effects from being duplicated. A flush replaces an instruction with a benign bubble by clearing its controls. The two actions solve different problems: holding a wrong-path instruction keeps the bug alive, while flushing a valid load response throws data away. Define enables and clears per pipeline register and verify them with short instruction sequences before running large programs.
 
 ## What the Simplified Version Omits
 
@@ -94,13 +94,13 @@ The full CORE-V Wally project contains many optional and privileged capabilities
 - **Privileged architecture:** no machine/supervisor/user modes, CSRs, PMP, MMU, page-table walker or delegation.
 - **Complex memory system:** no cache coherence, external-bus retries, virtual addressing or DMA policy.
 
-The absence of these features does not mean they are unimportant. It means that the pipeline can first be understood through ordinary integer instructions and synchronous-memory timing. Adding a trap path later is a controlled extension: it must stop younger instructions, preserve the faulting PC/cause, redirect Fetch to a vector and guarantee precise architectural state.
+These features are left out because they are important enough to deserve their own step: the pipeline is easier to understand first through ordinary integer instructions and synchronous-memory timing. Adding a trap path later is a controlled extension: it must stop younger instructions, preserve the faulting PC/cause, redirect Fetch to a vector and guarantee precise architectural state.
 
 ## Implementation Guide for the Simplified Pipeline
 
 Implement the simplified design as small modules with explicit interfaces: `ifu`, `decoder`, `regfile`, `alu`, `hazard`, instruction memory and data memory. Keep the stage registers in the top-level pipeline or in named stage modules so waveforms retain architectural meaning.
 
-For FPGA targets, infer synchronous block RAM deliberately. Initialize instruction memory from a reproducible file and register addresses/read data according to the selected RAM template. Use a single clock enable policy; do not gate the clock with LUT logic. The clocking-and-timing chapter explains why register enables are safer and easier to analyze.
+For FPGA targets, infer synchronous block RAM deliberately. Initialize instruction memory from a reproducible file and register addresses/read data according to the selected RAM template. Use a single clock-enable policy, and keep LUT logic out of the clock path. The clocking-and-timing chapter explains why register enables are safer and easier to analyze.
 
 Test in this order:
 
@@ -138,9 +138,9 @@ The configuration name is a directory label, not a complete manifest of every op
 | Reset PC | `0x80000000` | The first instruction is fetched from the RAM region |
 | Uncore targets | RAM, boot ROM, CLINT, PLIC, UART, GPIO and other peripherals enabled | Both transaction and interrupt paths are present |
 
-`config/shared/config-shared.vh` derives additional fields, including the physical-address width. RV32 has a 32-bit integer width but this Wally configuration derives a 34-bit physical-address width. Do not truncate all internal addresses merely because the program uses 32-bit registers.
+`config/shared/config-shared.vh` derives additional fields, including the physical-address width. RV32 has a 32-bit integer width but this Wally configuration derives a 34-bit physical-address width. Internal addresses keep their full width, even though the program only sees 32-bit registers.
 
-This baseline permits following cache misses, MMIO and interrupts in one configuration. It does not prove that a particular FPGA has sufficient resources or that an operating-system image boots without further platform work. The [FPGA SoC chapter](../05-fpga-implementation/fpga-soc.qmd) selects a different wrapper, memory implementation and configuration for its target.
+This baseline permits following cache misses, MMIO and interrupts in one configuration. Whether a particular FPGA has enough resources, or whether an operating-system image boots, depends on further platform work. The [FPGA SoC chapter](../05-fpga-implementation/fpga-soc.qmd) selects a different wrapper, memory implementation and configuration for its target.
 
 ### Read the hierarchy as a functional map
 
@@ -184,7 +184,7 @@ For this baseline, the main decoded regions include:
 | GPIO | `0x10060000` | 256-byte region | Input, output and event registers |
 | Uncore RAM | `0x80000000` | 128 MiB decoded region | Program and data storage in this model |
 
-The configuration encodes ranges as base-plus-range masks. The decoded region is not a claim that the eventual FPGA contains 128 MiB of on-chip SRAM, nor that every byte of a peripheral window corresponds to an implemented register. Storage resources and register offsets require separate inspection.
+The configuration encodes ranges as base-plus-range masks. A decoded region only reserves address space: the eventual FPGA need not contain 128 MiB of on-chip SRAM, and not every byte of a peripheral window is an implemented register. Check storage resources and register offsets separately.
 
 The loader, linker script and RTL must agree. A firmware binary linked at `0x80000000` needs initialized instruction bytes there when reset is released. An enabled boot ROM at `0x1000` does not automatically become the reset destination. Also, this baseline disables automatic RAM/ROM preload flags; the chosen harness must supply the image through its supported loading mechanism.
 
@@ -196,7 +196,7 @@ The sequence to observe is:
 
 1. The wrapper supplies a clock and asserts external reset. `wallypipelinedsoc` synchronizes reset to the core clock; a board wrapper may add further clock/reset requirements.
 2. Reset establishes the pipeline and control state and the configured initial PC.
-3. After safe release, IFU attempts to fetch from `0x80000000`. In the cache-enabled baseline, instruction availability can involve the I-cache and bus; do not assume immediate data merely because the address is known.
+3. After safe release, IFU attempts to fetch from `0x80000000`. In the cache-enabled baseline, instruction availability can involve the I-cache and bus; the data is not immediately available just because the address is known.
 4. Returned instruction bits remain associated with their fetch PC and enter the ordinary decode/execute path.
 5. Startup firmware initializes the stack, any required global-pointer setup, data/BSS state and trap handling according to its actual software runtime.
 6. Firmware enables the devices and interrupts needed by the application only after their contracts are established.
@@ -239,13 +239,13 @@ Now consider a word store to GPIO `output_val`, at base plus offset `0x0c`: addr
 
 **AHB ownership.** EBU selects the transaction. The AHB address phase carries the target and operation, while the matching write data belong to its data phase. Uncore recognizes the GPIO region and directs it to the AHB-to-APB bridge. The bridge preserves the transaction while the downstream interface completes [@cvwAhbApb].
 
-**APB ownership.** The bridge performs setup, then access. GPIO applies the selected enabled-byte updates at a completed write transfer. If the access waits, control and payload remain associated with the same operation; they must not cause a new side effect on every waiting clock.
+**APB ownership.** The bridge performs setup, then access. GPIO applies the selected enabled-byte updates at a completed write transfer. If the access waits, control and payload stay tied to the same operation, so a waiting clock cycle never repeats the side effect.
 
 **Return and visibility.** The target response returns through the bridge and AHB response selection. GPIO's stored output value changes, but physical output also depends on enables, alternate functions, reset state and wrapper pin wiring. Trace the register update and `GPIOOUT`/`GPIOEN` separately before diagnosing a dark LED.
 
 For a clean first exercise, use word-aligned writes, keep alternate GPIO functions and XOR disabled, and set one output bit. Observe the completed APB write, stored register value and resulting output together. Then stall the upstream path and verify that the device sees exactly one completed transfer.
 
-The store has no integer destination, but it has a real architectural/device effect. An interrupt cannot be treated as permission to repeat the store on return. Likewise, cancelling a later instruction does not undo an already applied GPIO write.
+The store has no integer destination, but it has a real architectural/device effect. That is why an interrupt never gives permission to repeat the store on return, and why cancelling a later instruction cannot undo a GPIO write that has already been applied.
 
 ### Journey 3: a timer event becomes a machine-mode interrupt
 
@@ -257,13 +257,13 @@ For hart zero, the conventional offsets in this implementation place `mtimecmp` 
 
 **Pending is different from enabled.** When `mtime` reaches or exceeds `mtimecmp`, the timer request becomes pending. The machine timer enable is `mie.MTIE`, bit 7; global machine interrupt enable is `mstatus.MIE`, bit 3 for the chosen machine-mode scenario. A pending event with those enables clear is not automatically taken [@riscvPrivilegedSpec].
 
-**Take the event at a safe boundary.** Wally's privileged/trap logic qualifies interrupt requests together with valid instruction and memory-progress conditions. It must avoid abandoning partially completed work in a way that repeats a side effect. Look at `src/privileged/trap.sv`, including its committed-operation and instruction-valid conditions, rather than assuming that the interrupt immediately redirects the very cycle its source rises [@cvwTrap].
+**Take the event at a safe boundary.** Wally's privileged/trap logic qualifies interrupt requests together with valid instruction and memory-progress conditions. It must avoid abandoning partially completed work in a way that repeats a side effect. Look at `src/privileged/trap.sv`, including its committed-operation and instruction-valid conditions, since the interrupt does not redirect execution in the very cycle its source rises [@cvwTrap].
 
 **Enter the handler precisely.** Machine trap state identifies the return PC and cause. For a machine timer interrupt on RV32, the interrupt flag and cause 7 give `mcause=0x80000007`. Trap entry saves the prior interrupt-enable state in `MPIE`, clears `MIE` and records the prior privilege in `MPP`. Fetch redirects to the trap entry. The return PC is the architectural resume point chosen by the trap logic, not an arbitrary currently visible fetch PC.
 
 **Save software context and service the source.** Hardware does not push all integer registers onto a stack. The entry code or an established interrupt ABI must preserve every value needed to resume the interrupted program. A C handler called through an ordinary function convention requires an appropriate assembly entry/exit wrapper or compiler interrupt convention. Count the event, perform the intended work and move `mtimecmp` to a future deadline.
 
-**Return.** Restore the saved software context and execute `mret`. It restores privilege/interrupt state according to the architecture and resumes at `mepc`. Do not unconditionally add four to `mepc`: this is an asynchronous interrupt, and compressed instruction support also makes a universal four-byte assumption unsafe. If the timer remains pending, another interrupt may follow as soon as the restored enables permit it.
+**Return.** Restore the saved software context and execute `mret`. It restores privilege/interrupt state according to the architecture and resumes at `mepc`. Adding four to `mepc` unconditionally would be a mistake: this is an asynchronous interrupt, and compressed instruction support makes a universal four-byte step unsafe. If the timer remains pending, another interrupt may follow as soon as the restored enables permit it.
 
 | Firmware or RTL event | Observation to record |
 |---|---|
@@ -280,7 +280,7 @@ Interrupt latency includes source generation, qualification, pipeline/memory con
 
 For a UART or GPIO event, the peripheral's interrupt output feeds a PLIC source. Firmware configures source priority, context enable and threshold. PLIC then asserts an external interrupt signal such as `MExtInt`, while the core separately applies its machine external interrupt enable and privilege rules [@cvwPlic].
 
-The handler reads the claim register to identify a source, services the device and writes completion. Claiming is not equivalent to clearing the device condition; completing without servicing a persistent condition can lead to repeated interrupts. Keep the returned claim ID rather than assuming that every machine external interrupt comes from the UART.
+The handler reads the claim register to identify a source, services the device and writes completion. Claiming and clearing the device condition are different steps, and completing without servicing a persistent condition leads to repeated interrupts. Keep the returned claim ID, because not every machine external interrupt comes from the UART.
 
 This contrasts with the timer path: a timer handler reprograms CLINT compare state and does not issue a PLIC claim/complete transaction. The common part is precise trap entry, software context handling and architectural return. The peripheral-specific part is how the pending condition is serviced.
 
@@ -288,7 +288,7 @@ This contrasts with the timer path: a timer handler reprograms CLINT compare sta
 
 ![Three causal journeys in the selected Wally SoC: a cache-miss RAM load, an uncached GPIO write and a machine timer interrupt. Original teaching diagram based on the inspected configuration and RTL. Arrows indicate causality, not fixed cycle counts.](../../figures/wally-soc-three-paths.svg){#fig-wally-soc-three-paths fig-alt="RAM refill ends in load writeback, GPIO MMIO ends in a device register update, and a timer event ends in trap service and architectural return"}
 
-Compare the instruction-fetch, load-miss and interrupt journeys in @fig-wally-soc-three-paths. They cross different interfaces and must not be inferred from the same timing waveform.
+Compare the instruction-fetch, load-miss and interrupt journeys in @fig-wally-soc-three-paths. They cross different interfaces, so each needs its own timing waveform.
 
 A RAM load consumes a returned value. A device write commits a side effect. An interrupt preserves foreground execution while transferring control to service code. All three can stall or require bus activity, but their correctness conditions differ.
 
@@ -325,7 +325,7 @@ The simplified pipeline establishes instruction timing and hazards. The complete
 
 ## Verification scope of this teaching core
 
-Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt/trap/privileged machinery is deliberately omitted, so a passing teaching-core test cannot establish those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios; neither experiment is a complete architectural or microarchitectural qualification of every Wally configuration. A retirement comparator and broader feature/coverage plan remain explicit integration work.
+Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt, trap and privileged machinery is deliberately omitted, so a passing teaching-core test says nothing about those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios. Neither experiment qualifies every Wally configuration, architecturally or microarchitecturally. A retirement comparator and broader feature/coverage plan remain explicit integration work.
 
 <!-- chapter-review:core-v-wally -->
 
@@ -340,7 +340,7 @@ Explain a load-use stall and a redirected fetch, including how synchronous-memor
 
 ## Common mistakes {#review-core-v-wally-mistakes .unnumbered .unlisted}
 
-Treating the simplified diagram as the complete privileged core; confusing a stall with discarding an instruction.
+The simplified diagram is easy to mistake for the complete privileged core, but it leaves out the trap and privilege machinery. And a stall holds an instruction in place, while a flush discards it; mixing the two either keeps a bug alive or loses valid data.
 
 ## Try it yourself {#review-core-v-wally-try .unnumbered .unlisted}
 

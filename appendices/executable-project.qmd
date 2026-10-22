@@ -48,7 +48,7 @@ This entry is part of the nine automatic entries in `run all`. It generates an i
 
 The random seed controls the data and independent memory wait states. The RAM model deliberately allows AW and W to be accepted at different times. The control test also sends AW first and W first, exercises byte strobes and stalls response consumption. Changing a seed is useful, but directed boundary tests remain required.
 
-Inspect `labs/build/report.json` and the numbered command logs in `labs/build/dotproduct/`. `dotproduct.json` contains the generic synthesized netlist. The logs distinguish vector generation, simulation, synthesis and formal checking; a simulation PASS is not a timing result.
+Inspect `labs/build/report.json` and the numbered command logs in `labs/build/dotproduct/`. `dotproduct.json` contains the generic synthesized netlist. The logs distinguish vector generation, simulation, synthesis and formal checking; a simulation PASS says nothing about timing.
 
 ## Second run: real Wally, firmware and interrupts
 
@@ -99,7 +99,7 @@ docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
   from-concept-labs:2026.10 python labs/10-dotproduct/verify_negative.py /work/labs/build/dotproduct-negative
 ```
 
-The checker must reject unsigned multiplication and premature DONE. The premature-DONE version must also produce a formal counterexample. These copies remain under ignored build directories and never overwrite reference RTL. Explain the failing transaction or cycle in the counterexample, rather than submitting only the solver's exit status.
+The checker must reject unsigned multiplication and premature DONE. The premature-DONE version must also produce a formal counterexample. These copies remain under ignored build directories and never overwrite reference RTL. Explain the failing transaction or cycle in the counterexample; the solver's exit status alone is not an explanation.
 
 ## A project that grows across P1–P5
 
@@ -109,7 +109,7 @@ The firmware prints software and accelerator end-to-end cycle counts for the sam
 
 `constraints.sdc` supplies an illustrative clock and interface budget. Yosys checks elaboration, unintended latches and a generic netlist. For a physical extension, choose a real FPGA or ASIC technology, review clocks/reset/interface budgets and produce corresponding implementation evidence. RA7 also requires justified DFT, manufacturability and reliability analysis: accumulator/protocol observability, scan/reset interactions, memory test, partial writes and failure containment all remain relevant.
 
-Submitting the unchanged reference is not the final assessed project. Students should specify and demonstrate a defensible extension, preserve regression tests, add evidence for its new contract, and identify every produced, supplied and missing IP view. The existing coursework rubric and individual defence apply.
+The unchanged reference is a starting point and is not the final assessed project. Students should specify and demonstrate a defensible extension, preserve regression tests, add evidence for its new contract, and identify every produced, supplied and missing IP view. The existing coursework rubric and individual defence apply.
 
 ## Verification plan and evidence collection
 
@@ -117,7 +117,7 @@ Use @sec-verification-methodology for the requirement-driven hierarchy from RTL 
 
 ## Reusable IP Design and Packaging {#sec-reusable-ip}
 
-A working accelerator answers whether one design computes the expected result in its original environment. A reusable IP must also tell another team what it may connect, which configurations it may select, what software must do, and which evidence applies after integration. That team should not need the author's working directory, undocumented tool settings or memory of a successful demonstration. This section turns the dot-product example into a concrete release and connects that work to **RA6: reusable architectures, supported parameters and justified design patterns**.
+A working accelerator answers whether one design computes the expected result in its original environment. A reusable IP must also tell another team what it may connect, which configurations it may select, what software must do, and which evidence applies after integration. That team needs none of the author's working directory, undocumented tool settings or memory of a successful demonstration. This section turns the dot-product example into a concrete release and connects that work to **RA6: reusable architectures, supported parameters and justified design patterns**.
 
 [Lab 23](../labs/23-reusable-ip/README.md) delivers `dotproduct_ip` version **1.1.0**, with register ABI **1.0**. It generates the control endpoint's register-address decoding from a common description and retains the original MAC and DMA engine byte for byte. The release is qualified in an AXI bus-functional subsystem and a real-Wally firmware fixture. Both compile the **same three released RTL files**, without platform-specific edits. The bus-functional subsystem supplies one integration boundary; it is not described as a second processor SoC.
 
@@ -151,7 +151,7 @@ AXI4-Lite control uses 32-bit data and byte offsets, independent AW/W capture an
 
 Keep three version questions distinct. The **IP release version** identifies the complete delivered implementation and collateral. The **register ABI version** identifies the software-visible contract. The **manifest schema version** identifies how tools parse the package. Here release 1.1.0 introduces generated packaging while retaining ABI 1.0; it is separate from the historical 1.0.0 source-locked physical studies. Version numbers describe policy; exact hashes identify bytes.
 
-A changed register offset, field meaning, numerical format or reset contract needs an explicit compatibility decision. Adding a supported profile needs new configuration evidence. A decoder refactoring can preserve ABI while still changing the RTL identity and invalidating an old mapped netlist. ABI 1.0 has no readable IP-version register: select the software binding through platform metadata and the release manifest instead of inventing a successful discovery read.
+A changed register offset, field meaning, numerical format or reset contract needs an explicit compatibility decision. Adding a supported profile needs new configuration evidence. A decoder refactoring can preserve ABI while still changing the RTL identity and invalidating an old mapped netlist. ABI 1.0 has no readable IP-version register: select the software binding through platform metadata and the release manifest, and avoid inventing a successful discovery read.
 
 ### Generate register views from one description
 
@@ -167,7 +167,7 @@ For example, the IRQ acknowledgement entry is:
 
 The generated C view exposes `DP_IRQ_ACK` and `DP_IRQ_ACK_ACK_MASK`; the assembly view exposes the offset without C types. The latter matters because the machine interrupt handler acknowledges the peripheral from `start.S`. Generating a C header while leaving a literal address in assembly creates another source of drift.
 
-This is deliberately a small generation backend. It generates addresses and views; **access behavior and field positions remain implemented in an explicit behavioral template**. It rejects unsupported field layouts rather than accepting metadata that the hardware ignores. A general register compiler would need backends for additional policies, reset domains, side effects and verification. The supplied generator is not presented as such a compiler.
+This is deliberately a small generation backend. It generates addresses and views; **access behavior and field positions remain implemented in an explicit behavioral template**. It rejects unsupported field layouts, so it never accepts metadata that the hardware ignores. A general register compiler would need backends for additional policies, reset domains, side effects and verification. The supplied generator is not presented as such a compiler.
 
 Single-source generation also creates common-mode risk. A wrong offset shared by the RTL, driver and test could make all three agree incorrectly. The AXI regression retains the independently written ABI 1.0 accesses and numerical oracle from Lab 10. The release negative controls reject duplicate offsets and unsupported field layouts. Functional tests still check byte strobes, busy rejection, retained responses and event-versus-ACK priority; a generated table cannot establish those behaviors by itself.
 
@@ -201,7 +201,7 @@ The package supplies an arbitrary-precision Python reference, seeded vectors, an
 
 The formal recipe checks control properties at depth 20 with `MAX_LENGTH=16`, and the engine at depth 24 with a fixed one-pair descriptor. It separately obtains a reachable DONE witness. This scope is the same even when the simulation profile allows 256 pairs; it is not an exhaustive proof of long jobs, fairness, arbitrary reset sequences or complete AXI compliance. Deliver the assumptions and bounds beside the result so a new environment can decide whether they still apply.
 
-A useful integration checklist asks who owns each assumption. Does the fabric guarantee a matching response ID and a final beat? Can another master overwrite an input? Can a reset strand a retained response? Who provides a timeout if memory never replies? If the platform cannot satisfy an assumption, change the platform or revise the IP contract and implementation. Passing unit tests cannot answer a question outside their environment.
+A useful integration checklist asks who owns each assumption. Does the fabric guarantee a matching response ID and a final beat? Can another master overwrite an input? Can a reset strand a retained response? Who provides a timeout if memory never replies? If the platform cannot satisfy an assumption, change the platform or revise the IP contract and implementation. Unit tests that pass cannot answer a question outside their environment.
 
 ### Lock dependencies and preserve ownership
 
@@ -209,7 +209,7 @@ The release inventory records the generated RTL, templates, generator, profile d
 
 The checked qualification mounts only the delivered package, a results directory and, for Wally, the read-only dependency clone. It runs offline with the package itself read-only. This tests whether the release is autonomous: a hidden include from the author's book checkout cannot rescue a missing delivered file. Tool-image identity and per-command output accompany the evidence.
 
-Checksums detect changes only relative to a trusted identity. A party that can replace both RTL and its inventory can generate matching hashes. Preserve an independently obtained release digest and apply the project's release/authentication policy. Record licenses at the file/dependency boundary; packaging a component does not replace its original terms.
+Checksums detect changes only relative to a trusted identity. A party that can replace both RTL and its inventory can generate matching hashes. Preserve an independently obtained release digest and apply the project's release/authentication policy. Record licenses at the file/dependency boundary; packaging a component leaves its original terms in force.
 
 ### Distinguish logical and physical deliverables
 
@@ -222,7 +222,7 @@ Checksums detect changes only relative to a trusted identity. A party that can r
 | FPGA view | No new board implementation for release 1.1.0 | Pin/device/clock constraints, route/timing and board evidence |
 | ASIC view | No new mapped netlist, LEF or GDS for release 1.1.0 | Technology/corner lock, extracted timing, power, DRC/LVS and DFT |
 
-A reusable soft IP need not bundle a technology-specific hard macro, but it must identify which views exist. An example 10 ns clock is a requested budget, not achieved frequency. A generic netlist is not a placed implementation. Historical results in @sec-complete-case and @sec-layout-verification show how to document physical evidence, but belong to their own hashes. The newly generated endpoint cannot inherit their area, timing, power or DRC/LVS status merely because it preserves register behavior.
+A reusable soft IP need not bundle a technology-specific hard macro, but it must identify which views exist. An example 10 ns clock is a requested budget and not an achieved frequency, and a generic netlist is not yet a placed implementation. Historical results in @sec-complete-case and @sec-layout-verification show how to document physical evidence, but belong to their own hashes. The newly generated endpoint cannot inherit their area, timing, power or DRC/LVS status merely because it preserves register behavior.
 
 ### Reproduce and review the release
 

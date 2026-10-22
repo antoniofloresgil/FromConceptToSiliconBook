@@ -8,7 +8,7 @@ A processor can execute an arithmetic operation quickly and still spend most of 
 
 This chapter develops a synchronous memory contract, explains cache organization and then follows instruction and data accesses through CORE-V Wally. It builds mainly on Chapter 10 of *RISC-V System-on-Chip Design*, with pipeline memory timing from Chapter 7, memory management from Chapter 11, LSU integration from Chapter 12 and instruction-cache integration from Section 13.3.1 [@harrisRiscvSoc].
 
-Wally's caches are configurable implementations, not requirements of the RISC-V ISA. A small configuration can use tightly integrated memories without a cache; an application-oriented configuration can include instruction/data caches and virtual memory. The examples below distinguish a physical memory, a functional cache model and full Wally RTL. None is a substitute for the others' verification.
+Wally's caches are configurable implementations, not requirements of the RISC-V ISA. A small configuration can use tightly integrated memories without a cache; an application-oriented configuration can include instruction/data caches and virtual memory. The examples below use three different things: a physical memory, a functional cache model and full Wally RTL. Each one is verified on its own terms.
 
 ## Concepts
 
@@ -26,7 +26,7 @@ CPU registers
    +-- device access ------- uncached path ---------------+-- peripheral registers
 ```
 
-This diagram presents alternatives, not a mandatory sequence. A tightly integrated memory is directly addressed storage with predictable access timing; it is not a cache containing automatically selected copies of other memory. Main memory may be on-chip RAM, external DRAM or a simulation model. Additional cache levels are possible in other systems but should not be assumed to exist in a chosen Wally configuration.
+This diagram presents alternatives, not a mandatory sequence. A tightly integrated memory is directly addressed storage with predictable access timing, whereas a cache holds automatically selected copies of other memory. Main memory may be on-chip RAM, external DRAM or a simulation model. Other systems can have additional cache levels, so check the chosen Wally configuration to see which ones it has.
 
 | Storage | Useful role | Integration issue |
 |---|---|---|
@@ -59,7 +59,7 @@ Before writing RTL, specify the storage interface. The client must know which ed
 
 **Word address** and **byte address** are not interchangeable. A 256 × 32-bit memory holds 1 KiB. Its eight-bit word index selects one of 256 entries, while a byte-addressed system needs ten offset bits to describe all bytes. The low two byte-address bits select a lane inside a 32-bit word; passing the full byte address into the array index silently changes the mapping.
 
-A synchronous read is not an arbitrary extra delay added to a combinational read. The accepted address must stay associated with its returned data. A stall after acceptance must not allow a newer address to replace the pending response. The processor must retain the load's destination and controls alongside that response.
+A synchronous read is more than an extra delay on a combinational read. The accepted address stays associated with its returned data, so a stall after acceptance cannot let a newer address replace the pending response, and the processor keeps the load's destination and controls alongside it.
 
 ### Read-during-write modes and port conflicts
 
@@ -72,9 +72,9 @@ A single read/write port cannot independently service two unrelated addresses on
 | No-change | Previous output retained |
 | Undefined/unsupported | Client must avoid the collision |
 
-A registered address followed by a combinational array output can behave differently from a registered data output. Simulation statements, inferred primitives and SRAM macro models must agree. A wrapper's name or comment is not enough evidence for a collision mode: inspect the actual assignments and the backend's specification.
+A registered address followed by a combinational array output can behave differently from a registered data output. Simulation statements, inferred primitives and SRAM macro models must agree. A wrapper's name or comment is not reliable evidence of its collision mode, so inspect the actual assignments and the backend's specification.
 
-Where the required behavior differs from a primitive, the wrapper may insert bypass logic, a read-modify-write sequence or an extra cycle. That adaptation changes latency or resource cost. Do not claim portable memory semantics while relying on an undocumented collision result.
+Where the required behavior differs from a primitive, the wrapper may insert bypass logic, a read-modify-write sequence or an extra cycle. That adaptation changes latency or resource cost. Memory semantics are only portable if they do not depend on an undocumented collision result.
 
 Byte masks must also be explicit. In a little-endian 32-bit word `0x11223344`, increasing byte addresses contain `44`, `33`, `22`, `11`. A masked write of `0xAABBCCDD` with mask `0101` changes the word to `0x11BB33DD`. The mask is a lane enable, not the data value to be stored.
 
@@ -96,7 +96,7 @@ Transfers occur in **lines**, not only in the requested word. A 64-byte line con
 
 Larger lines amortize request latency and exploit spatial locality, but consume more transfer time and can evict useful information. A larger line is not automatically a larger effective working set. Compare useful bytes, miss rate and refill bandwidth under the same workload.
 
-A hit means the requested line is present and usable; a miss means it must be obtained or handled through another path. An uncached device access is neither an ordinary cache hit nor evidence of a broken cache: bypass is intentional for regions with unsuitable semantics.
+A hit means the requested line is present and usable; a miss means it must be obtained or handled through another path. An uncached device access is neither an ordinary hit nor a sign of a broken cache, since bypass is intentional for regions whose semantics a cache would break.
 
 ### Capacity, sets, ways and address fields
 
@@ -181,9 +181,9 @@ The store-miss allocation choice is separate:
 
 Write-back with write allocation is a useful model for Wally's data-cache path. A partial store miss first obtains the untouched bytes, then merges the selected bytes. Replacing the whole line with a repeated store value destroys neighboring memory contents.
 
-A dirty victim must be written to its **old address**, reconstructed from its stored tag and set. Using the incoming request's tag writes the old data to the wrong block. Preserve victim identity until writeback completes; only then overwrite its storage with the refill.
+A dirty victim must be written to its **old address**, reconstructed from its stored tag and set. Using the incoming request's tag would write the old data to the wrong block. Keep the victim's identity until the writeback completes, and only then overwrite its storage with the refill.
 
-RISC-V atomics add another requirement. An AMO must perform its read-modify-write with the required indivisibility; LR/SC uses reservation state and a conditional store outcome. Two ordinary accesses through a cache do not automatically satisfy those contracts. Multiple harts and DMA make the scope of atomicity especially important. The cache model later in this chapter deliberately excludes atomics, while full Wally configurations can add the corresponding LSU machinery [@harrisRiscvSoc].
+RISC-V atomics add another requirement. An AMO must perform its read-modify-write with the required indivisibility; LR/SC uses reservation state and a conditional store outcome. Two ordinary accesses through a cache do not give those guarantees on their own. Multiple harts and DMA make the scope of atomicity especially important. The cache model later in this chapter deliberately excludes atomics, while full Wally configurations can add the corresponding LSU machinery [@harrisRiscvSoc].
 
 ```text
 request -> lookup -> hit ---------------------------> complete
@@ -195,7 +195,7 @@ request -> lookup -> hit ---------------------------> complete
                                +-> fetch requested line -> install/merge -> complete
 ```
 
-Do not mark a line valid while its refill is only partly received unless the design has additional per-beat validity machinery. A **blocking** cache retains the miss and prevents conflicting new accesses until service completes. A nonblocking cache can support multiple misses through miss-status entries, merging and response tracking; adding a request queue alone does not implement those features.
+A line should stay invalid while its refill is only partly received, unless the design has per-beat validity machinery. A **blocking** cache retains the miss and prevents conflicting new accesses until service completes. A nonblocking cache can support multiple misses through miss-status entries, merging and response tracking; a request queue alone does not provide those features.
 
 ### Timing: a hit can still stall
 
@@ -203,7 +203,7 @@ A hit is a placement result, not a guarantee of zero extra cycles. Synchronous a
 
 A store may use the data-array port when the following load wants to read another row. The younger operation then waits even if its tag would match. Separately, a load-use dependence waits for the loaded value before a dependent instruction can execute. These are different causes: storage-port contention versus an operand not yet available.
 
-During a miss, hold request address, size, store data and byte mask. A stall must not trigger the same store repeatedly. A pipeline flush discards speculative work, while cache maintenance changes stored copies; these uses of the word flush must not be confused.
+During a miss, hold request address, size, store data and byte mask. A stall must not trigger the same store repeatedly. The word flush has two meanings here: a pipeline flush discards speculative work, while cache maintenance changes stored copies.
 
 ### Average memory access time and program performance
 
@@ -221,7 +221,7 @@ $$
 \mathrm{AMAT}=t_1+m_1(t_2+m_2t_{\mathrm{memory}}).
 $$
 
-Here $m_2$ is conditional on reaching L2. With $t_1=1$, $m_1=0.05$, $t_2=6$, $m_2=0.2$ and $t_{\mathrm{memory}}=50$, AMAT is 1.8 cycles. This mathematical example does not imply that Wally includes an L2 cache.
+Here $m_2$ is conditional on reaching L2. With $t_1=1$, $m_1=0.05$, $t_2=6$, $m_2=0.2$ and $t_{\mathrm{memory}}=50$, AMAT is 1.8 cycles. The example is purely mathematical, and Wally itself is not assumed to include an L2 cache.
 
 For a blocking in-order core, a simple CPI estimate separates instruction and data penalties:
 
@@ -242,7 +242,7 @@ Discarding a dirty line without preserving required data loses stores. Reset may
 
 Instruction/data coherence is another issue. Stores can update code through the data path while the I-cache retains old instructions. `fence.i` provides local-hart instruction-fetch synchronization under Zifencei; it is not a general broadcast invalidation of every hart or a DMA cache-maintenance instruction. The book's Wally sequence includes data writeback and instruction invalidation [@harrisRiscvSoc; @riscvZifencei].
 
-Zicbom supplies block-management instructions such as `cbo.clean`, `cbo.inval` and `cbo.flush`; Zicboz includes `cbo.zero`. Their availability, privilege controls and platform visibility requirements must be checked. An RTL input supporting an operation does not prove every configured program may execute the corresponding instruction [@riscvCacheManagement].
+Zicbom supplies block-management instructions such as `cbo.clean`, `cbo.inval` and `cbo.flush`; Zicboz includes `cbo.zero`. Their availability, privilege controls and platform visibility requirements must be checked. An RTL input that supports an operation does not mean every configured program may execute the corresponding instruction [@riscvCacheManagement].
 
 For noncoherent DMA, software gives a buffer to the device only after input data is visible under the platform's rules, and obtains output only after stale CPU copies are handled. Share ownership at cache-line granularity or avoid unrelated data in the same line. Otherwise a later dirty CPU writeback can overwrite device-produced bytes. An interrupt reports completion; it does not solve cache visibility.
 
@@ -250,7 +250,7 @@ For noncoherent DMA, software gives a buffer to the device only after input data
 
 A TLB caches address translations, while a data cache stores memory contents. A TLB miss does not necessarily mean a D-cache miss; page-table walking can itself hit or miss in the data cache. Page faults, access faults and cache misses are distinct outcomes.
 
-Physical memory attributes (PMA) describe properties such as cacheability and permitted access types. Physical memory protection (PMP) controls access permissions. A cache hit must not bypass required protection checks. Ordinary MMIO should take a suitable uncached, nonspeculative path, as discussed in the buses chapter [@harrisRiscvSoc; @riscvPrivilegedSpec].
+Physical memory attributes (PMA) describe properties such as cacheability and permitted access types. Physical memory protection (PMP) controls access permissions. A cache hit still goes through the required protection checks. Ordinary MMIO should take a suitable uncached, nonspeculative path, as discussed in the buses chapter [@harrisRiscvSoc; @riscvPrivilegedSpec].
 
 Wally overlaps array indexing with translation using low page-offset bits and compares physical tags afterward. For a straightforward virtually indexed, physically tagged (VIPT) cache with minimum page size $P$, requiring index plus offset to fit the page gives
 
@@ -260,7 +260,7 @@ $$
 
 The limit is per-way capacity, not necessarily total cache capacity. A 4 KiB, two-way cache has 2 KiB per way and fits a 4 KiB page-offset budget. Exceeding that geometry needs additional handling for aliasing/indexing; changing cache parameters beyond the implemented address slices is not a safe exploration point.
 
-`sfence.vma` synchronizes translation-related state; it is not a substitute for instruction synchronization or ordinary dirty-data cleaning. This chapter introduces the MMU ideas needed to understand the cache path. @sec-privileged-mmu develops M/S/U modes, delegation, Sv32 page tables, protection and precise faults, with a complete executable supervisor example.
+`sfence.vma` synchronizes translation-related state; it neither replaces instruction synchronization nor cleans dirty data. This chapter introduces the MMU ideas needed to understand the cache path. @sec-privileged-mmu develops M/S/U modes, delegation, Sv32 page tables, protection and precise faults, with a complete executable supervisor example.
 
 ### Memory and cache verification obligations
 
@@ -344,11 +344,11 @@ For an ASIC, a wrapper can select a characterized SRAM macro. Its externally vis
 | GDS/OASIS layout | Final physical geometry |
 | Netlist/SPICE views, as required | Connectivity and physical verification |
 
-An available simulation model does not prove the other views exist or agree. Match instance pins and dimensions across views. Account for macro placement, power connections and access to pins during floorplanning; a dense cache can become routing-limited even when the logical capacity fits.
+A simulation model is only one view, and the others have to exist and agree with it. Match instance pins and dimensions across views. Account for macro placement, power connections and access to pins during floorplanning; a dense cache can become routing-limited even when the logical capacity fits.
 
-Tag and data arrays need different widths. Padding a narrow tag into a wider macro wastes bits; splitting a line across banks increases instance count and mask logic. Valid/dirty metadata may be implemented in flip-flops rather than the same SRAM. Estimate the whole organization before claiming a memory area saving.
+Tag and data arrays need different widths. Padding a narrow tag into a wider macro wastes bits; splitting a line across banks increases instance count and mask logic. Valid/dirty metadata may be implemented in flip-flops rather than the same SRAM. Estimate the whole organization before counting on a memory area saving.
 
-Parity and ECC add another contract. Partial writes can require updating protection bits through a read-modify-write sequence. Correction latency and uncorrectable-error behavior affect the cache/controller interface. The examples here do not implement ECC; adding a parity bit to the declaration does not create error handling.
+Parity and ECC add another contract. Partial writes can require updating protection bits through a read-modify-write sequence. Correction latency and uncorrectable-error behavior affect the cache/controller interface. The examples here do not implement ECC, and a parity bit added to a declaration gives no error handling by itself.
 
 ### Reading Wally's memory-system RTL
 
@@ -371,7 +371,7 @@ Each cacheway contains tag/data storage and validity. Its hit qualifies the phys
 
 The inspected controller sequences ACCESS, WRITEBACK, FETCH, WRITE_LINE and ADDRESS_SETUP states, with additional maintenance states. The address-setup state handles array timing after operations rather than treating a refill as a combinational hit. CacheCommitted marks work that cannot be casually interrupted [@cvwCacheFsm].
 
-Although named cacheLRU, the replacement unit implements tree pseudo-LRU and prefers invalid ways before a tree-selected victim when needed. Its forwarding path supplies recently updated replacement state to a following lookup. Do not describe it as exact LRU merely from the filename [@cvwCacheLru].
+Although named cacheLRU, the replacement unit implements tree pseudo-LRU and prefers invalid ways before a tree-selected victim when needed. Its forwarding path supplies recently updated replacement state to a following lookup. The filename suggests exact LRU, and the implementation is a tree approximation [@cvwCacheLru].
 
 ### Geometry and configuration units in Wally
 
@@ -417,11 +417,11 @@ A dirty eviction adds write traffic as well as read refill traffic. Measuring on
 
 ### Tightly integrated and uncached paths
 
-IROM/DTIM configurations provide direct storage rather than automatic replacement. Their predictable timing is useful for teaching and bounded-latency code. Programs still need enough capacity and a clear address map; a TIM is not unlimited main memory with all misses removed.
+IROM/DTIM configurations provide direct storage and no automatic replacement. Their predictable timing is useful for teaching and bounded-latency code. Programs still need enough capacity and a clear address map, because a TIM is limited memory and not main memory with the misses removed.
 
 In a full cache-enabled LSU, cacheability and selected region determine whether an operation uses D$, a TIM or the external uncached path. The inspected LSU also coordinates translation/page walking, partial/misaligned accesses and performed-operation retention. These features depend on configuration; the simplified pipeline lacks some of them [@cvwLsu].
 
-A device access must not be turned into a line refill that reads neighboring registers with side effects. Follow an MMIO address through PMA/path selection and verify its actual bus transaction count. Merely disabling cache updates after the device read does not prevent speculative extra reads.
+A device access that turned into a line refill would read neighboring registers with side effects. Follow an MMIO address through PMA/path selection and verify its actual bus transaction count. Disabling cache updates after the device read is too late to prevent the speculative extra reads.
 
 While the processor is stalled, a refill or page walk may need to continue. Gating every memory component with the pipeline's stall signal can deadlock the operation needed to release that stall. Wally separates operation progress from permission to admit new processor work and tracks committed memory activity to avoid unsafe trap/reissue behavior [@harrisRiscvSoc].
 
@@ -429,7 +429,7 @@ While the processor is stalled, a refill or page walk may need to continue. Gati
 
 The IFU instantiates the shared cache as read-only and connects invalidation to instruction synchronization. It does not need ordinary dirty-store writeback, but it still needs tags, valid state, refill service and handling of redirects [@cvwIfu].
 
-RISC-V compressed instructions add a boundary case: a 32-bit instruction can begin at a halfword-aligned location near the end of a cache line, with its remaining half in the next line. Fetch must assemble the instruction from the right bytes and preserve its starting PC. A hit on the first line alone is insufficient.
+RISC-V compressed instructions add a boundary case: a 32-bit instruction can begin at a halfword-aligned location near the end of a cache line, with its remaining half in the next line. Fetch must assemble the instruction from the right bytes and preserve its starting PC. A hit on the first line alone is not enough.
 
 A branch redirect during an outstanding instruction refill does not erase an accepted bus obligation. Control can discard the wrong-path instruction, while transport still completes or drains the operation safely. This is another reason instruction validity, memory ownership and current fetch address are distinct state.
 
@@ -532,7 +532,7 @@ two-way 3 2 0
 
 Addresses 0x100 and 0x140 conflict in the direct-mapped organization. A dirty eviction saves DEADBEEF before the later refill. With two ways they coexist, so no eviction writeback is needed during this trace; the final clean still exports dirty data. The total number of accesses is five in each case.
 
-The model's writeback count includes both eviction and explicit clean operations. A timing estimator would need to distinguish their service, plus dirty versus clean misses. Returning a value directly from this Python function does not model a synchronous hit cycle or predict FPGA frequency.
+The model's writeback count includes both eviction and explicit clean operations. A timing estimator would need to distinguish their service, plus dirty versus clean misses. Returning a value directly from this Python function models neither a synchronous hit cycle nor FPGA frequency.
 
 ## Hands-on Experiments
 
@@ -553,7 +553,7 @@ Save `sync_memory` as `sync_memory.sv` and create a testbench with an independen
 
 Randomize addresses, masks and response waits. A scoreboard should update its reference once per accepted write and compare responses using their accepted request identity. Testing only final memory contents can miss an extra acknowledgement or a response belonging to another address.
 
-Simulate with a four-state tool when investigating unwritten values, and compare with the two-state simulator used elsewhere. Document differences rather than assuming a zero returned by one environment proves initialization in hardware.
+Simulate with a four-state tool when investigating unwritten values, and compare with the two-state simulator used elsewhere. Document the differences, since a zero returned by one environment says nothing about initialization in hardware.
 
 ### Experiment 2: check physical memory inference
 
@@ -573,7 +573,7 @@ yosys -p '
 
 With the default parameters, a check using Yosys 0.60 reported one `RAMB18E1` and surrounding interface logic. This is evidence of block-RAM inference for that tool/target combination, not a routed frequency measurement. Port timing and collision mode still need examination in the mapped implementation and validation for the final backend.
 
-Repeat with a backend or experiment variant that forces ordinary register storage and compare resources/timing. Hold width, depth, masks and observable behavior fixed. If one implementation changes collision mode or read latency, describe it as a different contract rather than a fair interchangeable-backend comparison.
+Repeat with a backend or experiment variant that forces ordinary register storage and compare resources/timing. Hold width, depth, masks and observable behavior fixed. If one implementation changes collision mode or read latency, call it a different contract, because it is no longer a fair comparison of interchangeable backends.
 
 For an ASIC exercise, select an available macro and collect its required views. Build an adapter if the native mask polarity or output timing differs. Rerun interface tests against its functional model before treating Liberty/LEF-based implementation results as comparable. A black-box declaration with no timing model is not a completed macro integration.
 
@@ -641,7 +641,7 @@ void initialize_probe(void) {
 
 The volatile qualifier preserves the intended compiler-visible loads; cacheability still comes from the mapped RAM attributes. Check the emitted assembly and linker map. The example accesses three lines, not every byte of the 4,100-byte allocation. With 1,000 iterations its unsigned checksum is 6,000.
 
-Initialization itself touches the cache. Establish a documented starting condition using supported maintenance, a controlled reset/reload or a declared warm-state procedure. If repeating a timed run, distinguish warmup, measured loop and result reporting. Do not include UART printing in the timed kernel.
+Initialization itself touches the cache. Establish a documented starting condition using supported maintenance, a controlled reset/reload or a declared warm-state procedure. If repeating a timed run, distinguish warmup, measured loop and result reporting. Keep UART printing out of the timed kernel.
 
 Change the pattern to two same-set blocks, then compare associativity at fixed capacity. Recalculate mappings for each point. Record cycles, correct checksum, miss events, writebacks, bus traffic, hit latency and achieved implementation frequency. A functional cache model can predict placement effects; RTL simulation and implementation supply timing/resource evidence.
 
@@ -649,7 +649,7 @@ Change the pattern to two same-set blocks, then compare associativity at fixed c
 
 [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-memories-caches-06 .learning-activity}
 
-In a supported bare-metal environment, modify instructions in writable executable RAM using a controlled routine, perform the required local instruction synchronization and execute the updated code. Use the toolchain/platform-supported mechanism and ensure Zifencei is present. Observe data-side preservation, instruction invalidation and refill. Do not describe a passing test without synchronization as an architectural guarantee.
+In a supported bare-metal environment, modify instructions in writable executable RAM using a controlled routine, perform the required local instruction synchronization and execute the updated code. Use the toolchain/platform-supported mechanism and ensure Zifencei is present. Observe data-side preservation, instruction invalidation and refill. A test that passes without synchronization shows luck with one implementation and is no architectural guarantee.
 
 Separately inject interrupts or pipeline stalls around a pending cache/bus store. Trace accepted side effects and confirm they occur exactly once. Exercise an instruction crossing a cache-line boundary if compressed instructions are enabled. Later, enable a known virtual-memory configuration and distinguish TLB misses/page walks from cache misses in the same traces.
 
@@ -670,7 +670,7 @@ Explain a dirty eviction/refill and why DMA completion does not by itself guaran
 
 ## Common mistakes {#review-memories-caches-mistakes .unnumbered .unlisted}
 
-Treating a cache miss as a translation fault; comparing hit counts while ignoring memory contents and ownership.
+Two confusions waste debugging time. A cache miss is not a translation fault: one fetches data and the other reports a mapping problem. And hit counts can look healthy while the memory contents and ownership are wrong, so compare data as well as statistics.
 
 ## Try it yourself {#review-memories-caches-try .unnumbered .unlisted}
 

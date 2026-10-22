@@ -29,7 +29,7 @@ The right choice is driven by operand locality and latency. A single-cycle popul
 
 ### A quantitative decision rule
 
-Compare end-to-end time rather than only arithmetic throughput:
+Compare end-to-end time as well as arithmetic throughput:
 
 $$
 T_\text{offload} = T_\text{setup} + T_\text{transfer} + T_\text{compute} + T_\text{completion}.
@@ -59,7 +59,7 @@ Using a ratified extension avoids inventing assembler syntax, compiler intrinsic
 
 ### Why custom instructions still exist
 
-Some algorithms are domain-specific, research-oriented or too small to justify an ISA-wide extension. RISC-V reserves four major opcode spaces, commonly named `custom-0` through `custom-3`, for non-standard instructions. They are the appropriate starting point for a local extension; software must not reuse an opcode assigned to a standard extension merely because a particular core does not implement it [@riscvUnprivilegedSpec].
+Some algorithms are domain-specific, research-oriented or too small to justify an ISA-wide extension. RISC-V reserves four major opcode spaces, commonly named `custom-0` through `custom-3`, for non-standard instructions. They are the appropriate starting point for a local extension. An opcode assigned to a standard extension stays reserved for it, even on a core that does not implement that extension [@riscvUnprivilegedSpec].
 
 A custom instruction needs a complete architectural specification:
 
@@ -93,7 +93,7 @@ static inline int32_t dot2_custom(uint32_t a, uint32_t b) {
 }
 ```
 
-The exact `.insn` fields are part of the extension specification and must be tested against the decoder. Do not present the snippet as a portable instruction: it is intentionally tied to this proposed implementation.
+The exact `.insn` fields are part of the extension specification and must be tested against the decoder. The snippet is tied to this proposed implementation on purpose, so it is not a portable instruction.
 
 ## Integrating an Instruction into a Five-Stage Core
 
@@ -130,7 +130,7 @@ The unit must accept a request exactly once, preserve operands while busy, retur
 
 ### Exceptions, debug and formal properties
 
-Precise exceptions mean that instructions older than a fault retire and younger instructions do not. A custom unit must obey this ordering even if it has begun arithmetic before an older memory access faults. Design the commit point explicitly; do not make architectural state visible merely when a datapath starts.
+Precise exceptions mean that instructions older than a fault retire and younger instructions do not. A custom unit must obey this ordering even if it has begun arithmetic before an older memory access faults. Design the commit point explicitly, because architectural state becomes visible at commit and not when a datapath starts.
 
 Single-step debug should execute the custom instruction as one architectural instruction. Hardware breakpoints, trace and retirement accounting must likewise see one committed instruction, not the internal micro-operations. Useful properties include:
 
@@ -174,7 +174,7 @@ Wally configurations use AHB and APB peripherals as part of their SoC environmen
 5. Route the interrupt to the PLIC or the selected external-interrupt path.
 6. Update the device-tree/platform description when software discovers peripherals dynamically.
 
-The bus slave must obey its protocol even when the computation takes thousands of cycles. A control-register write can complete in one transfer, while the engine works independently. Software should poll `STATUS` or receive an interrupt; it must never assume a store instruction itself waits for the filter result.
+The bus slave must obey its protocol even when the computation takes thousands of cycles. A control-register write can complete in one transfer, while the engine works independently. Software polls `STATUS` or receives an interrupt, because the store instruction does not wait for the filter result.
 
 ### Interrupts and completion
 
@@ -216,7 +216,7 @@ The protocol is as important as the FIR arithmetic. It prevents software from ch
 
 ### Coherence and ordering
 
-An accelerator that accesses a cacheable buffer is a coherence problem. If Wally's D-cache holds dirty source data, DMA can read stale memory. If DMA writes a destination that is cached by Wally, the core can read stale cache lines. RISC-V describes cacheability and coherence through physical memory attributes; non-coherent regions require platform-specific handling and should not be treated as ordinary memory by accident [@riscvRvWmo].
+An accelerator that accesses a cacheable buffer is a coherence problem. If Wally's D-cache holds dirty source data, DMA can read stale memory. If DMA writes a destination that is cached by Wally, the core can read stale cache lines. RISC-V describes cacheability and coherence through physical memory attributes; non-coherent regions need platform-specific handling and are easy to treat as ordinary memory by accident [@riscvRvWmo].
 
 For a first single-core FPGA prototype, choose one of these explicit policies:
 
@@ -227,13 +227,13 @@ For a first single-core FPGA prototype, choose one of these explicit policies:
 | Software clean/invalidate protocol | Reuses normal memory | Error-prone; needs cache-maintenance support |
 | Hardware-coherent DMA | Best programming model | Substantial cache/interconnect complexity |
 
-Do not assume `fence` alone writes dirty cache lines back or invalidates stale data; ordering and cache maintenance are separate concerns. If cache-management instructions are implemented, define the required clean/invalidate sequence for the exact Wally configuration. For the first FIR prototype, on-chip uncached memory or a D-cache-disabled configuration is the most straightforward correctness baseline.
+A `fence` orders accesses and neither writes dirty cache lines back nor invalidates stale data; ordering and cache maintenance are separate concerns. If cache-management instructions are implemented, define the required clean/invalidate sequence for the exact Wally configuration. For the first FIR prototype, on-chip uncached memory or a D-cache-disabled configuration is the most straightforward correctness baseline.
 
 ### Address translation and protection
 
-DMA must use a defined address space. A simple machine-mode embedded SoC may use physical addresses and restrict the accelerator to trusted firmware. A system with virtual memory or untrusted processes needs address translation and protection: an IOMMU, a tightly controlled kernel driver or a bounce-buffer scheme. Never let unprivileged software program unrestricted physical DMA addresses.
+DMA must use a defined address space. A simple machine-mode embedded SoC may use physical addresses and restrict the accelerator to trusted firmware. A system with virtual memory or untrusted processes needs address translation and protection: an IOMMU, a tightly controlled kernel driver or a bounce-buffer scheme. Unprivileged software must not be allowed to program unrestricted physical DMA addresses.
 
-Validate alignment, length overflow, address-range limits and response errors in hardware. On error, halt the engine, preserve an error code and avoid issuing further writes. A memory fault after partial output requires a documented recovery rule; a driver must not mistake partial output for a completed FIR block.
+Validate alignment, length overflow, address-range limits and response errors in hardware. On error, halt the engine, preserve an error code and avoid issuing further writes. A memory fault after partial output requires a documented recovery rule; a driver has to tell partial output from a completed FIR block.
 
 ## Practical Case: FIR/DSP Accelerator
 
@@ -276,7 +276,7 @@ DONE <- WRITE_Y <- ROUND_SATURATE <- NEXT_OUTPUT
 
 On an FPGA, describe multiplication so the synthesis flow can map it to DSP blocks; confirm the mapping in the Yosys and nextpnr reports. A parallel implementation with P multipliers processes P taps per iteration but increases BRAM ports, routing pressure and DSP use. Start with P=1, prove it, then use PMU plus resource/timing data to justify unrolling.
 
-The engine should never read outside `SRC_ADDR`/`TAP_ADDR` ranges. For an initial finite block, either zero-pad the first `NTAPS-1` samples or define an input history buffer. Make this choice visible in `CTRL`; hidden edge behavior ruins comparisons with software.
+The engine should never read outside `SRC_ADDR`/`TAP_ADDR` ranges. For an initial finite block, either zero-pad the first `NTAPS-1` samples or define an input history buffer. Make this choice visible in `CTRL`, because hidden edge behavior makes comparisons with software meaningless.
 
 ### RTL interfaces
 
@@ -288,7 +288,7 @@ Split the design into three modules:
 | `fir_engine` | FSM, arithmetic and descriptor validation |
 | `fir_dma` | Read/write master protocol, responses and error conversion |
 
-Use ready/valid handshakes across module boundaries. The engine issues a read request only when it can accept the response; the DMA retains address/control until accepted; the response carries valid data/error exactly once. Do not use a combinational path from downstream ready back to a source that already depends on it through the FSM.
+Use ready/valid handshakes across module boundaries. The engine issues a read request only when it can accept the response; the DMA retains address/control until accepted; the response carries valid data/error exactly once. Avoid a combinational path from downstream ready back to a source that already depends on it through the FSM.
 
 An abbreviated engine interface illustrates the boundary:
 
@@ -358,7 +358,7 @@ The proposed FIR peripheral does not require altering Wally's ISA or pipeline. I
 | FPGA top | Include the RTL source manifest; no new board pins are needed for an internal accelerator |
 | Verification | Add unit, bus, SoC and software tests to the normal regression |
 
-If the selected Wally configuration has a cache, locate the DMA path on the physical memory side and document its coherence policy. If it has no cache, the first integration avoids a major class of bugs but must still handle normal bus arbitration and response errors. The same physical address must not be decoded simultaneously as accelerator registers and as ordinary RAM.
+If the selected Wally configuration has a cache, locate the DMA path on the physical memory side and document its coherence policy. If it has no cache, the first integration avoids a major class of bugs but must still handle normal bus arbitration and response errors. A physical address decodes either to accelerator registers or to ordinary RAM, never to both.
 
 For an optional custom `dot2` instruction, changes instead concentrate in the core: instruction decode, execute control, result mux, pipeline control, forwarding, hazard logic, illegal-instruction decode and instruction tests. Keep the FIR peripheral and `dot2` experiment in different configuration flags. This makes it possible to quantify the benefit/cost of each strategy independently.
 
@@ -375,7 +375,7 @@ Measure four intervals separately:
 | Interrupt handling | `DONE` to driver completion | scheduling and ISR overhead |
 | Whole application | input ready to output consumed | user-visible benefit |
 
-For very short buffers, setup can dominate and a custom instruction can win. For long buffers, DMA amortizes setup and lets the CPU work concurrently. Do not compare only engine-active time against scalar software time; it removes the cost that the software user actually pays.
+For very short buffers, setup can dominate and a custom instruction can win. For long buffers, DMA amortizes setup and lets the CPU work concurrently. Engine-active time compared against scalar software time leaves out the cost the software user actually pays, so compare the full operation.
 
 ### Extending the FIR engine
 
@@ -387,7 +387,7 @@ Once the P=1 engine is correct, evaluate changes one at a time:
 - **SIMD/custom dot instruction:** helps software fallback and small blocks, with less DMA setup but more core complexity.
 - **Double buffering:** overlaps DMA for block N+1 with computation for block N, requiring explicit ownership and error recovery.
 
-The correct next step is the one indicated by counters. If PMU data shows bus stalls dominate, adding multipliers will not help. If DSP use is nearly zero and the engine is arithmetic-limited, controlled unrolling may be justified. If the scalar baseline already maps to efficient DSP operations through the compiler and `M` extension, the accelerator must overcome a strong baseline rather than an artificial slow loop.
+The correct next step is the one indicated by counters. If PMU data shows bus stalls dominate, extra multipliers will wait on the bus too. If DSP use is nearly zero and the engine is arithmetic-limited, controlled unrolling may be justified. If the scalar baseline already maps to efficient DSP operations through the compiler and `M` extension, the accelerator must overcome a strong baseline rather than an artificial slow loop.
 
 ## Verification, FPGA Evaluation, and Security
 
@@ -408,7 +408,7 @@ Assertions should encode protocol invariants. Examples: a busy engine cannot acc
 
 The accelerator package should include more than SystemVerilog. Keep a portable scalar model, a bare-metal driver, self-checking test application, event-ID/CSR header where applicable and a short integration document. The test application should allocate separate source, tap and destination arrays, run scalar FIR, run accelerator FIR, compare every sample and print both timing records. It must test sizes below and above `NTAPS`, misaligned/invalid arguments rejected by the driver and repeated jobs without reset.
 
-For the interrupt mode, tests must cover the non-racy sequence: initialize driver state, clear stale status, enable the PLIC source and accelerator interrupt, start work, sleep/wait, then acknowledge at the correct layer. Include a timeout so a hardware deadlock turns into an actionable test failure rather than an infinite UART silence. The timeout result should report control/status registers and the last DMA error code.
+For the interrupt mode, tests must cover the non-racy sequence: initialize driver state, clear stale status, enable the PLIC source and accelerator interrupt, start work, sleep/wait, then acknowledge at the correct layer. Include a timeout so a hardware deadlock becomes an actionable test failure and not an endless UART silence. The timeout result should report control/status registers and the last DMA error code.
 
 ### Formal and equivalence-oriented checks
 
@@ -447,7 +447,7 @@ Efficiency is not a universal metric, but it forces an explicit resource/perform
 
 An accelerator is a bus master and potentially a privileged data-exfiltration path. Restrict MMIO configuration to the intended privilege mode; validate DMA ranges; clear or zeroize sensitive internal state on reset/abort when appropriate; and disable or authenticate debug access in the production lifecycle. Constant-time arithmetic may be required for cryptographic workloads, but it must be designed end-to-end: variable memory latency, cache behavior and DMA contention can still reveal information.
 
-Do not attach an experimental engine directly to trusted memory in a system with untrusted software. Begin with a bounded memory window and a machine-mode test. Add an IOMMU or kernel-managed buffers before exposing the device to independent processes.
+In a system with untrusted software, an experimental engine should not sit directly on trusted memory. Begin with a bounded memory window and a machine-mode test. Add an IOMMU or kernel-managed buffers before exposing the device to independent processes.
 
 ## Hands-on Experiments
 
@@ -475,7 +475,7 @@ The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-pro
 
 ![Original architecture mapped to the executable dot-product RTL. Control writes are validated and latched before the engine issues single-beat AXI4 accesses; the MAC accumulates signed products and the engine checks both result-write responses before completion.](../../figures/architecture-dotproduct-dma.svg){#fig-dotproduct-complete-architecture fig-alt="CPU control adapter, AXI4-Lite register bank, bounded descriptor validation, dot-product MAC and engine, AXI memory port, shared buffers and interrupt completion" width=100%}
 
-@fig-dotproduct-complete-architecture follows the [actual register endpoint](../../labs/10-dotproduct/rtl/dotproduct_axi.sv) and [engine](../../labs/10-dotproduct/rtl/dotproduct_engine.sv), rather than the earlier FIR design proposal. The Linux/Wally extension uses MMIO base `0x10080000`; the IP consumes offsets and its DMA window is separately parameterized. Platform arbitration, interrupt routing and driver buffer ownership belong outside the IP. This baseline has no burst pipeline or automatic CPU-cache snooping.
+@fig-dotproduct-complete-architecture follows the [actual register endpoint](../../labs/10-dotproduct/rtl/dotproduct_axi.sv) and [engine](../../labs/10-dotproduct/rtl/dotproduct_engine.sv), and not the earlier FIR design proposal. The Linux/Wally extension uses MMIO base `0x10080000`; the IP consumes offsets and its DMA window is separately parameterized. Platform arbitration, interrupt routing and driver buffer ownership belong outside the IP. This baseline has no burst pipeline or automatic CPU-cache snooping.
 
 Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.
 
@@ -492,7 +492,7 @@ Explain a job from control acceptance to memory-visible result and distinguish a
 
 ## Common mistakes {#review-accelerators-extensions-mistakes .unnumbered .unlisted}
 
-Reporting compute-only speedup as job speedup; overlooking DMA ownership, descriptor validation or interrupt completion.
+Compute-only speedup looks impressive, and the job speedup the user sees includes setup, copies and completion. DMA ownership, descriptor validation and interrupt completion are the other three items that are easy to overlook until a test fails.
 
 ## Try it yourself {#review-accelerators-extensions-try .unnumbered .unlisted}
 

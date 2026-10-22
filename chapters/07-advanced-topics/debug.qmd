@@ -24,7 +24,7 @@ This chapter focuses on the digital design behind that diagram. It uses the RISC
 
 RISC-V Debug 1.0 is the current reference specification [@riscvDebugSpec]. NEORV32 explicitly documents its Debug Module and CPU Debug Mode as compatible with the minimal 1.0 `Sdext` extension [@neorv32Ocd]. By comparison, `riscv-dbg` states compatibility with the earlier 0.13.2 specification and is used by CVA6, CV32E40P and Ibex; CV32E40P documentation also describes execution-based debug according to 0.13.2 [@pulpRiscvDbg; @cv32e40pDebug]. The basic architecture is closely related, but optional features, clarified behavior and compatibility details evolve.
 
-Therefore state the exact debug-specification version and implemented feature set for a real chip. Do not write only “RISC-V debug supported.” For example, trigger count/type, System Bus Access (SBA), authentication, abstract memory commands, quick access, hardware breakpoints, trace and behavior during single-step interrupts may differ between implementations.
+Therefore state the exact debug-specification version and implemented feature set for a real chip. “RISC-V debug supported” alone is too vague. For example, trigger count/type, System Bus Access (SBA), authentication, abstract memory commands, quick access, hardware breakpoints, trace and behavior during single-step interrupts may differ between implementations.
 
 | Question | Why it matters |
 | --- | --- |
@@ -86,7 +86,7 @@ Important DM register groups include:
 | `progbuf0` ... | Optional program buffer instructions |
 | `sbcs`, `sbaddress`, `sbdata` | Optional system-bus access control, address and data |
 
-The DM is active only when `dmactive` is asserted. Deactivating it resets DM state as defined by the specification. This is useful for recovering a stuck debug transaction, but it is not a substitute for a SoC reset policy. Decide whether DM state survives system reset, how a debugger observes `havereset`, and whether reset can be requested per hart or for the non-debug module.
+The DM is active only when `dmactive` is asserted. Deactivating it resets DM state as defined by the specification. This is useful for recovering a stuck debug transaction, and the SoC still needs its own reset policy. Decide whether DM state survives system reset, how a debugger observes `havereset`, and whether reset can be requested per hart or for the non-debug module.
 
 ### The hart-facing interface
 
@@ -135,7 +135,7 @@ The program buffer is a small optional instruction storage area controlled by DM
 
 Execution-based debug is a common implementation technique. NEORV32 combines a debug ROM with a two-entry program buffer; an implicit `ebreak` completes the program-buffer sequence, and abstract register commands can use auto-execution [@neorv32Ocd]. `riscv-dbg` offers a useful 0.13.2 comparison: it uses a park loop in which the core runs controlled code and the DM dynamically changes what it executes in response to JTAG/DTM requests [@pulpRiscvDbg]. The approach simplifies core-side register access but means a hart may be busy-looping in debug control code rather than electrically stopped at every internal pipeline stage.
 
-This distinction matters for observation. Architectural state is well defined at debug boundaries; transient pipeline signals are not necessarily frozen in a way suitable for a debugger. If post-silicon investigation requires trace of microarchitectural events, add a trace or performance-monitoring mechanism rather than assuming run-control debug exposes every internal wire.
+This distinction matters for observation. Architectural state is well defined at debug boundaries; transient pipeline signals are not necessarily frozen in a way suitable for a debugger. If post-silicon investigation requires trace of microarchitectural events, add a trace or performance-monitoring mechanism, because run-control debug does not expose every internal wire.
 
 ### System Bus Access
 
@@ -185,7 +185,7 @@ The integration plan must define:
 - JTAG pin multiplexing, pull resistors, voltage reference and production availability.
 - Lifecycle policy: development, production, return/service and permanently disabled states.
 
-CORE-V Wally configurations should be evaluated against their actual RTL debug capability and selected build options. Do not infer NEORV32, CV32E40P or `riscv-dbg` compatibility from the fact that all are RISC-V cores.
+CORE-V Wally configurations should be evaluated against their actual RTL debug capability and selected build options. NEORV32, CV32E40P and `riscv-dbg` are all RISC-V designs, and that alone says nothing about their compatibility.
 
 ### Example control sequence
 
@@ -266,7 +266,7 @@ Run-control debug, scan/BIST and trace solve different problems:
 | Scan/BIST | Detect manufacturing defects | Scan chains, memories and structural test logic |
 | Trace | Reconstruct execution history/performance | Retired instructions, branches, buses or microarchitectural events |
 
-Their access paths can overlap, and each must respect the security lifecycle. A halted processor snapshot may not explain a transient cache, bus or clock problem; trace and performance counters complement debug rather than replace it.
+Their access paths can overlap, and each must respect the security lifecycle. A halted processor snapshot may not explain a transient cache, bus or clock problem, and trace and performance counters complement debug.
 
 ## Hands-on Experiments
 
@@ -321,7 +321,7 @@ Explain halt/resume versus system-bus access and why lifecycle policy must cover
 
 ## Common mistakes {#review-debug-mistakes .unnumbered .unlisted}
 
-Assuming debug-specification compatibility includes every optional feature; treating a JTAG connection as access authorization.
+Two assumptions are risky. Debug-specification compatibility covers the mandatory behavior, and each optional feature needs its own check. And a JTAG connection is a transport, so access authorization has to come from the lifecycle and authentication policy.
 
 ## Try it yourself {#review-debug-try .unnumbered .unlisted}
 

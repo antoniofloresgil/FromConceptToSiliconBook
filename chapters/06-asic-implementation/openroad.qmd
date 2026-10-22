@@ -10,7 +10,7 @@ This chapter uses OpenROAD **directly**. It does not use LibreLane, OpenLane, or
 
 ### Two ways to use the same implementation engines
 
-There are two practical ways to harden a SystemVerilog block with this ecosystem. The direct path, developed in detail in this chapter, invokes OpenROAD and its Tcl commands explicitly. The managed path uses LibreLane to resolve a configuration, invoke the implementation tools in a tested order, and preserve a structured run directory. They are not competing physical algorithms: LibreLane uses OpenROAD for the physical implementation.
+There are two practical ways to harden a SystemVerilog block with this ecosystem. The direct path, developed in detail in this chapter, invokes OpenROAD and its Tcl commands explicitly. The managed path uses LibreLane to resolve a configuration, invoke the implementation tools in a tested order, and preserve a structured run directory. The two paths share the same physical engines, because LibreLane uses OpenROAD for the physical implementation.
 
 | Choice | Direct OpenROAD | LibreLane-managed flow |
 | --- | --- | --- |
@@ -20,11 +20,11 @@ There are two practical ways to harden a SystemVerilog block with this ecosystem
 | Main risk | The author must maintain all technology details and stage ordering | Defaults can obscure a physical decision unless reports/configuration are reviewed |
 | Common practice | Prototype a command sequence, then keep it in version control | Run the stabilized configuration in CI and compare QoR reports |
 
-For a small block, direct OpenROAD is the best way to learn why a floorplan, PDN or clock tree is needed. For a larger design, the LibreLane option reduces accidental variation. A robust project can use both: develop and debug a Tcl experiment directly, then transfer the justified parameters into the managed configuration. The LibreLane chapter describes its project structure and commands; neither approach removes the need to check timing, routing and physical-verification reports.
+For a small block, direct OpenROAD is the best way to learn why a floorplan, PDN or clock tree is needed. For a larger design, the LibreLane option reduces accidental variation. A robust project can use both: develop and debug a Tcl experiment directly, then transfer the justified parameters into the managed configuration. The LibreLane chapter describes its project structure and commands. With either approach, you still read the timing, routing and physical-verification reports.
 
 ![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-openroad-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter a direct OpenROAD physical implementation flow and produce GDSII"}
 
-Follow @fig-openroad-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
+Follow @fig-openroad-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration; the physical result is accepted only after review.
 
 ### What OpenROAD does and does not provide
 
@@ -41,7 +41,7 @@ OpenROAD contains engines for the central digital back-end tasks:
 | Routing | Global routing and TritonRoute detailed routing | Connect nets with legal tracks, wires and vias |
 | Finishing | Extraction, antenna checks, fill support and reports | Prepare physical data for final verification |
 
-The application does not turn arbitrary RTL into a tapeout automatically. It needs a PDK, characterized cell libraries, realistic timing and I/O constraints, a power intent, and decisions about the die, pins, macros and packaging. In particular, OpenROAD does not replace a foundry's final DRC/LVS deck, pad-ring requirements, ESD rules, package co-design, or acceptance review. It is an implementation engine whose output must be validated in the context of the target technology.
+Turning RTL into a tapeout takes more than running the application. It needs a PDK, characterized cell libraries, realistic timing and I/O constraints, a power intent, and decisions about the die, pins, macros and packaging. In particular, a foundry's final DRC/LVS deck, pad-ring requirements, ESD rules, package co-design and acceptance review remain separate steps. OpenROAD is an implementation engine, and its output is validated in the context of the target technology.
 
 ### The views that join RTL to geometry
 
@@ -76,7 +76,7 @@ SDC constraints ─────────────────────�
                               reports + DEF + SPEF + GDSII for sign-off
 ```
 
-Do not treat this as a one-way conveyor belt. A failed endpoint after routing may call for a new RTL pipeline stage, a better constraint, a larger die, more whitespace, different cells, or a different pin location. The discipline is to modify one controlled input, retain the reports, and compare the result with the baseline.
+This is no one-way conveyor belt. A failed endpoint after routing may call for a new RTL pipeline stage, a better constraint, a larger die, more whitespace, different cells, or a different pin location. The discipline is to modify one controlled input, retain the reports, and compare the result with the baseline.
 
 ## Installing OpenROAD
 
@@ -157,7 +157,7 @@ LIBERTY     timing/power characterization for the selected corner
 GDS         standard-cell layouts, if the chosen stream-out flow needs them
 ```
 
-Never combine a `sky130_fd_sc_hd` Liberty file with a LEF from another library variant merely because the names look similar. Use a PDK installation method that keeps the views versioned together.
+A `sky130_fd_sc_hd` Liberty file pairs only with the LEF of the same library variant, even when other names look similar. Use a PDK installation method that keeps the views versioned together.
 
 ## How OpenROAD runs
 
@@ -210,11 +210,11 @@ examples/openroad/
 └── harden.tcl
 ```
 
-The listing below uses `Clk` and `Reset`; the earlier simulation example uses `clk` and `reset`. The laboratory package exports this exact implementation listing as `labs/07-implementation/rtl/accumulator.sv` and tests its behavior before synthesis. Match RTL port spelling with constraints and flow configuration; do not point an uppercase-clock configuration at the earlier lowercase-clock file.
+The listing below uses `Clk` and `Reset`; the earlier simulation example uses `clk` and `reset`. The laboratory package exports this exact implementation listing as `labs/07-implementation/rtl/accumulator.sv` and tests its behavior before synthesis. Keep the RTL port spelling consistent with the constraints and flow configuration, so an uppercase-clock configuration is never pointed at the earlier lowercase-clock file.
 
 ### Step 0: verify the RTL before implementation
 
-From the book/package root, run the **checked** `python labs/run.py run synthesis` recipe in the teaching environment. It uses `labs/07-implementation/tb_implementation.sv` against the two-operand RTL and checks elaboration before generic synthesis. The earlier cocotb Makefile tests the one-operand simulation variant; it is not a test for this physical-flow source without adaptation. Physical implementation does not replace that functional check.
+From the book/package root, run the **checked** `python labs/run.py run synthesis` recipe in the teaching environment. It uses `labs/07-implementation/tb_implementation.sv` against the two-operand RTL and checks elaboration before generic synthesis. The earlier cocotb Makefile tests the one-operand simulation variant; it needs adaptation before it can test this physical-flow source. Physical implementation comes after that functional check and does not replace it.
 
 The following RTL is a compact version of the example:
 
@@ -288,7 +288,7 @@ The corrected listing was checked with Yosys 0.60 in the local ORFS environment 
 
 ### Step 2: state the physical configuration
 
-Make technology paths and cell choices explicit in `config.tcl`. The actual names vary by PDK. The values below are placeholders deliberately written as variables rather than pretending that one set of SKY130 names fits every library:
+Make technology paths and cell choices explicit in `config.tcl`. The actual names vary by PDK. The values below are placeholders, written as variables on purpose because no single set of SKY130 names fits every library:
 
 ```tcl
 set design_name accumulator
@@ -304,7 +304,7 @@ set inv_cell    $::env(INVERTER_CELL)
 set site_name   $::env(SITE_NAME)
 ```
 
-For a SKY130 library, determine the site and legal buffer/inverter names from that library's LEF and Liberty files. Do not copy cell names from a different library family. A high-density, low-leakage or high-voltage library can differ in available cells and physical dimensions.
+For a SKY130 library, determine the site and legal buffer/inverter names from that library's LEF and Liberty files. Cell names come from the library in use, never from a different family. A high-density, low-leakage or high-voltage library can differ in available cells and physical dimensions.
 
 ### Step 3: read the technology, netlist and constraints
 
@@ -377,7 +377,7 @@ write_def results/02_pdn.def
 
 Here `VPWR`, `VGND`, `met1` and `met4` are examples, not universal names. Use the actual supply pins and routing layers from the selected library and PDK. The PDN generator lets the designer state a policy--layers, widths, spacing, pitch and connections--then creates the grid [@openroadPdn]. A real implementation must check voltage drop, current density, macro supplies and package/bumps; a small core-only demonstration cannot establish those properties.
 
-Add tap cells and end caps according to the PDK's required insertion rules before placement. They maintain well/substrate ties and legal row boundaries. The appropriate command and master-cell names must be taken from the technology collateral; do not invent them.
+Add tap cells and end caps according to the PDK's required insertion rules before placement. They maintain well/substrate ties and legal row boundaries. Take the appropriate command and master-cell names from the technology collateral.
 
 ### Step 6: global placement, legalization and pre-CTS repair
 
@@ -398,7 +398,7 @@ tee -file results/03_prects_hold.rpt  { report_checks -path_delay min -fields {s
 write_db results/03_placed.odb
 ```
 
-Do not interpret pre-CTS timing as final. It is useful for identifying an impossible clock target or a logic path that is already too deep. If congestion is high, reduce utilization, enlarge the core, reconsider pin positions, or examine macro placement. Increasing the clock period hides the symptom but does not explain its cause.
+Pre-CTS timing is not final timing. It is useful for identifying an impossible clock target or a logic path that is already too deep. If congestion is high, reduce utilization, enlarge the core, reconsider pin positions, or examine macro placement. Increasing the clock period hides the symptom and leaves its cause unexplained.
 
 ### Step 7: build and analyze the clock tree
 
@@ -473,13 +473,13 @@ Producing GDSII requires a stream-out path that combines the routed design with 
 
 The scripts and recorded reports in [Lab 16](../../labs/16-openroad-study/README.md) turn the preceding decisions into an executed experiment. They use the same 16-bit accumulator, one common Nangate45 mapped netlist, a fixed typical Liberty view, and direct OpenROAD Tcl. The ORFS image supplies the binaries and matching technology files; its Make-based flow does not orchestrate these runs. Nangate45 is an open teaching/reference technology, not a fabrication offer.
 
-The recorded container digest is `openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699`. It contains OpenROAD `24Q3-11382-g61879bec53` and Yosys 0.60. The [reference manifest](../../labs/16-openroad-study/reference/manifest.json) records input, technology, extraction-rule, report and image hashes. The image contains no usable ORFS Git metadata, so the record uses its immutable image identity and individual technology-file hashes rather than inventing a source revision.
+The recorded container digest is `openroad/orfs@sha256:fd3e27cf1788815be526e86fbe449310d1114bf256fd6c7af9dced6eaf12c699`. It contains OpenROAD `24Q3-11382-g61879bec53` and Yosys 0.60. The [reference manifest](../../labs/16-openroad-study/reference/manifest.json) records input, technology, extraction-rule, report and image hashes. The image contains no usable ORFS Git metadata, so the record uses its immutable image identity and individual technology-file hashes in place of an invented source revision.
 
 ### Experiment design and observation boundaries
 
 The main sweep requests core utilizations of 45%, 65% and 80% at periods 0.85, 1.00 and 1.15 ns. These are requested frequencies of approximately 1176, 1000 and 870 MHz, not demonstrated silicon operating frequencies. Two 55% cases at 0.91 and 1.00 ns examine a small margin near a setup boundary. Both synthesis and all other settings remain fixed. Pin placement, the power grid, signal layers `metal2..metal6`, clock layers `metal4..metal6`, two tool threads and the density-selection rule are recorded in `flow.tcl`.
 
-This experiment measures sensitivity of one mapped design. It deliberately omits setup/hold repair and frequency-driven remapping so that a failing case remains observable. Changing the period therefore principally changes the required time, while changing utilization changes geometry and routing. An optimizing flow could also resize cells, insert buffers or choose a different netlist as constraints change; that is a subsequent controlled experiment, not a claim about these measurements.
+This experiment measures sensitivity of one mapped design. It deliberately omits setup/hold repair and frequency-driven remapping so that a failing case remains observable. Changing the period therefore principally changes the required time, while changing utilization changes geometry and routing. An optimizing flow could also resize cells, insert buffers or choose a different netlist as constraints change; that is a subsequent controlled experiment, and these measurements do not speak for it.
 
 The study SDC uses 20 ps clock uncertainty, input delays of 100 ps maximum and 20 ps minimum, output delays of 100 ps maximum and 20 ps minimum, 20 ps input transition and 5 fF output loads. These are explicit block-level teaching budgets, not the earlier 10 ns illustrative SDC. The chosen Liberty uses fF; `set_load 5.0` specifies five femtofarads. Changing the SDC for this study does not overwrite the reference accumulator's original constraints.
 
@@ -498,7 +498,7 @@ write_spef $out/routed.spef
 read_spef $out/routed.spef
 ```
 
-Writing a SPEF without importing it into the timing analysis would leave an earlier estimated model in use in this recipe. The recorded post-route reports are produced after `read_spef`. OpenRCX and the supplied extraction rules model routed geometry; they do not supply a foundry-qualified multi-corner sign-off result [@openroadStudyRcx].
+Writing a SPEF without importing it into the timing analysis would leave an earlier estimated model in use in this recipe. The recorded post-route reports are produced after `read_spef`. OpenRCX and the supplied extraction rules model routed geometry, and a foundry-qualified multi-corner sign-off result needs more [@openroadStudyRcx].
 
 ### Placement: inspect geometry before interpreting the table
 
@@ -583,7 +583,7 @@ Use the [post-CTS setup report](../../labs/16-openroad-study/reference/u55-p0.91
 The per-arc sums use the printed five-decimal-place nanosecond values and therefore have rounding error relative to the timer's accumulated arrival. The extracted budget is `915.74 − 917.20 = −1.46 ps`. The capture budget includes the 910 ps period, approximately 62.43 ps clock insertion, 20 ps uncertainty and 36.69 ps library setup time. The [path-pin list](../../labs/16-openroad-study/reference/u55-p0.91/critical-path-pins.txt) identifies the objects highlighted in the image.
 <!-- /openroad-study-path -->
 
-The route adds delay directly through interconnect and indirectly by changing the capacitance/slew seen by cell arcs. In this small case, most total data delay is in the 17 combinational cell arcs, rather than the reported pin-to-pin wire increments. It would be misleading to call the entire arrival-time change “wire delay” or to conclude that the bottleneck is a long wire solely from the picture. Trace the XOR/carry and AOI/OAI chain from the low input bit toward the overflow register; correlate cell names with the [mapped netlist](../../labs/16-openroad-study/reference/mapped.v).
+The route adds delay directly through interconnect and indirectly by changing the capacitance/slew seen by cell arcs. In this small case, most total data delay is in the 17 combinational cell arcs, and not in the reported pin-to-pin wire increments. It would be misleading to call the entire arrival-time change “wire delay” or to conclude that the bottleneck is a long wire solely from the picture. Trace the XOR/carry and AOI/OAI chain from the low input bit toward the overflow register; correlate cell names with the [mapped netlist](../../labs/16-openroad-study/reference/mapped.v).
 
 The global-route estimate is also useful: it predicts a larger setup loss than the final extracted result. Detailed routing and extraction need not monotonically worsen an estimate. Keep the model label on every number and compare the same endpoint as well as the worst endpoint, which can change between stages.
 
@@ -604,7 +604,7 @@ The evidence supports several different experiments, each addressing a different
 
 A pipeline is a proposed architectural modification here, not an already measured repair. The accumulator contains feedback; inserting a register into that feedback without a new recurrence changes its result sequence. A safer candidate separates input pre-addition from accumulation and defines the additional latency explicitly. A carry-save accumulator also changes the stored representation and may require a final carry-propagate step; it needs a new contract if results are no longer visible every cycle. Check whether synthesis already performs the proposed compression before claiming that an RTL rewrite improves the hardware.
 
-The study therefore diagnoses the physical behavior without promising an unexecuted fix. To complete a repair exercise, rerun simulation/equivalence as applicable, map the revised RTL, retain a new source/netlist identity, and repeat placement through extracted timing. Do not change the reference reports or mix the old geometry with the new RTL.
+The study therefore diagnoses the physical behavior and leaves the fix unexecuted. To complete a repair exercise, rerun simulation/equivalence as applicable, map the revised RTL, retain a new source/netlist identity, and repeat placement through extracted timing. Keep the reference reports as they are, and never mix the old geometry with the new RTL.
 
 ### Reproduce, inspect and submit
 
@@ -655,9 +655,9 @@ An antenna violation arises when a conductive region connected to a gate can acc
 
 ### What to compare between experiments
 
-Use the measured table in @sec-openroad-study and its raw CSV as the reporting model. For a new candidate, retain requested utilization/period, actual core and cell areas, per-stage setup and hold, parasitic/clock models, routed wire length, router DRC scope and any failed stage. Change one independent input at a time and preserve the baseline. Leave unavailable results empty with a reason rather than inserting an estimated PASS.
+Use the measured table in @sec-openroad-study and its raw CSV as the reporting model. For a new candidate, retain requested utilization/period, actual core and cell areas, per-stage setup and hold, parasitic/clock models, routed wire length, router DRC scope and any failed stage. Change one independent input at a time and preserve the baseline. Leave unavailable results empty with a reason; an estimated PASS would hide the gap.
 
-Do not claim a physical improvement solely because area decreases. A valid comparison keeps the PDK, cell library, RTL, constraints, tool version and relevant settings fixed.
+A smaller area alone is not a physical improvement. A valid comparison keeps the PDK, cell library, RTL, constraints, tool version and relevant settings fixed.
 
 ## Failure diagnosis
 
@@ -686,7 +686,7 @@ A maximum-delay report answers whether data reaches its endpoint before the next
 
 The original ASIC's worst hold report starts at the `m_bvalid` input and ends at a clocked register. Its minimum input budget is 0.2 ns, while the propagated capture clock and hold uncertainty leave a small negative margin. Other short paths start at reset; the report shows reset driving 419 loads. The electrical report also includes an internal output transition of 3.41 ns against a 0.20 ns limit. These observations lead to two specific actions: build appropriate buffering for heavily loaded signals and add controlled delay to short data paths after CTS. They do not justify declaring reset or every input path false.
 
-The FPGA diagnosis is different. The preserved critical paths cross the arithmetic network. In ECP5, the path includes the unregistered DSP multiplier followed by the accumulation carry chain; in Nexys Video, the chosen open flow maps multiplication into LUTs and carry logic. The target is therefore a long combinational calculation between state elements. Improving the ASIC clock tree would not repair that FPGA path.
+The FPGA diagnosis is different. The preserved critical paths cross the arithmetic network. In ECP5, the path includes the unregistered DSP multiplier followed by the accumulation carry chain; in Nexys Video, the chosen open flow maps multiplication into LUTs and carry logic. The target is therefore a long combinational calculation between state elements. Improving the ASIC clock tree would leave that FPGA path unchanged.
 
 Use electrical reports together with timing reports. A cell operating beyond its characterized transition/load limits weakens the interpretation of an apparently attractive timing result. Repairing a maximum-capacitance violation may insert a buffer, change placement and alter both setup and hold. A new worst path after repair is useful evidence that the bottleneck has moved.
 
@@ -698,11 +698,11 @@ Use electrical reports together with timing reports. A cell operating beyond its
 | Register the product | Separate multiplication from accumulation; target remains 100 MHz | Remove multiplier-plus-adder from one cycle | Extra state/registers and one extra serial cycle per element; repeat arithmetic, protocol, error and reset tests |
 | Physical repair | Original ASIC RTL and 100 MHz remain fixed; add electrical and timing repair | Fix load/slew and short data paths without changing architectural latency | Added cells/routing/power; repeat legalization, routing, extraction, timing and equivalence |
 
-Lowering frequency is a valid engineering decision when the application permits it. It changes the requirement: a 75 MHz acceptance does not close the original 100 MHz requirement. It also does not generally fix a same-edge hold failure, because the period does not provide extra time between the data and clock edges involved in that check. Lab 21 reruns the ASIC at 75 MHz to make this distinction measurable rather than merely asserting it.
+Lowering frequency is a valid engineering decision when the application permits it. It changes the requirement: a 75 MHz acceptance does not close the original 100 MHz requirement. It also generally leaves a same-edge hold failure in place, because the period gives no extra time between the data and clock edges involved in that check. Lab 21 reruns the ASIC at 75 MHz to make this distinction measurable.
 
 The RTL candidate registers a signed 32-bit product when the second operand response is accepted, enters `ACCUMULATE`, and updates the 64-bit accumulator on the following edge. It issues no new DMA request in between. The register map, signed arithmetic, transaction count, error responses and completion-after-write-response rule stay intact. It is a serial multicycle engine: this change adds latency and does not establish a one-element-per-cycle pipeline. A result at a higher clock must be evaluated against the extra cycles, memory latency and application workload.
 
-Do not copy a known result from the original source revision into the candidate's evidence column. In this experiment the new engine passes the independent integer-oracle regression for lengths 1–256 at two seeds and the Nexys serial-boundary fixture. A negative control deliberately zero-extends a negative product and must fail that same scoreboard. These are candidate-specific simulation checks. They do not transfer the original bounded proof or real-Wally firmware cycle measurements to the modified engine, and they do not prove the two state machines cycle-equivalent.
+The candidate's evidence column holds the candidate's own results, never a known result copied from the original source revision. In this experiment the new engine passes the independent integer-oracle regression for lengths 1–256 at two seeds and the Nexys serial-boundary fixture. A negative control deliberately zero-extends a negative product and must fail that same scoreboard. These are candidate-specific simulation checks. They do not transfer the original bounded proof or real-Wally firmware cycle measurements to the modified engine, and they do not prove the two state machines cycle-equivalent.
 
 ### Repair the physical implementation in the right order
 
@@ -710,9 +710,9 @@ The executable [repair recipe](../../labs/21-physical-closure/repair.tcl) keeps 
 
 This command sequence follows the resizer's documented distinction between electrical repair and timing repair. The installed release's `help` output remains authoritative for supported options; the [official Gate Resizer documentation](https://openroad.readthedocs.io/en/latest/main/src/rsz/README.html) explains the underlying operations. In particular, hold repair follows CTS with propagated clocks, and setup repair precedes hold repair.
 
-The exploratory 0.10 ns hold-margin run exhausted its buffer allowance. Increasing an optimization target is therefore not free: it can consume cells and whitespace without addressing a release requirement. The retained candidate uses the smaller 0.03 ns margin and an explicit maximum hold-buffer percentage. A buffer allowance is a stopping condition for the optimizer, never a replacement for reading the resulting slack and area. The final repaired database must still be legalized and routed.
+The exploratory 0.10 ns hold-margin run exhausted its buffer allowance. Increasing an optimization target therefore has a cost: it can consume cells and whitespace without addressing a release requirement. The retained candidate uses the smaller 0.03 ns margin and an explicit maximum hold-buffer percentage. A buffer allowance is a stopping condition for the optimizer, and the resulting slack and area still have to be read. The final repaired database must still be legalized and routed.
 
-After detailed routing, OpenRCX extracts parasitics into SPEF. The flow reloads those parasitics and regenerates setup, hold, electrical-limit, constraint and power reports. A clean placement estimate or global-route report cannot satisfy this final gate. If extracted hold becomes negative again, preserve that failed candidate, choose a justified larger margin or local repair, reroute and repeat extraction. Avoid editing an already collected report or treating an intermediate checkpoint as the final layout.
+After detailed routing, OpenRCX extracts parasitics into SPEF. The flow reloads those parasitics and regenerates setup, hold, electrical-limit, constraint and power reports. A clean placement estimate or global-route report is an earlier checkpoint, and only the extracted result passes this final gate. If extracted hold becomes negative again, preserve that failed candidate, choose a justified larger margin or local repair, reroute and repeat extraction. Avoid editing an already collected report or treating an intermediate checkpoint as the final layout.
 
 ### Recheck function and keep the acceptance gate executable
 
@@ -781,7 +781,7 @@ Explain the accumulator checkpoints and why setup, hold and electrical-limit rep
 
 ## Common mistakes {#review-openroad-mistakes .unnumbered .unlisted}
 
-Treating a completed script as timing closure; assuming the accumulator flow supplies Wally memory macros and SoC collateral.
+Two assumptions mislead newcomers. A script that completes has only run; timing closure is what the reports show. And the accumulator flow comes without Wally memory macros and SoC collateral, which a full SoC would have to supply.
 
 ## Try it yourself {#review-openroad-try .unnumbered .unlisted}
 

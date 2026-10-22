@@ -56,7 +56,7 @@ The book also reports that the Sail model was substantially slower than Spike in
 
 ### From reference execution to differential verification
 
-The examples here run architectural models; they do not wire a retirement comparator into the Wally testbench. For that next step, follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
+The examples here run architectural models and stop short of wiring a retirement comparator into the Wally testbench. That is the natural next step, and follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
 
 
 ## Implementation
@@ -73,7 +73,7 @@ For Spike, `--isa` selects the architectural instruction set. For Sail, use the 
 
 A useful trace associates each executed instruction with its PC, encoding, privilege context, and architectural updates. Sail's trace in Section 3.5 displays integer-register writes, CSR operations, and memory transactions. The summation trace connects the loaded input, loop iterations, returned result, signature stores, and HTIF completion.
 
-Compare traces at architectural boundaries. Wally may have several instructions in flight and speculative instructions that are later discarded. Matching a pipeline cycle against one ISS step is therefore inappropriate. For a retired instruction, identify its PC, destination register/value, memory effect, and any trap. If the final signature differs, find the first divergent instruction rather than starting from the final incorrect value.
+Compare traces at architectural boundaries. Wally may have several instructions in flight and speculative instructions that are later discarded. A pipeline cycle therefore cannot be matched against one ISS step. For a retired instruction, identify its PC, destination register/value, memory effect, and any trap. If the final signature differs, find the first divergent instruction rather than starting from the final incorrect value.
 
 Interrupts and peripheral inputs need special treatment. A lockstep reference must receive equivalent events and read values; otherwise the instruction streams diverge for environmental reasons. Section 5.6 presents this principle without claiming that a standalone Spike or Sail command automatically provides a Wally lockstep integration.
 
@@ -81,9 +81,9 @@ Interrupts and peripheral inputs need special treatment. A lockstep reference mu
 
 Section 3.7 describes the book's RISCOF workflow: select tests compatible with a declared ISA, compile them, run reference models, and compare signatures. The resulting ELF, disassembly, and memory image can support the RTL testbench. Configuration is part of the experiment, not merely a build convenience.
 
-The book distinguishes architectural tests from additional Wally tests for privilege, memory management, and peripherals. In its described setup, not every peripheral behavior is represented by Sail, so some expected outputs are supplied separately. When expected data is written manually, review it independently; the reference model cannot catch an incorrect prediction it never computed.
+The book distinguishes architectural tests from additional Wally tests for privilege, memory management, and peripherals. In its described setup, not every peripheral behavior is represented by Sail, so some expected outputs are supplied separately. When expected data is written by hand, have someone review it independently, because the reference model cannot catch a wrong prediction that it never computed.
 
-Passing a finite suite does not prove complete ISA correctness. A signature may omit important flags, traps, or side effects. Combine instruction tests, retirement-state comparison, assertions, and system scenarios. A coverage plan should say which requirements each technique observes and which remain untested.
+A finite suite that passes shows the tested behavior is right, and complete ISA correctness is a larger claim. A signature may omit important flags, traps or side effects. Combine instruction tests, retirement-state comparison, assertions, and system scenarios. A coverage plan should say which requirements each technique observes and which remain untested.
 
 ## Hands-on Experiments
 
@@ -140,7 +140,7 @@ timeout 20s spike --isa=rv64i \
 diff -i expected.signature spike.sig
 ```
 
-Both commands should return zero; silent `diff` means agreement. The timeout bounds an accidentally nonterminating test and returns nonzero on expiry. Do not treat a stale signature from a previous run as evidence after a simulation failure.
+Both commands should return zero; silent `diff` means agreement. The timeout bounds an accidentally nonterminating test and returns nonzero on expiry. After a simulation failure, a stale signature from a previous run is not evidence, so make sure the file is fresh.
 
 For an interactive run:
 
@@ -196,7 +196,7 @@ diff -i spike.sig sail.sig
 
 The shared program was compiled and run successfully using Spike 1.1.1-dev and this older Sail executable in the local Wally toolchain container. Both produced the expected three-word signature. The newer `sail_riscv_sim` command documents the PDF's workflow and was not executed in that container.
 
-Signature formatting matters: different granularities may split or reverse groups within a wider word. Use matching eight-byte granularity here. For other tools, compare decoded values with the documented byte ordering rather than silently rearranging lines until text matches.
+Signature formatting matters: different granularities may split or reverse groups within a wider word. Use matching eight-byte granularity here. For other tools, compare decoded values using the documented byte ordering; rearranging lines until the text matches hides real differences.
 
 ### Diagnose and extend the experiment
 
@@ -212,7 +212,7 @@ Finally, run the program on a configured RTL core and compare the defined signat
 
 ## Key ideas {#review-spike-sail-ideas .unnumbered .unlisted}
 
-- An ISA reference checks architectural behavior rather than RTL cycle timing.
+- An ISA reference checks architectural behavior; RTL cycle timing is a different question.
 - Model version, ISA configuration and execution environment must agree.
 
 ## What you should now be able to explain {#review-spike-sail-explain .unnumbered .unlisted}
@@ -221,7 +221,7 @@ Explain the signature comparison boundary and what a reference-model pass cannot
 
 ## Common mistakes {#review-spike-sail-mistakes .unnumbered .unlisted}
 
-Comparing incompatible ISA/platform configurations; interpreting simulator execution time as target processor performance.
+Two comparisons look meaningful and are not. Results from incompatible ISA or platform configurations cannot be set side by side. And the wall-clock time of an instruction-set simulator reflects the host machine, so it is not the performance of the target processor.
 
 ## Try it yourself {#review-spike-sail-try .unnumbered .unlisted}
 

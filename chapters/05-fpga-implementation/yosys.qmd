@@ -46,7 +46,7 @@ The chosen top level is a board wrapper, not the processor core. It instantiates
 
 Yosys uses a pass-based internal representation called RTLIL. A script is more useful than a one-line command because it records every source, include path, top level and technology choice. The important phases are:
 
-1. **Frontend and elaboration.** `read_verilog -sv`, `read_slang`, include directories and parameter overrides parse source files and choose the configured hierarchy. The project uses `read_slang --std 1800-2017` for Wally SystemVerilog. Run a simulator or linter first: synthesis acceptance is not a proof of intended behavior.
+1. **Frontend and elaboration.** `read_verilog -sv`, `read_slang`, include directories and parameter overrides parse source files and choose the configured hierarchy. The project uses `read_slang --std 1800-2017` for Wally SystemVerilog. Run a simulator or linter first, because synthesis only checks that the design is synthesizable and says nothing about whether it does what you intended.
 2. **Hierarchy and checks.** `hierarchy -top fpgaOpenSource` resolves modules, parameters and the root. `check` detects disconnected cells, multiply driven nets and other structural errors.
 3. **Process lowering.** `proc` converts `always_comb`, `always_ff`, case statements and conditional assignments into multiplexers, latches where they are genuinely implied, and flip-flop processes. An unintended latch warning is a design defect to resolve at RTL level.
 4. **Coarse-grain optimization.** Constant propagation, width reduction, dead-logic removal, arithmetic sharing, FSM processing and memory analysis make the structure smaller without changing the synchronous behavior. This phase can still identify memories and arithmetic before they become simple gates.
@@ -72,7 +72,7 @@ BRAM, DSP and clock resources are limited physical blocks. A design that synthes
 
 ### Logical implementation acceptance
 
-The synthesis boundary in @sec-verification-methodology distinguishes clean elaboration, inferred storage, resource mapping and equivalence. Compile legal parameter/wrapper variants and review technology primitive/memory inference. Keep the reference RTL and mapped netlist identities with the synthesis configuration. A netlist and resource report are not an RTL-equivalence proof; add an explicit comparison flow with correct cell/memory models and reset/state correspondence when making that claim. Changed arithmetic mapping or retiming also needs the appropriate numerical/latency contract.
+The synthesis boundary in @sec-verification-methodology distinguishes clean elaboration, inferred storage, resource mapping and equivalence. Compile legal parameter/wrapper variants and review technology primitive/memory inference. Keep the reference RTL and mapped netlist identities with the synthesis configuration. A netlist and a resource report are good checkpoints, and an RTL-equivalence claim needs an explicit comparison flow with correct cell and memory models and a reset/state correspondence. Changed arithmetic mapping or retiming also needs the appropriate numerical/latency contract.
 
 
 ## Implementation
@@ -96,7 +96,7 @@ git submodule update --init --recursive
 source setup.sh
 ```
 
-The installation may take considerable time because it builds the XC7 device database. Confirm the actual commands rather than guessing from `PATH`:
+The installation may take considerable time because it builds the XC7 device database. Confirm the actual commands instead of guessing from `PATH`:
 
 ```sh
 yosys -V
@@ -126,9 +126,9 @@ delete t:$scopeinfo
 write_json opensource-nexysvideo/nexysvideo.json
 ```
 
-The cell-library reads describe vendor primitives to Yosys; they do not call a vendor implementation tool. LiteDRAM-generated Verilog is read separately because it contains parameters and primitives for which that path is appropriate. `--ignore-timing` and `--ignore-assertions` prevent simulation-only timing checks and assertions from becoming a synthesis-language issue; they do **not** waive static timing analysis after routing.
+The cell-library reads describe vendor primitives to Yosys; they do not call a vendor implementation tool. LiteDRAM-generated Verilog is read separately because it contains parameters and primitives for which that path is appropriate. `--ignore-timing` and `--ignore-assertions` prevent simulation-only timing checks and assertions from becoming a synthesis-language issue; static timing analysis after routing still applies in full.
 
-`-flatten` makes the implementation hierarchy easier for the mapper to optimize across module boundaries. It makes debug names less convenient, so preserve the source tree, source list and build log. `-abc9` selects the newer LUT-mapping flow. The explicit `-nodsp` is a design decision in this branch: multipliers map away from DSP blocks, which must be reconsidered if performance or DSP utilization becomes a limiting factor.
+`-flatten` makes the implementation hierarchy easier for the mapper to optimize across module boundaries. The price is less convenient debug names, so keep the source tree, source list and build log. `-abc9` selects the newer LUT-mapping flow. The explicit `-nodsp` is a design decision in this branch: multipliers map away from DSP blocks, which must be reconsidered if performance or DSP utilization becomes a limiting factor.
 
 ### A small standalone synthesis experiment
 
@@ -175,21 +175,21 @@ Keep the following artifacts with every bitstream:
 | Firmware hashes | Which software is embedded in memories |
 | Git commit and tool versions | Rebuild provenance |
 
-Do not treat a zero exit code as proof of a correct processor. Compare the resource trend with the previous build; unexpected changes in LUT, BRAM or flip-flop count frequently expose a missing source file, different parameter override or an accidentally optimized-away peripheral. Run simulation and ISA/software tests before FPGA compilation, then use the board to validate integration and physical interfaces.
+A zero exit code means the tools finished, and the processor may still be wrong. Compare the resource trend with the previous build, because unexpected changes in LUT, BRAM or flip-flop count frequently expose a missing source file, different parameter override or an accidentally optimized-away peripheral. Run simulation and ISA/software tests before FPGA compilation, then use the board to validate integration and physical interfaces.
 
 ### SystemVerilog boundary and reproducible source sets
 
-Yosys does not accept every construct permitted by the SystemVerilog language, because many language features describe testbench behavior rather than hardware. Interfaces, classes, dynamic arrays, constrained randomization, delays, coverage and most assertion semantics are not an FPGA circuit. The safe workflow is to compile the synthesizable design with the same frontend and source manifest that will be used for implementation, while running verification constructs in Verilator or another simulator.
+Yosys does not accept every construct permitted by the SystemVerilog language, because many language features describe testbench behavior rather than hardware. Interfaces, classes, dynamic arrays, constrained randomization, delays, coverage and most assertion semantics are not an FPGA circuit. The reliable workflow is to compile the synthesizable design with the same frontend and source manifest that will be used for implementation, while running verification constructs in Verilator or another simulator.
 
-The CVW command uses `read_slang` rather than silently treating all files as Verilog-2005. It also records the include roots and the selected `fpgaOpenSource` top. This matters for a large parameterized processor: a source list that omits a configuration header can synthesize a different, apparently valid SoC. Prefer a generated, sorted source manifest over shell globbing, and keep it in the build output.
+The CVW command uses `read_slang`, so files are not silently treated as Verilog-2005. It also records the include roots and the selected `fpgaOpenSource` top. This matters for a large parameterized processor: a source list that omits a configuration header can synthesize a different, apparently valid SoC. A generated, sorted source manifest is safer than shell globbing, and keeping it in the build output makes the build reproducible.
 
 Some portable RTL rules are especially useful:
 
 - Use `logic` and one clear driver per signal. Multiple drivers that happen to resolve in simulation are poor synthesis intent.
 - Use `always_ff` for sequential state and `always_comb` for combinational logic; give every combinational output a value on every path.
 - Specify widths and signedness on arithmetic boundaries. A 32-bit unsigned comparison can change when one operand becomes signed.
-- Do not rely on `initial` blocks for architectural reset unless the target and coding style explicitly use FPGA memory/flip-flop initialization.
-- Isolate device primitives in a small wrapper. A generic core should not instantiate an Artix-7 `BUFG`, `MMCME2_BASE` or IO buffer directly.
+- Use `initial` blocks for architectural reset only when the target and coding style explicitly rely on FPGA memory/flip-flop initialization.
+- Isolate device primitives in a small wrapper. That keeps a generic core free of Artix-7 `BUFG`, `MMCME2_BASE` and IO buffer instances.
 
 `read_slang` accepts the IEEE language syntax; it does not turn non-synthesizable behavior into gates. `--ignore-assertions` in the example prevents synthesis from handling assertion constructs, but assertions still belong in the simulation/formal verification flow. A useful policy is: testbench-only code sits outside the source manifest, synthesizable assertions are either supported intentionally or excluded explicitly, and every exclusion is visible in the script.
 
@@ -213,7 +213,7 @@ For equivalence-sensitive work, compare a simulation of the RTL against a simula
 
 Synthesis data can guide microarchitecture only when experiments are controlled. Compile a baseline with a fixed source commit, configuration, tool version and constraints. Change one item, then compare both resource totals and critical structural messages. For a processor, meaningful alternatives include branch-predictor size, cache ways, multiplier implementation, register-file realization, reset policy and optional peripherals.
 
-Do not translate FPGA LUT counts into ASIC area or power. The value of the FPGA measurement is comparative: it tells you how this RTL maps to this device under this implementation flow. A cache that consumes BRAM but reduces instruction-bus activity can be a good FPGA trade-off even when its ASIC cost would be evaluated differently.
+FPGA LUT counts do not convert into ASIC area or power. The FPGA measurement is valuable as a comparison: it tells you how this RTL maps to this device under this implementation flow. A cache that consumes BRAM but reduces instruction-bus activity can be a good FPGA trade-off even when its ASIC cost would be evaluated differently.
 
 ## Hands-on Experiments
 
@@ -242,7 +242,7 @@ Explain how parameters and inferred memories affect the netlist, and why behavio
 
 ## Common mistakes {#review-yosys-mistakes .unnumbered .unlisted}
 
-Synthesizing the wrong top/configuration; interpreting synthesis success as a validated FPGA bitstream.
+Two mistakes are easy to make with a large parameterized design. Synthesizing the wrong top or configuration produces a clean run of the wrong SoC. And a successful synthesis is only the first checkpoint toward a validated FPGA bitstream.
 
 ## Try it yourself {#review-yosys-try .unnumbered .unlisted}
 

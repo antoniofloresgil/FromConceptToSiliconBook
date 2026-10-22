@@ -2,7 +2,7 @@
 
 ## Concepts
 
-An RTL description specifies state and transformations. A silicon implementation must realize them using transistors, wires, supplies and clocks that have finite resistance, capacitance and manufacturing variation. This chapter connects the microarchitectural choices made earlier in the book to those physical costs. It prepares the reader to interpret the OpenROAD and LibreLane experiments, rather than merely execute their commands.
+An RTL description specifies state and transformations. A silicon implementation must realize them using transistors, wires, supplies and clocks that have finite resistance, capacitance and manufacturing variation. This chapter connects the microarchitectural choices made earlier in the book to those physical costs. It prepares the reader to interpret the OpenROAD and LibreLane experiments and not just execute their commands.
 
 The circuit background follows Weste and Harris, *CMOS VLSI Design: A Circuits and Systems Perspective*, fourth edition: Chapters 1–7 for CMOS, fabrication, delay, power, interconnect and robustness; Chapters 10–12 for sequential circuits, datapaths and memories; and Chapter 13 for power distribution and clocks [@westeCmosVlsi]. The examples and diagrams here are original teaching material. Technology-specific numbers must come from the selected PDK and characterized libraries, not from a historical process example in a textbook.
 
@@ -32,7 +32,7 @@ Lower metal layers generally serve local connections; higher layers can provide 
 
 Design rules specify minimum widths, separations, enclosures, overlaps and other geometry constraints. Additional rules concern density, antenna exposure, wells and chip boundaries. A drawing can be electrically understandable yet impossible to manufacture reliably. Conversely, legal shapes can implement the wrong circuit. The distinction between geometric legality and connectivity motivates the separate DRC and LVS checks in @sec-physical-validation.
 
-Do not transfer scalable textbook layout rules directly into SKY130. Use the actual PDK rules and approved cell views. The open SKY130 documentation is useful for inspecting the layer stack and manufacturing constraints, but its stated status and limitations must also be read [@skywaterPdkDocs].
+Scalable textbook layout rules are a starting point; SKY130 needs the actual PDK rules and approved cell views. The open SKY130 documentation is useful for inspecting the layer stack and manufacturing constraints, and its stated status and limitations are worth reading too [@skywaterPdkDocs].
 
 ### Resistance, capacitance and delay
 
@@ -80,7 +80,7 @@ This quantity is a time constant estimate; interpreting it as a threshold-crossi
 
 Repeaters divide a long connection into shorter electrical segments. They add cell delay, capacitance, area and switching power, but can reduce the otherwise large distributed-wire delay. Layer selection, spacing and route topology are additional choices. Coupling capacitance can change effective delay depending on whether neighboring signals switch in the same or opposite direction, and can inject noise on a quiet victim [@westeCmosVlsi, Chapter 6].
 
-These effects explain why locality matters in Wally. A global bypass network, wide register-file output, cache-way mux or distributed CSR control can be expensive even if its RTL expression is short. Duplicating a small decode function near its consumers can be preferable to transporting a global control signal. Such a change must preserve behavior and be evaluated after physical implementation, because synthesis cell count alone cannot establish the benefit.
+These effects explain why locality matters in Wally. A global bypass network, wide register-file output, cache-way mux or distributed CSR control can be expensive even if its RTL expression is short. Duplicating a small decode function near its consumers can be preferable to transporting a global control signal. Such a change must preserve behavior and be evaluated after physical implementation, because the synthesis cell count alone cannot show the benefit.
 
 ### Standard-cell views and Liberty tables
 
@@ -104,7 +104,7 @@ For a RISC-V SoC, clocks, resets and test controls also cross subsystem boundari
 
 ### PVT, RC corners and operating modes {#pvt-rc-corners-and-operating-modes}
 
-Manufactured devices differ from nominal models. Voltage and temperature change delay and leakage; metal variation changes route resistance and capacitance. A corner defines a modelled combination of these conditions. A mode defines behavior and constraints, such as functional operation or scan shift. Multi-mode, multi-corner analysis evaluates the required combinations rather than a single typical-condition run.
+Manufactured devices differ from nominal models. Voltage and temperature change delay and leakage; metal variation changes route resistance and capacitance. A corner defines a modelled combination of these conditions. A mode defines behavior and constraints, such as functional operation or scan shift. Multi-mode, multi-corner analysis evaluates all the required combinations, where a single typical-condition run would miss some.
 
 | Dimension | Example question | Evidence needed |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ Manufactured devices differ from nominal models. Voltage and temperature change 
 | Interconnect | Which extracted resistance/capacitance conditions are used? | Extraction model and RC corner |
 | Mode | Are functional, test and low-power states constrained correctly? | Mode-specific clocks, constants and exceptions |
 
-Do not assume that one named slow corner always governs setup or that one fast corner always governs hold. Actual paths combine clock and data behavior, cell types and wires. Temperature dependence can also vary with technology and voltage. Analyze the combinations required by the selected methodology. Larger industrial flows may use on-chip variation models and common-clock-path pessimism removal; support and qualification must be verified for the chosen tools.
+One named slow corner does not always govern setup, and one fast corner does not always govern hold. Actual paths combine clock and data behavior, cell types and wires. Temperature dependence can also vary with technology and voltage. Analyze the combinations required by the selected methodology. Larger industrial flows may use on-chip variation models and common-clock-path pessimism removal; support and qualification must be verified for the chosen tools.
 
 ### Dynamic power, leakage and energy {#dynamic-power-leakage-and-energy}
 
@@ -126,11 +126,11 @@ $$
 
 Here $\alpha$ counts expected zero-to-one charging events per clock cycle for the represented capacitance. If activity is defined as total toggles, the factor must be converted accordingly. A clock has one charging event per cycle. Logic activity depends on data and can include glitches. Total dynamic power also includes internal cell activity and short-circuit current, while static power includes leakage.
 
-For an illustrative aggregate capacitance of $20\,\mathrm{pF}$, $\alpha=0.15$, $V_{DD}=1.8\,\mathrm{V}$ and $f=100\,\mathrm{MHz}$, switching power is $0.972\,\mathrm{mW}$. At 1.6 V with everything else unchanged it would be $0.768\,\mathrm{mW}$. This arithmetic illustrates the squared voltage dependence; it does not establish that a real design still meets timing at the lower voltage.
+For an illustrative aggregate capacitance of $20\,\mathrm{pF}$, $\alpha=0.15$, $V_{DD}=1.8\,\mathrm{V}$ and $f=100\,\mathrm{MHz}$, switching power is $0.972\,\mathrm{mW}$. At 1.6 V with everything else unchanged it would be $0.768\,\mathrm{mW}$. This arithmetic illustrates the squared voltage dependence; whether a real design still meets timing at the lower voltage is a separate question.
 
 Energy for a task is the integral of power over its execution. Halving frequency can halve switching power while doubling execution time, leaving capacitive switching energy approximately unchanged and increasing leakage energy. Extra parallel units can finish sooner but increase active capacitance. A pipeline can increase frequency while making the clock tree more expensive. Compare energy per useful result under the same workload, including idle and transfer periods.
 
-Activity-based power estimation uses representative stimulus or switching records such as VCD/SAIF, where supported. RTL activity may miss gate-level glitches and physical clock-tree loads. Gate-level activity is more informative but needs cell models and appropriate timing. A report based on assumed activity must state that assumption. Never label a vectorless estimate as a measured board or chip power result.
+Activity-based power estimation uses representative stimulus or switching records such as VCD/SAIF, where supported. RTL activity may miss gate-level glitches and physical clock-tree loads. Gate-level activity is more informative but needs cell models and appropriate timing. A report based on assumed activity must state that assumption. A vectorless estimate stays an estimate and should never be presented as a measured board or chip power result.
 
 ### Clock gating, power gating and voltage domains
 
@@ -138,11 +138,11 @@ Clock gating suppresses clock transitions in idle regions. An integrated clock-g
 
 Power gating disconnects a region's supply to reduce leakage. It introduces power switches, wake-up current, isolation at outputs and possibly retained state. A controller must coordinate quiescence, isolation, power removal, power restoration and reset or retention restore. In a memory-connected accelerator, outstanding requests must be resolved before its interface becomes unavailable.
 
-Different voltage domains may require level shifters and suitable isolation cells. Power intent, often expressed with UPF in supporting flows, describes these relationships. Availability of a parser or command does not prove that a specific open flow and PDK provide a complete multi-voltage implementation. Begin coursework with one supply domain, then treat power-domain design as an explicit extension with additional checks.
+Different voltage domains may require level shifters and suitable isolation cells. Power intent, often expressed with UPF in supporting flows, describes these relationships. A parser or command being available does not mean a specific open flow and PDK provide a complete multi-voltage implementation. Begin coursework with one supply domain, then treat power-domain design as an explicit extension with additional checks.
 
 ### Power distribution, reliability and thermal limits
 
-The PDN connects package supplies to cell and macro pins through rings, straps, rails and vias. Its resistance causes static voltage drop, approximated locally by $\Delta V=IR$. Package and interconnect inductance also cause transient voltage disturbances proportional to $L\,di/dt$. Bypass capacitors supply charge over limited time scales; they do not replace adequate supply connections.
+The PDN connects package supplies to cell and macro pins through rings, straps, rails and vias. Its resistance causes static voltage drop, approximated locally by $\Delta V=IR$. Package and interconnect inductance also cause transient voltage disturbances proportional to $L\,di/dt$. Bypass capacitors supply charge over limited time scales, so adequate supply connections are still needed.
 
 Electromigration concerns material transport under sustained current stress. Current density, temperature, geometry and lifetime matter. A route that meets signal DRC can still be unsuitable for the expected current. Supply analysis needs realistic source locations and power assumptions: an ideal source at every stripe can conceal the drop of the actual pad-fed network.
 
@@ -154,7 +154,7 @@ OpenROAD provides static PDN analysis with IR-drop and current reporting [@openr
 
 A cache's RTL array may map efficiently into FPGA BRAM, but an ASIC needs a realizable memory implementation. Mapping a large array into flip-flops adds cell area, muxing, clock loads and routing. SRAM macros use dense bit-cell arrays with decoders, bit lines, sense amplifiers and write circuitry; their interfaces have specific read/write and collision behavior [@westeCmosVlsi, Chapter 12].
 
-The integration package needs a simulation model, matching Liberty, LEF, GDSII and verification netlists. The wrapper adapts polarity, byte masks, latency and legal enables while preserving the architectural contract. Verify uninitialized contents, read-during-write behavior, power pins and test access. A black-box declaration that lets synthesis finish is not a substitute for these views.
+The integration package needs a simulation model, matching Liberty, LEF, GDSII and verification netlists. The wrapper adapts polarity, byte masks, latency and legal enables while preserving the architectural contract. Verify uninitialized contents, read-during-write behavior, power pins and test access. A black-box declaration lets synthesis finish, and these views are what the integration actually needs.
 
 Macro placement is a floorplan decision. Leave routing access around pins, reserve channels, plan power connections and avoid incompatible orientations. A cache can have many banks whose interfaces compete for nearby tracks. Placing macros close to their controllers reduces some wire costs, but packing them too tightly can prevent routing or PDN access.
 
@@ -162,7 +162,7 @@ Hierarchical design hardens blocks independently and integrates their abstracts 
 
 ### Verification across circuit and digital representations
 
-Use @sec-verification-methodology to connect cell/circuit characterization to the digital hierarchy. Check that cell Boolean behavior, pin polarity, timing arcs, reset and power views agree with the intended circuit. Custom circuits require appropriate transient/DC and PVT scenarios with the technology models; standard-cell integration relies on identified characterized views and their permitted use. RTL arithmetic tests do not validate transistor noise margins or lifetime reliability. Record model/corner identity and carry the resulting interface assumptions into STA and physical review.
+Use @sec-verification-methodology to connect cell/circuit characterization to the digital hierarchy. Check that cell Boolean behavior, pin polarity, timing arcs, reset and power views agree with the intended circuit. Custom circuits require appropriate transient/DC and PVT scenarios with the technology models; standard-cell integration relies on identified characterized views and their permitted use. RTL arithmetic tests say nothing about transistor noise margins or lifetime reliability. Record model/corner identity and carry the resulting interface assumptions into STA and physical review.
 
 
 ## Implementation
@@ -177,7 +177,7 @@ Choose the same PDK and standard-cell library used by the OpenROAD example. Reco
 | Selected NAND | Complement of AND | From cell LEF | Per pin | Compare the input arcs | Logic mapping |
 | Selected DFF | Edge-triggered state | From cell LEF | Clock and data separately | Setup/hold and clock-to-Q | Pipeline state |
 
-Do not fill the table with nominal numbers from this chapter. The exercise is to recover the technology facts and connect representations. Verify units in every file: capacitance units, timing units and LEF dimensions can differ from the units used in a report.
+The nominal numbers in this chapter are illustrations, and the table should be filled from the technology files: the exercise is to recover the technology facts and connect representations. Verify units in every file: capacitance units, timing units and LEF dimensions can differ from the units used in a report.
 
 ### Follow the accumulator's feedback path
 
@@ -185,7 +185,7 @@ Use `labs/07-implementation/rtl/accumulator.sv`, which has the uppercase `Clk` a
 
 Start with `python labs/run.py run synthesis` in the supplied environment. This verifies the teaching RTL and produces generic synthesis evidence. Then use the technology-specific OpenROAD or LibreLane exercise to obtain mapped and physical results. The generic synthesis lab does not report a technology frequency or validated ASIC power.
 
-At each physical checkpoint, record cell area, number of sequential cells, clock buffers, worst setup/hold slack, estimated/extracted interconnect and the critical path endpoints. Separate the clock contribution, cell contribution and wire contribution. Explain which change between stages caused a regression rather than only reporting the final slack.
+At each physical checkpoint, record cell area, number of sequential cells, clock buffers, worst setup/hold slack, estimated/extracted interconnect and the critical path endpoints. Separate the clock contribution, cell contribution and wire contribution. Explain which change between stages caused a regression, as well as reporting the final slack.
 
 ### A worked timing-budget calculation
 
@@ -211,7 +211,7 @@ With 0.06 ns clock-to-Q, 0.04 ns minimum data delay, 0.05 ns hold and 0.03 ns un
 
 Choose one controlled change: clock target, core utilization, register placement constraint or architecture. Preserve tool and PDK versions, interface loads and activity assumptions. Revalidate behavior for an RTL change, and rerun the relevant physical stages. Classify the result as a verified baseline, a failed candidate or an incomplete experiment.
 
-For example, compare the original accumulator with a pipelined arithmetic implementation. The latter changes result latency and may need additional handling of feedback dependencies; inserting a register into the feedback sum cannot be assumed to preserve one accumulated update per cycle. State the new protocol and verify it before comparing PPA. An area or frequency improvement is irrelevant if the two circuits perform different work.
+For example, compare the original accumulator with a pipelined arithmetic implementation. The latter changes result latency and may need additional handling of feedback dependencies; inserting a register into the feedback sum no longer gives one accumulated update per cycle. State the new protocol and verify it before comparing PPA. An area or frequency improvement is irrelevant if the two circuits perform different work.
 
 ## Hands-on Experiments
 
@@ -243,7 +243,7 @@ Create stimulus representing active arithmetic, disabled accumulation and repeat
 
 [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-vlsi-design-05 .learning-activity}
 
-Select a documented Wally cache geometry and compute the required storage bits and ports. Propose compatible SRAM banks, or explicitly identify the missing macro collateral. Sketch controller placement, power access and routing channels. Explain how memory latency affects the pipeline described in @sec-core-v-wally. The deliverable is an integration plan; do not claim a hardened Wally implementation without its physical evidence.
+Select a documented Wally cache geometry and compute the required storage bits and ports. Propose compatible SRAM banks, or explicitly identify the missing macro collateral. Sketch controller placement, power access and routing channels. Explain how memory latency affects the pipeline described in @sec-core-v-wally. The deliverable is an integration plan, and a hardened Wally implementation would need its own physical evidence.
 
 The final report should connect each physical result to a design choice, name its verification boundary, and identify the next measurement needed. These practices prepare the reader for the implementation engines in @sec-openroad and the release evidence in @sec-physical-validation.
 
@@ -260,7 +260,7 @@ Explain a cell-size/load tradeoff and why an RTL memory array needs an explicit 
 
 ## Common mistakes {#review-vlsi-design-mistakes .unnumbered .unlisted}
 
-Copying textbook process numbers into another PDK; comparing PPA for designs with different behavior.
+Two comparisons mislead. Process numbers from a textbook belong to that process, so another PDK needs its own. And PPA figures only compare designs that perform the same work, since a faster circuit with different behavior has answered a different question.
 
 ## Try it yourself {#review-vlsi-design-try .unnumbered .unlisted}
 

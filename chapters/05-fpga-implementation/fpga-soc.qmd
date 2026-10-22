@@ -8,7 +8,7 @@
 
 The preceding chapters describe a generic open FPGA flow. This chapter follows a concrete and more demanding case: a reduced CORE-V Wally RISC-V SoC on Digilent's Nexys Video. The example is taken from the `opensource-fpga-bitstream` branch of CVW, where the entire FPGA build avoids Vivado dependencies [@cvwOpenSourceFpga].
 
-The board is useful because it has an Artix-7 `xc7a200t`, a 100 MHz oscillator, user LEDs, UART, DDR3 and a JTAG connection. The processor is useful because it exercises a realistic SoC boundary: parameterized RISC-V RTL, boot memories, timer/interrupt logic, GPIO, serial IO and an external-memory bus. It is not a claim that every Wally configuration or every Nexys Video peripheral is supported by the open flow.
+The board is useful because it has an Artix-7 `xc7a200t`, a 100 MHz oscillator, user LEDs, UART, DDR3 and a JTAG connection. The processor is useful because it exercises a realistic SoC boundary: parameterized RISC-V RTL, boot memories, timer/interrupt logic, GPIO, serial IO and an external-memory bus. The open flow does not cover every Wally configuration or every Nexys Video peripheral.
 
 ### What the example builds
 
@@ -39,7 +39,7 @@ Treat the following claims differently:
 | DDR controller initializes | `init_done`, calibration logs and memory test |
 | Linux/DDR3 subsystem works | Sustained hardware software tests, not only synthesis |
 
-The documented branch builds and programs a full open bitstream on Nexys Video and reports timing at 40 MHz. At the stated snapshot, DDR3 hardware bring-up remains unresolved: the LiteDRAM service CPU does not yet execute its initialization firmware, so `init_done` and `init_error` stay low. This is valuable engineering information, not a failure to conceal. The book distinguishes a generated bitstream from a validated external-memory system [@cvwLiteDram].
+The documented branch builds and programs a full open bitstream on Nexys Video and reports timing at 40 MHz. At the stated snapshot, DDR3 hardware bring-up remains unresolved: the LiteDRAM service CPU does not yet execute its initialization firmware, so `init_done` and `init_error` stay low. That is valuable engineering information, and the book reports it openly. A generated bitstream is a different milestone from a validated external-memory system [@cvwLiteDram].
 
 ### Board validation is an additional integration level
 
@@ -48,7 +48,7 @@ The methodology in @sec-verification-methodology adds physical programming, osci
 
 ## Implementation
 
-**Recipe status: adaptation template.** The board workflow depends on the external pinned Wally checkout, toolchain/database, USB permissions and actual Nexys Video. The book's RTL simulation fixtures do not execute physical programming or qualify DDR3 bring-up. Board observations and unresolved integration tasks remain exercises with explicit evidence.
+**Recipe status: adaptation template.** The board workflow depends on the external pinned Wally checkout, toolchain/database, USB permissions and actual Nexys Video. The book's RTL simulation fixtures stop short of physical programming and DDR3 bring-up. Board observations and unresolved integration tasks remain exercises with explicit evidence.
 
 **Online route without a board:** keep this implementation as the physical case study and follow the alternatives after the experiments below. Build/route/bitstream steps need the external tools and device data, but no connected FPGA. The checked real-Wally platform in @sec-executable-project supplies the functional firmware milestone; it has simulated RAM, a different reset vector/memory configuration and a direct interrupt route. It does not reproduce this board wrapper or simulate a `.bit`. [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board) defines the report-analysis fallback when implementation resources are unavailable.
 
@@ -67,7 +67,7 @@ cd fpga/generator
 make FLOW=opensource nexysvideo
 ```
 
-The last command drives preprocessing, LiteDRAM generation, synthesis, nextpnr and bitstream conversion. Its output directory is `fpga/generator/opensource-nexysvideo/`; do not look for the bitstream in a Vivado project directory. Preserve this directory with the source revision when reporting an experiment.
+The last command drives preprocessing, LiteDRAM generation, synthesis, nextpnr and bitstream conversion. Its output directory is `fpga/generator/opensource-nexysvideo/`; the bitstream is not in a Vivado project directory. Keep this directory with the source revision when reporting an experiment.
 
 The target definition selects:
 
@@ -78,7 +78,7 @@ nexysvideo: export SYSTEMCLOCK := 20000000
 nexysvideo: export MAXSDCCLOCK := 10000000
 ```
 
-The build script separately asks nextpnr for 40 MHz on Nexys Video. Do not confuse `SYSTEMCLOCK` configuration constants with the routed timing target: trace a signal from the oscillator through the chosen clocking circuitry and use the actual post-route report as the hardware-frequency evidence.
+The build script separately asks nextpnr for 40 MHz on Nexys Video. `SYSTEMCLOCK` configuration constants are not the routed timing target; trace a signal from the oscillator through the chosen clocking circuitry and use the actual post-route report as the hardware-frequency evidence.
 
 ### The board wrapper and constraints
 
@@ -90,7 +90,7 @@ The wrapper has three responsibilities:
 2. Form a reset sequence that keeps Wally inactive until its dependencies are ready.
 3. Connect the configured Wally SoC to on-chip memories and, when enabled, the external-memory bridge.
 
-Do not add a new peripheral by only editing the wrapper. Add RTL, define its address-map and reset behavior, verify it in simulation, expose a port with the correct direction/IO standard, update the XDC and then run the complete physical flow. Board IO is part of the hardware interface specification.
+Editing the wrapper is only one step of adding a new peripheral. Add RTL, define its address-map and reset behavior, verify it in simulation, expose a port with the correct direction/IO standard, update the XDC and then run the complete physical flow. Board IO is part of the hardware interface specification.
 
 ### Why LiteDRAM replaces MIG
 
@@ -137,7 +137,7 @@ LiteDRAM reset release -> service firmware -> DDR init/leveling
 Wally boot ROM -> UART/GPIO software milestone
 ```
 
-Do not release Wally when the PLL merely reports lock if it will immediately use DDR3. Conversely, a test that only uses internal ROM/RAM may choose an explicitly documented mode that does not wait for DDR. Keep the two cases separate: a reset workaround can make a blink test pass while invalidating the intended memory-system test.
+If Wally will use DDR3 immediately, a PLL lock alone is too early to release it. Conversely, a test that only uses internal ROM/RAM may choose an explicitly documented mode that does not wait for DDR. Keep the two cases separate: a reset workaround can make a blink test pass while invalidating the intended memory-system test.
 
 ### Build products and checkpoints
 
@@ -180,7 +180,7 @@ This diagnosis suggests a disciplined next experiment:
 4. Fix the smallest demonstrated fault.
 5. Constrain and verify the DDR PHY high-speed domain before declaring DDR3 operation.
 
-Do not skip directly to booting Linux from DDR3. The validation order should be internal ROM execution, controller reset release, JEDEC initialization, PHY leveling, simple read/write memory test, sustained memory test, then operating-system boot.
+Booting Linux from DDR3 is the last step and not the first. The validation order is internal ROM execution, controller reset release, JEDEC initialization, PHY leveling, simple read/write memory test, sustained memory test, then operating-system boot.
 
 ### Firmware as a hardware dependency
 
@@ -218,7 +218,7 @@ Hardware bring-up is faster when each observation has a clear owner. The followi
 | First firmware | UART/LED boot marker | CPU fetch, ROM image, reset or peripheral wiring |
 | DDR3 | Calibration then memory test | PHY, controller, clocking or bridge integration |
 
-Write expected observations before running the test. For example, if Wally is correctly held until DDR is ready, an absent UART banner is expected while `init_done` is low; it does not distinguish a failed Wally core from a deliberate reset dependency. Temporary LEDs make this dependency visible and protect against incorrect conclusions.
+Write expected observations before running the test. For example, if Wally is correctly held until DDR is ready, an absent UART banner is expected while `init_done` is low; it cannot tell a failed Wally core from a deliberate reset dependency. Temporary LEDs make this dependency visible and prevent wrong conclusions.
 
 ### Reproducibility and release record
 
@@ -238,7 +238,7 @@ Avoid committing large generated bitstreams by default. Store them in a versione
 
 The next logical additions are an interrupt-driven timer test, GPIO input debounce, SPI/SD support or a processor configuration with caches. Add one at a time. Each changes more than resource count: clocks, IO banks, firmware, verification and timing paths may all change. For external interfaces, consult the board schematic and electrical standards before writing an XDC constraint.
 
-When changing the Wally core configuration, repeat the complete evidence ladder. A cache or bus-width change can alter the AHB traffic assumptions used by the Wishbone bridge. A faster target clock can invalidate the current LiteDRAM shared-domain choice. An optional debug block can affect reset behavior and JTAG pins. The proper conclusion is thus configuration-specific: “this commit and configuration met these checks on this board,” rather than a broad claim about all Wally implementations.
+When changing the Wally core configuration, repeat the complete evidence ladder. A cache or bus-width change can alter the AHB traffic assumptions used by the Wishbone bridge. A faster target clock can invalidate the current LiteDRAM shared-domain choice. An optional debug block can affect reset behavior and JTAG pins. The proper conclusion is thus configuration-specific: “this commit and configuration met these checks on this board,” and not a broad claim about all Wally implementations.
 
 ## Hands-on Experiments
 
@@ -279,7 +279,7 @@ Explain the Nexys Video boot/console path and why a DDR calibration or transacti
 
 ## Common mistakes {#review-fpga-soc-mistakes .unnumbered .unlisted}
 
-Claiming DDR functionality from a successful build; overlooking firmware placement or reset-domain assumptions.
+Two oversights cost the most board time. A successful build says nothing yet about DDR functionality, which needs its own tests. And firmware placement or reset-domain assumptions can silently keep the core in reset or fetching from the wrong memory.
 
 ## Try it yourself {#review-fpga-soc-try .unnumbered .unlisted}
 

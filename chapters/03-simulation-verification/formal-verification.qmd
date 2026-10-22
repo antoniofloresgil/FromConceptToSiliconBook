@@ -16,7 +16,7 @@ $$
 s_{t+1}=T(s_t,i_t),\qquad o_t=O(s_t,i_t).
 $$
 
-The harness supplies an initial-state predicate $I$ and environment restrictions $A$. A safety assertion $P$ asks whether any state reachable from $I$, while satisfying $A$, violates $P$. The solver considers symbolic input values rather than one generated stimulus sequence. It still checks a particular finite-width circuit and model: proving an eight-bit, two-entry FIFO does not prove arbitrary widths, depths or asynchronous clock crossings.
+The harness supplies an initial-state predicate $I$ and environment restrictions $A$. A safety assertion $P$ asks whether any state reachable from $I$, while satisfying $A$, violates $P$. The solver considers symbolic input values rather than one generated stimulus sequence. Even so, it checks one particular finite-width circuit and model: a proof for an eight-bit, two-entry FIFO tells you about that FIFO, and nothing yet about other widths, depths or asynchronous clock crossings.
 
 Our RTL state is initially unconstrained. The harness assumes reset on the first sampled edge and initializes only its own bookkeeping flags. The FIFO reset establishes empty occupancy and matching pointers; payload storage is not reset. Payload comparisons therefore apply only to occupied entries. We deliberately avoid globally forcing every register to zero, which could conceal missing reset behavior.
 
@@ -30,9 +30,9 @@ Our RTL state is initially unconstrained. The harness assumes reset on the first
 
 Yosys's formal frontend accepts immediate assertions and sampled-history helpers such as `$past`. The harness uses a `past_valid` flag before consulting previous-cycle values. These small clocked properties do not require the full concurrent SVA language; frontend support should be checked before adopting a richer syntax [@formalSbyVerilog].
 
-An assumption is part of the interface contract. Do not assume `out_data` is correct or that occupancy is legal: those are DUT obligations. Do not assume the consumer always accepts data merely to prove that data cannot be lost under backpressure. The default safety/equivalence task leaves `out_ready` unconstrained and permits later resets. Producer stability is the only traffic restriction beyond initial reset.
+An assumption is part of the interface contract. Leave `out_data` correctness and legal occupancy as DUT obligations rather than assuming them. Likewise, if the consumer is assumed to always accept data, the proof that data cannot be lost under backpressure becomes empty. The default safety/equivalence task leaves `out_ready` unconstrained and permits later resets. Producer stability is the only traffic restriction beyond initial reset.
 
-At an integration boundary, a guarantee can become another block's assumption only after the connection and reset contract have been checked. Assuming every peer behaves correctly is not a substitute for verifying the adapters between them.
+At an integration boundary, a guarantee can become another block's assumption only after the connection and reset contract have been checked. Assuming every peer behaves correctly cannot replace verifying the adapters between them.
 
 ### Safety and progress {#safety-and-progress}
 
@@ -46,7 +46,7 @@ An unbounded liveness claim requires a precise fairness condition and an engine/
 
 Bounded model checking (BMC) searches transitions up to a finite horizon. A counterexample within that horizon is useful evidence of failure in the model. A successful twelve-step check means no modeled violation was found within those steps; it supplies no universal horizon by itself.
 
-Induction adds a different argument. A base case establishes the properties from the specified initial state. The inductive step establishes that the candidate invariants preserve themselves across the next transition, assuming they held over the induction window. A completed base and step can establish an unbounded safety result for the modeled system. Reaching an induction limit without proof is inconclusive.
+Induction adds a different argument. A base case establishes the properties from the specified initial state. The inductive step establishes that the candidate invariants preserve themselves across the next transition, assuming they held over the induction window. A completed base and step can establish an unbounded safety result for the modeled system. If induction reaches its limit without a proof, the result is inconclusive, and that is worth saying plainly.
 
 Induction may explore states that are unreachable from reset. For example, two FIFOs can have equal occupancies while the ring pointers address unrelated data. Output equality alone may not be inductive. We strengthen the invariant with the relationship between occupancy, pointers and the two representations' occupied slots. These are additional assertions to prove, not assumptions inserted to hide a mismatch.
 
@@ -91,7 +91,7 @@ case ({push, pop})
 endcase
 ```
 
-Both pointers advance when both transfers occur, while occupancy stays unchanged. This is the same acceptance-based reasoning used by the parameterized transport FIFO in @sec-verification-methodology and [Lab 03](../../labs/03-transport/README.md). Here we specialize capacity to two to make the state relation and counterexample easy to inspect; this is a separate teaching implementation, not a proof of every `transport_fifo` parameter.
+Both pointers advance when both transfers occur, while occupancy stays unchanged. This is the same acceptance-based reasoning used by the parameterized transport FIFO in @sec-verification-methodology and [Lab 03](../../labs/03-transport/README.md). Here we specialize capacity to two to make the state relation and counterexample easy to inspect; it is a separate teaching implementation, so its proof covers this FIFO and not every `transport_fifo` parameter.
 
 ### Harness, ordering model and invariants
 
@@ -174,7 +174,7 @@ The runner checks this actual RTL revision with a six-step BMC task. `-falsify` 
 | Exchange | 0 | 1 / 1 | 1 / 1 | 1 | Accept `0x7b`, consume `0xfb` |
 | Following observation | 1 | 0 / 0 | 0 / 0 | 2 | Wrong count should be one before this reset edge |
 
-The tool is allowed to assert reset after exposing the bad state. Reset masks the interface, but the count/reference and pointer assertions still observe the erroneous pre-update occupancy. The clocked assertion result is reported after its sampled check. Inspect the invariant failure and preceding update, rather than blaming the later reset. Solver choices, including byte values and subsequent reset, may differ on another run.
+The tool is allowed to assert reset after exposing the bad state. Reset masks the interface, but the count/reference and pointer assertions still observe the erroneous pre-update occupancy. The clocked assertion result is reported after its sampled check. The place to look is the invariant failure and the update before it; the later reset only masked the interface. Solver choices, including byte values and subsequent reset, may differ on another run.
 
 ### Minimize, repair and regress
 
@@ -186,29 +186,29 @@ The [simulation regression](../../labs/15-formal/tb_regression.sv) retains the e
 
 The repair restores the four-way accepted-event update. The script reruns BMC and induction on `BUG=0`, then executes the same directed test on both revisions. The repaired revision must pass and the faulty revision must fail with the expected diagnostic. The formal counterexample and executable regression serve different purposes: one finds an admitted failing trace, and the other preserves the diagnosed scenario in the simulation suite.
 
-Never repair this defect by assuming `!(push && pop)`. The interface explicitly permits that combination. Such an assumption changes the environment to exclude the failing legal behavior.
+It is tempting to repair this defect by assuming `!(push && pop)`, but the interface explicitly permits that combination. Such an assumption would change the environment to hide a legal behavior that fails, so the repair belongs in the RTL.
 
 ### Detect a vacuous success {#detect-a-vacuous-success}
 
 For `QUIET=1`, the harness adds `assume(!in_valid)`. The twelve-step safety check still passes: no input can enter the FIFO. The same configuration cannot reach the traffic goal within twelve steps, so the reachability task must report no model. This intentionally overconstrained case is a successful *negative control*, not an adequate verification environment.
 
-The default traffic witness establishes that full occupancy, backpressure, exchange and drainage are admitted. The drain-restricted configuration has its own witness as well. These witnesses catch the particular missing-traffic restriction tested here. They do not prove that every assumption is necessary, that every assertion antecedent is reachable, or that the requirement set is complete. In a larger plan, add separate cover obligations for each important antecedent, error path and mode. Failure to reach a goal within a bound can also mean the bound is too short; diagnose it before declaring impossibility.
+The default traffic witness establishes that full occupancy, backpressure, exchange and drainage are admitted. The drain-restricted configuration has its own witness as well. These witnesses catch the particular missing-traffic restriction tested here. They leave open whether every assumption is necessary, whether every assertion antecedent is reachable and whether the requirement set is complete, so a larger plan adds separate cover obligations for each important antecedent, error path and mode. If a goal is not reached within a bound, the bound may simply be too short, so diagnose that before declaring the goal impossible.
 
 ### Equivalence between implementations {#equivalence-between-implementations}
 
 The joint induction proves that the ring and shift-register designs have the same cycle-level interface and valid payload observations from reset under their common environment. The internal state relation supplies the inductive bridge between different storage layouts. All eight-bit values and permitted ready/valid sequences are symbolic; this is stronger than comparing a finite set of simulations.
 
-This result is sequential equivalence under an explicit reset relation, not a claim that arbitrary initial contents match. It also is not latency-insensitive equivalence: adding a bypass or allowing full-cycle replacement changes ready/valid timing and should fail this miter. A pipelined implementation with a different latency needs a new correspondence relation and contract.
+This result is sequential equivalence under an explicit reset relation, which is narrower than matching arbitrary initial contents, and it is not latency-insensitive equivalence either: adding a bypass or allowing full-cycle replacement changes ready/valid timing and should fail this miter. A pipelined implementation with a different latency needs a new correspondence relation and contract.
 
-The proof does not establish RTL-to-Yosys-netlist equivalence for the project accelerator, scan equivalence, or equivalence of FPGA primitives. Those are different pairs of representations with their own models and obligations. Keep the existing `DP-EQUIV` project dossier entry open until its actual project-specific flow has completed.
+RTL-to-Yosys-netlist equivalence for the project accelerator, scan equivalence and equivalence of FPGA primitives are separate pairs of representations, each with its own model and obligations, so this proof leaves them open. Keep the `DP-EQUIV` project dossier entry open until its own project-specific flow has completed.
 
 ## Evidence, course scope and protocol extensions
 
-`labs/build/formal/report.json` records tool versions, source hashes, exact commands, task expectations, actual exit codes and log/artifact hashes. Preserve the BMC log, completed induction log, useful-traffic witnesses, fault counterexample, unreachable-traffic negative control and both regression outcomes. A task labelled PASS by the driver means its *expected* outcome occurred: the faulty design is expected to fail and the overconstrained reachability query is expected to be unsatisfiable. Read the per-task claim before aggregating results.
+`labs/build/formal/report.json` records tool versions, source hashes, exact commands, task expectations, actual exit codes and log/artifact hashes. Preserve the BMC log, completed induction log, useful-traffic witnesses, fault counterexample, unreachable-traffic negative control and both regression outcomes. A task labelled PASS by the driver means its *expected* outcome occurred: the faulty design is expected to fail and the overconstrained reachability query is expected to be unsatisfiable. Read each task's claim before aggregating results, since the labels mean different things.
 
 The example is an explicit practice outside the nine `run all` entries and runs separately in the publication validation workflow. For P4, reproduce it as preparation, then transfer a small meaningful property and reachability obligation to the student's accelerator. This reuses the existing P4 workload; it does not add a processor-wide proof requirement to the 6 ECTS course. Whole-core retirement refinement, privilege/MMU completeness, caches and multicore coherence remain advanced extensions.
 
-To progress from the FIFO to AXI4-Lite, treat each channel as an ownership contract. AW and W can arrive independently, so they need separate acceptance records. A B response follows a paired address/data request; a stalled B/R response retains its payload. An event register may have side effects only on the specified accepted access. Reuse the FIFO's retained-output reasoning, but add pairing, byte strobes, outstanding-count limits, reset cancellation and error semantics before claiming a protocol proof. The existing [AXI4-Lite lab](../../labs/04-mmio/README.md) and the bounded control checks in @sec-executable-project provide the next design boundary. Their bounded results do not inherit this FIFO's induction result.
+To progress from the FIFO to AXI4-Lite, treat each channel as an ownership contract. AW and W can arrive independently, so they need separate acceptance records. A B response follows a paired address/data request; a stalled B/R response retains its payload. An event register may have side effects only on the specified accepted access. Reuse the FIFO's retained-output reasoning, but add pairing, byte strobes, outstanding-count limits, reset cancellation and error semantics before claiming a protocol proof. The existing [AXI4-Lite lab](../../labs/04-mmio/README.md) and the bounded control checks in @sec-executable-project provide the next design boundary. Their bounded results stand on their own, without this FIFO's induction result.
 
 ## Hands-on experiments
 
@@ -219,7 +219,7 @@ To progress from the FIFO to AXI4-Lite, treat each channel as an ownership contr
 5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-05 .learning-activity} — Increase capacity to three in both implementations. Redesign pointer wrap and the state relation, check all new boundary cases and report a new completed proof or an explicit inconclusive result. The depth-two proof does not transfer automatically.
 6. [Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-06 .learning-activity} — Apply a retained-response property to the course AXI4-Lite endpoint. Add independent AW/W antecedent witnesses and a defective response variant, then repair and regress it. State the remaining AXI obligations.
 
-Submit the contract, assumption inventory, properties, model/source identities, completed logs, interpreted counterexample, repair/regression and proof limits. Keep student copies in `labs/work/` or a separate branch. Do not edit packaged references and then claim that their original integrity/proof evidence still applies.
+Submit the contract, assumption inventory, properties, model/source identities, completed logs, interpreted counterexample, repair/regression and proof limits. Keep student copies in `labs/work/` or a separate branch. Editing a packaged reference ends the validity of its original integrity and proof evidence, so work on a copy.
 
 <!-- chapter-review:formal-verification -->
 
@@ -235,7 +235,7 @@ Explain the FIFO's simultaneous-transfer defect, the invariant needed for induct
 
 ## Common mistakes {#review-formal-verification-mistakes .unnumbered .unlisted}
 
-Assuming away a legal failure; treating a bounded PASS as an unbounded proof; comparing unspecified empty payloads; ignoring reset/history sampling; reporting an induction timeout or an unreachable cover as proof of correctness.
+Formal tools reward careful reading of what they actually proved. Assuming away a legal failure removes the very behavior you wanted to check. A bounded PASS covers only the bound, so it is not yet an unbounded proof. Comparing the payload of an empty FIFO compares values the contract leaves unspecified. History helpers such as `$past` need reset and sampling handled first. And an induction timeout, or a cover that cannot be reached, is a result to diagnose, not a sign of correctness.
 
 ## Try it yourself {#review-formal-verification-try .unnumbered .unlisted}
 

@@ -4,7 +4,7 @@ Executable reference sources and tests are included in the [laboratory package](
 
 ## Concepts
 
-Digital hardware is only synchronous when a timing contract makes it synchronous. SystemVerilog can describe a register with `always_ff @(posedge clk)`, but that syntax neither creates a physical clock network nor states how fast the circuit must run. The contract connects three levels of design:
+Digital hardware is only synchronous when a timing contract makes it synchronous. SystemVerilog can describe a register with `always_ff @(posedge clk)`, but that syntax creates no physical clock network and says nothing about how fast the circuit must run. The contract connects three levels of design:
 
 1. **RTL intent:** which signals are sampled by which edge, how reset behaves, and which paths cross domains.
 2. **Timing constraints:** clock periods, uncertainty, external delays and any justified exceptions.
@@ -49,7 +49,7 @@ Signals should cross between unrelated domains only through a deliberate clock-d
 | Independent streaming clocks | Asynchronous FIFO with Gray-coded pointers | Requires correct pointer synchronization and overflow/underflow policy |
 | Related clocks with known phase | Explicit generated-clock constraints | Relationship must be true in hardware, not assumed |
 
-Metastability cannot be eliminated by RTL. A synchronizer reduces the probability that a metastable first-stage output propagates, but it does not make the first flip-flop magically deterministic. The architecture must tolerate its latency and the verification plan must test the protocol rather than relying on a simulation to display analog metastability.
+Metastability cannot be eliminated by RTL. What a synchronizer does is lower the probability that a metastable first-stage output propagates; the first flip-flop itself stays unpredictable. The architecture therefore has to tolerate the synchronizer's latency, and the verification plan tests the protocol, since a digital simulation will never display analog metastability.
 
 ### Reset is a clocking problem too {#reset-is-a-clocking-problem-too}
 
@@ -61,7 +61,7 @@ Reset defines the state from which a domain begins operation. It also crosses ph
 - How deassertion is synchronized in every receiving clock domain.
 - When traffic is allowed to begin after release.
 
-An asynchronous assertion can force a design promptly into a safe state, while asynchronous deassertion near a clock edge can violate recovery/removal requirements or release different registers on different cycles. A common architecture asynchronously asserts reset and synchronizes its release locally. The exact circuit and policy depend on the system; document it rather than mixing reset styles by accident.
+An asynchronous assertion can force a design promptly into a safe state, while asynchronous deassertion near a clock edge can violate recovery/removal requirements or release different registers on different cycles. A common architecture asynchronously asserts reset and synchronizes its release locally. The exact circuit and policy depend on the system; document it, so that reset styles are mixed on purpose and not by accident.
 
 ## The timing budget
 
@@ -110,7 +110,7 @@ Timing results must state the implementation context:
 | Worst setup and hold slack | Shows whether both requirements are met |
 | Unconstrained paths and exceptions | Reveals timing that was not checked normally |
 
-Do not compare an FPGA slack at one speed grade with an ASIC slack at a different corner as if they measured the same physical result. Compare only runs with the same stated assumptions.
+An FPGA slack at one speed grade and an ASIC slack at another corner measure different physical situations, so only runs with the same stated assumptions are comparable.
 
 ## From RTL to constraints
 
@@ -141,7 +141,7 @@ always_ff @(posedge clk_sys) begin
 end
 ```
 
-`Tick` is a one-cycle enable in the `clk_sys` domain. It is not a clock and should not drive the clock pin of another general-purpose flip-flop. Use dedicated clock-control resources only when the target FPGA/ASIC methodology permits them and constraints model the resulting clock correctly.
+`Tick` is a one-cycle enable in the `clk_sys` domain. It is an enable, so it stays on the data side and does not drive the clock pin of another general-purpose flip-flop. Dedicated clock-control resources are for cases where the target FPGA/ASIC methodology permits them and constraints model the resulting clock correctly.
 
 ### The purpose of SDC {#the-purpose-of-sdc}
 
@@ -161,7 +161,7 @@ set_output_delay 1.0 -clock core_clk [get_ports {Sum[*] Valid Overflow}]
 
 `create_clock` tells the timing engine that `clk` launches and captures sequential paths every 10 ns. `set_clock_uncertainty` reserves 0.20 ns for clock variation; it is an illustrative value, not a universal number. Input and output delays describe the part of an interface budget outside the block: transmitter clock-to-output, package/board trace, receiver setup, or the equivalent system boundary. Leaving them undefined can make a block report appear faster than its real integration contract.
 
-The accumulator's `reset` is normally excluded from ordinary synchronous data timing only after its reset architecture is understood. Do not call every inconvenient control signal a false path. If reset deassertion is synchronous to `clk`, it has a meaningful timing/recovery story; if it is asynchronous, the implementation still needs an explicit release strategy.
+The accumulator's `reset` is normally excluded from ordinary synchronous data timing only after its reset architecture is understood. Calling every inconvenient control signal a false path hides real problems. If reset deassertion is synchronous to `clk`, it has a meaningful timing/recovery story; if it is asynchronous, the implementation still needs an explicit release strategy.
 
 ### Generated clocks
 
@@ -204,7 +204,7 @@ Three related terms are often confused:
 
 Before clock-tree synthesis, an implementation can use an ideal clock model. That is useful for logical optimization, but it cannot expose the actual latency/skew caused by buffers and wires. After CTS, clocks are propagated through the generated tree and timing analysis uses their physical arrival information. A path that passes with an ideal clock can fail after CTS; a path that passes after CTS can still fail after detailed routing and extraction.
 
-Clock duty cycle matters to interfaces that use both edges, latches, level-sensitive timing or external DDR signaling. A conventional single-edge synchronous block typically constrains only the active rising edge, but its clock generator still needs a legal waveform and duty-cycle specification at the technology level. Do not rely on an arbitrary simulator `#5` toggle as evidence that a hardware PLL, oscillator or clock mux has a valid duty cycle.
+Clock duty cycle matters to interfaces that use both edges, latches, level-sensitive timing or external DDR signaling. A conventional single-edge synchronous block typically constrains only the active rising edge, but its clock generator still needs a legal waveform and duty-cycle specification at the technology level. A simulator `#5` toggle says nothing about whether a hardware PLL, oscillator or clock mux produces a valid duty cycle; that comes from the technology's specification.
 
 ### Clock enables, gating and power
 
@@ -219,7 +219,7 @@ end
 
 Clock gating prevents clock transitions from reaching a region and can save dynamic power, but it is an implementation and verification concern. A gate must not create runt pulses, and its enable must be stable at the point required by the technology's integrated clock-gating (ICG) cell. In ASIC RTL, describe clock-gating intent using the project's approved methodology; synthesis and CTS can then use legal ICG cells and preserve test/scan behavior. In FPGA designs, use the device's recommended clock-control primitive rather than fabric logic unless the vendor flow explicitly supports the pattern.
 
-Do not write a general combinational gate on a clock merely because it simulates:
+A combinational gate written on a clock may simulate perfectly and still be wrong in hardware:
 
 ```systemverilog
 // Unsafe general pattern: can generate a shortened pulse when Enable changes.
@@ -239,7 +239,7 @@ external launch FF ─ package/board ─► block input ─► internal logic �
 
 Without those delays, a block can appear to have a full clock period for its internal logic while its integrated interface has much less. Conversely, assigning excessive arbitrary delays can make a feasible interface look impossible. The system architect, board/pad/package data and the interface protocol determine the numbers.
 
-For source-synchronous interfaces, the receiver may capture data with a forwarded clock or strobe rather than the system clock. Such interfaces need an explicit timing model for the strobe, data relationship, phase and uncertainty. They cannot be constrained correctly by copying a generic synchronous `set_input_delay` template.
+For source-synchronous interfaces, the receiver may capture data with a forwarded clock or strobe rather than the system clock. Such interfaces need an explicit timing model for the strobe, data relationship, phase and uncertainty. Copying a generic synchronous `set_input_delay` template will not constrain them correctly.
 
 ### Timing constraints review checklist
 
@@ -287,7 +287,7 @@ endmodule
 
 The critical data path is conceptually `Sum` register → adder → `Sum` register. `Enable`, `Clear` and `Operand` are external inputs; their arrival relative to the clock must be defined at the block boundary. `reset` has a synchronous effect in this RTL because it is tested only inside the rising-edge process. The design contract should state that it is asserted and stable before the active edge where reset behavior is required.
 
-Start with the SDC above, then use the actual tool reports to determine whether a 10 ns target is realistic. If the path fails, possible repairs include a longer period, a pipeline stage, a different arithmetic architecture or physical optimization. Do not add a multicycle exception merely because the adder is slow unless the architectural behavior really allows multiple cycles.
+Start with the SDC above, then use the actual tool reports to determine whether a 10 ns target is realistic. If the path fails, possible repairs include a longer period, a pipeline stage, a different arithmetic architecture or physical optimization. A multicycle exception is only honest if the architectural behavior really allows several cycles; adding one just because the adder is slow hides the problem.
 
 ### Synchronizing a single control bit
 
@@ -344,7 +344,7 @@ Each clock domain needs its own release synchronizer. The design must tolerate t
 
 [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-async-fifo .learning-activity}
 
-The single-bit synchronizer above cannot preserve a changing word. If a binary value changes from `0111` to `1000`, independent bit synchronizers can present a mixture that the source never produced. Adding stages to every bit reduces propagation risk without establishing word ownership. A streaming link needs storage plus a protocol that tells the receiving domain which complete words it may consume.
+The single-bit synchronizer above cannot preserve a changing word. If a binary value changes from `0111` to `1000`, independent bit synchronizers can present a mixture that the source never produced. Adding stages to every bit lowers the propagation risk, but it still does not tell the receiver who owns the word. A streaming link needs storage plus a protocol that tells the receiving domain which complete words it may consume.
 
 [Lab 24](../../labs/24-async-fifo/README.md) provides an executable, power-of-two asynchronous FIFO using registered Gray pointers and synchronized local flag comparisons, the established FIFO Style #1 approach [@cdcCummings2002]. The RTL is original teaching code with local ready/valid interfaces and a common reset contract. Its independent clocks are not replaced by clock enables in the experiment.
 
@@ -364,7 +364,7 @@ The complete [RTL](../../labs/24-async-fifo/async_fifo.sv) separates three respo
 | Reset | Common active-low asynchronous assertion; local synchronized release; unread items discarded |
 | Memory view | Write-clocked array with combinational read; invalid output is zero |
 
-Each side sees only its own ready/valid pair. Do not synchronize `w_ready` back to another source clock or treat `r_valid` as permission in the write domain. If data has tags, byte enables or an end-of-packet marker, include them in the stored word. Crossing metadata independently can break correspondence even when every individual signal is synchronized.
+Each side sees only its own ready/valid pair. Keep `w_ready` out of any other source clock, and keep `r_valid` from acting as permission in the write domain. If data has tags, byte enables or an end-of-packet marker, include them in the stored word. Crossing metadata independently can break correspondence even when every individual signal is synchronized.
 
 ### Binary addresses, Gray publication and wrap {#binary-addresses-gray-publication-and-wrap}
 
@@ -415,27 +415,27 @@ r_empty <= (r_gray_next == rq2_wgray);
 
 After the final available slot is written, the write-side full flag blocks the following write. After the final available word is read, the read-side empty flag blocks the following read. `w_take` and `r_take` include those local permissions; raw VALID or READY alone never advances a pointer.
 
-Because synchronized pointers are old, full may remain asserted after a read frees space, and empty may remain asserted after a write stores data. The two flags can even be asserted simultaneously as observations in different domains. They are conservative local views, not two outputs of an instantaneous global occupancy counter. A scoreboard should check accepted transactions and eventual recovery under running clocks, rather than require flags to match its instantaneous occupancy every cycle.
+Because synchronized pointers are old, full may remain asserted after a read frees space, and empty may remain asserted after a write stores data. The two flags can even be asserted simultaneously as observations in different domains. Each flag is a conservative local view; neither is an output of an instantaneous global occupancy counter. A good scoreboard therefore checks accepted transactions and eventual recovery under running clocks, and does not demand that the flags match its occupancy count every cycle.
 
 ### Reset establishes an epoch, not cleared RAM
 
 The FIFO supplies two release pipelines, one per clock. A low `arst_n` asynchronously clears both pipelines, pointers, synchronizer stages and flags. Raising `arst_n` allows each local pipeline to release only after two edges of its own clock. A stopped clock leaves its domain in reset. Ready/valid outputs are gated by the corresponding local release.
 
-The common reset starts a new **empty epoch**. It does not reset every array word or preserve unread items. The testbench flushes its expected queue on that event and counts discarded words separately. Data left in the physical array stays invalid until new writes publish ownership. Clearing memory would add reset fanout without repairing an incorrect pointer or reset protocol.
+The common reset starts a new **empty epoch**. It does not reset every array word or preserve unread items. The testbench flushes its expected queue on that event and counts discarded words separately. Data left in the physical array stays invalid until new writes publish ownership. Clearing memory would only add reset fanout, and it would not fix a faulty pointer or reset protocol.
 
 A writer may fill the FIFO while the reader clock remains stopped after common reset; the reader starts later and observes the published pointer. Conversely, a reader that releases first remains empty while the writer is stopped. Neither case licenses resetting only one pointer while the other side keeps its previous state. Independent warm resets need an additional quiesce/rejoin or epoch-exchange protocol, including treatment of in-flight traffic.
 
-External producers and consumers must participate in the reset contract. A FIFO cannot undo a transfer already accepted by a peripheral, or repair an AXI transaction whose remaining beats were discarded. Minimum reset pulse widths, reset-tree skew and recovery/removal still require implementation review. The local release circuit is not evidence that a complete reset distribution network has been qualified.
+External producers and consumers must participate in the reset contract. A FIFO cannot undo a transfer already accepted by a peripheral, or repair an AXI transaction whose remaining beats were discarded. Minimum reset pulse widths, reset-tree skew and recovery/removal still require implementation review. The local release circuit is one piece of the reset network, and qualifying the whole distribution is a separate task.
 
 ### The data array and Gray routes still need physical contracts
 
 The teaching array has one write-clocked port and a combinational read at the current read address. This fall-through interface presents a head word while `r_valid` is high, then moves to the next word after acceptance. The writer cannot overwrite that slot until the returned read pointer grants ownership. The output must remain stable during backpressure.
 
-This is suitable for studying small register/LUTRAM-style storage. It does not imply portable inference of synchronous-read FPGA block RAM or a characterized ASIC SRAM. Adding a read register changes when data exists: adapt prefetch, output-valid state and capacity accounting together. Replacing the memory statement while retaining the original valid logic can associate a new valid indication with an old word.
+This is suitable for studying small register/LUTRAM-style storage. It should not be expected to infer synchronous-read FPGA block RAM or a characterized ASIC SRAM portably. Adding a read register changes when data exists: adapt prefetch, output-valid state and capacity accounting together. Replacing the memory statement while retaining the original valid logic can associate a new valid indication with an old word.
 
 Gray coding also needs physical bounds. Source transitions separated by one source period can become reordered at the synchronizer input if inter-bit delays are excessive. Review direction-specific maximum delay and bus-skew constraints, with margin against the minimum source period. AMD documents Gray-coded FIFO pointer transfer as a use case for bus-skew constraints [@cdcAmdSkew]. The lab's [XDC template](../../labs/24-async-fifo/constraints/cdc-template.xdc) requires the integrator to bind actual pin collections and budgets.
 
-Do not hide those checks behind a higher-priority blanket clock-group exception. Keep stage-one-to-stage-two paths timed in the destination domain. Review the raw storage-to-reader data path, clock definitions and reset paths separately. The supplied digital run does not execute this XDC or establish routed skew, analog metastability probability or MTBF.
+Do not hide those checks behind a higher-priority blanket clock-group exception. Keep stage-one-to-stage-two paths timed in the destination domain. Review the raw storage-to-reader data path, clock definitions and reset paths separately. The supplied digital run does not execute this XDC, so routed skew, analog metastability probability and MTBF remain to be established.
 
 ### Reproduce the experiment and diagnose failures
 
@@ -452,13 +452,13 @@ The recorded [results](../../labs/24-async-fifo/reference/results.json) conserve
 | Binary publication | Source Gray assertion rejects the change | Ideal simulation does not prove binary CDC safety |
 | Release bypass | Detected release with stopped clock | No recovery/removal characterization |
 
-For a short design review, explain the three-bit full target, one conservative flag delay and one reset-discarded word. Then propose a synchronous-memory adapter or a packet-level reset policy and identify the new tests it needs. Preserve the original regression before claiming the extension. The compact auditor checks recorded sources, transcripts and generic netlists without rerunning tools; it does not turn these digital checks into physical CDC/RDC qualification.
+For a short design review, explain the three-bit full target, one conservative flag delay and one reset-discarded word. Then propose a synchronous-memory adapter or a packet-level reset policy and identify the new tests it needs. Keep the original regression passing before you claim the extension. The compact auditor checks recorded sources, transcripts and generic netlists without rerunning tools, so its verdict covers these digital checks and stops short of physical CDC/RDC qualification.
 
 ## Verification and analysis
 
 ### Simulation answers different questions
 
-Simulation verifies the edge-level functional contract: state changes on the intended edge, reset dominates as specified, enables hold state, and protocols maintain payload stability. It does not prove that a 10 ns period is physically achievable unless the testbench uses a characterized timing model and an appropriate timing analysis exists. HDL `#` delays schedule simulator events; they are not SDC constraints or a substitute for STA.
+Simulation verifies the edge-level functional contract: state changes on the intended edge, reset dominates as specified, enables hold state, and protocols maintain payload stability. Whether a 10 ns period is physically achievable is outside its reach, unless the testbench uses a characterized timing model and a timing analysis backs it. HDL `#` delays only schedule simulator events; SDC constraints and STA answer the timing question.
 
 Useful assertions express cycle behavior:
 
@@ -485,7 +485,7 @@ Before sign-off, inspect at least:
 - clock skew and insertion delay after CTS;
 - the list and justification of timing exceptions.
 
-An unconstrained path is neither automatically safe nor automatically a failure. It is a review item: either add a real constraint, prove it is asynchronous and protect the CDC, or document a valid exception.
+An unconstrained path is a review item, not a verdict: either add a real constraint, prove it is asynchronous and protect the CDC, or document a valid exception.
 
 ### Timing a transaction interface
 
@@ -507,7 +507,7 @@ The SoC pipeline chapter presents buffers that change path length and storage ca
 
 ### Carrying assumptions into implementation
 
-Maintain one timing-assumption record alongside the configuration used in simulation. Include clock source, period, reset release, interface delays, memory read latency, allowed backpressure and any clock crossing. Simulation parameters alone do not constrain implementation tools.
+Maintain one timing-assumption record alongside the configuration used in simulation. Include clock source, period, reset release, interface delays, memory read latency, allowed backpressure and any clock crossing. Simulation parameters never reach the implementation tools, so the record has to carry them.
 
 For an FPGA, confirm that the clock pin, clock distribution and IO constraints match the actual board. For an ASIC, replace board assumptions with cell libraries, corners, clock-tree behavior and external interface budgets. A nominal period entered into a testbench remains only a simulation schedule until an implementation flow receives real constraints.
 
@@ -561,7 +561,7 @@ The SystemVerilog chapter defines clocked RTL semantics; this chapter supplies t
 
 ### Verification of clock and reset contracts
 
-Apply the domain and timing methodology in @sec-verification-methodology. Maintain a clock/reset/crossing inventory, separate CDC structure from protocol correctness, and identify independent reset sequencing as an RDC obligation. Vary clock phases/ratios in digital tests, check pulse capture and reset release, and review synchronization placement and timing constraints. Those tests do not measure analog metastability or MTBF. Static timing needs actual min/max paths, generated clocks, exceptions and operating corners; an illustrative period is an input requirement rather than an achieved frequency.
+Apply the domain and timing methodology in @sec-verification-methodology. Maintain a clock/reset/crossing inventory, separate CDC structure from protocol correctness, and identify independent reset sequencing as an RDC obligation. Vary clock phases/ratios in digital tests, check pulse capture and reset release, and review synchronization placement and timing constraints. Those tests stay digital, so analog metastability and MTBF need other evidence. Static timing needs actual min/max paths, generated clocks, exceptions and operating corners; an illustrative period is an input requirement rather than an achieved frequency.
 
 <!-- chapter-review:clocking-timing -->
 
@@ -576,7 +576,7 @@ Explain setup versus hold, clock enables versus generated clocks, and why reset 
 
 ## Common mistakes {#review-clocking-timing-mistakes .unnumbered .unlisted}
 
-Using a timing exception to hide an unexplained path; assuming simulation tests measure metastability or achieved frequency.
+Two mistakes cost the most time. A timing exception can hide an unexplained path that was a real problem all along. And a passing simulation can feel like timing evidence, yet it measures neither metastability nor achieved frequency.
 
 ## Try it yourself {#review-clocking-timing-try .unnumbered .unlisted}
 

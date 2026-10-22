@@ -20,7 +20,7 @@ The running example has two harts and the book's signed dot-product accelerator.
 
 ### Draw the platform before connecting the second hart
 
-Start with the physical address map and the paths to each target. List private caches, shared caches, home nodes, memory controllers, MMIO bridges, interrupt controllers, debug masters and accelerators. Mark the coherence domain on the diagram rather than describing the entire SoC as coherent. The design in @fig-multicore-domains deliberately places DMA outside the CPU domain.
+Start with the physical address map and the paths to each target. List private caches, shared caches, home nodes, memory controllers, MMIO bridges, interrupt controllers, debug masters and accelerators. Mark the coherence domain on the diagram, because the entire SoC is rarely coherent. The design in @fig-multicore-domains deliberately places DMA outside the CPU domain.
 
 ![An integration contract with coherent CPUs and a non-snooping DMA path. This is a design to review, not a claim that QEMU or the supplied Wally fixture implements these cache structures.](../../figures/multicore-domains.svg){#fig-multicore-domains}
 
@@ -30,7 +30,7 @@ A shared physical address is necessary for sharing a buffer, but does not identi
 
 For each agent, record its transaction IDs, outstanding limits, address width, atomic support, ordering attributes and reset behavior. Include the buffers needed to accept responses and probes. For each shared allocation, name its owners and allowed mappings. A useful first review asks whether any agent can retain a copy that another writer cannot invalidate or update.
 
-Do not simply instantiate the old top level twice. It may contain a private timer, a singleton interrupt target, duplicate memory decoding, a reset vector that clears shared RAM, or an unqualified assumption that only one master exists. Replicate hart-local state deliberately, centralize shared resources deliberately, and define the response path back to the requesting hart. Boot success on one CPU leaves these questions open.
+Instantiating the old top level twice is a trap. It may contain a private timer, a singleton interrupt target, duplicate memory decoding, a reset vector that clears shared RAM, or an unqualified assumption that only one master exists. Replicate hart-local state deliberately, centralize shared resources deliberately, and define the response path back to the requesting hart. Boot success on one CPU leaves these questions open.
 
 ## Coherent interconnect architectures
 
@@ -70,7 +70,7 @@ Avoid making an adapter silently stronger than its implementation. Adding an att
 
 ### Arbitration and physical topology interact
 
-Two harts contending for one memory bank do not receive twice the single-hart bandwidth. Place the shared cache/home and memory interfaces with the actual access pattern in mind. A long return route, a narrow bridge or a single write-response slot can dominate a workload even when neither core is fully utilized.
+Two harts contending for one memory bank share the single-hart bandwidth and do not double it. Place the shared cache/home and memory interfaces with the actual access pattern in mind. A long return route, a narrow bridge or a single write-response slot can dominate a workload even when neither core is fully utilized.
 
 Keep separate limits for accepted requests, pending probes, returned data and completed transactions. An average utilization figure can hide a saturated response queue. A proposed wider link should be evaluated against the queue that is actually blocking progress; it may otherwise increase upstream pressure without improving completion rate. Physical timing and clock-domain costs remain part of the final implementation decision, rather than being inferred from an abstract NoC diagram.
 
@@ -82,7 +82,7 @@ An agent is coherent relative to an address domain and a supported transaction p
 
 An IOMMU answers an address-translation and protection question. It can restrict what DMA can reach, but translation alone does not provide data-cache snooping. The Devicetree specification describes DMA address ranges and coherency properties separately [@multicoreDevicetree]. A security review should also identify who can program the IOMMU, invalidate its translation caches and reuse a mapping while work remains outstanding.
 
-The CPU virtual pointer used by a driver, the device-visible DMA address and the cache maintenance granularity are separate pieces of information. They can happen to align neatly in a small teaching system without being interchangeable abstractions. Keep the DMA address returned by the platform API rather than deriving it from a userspace pointer or a guessed physical offset.
+The CPU virtual pointer used by a driver, the device-visible DMA address and the cache maintenance granularity are separate pieces of information. They can happen to align neatly in a small teaching system and are still different abstractions. Use the DMA address returned by the platform API; a userspace pointer or a guessed physical offset is the wrong source.
 
 ### Trace the dirty-input failure across two harts
 
@@ -98,7 +98,7 @@ Suppose memory initially contains operand value 0. Hart 0 changes it to 7 and re
 
 A fence can establish required ordering between actions already defined by the platform. It does not by itself write this dirty cache line back to RAM. A lock can ensure that only one task submits the job, but also does not perform that writeback. These are different failures from publishing a token before initializing a descriptor.
 
-The second hart introduces a particularly revealing maintenance mistake: cleaning only hart 1's local cache when hart 0 owns the dirty data. Whether a particular architectural cache-block operation covers a coherent domain is defined by the implementation and ISA contract; it must not be guessed from the executing hart. The finite model in Lab 20 deliberately models a **local-only** action and shows why it is insufficient. It does not claim that every RISC-V `cbo.clean` is local-only. Zicbom defines operations in relation to coherent agents and a common observation point [@multicoreCmo].
+The second hart introduces a particularly revealing maintenance mistake: cleaning only hart 1's local cache when hart 0 owns the dirty data. Whether a particular architectural cache-block operation covers a coherent domain is defined by the implementation and ISA contract; it cannot be guessed from the executing hart. The finite model in Lab 20 deliberately models a **local-only** action and shows why it is insufficient. It does not claim that every RISC-V `cbo.clean` is local-only. Zicbom defines operations in relation to coherent agents and a common observation point [@multicoreCmo].
 
 ### Returning results is a separate ownership transfer
 
@@ -106,13 +106,13 @@ Now let DMA write result 49 to memory while hart 1 retains an old clean copy con
 
 Input preparation and output consumption therefore need different obligations. Before a device reads, make its inputs visible and stop conflicting CPU writes. Before a CPU reads a device-written result, establish device completion and the required CPU visibility. For a bidirectional buffer, both transitions apply, with ownership changing in between. A completion event is part of that protocol; it is not permission to skip the other steps.
 
-Specify what completion means in the accelerator. The last write request being issued is weaker than all required write responses being accepted. A posted bridge can add another distinction between local acceptance and visibility at the agreed target. The IP must not advertise a result-ready event earlier than its interface contract allows, and the consuming driver must use the documented ordering mechanism. Revisit the premature-DONE negative test before adding a second submitting hart.
+Specify what completion means in the accelerator. The last write request being issued is weaker than all required write responses being accepted. A posted bridge can add another distinction between local acceptance and visibility at the agreed target. The IP advertises a result-ready event only when its interface contract allows it, and the consuming driver must use the documented ordering mechanism. Revisit the premature-DONE negative test before adding a second submitting hart.
 
 ### Cache-line ownership prevents partial-buffer corruption
 
 A buffer can be byte-disjoint and still share cache lines with CPU-owned control data. Imagine a result word and a flag in the same line. The CPU modifies the flag, retaining an older copy of the result word in that dirty line. DMA updates the result in RAM. A later CPU writeback can overwrite the device's new result with its stale word.
 
-The resulting value can depend on eviction timing, so a small test may appear to work until unrelated traffic creates pressure. Extra fences do not make a partial dirty writeback merge correctly. Design allocation and ownership at the maintenance granularity: separate independently owned regions, align their boundaries appropriately, and prohibit dirty aliases during the device-owned interval. An assumed 64-byte alignment in a teaching example is not a substitute for identifying the real target's granularity.
+The resulting value can depend on eviction timing, so a small test may appear to work until unrelated traffic creates pressure. Extra fences cannot make a partial dirty writeback merge correctly. Design allocation and ownership at the maintenance granularity: separate independently owned regions, align their boundaries appropriately, and prohibit dirty aliases during the device-owned interval. An assumed 64-byte alignment in a teaching example is not a substitute for identifying the real target's granularity.
 
 | Object | Writer during the device interval | Other accesses allowed? | Return condition |
 | --- | --- | --- | --- |
@@ -125,7 +125,7 @@ The resulting value can depend on eviction timing, so a small test may appear to
 
 Linux distinguishes coherent allocations from streaming mappings. A coherent allocation still needs ordering around descriptor publication. Streaming mappings express transfer direction and ownership transitions; persistent mappings require the matching synchronization calls when ownership changes [@multicoreDmaGuide; @multicoreDmaApi]. Those APIs let the architecture/platform provide the appropriate mapping, cache or translation actions. A driver must not replace them with a userspace fence or an undocumented instruction sequence.
 
-An allocation can satisfy the coherent DMA API through an uncached mapping on a non-coherent platform. Thus, a successful `dma_alloc_coherent()` call does not establish a snooping interconnect. Conversely, using ordinary cacheable RAM on a genuinely coherent DMA path does not remove publication and lifetime rules. Ask what contract the API supplies for this device and mapping, rather than equating one API name with a physical cache architecture.
+An allocation can satisfy the coherent DMA API through an uncached mapping on a non-coherent platform. Thus, a successful `dma_alloc_coherent()` call says nothing about whether the interconnect snoops. Conversely, using ordinary cacheable RAM on a genuinely coherent DMA path does not remove publication and lifetime rules. Ask what contract the API supplies for this device and mapping, instead of equating one API name with a physical cache architecture.
 
 Lab 18's Wally profile explicitly uses an uncached DMA pool in the PMA checker. Its QEMU profile uses the emulator's shared-RAM device model. Both use the kernel coherent-allocation API, but their underlying mechanisms differ. Neither establishes a general two-hart coherent Wally fabric. Extending the CPU side requires a new integration and verification record.
 
@@ -135,13 +135,13 @@ Two processes can each have a correct numerical job and still interleave writes 
 
 The supplied Linux driver uses one device-wide mutex and one DMA allocation. Lab 20 exercises callers pinned to two CPUs against that shared context. It does not pretend that the engine executes jobs in parallel. The useful outcome is that accepted jobs receive their own result while callers contend safely. A multi-queue redesign would require queue identifiers, ownership and response accounting that this single-context interface does not provide.
 
-Timeouts are especially dangerous across harts. A second task must not reuse the buffer merely because the first task stopped waiting. The original IP has no abort/reset register, so the driver quarantines the device and retains its allocation after timeout. A production recovery design needs a way to establish that old DMA and old completions cannot affect a new generation. That lifecycle contract extends to IOMMU mappings, interrupts and any reset of the fabric.
+Timeouts are especially dangerous across harts. A second task can only reuse the buffer once the device is done, which is a different event from the first task giving up its wait. The original IP has no abort/reset register, so the driver quarantines the device and retains its allocation after timeout. A production recovery design needs a way to establish that old DMA and old completions cannot affect a new generation. That lifecycle contract extends to IOMMU mappings, interrupts and any reset of the fabric.
 
 ## Memory ordering in a real SoC {#memory-ordering-in-a-real-soc}
 
 ### Put ordering edges on the job lifecycle
 
-Do not begin by adding the strongest fence to every access. Draw the required chain: initialize payload, publish ownership, acquire ownership on the submitting hart, prepare DMA-visible state, order the doorbell, observe device completion, establish CPU visibility, publish the result, and finally permit reuse. Different edges involve different agents and APIs.
+Adding the strongest fence to every access is the wrong place to begin. Draw the required chain: initialize payload, publish ownership, acquire ownership on the submitting hart, prepare DMA-visible state, order the doorbell, observe device completion, establish CPU visibility, publish the result, and finally permit reuse. Different edges involve different agents and APIs.
 
 RVWMO is the baseline memory model for ordinary shared memory; the A extension supplies atomic operations and ordering annotations. Those architectural mechanisms must be connected to the compiler's concurrency rules and the platform's device-access rules [@multicoreRvwmo; @multicoreAtomics]. A C data race is not repaired merely because the processor eventually executes a fence. Use language atomics or kernel synchronization primitives for CPU communication, and the appropriate MMIO/DMA APIs for device communication.
 
@@ -157,13 +157,13 @@ submit_via_driver(job);
 atomic_store_explicit(&completed_epoch, epoch, memory_order_release);
 ```
 
-The sequence is a sketch, not a generic queue implementation. An epoch must not be reused while an old participant can still act on it. Multiple producers need a reservation/serialization mechanism in addition to this publication pair. The executable test uses one producer, one worker and a bounded non-wrapping epoch range.
+The sequence is a sketch, not a generic queue implementation. An epoch can be reused only after no old participant can act on it. Multiple producers need a reservation/serialization mechanism in addition to this publication pair. The executable test uses one producer, one worker and a bounded non-wrapping epoch range.
 
 ### Keep ordinary memory and MMIO rules distinct
 
 An atomic operation's ordering domain and a device doorbell are not interchangeable. A release operation used for CPU-to-CPU publication is not a universal MMIO barrier. Likewise, a normal compiler-visible store to a pointer is not necessarily a valid access to a device register. Use the platform's ordered register accessors and identify any required completion/readback point. Kernel barrier documentation distinguishes SMP, DMA and I/O obligations [@multicoreBarriers].
 
-Atomicity at an interconnect bridge also needs an explicit answer. A bridge must not decompose an atomic read-modify-write into an unprotected read followed by a write. A reservation-based primitive can fail for legitimate reasons and must satisfy the required progress contract under its specified conditions. Supporting ordinary AXI reads/writes is not evidence that all CPU atomic accesses to that path are valid.
+Atomicity at an interconnect bridge also needs an explicit answer. A bridge keeps an atomic read-modify-write whole, never splitting it into an unprotected read followed by a write. A reservation-based primitive can fail for legitimate reasons and must satisfy the required progress contract under its specified conditions. Supporting ordinary AXI reads/writes is no guarantee that all CPU atomic accesses to that path are valid.
 
 For a software lock, identify who participates. CPU harts can share a lock in coherent memory. A DMA engine that never reads or honors that lock remains outside its protection. The driver must translate software ownership into a hardware rule, such as withholding start until preparation completes and refusing buffer reuse until completion. Mutual exclusion among CPUs and exclusion of device activity are related but different protocols.
 
@@ -171,7 +171,7 @@ For a software lock, identify who participates. CPU harts can share a lock in co
 
 Use a small message-passing test to name the failure. With atomic payload and token locations, ask whether seeing the new token while seeing old payload is allowed under the selected language/ISA model. Then test the selected release/acquire mapping using an appropriate formal litmus tool. Record the model file and version: an SC interpreter, the Linux kernel memory model and RVWMO answer different questions.
 
-Lab 20 includes an intentionally smaller visibility-event enumerator. It shows stale outcomes when the necessary publication edges are missing, and none when its release/acquire edges are present. It is useful for checking the proposed handoff reasoning, but it is not a herd7 implementation or a complete RVWMO validator. The live QEMU program supplies a separate execution of the correct C11 synchronization. Absence of a rare forbidden outcome in repeated emulation does not prove the memory model.
+Lab 20 includes an intentionally smaller visibility-event enumerator. It shows stale outcomes when the necessary publication edges are missing, and none when its release/acquire edges are present. It is useful for checking the proposed handoff reasoning, but it is a small checker and leaves herd7 and a complete RVWMO validator to the real tools. The live QEMU program supplies a separate execution of the correct C11 synchronization. Absence of a rare forbidden outcome in repeated emulation does not prove the memory model.
 
 ## Interrupts and system management
 
@@ -181,15 +181,15 @@ Assign unique hart IDs and describe enabled CPUs consistently in firmware and De
 
 On an SBI-based supervisor platform, distinguish firmware participation from the OS's hart-start protocol. The HSM extension describes hart lifecycle operations; IPI and remote-fence extensions provide other services [@multicoreSbiHsm; @multicoreSbiIpi; @multicoreSbiRfence]. A Linux CPU number need not be identical to a physical hart ID. The practice records both Device Tree hart nodes and the logical CPU affinities used by its tasks, rather than assuming their general identity.
 
-Require evidence beyond a two-CPU emulator option. Check that the kernel reports two online CPUs, that each pinned worker actually executes on its requested logical CPU and that both make progress through shared work. A second CPU entry in Device Tree without successful startup is only a configuration artifact. Preserve the last boot checkpoint if startup fails.
+Require evidence beyond a two-CPU emulator option. Check that the kernel reports two online CPUs, that each pinned worker actually executes on its requested logical CPU and that both make progress through shared work. A second CPU entry in Device Tree without successful startup is just a configuration artifact. Preserve the last boot checkpoint if startup fails.
 
 ### Route interrupts to a serviceable context
 
-Define which supervisor/machine contexts can receive each device interrupt. A submitting task may run on CPU 1 while the handler runs on CPU 0. The completion primitive and device-wide state must remain correct across that split. The result must not depend on the handler returning to the same task that submitted the job.
+Define which supervisor/machine contexts can receive each device interrupt. A submitting task may run on CPU 1 while the handler runs on CPU 0. The completion primitive and device-wide state must remain correct across that split. The result is independent of whether the handler returns to the same task that submitted the job.
 
 For a level interrupt, clearing the pending state in a controller is not the same as clearing the device's condition. The handler must honor the device/controller acknowledgement sequence. During migration or affinity changes, ensure at least one enabled context can service an outstanding completion. During shutdown, prevent a new job from depending on a context that has already been taken offline.
 
-The QEMU experiment uses its existing PLIC-based device path and records the actual `/proc/interrupts` row. It does not require a particular distribution between CPUs. AIA/APLIC/IMSIC systems use a different interrupt delivery architecture and require their own configuration, affinity and lifecycle checks [@multicoreAia]. Replacing the PLIC in a diagram is not evidence that the new message-delivery path works.
+The QEMU experiment uses its existing PLIC-based device path and records the actual `/proc/interrupts` row. It does not require a particular distribution between CPUs. AIA/APLIC/IMSIC systems use a different interrupt delivery architecture and require their own configuration, affinity and lifecycle checks [@multicoreAia]. Replacing the PLIC in a diagram does not show that the new message-delivery path works.
 
 ### IPIs and translation synchronization are distinct jobs
 
@@ -199,9 +199,9 @@ TLB shootdown requires more than cleaning data caches. If a mapping changes whil
 
 ### Reset is part of the transaction protocol
 
-Specify what happens if a hart resets while owning dirty data, holding a lock or serving a probe. A coherent participant cannot simply disappear while another agent waits for its response. Similarly, resetting an accelerator must not allow a late write response or old interrupt to be mistaken for a new job.
+Specify what happens if a hart resets while owning dirty data, holding a lock or serving a probe. A coherent participant cannot simply disappear while another agent waits for its response. Similarly, when an accelerator resets, a late write response or old interrupt must never be mistaken for a new job.
 
-A generation-tagged interface can reject obsolete completions only if all relevant paths preserve that generation and old memory effects are contained. The practice's tagged-completion example is hypothetical: the actual dot-product IP lacks that interface. Its timeout policy is quarantine, not a claim of successful hot reset. Keep global reset, hart stop, device reset and runtime recovery as separate qualification obligations.
+A generation-tagged interface can reject obsolete completions only if all relevant paths preserve that generation and old memory effects are contained. The practice's tagged-completion example is hypothetical: the actual dot-product IP lacks that interface. Its timeout policy is quarantine, which stops short of a successful hot reset. Keep global reset, hart stop, device reset and runtime recovery as separate qualification obligations.
 
 ## Verification and performance
 
@@ -219,15 +219,15 @@ Test the integration contract at more than one level. A coherence-controller uni
 | Error and recovery | Fail a response, delay an interrupt, reset an owner | Error drains safely or remains explicitly quarantined |
 | System management | Start/stop a hart or move interrupt affinity | No abandoned request or unserviceable completion |
 
-Use acceptance-based scoreboards. A requested transfer does not enter the outstanding set until accepted. A result is not retired until the specified completion point. Track source/transaction identity across adapters and include generation when the interface provides one. If a response is legal out of order, compare by identity rather than assuming FIFO return order.
+Use acceptance-based scoreboards. A requested transfer does not enter the outstanding set until accepted. A result is not retired until the specified completion point. Track source/transaction identity across adapters and include generation when the interface provides one. If a response is legal out of order, compare by identity, because FIFO return order may not hold.
 
 The numerical oracle must remain independent of descriptor/control code. Give simultaneous clients distinct data patterns so that swapped results cannot pass by coincidence. Vary lengths, signed extrema, operand strides and reuse. Keep at least one case whose output differs strongly from initialized memory and from the previous job; repeated zero results are a poor stale-data detector.
 
 ### Use litmus tests for specific questions
 
-Organize tests by the edge being challenged. A producer/consumer publication test addresses ordering. A CPU-dirty/DMA-read test addresses visibility outside the coherence domain. A shared-line CPU-writeback/DMA-write test addresses ownership granularity. A two-caller descriptor test addresses serialization. Similar symptoms do not justify merging these into one “coherence test.”
+Organize tests by the edge being challenged. A producer/consumer publication test addresses ordering. A CPU-dirty/DMA-read test addresses visibility outside the coherence domain. A shared-line CPU-writeback/DMA-write test addresses ownership granularity. A two-caller descriptor test addresses serialization. Similar symptoms are no reason to merge these into one “coherence test.”
 
-For a formal memory-model experiment, use an identified litmus language and model, retain all allowed/forbidden outcomes and include a positive witness that the test can exercise useful work. Linux's memory-model tooling documents a kernel-specific environment; the architectural RISC-V model has a different scope [@multicoreLkmm; @multicoreRvwmo]. Do not apply an LKMM result directly to arbitrary userspace C or a device protocol.
+For a formal memory-model experiment, use an identified litmus language and model, retain all allowed/forbidden outcomes and include a positive witness that the test can exercise useful work. Linux's memory-model tooling documents a kernel-specific environment; the architectural RISC-V model has a different scope [@multicoreLkmm; @multicoreRvwmo]. An LKMM result does not carry over directly to arbitrary userspace C or a device protocol.
 
 For RTL, vary response latency, eviction timing and queue pressure independently. A cache bug that requires an eviction can disappear if every test fits in L1. A probe/response dependency can remain invisible if the harness always accepts responses immediately. Add tests that first create the dangerous state, then force the event that exposes it. Record the minimized transaction trace rather than only a random seed and a timeout.
 
@@ -245,7 +245,7 @@ For starvation, name the arbiter and eligibility conditions. Round-robin selecti
 
 ### Preserve failures as well as passing regressions
 
-The abstract practice supplies deliberately insufficient mechanisms: fence without cleaning dirty input, local-only cleaning by a non-owner, completion without invalidating a cached result, and a dirty shared-line overwrite. Keep these witnesses beside repaired cases. They establish that the experiment distinguishes mechanisms, rather than accepting every configuration.
+The abstract practice supplies deliberately insufficient mechanisms: fence without cleaning dirty input, local-only cleaning by a non-owner, completion without invalidating a cached result, and a dirty shared-line overwrite. Keep these witnesses beside repaired cases. They show that the experiment distinguishes mechanisms and does not accept every configuration.
 
 Do the same in a coherent RTL subsystem. Disable a required probe acknowledgement in a private fault variant, shrink a response resource incorrectly, or drop an identity bit at a bridge. The test must fail for the intended invariant, not because compilation broke. After repair, repeat the shortest witness and the relevant pressure regression. Formal proofs should retain antecedent/traffic witnesses and distinguish bounded safety from a progress argument under fairness assumptions.
 
@@ -325,7 +325,7 @@ Freeze a manageable boundary: two harts, one shared memory target, one singleton
 
 Begin without Linux. Boot both harts with private stacks, publish a shared work item and verify ordinary shared-memory synchronization. Then add an input prepared by one hart and submitted by the other. Force dirty-owner and stale-output situations in the cache model rather than relying on chance eviction. Add response stalls, simultaneous misses, conflicting writes, invalid descriptors and delayed interrupts. Finally bring the OS into the verified subsystem if resources permit.
 
-For a study rather than a new implementation, select an identified coherent subsystem revision and follow one real request, probe, data return and acknowledgement through its source/configuration. Map the resource-dependency graph and explain its admission/progress rules. Produce your own directed trace or property for one boundary. A diagram copied from documentation does not replace the analysis of the selected configuration.
+For a study rather than a new implementation, select an identified coherent subsystem revision and follow one real request, probe, data return and acknowledgement through its source/configuration. Map the resource-dependency graph and explain its admission/progress rules. Produce your own directed trace or property for one boundary. A diagram copied from documentation is not the analysis of the selected configuration.
 
 ### Deliverable and engineering decision
 
@@ -347,7 +347,7 @@ Trace a job from a dirty producer line to device-visible operands, accepted comp
 
 ## Common mistakes {#review-multicore-integration-mistakes .unnumbered .unlisted}
 
-Treating fences as cache writeback; declaring DMA coherent in metadata without a coherent path; protecting a singleton engine with per-hart locks; interpreting a watchdog as a deadlock proof; attributing QEMU timings to a physical multicore fabric.
+Five shortcuts recur in multicore work. A fence orders accesses and does not write back a cache. Declaring DMA coherent in metadata gives no coherent path unless the hardware has one. Per-hart locks do not protect a singleton engine that every hart shares. A watchdog that fires indicates a hang and does not prove a deadlock. And QEMU timings describe the emulator, not a physical multicore fabric.
 
 ## Try it yourself {#review-multicore-integration-try .unnumbered .unlisted}
 

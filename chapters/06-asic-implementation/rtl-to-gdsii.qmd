@@ -8,11 +8,11 @@ An ASIC flow translates a verified hardware description into the geometric layer
 
 ![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-rtl-to-gdsii-rtl-to-gdsii-flow fig-alt="Flow from SystemVerilog RTL and the PDK to LibreLane, OpenROAD, physical verification and GDSII"}
 
-Follow @fig-rtl-to-gdsii-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
+Follow @fig-rtl-to-gdsii-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration; the physical result is accepted only after review.
 
 The process design kit (PDK) is the contract between the designer and the foundry. It supplies design rules, layer definitions, transistor and parasitic models, standard-cell libraries, I/O cells, and technology views for each tool. Digital flows consume the same technology through several representations: Liberty (`.lib`) for timing and power, LEF for abstract physical geometry, Verilog models for simulation, and GDSII for the actual cell layouts. Constraints in SDC specify the clocks and the I/O timing environment; without credible constraints, a timing result has no engineering meaning.
 
-The final GDSII is necessary but is not itself proof that a chip is ready. The tapeout decision also needs clean physical-verification results, a reviewed timing and power budget, the required package and pad-ring integration, and the foundry's current submission requirements. A successful run is therefore a reproducible evidence package rather than a single layout file.
+The final GDSII is necessary, and a chip is ready only when more is in place. The tapeout decision also needs clean physical-verification results, a reviewed timing and power budget, the required package and pad-ring integration, and the foundry's current submission requirements. A successful run is therefore a reproducible evidence package, and the layout file is one part of it.
 
 | Stage | Main question | Typical result |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ Every stage has feedback. A slow path found after routing may require a differen
 
 For decades, foundry PDKs were normally available only under a non-disclosure agreement. Google and SkyWater released the SKY130 process design kit as an open-source project under Apache 2.0. It includes documentation, rules, models and multiple digital standard-cell libraries for SkyWater's 130 nm process [@skywaterPdk]. This made it possible to distribute a complete design flow and let students, researchers and open-hardware projects inspect and reproduce the technology collateral.
 
-Google also funded an open-source multi-project-wafer (MPW) initiative with SkyWater and Efabless. The original programme selected fully open designs for sponsored shared-wafer fabrication; the first announced shuttle carried 40 community designs [@googleSkywaterMpw]. That historical programme made the route from open RTL to manufactured silicon concrete, but it must not be confused with a permanent entitlement to free fabrication. Availability, eligibility, schedule, supported process and costs are programme-specific and change over time.
+Google also funded an open-source multi-project-wafer (MPW) initiative with SkyWater and Efabless. The original programme selected fully open designs for sponsored shared-wafer fabrication; the first announced shuttle carried 40 community designs [@googleSkywaterMpw]. That historical programme made the route from open RTL to manufactured silicon concrete, though it was never a permanent entitlement to free fabrication. Availability, eligibility, schedule, supported process and costs are programme-specific and change over time.
 
 Fabrication remains accessible through commercial or institutional routes. In an MPW shuttle, several designs share a wafer and mask cost, making prototypes much cheaper than a dedicated run. SkyWater publishes MPW services and asks prospective customers to discuss the project and current schedule before submitting a design [@skywaterMpw]. A designer must obtain the current foundry or shuttle requirements, complete their pre-checks, deliver the requested GDSII and collateral, then plan packaging, board bring-up and silicon test. The public SKY130 PDK supports learning and prototyping; it does not replace a fabrication agreement or the foundry's acceptance review.
 
@@ -70,7 +70,7 @@ At this point, inspect more than a single worst slack number. Review unconstrain
 
 Design-rule checking (DRC) verifies the geometry against manufacturing rules. Layout-versus-schematic (LVS) verifies that extracted connectivity matches the intended netlist. Antenna checks find nets that could damage gate oxide during manufacturing; the flow may insert diodes or require a routing change. These checks are distinct from functional simulation and all are necessary.
 
-The handoff package normally contains the final GDSII, netlist, constraints, reports, checksums, PDK and tool versions, pad-ring and package information, and any waivers with their rationale. A foundry may apply additional proprietary checks before accepting a tapeout. Never claim fabrication readiness merely because a local flow reached a GDSII output.
+The handoff package normally contains the final GDSII, netlist, constraints, reports, checksums, PDK and tool versions, pad-ring and package information, and any waivers with their rationale. A foundry may apply additional proprietary checks before accepting a tapeout. A local flow that reaches a GDSII output is a milestone; fabrication readiness depends on the whole package.
 
 ## Hands-on Experiments
 
@@ -109,7 +109,7 @@ Explain which inputs each physical stage consumes and what checks justify handin
 
 ## Common mistakes {#review-rtl-to-gdsii-mistakes .unnumbered .unlisted}
 
-Equating open PDK availability with automatic fabrication access; calling an unqualified GDS file manufacturing-ready.
+An open PDK makes design possible, and access to fabrication is a separate matter of programmes, schedules and cost. And a GDS file that has not been through the foundry's checks is a candidate, not yet manufacturing-ready.
 
 ## Try it yourself {#review-rtl-to-gdsii-try .unnumbered .unlisted}
 

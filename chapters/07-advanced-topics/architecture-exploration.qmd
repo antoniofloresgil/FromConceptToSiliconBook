@@ -10,7 +10,7 @@ This chapter uses CORE-V Wally as the RTL platform and connects the performance-
 
 ### Define the decision before selecting parameters
 
-Start with a use case: choose a bare-metal RV32 configuration for a fixed FPGA allocation, preserve its ISA/protection contract, and reduce the response time of a particular signal-processing workload. An average benchmark improvement does not automatically satisfy a deadline or memory budget.
+Start with a use case: choose a bare-metal RV32 configuration for a fixed FPGA allocation, preserve its ISA/protection contract, and reduce the response time of a particular signal-processing workload. An average benchmark improvement may still miss a deadline or a memory budget, so the use case sets the goal.
 
 Separate objectives from constraints. Objectives can minimize time, energy per job, resources or release effort. Constraints can require supported features, working interrupts, a resource allocation, timing closure or maximum latency. A design failing a mandatory constraint remains infeasible even if its average performance is excellent.
 
@@ -54,7 +54,7 @@ Suppose A takes 10,000 cycles at 50 MHz and B takes 8,000 at 35 MHz. Their times
 | Energy / power | Energy per work / energy-use rate | Activity, voltage, clock and model/measurement scope |
 | Verification effort | Qualification complexity | Features, regression and integration obligations |
 
-For miss count $M$, $\mathrm{MPKI}=1000M/I$. Miss rate uses accesses instead. Neither describes cost alone: an overlapped miss and a blocking refill affect execution differently. State whether events are speculative, architectural, per instruction, per beat or per cycle. Do not add overlapping stall categories as an exclusive partition of execution time.
+For miss count $M$, $\mathrm{MPKI}=1000M/I$. Miss rate uses accesses instead. Neither captures cost alone, because an overlapped miss and a blocking refill affect execution differently. State whether events are speculative, architectural, per instruction, per beat or per cycle. Stall categories can overlap, so adding them up does not partition execution time.
 
 ### Bounds guide effort
 
@@ -64,7 +64,7 @@ $$
 S=\frac{1}{(1-p)+p/s}.
 $$
 
-If division occupies 5% of application time, eliminating its cost yields at most about 1.053× speedup under those assumptions. A large divider gain can be irrelevant to the application. The bound prioritizes measurement; it does not establish unchanged frequency, overhead or contention.
+If division occupies 5% of application time, eliminating its cost yields at most about 1.053× speedup under those assumptions. A large divider gain can be irrelevant to the application. The bound tells you where to measure first, and frequency, overhead and contention are left to the measurement.
 
 For accelerators, include setup, ownership transfer, DMA, computation and completion handling. Engine throughput can conceal poor small-job latency. The dot-product measurements in @sec-executable-project include setup/polling/result access, while their memory assumptions still need physical-platform validation.
 
@@ -74,7 +74,7 @@ For accelerators, include setup, ownership transfer, DMA, computation and comple
 
 Obtain correct execution in the smallest platform exercising the mechanism. Pin the RTL, derive a documented configuration and record elaborated parameters. Run independent checks before optimization. Apply @sec-verification-methodology before and after each change.
 
-A source parameter is not evidence of active hardware. Internal memories can bypass caches; a disabled predictor makes its size irrelevant; compiler folding can remove arithmetic. Confirm the hardware path, instructions and enabled features. A cache study without cache traffic is an environment defect, not a useful zero-miss result.
+A source parameter does not show that the hardware is active. Internal memories can bypass caches; a disabled predictor makes its size irrelevant; compiler folding can remove arithmetic. Confirm the hardware path, instructions and enabled features. A cache study without cache traffic points to a problem in the environment, and the zero-miss result tells you nothing.
 
 Preserve local properties and configuration-specific coverage. Equivalence is useful when its relation fits the change. New latency, ISA or features can require a different comparison than arbitrary cycle equality.
 
@@ -97,13 +97,13 @@ Choose the suite before inspecting a preferred candidate's gains. Report regress
 
 ### ROI, warm-up and machine state
 
-The region of interest (ROI) can cover a kernel, application or complete job. Specify start/end events, overheads and termination. Separate boot, initialization, warming, measured work and correctness checks. A signature checked afterward does not establish that every other checker was excluded.
+The region of interest (ROI) can cover a kernel, application or complete job. Specify start/end events, overheads and termination. Separate boot, initialization, warming, measured work and correctness checks. A signature checked afterward does not show that every other checker was excluded.
 
 Declare cold or warm state. Resetting statistics does not reset caches, predictors, TLBs or queues. Warm-up can alter data and execution paths; use reproducible initialization and establish stable relevant behavior. For cold studies, describe which architectural/microarchitectural state is reset.
 
 Use stable 64-bit CSR reads as in @sec-pmu. Sequential snapshots add boundary overhead and are not simultaneous sampling. Empty-window tests can characterize fixed instrumentation costs, but subtracting an unrelated loop does not isolate every effect. Short-window CPI needs particular care.
 
-The current Wally FPGA path does not automatically expose the simulation logger as a hardware PMU service. Counter RTL may remain when configured, but software/event semantics and an observation path must be established. Record `COUNTERS`; do not populate board tables with simulation-only hierarchical observations.
+The current Wally FPGA path does not expose the simulation logger as a hardware PMU service. Counter RTL may remain when configured, and software/event semantics and an observation path still have to be established. Record `COUNTERS`, and keep simulation-only hierarchical observations out of the board tables.
 
 ### Factors, interactions and search
 
@@ -117,9 +117,9 @@ Use coarse sweeps before refinement. Sampling and surrogate models can reduce ev
 
 Repeated deterministic RTL runs with identical input/reset should reproduce counts. That is not statistical diversity. Input seeds explore workloads; routing seeds explore implementation variability; board repetitions sample environmental/execution variation. These are different populations.
 
-Preserve raw trials before medians, ranges or intervals. Alternate/randomize hardware candidate order when drift matters. An isolated best routing seed can exaggerate deliverability; record selection policy and failed seeds.
+Preserve raw trials before medians, ranges or intervals. Alternate/randomize hardware candidate order when drift matters. An isolated best routing seed can exaggerate what is deliverable, so record the selection policy and the failed seeds.
 
-If differences are smaller than observed variability, qualify the conclusion. Thousands of instructions in one deterministic run are not independent repetitions. Do not average incompatible ROIs, inputs or operating conditions for a convenient number.
+If differences are smaller than observed variability, qualify the conclusion. Thousands of instructions in one deterministic run are not independent repetitions. Averaging incompatible ROIs, inputs or operating conditions gives a convenient number that means little.
 
 ## Wally as the RTL Platform
 
@@ -162,7 +162,7 @@ Distinguish direction, target, return and other redirect events. Retain code/inp
 
 For multiply/divide, distinguish latency, initiation interval and application exposure. Pipelining may benefit independent operations but not a dependent chain or blocking in-order integration. DSP mapping changes physical assumptions. Verify numerical/control corners before performance.
 
-Following Harris's Chapter 21, check events on small predictable cases before using them to explain benchmarks. A plausible label does not establish counting at the intended boundary. Overlap and speculation complicate a simple events-times-penalty estimate.
+Following Harris's Chapter 21, check events on small predictable cases before using them to explain benchmarks. A plausible label does not show that the event is counted at the intended boundary. Overlap and speculation complicate a simple events-times-penalty estimate.
 
 ## Implementation: a Real Wally Divider Study
 
@@ -216,7 +216,7 @@ These measurements used seed 2026, pinned source and the teaching environment (V
 
 Equal retired counts and one binary support an isolated unit comparison. Reduction agrees with the hypothesis for this operand distribution/ROI. It is not divider-only latency: loads, stores, control and instrumentation remain. Sequential counter reads are not atomic multi-counter capture; this is an instrumented-window CPI.
 
-None is physically implemented by this experiment. The simulation clock does not establish FPGA frequency, resources, energy or timing closure. Four bits/cycle wins the cycle comparison; the deployable choice remains open until physical costs and application workloads are measured. The finite experiment is not complete ISA qualification.
+None is physically implemented by this experiment. The simulation clock says nothing about FPGA frequency, resources, energy or timing closure. Four bits/cycle wins the cycle comparison; the deployable choice remains open until physical costs and application workloads are measured. The finite experiment falls short of complete ISA qualification.
 
 ### Extend without silently changing the question
 
@@ -243,7 +243,7 @@ S_{j,k}=T_{\mathrm{base},k}/T_{j,k},\qquad
 G_j=\exp\left(\frac{1}{K}\sum_{k=1}^{K}\ln S_{j,k}\right).
 $$
 
-The equal-weight geometric mean aggregates ratios without a long workload dominating through raw duration. It does not establish production prevalence. Use justified weights or direct service-time objectives for a known mix. Show per-workload effects and worst regression too.
+The equal-weight geometric mean aggregates ratios without a long workload dominating through raw duration. It says nothing about production prevalence. Use justified weights or direct service-time objectives for a known mix. Show per-workload effects and worst regression too.
 
 A good mean can hide a deadline violation. Add deadlines as constraints. Latency distributions and worst-case timing need separate treatment; a finite benchmark's worst observation is not a formal worst-case execution-time bound.
 
@@ -301,15 +301,15 @@ Incremental reuse is valid only when supported and its objects remain appropriat
 
 Begin broad searches with cheaper models/mechanism tests, advance candidates through RTL correctness/cycle checks, then use FPGA to confirm selected physical/integration trade-offs. Reserve fabric for controllers, clocking, debug and interfaces rather than allocating the whole device to the core.
 
-Separate mapped/routed reports. Preserve clocks, slack, unconstrained paths and operating conditions. Failed candidates define practical boundaries. ASIC evaluation adds technology-specific cells/parasitics/corners; it is not a relabelled FPGA resource chart.
+Separate mapped/routed reports. Preserve clocks, slack, unconstrained paths and operating conditions. Failed candidates define practical boundaries. ASIC evaluation adds technology-specific cells/parasitics/corners; it cannot reuse an FPGA resource chart under a new label.
 
 ## gem5 for Broader Exploration
 
 ### Understand what the model represents
 
-gem5 offers configurable processor/memory models for architecture research. Its CPU documentation distinguishes simpler execution models from detailed timing models [@dseGem5Cpu]. Running RISC-V does not make a model cycle-accurate for Wally's pipeline, forwarding, divider or cache controller.
+gem5 offers configurable processor/memory models for architecture research. Its CPU documentation distinguishes simpler execution models from detailed timing models [@dseGem5Cpu]. A model that runs RISC-V is not thereby cycle-accurate for Wally's pipeline, forwarding, divider or cache controller.
 
-Select mechanisms appropriate to the question: locality, queues, bandwidth, latency or execution organization. A generic cache sweep can expose working-set effects while leaving Wally-specific cycle ranking unresolved. Declare that scope rather than borrowing the RTL core's name.
+Select mechanisms appropriate to the question: locality, queues, bandwidth, latency or execution organization. A generic cache sweep can expose working-set effects while leaving Wally-specific cycle ranking unresolved. Declare that scope and leave the RTL core's name out of it.
 
 Syscall emulation supports an application environment without modelling the complete guest OS/platform. Full-system work includes platform/software. Neither accepts every bare-metal image unchanged. The supplied DSE ELF expects machine-mode CSRs and fixed physical RAM/mailboxes; it is not a Linux user program to insert into syscall emulation.
 
@@ -344,17 +344,17 @@ Calibration adjusts a model against chosen reference observations. Validation te
 
 Relative time/cycle error helps, but inspect events and ranking disagreements too. Compensating wrong penalties can match total time. Ranking near the decision boundary matters more than reassuring correlation across dissimilar workloads. Held-out workloads/configurations help reveal overfitting.
 
-Do not tune a generic CPU and call it Wally just because it runs the ISA. Maintain correspondence between model parameters, RTL mechanisms and validated domain. Record unsupported behavior/uncertainty and confirm selected optima in the RTL/physical loop.
+A generic CPU tuned to run the ISA is still a generic CPU, and calling it Wally misleads. Maintain correspondence between model parameters, RTL mechanisms and validated domain. Record unsupported behavior/uncertainty and confirm selected optima in the RTL/physical loop.
 
 ## XiangShan and XS-GEM5
 
 XiangShan is a Chisel-based high-performance RISC-V project discussed in the other-architectures chapter. It illustrates research where full RTL/physical evaluation is costly and out-of-order mechanisms differ substantially from the scalar Wally experiment [@xiangshanRepository].
 
-The community maintains **XS-GEM5**, the `OpenXiangShan/GEM5` fork. Its documented focus is a full-system RISC-V performance model calibrated against XiangShan RTL. Compatible workload/checkpoint and syscall-emulation paths have distinct limits; it is not a universal bare-metal image loader [@dseXsGem5]. Published calibration claims apply to stated configurations/campaigns rather than every future revision.
+The community maintains **XS-GEM5**, the `OpenXiangShan/GEM5` fork. Its documented focus is a full-system RISC-V performance model calibrated against XiangShan RTL. Compatible workload/checkpoint and syscall-emulation paths have distinct limits; it does not load every bare-metal image [@dseXsGem5]. Published calibration claims apply to the stated configurations and campaigns, and later revisions need their own.
 
-The architecture guide separates Python configuration, C++ timing mechanisms and observability. It identifies an RTL-aligned Kunminghu configuration and an ideal/performance-oriented configuration [@dseXsGem5Architecture]. An ideal model explores opportunities; its gain is not automatically realizable. Preserve the exact configuration rather than naming every result simply “XiangShan.”
+The architecture guide separates Python configuration, C++ timing mechanisms and observability. It identifies an RTL-aligned Kunminghu configuration and an ideal/performance-oriented configuration [@dseXsGem5Architecture]. An ideal model explores opportunities, and its gain may not be realizable. Keep the exact configuration with each result so that it is not named simply “XiangShan.”
 
-The transferable lesson is a maintained mapping between model choices, RTL mechanisms and calibration. Functional differential checking and performance alignment are complementary: correct answers do not establish scheduling/prediction/cache timing; calibrated speed does not establish correctness or feasibility of a new RTL change.
+The transferable lesson is a maintained mapping between model choices, RTL mechanisms and calibration. Functional differential checking and performance alignment are complementary: correct answers say nothing about scheduling, prediction or cache timing, and calibrated speed says nothing about the correctness or feasibility of a new RTL change.
 
 A master's extension can reproduce a reduced model/RTL comparison, vary a mechanism and confirm one candidate. A complete campaign needs the project's toolchain, compatible checkpoints/workloads and compute. This package contains neither that campaign nor a validated Wally gem5 port.
 
@@ -376,13 +376,13 @@ Use illustrative data to explain cycle/time reversal, budget rejection and compu
 
 [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-03 .learning-activity}
 
-Choose a family; specify legal factors, working set, active hardware path, cold/warm state and events. Verify a mechanism baseline before sweeping. Preserve failing/unimplemented cases and reasons. Do not inherit uncached DMA correctness for a cached platform without ownership checks.
+Choose a family; specify legal factors, working set, active hardware path, cold/warm state and events. Verify a mechanism baseline before sweeping. Preserve failing/unimplemented cases and reasons. Correctness shown for uncached DMA carries over to a cached platform only after ownership checks.
 
 ### Experiment 4: confirm a candidate
 
 [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-architecture-exploration-04 .learning-activity}
 
-For FPGA, use the real board fabric and compare time/resources under stated memory/clock conditions. For gem5, prepare compatible workloads, calibrate mechanism tests and validate held-out configurations. Explain discrepancies rather than relabelling generic output as Wally evidence.
+For FPGA, use the real board fabric and compare time/resources under stated memory/clock conditions. For gem5, prepare compatible workloads, calibrate mechanism tests and validate held-out configurations. Explain discrepancies, because generic output relabelled as Wally evidence would mislead.
 
 Without a board, confirm the candidate with an independent workload in real-Wally RTL simulation and preserve the binary/input/ROI contract. Run device implementation without programming when tools are available; otherwise analyse the instructor-provided baseline/variant timing/resources reports under [Lab 07's alternative](../../labs/07-implementation/README.md#without-a-physical-board). Report cycle effects separately from supplied physical data, list board validation as unexecuted and identify what missing frequency/memory/energy evidence could reverse the decision. This completes the online exercise within its declared scope; a measured board Pareto claim still needs actual physical evidence.
 
@@ -405,7 +405,7 @@ Explain a controlled comparison, its region of interest and what missing evidenc
 
 ## Common mistakes {#review-architecture-exploration-mistakes .unnumbered .unlisted}
 
-Comparing mismatched configurations; presenting illustrative Pareto data or emulator runtime as measured Wally PPA.
+Two shortcuts spoil a design-space study. Mismatched configurations compare different things, so match them before ranking. And illustrative Pareto data or an emulator's runtime is not measured Wally PPA, however convincing the plot looks.
 
 ## Try it yourself {#review-architecture-exploration-try .unnumbered .unlisted}
 

@@ -30,13 +30,13 @@ For the base RV32I integer programming model, the relevant state consists of a p
 
 Memory and execution-environment behavior complete the state visible to a program. A richer configuration can also expose CSRs, floating-point state, vector state and privilege state. A cache valid bit or pipeline occupancy bit is implementation state, even though it influences execution time.
 
-`XLEN` describes the width of integer registers. It does not imply that every instruction has that length, that all physical addresses have that width, or that a bus transfers one `XLEN`-bit word each cycle. Keep register width, address width and data-bus width separate in configuration tables.
+`XLEN` is the width of the integer registers, and nothing more. Instructions are not `XLEN` bits long, physical addresses need not be that wide, and a bus does not have to move one `XLEN`-bit word per cycle. Giving register width, address width and data-bus width their own rows in a configuration table saves a surprising amount of debugging later.
 
 ### Integer representation and modular arithmetic
 
 An $n$-bit unsigned value ranges from zero to $2^n-1$. The same bit pattern interpreted in two's complement ranges from $-2^{n-1}$ to $2^{n-1}-1$. For 32 bits, `0xffffffff` means either unsigned 4294967295 or signed -1.
 
-Ordinary integer addition retains the low `XLEN` bits. It does not trap merely because a signed mathematical result is out of range. Thus `0x7fffffff + 1` produces `0x80000000`. A software routine that requires overflow detection uses additional checks. In an RTL scoreboard, mask arithmetic results to the architectural width rather than using an unlimited host integer as the expected register value.
+Ordinary integer addition keeps the low `XLEN` bits and never traps on signed overflow, so `0x7fffffff + 1` simply produces `0x80000000`. Software that needs overflow detection adds its own checks. The same wrap-around matters in an RTL scoreboard: mask the expected result to the architectural width, because an unlimited host integer will happily compute a value the register can never hold.
 
 Signedness affects comparisons and right shifts. `SLT` and `BLT` interpret operands as signed; `SLTU` and `BLTU` interpret them as unsigned. Arithmetic right shift replicates the sign bit; logical right shift introduces zeros. An incorrect SystemVerilog cast can implement the wrong instruction despite a correct opcode decoder.
 
@@ -47,7 +47,7 @@ Signedness affects comparisons and right shifts. `SLT` and `BLT` interpret opera
 | Logical right shift by one | `0x7fffffff` |
 | Arithmetic right shift by one | `0xffffffff` |
 
-For register shifts in RV32I, the effective shift amount comes from the low five bits of the second operand. A host-language model that shifts by the entire register value does not model that rule correctly. Encoding checks also matter: an immediate shift uses part of its apparent immediate field to distinguish legal operations.
+For register shifts in RV32I, the effective shift amount comes from the low five bits of the second operand. A host-language model that shifts by the entire register value gets this wrong, which is a classic way for a reference model to disagree with correct hardware. Encoding checks matter too: an immediate shift borrows part of its apparent immediate field to select the operation.
 
 ### Register names and the calling convention
 
@@ -111,7 +111,7 @@ J = sign_extend({instruction[31], instruction[19:12],
 
 For a general I-format immediate, the range is -2048 through 2047. B-format offsets span -4096 through 4094 bytes in steps of two; J-format offsets span -1048576 through 1048574 bytes in steps of two. Instruction-target alignment is a separate check: a pure RV32I instruction stream requires four-byte alignment, even though an offset encoding can express a two-byte step.
 
-Decode the whole operation before applying these formulas. An immediate shift and a CSR-immediate instruction do not use a generic sign-extended I immediate as their entire operand semantics. Validity of a format does not establish legality of every instruction with that opcode.
+Decode the whole operation before applying these formulas. Immediate shifts and CSR-immediate instructions share the I format but give their immediate field a different meaning, so a well-formed format is not yet a legal instruction: each opcode still has to be checked against its own rules.
 
 ### Loads, stores and byte addresses
 
@@ -121,13 +121,13 @@ This book's teaching systems use little-endian data storage. Storing `0x12345678
 
 `LB` sign-extends an eight-bit value; `LBU` zero-extends it. Reading byte `0xfd` yields `0xfffffffd` with `LB` and `0x000000fd` with `LBU`. A byte store changes one byte without changing its neighbours. The LSU and byte-enable logic implement these effects over a potentially wider memory port.
 
-Natural alignment places halfwords at multiples of two and words at multiples of four. Whether a misaligned data access is handled or traps depends on the execution environment. A teaching design that supports only aligned accesses must reject unsupported ones rather than silently dropping low address bits. An access crossing a device or protection boundary cannot be treated as an ordinary pair of harmless RAM accesses.
+Natural alignment places halfwords at multiples of two and words at multiples of four. Whether a misaligned data access is handled or traps depends on the execution environment. A teaching design that supports only aligned accesses should reject the others explicitly; silently dropping the low address bits turns a software bug into a wrong answer that is hard to trace. Accesses that cross a device or protection boundary need the same care, since they are not just two harmless RAM reads.
 
 ### Control flow and PC-relative addressing
 
 In an uncompressed base stream, ordinary sequential execution advances the PC by four. A taken conditional branch adds its signed displacement to the address of the branch instruction, not to the already incremented PC. An untaken branch advances sequentially.
 
-`JAL` computes a PC-relative target and writes the address following the instruction to its destination. `JALR` computes a target from a register and signed immediate and clears target bit zero. Clearing that bit does not establish four-byte alignment for a pure RV32I target. A separate target-alignment check is still needed.
+`JAL` computes a PC-relative target and writes the address following the instruction to its destination. `JALR` computes a target from a register and signed immediate and clears target bit zero. Clearing that bit does not make the target four-byte aligned, so a pure RV32I implementation still needs its own target-alignment check.
 
 `AUIPC` combines the current PC with an upper immediate. Together with another instruction it can reach data or a distant function without embedding one absolute address. Linker relocations fill in the actual fields after section placement.
 
@@ -158,9 +158,9 @@ The compiler's `-march` selects available instructions; `-mabi` selects the bina
 
 ### Privilege, CSRs and traps: the boundary
 
-Machine, supervisor and user modes define access and execution rules rather than different pipeline stages. A platform may provide only a machine-mode environment; an application system can provide further modes, address translation and protection. A full implementation needs the applicable privileged rules [@riscvPrivilegedSpec].
+Machine, supervisor and user modes are sets of access and execution rules, not pipeline stages. A small platform may offer only machine mode, while an application system adds further modes, address translation and protection. Whichever you build, implement the privileged rules that apply to it [@riscvPrivilegedSpec].
 
-CSRs form a separate register address space. `Zicsr` specifies read/write, set and clear operations and their immediate forms. Some CSRs serve unprivileged facilities, so CSR access and privilege must not be treated as synonyms. Reading with `CSRRS` and source register `x0` suppresses its write, whereas `CSRRW` with destination `x0` suppresses its read [@riscvZicsrFoundation].
+CSRs form a separate register address space. `Zicsr` specifies read/write, set and clear operations and their immediate forms. Some CSRs serve unprivileged facilities, so reading a CSR and holding privilege are two separate questions. Reading with `CSRRS` and source register `x0` suppresses its write, whereas `CSRRW` with destination `x0` suppresses its read [@riscvZicsrFoundation].
 
 A trap transfers control for an exception or interrupt. `ECALL` requests execution-environment handling; it is not a universal exit instruction. `EBREAK` is a breakpoint instruction; its routing depends on debug and trap configuration. A simulator-specific stop convention belongs to the harness, not to an invented base-ISA rule.
 
@@ -170,7 +170,7 @@ The simplified processor in the Wally chapter intentionally omits these mechanis
 
 The architectural order seen by software is not necessarily the same as every internal request timestamp. Store buffers, caches and other observers complicate visibility. RISC-V's memory model and ordering instructions constrain allowed observations; the memory and bus chapters apply those constraints to concrete systems [@riscvRvWmo].
 
-Do not assume C `volatile` establishes inter-hart synchronization or all required device ordering. It affects compiler treatment of accesses but does not replace hardware fences and platform rules. Similarly, `FENCE.I` belongs to `Zifencei` and concerns local instruction-fetch visibility after writes; it is not a universal data-cache flush or an automatic broadcast to other harts [@riscvZifenceiFoundation].
+C `volatile` only constrains what the compiler may do with an access. It does not synchronize harts or guarantee device ordering, which still require hardware fences and the platform's rules. `FENCE.I` is similarly narrow: it belongs to `Zifencei` and makes writes visible to the local instruction fetch, but it neither flushes the data cache in general nor notifies other harts [@riscvZifenceiFoundation].
 
 ## Implementation
 
@@ -298,7 +298,7 @@ For `addi x5, x0, -3`, first reconstruct the immediate as `0xfffffffd`, read zer
 
 For `sw x5, 4(x10)`, read the base and store operand, compute the byte address, validate its access, and modify memory. There is no integer destination. For a taken branch, select the target PC but do not apply an unrelated register write. This effect-oriented description is the input to a microarchitectural control table.
 
-Once the state transition is clear, the implementation may take one cycle or several cycles. Reference comparison should observe architectural effects, rather than demand that a functional simulator reproduce pipeline stages.
+Once the state transition is clear, the implementation is free to take one cycle or several. Compare against the reference at the level of architectural effects; a functional simulator has no pipeline stages to reproduce.
 
 ## Hands-on Experiments
 
@@ -306,7 +306,7 @@ Once the state transition is clear, the implementation may take one cycle or sev
 
 [Preparation · P0 · C1](../../learning-paths.qmd#sec-path-labels){#act-risc-v-isa-01 .learning-activity}
 
-Test the immediate generator with positive and negative I/S values, the minimum and maximum B/J offsets, U-format high-bit values and unsupported selectors. Construct encoded fields from known immediates in the testbench, then compare against the original values. This tests independent encoding/decoding rather than duplicating the same concatenation in both implementation and checker.
+Test the immediate generator with positive and negative I/S values, the minimum and maximum B/J offsets, U-format high-bit values and unsupported selectors. Construct encoded fields from known immediates in the testbench, then compare against the original values. That way the checker exercises an independent encoding and decoding, instead of repeating the same concatenation in both the implementation and the test.
 
 Choose branch offsets including -4, 2, 4 and 4094. Explain why reconstructing 2 is correct even though branching to a two-byte-aligned address is unsupported in a pure four-byte-aligned stream. Keep immediate formation and target legality as separate tests.
 
@@ -345,7 +345,7 @@ Matching one signature is useful evidence, not exhaustive ISA verification. Add 
 ## Key ideas {#review-risc-v-isa-ideas .unnumbered .unlisted}
 
 - The ISA specifies observable behavior; the microarchitecture chooses how to deliver it.
-- Operand interpretation, immediate encoding and the ABI belong to distinct contracts.
+- Operand interpretation, immediate encoding and the ABI are three distinct contracts, and bugs often hide at their boundaries.
 
 ## What you should now be able to explain {#review-risc-v-isa-explain .unnumbered .unlisted}
 
@@ -353,7 +353,7 @@ Explain one instruction from encoding to architectural result, and distinguish a
 
 ## Common mistakes {#review-risc-v-isa-mistakes .unnumbered .unlisted}
 
-Confusing signed interpretation with stored bits; treating every RISC-V core as having the same extensions and platform services.
+Two confusions cause most early errors. The register stores bits; whether they mean a signed or unsigned number is decided by the instruction that reads them. And RISC-V is a family, so a core's extensions and platform services must be checked before you assume a feature exists.
 
 ## Try it yourself {#review-risc-v-isa-try .unnumbered .unlisted}
 

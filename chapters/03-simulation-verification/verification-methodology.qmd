@@ -4,11 +4,11 @@
 
 ![Conceptual verification flow separates the independent model from the RTL and compares only observed accepted transactions. The formal harness constrains the environment and checks guarantees; coverage and counterexamples remain separate evidence.](../../figures/visual-verification-flow.svg){#fig-verification-evidence-flow width=100%}
 
-Follow @fig-verification-evidence-flow from the contract to both the scoreboard and formal harness. A mismatch must retain the configuration and stimulus that produced it; a passing bounded task does not establish an arbitrary execution horizon.
+Follow @fig-verification-evidence-flow from the contract to both the scoreboard and formal harness. A mismatch must keep the configuration and stimulus that produced it, so it can be replayed. A passing bounded task covers its bound and no further.
 
 A hardware verification result is a claim about a particular requirement, representation, configuration and environment. It becomes useful engineering evidence when another person can identify what was exercised, how correctness was checked and which assumptions limit the conclusion. A program printing PASS, a solver finding no counterexample, and a clean layout report answer different questions.
 
-This chapter develops a common methodology for Hardware System Design. Its functional foundation is Harris et al., *RISC-V System-on-Chip Design*, Chapter 5, particularly the verification plan, self-checking testbenches, lock-step comparison, assertions, coverage and Wally regression in Sections 5.1–5.11. The system's performance also needs the separate checks discussed in Chapter 21 [@harrisRiscvSoc]. The hierarchy of behavioral, RTL, gate and circuit representations, implementation flows and the distinction between logic verification, silicon debugging and manufacturing test follow Weste and Harris, *CMOS VLSI Design*, fourth edition, Sections 14.4 and 15.1–15.7 [@westeCmosVlsi]. This chapter adapts those ideas to the open tools and executable project provided here; it does not imply that every check described below has already been run on Wally or on a fabricated chip.
+This chapter develops a common methodology for Hardware System Design. Its functional foundation is Harris et al., *RISC-V System-on-Chip Design*, Chapter 5, particularly the verification plan, self-checking testbenches, lock-step comparison, assertions, coverage and Wally regression in Sections 5.1–5.11. The system's performance also needs the separate checks discussed in Chapter 21 [@harrisRiscvSoc]. The hierarchy of behavioral, RTL, gate and circuit representations, implementation flows and the distinction between logic verification, silicon debugging and manufacturing test follow Weste and Harris, *CMOS VLSI Design*, fourth edition, Sections 14.4 and 15.1–15.7 [@westeCmosVlsi]. This chapter adapts those ideas to the open tools and executable project provided here; not every check described below has been run on Wally or on a fabricated chip.
 
 ### Start with the question, then select the technique
 
@@ -26,7 +26,7 @@ Functional verification asks whether a design implements its specified behavior.
 | FPGA or first silicon | Does the actual platform operate in the intended environment? | Board tests, bring-up, characterization, measured limits | One device or one operating point is a sample |
 | Manufactured devices | Which individual parts satisfy the production test specification? | Scan/ATPG, memory test, electrical tests and binning | Fault coverage is not functional-specification coverage |
 
-These boundaries form a chain of contracts. Passing a downstream check does not repair a missing upstream obligation: LVS can match the wrong netlist, and a booting FPGA can contain an arithmetic corner-case defect. Conversely, a functional PASS does not establish timing, legal geometry or adequate test access.
+These boundaries form a chain of contracts, and each link needs its own check. A downstream pass cannot make up for a missing upstream obligation: LVS can match the wrong netlist, and a booting FPGA can still hide an arithmetic corner-case defect. The reverse holds too, since a functional PASS says nothing about timing, legal geometry or test access.
 
 ### Write a verification plan before expanding the RTL
 
@@ -76,7 +76,7 @@ For a complete local progression from assertions and assumptions to BMC, inducti
 
 Run inexpensive checks early. Elaborate each supported configuration, inspect port/assignment widths and signedness, find unintended storage or combinational loops, and review undriven/unused signals. Compile both the module and its actual wrapper. A legal parameter value that changes a bus width can expose a connection bug absent from the default configuration.
 
-Lint warnings need a disposition. Repair a real defect; otherwise record a narrow waiver with source context and justification. Disabling warnings globally to obtain a clean transcript hides new defects. A command containing `-Wno-fatal` allows warnings to remain: the Wally integration fixture uses that option for the vendor build, so its simulation PASS is not a claim of warning-free lint.
+Lint warnings need a disposition. Repair a real defect; otherwise record a narrow waiver with source context and justification. Disabling warnings globally gives a clean transcript at the price of hiding new defects. A command containing `-Wno-fatal` lets warnings remain; the Wally integration fixture uses that option for the vendor build, so read its simulation PASS as a functional result and not as warning-free lint.
 
 Test reset priority, clock enables, simultaneous control events and state retention. In an event-driven four-state simulation, distinguish an unknown result from the expected integer; avoid a comparison that silently treats X as harmless. `logic` does not change a signal into a two-state type. Verilator's initialization/X handling also requires review: its runtime documentation describes options that can trade reset-bug detection for speed [@verificationVerilator]. Use an appropriate complementary four-state test when the obligation concerns uninitialized state, reset release or X propagation.
 
@@ -86,9 +86,9 @@ A unit testbench separates stimulus generation, legal driving, passive monitorin
 
 Harris also identifies UVM as an industrial SystemVerilog verification approach. Its reusable drivers, monitors, sequences, agents and scoreboards organize these responsibilities for larger environments [@harrisRiscvSoc, Section 5.4 and Table 5.1]. In this course, learn those roles using the compact C++/Python/SystemVerilog benches first. A later UVM environment can reuse the contract and verification plan; adopting its class structure does not supply an independent oracle or missing coverage automatically.
 
-Drive inputs before the sampling edge and compare outputs after updates have settled. A C++ Verilator harness explicitly evaluates clock phases. In cocotb, `RisingEdge` and `ReadOnly` are distinct synchronization points; the timing-model documentation explains why an edge wake-up alone can precede downstream updates [@verificationCocotbTiming]. Do not repair a scheduler race with a delay that is accidentally dependent on one clock period or simulator.
+Drive inputs before the sampling edge and compare outputs after updates have settled. A C++ Verilator harness explicitly evaluates clock phases. In cocotb, `RisingEdge` and `ReadOnly` are distinct synchronization points; the timing-model documentation explains why an edge wake-up alone can precede downstream updates [@verificationCocotbTiming]. A scheduler race is best repaired with the right synchronization point, since a delay tuned to one clock period or simulator will fail on the next.
 
-Make the checker terminate with a failure on mismatch, invalid protocol state or timeout. A waveform supports diagnosis but does not replace an automatic comparison. Include a watchdog so a missing response produces a finite failure. Keep transaction traces small enough to identify the first discrepancy: seed, requirement ID, accepted transaction number, expected value, actual value and relevant status.
+Make the checker terminate with a failure on mismatch, invalid protocol state or timeout. A waveform is great for diagnosis, but the automatic comparison is what makes the test self-checking. Include a watchdog so a missing response produces a finite failure. Keep transaction traces small enough to identify the first discrepancy: seed, requirement ID, accepted transaction number, expected value, actual value and relevant status.
 
 The initial suite should contain directed normal and boundary cases, reset/enable interactions, simultaneous events, error responses and recovery. Add seeded constrained-random traffic to vary data, independent channel delays and legal interleavings. Constraints should reflect the environment contract, not prevent the DUT from encountering difficult but legal behavior. A permanently stalled peer is useful for a safety check even when completion cannot be expected.
 
@@ -96,7 +96,7 @@ The initial suite should contain directed normal and boundary cases, reset/enabl
 
 Assertions localize violations near their cause. For a valid/ready source, retained-valid/payload checking detects the violation when it occurs, rather than after the final numerical result happens to be wrong. Conservation properties can check accepted, outstanding and completed transactions. State-dependent properties can prohibit descriptor modification while a job is active or success before the terminal write responses.
 
-Distinguish an environment assumption from a DUT guarantee. If the DMA is the source of AW, stable AW under stall is its assertion. If a formal harness assumes stable AW from an external CPU master, it is constraining the environment. Never assume the very DUT behavior the proof is intended to establish. Record assumptions about target responses, clocks, reset, IDs, transaction counts and valid configuration.
+Distinguish an environment assumption from a DUT guarantee. If the DMA is the source of AW, stable AW under stall is its assertion. If a formal harness assumes stable AW from an external CPU master, it is constraining the environment. The one assumption to avoid is the very DUT behavior the proof is meant to establish. Record assumptions about target responses, clocks, reset, IDs, transaction counts and valid configuration.
 
 Safety says that a bad event never occurs. Liveness says that a desired event eventually occurs. A DMA master cannot guarantee completion when the target can hold READY low forever. An eventual-completion property needs explicit fairness or bounded-response assumptions. Test robustness under stalls separately from any claim about progress under a responsive environment.
 
@@ -104,7 +104,7 @@ Bounded model checking examines behavior to a stated depth. An unbounded proof n
 
 The project's Yosys SAT checks constrain reset in the first step and zero initialization. They disable assertions across reset boundaries. The control configuration has maximum length 16 and a 20-cycle bound; the separate engine configuration fixes a valid one-pair descriptor and checks 24 cycles. These conditions belong in the evidence, not only in the script. Reset-based claims require that relevant state is actually initialized by the reset contract; zero initialization is not a model of arbitrary physical power-up.
 
-Inspect reachability to avoid vacuity. A DONE implication can pass because DONE never occurs. The project saves a reachable engine DONE trace, then requires an early-DONE mutation to generate a counterexample. This checks meaningful completion behavior within that engine scope; it does not establish that every antecedent in the control proof is reachable or that the full accelerator completes at every length under formal analysis. Add witnesses for the specific antecedents of new properties.
+Inspect reachability to avoid vacuity. A DONE implication can pass because DONE never occurs. The project saves a reachable engine DONE trace, then requires an early-DONE mutation to generate a counterexample. This checks meaningful completion behavior within that engine scope; it leaves open whether every antecedent in the control proof is reachable, and whether the full accelerator completes at every length under formal analysis. Add witnesses for the specific antecedents of new properties.
 
 ### Level 4: functional and structural coverage
 
@@ -116,11 +116,11 @@ Coverage measures a defined observation space. It cannot establish that the spec
 | Functional coverage | Contract-defined scenarios and selected crosses | Determine which specified behaviors were reached |
 | Fault coverage | Detected faults in a declared manufacturing fault model | Assess sensitivity of production-test patterns |
 
-For the project, functional bins include supported lengths, operand sign classes, address/data arrival order, response stalls, descriptor rejection classes, DMA read/write errors, reset during activity, IRQ acknowledgement and the second reusable configuration. Useful crosses include terminal outcome × interrupt enable, channel order × stall, and descriptor class × traffic suppression. Do not generate every cross indiscriminately: review which combinations are meaningful and reachable.
+For the project, functional bins include supported lengths, operand sign classes, address/data arrival order, response stalls, descriptor rejection classes, DMA read/write errors, reset during activity, IRQ acknowledgement and the second reusable configuration. Useful crosses include terminal outcome × interrupt enable, channel order × stall, and descriptor class × traffic suppression. Generating every cross indiscriminately wastes effort, so review which combinations are meaningful and reachable.
 
-A bin should be credited when its scenario occurred and its checker ran, not merely because a test was scheduled. Detect a broken scoreboard or skipped sequence. The project's existing checks and transaction counts provide directed evidence; they do not currently export a full machine-readable functional cross-coverage database. A manifest listing covered cases is not a measured 100% coverage report.
+A bin should be credited when its scenario occurred and its checker ran, not merely because a test was scheduled. Detect a broken scoreboard or skipped sequence. The project's existing checks and transaction counts provide directed evidence, and they do not yet export a full machine-readable functional cross-coverage database. A manifest listing covered cases is useful documentation, but it is not a measured 100% coverage report.
 
-Verilator provides coverage instrumentation, whose available forms depend on the installed version [@verificationVerilator]. Record the instrumentation and collection configuration with the merged database. The teaching baseline is Verilator 5.020; do not assume every feature documented for a later release exists there. Merge only compatible design/configuration runs, and preserve which seeds contributed. A branch missing because an extension is disabled needs a configuration-specific exclusion, not an unexplained permanent waiver.
+Verilator provides coverage instrumentation, whose available forms depend on the installed version [@verificationVerilator]. Record the instrumentation and collection configuration with the merged database. The teaching baseline is Verilator 5.020, so check that a feature documented for a later release exists there before relying on it. Merge only compatible design/configuration runs, and preserve which seeds contributed. A branch missing because an extension is disabled needs a configuration-specific exclusion, not an unexplained permanent waiver.
 
 Review uncovered behavior as a design question: is stimulus missing, is a checker absent, is the feature disabled, or is the state unreachable? An exclusion records a reason and evidence. Reachability in one elaborated configuration does not settle another. Even full code coverage would not detect a feature omitted from the RTL; Harris's plan therefore also requires functional coverage.
 
@@ -132,7 +132,7 @@ Before differential comparison, agree on XLEN, extensions, privilege modes, memo
 
 Handle nondeterminism deliberately. Cycle counters, interrupt arrival times, devices, uninitialized memory and implementation-permitted values may differ. Synchronize input events or use a documented comparison policy; broad masking can hide the bug being sought. A Wally/reference mismatch is first evidence of a disagreement among DUT, adapter, environment and oracle, not immediate proof that the processor is wrong.
 
-ISA agreement does not establish correct forwarding, no lost requests, cache coherence, branch-predictor performance or deadlock freedom. Add local microarchitectural assertions and subsystem scoreboards. Follow a stall/flush through the relevant stages and require that wrong-path stores never become visible. Cache checking should observe data returned, eviction/writeback contents and ownership transitions, not only the hit count.
+ISA agreement is a strong result, and correct forwarding, absence of lost requests, cache coherence, branch-predictor performance and deadlock freedom are separate questions. Local microarchitectural assertions and subsystem scoreboards answer them. Follow a stall/flush through the relevant stages and require that wrong-path stores never become visible. Cache checking should observe data returned, eviction/writeback contents and ownership transitions, not only the hit count.
 
 Verify performance observables separately, following Harris's Chapter 21. Define event semantics, warm-up, measurement start/stop and termination, then use a short predictable workload to validate counters before a benchmark campaign. A cache-miss count and a retired-load count need different expectations. Compare identical workloads/configurations and document repetitions and variability where relevant. Distinguish simulated hardware cycles, simulator wall time and achieved physical clock frequency. A functionally correct faster model can still predict the wrong stall rate or rank two microarchitectures incorrectly.
 
@@ -144,7 +144,7 @@ At integration, test address decoding, memory attributes, arbitration, backpress
 
 Create an end-to-end scenario with a visible ownership sequence: CPU prepares buffers; orders initialization; starts the IP; transfers ownership; receives completion; orders result access; then compares. DMA protection is a distinct obligation from CPU PMP. Verify rejected descriptors before traffic and legal transactions at the window edges. A memory model must explain latency, collision behavior and persistence across reset.
 
-Test interruption and failure as system events. A read error stops further work; a second result-write failure may leave a partial value. Software must not accept it as success. Coordinated reset clears protocol state while preserving already committed memory writes under the project contract. Independent subsystem reset, unresponsive peers and cached buffers need additional specified recovery/ownership mechanisms.
+Test interruption and failure as system events. A read error stops further work; a second result-write failure may leave a partial value. Software has to treat it as a failure. Coordinated reset clears protocol state while preserving already committed memory writes under the project contract. Independent subsystem reset, unresponsive peers and cached buffers need additional specified recovery/ownership mechanisms.
 
 The teaching fixture directly routes the IP level interrupt to Wally's machine-external input. Its handler verifies this route, not PLIC priority/claim/complete behavior. Test a full interrupt controller separately before claiming full-SoC integration. Likewise, a shared simulation array does not verify a physical arbiter under conflicting accesses.
 
@@ -154,7 +154,7 @@ Security evaluation specifies assets, actors, trusted configuration and access p
 
 After synthesis, compare the identified RTL reference with the implemented netlist under appropriate cell/memory models and configuration. Formal equivalence checks whether the representations agree; it does not validate the specification. Yosys provides equivalence passes including `equiv_make`, `equiv_simple` and `equiv_status`; requiring the final status prevents unresolved comparison cells from being counted as success [@verificationYosysEquiv].
 
-The supplied generic synthesis runs check elaboration/storage and produce netlists, but do not currently execute an RTL-to-netlist equivalence flow. Preserve that gap in the plan. An equivalence experiment must identify mapping, reset/initial-state relationships, matched outputs/state, black boxes and any unproven partitions. Sequential retiming, different latency or scan-mode controls require a corresponding comparison relation; output equality at arbitrary cycles may be the wrong contract.
+The supplied generic synthesis runs check elaboration/storage and produce netlists, but they do not yet run an RTL-to-netlist equivalence flow. Keep that gap visible in the plan. An equivalence experiment must identify mapping, reset/initial-state relationships, matched outputs/state, black boxes and any unproven partitions. Sequential retiming, different latency or scan-mode controls require a corresponding comparison relation; output equality at arbitrary cycles may be the wrong contract.
 
 Gate-level simulation adds selected obligations: reset/initialization, library behavior, scan/test mode and, where supported, annotated-delay scenarios. Identify the exact netlist, cell models and SDF annotation coverage. A zero-delay netlist simulation does not check routing timing. Full software boot may be too expensive here; reuse minimized critical scenarios at this level and retain wider functional tests at RTL, as the books' hierarchical strategy suggests.
 
@@ -172,9 +172,9 @@ For FPGA, inspect the placed/routed design's clocks, resource use, timing, I/O c
 
 For ASIC, inspect consistent technology/library/macro views, DRC, LVS, antenna/density checks, RC extraction and corner/mode timing. Tie reports to the final checked GDS/netlist/constraints, not an earlier iteration. Verify top-cell identity and macro exclusions. A zero-violation empty or wrong-top run provides no useful release claim.
 
-Power integrity and reliability add current/activity, package/source, voltage and lifetime assumptions. Characterized cell circuits and custom blocks need circuit-level/PVT validation; SPICE scenarios for a critical cell complement the digital hierarchy. Their models and corner definitions must match the intended technology. The open RTL/physical tools in this book do not automatically perform every foundry-qualified electrical or lifetime check.
+Power integrity and reliability add current/activity, package/source, voltage and lifetime assumptions. Characterized cell circuits and custom blocks need circuit-level/PVT validation; SPICE scenarios for a critical cell complement the digital hierarchy. Their models and corner definitions must match the intended technology. The open RTL and physical tools in this book leave the foundry-qualified electrical and lifetime checks to other flows.
 
-Read @sec-physical-validation for actual physical report review, DFT and fabrication preparation. Re-run affected equivalence, timing and physical checks after an ECO, scan insertion, antenna repair or fill change according to the flow dependency. Matching input hashes are necessary for evidence freshness, but hashes alone do not establish that a checker chose the correct top, model or corner.
+Read @sec-physical-validation for actual physical report review, DFT and fabrication preparation. Re-run affected equivalence, timing and physical checks after an ECO, scan insertion, antenna repair or fill change according to the flow dependency. Matching input hashes show that the evidence is fresh. Whether a checker chose the correct top, model or corner is a separate question that hashes cannot answer.
 
 ### Level 10: silicon validation and production test
 
@@ -182,13 +182,13 @@ First-silicon bring-up uses a staged test plan: supplies/current limits, clock/r
 
 Characterization varies relevant voltage, temperature, frequency and workloads to locate operating margins. Investigate discrepant measurements against implementation predictions. A passing production part may still contain a design defect that its test patterns did not exercise; this is why Weste and Harris distinguish silicon debug from manufacturing test.
 
-Manufacturing test uses declared fault models and access mechanisms such as scan, ATPG and memory BIST. Keep detected, undetected, untestable and excluded faults visible with the denominator and model. At-speed delay tests, static stuck-at tests and memory tests measure different defects. Fault simulation assesses the patterns; simply shifting a scan chain successfully does not establish their coverage. Tester limits, power, test duration and false rejection also matter. The project's DFT review is coursework evidence; no scan insertion or production qualification is supplied.
+Manufacturing test uses declared fault models and access mechanisms such as scan, ATPG and memory BIST. Keep detected, undetected, untestable and excluded faults visible with the denominator and model. At-speed delay tests, static stuck-at tests and memory tests measure different defects. Fault simulation is what assesses the patterns, because a scan chain that shifts successfully says nothing yet about their coverage. Tester limits, power, test duration and false rejection also matter. The project's DFT review is coursework evidence; no scan insertion or production qualification is supplied.
 
 ### Close the loop with regression and release review
 
 Maintain a working baseline while adding features in small steps, following Harris's always-working strategy. Use a fast local tier for elaboration and unit checks, a change-level tier for affected configurations/formal obligations, a periodic tier for larger seed/configuration/system campaigns, and a release tier for physical/DFT/platform evidence. These are execution policies for identified checks, not four definitions of correctness.
 
-A failing test is first minimized to the earliest incorrect event. Determine whether stimulus, checker, model, configuration or DUT is responsible. Preserve the defect-specific regression after repair. CI captures command/log/artifact identities and must reject missing evidence or timeouts. The project's broader workflow runs nine automatic entries, deliberate defect checks and the separately pinned Wally integration. Per-commit checks do not establish board or manufacturing qualification.
+A failing test is first minimized to the earliest incorrect event. Determine whether stimulus, checker, model, configuration or DUT is responsible. Preserve the defect-specific regression after repair. CI captures command/log/artifact identities and must reject missing evidence or timeouts. The project's broader workflow runs nine automatic entries, deliberate defect checks and the separately pinned Wally integration. Per-commit checks keep the design healthy; board and manufacturing qualification are separate milestones.
 
 For a complete accelerator example, @sec-hardware-ci connects lint, elaboration, independent simulation, bounded formal checks, synthesis and report acceptance in one executable chain. Its four actual RTL mutations challenge the interface contract, arithmetic checker, assertion engine and generic-cell budget separately. A manually dispatched physical regression has a distinct extracted timing/electrical acceptance gate; previous physical results are never inherited by a changed RTL candidate.
 
@@ -227,9 +227,9 @@ python labs/verification/evidence.py \
   --output labs/build/verification-evidence.json
 ```
 
-In PowerShell, put the command on one line or use its backtick continuation. The tool maps the supplied plan to actual runner records, verifies source/artifact hashes and writes scoped requirement statuses. It leaves physical, equivalence and manufacturing obligations unexecuted. A missing/stale required record fails the command; it cannot create new verification evidence by relabelling an unrun check. Its report-level mapping does not replace measured functional coverage.
+In PowerShell, put the command on one line or use its backtick continuation. The tool maps the supplied plan to actual runner records, verifies source/artifact hashes and writes scoped requirement statuses. It leaves physical, equivalence and manufacturing obligations unexecuted. A missing or stale required record fails the command, so relabelling an unrun check cannot produce new verification evidence. The report-level mapping is a bookkeeping aid, and measured functional coverage is still needed.
 
-For P4/P5, add separately produced equivalence or physical records to a reviewed plan/evidence package; do not edit generated statuses to invent passes. Submit a summary of completed, failed and unresolved obligations, one reproducible failure or counterexample, and the proposed release decision. Explain what evidence would change that decision.
+For P4/P5, add separately produced equivalence or physical records to a reviewed plan/evidence package; leave the generated statuses untouched, since editing them would invent passes. Submit a summary of completed, failed and unresolved obligations, one reproducible failure or counterexample, and the proposed release decision. Explain what evidence would change that decision.
 
 <!-- chapter-review:verification-methodology -->
 
@@ -244,7 +244,7 @@ Explain what an independent oracle checks, how assumptions limit a proof, and wh
 
 ## Common mistakes {#review-verification-methodology-mistakes .unnumbered .unlisted}
 
-Reporting tool completion as requirement coverage; weakening a checker until an incorrect design passes.
+Two shortcuts quietly undermine a verification plan. A tool that finishes has run, and whether it covered a requirement is a separate fact. And weakening a checker until the incorrect design passes makes the result green without making the design right.
 
 ## Try it yourself {#review-verification-methodology-try .unnumbered .unlisted}
 

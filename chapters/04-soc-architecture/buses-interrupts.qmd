@@ -44,7 +44,7 @@ In **memory-mapped I/O (MMIO)**, a peripheral occupies an address region. Ordina
 
 A register table must also state offset, access width, reset value, permissions and side effects. **Read-only**, **read/write** and **write-one-to-clear (W1C)** registers differ: writing one to a W1C bit requests clearing, while writing zero leaves it unchanged. Reading a FIFO data register may consume an entry. Duplicate accesses can therefore corrupt behavior even when the final register value looks correct.
 
-MMIO needs appropriate memory attributes. Speculative reads must not consume data, and cache hits must not hide changing device status. `volatile` in C does not configure these attributes or enforce every hardware ordering requirement. Address decoding also does not automatically enforce privilege or protection; access checks require explicit hardware.
+MMIO needs appropriate memory attributes: a speculative read could consume data, and a cache hit could hide a changing device status. C `volatile` helps the compiler but configures neither these attributes nor every hardware ordering requirement. Address decoding does not enforce privilege or protection either, so access checks need explicit hardware.
 
 ### Acceptance, completion and backpressure
 
@@ -59,7 +59,7 @@ A transaction defines what is requested, when it is accepted, when it completes 
 | Status | Success/error | Failure mistaken for valid data |
 | Association | Saved selection, queue entry, ID | Response matched incorrectly |
 
-**Latency** is time from request to response; **throughput** is completed work per unit time. A memory might return its first word after four cycles and then one word per cycle. A simple peripheral might take two cycles per access and accept no overlap. Bus design should distinguish these properties.
+**Latency** is time from request to response; **throughput** is completed work per unit time. A memory might return its first word after four cycles and then one word per cycle. A simple peripheral might take two cycles per access and accept no overlap. Bus design has to treat the two separately.
 
 Backpressure lets a receiver delay acceptance. A buffer absorbs a bounded mismatch; when full, it must stop admitting work. Accepting an address without enough state to track its eventual response is unsafe even if the data wires happen to be idle.
 
@@ -98,7 +98,7 @@ assign WriteDone  = AccessDone &  PWRITE;
 assign ReadDone   = AccessDone & ~PWRITE;
 ```
 
-For a side-effecting read, another valid internal schedule captures data once in Setup and holds it through Access. Wally's PLIC uses such a Setup read strobe so claim processing occurs once. Do not combine schedules and perform the side effect again at completion. In a waiting device, an enable based only on `PSEL && PENABLE` may execute an operation repeatedly.
+For a side-effecting read, another valid internal schedule captures data once in Setup and holds it through Access. Wally's PLIC uses such a Setup read strobe so claim processing occurs once. Pick one schedule and keep to it: repeating the side effect at completion would perform it twice. In a waiting device, an enable based only on `PSEL && PENABLE` may execute the operation on every waiting cycle.
 
 APB revisions add capabilities. A block with older/basic signals does not acquire strobes, protection or error propagation merely through its name. In particular, a device's `PSLVERR` cannot pass through a bridge with no corresponding input. State the common implemented subset at integration boundaries.
 
@@ -129,7 +129,7 @@ The address currently visible can belong to the **next transaction**, while data
 | 4 | C | B, complete | 1 | Complete B; accept C |
 | 5 | Idle | C, complete | 1 | Complete C |
 
-For writes, `HWDATA` belongs to the data phase. If A writes and B reads, live `HWRITE` can already describe B while A's data is transferred. Preserve the accepted direction as well as the destination. In a simple AHB-Lite responder, selection, `HTRANS[1]` and `HREADY` identify an accepted active address phase:
+For writes, `HWDATA` belongs to the data phase. If A writes and B reads, live `HWRITE` can already describe B while A's data is transferred. Keep the accepted direction along with the destination. In a simple AHB-Lite responder, selection, `HTRANS[1]` and `HREADY` identify an accepted active address phase:
 
 ```systemverilog
 always_ff @(posedge HCLK or negedge HRESETn) begin
@@ -149,7 +149,7 @@ This fragment captures controls; it is not a complete responder. The `HREADY` en
 
 AHB bursts begin with `NONSEQ`, followed by related `SEQ` transfers. A four-word incrementing burst accesses, for example, `0x80000100`, `0x80000104`, `0x80000108`, `0x8000010C`. Every beat still obeys completion and wait rules. Cache-line traffic benefits from bursts, but a peripheral is not required to become a fast memory just because burst controls are present.
 
-Arbitration selects which controller proceeds. Fixed priority is simple but can starve other traffic; round-robin improves fairness. Bursts, locks and slow responders also influence worst-case service time. A high average bandwidth does not prove that an interrupt-driven control loop has bounded access latency.
+Arbitration selects which controller proceeds. Fixed priority is simple but can starve other traffic; round-robin improves fairness. Bursts, locks and slow responders also influence worst-case service time. A high average bandwidth still leaves open whether an interrupt-driven control loop gets bounded access latency.
 
 ### AXI: why independent channels matter
 
@@ -182,11 +182,11 @@ Manager                                 Subordinate
    |<--------- B: write status ---------------|
 ```
 
-Channels can operate concurrently when the implementation has resources. Accepting AR while a B response waits is possible, but independent channels do not promise unlimited queues or one accepted transaction every cycle.
+Channels can operate concurrently when the implementation has resources. Accepting AR while a B response waits is possible, but independent channels come with no promise of unlimited queues or of one accepted transaction every cycle.
 
 #### VALID/READY handshaking
 
-A channel transfers on a rising `ACLK` edge when VALID and READY are high. The source retains VALID and payload until acceptance. It must not wait for READY before offering available information; otherwise a receiver that waits for VALID could deadlock with it. The receiver controls READY according to available capacity.
+A channel transfers on a rising `ACLK` edge when VALID and READY are high. The source retains VALID and payload until acceptance. It offers available information without waiting for READY; if both sides waited for each other, the link would deadlock. The receiver controls READY according to available capacity.
 
 | Edge | VALID | READY | Payload | Accepted? |
 |---:|---:|---:|---|---|
@@ -196,7 +196,7 @@ A channel transfers on a rising `ACLK` edge when VALID and READY are high. The s
 | 4 | 1 | 1 | B | Yes |
 | 5 | 0 | 1 | irrelevant | No |
 
-Consecutive transfers do not require a low VALID cycle. After edge 3 the source may offer B immediately because A was accepted. READY by itself does not acknowledge anything while VALID is low. A teaching assertion for a stalled AXI4 write-data channel is:
+Consecutive transfers do not require a low VALID cycle. After edge 3 the source may offer B immediately because A was accepted. READY while VALID is low acknowledges nothing. A teaching assertion for a stalled AXI4 write-data channel is:
 
 ```systemverilog
 assert property (@(posedge ACLK) disable iff (!ARESETn)
@@ -220,7 +220,7 @@ AW and W are independent: address first, data first and simultaneous arrival are
 
 Exchanging address and data arrival must not break the design. Each accepted payload needs storage or an equivalent control mechanism. AXI4 requires B to follow acceptance of the write address and final data beat; in Lite the only beat is also the final beat. Address acceptance alone cannot generate a successful write response.
 
-B itself may stall. A pending response cannot disappear or be replaced while BREADY is low. The response reports the outcome defined by the transaction's attributes and destination contract; it should not be interpreted as an unspecified global ordering guarantee.
+B itself may stall. A pending response cannot disappear or be replaced while BREADY is low. The response reports the outcome defined by the transaction's attributes and destination contract; it says nothing about global ordering.
 
 #### Read snapshots and side effects
 
@@ -240,7 +240,7 @@ AXI4-Lite retains the five channels but uses single-beat accesses on 32- or 64-b
 
 A teaching endpoint can limit itself to one pending read and one pending write. **AXI4-Lite itself permits multiple outstanding transactions**, completed in order. Queue depth is therefore an implementation choice, not a restriction implied by the word Lite [@armAxi4Spec].
 
-`WSTRB` identifies valid write byte lanes. On a 32-bit port, `4'b0011` selects the low two bytes. A register bank documents supported strobes; a W1C bit must not clear when its byte's strobe is zero. Ignoring strobes silently can overwrite neighboring fields. If an interface supports only certain combinations, it needs a documented policy for other accesses.
+`WSTRB` identifies valid write byte lanes. On a 32-bit port, `4'b0011` selects the low two bytes. A register bank documents the strobes it supports, and a W1C bit stays put when its byte's strobe is zero. Ignoring strobes silently can overwrite neighboring fields. If an interface supports only certain combinations, it needs a documented policy for other accesses.
 
 #### AXI4 bursts, sizes and boundaries
 
@@ -272,7 +272,7 @@ That state includes destination, length and completion progress. A manager with 
 
 AXI4 has no W-channel transaction ID and does not allow AXI3-style write-data interleaving. Write data must maintain its required association with write-address order. Read-data interleaving across eligible different IDs is a separate capability. Adding AWID wires without data-association logic does not create a correct interconnect.
 
-Separate read/write channels also do not establish universal read-after-write order. A command write followed by a status read needs the platform's ordering rules, device attributes and software synchronization. IDs alone do not supply them.
+Separate read and write channels do not by themselves give a universal read-after-write order. A command write followed by a status read relies on the platform's ordering rules, device attributes and software synchronization, which IDs alone cannot supply.
 
 #### Responses, routing and failure recovery
 
@@ -285,13 +285,13 @@ AXI reports outcome on R for reads and B for writes. Interpret the response alon
 | `10` | SLVERR | Destination reports an access failure |
 | `11` | DECERR | Interconnect cannot route the access appropriately |
 
-AXI4-Lite does not support exclusive accesses or EXOKAY responses. In a full AXI design, exclusive-access outcomes require their own semantics; ordinary software must not interpret every OKAY as a successful exclusive update. This chapter's register example uses only OKAY and SLVERR [@armAxi4Spec].
+AXI4-Lite does not support exclusive accesses or EXOKAY responses. In a full AXI design, exclusive-access outcomes require their own semantics; ordinary software cannot read every OKAY as a successful exclusive update. This chapter's register example uses only OKAY and SLVERR [@armAxi4Spec].
 
-An interconnect decodes AW/AR, selects a destination and remembers enough routing state for W, B and R. Different managers may reuse the same local ID, so the fabric needs source tracking or an ID-extension scheme to route responses correctly. An accepted W payload must never be sent to whichever address happens to appear next on AW.
+An interconnect decodes AW/AR, selects a destination and remembers enough routing state for W, B and R. Different managers may reuse the same local ID, so the fabric needs source tracking or an ID-extension scheme to route responses correctly. An accepted W payload belongs to its own address, never to whichever one appears next on AW.
 
-Error handling must preserve the protocol's outstanding obligations. A failed read burst still needs the required response beats and final indication; a write path must consume the associated data and return its response according to the protocol. Neither party can simply stop exchanging information after noticing an error. Nor does a failure promise that earlier device side effects were rolled back: blindly retrying a command can duplicate work.
+Error handling must preserve the protocol's outstanding obligations. A failed read burst still needs the required response beats and final indication; a write path must consume the associated data and return its response according to the protocol. Neither party can simply stop exchanging information after noticing an error. A failure also gives no promise that earlier device side effects were rolled back, so retrying a command blindly can duplicate work.
 
-Protection, cache attributes and optional quality-of-service metadata describe additional contracts. Their presence does not prove enforcement. If a fabric ignores privilege metadata, it needs a separate mechanism for access control. If it accepts QoS metadata but uses fixed arbitration, software cannot assume bounded service solely from a QoS value.
+Protection, cache attributes and optional quality-of-service metadata describe additional contracts. Their presence does not mean anyone enforces them. If a fabric ignores privilege metadata, it needs a separate mechanism for access control. If it accepts QoS metadata but uses fixed arbitration, software cannot assume bounded service solely from a QoS value.
 
 #### Buffer depth and bandwidth
 
@@ -334,7 +334,7 @@ These protocols describe communication, not the processor ISA or a required vend
 
 A bridge preserves transaction meaning, not just signal names. AXI4-Lite-to-APB conversion retains AW and W separately, runs Setup/Access, then produces B. It retains AR and read results until R acceptance. A serialized bridge also arbitrates its read/write paths.
 
-Splitting an AXI4 burst into Lite accesses requires ID tracking and response aggregation. That may suit ordinary memory but cannot casually change a side-effecting register sequence. Width conversion must preserve addresses, byte lanes and operation semantics.
+Splitting an AXI4 burst into Lite accesses requires ID tracking and response aggregation. That may suit ordinary memory, but a side-effecting register sequence needs far more care. Width conversion must preserve addresses, byte lanes and operation semantics.
 
 No synchronous bus handshake makes an asynchronous clock crossing safe. Use reviewed FIFOs or coherent multi-bit handshakes, as explained in the clocking chapter. Synchronizing each address bit independently can deliver a mixture of two requests.
 
@@ -373,15 +373,15 @@ The examples use one hart in M-mode with nested interrupts disabled. @sec-privil
 
 Machine software, timer and external interrupt cause codes are 3, 7 and 11. The high bit of `mcause`, at an XLEN-dependent position, identifies an interrupt. Comparing the entire CSR to integer 11 therefore does not detect a machine external interrupt.
 
-Hardware records cause/PC, updates privilege and enables, and redirects execution. It does not automatically save all integer registers to a stack. Entry software preserves the state it clobbers; `mret` returns architecturally, whereas `ret` follows the function-call convention. Install a valid stack and handler before enabling interrupts.
+Hardware records cause/PC, updates privilege and enables, and redirects execution. It does not automatically save all integer registers to a stack. Entry software preserves the state it clobbers; `mret` returns architecturally, whereas `ret` follows the function-call convention. Install a valid stack and handler first, and only then enable interrupts.
 
-Direct `mtvec` sends all traps to one base. Vectored mode uses cause-derived offsets for interrupts while exceptions still enter at the base. The examples use direct mode. A `wfi` loop must recheck its work condition; waiting does not replace a correct event/enable contract.
+Direct `mtvec` sends all traps to one base. Vectored mode uses cause-derived offsets for interrupts while exceptions still enter at the base. The examples use direct mode. A `wfi` loop rechecks its work condition, because waiting is no substitute for a correct event and enable contract.
 
 For a pipeline, a precise trap must avoid unintended younger effects and duplicate older operations. An MMIO store already accepted by a device may be irreversible. Bus ownership and trap control must therefore agree about when an instruction can be interrupted or resumed.
 
 ### Bus and interrupt verification at two boundaries
 
-Apply @sec-verification-methodology first to each endpoint/adapter, then to the assembled address map and interrupt route. Independently monitor channel acceptance, retained payloads, IDs/order, byte strobes, error responses and outstanding capacity. Exercise AW/W arrival orders, full-range address decoding, burst boundaries where supported and reset with pending traffic. For interrupts, separate source-level assertion/acknowledgement from controller priority, masking, claim/complete and CPU trap entry/return. The executable project's direct `MExtInt` test does not establish PLIC behavior or bus arbitration in a complete SoC.
+Apply @sec-verification-methodology first to each endpoint/adapter, then to the assembled address map and interrupt route. Independently monitor channel acceptance, retained payloads, IDs/order, byte strobes, error responses and outstanding capacity. Exercise AW/W arrival orders, full-range address decoding, burst boundaries where supported and reset with pending traffic. For interrupts, separate source-level assertion/acknowledgement from controller priority, masking, claim/complete and CPU trap entry/return. The executable project's direct `MExtInt` test exercises one interrupt path; PLIC behavior and bus arbitration in a complete SoC need their own tests.
 
 
 ## Implementation
@@ -403,7 +403,7 @@ The inspected EBU prioritizes LSU requests over IFU requests and retains delayed
 
 In the uncore, decoded physical-address regions select memories or the AHB–APB bridge. Delayed selection controls returned data/completion across wait states. APB connects CLINT, PLIC, GPIO and other enabled devices. The no-region completion path is made ready to avoid permanent blockage [@cvwUncore].
 
-Do not infer complete fault handling from a port called `HRESP`. The inspected EBU describes that input as presently ignored. The APB bridge drives its error output to zero and has no APB error input. Extending error reporting therefore requires changes along the complete path, including architectural access-fault handling, rather than adding one signal to a peripheral [@cvwEbu; @cvwAhbApb].
+A port called `HRESP` suggests fault handling, but the inspected EBU describes that input as presently ignored. The APB bridge drives its error output to zero and has no APB error input. Extending error reporting therefore takes changes along the complete path, including architectural access-fault handling, and one extra signal on a peripheral is not enough [@cvwEbu; @cvwAhbApb].
 
 Consider a GPIO write: the LSU creates direction, size, address and data; the EBU grants the request; the uncore selects the GPIO region; the bridge aligns the address/control with the later AHB data phase and generates APB phases. Completion returns to the LSU when the device finishes. In the inspected bridge, `PCLK` equals `HCLK`, so this bridge is not an asynchronous crossing [@cvwAhbApb].
 
@@ -538,7 +538,7 @@ The Core Local Interruptor exposes `msip`, `mtimecmp` and `mtime`. The latter tw
 | `0x4000` | `mtimecmp` | Next deadline |
 | `0xBFF8` | `mtime` | System time |
 
-A platform timer needs a declared frequency. It can run independently of the processor in a general SoC, requiring CDC. In the inspected Wally `clint_apb.sv`, the counter advances on `PCLK`; comments discuss future separate-clock synchronization. Do not describe an independent real-time clock as implemented merely because a surrounding module exposes a time-related input [@harrisRiscvSoc; @cvwRepository].
+A platform timer needs a declared frequency. It can run independently of the processor in a general SoC, requiring CDC. In the inspected Wally `clint_apb.sv`, the counter advances on `PCLK`; comments discuss future separate-clock synchronization. An independent real-time clock should be called implemented only when it is, and a time-related input on a surrounding module does not make it so [@harrisRiscvSoc; @cvwRepository].
 
 RV32 cannot read a 64-bit counter with one ordinary load. A low-half rollover between loads can produce an inconsistent value. Reading high–low–high and retrying if the high half changes solves that problem under the declared device-access ordering:
 
@@ -585,7 +585,7 @@ The temporary low-half maximum prevents an unintended early compare while the ha
 
 For stable periodic scheduling, advance a stored deadline by the period. Replacing it with `now + period` each time accumulates service latency. If software is several periods late, explicitly choose whether to account for missed ticks or skip forward. A deadline left in the past can immediately request another interrupt.
 
-Reprogramming the future compare removes the timer condition, but pending visibility may lag. A handler should tolerate a possible subsequent timer entry rather than assume that writing the compare synchronously clears every CPU-side indication. The interval must be expressed in timer ticks, not assumed to equal processor cycles on every platform [@riscvPrivilegedSpec].
+Reprogramming the future compare removes the timer condition, but pending visibility may lag. A handler should tolerate one more timer entry, since writing the compare does not synchronously clear every CPU-side indication. Express the interval in timer ticks, because they do not equal processor cycles on every platform [@riscvPrivilegedSpec].
 
 ### PLIC: claim, service and complete
 
@@ -648,7 +648,7 @@ Wally's trap logic combines pending classes, enables, privilege/delegation and g
 
 For a minimal M-mode program: initialize a valid stack, install a direct-mode handler in `mtvec`, configure CLINT/PLIC/devices, enable required `mie` bits, then set `mstatus.MIE`. Setting global enable first can enter unprepared software. The simplified Wally without privileged support cannot run this sequence unchanged.
 
-RISC-V GCC can generate handler entry/exit using `interrupt("machine")`. Do not call the handler as an ordinary function or add a manual `mret` inside its C body [@gccRiscvInterrupt].
+RISC-V GCC can generate handler entry/exit using `interrupt("machine")`. Call it only through the interrupt mechanism, and leave `mret` out of the C body, because the compiler already emits it [@gccRiscvInterrupt].
 
 ```c
 void timer_service(void); // programs a future deadline
@@ -673,7 +673,7 @@ void machine_trap(void) {
 
 Compile for the selected ISA/ABI and inspect the assembly. An integer-only exercise should avoid floating-point/vector instructions in the handler and callees unless their state is explicitly managed. Systems with nesting, stack switching or multiple privilege modes need a more complete entry convention.
 
-An asynchronous interrupt normally resumes interrupted execution; it should not blindly increment `mepc` by four. Advancing PC is exception-specific, and compressed instructions need not occupy four bytes. The example treats synchronous exceptions as fatal so an invalid access is not accidentally hidden by interrupt handling.
+An asynchronous interrupt normally resumes interrupted execution; advancing `mepc` by four would be wrong. Advancing the PC is specific to exceptions, and compressed instructions need not occupy four bytes. The example treats synchronous exceptions as fatal so an invalid access is not accidentally hidden by interrupt handling.
 
 ## Hands-on Experiments
 
@@ -703,7 +703,7 @@ For step 8 align the event with internal commit, not merely AW acceptance. Commi
 
 Run AW-before-W, W-before-AW and simultaneous arrival with distinct payloads. A driver may release VALID after acceptance; the endpoint must retain accepted data. Insert randomized gaps and hold BREADY low while checking that the register update occurs once and response status remains stable.
 
-On reads, accept AR, stall RREADY and modify the underlying device state while R waits. RDATA/RRESP must remain the captured snapshot. A later read sees subsequent changes. Model same-edge read/write behavior in the scoreboard rather than allowing whichever value happens to arrive.
+On reads, accept AR, stall RREADY and modify the underlying device state while R waits. RDATA/RRESP must remain the captured snapshot. A later read sees subsequent changes. Model same-edge read/write behavior in the scoreboard, so the expected value is decided by the contract and not by arrival order.
 
 | Invariant | Defect detected |
 |---|---|
@@ -724,7 +724,7 @@ Draw an APB read with zero and two extra waits. Then follow a Wally access throu
 
 Make one memory responder wait while the next address names another region. Check that the previous destination still owns data/completion. A deliberately incorrect live-address mux should fail this case, explaining the purpose of delayed selection.
 
-Use a counting APB responder to test exactly-once writes under waits. Do not just force PREADY low while leaving a device that updates on every Access cycle: that creates a broken responder rather than a valid stalled transaction.
+Use a counting APB responder to test exactly-once writes under waits. Forcing PREADY low while the device still updates on every Access cycle creates a broken responder, which is not a valid stalled transaction.
 
 ### Experiment 4: AXI4 bursts and outstanding depth
 
@@ -741,7 +741,7 @@ Then compare outstanding depths using a declared memory latency. Count accepted 
 | C | Aligned bursts | Burst service and address overhead |
 | D | Random response stalls | Buffer occupancy and correctness |
 
-Keep width, clock and memory behavior fixed. A model accepting requests into an unlimited queue overstates the benefit of depth. Preserve failed points and protocol errors rather than reporting only maximum throughput.
+Keep width, clock and memory behavior fixed. A model that accepts requests into an unlimited queue overstates the benefit of depth. Keep the failed points and protocol errors in the report, along with the maximum throughput.
 
 ### Experiment 5: timer and external interrupts on Wally
 
@@ -783,7 +783,7 @@ Explain an AXI write with independent address/data arrival, then follow a periph
 
 ## Common mistakes {#review-buses-interrupts-mistakes .unnumbered .unlisted}
 
-Assuming AXI address/data always arrive together; confusing a CPU trap cause with an external controller source number.
+AXI address and data are independent channels, so assuming they arrive together builds a bug into the design. And a CPU trap cause is a different number from an external controller source: `mcause` says an external interrupt happened, and the PLIC claim says which source raised it.
 
 ## Try it yourself {#review-buses-interrupts-try .unnumbered .unlisted}
 

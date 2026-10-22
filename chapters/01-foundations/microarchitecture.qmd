@@ -35,9 +35,9 @@ This is not a sequencing diagram. It does not require a physical adder for each 
 | Cache tags and valid bits | Manage copies in the memory hierarchy |
 | Pending-response flag | Tracks transport work not yet consumed |
 
-A physical PC register might temporarily hold a predicted address while another register records the retiring instruction's PC. To compare with a sequential reference, choose the architectural observation point rather than whichever internal signal happens to be named PC.
+A physical PC register might temporarily hold a predicted address while another register records the retiring instruction's PC. To compare with a sequential reference, pick the architectural observation point deliberately; the internal signal that happens to be called PC is rarely it.
 
-Implementation state is still essential to correctness. Resetting an FSM while leaving a valid pending write can create an unintended effect. Conversely, clearing an entire register file on reset is not automatically required by the base ISA; startup software should not depend on arbitrary initial register contents.
+Implementation state is still essential to correctness. Resetting an FSM while leaving a valid pending write can create an unintended effect. Conversely, the base ISA does not require reset to clear the whole register file, so startup software should not depend on whatever the registers happen to contain.
 
 ### Datapath building blocks
 
@@ -69,7 +69,7 @@ A controller does more than choose an ALU operation. It determines which instruc
 | Branch | Register comparison | Target or sequential PC | PC update |
 | Jump | PC-relative or register-relative target | Link address | PC and optional register update |
 
-The table should also contain legality and exception decisions in a complete design. An unsupported opcode must not inherit stale controls from an earlier instruction. Defaulting every unrecognized encoding to addition makes a decoder appear functional while implementing incorrect behavior.
+The table should also contain legality and exception decisions in a complete design. An unsupported opcode needs its own defined response, because otherwise it inherits stale controls from an earlier instruction. Defaulting every unrecognized encoding to addition is tempting: the decoder looks functional while quietly doing the wrong thing.
 
 Control signals that cause writes require particularly careful defaults. A combinational block with an omitted output assignment can infer a latch; stale `memory_write` is more damaging than stale temporary arithmetic data. Keep an explicit instruction-valid condition attached to side effects.
 
@@ -83,7 +83,7 @@ An explicit bypass can select incoming write data for an equal read address. Tha
 
 ### ALU arithmetic and comparison
 
-The RTL must preserve operand widths and interpretation. Subtraction can share addition hardware through complemented input and carry-in, but an HDL `-` operator does not guarantee a particular cell topology. The synthesis flow chooses a mapping.
+The RTL must preserve operand widths and interpretation. Subtraction can share addition hardware through complemented input and carry-in, but the HDL `-` operator only states the intent. The synthesis flow chooses the cell topology.
 
 Signed less-than is not simply the top bit of a truncated subtraction: overflow can invalidate that shortcut. Compare signed operands explicitly or derive the full overflow-aware relation. Unsigned less-than uses unsigned interpretation. Equality is independent of whether the bit pattern is called signed or unsigned.
 
@@ -125,7 +125,7 @@ The timing of stores needs care. A store can already modify RAM when a request t
 
 For register writes, gate the write enable with result validity and successful completion. A stall can retain result data without repeatedly counting the instruction as retired. When `rd` is zero, suppress the register update while preserving all other applicable effects.
 
-A complete processor also needs precise fault behavior: an instruction that fails must not leave unintended register updates or permit younger instructions to commit past it. This foundation chapter defines the boundary; privileged execution and integration are studied later rather than simulated by silently dropping faults.
+A complete processor also needs precise fault behavior: a failing instruction leaves no register updates behind and lets no younger instruction commit past it. This foundation chapter marks that boundary and leaves privileged execution and integration to later chapters, instead of hiding faults by silently dropping them.
 
 ### Pipelining, resource duplication and speculation
 
@@ -308,7 +308,7 @@ Each work cycle inspects one multiplier bit, conditionally adds a shifted multip
 
 If operands transfer at edge $t$, the result becomes valid after edge $t+WIDTH$. The earliest consumption is at $t+WIDTH+1$. The conservative controller accepts a new request only after result consumption, so this latency does not equal a one-cycle initiation interval.
 
-This design uses an adder over multiple cycles; a combinational expression `a*b` describes a different scheduling choice. Technology mapping can use dedicated FPGA DSP resources or ASIC logic. Compare their actual reports rather than assuming which implementation is smaller or faster.
+This design uses an adder over multiple cycles; a combinational expression `a*b` describes a different scheduling choice. Technology mapping can use dedicated FPGA DSP resources or ASIC logic. Let the actual reports decide which implementation is smaller or faster.
 
 ### Integrating a unit with instruction execution
 
@@ -370,7 +370,7 @@ Record request acceptance, result production and result acceptance separately. C
 
 Compare the iterative multiplier with a registered combinational multiply. Use equal operands and widths, equivalent reset/response contracts, and the same output checker. Specify whether the alternative accepts every cycle or remains single-outstanding.
 
-Collect synthesis resource counts and, using the later implementation workflow, timing results. Do not compare one design's RTL operator count with another's routed area. Explain the interaction between latency, initiation interval, frequency and switching.
+Collect synthesis resource counts and, using the later implementation workflow, timing results. Compare like with like: an RTL operator count for one design says little next to another design's routed area. Explain the interaction between latency, initiation interval, frequency and switching.
 
 ### Experiment 6: prepare to read Wally
 
@@ -393,7 +393,7 @@ Explain the iterative product state transitions and distinguish an operation lat
 
 ## Common mistakes {#review-microarchitecture-mistakes .unnumbered .unlisted}
 
-Equating fewer cycles with a faster implementation; adding a pipeline register without preserving dependencies or interface behavior.
+Two mistakes are common. Fewer cycles do not mean a faster implementation, because the clock period may have grown. And a pipeline register added to shorten a path also has to keep the dependencies and the interface behavior intact.
 
 ## Try it yourself {#review-microarchitecture-try .unnumbered .unlisted}
 

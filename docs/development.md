@@ -33,6 +33,14 @@ details; do not infer its actual tools from a broad book discussion.
   source/evidence bytes for hashes across Windows and Linux. The same protection
   applies to retained `docs/audits/**/evidence/**` files. Do not normalize these
   files as an incidental formatting change.
+- Write prose by motivation first: say why a practice matters and what to do,
+  then state the limit of a result as a consequence ("a PASS covers the tested
+  scenarios, so keep the timeout and failing exit status"), not as a stream of
+  "do not"/"does not establish" warnings. Keep every scope boundary exact; a
+  tone edit changes the wording, never the claim. "Common mistakes" blocks are short prose
+  that explains each mistake. Text of `.learning-activity` items is checked
+  against `tools/book/learning-paths.json`: change both together, then run
+  `python tools/book/learning_paths.py --check`.
 - Keep chapter listings and executable references synchronized. Review the
   authoritative edit before using `labs/run.py sync`; never use synchronization
   to conceal a mismatch. Student variants belong under `labs/work/`.

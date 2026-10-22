@@ -12,7 +12,7 @@ This chapter follows the hardware-design topics in Chapter 4 of *RISC-V System-o
 
 Verilog began as a language for modeling and simulating digital circuits and became a widely used input to logic synthesis. Classic Verilog already describes modules, continuous assignments, clocked processes, hierarchy, and parameterized hardware. Later revisions improved practical RTL coding with features such as ANSI-style port declarations, automatic combinational sensitivity lists, and generate constructs.
 
-SystemVerilog extends that foundation rather than replacing its hardware model. Newer constructs express intent more clearly and support stronger checks. Following Wally's design conventions, this book uses `logic` for ordinary RTL signals. The declaration alone does not imply storage: `always_comb` describes combinational behavior, while `always_ff` describes sequential behavior. Resolved bidirectional IO connections use `tri` where required.
+SystemVerilog builds on that foundation and keeps its hardware model. Newer constructs express intent more clearly and support stronger checks. Following Wally's design conventions, this book uses `logic` for ordinary RTL signals. The declaration says nothing about storage; the process decides: `always_comb` describes combinational behavior, while `always_ff` describes sequential behavior. Resolved bidirectional IO connections use `tri` where required.
 
 Classic Verilog's `wire` and `reg` declarations often confused beginners because their names suggested physical hardware while their language semantics distinguished nets from procedural variables. A `wire` represents a connection whose value is determined by its drivers; a `reg` holds a procedural value in simulation, but can synthesize into combinational logic, a latch, or a flip-flop depending on how it is assigned. Thus, `reg` does not necessarily mean a hardware register, and neither declaration alone determines the circuit. SystemVerilog still supports both for compatibility: `reg` has not been removed and denotes the same four-state data type as `logic`. For new ordinary single-driver RTL, this book follows Wally's convention of declaring signals as `logic`, using `always_comb` with complete assignments for combinational logic and `always_ff` for clocked registers. The alternative to an actual hardware register is therefore not a different storage type: it is a `logic` signal driven by a clocked process. Resolved connections with multiple drivers still require an appropriate net declaration, such as `tri` for bidirectional IO; a bare `logic` variable does not replace that resolution behavior. The terminology and continued compatibility are discussed in the [Accellera SystemVerilog committee archive](https://www.accellera.org/images/eda/sv-bc/1868.html).
 
@@ -24,7 +24,7 @@ Classic Verilog's `wire` and `reg` declarations often confused beginners because
 | Related declarations repeated across files | `package`, `import`, `struct` | Shared types and structured configuration |
 | Procedural testbench checks | Assertions and temporal properties | Checks can express behavior across clock cycles |
 
-SystemVerilog also adds classes, constrained randomization, coverage, and other verification facilities. Those features help build test environments but are not the normal way to describe a synthesizable processor datapath. File extensions such as `.sv` select language mode in many tools; confirm the selected frontend and supported language subset rather than assuming every feature is supported.
+SystemVerilog also adds classes, constrained randomization, coverage, and other verification facilities. Those features are what make test environments productive, but a synthesizable processor datapath is normally written in the plainer RTL subset. File extensions such as `.sv` select language mode in many tools, so it pays to confirm which frontend and language subset you are really using before relying on a feature.
 
 ### Think in hardware before writing code
 
@@ -68,7 +68,7 @@ Bitwise operators (`&`, `\|`, `^`, `~`) operate on individual bits. Logical oper
 
 ### Expression width and signedness are part of the circuit
 
-Binary arithmetic has finite width. Do not rely on the reader or a tool warning to guess which carry bits must survive. Extend operands explicitly when an addition requires an extra result bit:
+Binary arithmetic has finite width, and a tool warning is a poor way to find out which carry bits you needed. Say it in the code: extend the operands explicitly when an addition requires an extra result bit:
 
 ```systemverilog
 logic [15:0] Left, Right;
@@ -136,7 +136,7 @@ This avoids a zero-width address declaration. It does not make `DEPTH=0` legal o
 
 Generate conditions select hardware at elaboration. A runtime input selects behavior in existing hardware. A disabled optional unit must leave every required output with a defined driver; otherwise one configuration can appear healthy while another contains undriven control signals.
 
-For Wally, typed configuration fields, packages and compilation order are important. Record the actual frontend used by simulation and synthesis. The native Yosys `read_verilog -sv` frontend supports a subset of SystemVerilog; other frontends or preprocessing flows may be needed for the full design [@yosysDocumentation]. Do not replace a tested project frontend merely because a small example compiles with a simpler command.
+For Wally, typed configuration fields, packages and compilation order are important. Record the frontend that simulation and synthesis actually use. The native Yosys `read_verilog -sv` frontend supports a subset of SystemVerilog, and the full design may need other frontends or preprocessing flows [@yosysDocumentation]. A small example that compiles with a simpler command is a good sign, but the project's tested frontend is the one that counts.
 
 ### Combinational logic
 
@@ -356,17 +356,17 @@ These small units are not a complete processor and cannot execute the ISA chapte
 
 The module says whether a recognised encoding belongs to its limited scope. It does not check memory alignment, privilege, target accessibility or all exceptions. A controller must qualify side effects with instruction validity and successful checks. It also needs an explicit path for unsupported instructions in a complete core.
 
-`case` matching is deliberately exact. Avoid `casex` to make unknown instruction bits behave like wildcards; that can hide initialization and transport faults. `unique` and `priority` express additional intent but do not replace correct defaults or legality checking.
+`case` matching is deliberately exact. Avoid `casex` as a way to make unknown instruction bits act like wildcards: it can hide initialization and transport faults that you would rather see. `unique` and `priority` state your intent, but correct defaults and legality checking still do the real work.
 
 ### Verification code is not datapath hardware
 
-Testbench clocks, randomized stimulus and reference models are simulation infrastructure. An `initial` block that toggles a clock with `#5` does not create a usable clock generator for FPGA or ASIC. A testbench reading an ELF does not imply that synthesized hardware contains that loader.
+Testbench clocks, randomized stimulus and reference models are simulation infrastructure. An `initial` block that toggles a clock with `#5` is only a simulation device; an FPGA or ASIC needs a real clock source. In the same way, a testbench that reads an ELF is not evidence that the synthesized hardware contains a loader.
 
 Assertions are sampled observations of a contract. For example, a retained payload property needs an output-valid condition, its associated ready condition and a reset policy. A check on every cycle without those qualifiers can compare unspecified payload bits and report false failures.
 
 Four-state simulation can expose uninitialized inputs, while a two-state simulation flow can require explicit initialization checks. Neither style makes the verification plan unnecessary. Confirm sampling phases: driving and checking at exactly the active edge in separate procedural processes can create races.
 
-Coverage also needs intent. Executing every `case` branch is useful code coverage, but does not establish that every instruction aliasing pattern, signed boundary, invalid encoding or stalled transfer was checked. The later simulation chapters turn these requirements into executable tests.
+Coverage also needs intent. Executing every `case` branch is useful code coverage, but it cannot tell you whether every instruction aliasing pattern, signed boundary, invalid encoding or stalled transfer was checked. The later simulation chapters turn these requirements into executable tests.
 
 ## Hardware Generators and Modern HDL Toolchains {#sec-hardware-generators}
 
@@ -384,7 +384,7 @@ These routes overlap: SystemVerilog already supports parameterized hardware, and
 
 Elaboration produces an early FIRRTL circuit, often called CHIRRTL: modules, typed connections, operations, registers and memories, with source information. It can retain inferred widths and higher-level memory constructs. It describes hardware rather than a sequence of Scala instructions or a placed gate netlist. FIRRTL also names the hardware IR and its lowering semantics; it should not be confused with only the historical Scala FIRRTL compiler.
 
-CIRCT is compiler infrastructure based on MLIR. Its FIRRTL dialect represents that hardware inside the compiler. Lowering can resolve widths, expand aggregate connections, simplify constants and remove unused logic. The `hw`, `comb` and `seq` dialects express modules/connections, combinational operations and sequential elements; SystemVerilog-specific constructs use the `sv` dialect. The emitter then writes SystemVerilog [@circtFirrtl; @circtPasses; @circtVerilog]. Generated SystemVerilog still needs frontend elaboration, synthesis, technology mapping and physical implementation. These compiler transformations do not establish timing closure.
+CIRCT is compiler infrastructure based on MLIR. Its FIRRTL dialect represents that hardware inside the compiler. Lowering can resolve widths, expand aggregate connections, simplify constants and remove unused logic. The `hw`, `comb` and `seq` dialects express modules/connections, combinational operations and sequential elements; SystemVerilog-specific constructs use the `sv` dialect. The emitter then writes SystemVerilog [@circtFirrtl; @circtPasses; @circtVerilog]. Generated SystemVerilog still needs frontend elaboration, synthesis, technology mapping and physical implementation. Timing closure is a separate question that only the implementation flow can answer.
 
 ### A small executable comparison
 
@@ -398,13 +398,13 @@ A deliberately faulty generator gives enable priority over clear. The same test 
 
 Backend emission options also matter: this example disables automatic local variables to accommodate the tested Icarus frontend. Valid generated SystemVerilog can still exceed a particular tool's supported subset; record compatibility options alongside the generator parameters.
 
-In the preserved [execution report](../../labs/19-hardware-generators/reference/report.json), all three widths pass 552 sampled cycles each, and the [faulty variant](../../labs/19-hardware-generators/reference/fault-w16-simulation.txt) fails at cycle index 1. Direct/generated generic cell counts are respectively 61/63, 130/132 and 271/273. These counts describe the recorded Yosys flow, not relative physical area or proof of a behavioral difference.
+In the preserved [execution report](../../labs/19-hardware-generators/reference/report.json), all three widths pass 552 sampled cycles each, and the [faulty variant](../../labs/19-hardware-generators/reference/fault-w16-simulation.txt) fails at cycle index 1. Direct/generated generic cell counts are respectively 61/63, 130/132 and 271/273. Read these counts as a statement about the recorded Yosys flow: they say nothing about physical area, and they do not show a behavioral difference.
 
 ### Traceability through implementation
 
 Retain the generator revision, parameters, Scala/plugin/backend versions, compiler flags and dependencies, followed by hashes of every IR and emitted RTL file. Join these to verification commands, synthesis inputs, constraints and implementation reports. Source locations and emitted comments help navigate the chain, but one generator expression can become many hardware objects, while optimization can merge or remove others. A signal name alone is not a stable identifier across configurations or compiler releases.
 
-The practice records generic synthesis statistics for both descriptions. They are a useful structural comparison, with no conversion into FPGA LUTs, ASIC area, frequency or power. To extend the experiment physically, feed the preserved emitted RTL into the same target and constraints as the direct version and retain that new implementation evidence.
+The practice records generic synthesis statistics for both descriptions. They make a useful structural comparison, but they cannot be converted into FPGA LUTs, ASIC area, frequency or power. To extend the experiment physically, feed the preserved emitted RTL into the same target and constraints as the direct version and retain that new implementation evidence.
 
 ## Hands-on Experiments
 
@@ -436,7 +436,7 @@ Connect `foundation_decode` to `rv32_immediate`. Check six supported instruction
 
 Test valid loads with `rd=x0` and confirm decode still requests a load. Connect the register file from the microarchitecture chapter and verify that register zero remains unchanged. This separates operand/result intent from actual storage updates.
 
-Create a matrix of language feature, simulator frontend and synthesis frontend for the small modules and the full Wally project. Include packages, typed configuration, packed structs, assertions and memory loading. Record observed support rather than assuming all tools accept the same source subset.
+Create a matrix of language feature, simulator frontend and synthesis frontend for the small modules and the full Wally project. Include packages, typed configuration, packed structs, assertions and memory loading. Record what each tool is observed to accept, since the tools do not all take the same source subset.
 
 ### Connection to the rest of the book
 
@@ -455,7 +455,7 @@ Explain why a declared variable does not determine storage, and trace old versus
 
 ## Common mistakes {#review-systemverilog-mistakes .unnumbered .unlisted}
 
-Assuming logic implies a flip-flop; leaving combinational outputs incompletely assigned or relying on implicit width conversions.
+Three habits cause most early surprises. Assuming `logic` means a flip-flop, when the process type decides. Leaving a combinational output unassigned on some path, which infers a latch. And relying on implicit width conversions, which silently change the arithmetic.
 
 ## Try it yourself {#review-systemverilog-try .unnumbered .unlisted}
 

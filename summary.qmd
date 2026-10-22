@@ -2,7 +2,7 @@
 
 A reusable IP release should have claims that another engineer can check. The Wally-controlled AXI/DMA accelerator connects the book's foundations, verification, SoC integration and implementation topics in one system. Correct arithmetic is necessary, but it is only one part of the release: transaction ownership, firmware ordering, verification scope and implementation constraints determine whether the IP can be integrated safely.
 
-Use this chapter for a release review, an independent demonstration or the course's individual defence. The detailed course specification and proposed assessment rubric remain in @sec-hsd-coursework; the executable reference is explained in @sec-executable-project. The questions below examine reasoning about the reader's own changes. Running the supplied reference unchanged establishes environment readiness rather than an independent design contribution.
+Use this chapter for a release review, an independent demonstration or the course's individual defence. The detailed course specification and proposed assessment rubric remain in @sec-hsd-coursework; the executable reference is explained in @sec-executable-project. The questions below examine reasoning about the reader's own changes. Running the supplied reference unchanged shows that your environment is ready, and your own design contribution is a separate piece of work.
 
 Use @sec-complete-case to rehearse a complete evidence review. It joins one locked dot-product RTL release to numerical/formal checks, real Wally firmware, FPGA placement/routing and ASIC GDSII, with actual results and physical visuals. Compare the failing original 100 MHz implementations with the later Nexys and ASIC candidates accepted within their declared gates; explain why the changed ECP5 candidate still misses 100 MHz. Its power and frequency estimates retain their block/model boundaries; no complete-SoC physical or energy claim is inherited.
 
@@ -16,7 +16,7 @@ Begin the review with a concrete operand vector and a successful job. Explain th
 
 Then follow the causal sequence. Firmware initializes shared buffers, programs the control registers and requests START. In the reference platform, Wally issues AHB accesses; the adapter turns them into AXI4-Lite control transactions. The IP validates and latches the descriptor before issuing AXI4 DMA requests. The engine fetches operands, computes the result, writes both result words and reports successful completion only after the write responses have been accepted. Firmware observes completion under the stated ordering contract and checks the complete numerical result. The interrupt case adds terminal-event detection, service and acknowledgement.
 
-Annotate a trace with **accepted** transactions rather than counting cycles in which VALID alone is high. A successful baseline job has `2*N` DMA reads and two DMA result writes; CPU instructions, descriptor accesses and status polling are separate traffic. Identify at least one stall and show that payload and transaction identity remain stable. Explain why a result word appearing in RAM does not, by itself, authorize software to consume the complete result.
+Annotate a trace with **accepted** transactions; cycles in which VALID alone is high are not transfers. A successful baseline job has `2*N` DMA reads and two DMA result writes; CPU instructions, descriptor accesses and status polling are separate traffic. Identify at least one stall and show that payload and transaction identity remain stable. Explain why a result word appearing in RAM does not yet tell software that the complete result is ready to consume.
 
 The two-word result is not an atomic 64-bit memory update. A fault or reset can leave a partial result. The completion/error protocol is therefore part of the data-validity contract, not just a user-interface convenience. CPU PMP also does not automatically restrict an independent DMA master. Show where the actual DMA access policy is enforced.
 
@@ -36,7 +36,7 @@ An observed PASS at one boundary does not inherit the obligations of the next. A
 
 ### Connect the release to RA5–RA8
 
-Use the learning outcomes as an evidence map rather than four headings containing identical screenshots.
+Use the learning outcomes as an evidence map; four headings that repeat the same screenshots would say little.
 
 | Outcome | Final claim | Evidence to bring to the review |
 | --- | --- | --- |
@@ -51,7 +51,7 @@ For each claim, identify the exact configuration and the person who can explain 
 
 ### Freeze the release candidate
 
-Choose the Git revision and define which student sources, generated views and external dependencies form the candidate. Record the Wally revision, tool/container identities, compiler flags, firmware ISA/ABI, clocks, memory attributes, address map, parameters and seeds. Identify the reference implementation separately from student variants. Do not regenerate or overwrite a student implementation during chapter-listing synchronization.
+Choose the Git revision and define which student sources, generated views and external dependencies form the candidate. Record the Wally revision, tool/container identities, compiler flags, firmware ISA/ABI, clocks, memory attributes, address map, parameters and seeds. Identify the reference implementation separately from student variants. Chapter-listing synchronization leaves a student implementation untouched, so never regenerate or overwrite it there.
 
 The release should contain a concise top-level index from requirements to design mechanisms and evidence. File names such as `final.v` or screenshots labelled “passed” are insufficient without configuration and checker provenance. Large waveforms and physical results can be immutable artifacts referenced by hashes and stable locations.
 
@@ -71,7 +71,7 @@ Use @sec-verification-methodology to keep the representation hierarchy consisten
 
 Select two or three design choices and compare them with feasible alternatives. Useful examples include a single-outstanding DMA schedule, separate numerical and bus modules, descriptor locking while BUSY, a widened range validator, uncached buffers or the choice of completion acknowledgement. Explain the constraint that made each choice reasonable and the property that would need revisiting if it changed.
 
-For a performance extension, show the cost as well as the benefit. Bursts or multiple outstanding reads change ordering, capacity and error-drain obligations. Caches change software ownership and maintenance requirements. A pipeline register changes latency and potentially the backpressure contract. Reuse is demonstrated by a supported change that preserves the external contract and still passes relevant checks, rather than by a parameter declaration alone.
+For a performance extension, show the cost as well as the benefit. Bursts or multiple outstanding reads change ordering, capacity and error-drain obligations. Caches change software ownership and maintenance requirements. A pipeline register changes latency and potentially the backpressure contract. Reuse is demonstrated by a supported change that keeps the external contract and still passes the relevant checks, and a parameter declaration alone shows less.
 
 Physical and test considerations also belong in the decision record. Explain the timing assumptions attached to the chosen constraints, what state a scan/reset strategy would expose, and which PDK/library/DFT dependencies remain external. If no physical implementation was completed, describe the missing views and checks precisely instead of estimating a fabrication-ready outcome from an RTL simulation.
 
@@ -81,7 +81,7 @@ The project has concrete assets: program/stack memory, operand buffers, results 
 
 Examine one reset or error trace with a transaction already accepted. Describe which state is cleared, which outstanding obligation remains at the platform boundary and which memory effects persist. The reference assumes coordinated reset; extending reset independence requires a reviewed recovery protocol. An error code must prevent software from interpreting a partially written destination as a valid completed result.
 
-Do not claim protection against untested threats. The reference range policy does not establish side-channel resistance, authenticated firmware, a protected multi-tenant interconnect or complete system isolation. Scope a security conclusion to the actual mechanism, actor and evaluated cases.
+Claim protection only against threats you tested. The reference range policy leaves side-channel resistance, authenticated firmware, a protected multi-tenant interconnect and complete system isolation open. Scope a security conclusion to the actual mechanism, actor and evaluated cases.
 
 ## Hands-on Experiments: the final demonstration
 
@@ -100,11 +100,11 @@ python labs/verification/evidence.py \
 
 Run that command in the documented Python environment from the repository/package root. The collector does not execute the missing experiments. Student variants require a reviewed plan and their own source identities; the reference plan cannot grant a reference correctness claim to modified RTL simply because it has the same module name. Archive the raw reports and their referenced artifacts before a subsequent run overwrites them.
 
-The reference formal checks are bounded checks with stated harnesses and horizons, including a reachable completion witness. Report the actual bound and assumptions. Explain why a safety PASS under that bound does not establish arbitrary-duration progress, complete coverage or signoff. A failing mutation detected by unchanged checking supports confidence in the checker; it does not demonstrate detection of every possible defect.
+The reference formal checks are bounded checks with stated harnesses and horizons, including a reachable completion witness. Report the actual bound and assumptions. Explain what a safety PASS under that bound leaves open: progress over arbitrary durations, complete coverage and signoff. A failing mutation caught by unchanged checking raises confidence in the checker, though it does not show that every possible defect would be caught.
 
 ### Demonstration sequence
 
-Prepare the artifacts in advance so the defence focuses on behavior and decisions rather than downloading tools. Where a live rerun is impractical, present preserved outputs with their source/environment identities and explain the reproduction command.
+Prepare the artifacts in advance so the defence can focus on behavior and decisions, with no time lost downloading tools. Where a live rerun is impractical, present preserved outputs with their source/environment identities and explain the reproduction command.
 
 1. **Identity and scope.** Show the candidate revision, student contribution, environment and selected configuration. Identify unrun obligations before presenting results.
 2. **Successful standalone job.** Compare a mixed-sign/extreme vector with the independent model. Explain the two result words and a stalled accepted transaction.
@@ -112,7 +112,7 @@ Prepare the artifacts in advance so the defence focuses on behavior and decision
 4. **Wally firmware integration.** Demonstrate CPU setup, polling completion and complete result comparison, followed by the interrupt-service/acknowledgement case. Trace the AHB-to-AXI4-Lite boundary and the separate DMA path.
 5. **Reusable configuration.** Demonstrate a supported configuration or wrapper change and its relevant regression results. State which properties must be re-established.
 6. **Independent checker and formal result.** Explain one deliberately detected defect, one property, its assumptions/bound and a non-vacuity or reachability witness.
-7. **Implementation and release review.** Present the actual available views, constraints and measurements. Close with unresolved risks and the evidence index rather than an unsupported “ready for silicon” claim.
+7. **Implementation and release review.** Present the actual available views, constraints and measurements. Close with the unresolved risks and the evidence index; an unsupported “ready for silicon” claim would undo the defence.
 
 Agree the demonstration duration with the instructor. This sequence is a review aid, not a replacement for the approved assessment rules or the rubric in @sec-hsd-coursework.
 
@@ -150,7 +150,7 @@ Each team member should explain at least one transaction, a reuse decision, a ve
 
 Finish with a requirement-level closure table. Use PASS only when the named check completed successfully for the submitted candidate; use FAIL for a contradiction, NOT RUN/INCOMPLETE for absent or unfinished checks, and N/A only with a reviewed scope justification. Identify illustrative examples, reference evidence and student evidence separately.
 
-A release decision should state the intended consumer and supported boundary. For example, a simulation-qualified uncached single-clock accelerator can be useful and reusable while still needing clock-domain analysis, physical timing/DFT views or cached-system integration. Those obligations define the next engineering step. They should remain visible rather than disappearing behind a green CI badge.
+A release decision should state the intended consumer and supported boundary. For example, a simulation-qualified uncached single-clock accelerator can be useful and reusable while still needing clock-domain analysis, physical timing/DFT views or cached-system integration. Those obligations define the next engineering step. Keep them visible, because a green CI badge hides them.
 
 The final achievement is the ability to connect a specification to RTL, observe its behavior in a real processor platform, challenge the implementation with independent checks and explain the limits of the resulting IP package. That evidence is what makes the design transferable to another engineer and provides a defensible starting point for further implementation.
 
@@ -167,7 +167,7 @@ Explain one complete project job and justify the claims supported by your own im
 
 ## Common mistakes {#review-summary-mistakes .unnumbered .unlisted}
 
-Combining unit, system and physical results into an undifferentiated PASS; hiding missing evidence behind a successful reference run.
+Unit, system and physical results answer different questions, so reporting them as one undifferentiated PASS loses information. A successful reference run is also no reason to leave missing evidence unmentioned; list it as unfinished work.
 
 ## Try it yourself {#review-summary-try .unnumbered .unlisted}
 

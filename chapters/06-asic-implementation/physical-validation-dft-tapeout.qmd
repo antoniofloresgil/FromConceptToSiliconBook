@@ -23,7 +23,7 @@ Passing one row cannot substitute for the others. A booting RISC-V program prove
 
 ![Evidence needed between implementation and fabricated silicon. Original diagram for this chapter, organized using the verification and test distinctions in Weste and Harris, Chapters 14 and 15.](../../figures/asic-validation-evidence.svg){#fig-asic-validation-evidence fig-alt="A release layout is checked for geometry, connectivity, timing and power, then reviewed with DFT, package and test information before fabrication and silicon bring-up"}
 
-Read @fig-asic-validation-evidence as separate evidence obligations: connectivity, geometry, timing, supply and manufacturing tests do not substitute for one another.
+Read @fig-asic-validation-evidence as separate evidence obligations: connectivity, geometry, timing, supply and manufacturing tests each cover something the others cannot.
 
 ### DRC: manufacturing legality {#drc-manufacturing-legality}
 
@@ -31,23 +31,23 @@ Design-rule checking applies the technology's geometric constraints to the layou
 
 A violation report needs a rule identifier, cell or hierarchy context and coordinates. Diagnose a marker by opening the exact checked layout, locating the shapes and understanding the requirement. A minimum-spacing error can arise from routing, an incorrect macro obstruction, a mismatched library view or a stream-out layer mapping. The repair belongs in the source layout or implementation input that caused it.
 
-Router DRC is valuable during detailed routing but usually works with the router's model and abstract views. Final layout checking sees the assembled GDS, including the detailed geometries of cells, macros and chip structures. Retain both sets of results and state their scope. A zero router violation count is not a claim that every manufacturing rule was tested.
+Router DRC is valuable during detailed routing but usually works with the router's model and abstract views. Final layout checking sees the assembled GDS, including the detailed geometries of cells, macros and chip structures. Retain both sets of results and state their scope. A zero router violation count covers the router's rules and leaves other manufacturing rules untested.
 
 ### LVS: connectivity and devices {#lvs-connectivity-and-devices}
 
 LVS extracts devices and connections from layout and compares them with a reference circuit. Depending on the flow and hierarchy, that comparison can use transistor-level extraction, recognized subcircuits or hierarchical macro models. Read the PDK's extraction and matching methodology before choosing the reference netlist [@klayoutLvsGuide].
 
-An open disconnects an intended connection. A short connects nodes that should be distinct. Mismatches can also involve missing instances, device types, dimensions, pin order or power naming. Hierarchy and permitted equivalent device combinations affect how a checker matches circuits; they should be recorded rather than treated as arbitrary switches until the comparison passes.
+An open disconnects an intended connection. A short connects nodes that should be distinct. Mismatches can also involve missing instances, device types, dimensions, pin order or power naming. Hierarchy and permitted equivalent device combinations affect how a checker matches circuits; record them, because they are not switches to flip until the comparison passes.
 
 Global power nets deserve particular attention. A cell's supply rails may exist in layout while the logical netlist omits explicit supply ports. The flow must apply the intended power connectivity consistently. Accidental aliases between supplies can conceal a real domain error. A black-boxed SRAM may allow a top-level match while leaving its internal circuit outside the checked boundary; document the macro's separate validation evidence.
 
 ### Extraction, antenna, density and electrical rules
 
-Parasitic extraction produces the resistance and capacitance used to analyze the routed implementation. LVS extraction and RC extraction serve different purposes: a connectivity match does not imply that the timing parasitics were generated correctly. Record extraction corners, layer mappings and the relationship between the SPEF net names and the timing netlist.
+Parasitic extraction produces the resistance and capacitance used to analyze the routed implementation. LVS extraction and RC extraction serve different purposes: a connectivity match says nothing about whether the timing parasitics were generated correctly. Record extraction corners, layer mappings and the relationship between the SPEF net names and the timing netlist.
 
-During fabrication, a conductor can collect charge before its eventual final connections exist. An antenna rule limits the exposure of vulnerable gate structures. Repairs can involve a diode, a route change or a connection through another layer, depending on the PDK. Antenna is a manufacturing issue rather than a radio-frequency transmission problem. Recheck timing and connectivity after the repair.
+During fabrication, a conductor can collect charge before its eventual final connections exist. An antenna rule limits the exposure of vulnerable gate structures. Repairs can involve a diode, a route change or a connection through another layer, depending on the PDK. Antenna is a manufacturing issue and has nothing to do with radio-frequency transmission. Recheck timing and connectivity after the repair.
 
-Metal density rules support manufacturing steps such as planarization. Fill changes the neighborhood of signal wires and can affect parasitics. Follow the prescribed order of fill, extraction and final checks; do not assume timing computed on an earlier layout applies unchanged to a filled release layout. Where supported, XOR comparison helps detect discrepancies between independent stream-out results, but equal polygons do not prove that either result implements the right circuit.
+Metal density rules support manufacturing steps such as planarization. Fill changes the neighborhood of signal wires and can affect parasitics. Follow the prescribed order of fill, extraction and final checks; timing computed on an earlier layout does not carry over unchanged to a filled release layout. Where supported, XOR comparison helps detect discrepancies between independent stream-out results, but equal polygons do not prove that either result implements the right circuit.
 
 Electrical-rule review adds checks that simple widths and spaces cannot express alone: supply connectivity, legal voltage-domain interfaces, floating wells, unsuitable device use and ESD relationships. The exact coverage depends on available decks. Mark unsupported checks as unresolved work instead of labelling them passed.
 
@@ -57,13 +57,13 @@ The final STA report should identify analyzed clocks, modes, cell corners and RC
 
 Clock trees must be represented by propagated arrival times at the appropriate stage. Timing budgets need realistic input slews, loads, min/max interface delays and clock uncertainty. Treat macro interfaces as contracts shared by both sides. A core hardened with a 1 ns input delay cannot automatically tolerate a parent implementation that delivers its operand 4 ns late.
 
-Power integrity adds an independent question: do cells receive adequate supply under the modelled load? Static IR-drop analysis is useful, but a static result does not establish dynamic droop, package resonance or lifetime reliability. OpenROAD's PDN analysis requires a placed design, power network and source/current assumptions [@openroadPowerIntegrity]. Record those assumptions with the result and evaluate any remaining package-level questions separately.
+Power integrity adds an independent question: do cells receive adequate supply under the modelled load? Static IR-drop analysis is useful, and it leaves dynamic droop, package resonance and lifetime reliability open. OpenROAD's PDN analysis requires a placed design, power network and source/current assumptions [@openroadPowerIntegrity]. Record those assumptions with the result and evaluate any remaining package-level questions separately.
 
 ### Review reports, not only exit codes
 
 Automation should parse the expected checker products and reject missing, incomplete or stale reports. Confirm that the selected top cell contains the expected instances and that checkers actually ran on the release files. An empty layout, a wrong top, an excluded macro or a stopped process can produce misleadingly small violation counts.
 
-For every check, preserve the input hash, tool version, deck version, scope, status and report path. Use distinct statuses such as passed, failed, not run and not applicable. A waiver records a reviewed exception with its reason and the required acceptance authority. Waivers should not silently carry forward to a changed instance or layout.
+For every check, preserve the input hash, tool version, deck version, scope, status and report path. Use distinct statuses such as passed, failed, not run and not applicable. A waiver records a reviewed exception with its reason and the required acceptance authority. A waiver applies to the instance and layout it reviewed, and a change reopens it.
 
 ### Link physical acceptance to the complete verification plan
 
@@ -87,13 +87,13 @@ Create a release-candidate directory containing a manifest and references to the
 | LVS | Final layout extraction and compatible reference | Matching result with stated hierarchical exclusions |
 | Power integrity | PDN, sources and load assumptions | Reviewed connectivity, voltage drop and current evidence |
 
-When using LibreLane, find these products in its run states, logs and reports rather than guessing an old output pathname. The Classic flow includes several physical checks, but its exact supported checks and configuration are release- and PDK-dependent [@librelaneClassic]. Installing another checker does not automatically make its deck approved for fabrication.
+When using LibreLane, find these products in its run states, logs and reports rather than guessing an old output pathname. The Classic flow includes several physical checks, but its exact supported checks and configuration are release- and PDK-dependent [@librelaneClassic]. A checker you install is not thereby approved for fabrication, and the deck needs the provider's approval.
 
 ### Diagnose a physical failure
 
 Use the earliest invalid stage to narrow the cause. For an LVS open on a supply, inspect whether the PDN was connected to cell pins and whether stream-out preserved the relevant layers. For an unexpected transistor mismatch, compare cell GDS, extracted device models and the netlist library revision. For a setup failure, correlate the path report with its cells and routes.
 
-Make a controlled correction and rerun affected stages. A changed clock period affects STA and implementation objectives. A changed route affects parasitics and physical checks. A scan transformation changes the netlist, placement needs, test modes and possibly the clock structure. Record these dependencies rather than copying an earlier passing summary into a new candidate.
+Make a controlled correction and rerun affected stages. A changed clock period affects STA and implementation objectives. A changed route affects parasitics and physical checks. A scan transformation changes the netlist, placement needs, test modes and possibly the clock structure. Record these dependencies, because an earlier passing summary does not describe a new candidate.
 
 ### DFT starts with controllability and observability {#dft-starts-with-controllability-and-observability}
 
@@ -142,7 +142,7 @@ For $N$ registers divided evenly across $K$ chains, the longest shift length is 
 
 More chains reduce shift time but require access resources or compression logic. Separate clock domains and edge types need a deliberate chain policy; lockup elements may be required to avoid shift hold problems between portions of a chain. Reset, gated clocks and power islands must be controllable in test mode. Capturing at functional speed also requires the intended launch/capture clock procedure.
 
-Scan increases area and can change setup/hold behavior. The scan-enable network and shift activity consume power. Unrestricted simultaneous switching can exceed the functional power budget, so test patterns and clock rates need power-aware constraints. Do not assume the functional SDC also correctly constrains scan shift and at-speed capture.
+Scan increases area and can change setup/hold behavior. The scan-enable network and shift activity consume power. Unrestricted simultaneous switching can exceed the functional power budget, so test patterns and clock rates need power-aware constraints. The functional SDC may not constrain scan shift and at-speed capture correctly, so check it.
 
 ### OpenROAD scan insertion as a guided extension
 
@@ -160,7 +160,7 @@ execute_dft_plan
 # Continue the documented physical flow and revalidate all modes.
 ```
 
-The template omits platform setup, placement and verification. It is not a complete runnable hardening script. Review tool limitations and generated chain information, simulate shift/capture, and run test-mode timing. Scan insertion alone does not provide ATPG, a measured fault-coverage result or a complete production-test solution. Likewise, do not assume LibreLane's default flow inserts scan unless that specific configuration documents it.
+The template omits platform setup, placement and verification. It is not a complete runnable hardening script. Review tool limitations and generated chain information, simulate shift/capture, and run test-mode timing. Scan insertion alone gives no ATPG, measured fault coverage or complete production-test solution. Likewise, count on LibreLane inserting scan only when that specific configuration documents it.
 
 ### ATPG and fault simulation
 
@@ -195,13 +195,13 @@ Boundary scan controls and observes chip I/O to help test package and board conn
 
 For a Wally-based SoC, define which test modes are available at reset, how they are selected and which pins or controller provide access. Include clock bypass, reset control, SRAM test and readable identification where needed. An internal PLL or boot failure should not eliminate every means of observing the device.
 
-Production access policy also matters. Scan can expose secrets and bypass ordinary privilege checks. Decide how development, manufacturing and deployed states control test/debug access, how locks are verified, and whether disabling a path affects serviceability. Link this review to the lifecycle discussion in @sec-riscv-debug; do not treat a test-mode pin as an undocumented back door.
+Production access policy also matters. Scan can expose secrets and bypass ordinary privilege checks. Decide how development, manufacturing and deployed states control test/debug access, how locks are verified, and whether disabling a path affects serviceability. Link this review to the lifecycle discussion in @sec-riscv-debug; a test-mode pin should be a documented feature and never an undocumented back door.
 
 ### Pads, ESD and package integration
 
-A hardened accumulator is a macro with signal pins, not a complete packaged chip. Top-level integration needs appropriate I/O and supply cells, ESD protection, legal supply-domain relationships and a pad/bump plan. A standard-cell output must not be connected directly to an external pad as though it were a board-rated driver.
+A hardened accumulator is a macro with signal pins, not a complete packaged chip. Top-level integration needs appropriate I/O and supply cells, ESD protection, legal supply-domain relationships and a pad/bump plan. A standard-cell output is not a board-rated driver, so it does not connect directly to an external pad.
 
-I/O cells specify voltage tolerance, direction, output strength and other operating limits. Inputs also need a defined behavior during reset, power sequencing and partial power-off where applicable. Pull devices and termination choices affect external behavior. Use a provider-approved harness or pad library when required rather than inventing an ESD network.
+I/O cells specify voltage tolerance, direction, output strength and other operating limits. Inputs also need a defined behavior during reset, power sequencing and partial power-off where applicable. Pull devices and termination choices affect external behavior. When one is required, use a provider-approved harness or pad library, since an ESD network is no place for improvisation.
 
 Package parasitics influence signal timing and supply stability. Bond wires, bumps, substrate routes and pins add resistance, capacitance and inductance. Pad placement and board pinout should therefore be planned before final floorplanning. Heat removal and mechanical/package constraints belong to the same system plan [@westeCmosVlsi, Chapter 13].
 
@@ -209,7 +209,7 @@ For a small educational SoC, start with an external clock and accessible reset, 
 
 ### Tapeout manifest and review
 
-Tapeout freezes the files accepted for mask preparation. The provider defines the exact requirements, process option, decks, integration harness and deliverable formats. Open PDK availability and an MPW announcement do not themselves establish current eligibility or fabrication acceptance. Obtain the applicable submission rules for the selected programme [@skywaterPdkDocs].
+Tapeout freezes the files accepted for mask preparation. The provider defines the exact requirements, process option, decks, integration harness and deliverable formats. An open PDK and an MPW announcement are a good start, and current eligibility and fabrication acceptance come from the provider. Obtain the applicable submission rules for the selected programme [@skywaterPdkDocs].
 
 The following is a suggested evidence layout, not a universal foundry specification:
 
@@ -234,7 +234,7 @@ Before packaged devices arrive, prepare the board, power budget, pinout, clock s
 
 On the first device, inspect power connections and package orientation, then use a controlled current-limited startup. Establish supply and reset behavior, a conservative external clock, identification/test access, memory tests and a minimal observable action. Increase complexity through ROM execution, internal RAM, interrupts, peripherals and finally representative workloads.
 
-If the chip is silent, separate power, clock, reset, pad mapping, boot address and memory issues. A readable scan chain or identification register can provide evidence before normal firmware works. Compare observations with simulation at the same boundary rather than assuming that every startup failure is a processor instruction bug.
+If the chip is silent, separate power, clock, reset, pad mapping, boot address and memory issues. A readable scan chain or identification register can provide evidence before normal firmware works. Compare observations with simulation at the same boundary, because not every startup failure is a processor instruction bug.
 
 Characterization sweeps voltage, frequency and temperature within permitted conditions and records the resulting pass/fail boundary. A shmoo plot can reveal trends and marginal regions. Production limits still require the chosen reliability and test criteria; one fast sample at room temperature is not a guaranteed specification for all devices.
 
@@ -270,7 +270,7 @@ Implement a small controller for the March sequence over the synchronous teachin
 
 [Core option · P5 · C0](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-05 .learning-activity}
 
-Choose a single-hart, internal-memory Wally configuration. Draft a pad/clock/reset plan, identify test access independent of firmware, inventory memories and macros, and prepare a first-power-on sequence. Connect each review item to evidence or missing work. An excellent report can expose an unresolved dependency; it should not hide it behind a generated GDS filename.
+Choose a single-hart, internal-memory Wally configuration. Draft a pad/clock/reset plan, identify test access independent of firmware, inventory memories and macros, and prepare a first-power-on sequence. Connect each review item to evidence or missing work. An excellent report can expose an unresolved dependency, and a generated GDS filename cannot hide it.
 
 <!-- chapter-review:physical-validation-dft-tapeout -->
 
@@ -285,7 +285,7 @@ Explain the distinction between DRC/LVS, timing closure, test coverage and produ
 
 ## Common mistakes {#review-physical-validation-dft-tapeout-mistakes .unnumbered .unlisted}
 
-Calling scan insertion ATPG effectiveness; treating routed layout or first boot as complete manufacturing qualification.
+Scan insertion is a structure, and ATPG effectiveness is a measured result, so the two are easy to conflate. A routed layout or a first boot is a milestone on the way to manufacturing qualification, which has many more steps.
 
 ## Try it yourself {#review-physical-validation-dft-tapeout-try .unnumbered .unlisted}
 

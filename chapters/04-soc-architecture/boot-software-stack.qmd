@@ -2,7 +2,7 @@
 
 A processor that executes a test program is not yet a platform that can boot an operating system. Someone must establish usable memory, place images, choose privilege boundaries, describe peripherals and transfer control with the expected register state. The work crosses RTL, firmware, operating systems and integration: a linker address is useful only if the decoder and memory controller implement it.
 
-This chapter closes the gap between @sec-privileged-mmu and physical implementation. It follows the chain **reset → ROM → platform firmware → SBI → bootloader/kernel → device tree and drivers → application**. The order is a useful model, rather than a mandatory list of separate binaries: a platform can combine stages or omit a bootloader. Readers should finish able to specify a boot contract, inspect an image layout, explain an SBI call and locate the earliest failing stage in a silent boot.
+This chapter closes the gap between @sec-privileged-mmu and physical implementation. It follows the chain **reset → ROM → platform firmware → SBI → bootloader/kernel → device tree and drivers → application**. Treat the order as a useful model and not as a mandatory list of separate binaries: a platform can combine stages or omit a bootloader. Readers should finish able to specify a boot contract, inspect an image layout, explain an SBI call and locate the earliest failing stage in a silent boot.
 
 The normative references are the RISC-V privileged and SBI specifications, the Linux boot contract and the Devicetree Specification. QEMU and OpenSBI provide the concrete software platform [@riscvPrivilegedSpec; @bootSbiAbi; @bootLinuxContract; @bootDeviceTree]. The practical baseline deliberately uses QEMU's `virt` platform; it does not assert that the same binaries boot the book's FPGA Wally platform unchanged.
 
@@ -10,7 +10,7 @@ The normative references are the RISC-V privileged and SBI specifications, the L
 
 ### From bare-metal bring-up to Linux
 
-Bare-metal bring-up and Linux expose different platform requirements. The small supervisor payload below is an intermediate diagnostic step toward Linux, rather than a second operating-system case study.
+Bare-metal bring-up and Linux expose different platform requirements. The small supervisor payload below is an intermediate diagnostic step toward Linux, not a second operating-system case study.
 
 | Environment | Typical entry and runtime | Platform work to supply | Evidence of success |
 |---|---|---|---|
@@ -23,7 +23,7 @@ This separation is pedagogically useful. Start with a tiny image and known UART,
 
 ### Reset is a hardware/software interface
 
-The reset vector is the physical address from which the hart begins instruction execution after reset. It is a platform choice, not an ISA-wide address. At that point the stack, ordinary registers and writable RAM contents should not be assumed to contain useful software state. Startup must establish the state required by its own calling convention before entering compiled C.
+The reset vector is the physical address from which the hart begins instruction execution after reset. It is a platform choice, not an ISA-wide address. At that point the stack, the ordinary registers and the writable RAM hold no useful software state. Startup must establish the state required by its own calling convention before entering compiled C.
 
 For an RTL system, specify which clocks and resets release first, whether the fetch address is stable, what memory answers the first request, and what happens while that memory is unavailable. A ROM on an internal bus may answer immediately; a DDR controller can require calibration. Releasing a hart into unavailable DRAM can prevent even the first diagnostic instruction from executing.
 
@@ -37,13 +37,13 @@ Use @fig-riscv-boot-stack to distinguish the optional loader from resident firmw
 
 ![Original boot timeline with privilege and handoff contracts. OpenSBI initialization ends before Linux entry, but its resident M-mode runtime remains available to service SBI calls. Horizontal distance does not represent elapsed boot time.](../../figures/architecture-boot-timeline.svg){#fig-boot-handoff-timeline fig-alt="ROM loader enters OpenSBI in M-mode, firmware hands hart ID and DTB to Linux in S-mode, and Linux starts U-mode applications while resident firmware handles SBI calls" width=100%}
 
-Use @fig-boot-handoff-timeline to locate the earliest missing milestone. An OpenSBI banner establishes firmware execution; a Linux banner establishes the next handoff; neither establishes a working root filesystem or userspace driver. Keep the kernel-entry register contract separate from the argument convention used by later SBI calls.
+Use @fig-boot-handoff-timeline to locate the earliest missing milestone. An OpenSBI banner tells you firmware is running, and a Linux banner tells you the next handoff happened; a working root filesystem or userspace driver is still ahead. Keep the kernel-entry register contract separate from the argument convention used by later SBI calls.
 
 A small ROM can contain immutable startup code, a diagnostic loop or a loader. SRAM provides writable state before external memory is available. DRAM usually provides the capacity needed by an OS, but a controller and a working physical interface must already exist before code executes there. Linux does not initialize an unusable instruction memory on behalf of the reset program.
 
 An FPGA development image may preload an ELF into simulated RAM or initialize block RAM while creating the bitstream. That is a valid development arrangement, but its loading mechanism must be recorded. A production device cannot rely on a simulator to deposit bytes. It needs an actual path such as ROM loading from flash, a host download protocol, or a first-stage loader using local SRAM.
 
-Do not confuse a hardware memory region with ownership of bytes inside it. RAM can simultaneously hold OpenSBI, a kernel, a DTB, an initramfs, DMA buffers and stacks. The regions must not overlap even when all addresses decode successfully.
+A hardware memory region says where bytes can live and nothing about who owns them. RAM can simultaneously hold OpenSBI, a kernel, a DTB, an initramfs, DMA buffers and stacks, and those regions must stay disjoint even when every address decodes successfully.
 
 ### Image placement and linker scripts
 
@@ -63,7 +63,7 @@ For each image, record physical load address, entry address, footprint including
 
 ### Startup before C
 
-The practice's entry code preserves `a0` and `a1`, disables supervisor interrupt sources, initializes `gp` and `sp`, clears BSS and calls C. Linker relaxation is disabled around `gp` initialization so that the instruction sequence does not assume an already valid global pointer. The stack obeys the selected ABI's alignment.
+The practice's entry code preserves `a0` and `a1`, disables supervisor interrupt sources, initializes `gp` and `sp`, clears BSS and calls C. Linker relaxation is disabled around `gp` initialization, because the instruction sequence cannot rely on a global pointer that is not yet valid. The stack obeys the selected ABI's alignment.
 
 That is enough for this one-hart supervisor payload. A reusable startup also defines trap handling, section-copy behavior, TLS if used and a policy for additional harts. Allocating the same stack to multiple harts or clearing BSS while another hart uses it produces failures that can appear only after concurrency starts. The checked practice fixes `-smp 1` instead of pretending to solve those issues.
 
@@ -81,11 +81,11 @@ OpenSBI supports three useful packaging styles [@bootOpenSbiFirmware]:
 | `FW_JUMP` | Build-time configured next-stage address | Another agent must already have loaded that stage |
 | `FW_PAYLOAD` | Next-stage binary embedded with firmware | Convenient combined image, with explicit placement and size constraints |
 
-For dynamic firmware, the preceding loader supplies a pointer to its dynamic-information structure in `a2`; hart ID and DTB address use `a0` and `a1`. These arguments belong to firmware entry. Do not confuse them with the later SBI `ecall` argument convention.
+For dynamic firmware, the preceding loader supplies a pointer to its dynamic-information structure in `a2`; hart ID and DTB address use `a0` and `a1`. These arguments belong to firmware entry, and the later SBI `ecall` argument convention is a different one.
 
 The checked experiment passes an explicit Ubuntu-packaged `fw_dynamic.bin` to QEMU, avoiding ambiguity about which default firmware was selected. QEMU supplies the initial platform state and image loading. A real Wally boot ROM would have to provide the corresponding services itself, or adopt a different firmware packaging style.
 
-The M-to-S handoff also establishes a protection policy. Firmware must keep machine traps on a valid resident stack, delegate the intended supervisor exceptions/interrupts, allow the lower mode to reach its RAM and devices, and preserve its own state. PMP entries and memory reservations have different purposes: PMP can enforce hardware access restrictions, whereas a DT reservation tells the OS allocator which region is already owned. A reservation does not itself stop a malicious load or DMA transaction.
+The M-to-S handoff also establishes a protection policy. Firmware must keep machine traps on a valid resident stack, delegate the intended supervisor exceptions/interrupts, allow the lower mode to reach its RAM and devices, and preserve its own state. PMP entries and memory reservations have different purposes: PMP can enforce hardware access restrictions, whereas a DT reservation tells the OS allocator which region is already owned. A reservation is guidance for the allocator and does not by itself stop a malicious load or DMA transaction; enforcement comes from mechanisms such as PMP.
 
 Similarly, trap delegation alone does not make a timer usable. A timer event must arrive through the chosen hardware/firmware path, the supervisor must enable the relevant interrupt, and its handler must program the next deadline. The SBI TIME interface allows software to request this service without hard-coding a machine timer register. Where supported, supervisor timer facilities such as Sstc can change the underlying mechanism; software must discover and use a coherent platform configuration.
 
@@ -93,7 +93,7 @@ Similarly, trap delegation alone does not make a timer usable. A timer event mus
 
 An ordinary C function call remains within one privilege context. An SBI call uses `ecall` to request a service from the supervisor execution environment. In the nonvirtualized OpenSBI case this is a transfer from S-mode into M-mode firmware, followed by a return to the caller.
 
-The modern SBI ABI places extension ID in `a7`, function ID in `a6`, and arguments in `a0`–`a5`. It returns an error in `a0` and a value in `a1`. On an error, the value is generally unspecified. The ABI preserves registers other than those two outputs [@bootSbiAbi]. The practice's [C source](../../labs/12-boot/main.c) binds the C operands to these architectural registers and uses a compiler memory clobber at the call boundary. That compiler constraint does not replace a device-specific hardware ordering rule.
+The modern SBI ABI places extension ID in `a7`, function ID in `a6`, and arguments in `a0`–`a5`. It returns an error in `a0` and a value in `a1`. On an error, the returned value is generally not meaningful. The ABI preserves registers other than those two outputs [@bootSbiAbi]. The practice's [C source](../../labs/12-boot/main.c) binds the C operands to these architectural registers and uses a compiler memory clobber at the call boundary. That compiler constraint is separate from any device-specific hardware ordering rule, which still applies.
 
 | Service | EID | Representative operation | Why the kernel needs it |
 |---|---|---|---|
@@ -107,7 +107,7 @@ The modern SBI ABI places extension ID in `a7`, function ID in `a6`, and argumen
 
 SRST defines reset types and successful nonreturning shutdown behavior; DBCN is the modern debug-console extension, distinct from legacy console calls [@bootSbiReset; @bootSbiConsole].
 
-Probe optional extensions rather than infer them from an OpenSBI banner. The BASE extension returns an encoded specification version and an implementation ID; those are different from the OpenSBI software release [@bootSbiBase]. The practice probes TIME and SRST before using them, and checks that an unsupported EID produces `SBI_ERR_NOT_SUPPORTED` (`-2`).
+Probe optional extensions instead of inferring them from an OpenSBI banner. The BASE extension returns an encoded specification version and an implementation ID; those are different from the OpenSBI software release [@bootSbiBase]. The practice probes TIME and SRST before using them, and checks that an unsupported EID produces `SBI_ERR_NOT_SUPPORTED` (`-2`).
 
 TIME accepts an absolute timer value; it is not a relative delay or a CPU-cycle count. The checked payload requests the maximum deadline to clear the pending timer condition. It does not enable supervisor interrupts or claim to test delivery. An RV32 implementation splits a 64-bit time value across argument registers; copying this RV64 wrapper unchanged into RV32 would be incorrect [@bootSbiTime].
 
@@ -115,7 +115,7 @@ Finally, an application system call and an SBI call are distinct even though bot
 
 ### Hart IDs, timers and interrupt controllers
 
-A hart is an architectural execution context. Hart IDs identify contexts; software must not assume they form a dense zero-based array or correspond directly to interrupt-context indexes. A platform description and firmware discovery establish those mappings. The Linux ordered-boot approach enters on one boot hart and starts others through HSM. The HSM start contract supplies a hart ID and an opaque argument, enters with translation disabled and requires the caller to provide a valid physical entry point [@bootSbiHsm].
+A hart is an architectural execution context. Hart IDs identify contexts, and they need not form a dense zero-based array or map directly to interrupt-context indexes. A platform description and firmware discovery establish those mappings. The Linux ordered-boot approach enters on one boot hart and starts others through HSM. The HSM start contract supplies a hart ID and an opaque argument, enters with translation disabled and requires the caller to provide a valid physical entry point [@bootSbiHsm].
 
 The timer/software-interrupt path and the device-interrupt path serve different purposes:
 
@@ -128,7 +128,7 @@ The timer/software-interrupt path and the device-interrupt path serve different 
 
 These devices were introduced in the buses chapter. Here the question is whether firmware and the kernel can operate the exact instance present in the SoC. Declaring a device in a DTB cannot create missing hardware. Likewise, substituting APLIC for PLIC requires more than changing a base address [@bootInterruptBindings].
 
-For early bring-up, use one hart, one UART and a known timer source. Add SMP only after the single-hart handoff is stable. Coherent memory, per-hart stacks, startup synchronization, IPIs and remote fences then become explicit acceptance criteria, rather than incidental consequences of increasing `-smp`.
+For early bring-up, use one hart, one UART and a known timer source. Add SMP only after the single-hart handoff is stable. Coherent memory, per-hart stacks, startup synchronization, IPIs and remote fences then become explicit acceptance criteria, instead of side effects of increasing `-smp`.
 
 ### Device tree is the platform description {#device-tree-is-the-platform-description}
 
@@ -147,17 +147,17 @@ accelerator@40000000 {
 
 This fragment assumes a parent with two address cells and two size cells. The address and compatibility string are illustrative; they are not a published Wally binding. To enable a real instance, provide its actual address, interrupt, clock/reset requirements and a matching driver/binding. Add interrupt properties only after verifying the controller's cell format and source mapping. A `dma-coherent` property is justified only by the implemented interconnect/cache behavior, not by a desire to avoid cache maintenance.
 
-`/chosen` identifies boot arguments and the selected console; `/reserved-memory` can exclude resident firmware and other owned buffers from the OS allocator. The OS must not reuse OpenSBI's resident memory simply because it lies inside the DRAM aperture. Reserve actual firmware extents and verify the kernel's interpretation [@bootLinuxContract].
+`/chosen` identifies boot arguments and the selected console; `/reserved-memory` can exclude resident firmware and other owned buffers from the OS allocator. OpenSBI's resident memory lies inside the DRAM aperture and still belongs to the firmware, so the OS has to leave it alone. Reserve the actual firmware extents and verify the kernel's interpretation [@bootLinuxContract].
 
 QEMU `virt` generates a DTB for its selected RAM and CPU/device configuration. The practice exports and decompiles it as `virt.dtb` and `virt.dts`. Inspect those artifacts instead of treating the diagram's addresses as authoritative. The payload checks DTB alignment and magic only: it deliberately does not implement a complete parser or dynamically discover the UART [@bootQemuVirt].
 
 ### Early console and regular drivers
 
-Before interrupts, allocation and device-model initialization work, a polling UART can provide the first trace. A successful OpenSBI banner proves that firmware reached a console path; it does not prove that Linux chose the same driver or console name.
+Before interrupts, allocation and device-model initialization work, a polling UART can provide the first trace. An OpenSBI banner shows that firmware reached a console path, while Linux may still choose a different driver or console name.
 
 The practice directly polls byte-wide NS16550 registers at QEMU `virt`'s UART base. It waits for the transmitter-holding register to become empty before writing a byte. This compact code relies on QEMU's selected UART access model and firmware permissions. A physical UART additionally requires a known input clock, divisor, reset state, pin assignment and electrical connection. A familiar base address is insufficient.
 
-Linux distinguishes an early console from the normal console. The former can expose startup before the complete serial driver is ready; the latter supplies the OS device such as `ttyS0`. Both need compatible configuration. The Linux template later uses a polling `earlycon` and a regular serial console; the corresponding support must be built into the kernel, rather than left in a module that cannot yet be loaded [@bootLinuxConsole].
+Linux distinguishes an early console from the normal console. The former can expose startup before the complete serial driver is ready; the latter supplies the OS device such as `ttyS0`. Both need compatible configuration. The Linux template later uses a polling `earlycon` and a regular serial console; the corresponding support has to be built into the kernel, since a module cannot be loaded that early [@bootLinuxConsole].
 
 A platform driver matches the device description, maps the MMIO region, configures interrupts and exposes an interface to software. Binding success should be tested separately from successful data movement [@bootLinuxPlatformDrivers]. For the course's AXI/DMA accelerator, the driver must also arbitrate ownership, validate commands and recover from device errors. Linux DMA addresses come from the DMA API; they are not arbitrary userspace pointers or automatically identical to CPU physical addresses [@bootLinuxDma].
 
@@ -177,7 +177,7 @@ The kernel initializes memory management, interrupt handling and devices, then s
 
 For first bring-up, use a minimal initramfs containing a static `/init`. A `newc` cpio archive supplies files directly in memory and removes disk-controller dependencies. This differs from the older block-device initrd mechanism. The QEMU `-initrd` option can supply the archive without making its internal format a block filesystem [@bootEarlyUserspace; @bootInitrd].
 
-The small Linux exercise below mounts `/proc` and `/sys`, prints a marker and remains alive as PID 1. It is enough to demonstrate U-mode execution. A useful interactive system can instead contain BusyBox, device nodes or devtmpfs setup and a shell. Buildroot can generate a coordinated toolchain, kernel and root filesystem; preserve its configuration and version rather than distributing an unexplained image [@bootBuildroot].
+The small Linux exercise below mounts `/proc` and `/sys`, prints a marker and remains alive as PID 1. It is enough to demonstrate U-mode execution. A useful interactive system can instead contain BusyBox, device nodes or devtmpfs setup and a shell. Buildroot can generate a coordinated toolchain, kernel and root filesystem; keep its configuration and version so the image is never unexplained [@bootBuildroot].
 
 ## Hands-on Experiments
 
@@ -238,7 +238,7 @@ PASS unsupported extension: -2
 BOOT_PASS
 ```
 
-SRST requests a normal shutdown after the last marker. A timeout, nonzero emulator exit, missing marker or `FAIL` message makes the script fail. The report does not claim Linux boot, DTB-wide semantic validation, timer interrupt delivery, SMP or physical UART operation. Preserve the image with `docker save` alongside the report: the base image is pinned, but Ubuntu package repositories can update between builds.
+SRST requests a normal shutdown after the last marker. A timeout, nonzero emulator exit, missing marker or `FAIL` message makes the script fail. The report makes no claim about Linux boot, DTB-wide semantic validation, timer interrupt delivery, SMP or physical UART operation; those need their own evidence. Preserve the image with `docker save` alongside the report: the base image is pinned, but Ubuntu package repositories can update between builds.
 
 Inspect `labs/build/boot/uart.log`, `payload.map`, `virt.dts`, `packages.txt` and `report.json`. Explain which agent supplied each artifact. Identify the DRAM aperture, UART, timer and interrupt-controller nodes in the generated tree. Compare their widths and interrupt bindings before attempting a port.
 
@@ -261,7 +261,7 @@ docker run --rm --platform linux/amd64 --network none \
 
 For PowerShell, use the mount and `HOME` options from Experiment 1, omit the POSIX UID/GID expression and append the same `python3` arguments to the image name. Only the acquisition command needs network; the second command enforces offline execution. Download once into a new workspace. The acquisition command refuses to replace an existing extracted source tree; keep the reference tree unchanged and place variants elsewhere.
 
-The script verifies the Linux archive against the checksum published by kernel.org, builds the RV64 `defconfig` kernel, compiles the static `/init` and constructs the archive with the kernel's `gen_init_cpio`. It observes the userspace marker, then stops QEMU because this PID 1 deliberately remains alive. The report records this harness termination; it does not claim an SBI guest shutdown test. Logs, `.config`, the kernel, root archive and image/input identities are retained under `labs/build/boot-linux/`.
+The script verifies the Linux archive against the checksum published by kernel.org, builds the RV64 `defconfig` kernel, compiles the static `/init` and constructs the archive with the kernel's `gen_init_cpio`. It observes the userspace marker, then stops QEMU because this PID 1 deliberately remains alive. The report records this harness termination; it is not an SBI guest shutdown test. Logs, `.config`, the kernel, root archive and image/input identities are retained under `labs/build/boot-linux/`.
 
 The following manual commands explain the same steps for a native Linux/WSL environment. They are an **adaptation template**, outside the existing publication gate, and use a separate Git source directory from the script's downloaded archive.
 
@@ -380,7 +380,7 @@ The preserved author run completed all three Linux boots and seven direct model 
 | 128 | 36.6 | 764.4 | 728.4 | 470.8 |
 | 256 | 4.0 | 384.3 | 353.6 | 2267.5 |
 
-The irregular software column is useful evidence of emulator translation, warm-up and host scheduling effects. Increasing N does not yield a smooth timing curve in this short run. Ask students which intervals include copies and system calls, why a 10 µs modeled device delay does not imply a 10 µs ioctl, and what repeated measurements and hardware evidence would be needed before selecting an implementation.
+The irregular software column is useful evidence of emulator translation, warm-up and host scheduling effects. Increasing N does not give a smooth timing curve in this short run. Ask students which intervals include copies and system calls, why a 10 µs modeled device delay does not imply a 10 µs ioctl, and what repeated measurements and hardware evidence would be needed before selecting an implementation.
 
 The fixed-size ioctl copies both complete operand arrays even for N = 1. The driver then copies the active elements into its DMA allocation. Improving only the MAC cannot remove these interface costs. A revised ABI or batching policy is a separate optimization that needs its own ownership, bounds and performance tests.
 
@@ -398,7 +398,7 @@ Lab 18 includes an executable **advanced** route: `wally.py prepare`, `compile`,
 
 Its reset ROM at `0x1000` supplies the OpenSBI dynamic-firmware arguments. OpenSBI, the same kernel and initramfs, and a Wally-specific DTB are loaded at explicitly separated addresses. The real CLINT provides the 100 MHz simulation timebase. D-cache is enabled for ordinary RAM, while the PMA checker explicitly excludes the trusted 16 KiB DMA pool from caching. The pool is page/cache-line aligned and has `no-map` in DT; the driver's allocation uses that reserved pool. Barriers still order launch and completed-result reads. The RTL platform makes no `dma-coherent` claim, and the fixture does not provide a snooping interconnect.
 
-Address-map review exposed a concrete integration defect: the upstream GPIO occupies `0x10060000–0x100600ff`. An earlier accelerator mapping at that address allowed two peripherals to answer one request. The accelerator's DMA result was correct, yet software received stale register values through the combined response. The Linux profile now places the accelerator at `0x10080000–0x1008001f` in both QEMU and Wally, preserving the native GPIO. Preparation checks that the entire 4 KiB page is free against the pinned Wally configuration and declared RAM override, preserving an auditable [address map](../../labs/18-linux-accelerator/reference/wally-address-map.json). A one-hot assertion checks every active AHB transfer. The earlier bare-metal and physical dossiers retain their recorded profiles. A correct arithmetic unit does not establish a correct SoC connection.
+Address-map review exposed a concrete integration defect: the upstream GPIO occupies `0x10060000–0x100600ff`. An earlier accelerator mapping at that address allowed two peripherals to answer one request. The accelerator's DMA result was correct, yet software received stale register values through the combined response. The Linux profile now places the accelerator at `0x10080000–0x1008001f` in both QEMU and Wally, preserving the native GPIO. Preparation checks that the entire 4 KiB page is free against the pinned Wally configuration and declared RAM override, preserving an auditable [address map](../../labs/18-linux-accelerator/reference/wally-address-map.json). A one-hot assertion checks every active AHB transfer. The earlier bare-metal and physical dossiers retain their recorded profiles. A correct arithmetic unit can still sit behind a wrong SoC connection.
 
 The runner first executes a short CPU/MMIO/DMA ROM regression on the same compiled RTL. It writes and reads the native GPIO output-value register with output enables held at zero, checks both accelerator register lanes, descriptor readback, DONE/error and the signed-extreme DMA result, then verifies that GPIO state is intact. Its `WALLY_MMIO_SMOKE_PASS` marker belongs to that preflight. Linux then starts in a separate reset run with the actual firmware/kernel/rootfs and requires its own completion markers. This catches a broken control connection before paying for a full RTL Linux boot; GPIO register isolation does not qualify a Linux GPIO driver or external pins.
 
@@ -408,15 +408,15 @@ The simulation console uses 6,250,000 baud with a 100 MHz UART input (divisor 1)
 
 The profile also disables the upstream RV64 configuration's optional Sv48/Sv57 modes and recomputes its derived VPN width, matching the DT's `riscv,sv39`. Keep the RTL parameter overrides and hardware description together; a firmware/kernel probe may otherwise select a translation mode beyond the one the DT declares.
 
-Both environments use the manifest's `pty.legacy_count=0` kernel argument. The shared kernel retains support for 256 legacy PTYs; creating their unused device nodes adds substantial CPU work during RTL boot. Changing a boot argument is still a configuration change: record it in both environments rather than silently comparing different startup workloads.
+Both environments use the manifest's `pty.legacy_count=0` kernel argument. The shared kernel retains support for 256 legacy PTYs; creating their unused device nodes adds substantial CPU work during RTL boot. Changing a boot argument is still a configuration change, so record it in both environments; otherwise the two startup workloads differ without anyone noticing.
 
 The same manifest also supplies `initcall_blacklist=plist_test,debug_vm_pgtable`, omitting two boot-time kernel debug self-tests retained by the pinned configuration. This is an accelerator-integration workload, not a qualification of those kernel tests. The model, driver, arithmetic, interrupt, polling and error-path tests remain enabled. Their completion must still be observed before claiming success.
 
-CPU and accelerator access a shared behavioral RAM array through separate simulated ports. This is a functional integration fixture, not a synthesized memory arbiter or DDR subsystem. The observer obtains UART characters from accepted writes of the real CPU. Preparation and successful Verilator compilation do not count as Linux execution: the run stage requires OpenSBI, Linux, driver, userspace-result and final RTL markers. A wall-clock/cycle timeout preserves the last checkpoint and fails the test. Keep the generated advanced report's actual status when describing reproduction.
+CPU and accelerator access a shared behavioral RAM array through separate simulated ports. This is a functional integration fixture, not a synthesized memory arbiter or DDR subsystem. The observer obtains UART characters from accepted writes of the real CPU. Preparation and a successful Verilator compilation are steps toward Linux execution and not the thing itself: the run stage requires OpenSBI, Linux, driver, userspace-result and final RTL markers. A wall-clock/cycle timeout preserves the last checkpoint and fails the test. Keep the generated advanced report's actual status when describing reproduction.
 
 The advanced run uses the normal application, including IRQ, polling and invalid-argument checks. The extra DMA-error and suppressed-IRQ boots are QEMU model experiments; qualifying the RTL platform's fault recovery requires separate fault injection and evidence.
 
-The preserved advanced run completed the short ROM preflight, booted OpenSBI/Linux, bound the driver and passed all ten numerical cases plus the userspace argument checks. The final RTL marker occurred at **99,362,109 cycles from reset**. This count includes firmware, kernel startup and the whole application; it is not accelerator launch latency. The [Linux UART log](../../labs/18-linux-accelerator/reference/wally-uart.txt), [preflight log](../../labs/18-linux-accelerator/reference/wally-smoke.txt), [advanced report](../../labs/18-linux-accelerator/reference/wally-report.json) and [combined results](../../labs/18-linux-accelerator/reference/results.json) retain the actual evidence and identical software-bundle identities.
+The preserved advanced run completed the short ROM preflight, booted OpenSBI/Linux, bound the driver and passed all ten numerical cases plus the userspace argument checks. The final RTL marker occurred at **99,362,109 cycles from reset**. This count includes firmware, kernel startup and the whole application, so it is far from the accelerator launch latency. The [Linux UART log](../../labs/18-linux-accelerator/reference/wally-uart.txt), [preflight log](../../labs/18-linux-accelerator/reference/wally-smoke.txt), [advanced report](../../labs/18-linux-accelerator/reference/wally-report.json) and [combined results](../../labs/18-linux-accelerator/reference/results.json) retain the actual evidence and identical software-bundle identities.
 
 These are single **Wally CPU/RTL simulation observations in microseconds**, using the declared 100 MHz timebase:
 
@@ -434,7 +434,7 @@ Wally is configurable. A Linux-oriented build requires the selected privilege/tr
 
 At revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c`, `config/rv64gc/config.vh` selects reset at `0x80000000`, declares a boot-ROM aperture at `0x1000`, and places external memory at `0x80000000`, UART at `0x10000000`, CLINT at `0x02000000` and PLIC at `0x0C000000` [@cvwRepository]. Notice that declaring a ROM does not mean the reset PC points at it. Inspect the chosen overrides, preload mechanism, testbench and FPGA wrapper before drawing a boot diagram.
 
-Some addresses resemble QEMU `virt`; that resemblance does not prove binary compatibility. Check UART register spacing/access size, timer semantics, PLIC context layout, supported CSRs, PMP behavior, cache properties and DRAM initialization. A DTB copied from QEMU can describe devices that do not exist in the FPGA SoC.
+Some addresses resemble QEMU `virt`; that resemblance is no guarantee of binary compatibility. Check UART register spacing/access size, timer semantics, PLIC context layout, supported CSRs, PMP behavior, cache properties and DRAM initialization. A DTB copied from QEMU can describe devices that do not exist in the FPGA SoC.
 
 | Porting step | Required implementation | Acceptance evidence |
 |---|---|---|
@@ -453,7 +453,7 @@ Run software-oriented bring-up in QEMU first, then use RTL to verify Wally-speci
 
 Boot code establishes who controls memory and privileged services before normal software protection exists. Define which image sources are trusted, who may replace firmware, how a failed load is reported and whether recovery can bypass the intended policy. Secure boot is a chain of authenticated stages rooted in an actual protected key or trust anchor; an SBI implementation or image checksum alone does not supply that chain.
 
-For the final project, distinguish accidental-corruption detection from authenticity. Hashes identify the tested files; authenticated boot additionally verifies that the signer is trusted and applies rollback policy. A malicious DTB can misdescribe protected memory or device reachability, so it belongs to the trusted image set or must be independently validated.
+For the final project, keep accidental-corruption detection and authenticity apart. Hashes identify the tested files; authenticated boot additionally verifies that the signer is trusted and applies rollback policy. A malicious DTB can misdescribe protected memory or device reachability, so it belongs to the trusted image set or must be independently validated.
 
 Reliability also includes behavior when startup does not finish. Use bounded memory/controller waits, watchdog/reset policy and diagnostic checkpoints appropriate to the platform. A recovery route should leave DMA inactive and untrusted devices contained until the software owner has configured them. Test cold reset, warm reset and an interrupted accelerator job separately.
 
@@ -472,7 +472,7 @@ Explain who loads each stage, how SBI differs from an OS system call, and how th
 
 ## Common mistakes {#review-boot-software-stack-mistakes .unnumbered .unlisted}
 
-Assuming QEMU virt binaries boot Wally unchanged; treating an image checksum as an authenticated root of trust.
+Two assumptions fail on real hardware. QEMU `virt` binaries do not boot Wally unchanged, because addresses, devices and platform details differ. And an image checksum detects accidental corruption, but only a verified signature and a rollback policy form an authenticated root of trust.
 
 ## Try it yourself {#review-boot-software-stack-try .unnumbered .unlisted}
 

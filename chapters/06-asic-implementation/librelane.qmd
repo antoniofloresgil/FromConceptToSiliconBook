@@ -22,7 +22,7 @@ LibreLane therefore makes a flow repeatable; it does not make an incorrect speci
 
 ![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-librelane-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter the managed ASIC implementation flow and produce GDSII"}
 
-Follow @fig-librelane-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration, rather than automatic acceptance of the physical result.
+Follow @fig-librelane-rtl-to-gdsii-flow from the RTL contract to each produced artifact. Feedback arrows mean another analysis or iteration; the physical result is accepted only after review.
 
 ### Direct OpenROAD or LibreLane?
 
@@ -45,7 +45,7 @@ The default Classic flow is a `SequentialFlow`: each step receives a validated c
 This automation delivers five practical benefits.
 
 1. **A single design contract.** A YAML or JSON file replaces a scattered set of environment variables and shell options. The configuration is validated before a long run begins.
-2. **Reproducible defaults.** The flow resolves the project configuration together with PDK and standard-cell defaults, then writes the effective `resolved.json`. That file captures values which were inherited rather than explicitly written by the designer.
+2. **Reproducible defaults.** The flow resolves the project configuration together with PDK and standard-cell defaults, then writes the effective `resolved.json`. That file captures the values that were inherited, so you can see what you never wrote yourself.
 3. **Consistent hand-off between tools.** The flow manages the files, databases and conversion steps between Yosys, OpenROAD, Magic, KLayout and Netgen.
 4. **Inspectability.** Each step has its own logs, reports, metrics and state. A designer can locate the first failing stage instead of reading one huge terminal transcript.
 5. **Controlled variation.** A run tag separates experiments. Clock period, floorplan utilization or synthesis strategy can be varied without overwriting the baseline.
@@ -58,13 +58,13 @@ LibreLane supports Nix, AppImage, Docker and an advanced Python-only installatio
 
 ### Hardware and operating-system expectations
 
-For an educational macro, use a modern multi-core machine with at least 8 GiB of RAM; 16 GiB is a more comfortable starting point for SKY130 work. LibreLane documentation primarily supports Ubuntu 22.04 or later on Linux. On Windows, run it in WSL2 or through Docker Desktop rather than attempting a native Windows EDA installation [@librelaneNixInstall].
+For an educational macro, use a modern multi-core machine with at least 8 GiB of RAM; 16 GiB is a more comfortable starting point for SKY130 work. LibreLane documentation primarily supports Ubuntu 22.04 or later on Linux. On Windows, run it in WSL2 or through Docker Desktop, which is far easier than a native Windows EDA installation [@librelaneNixInstall].
 
-The first invocation downloads a substantial tool and PDK environment. Keep the PDK cache outside the book repository and do not commit it. Record the LibreLane version, PDK version, standard-cell library and host/container identity in every report.
+The first invocation downloads a substantial tool and PDK environment. Keep the PDK cache outside the book repository, where it stays out of commits. Record the LibreLane version, PDK version, standard-cell library and host/container identity in every report.
 
 ### Option A: Nix installation on Linux or WSL2
 
-Nix is the recommended method. It creates a controlled shell that exposes LibreLane and the exact tool set it expects. Install Nix using the current instructions from the LibreLane documentation; do not use an old system-package Nix merely because it is convenient, as it may not support the required features. Then clone LibreLane and enter its shell:
+Nix is the recommended method. It creates a controlled shell that exposes LibreLane and the exact tool set it expects. Install Nix using the current instructions from the LibreLane documentation; an old system-package Nix is convenient, and it may lack the required features. Then clone LibreLane and enter its shell:
 
 ```bash
 git clone https://github.com/librelane/librelane.git
@@ -79,7 +79,7 @@ librelane --version
 librelane --log-level ERROR --condensed --show-progress-bar --smoke-test
 ```
 
-The smoke test exercises the installed tools and a supported open PDK. It is the correct first diagnosis if a later run fails before synthesis. The project documents its Nix binary cache and the exact Nix configuration needed by current releases; follow that documentation rather than copying cache keys from this chapter [@librelaneNixInstall].
+The smoke test exercises the installed tools and a supported open PDK. It is the correct first diagnosis if a later run fails before synthesis. The project documents its Nix binary cache and the exact Nix configuration needed by current releases; follow that documentation, since cache keys copied from this chapter may be out of date [@librelaneNixInstall].
 
 ### Option B: Docker, including Windows
 
@@ -135,7 +135,7 @@ Variables can be scoped to a PDK or standard-cell library. That is useful when t
 
 ### The effective configuration is the specification of a run
 
-The user configuration is deliberately small. LibreLane combines flow/PDK/library defaults and overrides, validates them and writes effective run configuration/state. Preserve those files using the names emitted by the selected release (the run tree below illustrates `config.json`). Do not assume every release writes a file named `resolved.json`. Identical user YAML does not imply identical tools, PDK or defaults.
+The user configuration is deliberately small. LibreLane combines flow/PDK/library defaults and overrides, validates them and writes effective run configuration/state. Preserve those files using the names emitted by the selected release (the run tree below illustrates `config.json`); not every release writes a file named `resolved.json`. Identical user YAML can still run with different tools, PDK or defaults.
 
 Avoid silently relying on the latest PDK. For coursework and a book example, pin a known LibreLane release and PDK version in the project notes. For a real program, place those versions in CI and require a deliberate review for upgrades.
 
@@ -238,7 +238,7 @@ runs/synth-only/
 └── ... state information and step products ...
 ```
 
-Exact directory names can change between releases, but the principle does not: use the run's state, reports and resolved configuration rather than guessing output paths from an old tutorial. Verify the top module, source list, inferred flip-flops, unmapped cells, warnings and synthesis area. If the result contains unexpected latches, an unresolved module or no sequential cells, correct the RTL/source configuration first.
+Exact directory names can change between releases, but the principle does not: use the run's state, reports and resolved configuration, because output paths guessed from an old tutorial may be wrong. Verify the top module, source list, inferred flip-flops, unmapped cells, warnings and synthesis area. If the result contains unexpected latches, an unresolved module or no sequential cells, correct the RTL/source configuration first.
 
 ### Step 4: run the Classic flow
 
@@ -267,7 +267,7 @@ LibreLane resolves configuration, checks the PDK and source files, then drives t
 
 The Classic flow's step list is public and should be consulted for the installed release. A project can disable or substitute a step only when it has a documented reason and an equivalent verification plan [@librelaneClassic].
 
-### Step 5: inspect the result rather than trusting the exit code
+### Step 5: inspect the result, as the exit code is not enough
 
 Start by reading the summarized metrics and the final timing reports. The critical questions are:
 
@@ -284,7 +284,7 @@ librelane --last-run --flow OpenInOpenROAD config.yaml
 librelane --last-run --flow OpenInKLayout config.yaml
 ```
 
-The first command opens the OpenROAD database for physical inspection; the second opens the layout in KLayout. Use them to correlate report paths with real cells, pins, clock routes and DRC markers. Do not repair the layout manually and then call the run reproducible: change configuration or source inputs and run again.
+The first command opens the OpenROAD database for physical inspection; the second opens the layout in KLayout. Use them to correlate report paths with real cells, pins, clock routes and DRC markers. A layout repaired by hand is no longer a reproducible run, so change the configuration or source inputs and run again.
 
 ### Step 6: compare a controlled experiment
 
@@ -302,7 +302,7 @@ Run it with a new tag:
 librelane config-8ns.yaml --run-tag target-125MHz
 ```
 
-Compare the resolved configuration, cell area, core area, worst setup slack, total negative slack, worst hold slack, buffer count, route DRC count and power estimate. Do not compare only frequency. If 8 ns fails after routing but 10 ns passes, read the failing path and decide whether the correct action is a pipeline stage, a different microarchitecture, a lower target frequency, a floorplan change or an allowed library/constraint change.
+Compare the resolved configuration, cell area, core area, worst setup slack, total negative slack, worst hold slack, buffer count, route DRC count and power estimate. Frequency alone is not a comparison. If 8 ns fails after routing but 10 ns passes, read the failing path and decide whether the correct action is a pipeline stage, a different microarchitecture, a lower target frequency, a floorplan change or an allowed library/constraint change.
 
 ### Step 7: make an implementation record
 
@@ -325,7 +325,7 @@ At the end of a run, commit the small inputs: the YAML configuration, pin-order 
 
 The apparent simplicity of a four-line configuration can be misleading. LibreLane resolves values in layers: the built-in flow defines defaults; the PDK and cell library define technology-specific values; the user design file supplies intent; command-line flags make temporary overrides. The final configuration is immutable for the run, which prevents an individual step from silently redefining the project contract [@librelaneArchitecture].
 
-This layering allows a common SystemVerilog design to be evaluated under several PDKs while keeping technology-specific facts in the appropriate place. It also means that a local YAML file should not reproduce every PDK default. Specify values that express design intent--clock, sources, core utilization, macro placement, pin plan and justified overrides--and inspect `resolved.json` for the rest.
+This layering allows a common SystemVerilog design to be evaluated under several PDKs while keeping technology-specific facts in the appropriate place. It also means that a local YAML file does not need to reproduce every PDK default. Specify values that express design intent--clock, sources, core utilization, macro placement, pin plan and justified overrides--and inspect `resolved.json` for the rest.
 
 ### States, steps and checkpoints
 
@@ -337,13 +337,13 @@ For a failure, find the earliest step whose report is invalid. A synthesis probl
 
 The same high-level request, such as “create a power grid,” has different concrete choices for different PDKs: power-pin names, metal layers, via rules, fill cells, clock buffers and DRC decks. LibreLane uses PDK and standard-cell configuration files to supply these values. This is what makes `PDK: sky130A` meaningful; it is not a label attached after layout.
 
-When porting a design to a new process, do not assume that a successful SKY130 configuration transfers unchanged. Re-evaluate the clock target, core utilization, I/O/pad requirements, macro views, power intent, process corners and sign-off criteria. A custom PDK must provide the LibreLane configuration required by the steps it intends to support [@librelanePdks].
+When porting a design to a new process, a successful SKY130 configuration will not transfer unchanged. Re-evaluate the clock target, core utilization, I/O/pad requirements, macro views, power intent, process corners and sign-off criteria. A custom PDK must provide the LibreLane configuration required by the steps it intends to support [@librelanePdks].
 
 ## Customizing the managed flow
 
 Classic is a reference flow, not a prison. LibreLane can select a flow from the command line, replace or remove named steps through configuration metadata, or construct a custom sequential flow with the Python API. The documentation gives examples of a flow that explicitly lists Yosys, OpenROAD, Magic and Netgen steps [@librelaneCustomFlows].
 
-Customization is appropriate when a project has a proven need: a foundry-specific check, a macro assembly stage, a formal equivalence gate, a custom extraction recipe or an ECO. It is not a cure for a warning that has not been understood. Start from Classic, record each substitution and preserve an equivalent check for anything removed.
+Customization is appropriate when a project has a proven need: a foundry-specific check, a macro assembly stage, a formal equivalence gate, a custom extraction recipe or an ECO. It cannot cure a warning that nobody has understood. Start from Classic, record each substitution and preserve an equivalent check for anything removed.
 
 For example, a project might disable a stream-out tool only when the selected PDK does not support it and another approved stream-out and DRC path exists. Disabling LVS merely because it is inconvenient creates an implementation gap, not a valid faster flow.
 
@@ -377,7 +377,7 @@ A complete run contains far more useful information than its final GDSII. LibreL
 
 Start at the earliest failing checker, not at the last line of the console. For example, a final hold checker failure can be investigated through the post-route STA report, extracted parasitics and routed state. An LVS failure should be investigated through the corresponding Netgen, extraction and stream-out logs. A later checker often reports the symptom; the earlier step tells you the cause.
 
-Do not commit all generated files to the source repository. They can be large, PDK-dependent and regenerated. Preserve them as CI artifacts, a release archive or reproducible experiment record. Commit inputs, a short results summary and any scripts needed to reproduce the run.
+Generated files stay out of the source repository, since they can be large, PDK-dependent and regenerated. Preserve them as CI artifacts, a release archive or reproducible experiment record. Commit inputs, a short results summary and any scripts needed to reproduce the run.
 
 ### Run tags, partial runs and ECOs
 
@@ -432,7 +432,7 @@ The Google/SkyWater open PDK made the technology collateral inspectable, and ope
 
 ## Hands-on Experiments
 
-For a book-wide IP example, use the common source/configuration manifest in @sec-complete-case. Its measured ASIC route uses direct OpenROAD and KLayout rather than a claimed LibreLane run. A managed-flow extension should consume the same three RTL modules and baseline parameters, declare a compatible PDK/library/SDC profile, and regenerate every result. Do not transplant the Nangate45 area/power/timing into a SKY130 LibreLane report or infer sign-off from the existing GDS readback.
+For a book-wide IP example, use the common source/configuration manifest in @sec-complete-case. Its measured ASIC route uses direct OpenROAD and KLayout, and no LibreLane run is claimed. A managed-flow extension should consume the same three RTL modules and baseline parameters, declare a compatible PDK/library/SDC profile, and regenerate every result. Do not transplant the Nangate45 area/power/timing into a SKY130 LibreLane report or infer sign-off from the existing GDS readback.
 
 ### Experiment 1: validate the baseline
 
@@ -444,7 +444,7 @@ Run the accumulator at 10 ns. Make a one-page report containing the resolved PDK
 
 [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-librelane-02 .learning-activity}
 
-Copy the baseline YAML into two variants with `FP_CORE_UTIL` values of 45 and 65. Keep RTL, PDK, cell library and period unchanged. Use a derived placement density only where the values stay feasible. Compare area, wire length, buffer insertion, congestion, timing and DRC. Explain which result offers the best engineering trade-off rather than choosing the smallest core mechanically.
+Copy the baseline YAML into two variants with `FP_CORE_UTIL` values of 45 and 65. Keep RTL, PDK, cell library and period unchanged. Use a derived placement density only where the values stay feasible. Compare area, wire length, buffer insertion, congestion, timing and DRC. Explain which result offers the best engineering trade-off, since the smallest core is not automatically the best.
 
 ### Experiment 3: make the run suitable for CI
 
@@ -464,14 +464,14 @@ LibreLane makes the full open ASIC stack practical for repeated work: a design c
 
 ### Automation and verification ownership
 
-Apply @sec-verification-methodology when accepting an automated flow result. Record which configured steps actually executed, their input identities and their checker/deck/model scope. Verify consistency among the final netlist, extraction, layout and reports. A successful orchestration command does not turn disabled equivalence, macro-internal, electrical or production-test checks into passes. Flow repairs and changed views invalidate affected downstream evidence; review the final products rather than accepting a summary copied from a prior run.
+Apply @sec-verification-methodology when accepting an automated flow result. Record which configured steps actually executed, their input identities and their checker/deck/model scope. Verify consistency among the final netlist, extraction, layout and reports. A successful orchestration command leaves disabled equivalence, macro-internal, electrical and production-test checks unrun, and they are not passes. Flow repairs and changed views invalidate affected downstream evidence; review the final products rather than accepting a summary copied from a prior run.
 
 <!-- chapter-review:librelane -->
 
 ## Key ideas {#review-librelane-ideas .unnumbered .unlisted}
 
 - Flow automation preserves dependencies, configurations and stage reports.
-- Automation does not replace technology selection or release acceptance.
+- Automation handles orchestration, while technology selection and release acceptance stay with the engineer.
 
 ## What you should now be able to explain {#review-librelane-explain .unnumbered .unlisted}
 
@@ -479,7 +479,7 @@ Explain which accumulator steps LibreLane coordinates and how a failed report di
 
 ## Common mistakes {#review-librelane-mistakes .unnumbered .unlisted}
 
-Assuming default configuration fits another PDK/design; interpreting generated artifacts as a qualified tapeout.
+Defaults tuned for one PDK and design rarely fit another, so re-evaluate them when either changes. And generated artifacts are the output of a flow, not a qualified tapeout, which needs the provider's acceptance.
 
 ## Try it yourself {#review-librelane-try .unnumbered .unlisted}
 

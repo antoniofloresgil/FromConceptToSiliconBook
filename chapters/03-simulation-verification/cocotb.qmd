@@ -16,7 +16,7 @@ Separating tests from RTL lets one design be checked without adding a hardware t
 
 Tests produce automatic pass/fail results and machine-readable reports suitable for regression workflows. Python familiarity can lower the barrier to writing a self-checking environment, but hardware knowledge is still required: clock edges, signal scheduling, reset, unknown values, and protocol rules remain essential.
 
-The framework does not prove correctness or synthesize the design. Random stimulus needs a coverage plan, a reproducible seed, and bounded execution. Calls between Python and the simulator also have a cost; compare performance for the actual workload rather than assuming one testbench language is always faster. See the [supported simulators](https://docs.cocotb.org/en/v2.0.1/simulator_support.html) before selecting a backend.
+cocotb is a testbench framework: it drives and checks a design that something else synthesizes, and a passing test is evidence, not proof. Random stimulus works best with a coverage plan, a reproducible seed and bounded execution. Calls between Python and the simulator also have a cost, so measure the actual workload before deciding which testbench language is faster. See the [supported simulators](https://docs.cocotb.org/en/v2.0.1/simulator_support.html) before selecting a backend.
 
 ### Read signals at the correct simulation phase
 
@@ -30,7 +30,7 @@ Inputs are driven on the falling edge, leaving them stable before the next risin
 
 ### Drivers, monitors and evidence
 
-Apply @sec-verification-methodology by separating the task that drives a request from the monitor that observes its actual acceptance and the scoreboard that checks completion. Model from the written contract rather than copying RTL branches. Preserve the existing edge/read-only sampling discipline, then add bounded stalls, reset/error scenarios and requirement-defined coverage. Python assertions and a nonzero test result are functional evidence; a generated XML file alone does not establish that tests ran without skips. Record seed, simulator, cocotb version and configuration with each result.
+Apply @sec-verification-methodology by separating the task that drives a request from the monitor that observes its actual acceptance and the scoreboard that checks completion. Model from the written contract rather than copying RTL branches. Preserve the existing edge/read-only sampling discipline, then add bounded stalls, reset/error scenarios and requirement-defined coverage. Python assertions and a nonzero exit status are the functional evidence; a generated XML file by itself cannot tell you whether any test was skipped. Record seed, simulator, cocotb version and configuration with each result.
 
 
 ## Implementation
@@ -242,7 +242,7 @@ Explain why waiting for a clock event and sampling settled values are separate s
 
 ## Common mistakes {#review-cocotb-mistakes .unnumbered .unlisted}
 
-Using arbitrary delays instead of protocol events; confusing a timeout or missing tool with a successful test.
+Two habits make Python testbenches flaky. Arbitrary delays work until timing shifts, whereas protocol events keep working. And a timeout or a missing tool can look like a quiet run, so check that the test actually executed and passed.
 
 ## Try it yourself {#review-cocotb-try .unnumbered .unlisted}
 

@@ -31,7 +31,7 @@ A threat model states what the adversary controls, observes and can repeat. “A
 
 For a useful teaching baseline, assume adversarial lower-mode software can provide arbitrary accelerator descriptors and repeatedly call exposed interfaces. Firmware and the lifecycle controller are trusted. A second, stronger model permits a compromised DMA master to generate arbitrary bus transactions. A third permits physical observation or faults. A result established under the first model does not automatically cover the second or third.
 
-Record what is excluded and why. A digital RTL simulation cannot measure laser-fault resistance. A protected external key store does not solve a threat in which the adversary controls the trusted signing service. An exclusion should bound a claim, rather than quietly remove the most important attack path from the design.
+Record what is excluded and why. A digital RTL simulation cannot measure laser-fault resistance. A protected external key store does not solve a threat in which the adversary controls the trusted signing service. An exclusion should bound a claim, and it should not quietly remove the most important attack path from the design.
 
 | Profile | Controlled inputs | Observations | Consequence for verification |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Record what is excluded and why. A digital RTL simulation cannot measure laser-f
 | Board access | External image storage, reset and permitted debug pins | Console/debug outputs and externally available traces | Test boot/lifecycle policy across resets and image replacement |
 | Physical adversary | Defined fault/measurement capabilities | Power/EM/timing or fault responses | Qualify physical assumptions and separate silicon/board evidence |
 
-OpenTitan's security material is useful because it treats roots of trust, provisioning, ownership and lifecycle as one architecture, rather than equating security with a cipher block [@securityOtOverview]. The course proposal borrows that discipline without copying OpenTitan's complete feature set or implying equivalent assurance.
+OpenTitan's security material is useful because it treats roots of trust, provisioning, ownership and lifecycle as one architecture, instead of equating security with a cipher block [@securityOtOverview]. The course proposal borrows that discipline without copying OpenTitan's complete feature set or implying equivalent assurance.
 
 ### Attack surfaces and trust boundaries
 
@@ -50,7 +50,7 @@ A trust boundary is the point where an untrusted action requires a trusted decis
 
 ![Original proposal showing separate CPU, DMA and debug access paths. Dotted lines carry trusted policy; solid lines carry requests. CPU PMP does not automatically constrain other masters.](../../figures/security-trust-boundaries.svg){#fig-security-boundaries width=100%}
 
-In @fig-security-boundaries, trace each CPU, DMA and debug access through its proposed enforcement point. The diagram is a policy design, not evidence that all guards exist in the pinned RTL.
+In @fig-security-boundaries, trace each CPU, DMA and debug access through its proposed enforcement point. The diagram is a policy design, and whether all the guards exist in the pinned RTL is a separate matter.
 
 The trusted computing base (TCB) contains the hardware, firmware and configuration whose correctness is required by the claim. Minimizing its size helps review, but a small firmware image is not a small TCB if it relies on an undocumented interconnect, debug controller and key store. Conversely, a large driver outside the trusted boundary can be acceptable if it cannot escape the hardware policy.
 
@@ -62,7 +62,7 @@ For each boundary, state the decision inputs, their owner, the point of enforcem
 
 For each entry in @fig-security-attack-surfaces, name the enforcing block and a negative test. For example, a rejected CPU access tests PMP, while a rejected DMA descriptor tests a different guard. Neither test establishes resistance to the physical fault and observation path on the right. The additions are a design proposal, consistent with the implemented-versus-proposed distinction later in this chapter.
 
-Functional verification often checks that the allowed result is correct. Security additionally asks whether a forbidden effect can occur, whether an unauthorized observer learns something, and whether the policy remains active during exceptional conditions. A successful denied transaction should not modify memory, but an error response alone does not prove that no earlier write occurred.
+Functional verification often checks that the allowed result is correct. Security additionally asks whether a forbidden effect can occur, whether an unauthorized observer learns something, and whether the policy remains active during exceptional conditions. A denied transaction should not modify memory, and an error response alone cannot show that no earlier write occurred.
 
 A safety property can describe a single trace: whenever a DMA address is presented, its entire accessed span lies within the allowed window. Confidentiality often needs a relationship between traces. If two executions have the same public inputs but different secrets, the permitted observations should be equal, except for an explicitly authorized disclosure.
 
@@ -70,15 +70,15 @@ For public inputs P, secret S and observation O, a simplified noninterference go
 
 $$O(P,S_1)=O(P,S_2).$$
 
-This equation is meaningful only after defining O. It might include UART output, bus traffic, timing, cache occupancy or power. Equal architectural outputs do not imply equal cache traces. A design review must specify which observations are protected and which are not modelled.
+This equation is meaningful only after defining O. It might include UART output, bus traffic, timing, cache occupancy or power. Equal architectural outputs can still come with different cache traces. A design review must specify which observations are protected and which are not modelled.
 
-Declassification permits an intended disclosure, such as the public verification result of a signature. It should not permit the private key or arbitrary internal state to appear alongside that result. The allowed disclosure belongs in the interface specification, error behavior and tests.
+Declassification permits an intended disclosure, such as the public verification result of a signature. It leaves out the private key and arbitrary internal state, which should never appear alongside that result. The allowed disclosure belongs in the interface specification, error behavior and tests.
 
 ### Hardware roots of trust
 
 A root of trust anchors a decision that cannot be justified by another mutable stage. For boot integrity, that can be immutable verification code and an authentic key or key digest. For device identity, it can be protected, device-specific secret material and a constrained signing interface. For measurement, it can be a protected mechanism that records what actually ran.
 
-Those roles are related but not identical. A public boot-verification key does not need confidentiality, but it does need integrity. A private attestation key requires controlled use and confidentiality. Storing either as a software constant in rewritable flash does not establish the assumed root.
+Those roles are related but not identical. A public boot-verification key does not need confidentiality, but it does need integrity. A private attestation key requires controlled use and confidentiality. Storing either as a software constant in rewritable flash does not give the assumed root of trust.
 
 An FPGA teaching platform can demonstrate signature verification and access policies, but its root depends on bitstream configuration, storage and board capabilities. A constant synthesized into a replaceable bitstream is not automatically immutable to a board owner. State whether the threat model includes replacing that bitstream, and use the board's actual authenticated-configuration mechanism if that capability is meant to be resisted.
 
@@ -96,13 +96,13 @@ A checksum detects a change relative to a trusted expected value. If an adversar
 
 Rollback is a separate problem. An old correctly signed image can contain a fixed vulnerability. Security-version policy needs protected monotonic state or another justified freshness mechanism. A human-readable firmware version string in the same rewritable image is insufficient. Updating that state must also survive power interruption without accepting an unintended lower version or permanently disabling valid recovery.
 
-Firmware resiliency combines protection, detection and recovery [@securityNistFirmware]. Recovery must not bypass the same policy it is meant to restore. A recovery UART that accepts an arbitrary unsigned image can invalidate an otherwise careful boot design. A useful policy supports an authenticated recovery image and records when recovery occurs.
+Firmware resiliency combines protection, detection and recovery [@securityNistFirmware]. Recovery has to respect the same policy it is meant to restore. A recovery UART that accepts an arbitrary unsigned image can invalidate an otherwise careful boot design. A useful policy supports an authenticated recovery image and records when recovery occurs.
 
 ### Memory protection and privilege isolation
 
-Use @sec-privileged-mmu for the mechanics. In the security argument, virtual mappings define a process's view of memory, while PMP constrains physical accesses under the relevant hart privilege policy. The two protections compose; one does not replace the other. PMA and device semantics additionally determine whether an otherwise permitted access is meaningful and safe.
+Use @sec-privileged-mmu for the mechanics. In the security argument, virtual mappings define a process's view of memory, while PMP constrains physical accesses under the relevant hart privilege policy. The two protections compose, and each does a job the other cannot. PMA and device semantics additionally determine whether an otherwise permitted access is meaningful and safe.
 
-Ordinary unlocked PMP entries generally do not constrain normal M-mode accesses in the same way as lower-mode accesses. Locked rules and enhanced PMP such as Smepmp change parts of that policy [@riscvPrivilegedSpec; @securitySmepmp]. Do not claim that a U-mode denial protects a key from compromised machine firmware. Identify precisely which privilege context and access type the rule constrains.
+Ordinary unlocked PMP entries generally do not constrain normal M-mode accesses in the same way as lower-mode accesses. Locked rules and enhanced PMP such as Smepmp change parts of that policy [@riscvPrivilegedSpec; @securitySmepmp]. A U-mode denial cannot protect a key from compromised machine firmware. Identify precisely which privilege context and access type the rule constrains.
 
 The core's PMP check is not a universal SoC memory firewall. A DMA engine or Debug Module with system-bus access can reach memory without executing the CPU's protected load/store path. Protecting a physical asset requires a policy for every initiating master and, where relevant, a target-side enforcement point.
 
@@ -126,7 +126,7 @@ The executable Linux continuation in @sec-linux-accelerator makes this boundary 
 
 ### Debug lifecycle and service access
 
-Debug authority can stop software, examine state or issue system-bus transactions. The debug chapter explains the RISC-V mechanisms. The security policy must cover all relevant effects, rather than only the JTAG transport or a halt-request bit. Disabling hart halt while allowing SBA can leave memory fully exposed.
+Debug authority can stop software, examine state or issue system-bus transactions. The debug chapter explains the RISC-V mechanisms. The security policy has to cover all relevant effects, and the JTAG transport or a halt-request bit is only part of them. Disabling hart halt while allowing SBA can leave memory fully exposed.
 
 A lifecycle commonly distinguishes manufacturing/test, development, production and service/return states. Their permitted operations differ. An authenticated development session may allow broad inspection, while production allows only a restricted health/status interface. Service access may require erasure of customer secrets before invasive test paths become available.
 
@@ -146,7 +146,7 @@ Constant-time design means independence from secret data for the chosen observat
 
 Random delays can make observation noisier without removing correlation. Cache partitioning can remove a particular sharing path without addressing power leakage. Restricting timers can change measurement difficulty without preventing an adversary from using another observable completion signal. Connect each countermeasure to a stated channel and capability model.
 
-The PMU chapter is relevant here: counters and cycle timers are valuable for measurement, but their privilege policy can affect what untrusted software observes. Removing PMU access is not an automatic security proof. Conversely, a simulation-only counter is not evidence that an FPGA user can perform the same timing measurement.
+The PMU chapter is relevant here: counters and cycle timers are valuable for measurement, but their privilege policy can affect what untrusted software observes. Removing PMU access, on its own, does not prove a design secure. Conversely, a simulation-only counter does not mean an FPGA user can perform the same timing measurement.
 
 ### Speculative execution and transient effects
 
@@ -154,7 +154,7 @@ Speculative execution can perform work that later fails to retire. If that work 
 
 The important architectural review separates three questions: when an access becomes authorized, when data becomes available to dependent operations, and which state changes are undone on a squash. Squashing a destination register does not necessarily undo a cache fill, replacement update or resource contention.
 
-Do not infer that every RISC-V core has the same speculative vulnerabilities. An in-order pipeline differs from a wide out-of-order design, but can still have prediction, prefetching, queues or memory activity on uncommitted paths. The inspected Wally configuration needs its own timing/permission-path review. This chapter does not demonstrate a Spectre exploit against Wally or claim that the absence of an out-of-order backend proves immunity.
+Speculative vulnerabilities differ between RISC-V cores. An in-order pipeline differs from a wide out-of-order design, but can still have prediction, prefetching, queues or memory activity on uncommitted paths. The inspected Wally configuration needs its own timing/permission-path review. This chapter does not demonstrate a Spectre exploit against Wally or claim that the absence of an out-of-order backend proves immunity.
 
 Possible design responses include preventing use of unauthorized data, controlling transient effects, isolating shared predictor/cache state and using architecture-supported ordering mechanisms where their documented semantics address the actual channel. Evaluate costs and remaining observations. A fence included without a specific semantic argument is a code annotation, not a complete mitigation.
 
@@ -162,7 +162,7 @@ Possible design responses include preventing use of unauthorized data, controlli
 
 Fault injection changes computation or control under an adversary's specified physical capabilities. A voltage/clock disturbance, memory corruption or targeted physical stimulus might affect a state bit, comparison result, instruction execution or transaction. The security question is whether that change crosses a boundary before it is detected and contained.
 
-Digital fault experiments can flip selected bits or force signals in a simulation. They are useful for testing a fault model, but they do not establish that a physical stimulus maps to exactly that model. Physical evaluation needs the target technology, board, equipment, calibration and repeatability record.
+Digital fault experiments can flip selected bits or force signals in a simulation. They are useful for testing a fault model, and a physical stimulus may not map to exactly that model. Physical evaluation needs the target technology, board, equipment, calibration and repeatability record.
 
 Fault countermeasures can include redundancy, encoded state, integrity checking and independent alert/escalation paths. Their implementation matters: equivalent duplicate computations can fail together; an alert arriving after an irreversible grant is too late; synthesis can simplify a proposed redundant representation. OpenTitan's hardware guidelines discuss these design concerns and the need for clearly bounded assumptions [@securityOtHardware].
 
@@ -176,7 +176,7 @@ A cryptographic accelerator can reduce CPU work and keep some intermediate state
 
 For an AES engine, distinguish data confidentiality from authenticity; the selected protocol/mode determines whether modified ciphertext is detected. For a hash engine, distinguish an unkeyed digest from a MAC or signature. A fast SHA block alone cannot decide whether a boot image came from an approved signer.
 
-OpenTitan's AES and key-manager documentation illustrates hardware responsibilities such as key use, operation control and protection of internal state [@securityOtAes; @securityOtKeymgr]. A course extension should state which features it actually implements rather than inherit the security claims of a referenced IP.
+OpenTitan's AES and key-manager documentation illustrates hardware responsibilities such as key use, operation control and protection of internal state [@securityOtAes; @securityOtKeymgr]. A course extension should state which features it actually implements, since it cannot inherit the security claims of a referenced IP.
 
 An AXI crypto block has the same descriptor, DMA and reset obligations as the arithmetic accelerator, plus confidentiality of keys and intermediate state. Returning diagnostic registers or leaving key shares visible through scan can defeat an otherwise correct cipher. Completion/error timing and fault responses can also become observations. Use established cryptographic implementations and separately qualify their integration; writing an educational cipher does not produce a production cryptographic core.
 
@@ -184,7 +184,7 @@ An AXI crypto block has the same descriptor, DMA and reset obligations as the ar
 
 ### A security architecture for the Wally platform
 
-Begin with the known scalar Wally configuration and the complete AXI/DMA reference project. Identify the actual masters, address decoder, firmware storage, RAM/cache regions, debug integration and reset tree. The proposal adds a trusted boot/policy domain and independently controlled CPU, DMA and debug paths. These additions must not be described as existing features of the pinned Wally repository.
+Begin with the known scalar Wally configuration and the complete AXI/DMA reference project. Identify the actual masters, address decoder, firmware storage, RAM/cache regions, debug integration and reset tree. The proposal adds a trusted boot/policy domain and independently controlled CPU, DMA and debug paths. These additions are proposals and not existing features of the pinned Wally repository.
 
 The trust hierarchy for this proposal is: immutable/protected boot policy establishes trusted firmware; firmware installs memory and device policies; the OS/driver allocates permitted jobs; lower-mode applications supply untrusted requests; hardware enforces the accepted transaction envelope. Debug and manufacturing access are controlled by lifecycle authority that ordinary application software cannot rewrite.
 
@@ -281,7 +281,7 @@ Define alert handling end to end. A sticky status bit can preserve evidence, but
 
 The monitor itself is security-critical. Protect its policy registers, reset and event inputs. If a bus master can forge its source identity, address checking by source ID is ineffective. If a fault corrupts both a grant and the checker that is meant to observe that grant, redundant-looking logic may not provide independent detection.
 
-For IP reuse, document assumptions alongside guarantees. The DMA engine's guarantee depends on validated latched descriptors and a trusted policy window; the debug guard's guarantee depends on trusted lifecycle/authentication inputs; a cryptographic block's guarantee depends on key/entropy/control interfaces. SoC integration must discharge those assumptions, rather than concatenate module PASS reports.
+For IP reuse, document assumptions alongside guarantees. The DMA engine's guarantee depends on validated latched descriptors and a trusted policy window; the debug guard's guarantee depends on trusted lifecycle/authentication inputs; a cryptographic block's guarantee depends on key/entropy/control interfaces. SoC integration has to discharge those assumptions, and a pile of module PASS reports does not do that.
 
 ## Hands-on Experiments
 
@@ -352,7 +352,7 @@ For security, focus on the test cases for an out-of-window destination, a near-a
 
 Explain the two authorities in the result. The CPU/driver is permitted to request a job, but the engine accepts only a descriptor inside its policy. Once the engine has bus-master authority, its emitted addresses remain constrained. This does not address a malicious independently redesigned master, which needs an external firewall.
 
-Extend the test plan with window-edge spans, partial/burst access boundaries, policy reconfiguration and a reset during an accepted job. Do not label a permanently stalled bus as an unauthorized-write test unless the checker establishes both denial and protocol recovery. Preserve expected allowed jobs as positive controls.
+Extend the test plan with window-edge spans, partial/burst access boundaries, policy reconfiguration and a reset during an accepted job. A permanently stalled bus is an unauthorized-write test only when the checker establishes both the denial and the protocol recovery. Preserve expected allowed jobs as positive controls.
 
 ### Experiment 3: debug interface locking
 
@@ -368,7 +368,7 @@ PASS debug admission: auth, immediate/sticky lock, production reset and invalid 
 
 Observe both halt and bus grants. If only hart halt were checked, a defect in SBA admission could remain invisible. Next, write an integration plan connecting those gates to the actual DM/DTM or debug master, including queued transactions and returned data.
 
-The source is intentionally small enough to audit. It does not demonstrate a production authentication exchange, fault-hardened lifecycle state, scan locking or permanent fuse behavior. State those remaining requirements in the final project; do not rename the unit test “secure JTAG qualification.”
+The source is intentionally small enough to audit. It does not demonstrate a production authentication exchange, fault-hardened lifecycle state, scan locking or permanent fuse behavior. State those remaining requirements in the final project; keep the unit test's name honest instead of calling it “secure JTAG qualification.”
 
 ### Experiment 4: timing side-channel demonstration
 
@@ -401,11 +401,11 @@ The proof uses twenty cycles. A separate two-step SAT query obtains an authorize
 
 The bounded proof is not an unbounded invariant proof, a cryptographic authentication proof or an analog fault model. Authentication and lifecycle values are authoritative inputs, and the RTL transition relation excludes arbitrary corruption of internal state. All claims must retain those assumptions. The project's existing DMA bounds similarly constrain a specified implementation/horizon rather than certifying arbitrary AXI masters.
 
-As a negative control, remove the sticky-lock term from a student variant while leaving the property intact. Expect a counterexample after a lock request has been removed. Inspect the trace rather than relaxing the property to make the mutant pass. Yosys supplies the SAT command/property machinery; match options to the installed version [@securityYosysSat].
+As a negative control, remove the sticky-lock term from a student variant while leaving the property intact. Expect a counterexample after a lock request has been removed. Inspect the trace; relaxing the property to make the mutant pass would defeat the control. Yosys supplies the SAT command/property machinery; match options to the installed version [@securityYosysSat].
 
 ### Release evidence and the final security review
 
-Deliver an asset/threat matrix, the trust-boundary diagram, policy ownership/reset descriptions and a requirement-to-evidence table. Link the actual source/image/configuration identities to each test. Preserve counterexamples and accepted positive cases; a collection of denied requests alone cannot show that an authorized service works.
+Deliver an asset/threat matrix, the trust-boundary diagram, policy ownership/reset descriptions and a requirement-to-evidence table. Link the actual source/image/configuration identities to each test. Preserve counterexamples and accepted positive cases; a collection of denied requests cannot show that an authorized service works.
 
 | Requirement | Current evidence | Required extension for a broader claim |
 |---|---|---|
@@ -420,7 +420,7 @@ The methodology in @sec-verification-methodology applies to the whole dossier. S
 
 For defence, answer these questions with the actual implementation: Which master can still reach the secret when CPU PMP denies it? Who owns the debug authorization signal? What changes after cold reset? Which exact bytes and policy inputs are authenticated? Can an accepted descriptor be changed before use? Which observer was excluded from the side-channel model? What would the system do after a detected security fault?
 
-Close with a residual-risk statement rather than an absolute label. The course references establish several concrete protection mechanisms and intentionally leave a complete secure Wally platform, authenticated boot firmware and physical attack resistance as integration/research work. That boundary is part of a defensible hardware system design.
+Close with a residual-risk statement; an absolute label such as “secure” overreaches. The course references establish several concrete protection mechanisms and intentionally leave a complete secure Wally platform, authenticated boot firmware and physical attack resistance as integration/research work. That boundary is part of a defensible hardware system design.
 
 <!-- chapter-review:hardware-security -->
 
@@ -435,7 +435,7 @@ Explain why CPU PMP does not protect against every DMA/debug master, and disting
 
 ## Common mistakes {#review-hardware-security-mistakes .unnumbered .unlisted}
 
-Calling a checksum secure boot; extending a bounded/modelled experiment into a complete secure-SoC claim.
+A checksum detects corruption, and secure boot needs authentication, so the two should not share a name. And a bounded, modelled experiment supports a claim about that model, which stops short of a complete secure SoC.
 
 ## Try it yourself {#review-hardware-security-try .unnumbered .unlisted}
 

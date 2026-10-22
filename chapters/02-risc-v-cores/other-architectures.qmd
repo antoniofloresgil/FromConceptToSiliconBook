@@ -80,7 +80,7 @@ Wally:     instruction A [F][D][E][M][W]
            instruction C       [F][D][E][M][W]
 ```
 
-This diagram is conceptual; exact cycle counts vary by PicoRV32 option, instruction and memory response. The official project explicitly optimizes for size and clock frequency rather than minimum CPI, and reports several cycles per instruction for many operations [@picoRv32]. A high `fmax` by itself cannot establish that a program finishes faster than on a pipelined Wally configuration.
+This diagram is conceptual; exact cycle counts vary by PicoRV32 option, instruction and memory response. The official project explicitly optimizes for size and clock frequency rather than minimum CPI, and reports several cycles per instruction for many operations [@picoRv32]. A high `fmax` alone does not tell you that a program finishes sooner than on a pipelined Wally configuration, because the cycles per instruction matter just as much.
 
 ### Memory handshake as a teaching example
 
@@ -114,7 +114,7 @@ The theoretical maximum throughput of a simple two-stage scalar pipeline is one 
 
 Ibex offers configuration choices for features such as a branch predictor, instruction cache, PMP and integrity/security measures in relevant integration profiles. These options change both hardware cost and the platform software contract. A security-oriented implementation might spend area on error detection and control-flow robustness rather than maximize benchmark throughput. Read the exact selected configuration when comparing Ibex with Wally: “Ibex” is a family of elaborated designs, not one fixed netlist.
 
-The distinction between a **core** and a **secure SoC** is especially important here. A core can support PMP, but system security also requires bus access control, memory protection for other masters, debug policy and a trusted boot chain. Likewise, core integrity checks do not automatically protect external memory or peripherals.
+The distinction between a **core** and a **secure SoC** is especially important here. A core can support PMP, but system security also requires bus access control, memory protection for other masters, debug policy and a trusted boot chain. In the same way, a core's integrity checks stop at the core: external memory and peripherals need their own protection.
 
 ### Experiment: memory wait states
 
@@ -130,7 +130,7 @@ CORE-V CV32E40P is a 32-bit in-order RISC-V core with four main stages: instruct
 
 Both CV32E40P and the simplified Wally are in-order pipelines, but their boundaries differ. CV32E40P's fetch stage uses an aligning prefetch buffer and handles compressed instructions; jumps can redirect early from decode, while conditional branches are resolved later in execute. Loads, stores and multicycle arithmetic affect stage availability. The Wally teaching pipeline explicitly separates a memory stage and carries controls into writeback.
 
-The exact point at which a branch is resolved determines how many younger instructions may be in flight and therefore the flush cost. A branch resolved in decode can avoid some wrong-path work but may lengthen decode or need earlier operand availability. A branch resolved in execute simplifies some timing but may discard more fetched instructions. This is a concrete architectural trade-off to investigate with short assembly tests rather than a vague assertion that one pipeline is “deeper.”
+The exact point at which a branch is resolved determines how many younger instructions may be in flight and therefore the flush cost. A branch resolved in decode can avoid some wrong-path work but may lengthen decode or need earlier operand availability. A branch resolved in execute simplifies some timing but may discard more fetched instructions. This is a concrete architectural trade-off, and short assembly tests will show it far better than saying one pipeline is “deeper.”
 
 ### Extensions for data processing
 
@@ -140,7 +140,7 @@ Hardware loops make a particularly good teaching case. The processor stores loop
 
 ### Interface and integration
 
-A core with OBI ports still needs an SoC adapter when the rest of a design uses another bus. Address translation, byte enables, outstanding requests, errors and reset behavior must be preserved. This is analogous to the AHB-to-Wishbone boundary discussed for Wally's open FPGA flow: the processor name does not settle the system integration cost.
+A core with OBI ports still needs an SoC adapter when the rest of a design uses another bus. Address translation, byte enables, outstanding requests, errors and reset behavior must be preserved. This is analogous to the AHB-to-Wishbone boundary discussed for Wally's open FPGA flow: the processor name alone tells you little about the system integration cost.
 
 Debug, interrupt and trap support should be compared with a **full** Wally configuration, not the deliberately simplified datapath. The objective of this section is to contrast pipeline and embedded integration choices; a fuller comparison must identify exact revisions and feature options.
 
@@ -192,7 +192,7 @@ The key benefit is conditional: a program must offer independent work and a memo
 
 ![Original conceptual OoO pipeline: rename maps architectural to physical registers, dispatch allocates window and ROB entries, issue follows readiness, and commit retires the oldest completed instruction. This is a teaching organization, not a particular BOOM or XiangShan configuration.](../../figures/architecture-ooo-window.svg){#fig-ooo-window fig-alt="Fetch, rename, dispatch, issue, physical register file, execution, reorder buffer and in-order commit with recovery feedback" width=100%}
 
-In @fig-ooo-window, distinguish the result path from the retirement path. Writing a physical register can wake a dependent instruction while the producer still waits in the ROB. A misprediction or exception must discard younger work and recover the appropriate rename state; completion alone does not authorize an architectural side effect.
+In @fig-ooo-window, distinguish the result path from the retirement path. Writing a physical register can wake a dependent instruction while the producer still waits in the ROB. A misprediction or exception must discard younger work and recover the appropriate rename state; completion is not yet permission for an architectural side effect; that comes at retirement.
 
 Consider `mul x5,x1,x2`, followed by `add x6,x3,x4`, then `sub x7,x5,x6`. The multiply and add can execute independently. The subtract waits for both results. Renaming assigns separate physical destinations, the issue logic schedules ready operations, and the reorder buffer retires them in program order. If an older instruction faults, younger results cannot become architectural state, even if the arithmetic finished.
 
@@ -212,7 +212,7 @@ XiangShan (香山) is an open-source, high-performance RISC-V processor project 
 
 ### Select a documented generation
 
-XiangShan is an evolving project with generations and revisions. Its user guide describes the Kunminghu V2R2 microarchitecture; descriptions from another revision should not be mixed into one hypothetical core [@xiangshanUserGuide]. For this chapter, references to issue queues, rename, reorder buffer and cache organization mean the **documented Kunminghu V2R2 generation**. The examples are architectural explanations, not performance claims about a newer branch.
+XiangShan is an evolving project with generations and revisions. Its user guide describes the Kunminghu V2R2 microarchitecture; mixing descriptions from another revision would describe a core that does not exist [@xiangshanUserGuide]. For this chapter, references to issue queues, rename, reorder buffer and cache organization mean the **documented Kunminghu V2R2 generation**. The examples explain the architecture and say nothing about the performance of a newer branch.
 
 The documented core is wide and out of order. It includes instruction fetch/decode, register renaming, dispatch and issue queues, integer/floating-point/vector execution units, a load/store subsystem, a reorder buffer, MMU and cache hierarchy [@xiangshanUserGuide]. Its goal differs radically from PicoRV32's: exploit parallelism and memory-level concurrency in demanding applications rather than minimize the smallest FPGA footprint.
 
@@ -253,7 +253,7 @@ Chisel does not exempt the design from hardware constraints. After elaboration, 
 
 A wide speculative core has many corner cases: branch recovery, exceptions among in-flight instructions, replay after memory conflicts, TLB/page-walk faults, vector state and interrupt boundaries. XiangShan's project ecosystem uses differential testing and related simulation tools to compare architectural outcomes with a reference model [@xiangshanRepository]. A reference ISA model checks *what* retires; specialized assertions and microarchitecture tests check *how* the machine reaches that state safely.
 
-The most useful lesson for a student project is methodological rather than “build XiangShan on a small board.” Choose one mechanism, such as an issue queue or branch recovery, inspect its contract and write a reduced test that demonstrates it. Save full-core integration for an environment with sufficient compute, memory, verification tooling and target technology.
+The most useful lesson for a student project is a method, not “build XiangShan on a small board.” Choose one mechanism, such as an issue queue or branch recovery, inspect its contract and write a reduced test that demonstrates it. Save full-core integration for an environment with sufficient compute, memory, verification tooling and target technology.
 
 ### Where gem5 fits
 
@@ -307,7 +307,7 @@ For reproducibility, store the emitted RTL hash for a Chisel design as well as t
 
 An open repository may contain ISA tests, differential testing, random instruction generation, formal properties and FPGA or silicon demonstrations. Each proves something narrower than “the architecture works.” ISA tests cover architectural outcomes for selected combinations. Differential testing compares retirement against a reference but may miss timing, deadlock or a defect shared by the reference model. Formal properties prove specified invariants under stated assumptions. FPGA bring-up proves a particular SoC and toolchain reached observable milestones.
 
-A useful comparison report therefore records the **exact tested configuration** and its evidence. Do not transfer a claim from an Ibex security configuration to the smallest two-stage build, or from one XiangShan Kunminghu revision to another. Likewise, a full Wally Linux demonstration does not validate the simplified pedagogical pipeline's omitted privileged machinery.
+A useful comparison report therefore records the **exact tested configuration** and its evidence. A claim belongs to the configuration that earned it: what holds for an Ibex security configuration may not hold for the smallest two-stage build, nor for another XiangShan Kunminghu revision. A full Wally Linux demonstration likewise says nothing about the privileged machinery that the simplified pedagogical pipeline omits.
 
 ### Build two comparison groups
 
@@ -350,7 +350,7 @@ One benchmark can reward an architectural accident. A more informative suite del
 
 If PicoRV32 and Wally differ strongly in the register-only test but little in pointer chasing, memory latency may dominate the latter. If BOOM or XiangShan gains on independent streams but not pointer chasing, the larger window is probably finding parallel memory operations where the program permits them. Such interpretations are hypotheses until the relevant counters or traces support them.
 
-For RV32 small-core experiments, disable unsupported custom instructions, hold memory latency fixed and separate cold-start from steady-state measurements. For an RV64 application comparison, choose a common userspace binary and identical input but also report whether OS, cache sizes, TLB configuration and DRAM model genuinely match. If they do not, present a case study of each system rather than a core ranking.
+For RV32 small-core experiments, disable unsupported custom instructions, hold memory latency fixed and separate cold-start from steady-state measurements. For an RV64 application comparison, choose a common userspace binary and identical input but also report whether OS, cache sizes, TLB configuration and DRAM model genuinely match. If they do not, present a case study of each system; a ranking of the cores would not be fair.
 
 ### A reproducible manifest
 
@@ -392,7 +392,7 @@ The manifest belongs beside logs and generated reports. If the synthesis tool ch
 | Candidate A | RV32I | array reduction | yes/no | measured | measured | computed | measured | Memory latency stated |
 | Candidate B | RV32I | same binary | yes/no | measured | measured | computed | measured | Same constraints |
 
-Never fill missing measurements with an official marketing number from another FPGA, process or workload. A source's published benchmark can motivate a hypothesis, but the chapter's comparative conclusion must come from the controlled experiment.
+When a measurement is missing, leave the gap visible instead of filling it with a marketing number from another FPGA, process or workload. A published benchmark is a good source of hypotheses, but the comparative conclusion has to come from the controlled experiment.
 
 ## Choosing a Core for a Project
 
@@ -410,7 +410,7 @@ For a simple programmable peripheral, PicoRV32 or a compact Ibex configuration m
 
 ### Cost that does not appear in LUT count
 
-Engineering time is a real constraint. A small core with an unusual interrupt scheme may require extra firmware work; a generator can need a large build environment; an out-of-order design demands significantly more verification capacity. Documentation, automated tests, debugging support and maintenance activity influence how quickly a project reaches a working SoC. Include these costs explicitly in a selection report rather than hiding them under a single “complexity” label.
+Engineering time is a real constraint. A small core with an unusual interrupt scheme may require extra firmware work; a generator can need a large build environment; an out-of-order design demands significantly more verification capacity. Documentation, automated tests, debugging support and maintenance activity influence how quickly a project reaches a working SoC. List these costs explicitly in a selection report, because a single “complexity” label hides them.
 
 License and provenance also matter for reuse. Record the exact repository and license of the selected revision, plus the licenses of generated IP and dependencies. This is especially relevant for a generated SoC that pulls in several libraries. The technical lesson is straightforward: the processor file alone is rarely the whole deliverable.
 
@@ -432,7 +432,7 @@ Read the [Ibex pipeline documentation](https://ibex-core.readthedocs.io/en/lates
 
 [Advanced · C0](../../learning-paths.qmd#sec-path-labels){#act-other-architectures-03 .learning-activity}
 
-Using the [CVA6 issue-stage documentation](https://docs.openhwgroup.org/projects/cva6-user-manual/03_cva6_design/issue_stage.html), trace a slow load followed by an independent integer add. Record issue order, return order and commit order. Explain why seeing an add result before a load result does not imply general out-of-order issue.
+Using the [CVA6 issue-stage documentation](https://docs.openhwgroup.org/projects/cva6-user-manual/03_cva6_design/issue_stage.html), trace a slow load followed by an independent integer add. Record issue order, return order and commit order. Explain why seeing an add result before a load result is not yet general out-of-order issue.
 
 ### Experiment 4: rename and recovery
 
@@ -450,7 +450,7 @@ Across all experiments, preserve the exact configuration, tool versions, command
 
 ## Comparing verification maturity across cores
 
-Use @sec-verification-methodology to compare evidence as well as architecture. Identify the exact generated/elaborated configuration, available unit/ISA/system regressions, retirement comparison, coverage and physical validation. An open source tree or a booting operating system does not by itself establish equivalent qualification across cores. Chisel generation adds a representation boundary: preserve generator inputs and emitted RTL identity, then check the resulting hardware contract. Out-of-order cores require commit-aligned checking, wrong-path side-effect suppression, dependency recovery and ordered memory effects; the reduced Wally project's single-outstanding DMA tests do not cover those mechanisms.
+Use @sec-verification-methodology to compare evidence as well as architecture. Identify the exact generated/elaborated configuration, available unit/ISA/system regressions, retirement comparison, coverage and physical validation. An open source tree or a booting operating system is not, by itself, the same qualification on every core. Chisel generation adds a representation boundary: preserve generator inputs and emitted RTL identity, then check the resulting hardware contract. Out-of-order cores require commit-aligned checking, wrong-path side-effect suppression, dependency recovery and ordered memory effects; the reduced Wally project's single-outstanding DMA tests never exercise those mechanisms.
 
 <!-- chapter-review:other-architectures -->
 
@@ -465,7 +465,7 @@ Explain why an independent result completing early does not alone establish out-
 
 ## Common mistakes {#review-other-architectures-mistakes .unnumbered .unlisted}
 
-Ranking cores by unmatched headline frequency; assuming an open repository or Linux boot establishes comparable verification maturity.
+Two shortcuts mislead comparisons. Ranking cores by headline frequency without matching configuration and workload compares numbers that mean different things. And an open repository or a Linux boot looks like verification maturity, but it does not tell you how thoroughly each core was verified.
 
 ## Try it yourself {#review-other-architectures-try .unnumbered .unlisted}
 

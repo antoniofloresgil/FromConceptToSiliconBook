@@ -4,7 +4,7 @@ Executable reference sources and tests are included in the [laboratory package](
 
 A system-on-chip contains many pipelines besides the processor's instruction pipeline. Requests travel from a client to a memory or peripheral, responses travel back, and streams move between accelerators. These paths must preserve information even when one component runs out of space or takes longer than expected. Registers shorten timing paths; buffers allow components to work concurrently; a flow-control protocol determines when ownership of a transaction changes.
 
-This chapter develops those transport mechanisms. The five-stage instruction pipeline, forwarding and instruction hazards belong to the CORE-V Wally chapter. Here, a pipeline carries transactions rather than instructions. A FIFO can preserve memory-request order without knowing anything about register dependencies, speculative execution or the RISC-V instruction set.
+This chapter develops those transport mechanisms. The five-stage instruction pipeline, forwarding and instruction hazards belong to the CORE-V Wally chapter. Here, a pipeline carries transactions instead of instructions. A FIFO can preserve memory-request order without knowing anything about register dependencies, speculative execution or the RISC-V instruction set, and that independence is what makes it reusable.
 
 The discussion connects synchronous-memory timing in Chapter 7 of *RISC-V System-on-Chip Design* with SoC interfaces studied later in the book [@harrisRiscvSoc]. The RTL below consists of original teaching designs. Their ready/valid interfaces are deliberately smaller than AXI; a handshake alone does not make a module AXI compliant.
 
@@ -16,7 +16,7 @@ The discussion connects synchronous-memory timing in Chapter 7 of *RISC-V System
 
 The **initiation interval** is the minimum separation between starting successive operations. A four-cycle processing unit can have an initiation interval of one cycle if different operations occupy its internal stages concurrently. A four-cycle iterative unit that cannot accept another operation while busy has a lower maximum throughput.
 
-**Throughput** measures completed useful operations per unit time. Peak throughput describes an ideal condition; sustained throughput includes stalls, arbitration, response congestion and idle sources. Counting cycles with `valid` asserted overestimates throughput whenever `ready` is low.
+**Throughput** measures completed useful operations per unit time. Peak throughput describes an ideal condition; sustained throughput includes stalls, arbitration, response congestion and idle sources. Counting the cycles with `valid` asserted overestimates throughput, because those cycles include the ones where `ready` was low.
 
 For a balanced fixed-latency pipeline with $K$ stages, initiation interval one and no stalls, moving $N$ items takes $K+N-1$ clock intervals from the first input acceptance to the final output acceptance, using a convention in which one stage contributes one interval. The fill cost matters for short sequences and becomes less important for long streams.
 
@@ -41,7 +41,7 @@ Response payload: {identifier, read_data, status}
 
 Registering data without its identifier can associate a correct value with the wrong requester. Registering an address without its write enable can modify the wrong location. Packing the payload into a structure or vector makes its ownership explicit.
 
-Before a handshake, the source owns the item and preserves it according to the interface contract. After the handshake, the destination owns an accepted copy. The source may then present another item even if the original operation has not finished. Acceptance transfers responsibility; it does not necessarily complete the work.
+Before a handshake, the source owns the item and preserves it according to the interface contract. After the handshake, the destination owns an accepted copy. The source may then present another item even if the original operation has not finished. Acceptance transfers responsibility, and the work may still be unfinished.
 
 An end-to-end read contains four distinguishable events: the client submits a request, the service accepts it, the service produces a response, and the client consumes the response. Queues separate these events. The number of requests accepted by the client interface can therefore exceed the number already executed by memory.
 
@@ -62,7 +62,7 @@ For the lossless transaction interfaces in this chapter, once a source presents 
 | 1 | 0 | Item waits; source retains it |
 | 1 | 1 | One item transfers |
 
-The source must not wait for `ready` before deciding to assert `valid`. A destination that waits for `valid` before advertising readiness could otherwise form a deadlock. Keeping `valid` asserted until transfer also prevents repeated short pulses from missing readiness. LaForest summarizes these handshake rules [@laforestHandshake]. For AXI channels, Arm specifies the corresponding requirements and dependencies [@armAxi4Spec]. Here they form a local transport contract; bus transaction assembly remains separate.
+The source decides to assert `valid` without waiting for `ready`; if it waited, a destination that waits for `valid` before advertising readiness would form a deadlock. Keeping `valid` asserted until transfer also prevents repeated short pulses from missing readiness. LaForest summarizes these handshake rules [@laforestHandshake]. For AXI channels, Arm specifies the corresponding requirements and dependencies [@armAxi4Spec]. Here they form a local transport contract; bus transaction assembly remains separate.
 
 ### Reading a waveform
 
@@ -85,7 +85,7 @@ An item can remain valid indefinitely under indefinite backpressure without viol
 
 A fixed pipeline shifts every cycle. It suits a guaranteed input schedule and guaranteed downstream capacity. A stopped register chain still needs an agreement with its producer about input acceptance.
 
-An **elastic pipeline** gives stages occupancy state and allows them to stop independently. Empty slots are transport bubbles: absence of an item, rather than a processor instruction inserted to resolve a dependency. A stage advances when its next stage has capacity, while upstream occupied stages can wait.
+An **elastic pipeline** gives stages occupancy state and allows them to stop independently. Empty slots are transport bubbles, meaning the absence of an item and not a processor instruction inserted to resolve a dependency. A stage advances when its next stage has capacity, while upstream occupied stages can wait.
 
 ```text
                     data and valid move right
@@ -93,7 +93,7 @@ Producer --> [stage 0] --> [stage 1] --> [stage 2] --> Consumer
                     capacity information moves left
 ```
 
-Elasticity preserves correctness under changing readiness. It does not guarantee unlimited storage or equal rates. A producer that consistently generates items faster than its consumer eventually fills every finite lossless buffer and must stop.
+Elasticity keeps the design correct as readiness changes; it cannot provide unlimited storage or equal rates. A producer that consistently generates items faster than its consumer eventually fills every finite lossless buffer and must stop.
 
 ### The one-entry elastic register
 
@@ -114,7 +114,7 @@ always_ff @(posedge clk) begin
 end
 ```
 
-This fragment illustrates the state update, rather than defining a complete module. Transfers are ignored during reset. When full and the consumer stops, it retains its payload. When both input and output transfer, the old item leaves and a new item replaces it without an empty cycle.
+This fragment illustrates the state update and is not a complete module. Transfers are ignored during reset. When full and the consumer stops, it retains its payload. When both input and output transfer, the old item leaves and a new item replaces it without an empty cycle.
 
 Occupancy satisfies:
 
@@ -122,7 +122,7 @@ $$
 q_{t+1}=q_t+push_t-pop_t, \qquad 0\leq q_t\leq 1.
 $$
 
-There is a combinational path from downstream `out_ready` to upstream `in_ready`. Chaining these stages creates a backward timing path even though payload paths are registered. This can be acceptable inside a small custom pipeline, but does not establish AXI compliance: AXI prohibits combinational paths between interface inputs and outputs. Use a suitable register slice at such a boundary.
+There is a combinational path from downstream `out_ready` to upstream `in_ready`. Chaining these stages creates a backward timing path even though payload paths are registered. This can be acceptable inside a small custom pipeline. At an AXI boundary it is not allowed, since AXI prohibits combinational paths between interface inputs and outputs, so put a suitable register slice there.
 
 ### FIFO depth and burst absorption
 
@@ -214,7 +214,7 @@ An ordered service returns responses in request order; it can carry tags to make
 | Multiple operations, reordered responses | Outstanding table indexed by tag |
 | Reordered results, ordered observation | Completion storage and ordering queue |
 
-Do not reuse a tag while its earlier operation can still respond unless a generation field safely distinguishes them. Identifier width bounds the encoding space; it does not provide storage for that many operations.
+A tag can be reused only once its earlier operation can no longer respond, or when a generation field tells the two apart. Identifier width bounds the encoding space and provides no storage for that many operations.
 
 Ordering depends on semantics. Independent RAM reads can be reordered by a suitable system, but reading after writing the same location needs a visibility rule. Device reads can have side effects; repeated writes to a command register can trigger repeated actions. Transport optimization must respect these properties.
 
@@ -224,15 +224,15 @@ AHB overlaps one transfer's address phase with a preceding transfer's data phase
 
 AXI separates read addresses, read responses, write addresses, write data and write responses into independently handshaken channels. Registering one channel does not register the others. Write addresses and data need not arrive together; an adapter retains each until it can assemble the transaction. The bus chapter develops these details [@armAxi4Spec].
 
-For AXI4 bursts, count beats as well as transactions. One accepted read address can commit the target to several response beats. Reserving one result slot per address is insufficient. Independent channels do not authorize arbitrary reordering; AXI IDs and ordering rules remain relevant.
+For AXI4 bursts, count beats as well as transactions. One accepted read address can commit the target to several response beats. Reserving one result slot per address is not enough. Independent channels also leave the ordering rules in force, so AXI IDs still matter.
 
-Do not insert an arbitrary clocked delay into AHB address, readiness or response signals. Use a phase-aware bridge. Likewise, use a complete AXI register slice instead of shifting only `VALID` while leaving its payload behind.
+An arbitrary clocked delay in AHB address, readiness or response signals breaks the protocol, so use a phase-aware bridge. In the same spirit, use a complete AXI register slice, because shifting only `VALID` leaves its payload behind.
 
 ### Arbitration, forks and joins
 
 When clients share a service, an arbiter chooses the next item. If its destination stops, the selected payload remains stable. Choosing a different client every cycle during a stall can violate the contract even when each client is correct.
 
-The arbiter can lock its selection until transfer or buffer the chosen item. Fixed priority can starve low-priority clients. Round-robin gives a different fairness contract; update it on actual service rather than merely on visible requests.
+The arbiter can lock its selection until transfer or buffer the chosen item. Fixed priority can starve low-priority clients. Round-robin gives a different fairness contract; update it on actual service and not merely on visible requests.
 
 A fork delivers an item to several destinations. If they pause independently, it remembers which destinations already consumed that item. Repeatedly presenting it to a destination that already accepted creates duplicates. A join retains whichever related input arrives first until the other inputs are available.
 
@@ -244,13 +244,13 @@ Reset empties protocol state: valid bits, FIFO counts, active-operation state an
 
 Cancellation is selective. A queued request may be removable before execution, but an executed device write cannot generally be undone. An old response can arrive after a local flush. Safe handling may require draining transactions, tagging generations or resetting the whole transaction domain under an agreed contract.
 
-Do not translate a processor branch flush into indiscriminate deletion of bus traffic. Requests may have to finish even if their results are unused; stores and device accesses have architectural constraints. A transport identifier cannot express those constraints alone.
+A processor branch flush should not turn into indiscriminate deletion of bus traffic. Requests may have to finish even when their results go unused, since stores and device accesses have architectural constraints that a transport identifier cannot express alone.
 
-Ready/valid here assumes a shared clock. For different clocks, use an asynchronous FIFO or another verified crossing scheme. Synchronizing data bits individually can corrupt an item; synchronizing `valid` and `ready` separately does not preserve the handshake.
+Ready/valid here assumes a shared clock. For different clocks, use an asynchronous FIFO or another verified crossing scheme. Synchronizing data bits individually can corrupt an item, and synchronizing `valid` and `ready` separately breaks the handshake.
 
 ### Verify acceptance, conservation and ordering
 
-The transport methodology in @sec-verification-methodology observes accepted requests and consumed responses. Track outstanding work with an independent queue, check payload retention during stalls, and assert the applicable ordering/ID rules. Cross queue occupancy with simultaneous push/pop, downstream stalls and reset. Reset can cancel protocol state under the contract while already committed memory writes remain. Unit FIFO correctness does not establish the correctness of the assembled arbiter, memory adapter or recovery policy; add an end-to-end transaction scoreboard at that boundary.
+The transport methodology in @sec-verification-methodology observes accepted requests and consumed responses. Track outstanding work with an independent queue, check payload retention during stalls, and assert the applicable ordering/ID rules. Cross queue occupancy with simultaneous push/pop, downstream stalls and reset. Reset can cancel protocol state under the contract while already committed memory writes remain. A correct unit FIFO leaves the assembled arbiter, memory adapter and recovery policy unverified, so add an end-to-end transaction scoreboard at that boundary.
 
 
 ## Implementation
@@ -311,7 +311,7 @@ endmodule
 
 It is not a fall-through FIFO: an item accepted into an empty FIFO becomes available after that edge and can be consumed at the next edge. In a partially occupied steady state, input and output can transfer together each cycle. When completely full, its first pop creates capacity visible the following cycle.
 
-For timing isolation, this tradeoff can be useful. Measure behavior under actual traffic instead of assuming every buffer is identical. For large depths, adapt to synchronous storage rather than assuming the combinational head maps efficiently to block RAM.
+For timing isolation, this tradeoff can be useful. Measure behavior under actual traffic, because buffers differ more than they look. For large depths, adapt the design to synchronous storage, since a combinational head does not map efficiently to block RAM.
 
 `out_data` is unspecified when `out_valid` is low. Consumers cannot treat arbitrary stored words as transactions. Reset clears occupancy and pointers, leaving storage unchanged; the absence of valid data makes stale payload bits irrelevant.
 
@@ -389,7 +389,7 @@ If a request transfers at edge $t$, response valid is set after edge $t+1+a$, wh
 
 The engine waits for response transfer before accepting another request. Its initiation interval is therefore greater than one. Queues can accumulate bursts and decouple the client, but cannot convert its execution into a one-request-per-cycle memory.
 
-The active state and retained response reserve capacity for the only operation in progress. No result overwrites an unconsumed response. A higher-throughput implementation needs reservations for every read in flight rather than this single-operation rule.
+The active state and retained response reserve capacity for the only operation in progress. No result overwrites an unconsumed response. A higher-throughput implementation needs reservations for every read in flight, which replaces this single-operation rule.
 
 RAM contents are not initialized or reset. Write each location before reading when deterministic results are required. Reset can abandon queued responses, but a write applied to the array remains applied. Both the testbench and software contract need to reflect this distinction.
 
@@ -463,15 +463,15 @@ module queued_memory #(
 endmodule
 ```
 
-The request FIFO accepts transactions independently of current service activity. The response FIFO can release the service's result register while the client pauses, if space remains. When it fills, `m_rsp_ready` drops, the service retains its result and stops accepting requests, and the request FIFO eventually fills. Backpressure travels through a resource chain rather than a single combinational readiness chain.
+The request FIFO accepts transactions independently of current service activity. The response FIFO can release the service's result register while the client pauses, if space remains. When it fills, `m_rsp_ready` drops, the service retains its result and stops accepting requests, and the request FIFO eventually fills. Backpressure travels through a chain of resources and not through a single combinational readiness path.
 
 With depth $D$ on both sides, maximum outstanding capacity is $2D+1$: $D$ queued requests, one operation or retained result in the service, and $D$ queued responses. The service cannot hold an active operation and a separate valid response simultaneously. This bound counts external accepted requests until consumed responses; it does not describe simultaneous execution.
 
-The service is ordered. A read following a write observes updated bytes, and writes to the same location execute in acceptance order. Tags are echoed rather than used for reordering. The client still needs a tag-allocation policy; reuse can make diagnostics ambiguous even when this service is ordered.
+The service is ordered. A read following a write observes updated bytes, and writes to the same location execute in acceptance order. Tags are echoed back and do not reorder anything. The client still needs a tag-allocation policy; reuse can make diagnostics ambiguous even when this service is ordered.
 
 ### Walking through congestion
 
-Suppose a depth-two response FIFO already holds two results and the client deasserts readiness. A third result remains in the service register. Request-side space does not imply capacity to execute another operation.
+Suppose a depth-two response FIFO already holds two results and the client deasserts readiness. A third result remains in the service register. Space on the request side says nothing about the capacity to execute another operation.
 
 | Event | Request FIFO | Service | Response FIFO |
 |---|---|---|---|
@@ -497,7 +497,7 @@ Starting multiple reads while retaining only one `rsp_id` register is incorrect.
 
 Wally's External Bus Unit combines instruction and load/store traffic for AHB. In the inspected implementation, LSU traffic has priority, and saved instruction address-phase context is restored when arbitration requires it [@cvwEbu]. These mechanisms preserve phase ownership under contention.
 
-Ask who owns a pending instruction access, where its context is saved, and which readiness indication permits progress. Wally does not use the queued-memory example above. Its AHB signals and cache-bus controllers require their own protocol interpretation rather than relabelling as FIFO signals.
+Ask who owns a pending instruction access, where its context is saved, and which readiness indication permits progress. Wally does not use the queued-memory example above. Its AHB signals and cache-bus controllers need their own protocol interpretation and cannot simply be relabelled as FIFO signals.
 
 Inspect `src/ebu/ebu.sv` and its controller-input instances. Trace simultaneous instruction/data requests, identify the saved address/control fields, and record the save/restore conditions. Pin a repository revision in experiment reports because implementation details can change.
 
@@ -525,11 +525,11 @@ Hold reset through active edges and deassert away from them. Write every RAM wor
 
 [Core · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-pipelines-01 .learning-activity}
 
-Test the FIFO independently at depths two, three and eight; three exercises non-power-of-two wraparound. Send numbered words and randomly pause the receiver. A stalled sender retains its word rather than generating a new number every cycle.
+Test the FIFO independently at depths two, three and eight; three exercises non-power-of-two wraparound. Send numbered words and randomly pause the receiver. A stalled sender keeps its word and does not generate a new number every cycle.
 
 Maintain a reference queue. Append on input handshake; compare with and remove the oldest entry on output handshake. Accepted inputs minus outputs must remain between zero and depth.
 
-Directed cases include empty/full states, simultaneous transfers, a prolonged pause, pointer wrap and reset while occupied. Reset discards the reference queue because it discards buffered hardware items. Do not count reset edges as transfers.
+Directed cases include empty/full states, simultaneous transfers, a prolonged pause, pointer wrap and reset while occupied. Reset discards the reference queue because it discards buffered hardware items. Reset edges are not transfers, so leave them out of the count.
 
 Explain the full-state recovery bubble. Then build a variant accepting full-plus-pop and compare timing and cycle counts. It must preserve the old head being consumed when the write and read address the same array entry.
 
@@ -551,7 +551,7 @@ Set both depths to two. Stop the consumer longer than the path's capacity while 
 
 The response FIFO fills, the service retains one result, the request FIFO fills and source readiness drops. Maximum external outstanding count is five. The source retains its next unaccepted item throughout the stop.
 
-Resume consumption and drain all work. Responses appear once and in order. Apply a timeout only while the environment permits progress; a timeout during deliberately indefinite backpressure is not evidence of an internal deadlock.
+Resume consumption and drain all work. Responses appear once and in order. Apply a timeout only while the environment permits progress; a timeout during deliberately indefinite backpressure says nothing about an internal deadlock.
 
 ### Experiment 4: Measure latency and throughput
 
@@ -570,7 +570,7 @@ Compare depths two, four and eight under short bursts, a continuous source and p
 | Source backpressure | Cycles with `req_valid && !req_ready` |
 | Consumer starvation | Cycles with `rsp_ready && !rsp_valid` |
 
-Larger queues reduce burst-source waiting without necessarily improving saturated execution rate. They can increase queueing latency. Explain results using the serial initiation interval, rather than asserting that more entries always improve performance.
+Larger queues reduce burst-source waiting without necessarily improving saturated execution rate. They can increase queueing latency. Explain results using the serial initiation interval; more entries do not always improve performance.
 
 Include drain time or identify a steady-state window. During filling, input rate exceeds output rate because work accumulates. During draining, output rate can exceed input rate. Both obey conservation.
 
@@ -580,11 +580,11 @@ Include drain time or identify a steady-state window. During filling, input rate
 
 Reset an occupied FIFO and confirm that old items disappear. Next reset the subsystem after a write executes but before its acknowledgement reaches the client. Issue a fresh read after reset.
 
-RAM preserves the applied write while its old acknowledgement can disappear. Missing acknowledgement therefore does not prove that a write never occurred. Retrying a device command after cancellation can repeat its side effect.
+RAM preserves the applied write while its old acknowledgement can disappear. A missing acknowledgement therefore leaves open whether the write occurred. Retrying a device command after cancellation can repeat its side effect.
 
-Repeat with a write only queued before reset, not yet accepted by the service. It is discarded without changing RAM. Observe the internal service handshake to distinguish these cases rather than guessing from external timing.
+Repeat with a write only queued before reset, not yet accepted by the service. It is discarded without changing RAM. Observe the internal service handshake to tell these cases apart, as external timing alone would be a guess.
 
-A production integration needs a reset policy across clients, transport and targets. Compare draining before reset, resetting a whole domain, and tracking old responses by epoch. Do not assume peripheral actions are reversible.
+A production integration needs a reset policy across clients, transport and targets. Compare draining before reset, resetting a whole domain, and tracking old responses by epoch. Peripheral actions are not always reversible.
 
 ### Experiment 6: Build a pipelined target
 
@@ -596,7 +596,7 @@ Let the target accept each cycle when reservations permit it. Pause the response
 
 Measure the outstanding capacity needed to sustain the chosen latency. Then introduce variable completion times and an outstanding table. Compare ordered observation with tag-directed reordered delivery. Add writes only after specifying their ordering and side-effect semantics.
 
-Improvement comes from execution overlap rather than request storage alone. New costs include context storage, reservations and stronger correspondence checking.
+The improvement comes from execution overlap, and request storage alone does not deliver it. New costs include context storage, reservations and stronger correspondence checking.
 
 ### Assertions and progress assumptions
 
@@ -614,7 +614,7 @@ assert property (@(posedge clk) disable iff (reset)
 
 The first belongs at the FIFO output; the second at the memory-subsystem response. Assert occupancy bounds and nonnegative outstanding counts too. In a formal harness, input-source stability is an environment assumption; output stability is a design obligation.
 
-Completing every request eventually is a liveness property. It requires eventual consumption and service assumptions. Safety assertions alone do not prove it, and randomized simulation cannot guarantee coverage of every dependency cycle.
+Completing every request eventually is a liveness property. It requires eventual consumption and service assumptions. Safety assertions alone cannot prove it, and randomized simulation cannot promise to cover every dependency cycle.
 
 ### Reviewing an integration
 
@@ -644,7 +644,7 @@ Explain the difference between accepting a request and completing its side effec
 
 ## Common mistakes {#review-pipelines-mistakes .unnumbered .unlisted}
 
-Counting requests before acceptance; dropping payload stability or assuming reset cancels an already committed write.
+Three slips recur in transport logic. Requests counted before acceptance inflate every throughput figure. A payload that changes while `valid` waits corrupts the transfer. And reset cancels protocol state while a write that was already committed stays in memory.
 
 ## Try it yourself {#review-pipelines-try .unnumbered .unlisted}
 

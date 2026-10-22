@@ -28,7 +28,7 @@ The C++ reference uses a wider integer and explicit modulo arithmetic. It checks
 
 ### The simulator's place in the verification plan
 
-The C++ scoreboard below is a unit-level numerical/control checker under the contract in @sec-verification-methodology. Preserve its automatic comparisons, timeout and failing exit status when adding traces or random traffic. Treat warnings individually; a build that allows warnings is not a clean-lint result. Record initialization/X-handling and assertion options. Waveforms help explain the first failure, while a PASS covers the tested scenarios. Code coverage, when instrumented and collected for the installed version, does not replace contract-defined functional bins or an independent oracle [@verificationVerilator].
+The C++ scoreboard below checks numerical and control behavior at unit level, under the contract in @sec-verification-methodology. Waveforms are the quickest way to understand the first failure, but a PASS vouches only for the scenarios that ran. Keep the automatic comparisons, the timeout and the failing exit status when you add traces or random traffic, so a broken run cannot look like a quiet one. Look at each warning on its merits: a build that tolerates warnings is not a clean lint result. Record the initialization/X-handling and assertion options you used, since they change what a PASS means. Code coverage is a good pointer to logic your tests never reached, but functional bins from the contract and an independent oracle still decide whether the behavior is right [@verificationVerilator].
 
 
 ## Implementation
@@ -301,7 +301,7 @@ Record tool versions, source revision, command, exit status, and any failing cyc
 
 ## Key ideas {#review-verilator-ideas .unnumbered .unlisted}
 
-- Verilator turns supported RTL into an executable simulation model.
+- Verilator turns supported RTL into an executable simulation model, so every RTL edit needs a rebuild.
 - The C++ harness supplies stimulus, clock progression and checking.
 
 ## What you should now be able to explain {#review-verilator-explain .unnumbered .unlisted}
@@ -310,7 +310,7 @@ Explain one simulation iteration, including signal updates, evaluation, sampling
 
 ## Common mistakes {#review-verilator-mistakes .unnumbered .unlisted}
 
-Treating model generation as verification; sampling before the model reflects the intended clock edge.
+Two traps catch most newcomers. A model that builds has only shown that the RTL can be translated, not that it is correct. And sampling before the model reflects the intended clock edge shifts every check by one cycle, which can make a correct design look broken or a broken one look right.
 
 ## Try it yourself {#review-verilator-try .unnumbered .unlisted}
 

@@ -64,7 +64,7 @@ Mixed-width instructions also have an **effective LMUL**, EMUL. If an operand's 
 
 ![Original separation of RVV architectural register grouping and a possible banked implementation. With VLEN=128, e16/m2 groups v8 and v9 into sixteen element positions. The four banks below are an illustrative implementation choice, not a Wally vector unit or a required RVV organization.](../../figures/architecture-rvv-registers.svg){#fig-rvv-register-organization fig-alt="Registers v8 and v9 group into sixteen 16-bit elements, while a separate conceptual physical view shows four banks feeding operand routing and execution" width=100%}
 
-The two views in @fig-rvv-register-organization answer different questions. LMUL determines which architectural names an operand occupies; banking determines how an implementation supplies and accepts slices. Element positions beyond the selected `vl`, and masked positions, still follow the tail and mask policies discussed below. Group capacity alone does not establish throughput.
+The two views in @fig-rvv-register-organization answer different questions. LMUL determines which architectural names an operand occupies; banking determines how an implementation supplies and accepts slices. Element positions beyond the selected `vl`, and masked positions, still follow the tail and mask policies discussed below. Group capacity alone says nothing about throughput.
 
 `vtype` selects SEW, LMUL and inactive-element policies. `vsetvli` takes an AVL from an integer register and writes the chosen `vl` to an integer destination:
 
@@ -74,9 +74,9 @@ vsetvli t0, a2, e16, m1, ta, ma
 
 Here `a2` holds the remaining count, and `t0` receives the actual active count. `ta` and `ma` select tail-agnostic and mask-agnostic destination policies. The immediate form `vsetivli` is convenient for a small constant AVL; `vsetvl` provides a register-supplied configuration form. The practice uses the immediate form only to initialize or extract one reduction element.
 
-Do not hard-code `vl = min(AVL, VLMAX)` as a universal architectural rule. At AVL ≤ VLMAX, the count is AVL; at AVL ≥ 2 × VLMAX, it is VLMAX. Between those bounds, an implementation may choose a count from `ceil(AVL/2)` through VLMAX. A loop using the returned value works for all those choices. A loop advancing by an assumed maximum can skip input.
+`vl = min(AVL, VLMAX)` is not a universal architectural rule, so it should not be hard-coded. At AVL ≤ VLMAX, the count is AVL; at AVL ≥ 2 × VLMAX, it is VLMAX. Between those bounds, an implementation may choose a count from `ceil(AVL/2)` through VLMAX. A loop using the returned value works for all those choices. A loop advancing by an assumed maximum can skip input.
 
-Unsupported format combinations produce an invalid configuration indication (`vill`) and a zero vector length. A general runtime must discover an appropriate target or provide a fallback rather than retry forever with unchanged pointers. The checked practice fixes a model with full V, ELEN = 64 and known legal configurations. Portability here concerns VLEN within that feature contract, not execution on a core without vector instructions.
+Unsupported format combinations produce an invalid configuration indication (`vill`) and a zero vector length. A general runtime discovers an appropriate target or provides a fallback, and retrying forever with unchanged pointers goes nowhere. The checked practice fixes a model with full V, ELEN = 64 and known legal configurations. Portability here concerns VLEN within that feature contract, not execution on a core without vector instructions.
 
 ### Strip mining a loop
 
@@ -101,9 +101,9 @@ For 19 int16 elements on VLEN = 128, e16/m1, one legal partition is 8, 8 and 3. 
 
 A mask is a per-element predicate. Ordinary masked instructions take their predicate from `v0`, conventionally shown as `v0.t` in assembly. A comparison can produce those bits, avoiding a scalar branch for every element. The mask's bit representation is different from an array of full-width zero/one integers.
 
-Separate three regions when reviewing an instruction: active elements selected by the mask, active elements deselected by the mask, and tail elements beyond `vl`. Destination-register policies control what can happen to inactive/tail register elements. With agnostic policies, software must not rely on their old contents or assume they become zero. Undisturbed policies preserve the applicable destination elements but can introduce data dependencies and constrain implementation choices.
+Separate three regions when reviewing an instruction: active elements selected by the mask, active elements deselected by the mask, and tail elements beyond `vl`. Destination-register policies control what can happen to inactive/tail register elements. With agnostic policies, software can rely neither on their old contents nor on zeros. Undisturbed policies preserve the applicable destination elements but can introduce data dependencies and constrain implementation choices.
 
-Memory is different. A masked store does not write a masked-off element, and tail elements do not generate stores. Selecting `ma` does not authorize clearing all unused locations in the destination array. The second lab kernel makes this observable: it copies only positive elements and checks that nonpositive destinations retain a sentinel value.
+Memory is different. A masked store does not write a masked-off element, and tail elements do not generate stores. Selecting `ma` gives no permission to clear the unused locations in the destination array. The second lab kernel makes this observable: it copies only positive elements and checks that nonpositive destinations retain a sentinel value.
 
 ```asm
 vle16.v v2, (a0)
@@ -128,11 +128,11 @@ Segment operations load or store several fields associated with each element. Ch
 | Indexed | Indirect lookup or sparse data | How are addresses generated and faults/order tracked? |
 | Segmented | Interleaved records | Can multiple fields be supplied without excessive bank conflicts? |
 
-Vectorizing an access does not make it cache coherent with a device, remove address translation or replace MMIO ordering rules. Do not apply an ordinary array loop to side-effecting peripheral registers without a precise access contract. Fault-only-first loads provide a specialized mechanism for reducing the active count under defined conditions; they are not a general promise to ignore invalid accesses. Their use and restart behavior belong to a more advanced memory experiment than the contiguous arrays here.
+Vectorizing an access leaves it exactly as coherent with a device as before, keeps address translation in force and leaves MMIO ordering rules unchanged. An ordinary array loop over side-effecting peripheral registers needs a precise access contract first. Fault-only-first loads provide a specialized mechanism for reducing the active count under defined conditions; they are not a general promise to ignore invalid accesses. Their use and restart behavior belong to a more advanced memory experiment than the contiguous arrays here.
 
 ### Reduction and arithmetic width
 
-A reduction combines multiple elements into a scalar result held in an element of a vector register. A seed establishes the initial accumulator; the reduction result must then be extracted or used by subsequent operations. For an empty input, the routine must establish its return value explicitly rather than depend on an operation at zero `vl`.
+A reduction combines multiple elements into a scalar result held in an element of a vector register. A seed establishes the initial accumulator; the reduction result must then be extracted or used by subsequent operations. For an empty input, the routine sets its return value explicitly, because an operation at zero `vl` cannot supply one.
 
 The lab's mathematical contract is:
 
@@ -173,13 +173,13 @@ The configuration change preserves `LMUL/SEW = 1/16 = 2/32`. Both forms therefor
 
 The reduction seed is initialized at e64 before the first iteration. Initializing only its low 32 bits and later reading it as a 64-bit seed would allow undefined upper bits into the result. On subsequent iterations the seed is the preceding 64-bit sum, so each chunk contributes once.
 
-This design emphasizes auditability. Reducing every chunk can become expensive on real hardware. An alternative can keep several vector accumulators and reduce once at the end, provided their per-lane widths cannot overflow and tail handling preserves live partial sums. For signed int16 inputs, blindly keeping 32-bit accumulators is unsafe even though every individual product fits. Optimization must preserve the arithmetic proof.
+This design emphasizes auditability. Reducing every chunk can become expensive on real hardware. An alternative can keep several vector accumulators and reduce once at the end, provided their per-lane widths cannot overflow and tail handling preserves live partial sums. For signed int16 inputs, keeping 32-bit accumulators is unsafe even though every individual product fits. Optimization must preserve the arithmetic proof.
 
 ### Compiler support and the ABI
 
 There are three practical entry points: compiler auto-vectorization of ordinary loops, explicit C intrinsics and assembly. Auto-vectorization is easiest to maintain but needs evidence that the compiler selected a suitable vector loop. Intrinsics expose operations while leaving register allocation to the compiler. Assembly makes the configuration and width transitions explicit, which is why it is the teaching reference here.
 
-Instruction version and intrinsic API version should not be conflated. A compiler may assemble RVV 1.0 while exposing an older intrinsic API. Current GCC documentation describes the ratified intrinsic interface, whereas the environment's exact installed compiler must be checked before copying an example that uses `riscv_vector.h` [@rvvGccIntrinsics; @rvvIntrinsicSpec]. LLVM documents its target-feature and vector support independently [@rvvLlvmUsage]. The reference uses Clang's assembler and ordinary C, avoiding a silent dependency on a particular intrinsic spelling.
+The instruction version and the intrinsic API version are two different things. A compiler may assemble RVV 1.0 while exposing an older intrinsic API. Current GCC documentation describes the ratified intrinsic interface, whereas the environment's exact installed compiler must be checked before copying an example that uses `riscv_vector.h` [@rvvGccIntrinsics; @rvvIntrinsicSpec]. LLVM documents its target-feature and vector support independently [@rvvLlvmUsage]. The reference uses Clang's assembler and ordinary C, avoiding a silent dependency on a particular intrinsic spelling.
 
 The practice compiles the C oracle for a scalar ISA and disables both loop and SLP vectorization. It assembles only the vector kernels/startup with V enabled, then links both sets of objects. This keeps the oracle independent of the operation under test. A reference compiled with the same optimized vector strategy could reproduce the same defect.
 
@@ -189,17 +189,17 @@ The functions use the standard calling convention: arguments and scalar results 
 
 Vector instructions require permitted architectural vector state. The bare-metal startup enables `mstatus.VS`, clears `vstart` and installs a diagnostic trap handler. Disabling interrupts and using one hart avoids a context-switch exercise; it does not solve general preemption.
 
-A Linux application depends on a vector-capable CPU, kernel support and process policy. The kernel must preserve the applicable vector registers and CSRs across scheduling and signals. The Linux vector documentation describes userspace control of vector use; a firmware banner alone does not demonstrate a usable process environment [@rvvLinuxState].
+A Linux application depends on a vector-capable CPU, kernel support and process policy. The kernel must preserve the applicable vector registers and CSRs across scheduling and signals. The Linux vector documentation describes userspace control of vector use; a firmware banner alone says nothing about a usable process environment [@rvvLinuxState].
 
-The raw register payload to save grows with VLEN: 512, 1024 and 2048 bytes for VLEN 128, 256 and 512 respectively. A real scheduler also handles metadata and ownership. Consequently, a short vectorized task may save arithmetic time while increasing scheduling/state-management overhead. Measure the workload at its intended execution boundary, rather than assume the tight loop determines total latency.
+The raw register payload to save grows with VLEN: 512, 1024 and 2048 bytes for VLEN 128, 256 and 512 respectively. A real scheduler also handles metadata and ownership. Consequently, a short vectorized task may save arithmetic time while increasing scheduling/state-management overhead. Measure the workload at its intended execution boundary, because the tight loop alone does not determine total latency.
 
 ### What the Wally baseline provides
 
-The pinned Wally revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` constructs `MISA` in `config/shared/config-shared.vh` with the V position hardwired to zero [@cvwRepository]. The scalar configurations used by this book are therefore not targets for this RVV executable. Coverage files containing a name such as `VLEN512` do not establish an implemented vector datapath or an enabled V ISA bit.
+The pinned Wally revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` constructs `MISA` in `config/shared/config-shared.vh` with the V position hardwired to zero [@cvwRepository]. The scalar configurations used by this book are therefore not targets for this RVV executable. A coverage file with a name such as `VLEN512` does not mean there is an implemented vector datapath or an enabled V ISA bit.
 
 This statement concerns the inspected revision and configurations. A later branch or an external vector coprocessor requires its own source, feature and verification evidence. Enabling a parameter or advertising V in `misa` cannot replace the register file, decode, execution, memory, trap and context-state mechanisms needed by the extension.
 
-For a proposed Wally vector integration, specify at least the architectural feature subset, register organization, scalar/vector issue interface, execution lanes, LSU transaction/restart policy and exception behavior. Reuse the existing scalar core where appropriate, but treat retirement and memory ownership as architectural contracts. A queued vector request must not survive a kill or reset in a way that writes stale data.
+For a proposed Wally vector integration, specify at least the architectural feature subset, register organization, scalar/vector issue interface, execution lanes, LSU transaction/restart policy and exception behavior. Reuse the existing scalar core where appropriate, but treat retirement and memory ownership as architectural contracts. A queued vector request has to be cancelled by a kill or reset in a way that writes stale data.
 
 ## Hands-on Experiments
 
@@ -255,7 +255,7 @@ The first value becomes hexadecimal `100` or `200` for the other two register le
 
 The oracle checks lengths 0–257, additional boundaries through 1025, deterministic signed data, all minimum signed inputs, alternating extremes and zeros. Zero-count calls receive deliberately invalid pointers and must return without accessing them. Masked copying verifies both selected values and unchanged nonpositive destinations, plus output guards.
 
-These checks exercise strip mining, the widening reduction and masked memory writes across three VLEN values. The extremes would fail with a 32-bit accumulator. They do not establish every RVV instruction, floating-point correctness, gather fault behavior, OS context switching or all legal choices of `vl`. QEMU's observed partition is one implementation policy; the loop structure must still obey the architectural count contract.
+These checks exercise strip mining, the widening reduction and masked memory writes across three VLEN values. The extremes would fail with a 32-bit accumulator. Every RVV instruction, floating-point correctness, gather fault behavior, OS context switching and all legal choices of `vl` remain outside what they establish. QEMU's observed partition is one implementation policy; the loop structure must still obey the architectural count contract.
 
 Useful student extensions are to add randomized seeds, a second reduction strategy with a proved width bound, a strided kernel and a controlled translation-fault test. Keep variants outside packaged reference files so that integrity checks continue to identify the supplied implementation.
 
@@ -276,7 +276,7 @@ For the int16 dot product, two input streams deliver four bytes per product. Ign
 
 Separate measured kernel time from complete-job time. For an RVV routine, include call/configuration costs and the intended cache state. For DMA, include descriptor/MMIO setup, buffer synchronization, memory transfer and completion. A device may overlap work with the CPU, so report whether the metric is latency, throughput or freed CPU time.
 
-QEMU wall-clock time and emulated counters do not provide a Wally vector-unit performance model. Use QEMU to establish functional behavior; use an explicitly configured timing model or implemented RTL/hardware for a performance claim. A valid comparison names the core/vector configuration, compiler, workload, memory system, region of interest and counter validation described in @sec-architecture-exploration.
+QEMU wall-clock time and emulated counters do not provide a Wally vector-unit performance model. Use QEMU for functional behavior, and use an explicitly configured timing model or implemented RTL/hardware for a performance claim. A valid comparison names the core/vector configuration, compiler, workload, memory system, region of interest and counter validation described in @sec-architecture-exploration.
 
 ### Microarchitectural choices behind the ISA
 
@@ -288,7 +288,7 @@ Reductions may use a tree, iterative accumulator or hybrid organization. Trees o
 
 The LSU must translate and protect addresses, honor masks, manage outstanding requests and report faults with the right architectural state. Memory instructions are especially important when vector operations cross page boundaries or a device interrupts/reset arrives during execution. Verification should cover outstanding transactions, restart/kill behavior and the difference between register results and externally visible stores.
 
-This makes RVV a genuine alternative to an accelerator, rather than free acceleration. A general vector unit amortizes hardware across many workloads; a dedicated FIR/DMA pipeline can specialize buffering and arithmetic around one contract. Neither option wins without workload and system evidence.
+This makes RVV a genuine alternative to an accelerator, and it is not free acceleration. A general vector unit amortizes hardware across many workloads; a dedicated FIR/DMA pipeline can specialize buffering and arithmetic around one contract. Neither option wins without workload and system evidence.
 
 ### Design review and follow-on exercises
 
@@ -313,7 +313,7 @@ Explain SEW/LMUL changes in the dot product and why widening must precede an ove
 
 ## Common mistakes {#review-vector-processing-mistakes .unnumbered .unlisted}
 
-Assuming vl always equals min(AVL,VLMAX); treating QEMU host runtime as target vector-unit speed.
+Two assumptions break portability and credibility. `vl` is not always `min(AVL, VLMAX)`, so loops must use the returned value. And QEMU's host runtime reflects the emulator, so it is not the speed of a target vector unit.
 
 ## Try it yourself {#review-vector-processing-try .unnumbered .unlisted}
 
