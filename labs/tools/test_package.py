@@ -46,7 +46,7 @@ class PracticeDownload(unittest.TestCase):
         self.assertIn(BOOK_URL + 'learning-paths.html', guide)
         result = self.command('check')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn('29 listing origins', result.stdout)
+        self.assertIn('36 listing origins', result.stdout)
         guides = subprocess.run([sys.executable, 'labs/tools/check_recipes.py'], cwd=self.root,
                                 capture_output=True, text=True, timeout=30)
         self.assertEqual(guides.returncode, 0, guides.stdout + guides.stderr)
