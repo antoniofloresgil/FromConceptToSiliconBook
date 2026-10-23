@@ -47,7 +47,7 @@ The C++ scoreboard below checks numerical and control behavior at unit level, un
 
 Save both files in the same directory, keeping their filenames. If your browser displays a file as text, use **Save link as** to download it. Run the commands below locally in that directory.
 
-### 1. Install the tools
+### Install the tools
 
 On Ubuntu or Debian, install the packaged tool and a C++ build environment:
 
@@ -83,7 +83,7 @@ git describe --tags --always
 
 For reproducibility, replace `stable` with a selected release tag and record it. For package/global installations, leave `VERILATOR_ROOT` unset.
 
-### 2. Prepare a working directory
+### Prepare a working directory
 
 The two source files are included in this book repository under `examples/verilator/`. In a Linux or WSL terminal, from the repository root:
 
@@ -94,7 +94,7 @@ ls accumulator.sv sim_main.cpp
 
 For an independent exercise, create a directory with `mkdir verilator-accumulator`, enter it, and save the following two listings using the exact filenames shown. Use LF line endings.
 
-### 3. Describe the circuit: accumulator.sv
+### Describe the circuit: accumulator.sv
 
 ```systemverilog
 module accumulator(
@@ -122,7 +122,7 @@ endmodule
 
 The addition explicitly extends both operands to 17 bits, preserving the carry. Only the low 16 bits enter the sum register. The clocked process updates state with nonblocking assignments, and the default branch clears the reporting flags on a disabled cycle.
 
-### 4. Write the C++ harness: sim_main.cpp
+### Write the C++ harness: sim_main.cpp
 
 ```cpp
 #include "Vaccumulator.h"
@@ -243,7 +243,7 @@ No HDL delay controls are used, so this harness does not require `--timing`. Adv
 
 ## Hands-on Experiments
 
-### 5. Compile the model and harness
+### Compile the model and harness
 
 [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-baseline .learning-activity}
 
@@ -272,7 +272,7 @@ The translation/build flow follows the official [C++ walkthrough](https://verila
 
 The build leaves the generated C++ and the executable in `obj_dir/`. Open `Vaccumulator.h` to see what your harness can touch: each port is a public member, `Enable` declared as `VL_IN8(&Enable,0,0)` and `Operand` as `VL_IN16(&Operand,15,0)`, so one-bit ports occupy a byte and the 16-bit ports a 16-bit integer. The class also declares `eval()` and `final()`, the two calls the harness uses to advance and finish the model. Knowing where the ports come from makes a compile error in the harness easy to read, and it is the first thing to check when you change a width.
 
-### 6. Run and inspect the result
+### Run and inspect the result
 
 ```sh
 ./obj_dir/Vaccumulator
@@ -373,7 +373,7 @@ The build stops, because `-Wall` enables this warning and Verilator treats warni
 
 Verilator found a real bug at build time, before any waveform or vector. That is the reason to read each warning on its merits and not to silence the tool. If a warning is a deliberate choice, waive it narrowly with a comment that says why, at the exact line, so the next reader sees the decision; the policy in @sec-verification-methodology explains why a global `-Wno-fatal` hides new defects.
 
-### 7. Extend the checks
+### Extend the checks
 
 1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-01 .learning-activity} — Change the RTL overflow test deliberately so that exactly 65535 reports overflow. Rebuild and confirm that the test fails.
 2. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-02 .learning-activity} — Add consecutive disabled cycles after a wrap and check that overflow never becomes sticky.

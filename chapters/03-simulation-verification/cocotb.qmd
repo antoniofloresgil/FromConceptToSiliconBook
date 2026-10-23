@@ -59,7 +59,7 @@ examples/
 
 For standalone downloads, run the setup and test commands from `examples/cocotb/` in your downloaded directory tree.
 
-### 1. Install Python, cocotb, and a simulator
+### Install Python, cocotb, and a simulator
 
 This example pins **cocotb 2.0.1** and uses Icarus Verilog. It requires Python 3.9 or later and Icarus 11 or later. In an Ubuntu/Debian environment:
 
@@ -83,7 +83,7 @@ iverilog -V
 
 The requirements file contains `cocotb==2.0.1`. Keep the environment active when running Make so that its Python and cocotb tools agree.
 
-### 2. Reuse the accumulator RTL
+### Reuse the accumulator RTL
 
 The DUT is `examples/verilator/accumulator.sv`, introduced in the Verilator chapter. The same circuit is now checked from Python rather than from the C++ harness.
 
@@ -91,7 +91,7 @@ At each rising edge, reset or clear sets the sum and reporting flags to zero. Ot
 
 This shared RTL makes the two approaches easy to compare. It does not require running the C++ executable or modifying the accumulator for cocotb.
 
-### 3. Write the Python test
+### Write the Python test
 
 Save the following as `test_accumulator.py`; it is included in `examples/cocotb/`:
 
@@ -172,7 +172,7 @@ The 14 directed vectors exercise reset priority, clear priority, holding state, 
 
 The comparison includes sum, valid, and overflow on every tested cycle. A wrong result prints the cycle, stimulus, and actual/expected tuples. Conversion with `int()` also fails on unresolved values rather than silently accepting an unknown output. The 20 microsecond simulation timeout bounds a missing-clock or stalled test.
 
-### 4. Configure the build
+### Configure the build
 
 The accompanying `Makefile` is:
 
@@ -196,7 +196,7 @@ It selects the HDL source, top module, Python test module, and simulator. The ti
 
 ## Hands-on Experiments
 
-### 5. Run the test
+### Run the test
 
 [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-baseline .learning-activity}
 
@@ -287,7 +287,7 @@ AssertionError: cycle=5, stimulus=(0, 1, 1, 100), actual=(114, 1, 0), expected=(
 
 This table is a **checked recipe**. `python labs/run.py run cocotb` builds every variant from [cocotb_mutation_check.py](../../labs/05-verification/cocotb_mutation_check.py), runs both versions of the test with the same fault list as the Verilator check, and fails if any outcome differs from the table.
 
-### 6. Extend verification
+### Extend verification
 
 1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-01 .learning-activity} — Deliberately make overflow sticky in the RTL. Rerun the test and confirm a disabled cycle detects the error.
 2. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-02 .learning-activity} — Add consecutive reset and clear cases while enable is active, documenting their priority.

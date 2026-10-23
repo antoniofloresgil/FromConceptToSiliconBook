@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 CATALOGUE=Path(__file__).with_name('learning-paths.json')
 LABEL=re.compile(r'\[(?:Preparation|Core option|Core|Advanced)[^\n]*?\]\([^\n]*?\)\{#act-[^}\n]+ \.learning-activity\}')
 ROLES={'preparation':'Preparation','core':'Core','option':'Core option','advanced':'Advanced'}
-LIST_SECTIONS={'Fundamentals exercises','Full-SoC integration experiments','6. Extend verification','7. Extend the checks'}
+LIST_SECTIONS={'Fundamentals exercises','Full-SoC integration experiments','Extend verification','Extend the checks'}
 
 def strip_labels(text):
     text=re.sub(r'^'+LABEL.pattern+r'\n\n','',text,flags=re.M)
