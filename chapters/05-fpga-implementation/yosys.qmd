@@ -209,6 +209,155 @@ Use reports to formulate a narrow hypothesis, then test one change at a time:
 
 For equivalence-sensitive work, compare a simulation of the RTL against a simulation of the mapped netlist, or use formal equivalence when the design/toolchain supports it. This is particularly valuable after RAM inference, reset refactoring or aggressive parameter changes. It catches mismatches at the logical boundary before place-and-route makes the artifacts much larger.
 
+### Three surprises, diagnosed
+
+The table above lists likely causes. Here are three of them reproduced on small modules, so that each cause comes with the evidence that identifies it. They run on the Yosys in the laboratory container (version 0.33); the counts belong to that version and to the flow named in each case, and a different Yosys release can report different numbers for the same module.
+
+**A counter that vanished.** The module below registers `a` into `y` and also contains a 16-bit counter that nothing observes:
+
+```systemverilog
+module counter_unobserved(
+  input  logic       clk, rst,
+  input  logic [7:0] a,
+  output logic [7:0] y);
+
+  logic [15:0] dbg; // free-running debug counter that no output observes
+
+  always_ff @(posedge clk) begin
+    if (rst) dbg <= '0;
+    else     dbg <= dbg + 16'd1;
+    y <= a;
+  end
+endmodule
+```
+
+```sh
+yosys -p 'read_verilog -sv counter_unobserved.sv; synth -top counter_unobserved; stat'
+```
+
+The report shows 8 cells, all of them `$_DFF_P_`, and they are the eight bits of `y`. The counter has no flip-flops and no incrementer, because logic that drives no output is removed. That is the right result for this module, and the symptom to recognize in a real design is the one in the table: a block that consumes zero logic. Give the counter an observable output and it returns:
+
+```systemverilog
+module counter_observed(
+  input  logic        clk, rst,
+  input  logic [7:0]  a,
+  output logic [7:0]  y,
+  output logic [15:0] dbg_o);
+
+  logic [15:0] dbg;
+
+  always_ff @(posedge clk) begin
+    if (rst) dbg <= '0;
+    else     dbg <= dbg + 16'd1;
+    y <= a;
+  end
+  assign dbg_o = dbg;
+endmodule
+```
+
+Now the report has 62 cells: the same eight `$_DFF_P_`, 16 `$_SDFF_PP0_` (flip-flops with a synchronous reset) and the adder logic. When a peripheral or a debug block disappears from a build, trace its connectivity to an output before suspecting the tool.
+
+**A block RAM that became LUT RAM.** Two memories of 1,024 bytes differ only in how they are read:
+
+```systemverilog
+module ram_async(
+  input  logic       clk, we,
+  input  logic [9:0] addr,
+  input  logic [7:0] din,
+  output logic [7:0] dout);
+
+  logic [7:0] mem [1024];
+
+  always_ff @(posedge clk) if (we) mem[addr] <= din;
+  assign dout = mem[addr]; // asynchronous read
+endmodule
+```
+
+```systemverilog
+module ram_sync(
+  input  logic       clk, we,
+  input  logic [9:0] addr,
+  input  logic [7:0] din,
+  output logic [7:0] dout);
+
+  logic [7:0] mem [1024];
+
+  always_ff @(posedge clk) begin
+    if (we) mem[addr] <= din;
+    dout <= mem[addr]; // registered read: one cycle of latency
+  end
+endmodule
+```
+
+```sh
+yosys -p 'read_verilog -sv ram_async.sv; synth_xilinx -family xc7 -top ram_async; stat'
+```
+
+With the asynchronous read, the XC7 flow builds the memory from distributed LUT RAM: 32 `RAM256X1S` primitives and 12 LUTs, and no block RAM. The arithmetic matches the memory: each primitive holds 256 bits, four of them make a 1,024-deep bit, and eight bits need 32. The 12 LUTs are the surrounding logic, 4 `LUT3` and 8 `LUT6`, which fits one write decode per slice and a four-way read multiplexer per bit. With the registered read, the same flow reports one `RAMB18E1` and no LUT RAM. Block RAM has a registered output, so an asynchronous read cannot map to it, and the registered read changes the design: the data now arrives one cycle later, and the logic that consumes it has to expect that. This is the row "BRAM count unexpectedly drops" in the table, and why the fourth hands-on exercise asks you to confirm the latency in simulation after changing a memory style.
+
+**A latch the tool rejects, or quietly builds.** A combinational block that forgets to assign `q` when `en` is low describes a latch:
+
+```systemverilog
+module latch_comb(
+  input  logic       en,
+  input  logic [3:0] d,
+  output logic [3:0] q);
+
+  always_comb if (en) q = d; // q is not assigned when en is low
+endmodule
+```
+
+Written with `always_comb`, Yosys stops while converting the process and says why:
+
+```text
+ERROR: Latch inferred for signal `\latch_comb.\q' from always_comb process ...
+```
+
+The older `always @*` accepts the same mistake and builds a latch, which only the review gate catches:
+
+```systemverilog
+module latch_star(
+  input  logic       en,
+  input  logic [3:0] d,
+  output logic [3:0] q);
+
+  always @* if (en) q = d; // the same mistake with the older construct
+endmodule
+```
+
+```text
+Latch inferred for signal `\latch_star.\q' from process ...
+ERROR: Assertion failed: selection is not empty: t:$dlatch
+```
+
+The gate is `select -assert-none t:$dlatch`, the same check the laboratory runs on every teaching module. `always_comb` is therefore worth using for more than style: it turns a silent latch into an error at the `proc` step. Assign a default on every path and the gate passes:
+
+```systemverilog
+module latch_fixed(
+  input  logic       en,
+  input  logic [3:0] d,
+  output logic [3:0] q);
+
+  always_comb begin
+    q = '0;            // default assignment on every path
+    if (en) q = d;
+  end
+endmodule
+```
+
+Read the log and not only the exit code, since the `always @*` case shows the latch in a log line before the assertion fires.
+
+| Case | Flow | Result on Yosys 0.33 |
+| --- | --- | --- |
+| `counter_unobserved` | `synth` | 8 cells, 8 flip-flops: the counter is gone |
+| `counter_observed` | `synth` | 62 cells, 24 flip-flops |
+| `ram_async` | `synth_xilinx -family xc7` | 32 `RAM256X1S` and 12 LUTs, no block RAM |
+| `ram_sync` | `synth_xilinx -family xc7` | 1 `RAMB18E1`, no LUT RAM |
+| `latch_comb`, `latch_star` | latch gate | error at `proc`; assertion failure |
+| `latch_fixed` | latch gate | passes |
+
+This table is a **checked recipe**. `python labs/run.py run synthesis` synthesizes every module in [labs/07-implementation/surprises/](../../labs/07-implementation/surprises/) and fails if any outcome differs from it.
+
 ### Reports for architecture decisions
 
 Synthesis data can guide microarchitecture only when experiments are controlled. Compile a baseline with a fixed source commit, configuration, tool version and constraints. Change one item, then compare both resource totals and critical structural messages. For a processor, meaningful alternatives include branch-predictor size, cache ways, multiplier implementation, register-file realization, reset policy and optional peripherals.
@@ -235,6 +384,7 @@ The next chapter takes the JSON netlist and constraints through packing, placeme
 
 - Synthesis maps an elaborated RTL configuration into technology-specific structures.
 - A mapped netlist is an implementation checkpoint, not a timing or board result.
+- A resource report is evidence: logic that disappears, a RAM that changes style or a latch that appears each has a signature that a small module reproduces.
 
 ## What you should now be able to explain {#review-yosys-explain .unnumbered .unlisted}
 

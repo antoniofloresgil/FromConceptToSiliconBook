@@ -2,6 +2,8 @@
 
 Run `python labs/run.py run synthesis`. Tools: Icarus and Yosys. It tests the **implementation** accumulator's uppercase `Clk`/`Reset` interface, elaborates every complete teaching RTL unit with its dependencies, rejects unintended latches and produces a generic accumulator netlist/resource report. This is not FPGA placement or ASIC sign-off.
 
+`python labs/run.py run synthesis` also runs `synthesis_surprises.py`, which synthesizes the small modules in `surprises/` and checks the results the Yosys chapter reports: a debug counter that disappears when no output observes it, a 1,024-byte memory that maps to 32 `RAM256X1S` primitives with an asynchronous read and to one `RAMB18E1` with a registered read, and a latch that `always_comb` rejects, `always @*` quietly builds and the `$dlatch` gate catches. The counts belong to the Yosys 0.33 of the laboratory container.
+
 `rtl/accumulator.sv`, `constraints.sdc` and `config.yaml` correspond to the OpenROAD/LibreLane chapters. The simulation chapter's accumulator has different clock/reset spelling. The physical-flow configuration deliberately points to this implementation RTL so that `CLOCK_PORT: Clk` is correct.
 
 ## Guided ASIC work

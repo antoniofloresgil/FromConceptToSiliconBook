@@ -21,6 +21,20 @@ module("04-soc-architecture/buses-interrupts", "04-mmio", "event_axil")
 for name in ["gpio_teaching_apb", "byte_fifo", "pwm_teaching"]:
     module("04-soc-architecture/peripherals", "04-mmio", name)
 module("06-asic-implementation/openroad", "07-implementation", "accumulator")
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module counter_unobserved"], "file": "labs/07-implementation/surprises/counter_unobserved.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module counter_observed"], "file": "labs/07-implementation/surprises/counter_observed.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module ram_async"], "file": "labs/07-implementation/surprises/ram_async.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module ram_sync"], "file": "labs/07-implementation/surprises/ram_sync.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module latch_comb"], "file": "labs/07-implementation/surprises/latch_comb.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module latch_star"], "file": "labs/07-implementation/surprises/latch_star.sv"})
+SOURCES.append({"chapter": "chapters/05-fpga-implementation/yosys.qmd", "language": "systemverilog",
+                "starts": ["module latch_fixed"], "file": "labs/07-implementation/surprises/latch_fixed.sv"})
 
 SOURCES += [
     {"chapter": "chapters/01-foundations/risc-v-isa.qmd", "language": "asm",

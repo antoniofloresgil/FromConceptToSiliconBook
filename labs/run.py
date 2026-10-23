@@ -240,6 +240,7 @@ def run_lab(name, session):
         source = (session.override or folder / "rtl") / "accumulator.sv"
         script = f'read_verilog -sv "{source.as_posix()}"; synth -top accumulator; check -assert; stat; write_json accumulator.json; write_verilog accumulator-netlist.v'
         session.execute(["yosys", "-Q", "-T", "-p", script])
+        session.execute([sys.executable, folder / "synthesis_surprises.py", session.directory / "surprises"], timeout=600)
     else:
         raise RuntimeError(f"{name} is {LABS[name]['mode']}: follow labs/{LABS[name]['folder']}/README.md")
 
