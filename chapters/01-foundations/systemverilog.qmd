@@ -1,6 +1,8 @@
 # SystemVerilog for Hardware Design {#sec-systemverilog}
 
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run foundations`. The appendix states dependencies, checked requirements and guided extensions.
+Many of the first bugs in SystemVerilog are not syntax errors: a latch where a wire was meant, a width that silently truncates, a register that never resets. This chapter teaches the part of the language that describes hardware predictably, and how to read the circuit that a description implies.
+
+The small modules in it, a word selector, an enabled sample pipeline, a request controller, an elastic slice and an instruction decoder, are exercised by `python labs/run.py run foundations` in the [laboratory package](../../appendices/reproducible-labs.qmd).
 
 ## Concepts
 

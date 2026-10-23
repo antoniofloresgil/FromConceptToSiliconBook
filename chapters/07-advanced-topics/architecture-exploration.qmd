@@ -1,12 +1,12 @@
 # Architectural Design Exploration {#sec-architecture-exploration}
 
-For multicore alternatives, use @sec-multicore to establish coherence-domain, ordering, ownership and progress constraints before comparing performance. A configuration with missing integration guarantees is not a feasible point merely because its core count is larger.
-
 ## Concepts
 
 Architectural design-space exploration (DSE) selects among implementable processor and SoC alternatives under defined objectives and constraints. A useful result connects a design decision to verified behavior, a workload, measured performance and implementation cost. A configuration table is a starting point; a defensible choice requires a controlled comparison and an explanation of its limits.
 
 This chapter uses CORE-V Wally as the RTL platform and connects the performance-counter, verification, FPGA and ASIC chapters. Harris et al.'s performance verification in Chapter 21 establishes that cache and predictor measurements themselves need validation [@harrisRiscvSoc]. Weste and Harris connect design choices to implementation flows and physical constraints [@westeCmosVlsi, Chapter 14]. The complete files under `labs/11-dse/` provide a real Wally divider sweep and a separate, explicitly illustrative Pareto-analysis exercise.
+
+For multicore alternatives, use @sec-multicore to establish coherence-domain, ordering, ownership and progress constraints before comparing performance. A configuration with missing integration guarantees is not a feasible point merely because its core count is larger.
 
 ### Define the decision before selecting parameters
 

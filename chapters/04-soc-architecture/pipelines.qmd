@@ -1,12 +1,12 @@
 # Pipelines, Buffering and Backpressure {#sec-transport-pipelines}
 
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run transport`. The appendix states dependencies, checked requirements and guided extensions.
-
 A system-on-chip contains many pipelines besides the processor's instruction pipeline. Requests travel from a client to a memory or peripheral, responses travel back, and streams move between accelerators. These paths must preserve information even when one component runs out of space or takes longer than expected. Registers shorten timing paths; buffers allow components to work concurrently; a flow-control protocol determines when ownership of a transaction changes.
 
 This chapter develops those transport mechanisms. The five-stage instruction pipeline, forwarding and instruction hazards belong to the CORE-V Wally chapter. Here, a pipeline carries transactions instead of instructions. A FIFO can preserve memory-request order without knowing anything about register dependencies, speculative execution or the RISC-V instruction set, and that independence is what makes it reusable.
 
 The discussion connects synchronous-memory timing in Chapter 7 of *RISC-V System-on-Chip Design* with SoC interfaces studied later in the book [@harrisRiscvSoc]. The RTL below consists of original teaching designs. Their ready/valid interfaces are deliberately smaller than AXI; a handshake alone does not make a module AXI compliant.
+
+The queues and the delayed-memory engine below are checked by `python labs/run.py run transport` in the [laboratory package](../../appendices/reproducible-labs.qmd), at queue depths 2, 3 and 8, with 500 memory operations and 5,000 FIFO cycles per configuration and a consumer that stays stopped until both queues fill.
 
 ## Concepts
 

@@ -1,6 +1,8 @@
 # Clocking, Reset, and Timing Constraints {#sec-clocking-timing}
 
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run foundations`. The appendix states dependencies, checked requirements and guided extensions.
+A design that simulates correctly can still fail on a board, because nobody told the tools how fast it has to run or because two clocks meet with no protocol between them. This chapter is about the contract that closes that gap: which edge samples what, how reset enters and leaves, and what the timing constraints promise to the implementation tools.
+
+The reset-release and bit-synchronizer modules built here are simulated by `python labs/run.py run foundations` in the [laboratory package](../../appendices/reproducible-labs.qmd). A digital run shows the protocol working; it cannot measure metastability, and the chapter says where that limit matters.
 
 ## Concepts
 

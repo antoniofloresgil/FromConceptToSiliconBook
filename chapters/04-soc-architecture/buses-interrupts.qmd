@@ -1,14 +1,14 @@
 # Buses and Interrupts {#sec-buses-interrupts}
 
-For an executable software endpoint, follow @sec-linux-accelerator: Device Tree discovery, MMIO, PLIC completion, a kernel IRQ handler, DMA ownership and an ioctl application. The QEMU model checks the software contract; the advanced Wally route exposes the actual RTL control/interrupt path.
-
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run mmio`. The appendix states dependencies, checked requirements and guided extensions.
-
 A processor becomes a system when its instructions can reach memories and peripherals and peripheral events can reach software. A load from RAM and a load from a UART status register look similar in assembly, but their hardware contracts differ. A peripheral may return changing state, consume a received byte or acknowledge an event. The interconnect must preserve those meanings while devices respond at different speeds.
 
 This chapter follows two paths: an instruction's request to a device, and an interrupt's journey back to the processor. It develops APB, AHB and AXI, then uses full CORE-V Wally to connect transactions, registers and RISC-V interrupt handling. The main textbook references are Chapters 8 and 9 and Sections 20.2–20.3 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc].
 
 Distinguish a **protocol** from an **implementation**. Wally's EBU/uncore path uses AHB and an AHB-to-APB bridge. AXI is studied as another SoC design option, not described as the native interface of that path. The interrupt examples require privileged support; the simplified teaching pipeline studied elsewhere omits traps and privileged state.
+
+The AXI4-Lite endpoint, the APB GPIO, a byte FIFO, a PWM unit and their C drivers are checked by `python labs/run.py run mmio` in the [laboratory package](../../appendices/reproducible-labs.qmd), for channel independence, event handling, byte masks and driver compilation.
+
+For an executable software endpoint, follow @sec-linux-accelerator: Device Tree discovery, MMIO, PLIC completion, a kernel IRQ handler, DMA ownership and an ioctl application. The QEMU model checks the software contract; the advanced Wally route exposes the actual RTL control/interrupt path.
 
 ## Concepts
 

@@ -1,10 +1,10 @@
 # RISC-V ISA: The Hardware–Software Contract {#sec-riscv-isa}
 
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run isa`. The appendix states dependencies, checked requirements and guided extensions.
-
 An instruction-set architecture (ISA) specifies what a program can observe when instructions execute. A microarchitecture specifies how a circuit produces that behavior. A compiler needs the former; an RTL designer chooses the latter. Keeping the distinction explicit makes it possible to compare a functional simulator, Wally RTL and an implemented FPGA without confusing identical results with identical timing.
 
 This chapter develops the integer programming model and the encodings needed to read a RISC-V datapath. It draws on Chapters 2 and 3 and the immediate-extension discussion in Chapter 7 of *RISC-V System-on-Chip Design* [@harrisRiscvSoc]. The ratified instruction-set manuals remain the normative reference [@riscvUnprivilegedSpec]. The examples start with RV32I and explicitly identify extensions and platform services instead of assuming that every RISC-V implementation includes them.
+
+To check what you read here, `python labs/run.py run isa` in the [laboratory package](../../appendices/reproducible-labs.qmd) assembles a short RV32I program and compares its signature with the expected one. `python labs/run.py run foundations` tests the immediate decoder against every I and S immediate, every branch offset and the jump and upper-immediate boundaries.
 
 ## Concepts
 

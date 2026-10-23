@@ -1,14 +1,14 @@
 # Memories and Caches {#sec-memories-caches}
 
-The Linux integration in @sec-linux-accelerator makes DMA ownership concrete: a reserved pool, DMA addresses, coherent allocation, ordering barriers and timeout quarantine. Its advanced Wally profile starts with D-cache disabled; enabling it requires a new verified cache/DMA contract.
-
-Executable reference sources and tests are included in the [laboratory package](../../appendices/reproducible-labs.qmd). From its root, run `python labs/run.py run memory`. The appendix states dependencies, checked requirements and guided extensions.
-
 A processor can execute an arithmetic operation quickly and still spend most of its time waiting for data. The memory system bridges the gap between a small, fast datapath and a much larger storage space. Its behavior depends on physical memories, cache organization, address translation, bus service and the instructions being executed. These layers must be understood separately before they can be integrated correctly.
 
 This chapter develops a synchronous memory contract, explains cache organization and then follows instruction and data accesses through CORE-V Wally. It builds mainly on Chapter 10 of *RISC-V System-on-Chip Design*, with pipeline memory timing from Chapter 7, memory management from Chapter 11, LSU integration from Chapter 12 and instruction-cache integration from Section 13.3.1 [@harrisRiscvSoc].
 
 Wally's caches are configurable implementations, not requirements of the RISC-V ISA. A small configuration can use tightly integrated memories without a cache; an application-oriented configuration can include instruction/data caches and virtual memory. The examples below use three different things: a physical memory, a functional cache model and full Wally RTL. Each one is verified on its own terms.
+
+The synchronous RAM and the Python cache model developed here are checked by `python labs/run.py run memory` in the [laboratory package](../../appendices/reproducible-labs.qmd): read-first behavior, byte masks, stalls, and dirty eviction, clean and refill.
+
+The Linux integration in @sec-linux-accelerator makes DMA ownership concrete: a reserved pool, DMA addresses, coherent allocation, ordering barriers and timeout quarantine. Its advanced Wally profile starts with D-cache disabled; enabling it requires a new verified cache/DMA contract.
 
 ## Concepts
 

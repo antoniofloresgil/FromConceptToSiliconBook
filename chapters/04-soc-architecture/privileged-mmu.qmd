@@ -1,7 +1,5 @@
 # Privileged Architecture and the MMU {#sec-privileged-mmu}
 
-Use @sec-hardware-security for the system threat model and composition of CPU isolation with independent DMA/debug access controls; the architectural PMP/MMU mechanisms remain developed in this chapter.
-
 ## Concepts
 
 The simplified processor in @sec-core-v-wally executes instructions without the privileged machinery of a complete Wally core. The buses chapter introduces machine-mode interrupts, while the memory chapter introduces translation and protection where they interact with caches. This chapter completes the connection: who may execute an operation, how virtual addresses become physical addresses, and how a rejected operation transfers control to privileged software.
@@ -9,6 +7,8 @@ The simplified processor in @sec-core-v-wally executes instructions without the 
 The main reading is Harris et al., *RISC-V System-on-Chip Design*, Chapters 8 and 11, with Chapter 12 for integration into the LSU [@harrisRiscvSoc]. The architectural reference is the RISC-V privileged specification; the examples select its ordinary single-stage supervisor translation model, without hypervisor translation [@riscvPrivilegedSpec]. Wally implementation observations refer to revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c`, matching the full-SoC reading baseline elsewhere in this book.
 
 After the chapter, the reader should be able to trace an M-to-S transition, determine a trap's destination, decode an Sv32 PTE, calculate a two-level translation, distinguish page faults from physical access faults, and explain a Wally TLB miss without confusing it with a cache miss. The practical example exercises a successful load/store and a deliberately denied store on Spike; the final exercise follows the same behavior in Wally RTL.
+
+Use @sec-hardware-security for the system threat model and composition of CPU isolation with independent DMA/debug access controls; the architectural PMP/MMU mechanisms remain developed in this chapter.
 
 ### Privilege is architectural state
 

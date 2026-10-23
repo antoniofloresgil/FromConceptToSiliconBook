@@ -1,16 +1,16 @@
 # Accelerators and ISA Extensions {#sec-accelerators}
 
-The Linux continuation in @sec-linux-accelerator and [Lab 18](../../labs/18-linux-accelerator/README.md) connects the dot-product register contract to a kernel driver, DMA pool, IRQ/polling and a userspace application. Keep its QEMU software timings separate from RTL cycles and physical implementation frequency.
-
-Use @sec-vector-processing to establish a standard RVV alternative before committing to custom ISA or DMA acceleration. Its checked integer example demonstrates vector-length-independent execution; selecting hardware still requires matched numerical contracts and measured system costs.
-
-The threat model and independent enforcement obligations for a bus master are synthesized in @sec-hardware-security; retain this chapter's descriptor, ownership and DMA integration mechanics when evaluating that system policy.
-
 ## Why Accelerate?
 
 An accelerator is worthwhile only when it improves the complete workload. Replacing ten arithmetic instructions by one fast hardware operation is not useful if moving operands, starting the unit, waiting for it and copying the result cost more than the saved execution. The starting point is therefore a measured software profile, a reference implementation and a clear contract for correctness.
 
 This chapter uses CORE-V Wally as the integration context and a finite-impulse-response (FIR) filter as a practical case. The FIR is deliberately modest: it has repeated multiply-accumulate work, a streaming memory-access pattern, a software reference model and a natural mapping to FPGA DSP blocks. The architecture and RTL described as an **implementation proposal** are not claimed to be part of the current Wally repository.
+
+The Linux continuation in @sec-linux-accelerator and [Lab 18](../../labs/18-linux-accelerator/README.md) connects the dot-product register contract to a kernel driver, DMA pool, IRQ/polling and a userspace application. Keep its QEMU software timings separate from RTL cycles and physical implementation frequency.
+
+Use @sec-vector-processing to establish a standard RVV alternative before committing to custom ISA or DMA acceleration. Its checked integer example demonstrates vector-length-independent execution; selecting hardware still requires matched numerical contracts and measured system costs.
+
+The threat model and independent enforcement obligations for a bus master are synthesized in @sec-hardware-security; retain this chapter's descriptor, ownership and DMA integration mechanics when evaluating that system policy.
 
 ### The design-space choices
 
