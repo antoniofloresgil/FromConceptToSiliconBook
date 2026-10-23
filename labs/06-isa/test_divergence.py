@@ -12,6 +12,7 @@ sys.path.insert(0, str(HERE))
 import compare_retirement as compare  # noqa: E402
 
 START = 0x80000000
+ELF_OPTION = []  # set from the command line by the lab runner, which passes the check.elf it built
 
 
 def line(pc, insn, effect=""):
@@ -64,7 +65,7 @@ class RecordedReferenceTest(unittest.TestCase):
 
     def test_demo_finds_the_seeded_fault_with_the_recorded_log(self):
         with tempfile.TemporaryDirectory() as directory:
-            done = subprocess.run([sys.executable, str(HERE / "divergence_demo.py"), directory],
+            done = subprocess.run([sys.executable, str(HERE / "divergence_demo.py"), directory, *ELF_OPTION],
                                   capture_output=True, text=True)
             self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
             self.assertIn("FIRST DIVERGENCE at retired instruction #25", done.stdout)
@@ -72,4 +73,6 @@ class RecordedReferenceTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 2 and not sys.argv[1].startswith("-"):
+        ELF_OPTION[:] = ["--elf", sys.argv.pop(1)]
     unittest.main()

@@ -171,8 +171,16 @@ def run_lab(name, session):
         session.execute(["ld.lld", "-m", "elf32lriscv", "--no-relax", "-T", folder / "isa_demo.ld",
                          session.directory / "isa_demo.o", "-o", session.directory / "isa_demo.elf"])
         session.execute([sys.executable, folder / "check_signature.py", session.directory / "isa_demo.elf"])
-        session.execute([sys.executable, folder / "test_divergence.py"])
-        session.execute([sys.executable, folder / "divergence_demo.py", session.directory / "divergence"])
+        # The Spike/Sail chapter builds this program with the GNU toolchain; the image's Clang and LLD give the
+        # same instructions, which the recorded Spike log in the demo then confirms.
+        reference_models = ROOT / "examples/reference-models"
+        session.execute(["clang", "--target=riscv64", "-march=rv64i", "-mabi=lp64", "-mcmodel=medany", "-nostdlib",
+                         "-c", reference_models / "check.S", "-o", session.directory / "check.o"])
+        session.execute(["ld.lld", "-m", "elf64lriscv", "--no-relax", "-T", reference_models / "link.ld",
+                         session.directory / "check.o", "-o", session.directory / "check.elf"])
+        session.execute([sys.executable, folder / "test_divergence.py", session.directory / "check.elf"])
+        session.execute([sys.executable, folder / "divergence_demo.py", session.directory / "divergence",
+                         "--elf", session.directory / "check.elf"])
     elif name == "verilator":
         objects = session.directory / "obj_dir"
         session.execute(["verilator", "--cc", "--exe", "--build", "--trace", "-Wall",

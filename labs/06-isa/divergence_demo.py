@@ -5,7 +5,9 @@ Runs the book's RV64I program through the stand-in model twice, without and with
 retirement log with the Spike reference log, and compares the signature words too. By default the reference is the
 recorded Spike log in labs/06-isa/reference/. With --spike PATH the reference is produced live (and --record
 refreshes the recorded log, which then needs its manifest updated).
-Usage: python labs/06-isa/divergence_demo.py BUILD_DIRECTORY [--spike spike] [--record]
+The program is examples/reference-models/check.elf unless --elf names another build of check.S (the lab runner
+builds one with the image's Clang and LLD; the chapter builds it with the GNU toolchain).
+Usage: python labs/06-isa/divergence_demo.py BUILD_DIRECTORY [--elf check.elf] [--spike spike] [--record]
 """
 import argparse
 import hashlib
@@ -37,9 +39,9 @@ def trimmed(text):
     return "\n".join(kept) + "\n"
 
 
-def run_model(work, name, fault):
+def run_model(work, name, fault, elf):
     log, signature = work / f"{name}.log", work / f"{name}.sig"
-    subprocess.run([sys.executable, str(HERE / "retire_model.py"), str(ELF), "--log", str(log),
+    subprocess.run([sys.executable, str(HERE / "retire_model.py"), str(elf), "--log", str(log),
                     "--signature", str(signature), "--fault", fault], check=True)
     return log, signature
 
@@ -47,16 +49,20 @@ def run_model(work, name, fault):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("build")
+    parser.add_argument("--elf", type=Path, default=ELF)
     parser.add_argument("--spike")
     parser.add_argument("--record", action="store_true")
     args = parser.parse_args()
+    if not args.elf.is_file():
+        raise SystemExit(f"Missing {args.elf}: build it from check.S and link.ld as the Spike/Sail chapter shows, "
+                         "or run `python labs/run.py run isa`, which builds one in its own build directory.")
     work = Path(args.build).resolve()
     work.mkdir(parents=True, exist_ok=True)
 
     reference = RECORDED
     if args.spike:
         live = work / "spike.log"
-        subprocess.run([args.spike, "--isa=rv64i", "--log-commits", f"--log={live}", str(ELF)], check=True)
+        subprocess.run([args.spike, "--isa=rv64i", "--log-commits", f"--log={live}", str(args.elf)], check=True)
         reference = work / "spike-trimmed.log"
         reference.write_text(trimmed(live.read_text(encoding="utf-8")), encoding="utf-8")
         if args.record:
@@ -65,8 +71,8 @@ def main():
     ref_items = compare.retired(reference)
 
     report = {"reference": "spike" if args.spike else RECORDED.relative_to(ROOT).as_posix()}
-    healthy_log, healthy_sig = run_model(work, "healthy", "none")
-    faulty_log, faulty_sig = run_model(work, "faulty", "slt-unsigned")
+    healthy_log, healthy_sig = run_model(work, "healthy", "none", args.elf)
+    faulty_log, faulty_sig = run_model(work, "faulty", "slt-unsigned", args.elf)
 
     healthy = compare.compare(ref_items, compare.retired(healthy_log), START)
     print("healthy stand-in:", compare.describe(healthy))
