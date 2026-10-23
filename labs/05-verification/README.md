@@ -6,4 +6,6 @@ Expected result: all scoreboards pass; the cocotb XML contains a successful test
 
 The supplied container's distribution Verilator is used for the standalone C++ example. cocotb uses Icarus: its Verilator backend requires version 5.036 or newer and is not selected automatically.
 
+`python labs/run.py run verilator` also runs `mutation_check.py`: it builds five deliberately faulty copies of the accumulator against the book's 14-vector harness and against the same harness with three added vectors, and fails if any outcome differs from the table in the Verilator chapter. Two of the faults pass the 14 vectors and fail the 17, and one never builds because `-Wall` reports an unused `Clear`.
+
 Exercise: make overflow incorrectly sticky in a student branch and confirm both environments detect the failure. Minimize the failing sequence, repair the implementation and retain the regression. Explain stimulus-driving and output-sampling phases.

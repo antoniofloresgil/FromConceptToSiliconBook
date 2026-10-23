@@ -12,6 +12,10 @@ In a C++ flow, the test harness supplies inputs, clock transitions, and checks. 
 
 This chapter develops an original clocked accumulator example. It follows the create–compile–run progression of the official [C++ example](https://verilator.org/guide/latest/example_cc.html), adding reset, enable, overflow checks, and a reference model. Consult the [user guide](https://verilator.org/guide/latest/index.html) for the installed version's supported constructs.
 
+### What Verilator does not model
+
+Verilator simulates a two-state, cycle-oriented model of your RTL, which is what makes it fast. A signal is 0 or 1 at every evaluation, so an uninitialized register shows a value instead of an `X`, and how it is initialized is an option you choose; the [user guide](https://verilator.org/guide/latest/index.html) documents the choices [@verificationVerilator]. HDL delay controls need `--timing`, and even then they schedule simulation events and are not gate or wire delays. The model also shows only settled values at each evaluation, so glitches and races that a gate-level simulation could expose stay invisible. None of this is a defect. It means Verilator answers "is the cycle-level behavior right?" very well, and questions about unknown values, reset release or timing need another tool, such as the four-state Icarus runs in the [cocotb chapter](cocotb.qmd) or static timing analysis.
+
 ### The experiment's hardware contract
 
 The accumulator uses a rising-edge clock and unsigned 16-bit operands:
@@ -33,7 +37,7 @@ The C++ scoreboard below checks numerical and control behavior at unit level, un
 
 ## Implementation
 
-**Recipe status:** the supplied one-operand RTL/C++ build and 14-cycle check are a **checked recipe** (Verilator 5.020 baseline). Installation/source-build choices are **adaptation templates**; width/random-stimulus changes are **exercises**. Keep the stated example working directory, or use the root-level `verilator` lab entry.
+**Recipe status:** the supplied one-operand RTL/C++ build and 14-cycle check are a **checked recipe** (Verilator 5.020 baseline), and so are the faulty variants and the 17-vector extension in the sections that follow. Installation/source-build choices are **adaptation templates**; width/random-stimulus changes are **exercises**. Keep the stated example working directory, or use the root-level `verilator` lab entry.
 
 
 ### Download the example files
@@ -264,6 +268,10 @@ verilator --cc --exe --build -j 2 -Wall --trace \
 
 The translation/build flow follows the official [C++ walkthrough](https://verilator.org/guide/latest/example_cc.html). Inspect warnings rather than disabling them indiscriminately. Generated sources and the executable are placed in `obj_dir/`.
 
+### Reading the generated model
+
+The build leaves the generated C++ and the executable in `obj_dir/`. Open `Vaccumulator.h` to see what your harness can touch: each port is a public member, `Enable` declared as `VL_IN8(&Enable,0,0)` and `Operand` as `VL_IN16(&Operand,15,0)`, so one-bit ports occupy a byte and the 16-bit ports a 16-bit integer. The class also declares `eval()` and `final()`, the two calls the harness uses to advance and finish the model. Knowing where the ports come from makes a compile error in the harness easy to read, and it is the first thing to check when you change a width.
+
 ### 6. Run and inspect the result
 
 ```sh
@@ -287,6 +295,84 @@ gtkwave accumulator.vcd
 
 Inspect `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, and `Overflow`. Use the waveform to explain a failed check, while retaining the automatic reference comparison as the pass criterion. Generated files are excluded by the example's local `.gitignore`.
 
+### Break the design on purpose
+
+A test that has never failed has never shown it can. Exercise 1 asks you to break the overflow logic; here is what that looks like. In `accumulator.sv`, replace the overflow assignment with one that also reports the exact maximum:
+
+```systemverilog
+Overflow <= Enable && (ExtendedSum >= 17'd65535);
+```
+
+Rebuild and run. The harness prints one line for the failing cycle and exits with status 1:
+
+```text
+FAIL cycle 11: sum=65535 expected=65535, valid=1 expected=1, overflow=1 expected=0
+```
+
+Read it from the left. Cycles count from zero, so this is the twelfth vector, the one commented "Exact maximum; no overflow". The sum and `Valid` agree with the reference and only `Overflow` differs, so the fault is in how overflow is derived and not in the adder. Open `accumulator.vcd` at that rising edge: `Operand` is 65535, `Sum` was cleared, and the mutant raises `Overflow` for a total of 65535 that fits in 16 bits. Restore the original line, rebuild, and the run is back to `PASS: 14 cycles checked`. Only that one cycle failed, which is what a good check should do: point at the vector and the signal.
+
+### A test that passes and should not
+
+Two other faults look just as plausible. In the first, overflow ignores `Enable`:
+
+```systemverilog
+Overflow <= ExtendedSum[16];
+```
+
+In the second, `Valid` also requires a nonzero operand:
+
+```systemverilog
+Valid    <= Enable && (Operand != 0);
+```
+
+Build each one. Both print `PASS: 14 cycles checked`. The test is green and the design is wrong, because none of the 14 vectors drives the situations these faults change: a disabled cycle whose operand would produce a carry, and an enabled cycle with a zero operand. Add three vectors before the final reset vector and change the array size from 14 to 17:
+
+```cpp
+        {false, false, true,  40000}, // Sum becomes nonzero.
+        {false, false, false, 40000}, // Disabled: a carry here must not report overflow.
+        {false, false, true,      0}, // Enabled zero operand is still a valid addition.
+```
+
+```cpp
+    const std::array<Stimulus, 17> tests{{
+```
+
+The unmodified RTL still passes, with `PASS: 17 cycles checked`, and the two faults now fail:
+
+```text
+FAIL cycle 14: sum=40000 expected=40000, valid=0 expected=0, overflow=1 expected=0
+FAIL cycle 15: sum=40000 expected=40000, valid=0 expected=1, overflow=0 expected=0
+```
+
+The lesson is about the vectors and not about these two faults. A hand-written list covers the cases its author thought of, and the survivors were cases nobody had thought of. A seeded pseudo-random sequence (Exercise 3) finds gaps like these without being told where to look, and the functional bins in @sec-verification-methodology state in advance what must be exercised. A green run, therefore, reports only on the scenarios that ran.
+
+| Fault introduced | 14 vectors | 17 vectors |
+| --- | --- | --- |
+| Overflow also at exactly 65535 | fails | fails |
+| Overflow never clears | fails | fails |
+| Overflow ignores `Enable` | **passes** | fails |
+| `Valid` requires a nonzero operand | **passes** | fails |
+| `Clear` ignored | build stops at lint | build stops at lint |
+
+This table is a **checked recipe**. `python labs/run.py run verilator` builds every variant from [mutation_check.py](../../labs/05-verification/mutation_check.py) against both harnesses and fails if any outcome differs from the table.
+
+### Let lint speak first
+
+The last fault never reaches simulation. Remove `Clear` from the reset condition:
+
+```systemverilog
+if (reset) begin
+```
+
+The build stops, because `-Wall` enables this warning and Verilator treats warnings as fatal unless told otherwise:
+
+```text
+%Warning-UNUSEDSIGNAL: accumulator.sv:2:35: Signal is not used: 'Clear'
+%Error: Exiting due to 1 warning(s)
+```
+
+Verilator found a real bug at build time, before any waveform or vector. That is the reason to read each warning on its merits and not to silence the tool. If a warning is a deliberate choice, waive it narrowly with a comment that says why, at the exact line, so the next reader sees the decision; the policy in @sec-verification-methodology explains why a global `-Wno-fatal` hides new defects.
+
 ### 7. Extend the checks
 
 1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-verilator-01 .learning-activity} — Change the RTL overflow test deliberately so that exactly 65535 reports overflow. Rebuild and confirm that the test fails.
@@ -303,10 +389,11 @@ Record tool versions, source revision, command, exit status, and any failing cyc
 
 - Verilator turns supported RTL into an executable simulation model, so every RTL edit needs a rebuild.
 - The C++ harness supplies stimulus, clock progression and checking.
+- A passing run covers only the vectors it ran; breaking the design on purpose shows what the test can and cannot detect.
 
 ## What you should now be able to explain {#review-verilator-explain .unnumbered .unlisted}
 
-Explain one simulation iteration, including signal updates, evaluation, sampling and the scoreboard decision.
+Explain one simulation iteration, including signal updates, evaluation, sampling and the scoreboard decision, and name one fault the 14-vector test misses and the vector that exposes it.
 
 ## Common mistakes {#review-verilator-mistakes .unnumbered .unlisted}
 

@@ -177,6 +177,7 @@ def run_lab(name, session):
                          "--top-module", "accumulator", "--Mdir", objects,
                          ROOT / "examples/verilator/accumulator.sv", ROOT / "examples/verilator/sim_main.cpp"])
         session.execute([objects / "Vaccumulator"])
+        session.execute([sys.executable, folder / "mutation_check.py", session.directory / "mutation"], timeout=900)
     elif name == "cocotb":
         if importlib.metadata.version("cocotb") != "2.0.1":
             raise RuntimeError("This baseline requires cocotb==2.0.1; install labs/requirements.txt")
