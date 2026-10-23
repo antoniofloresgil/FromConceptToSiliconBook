@@ -115,6 +115,10 @@ One possible controller uses the following phases. It is an illustrative schedul
 
 ALU instructions can skip the data phases. A variable-latency unit can extend execute. The fetch path can use the same transport discipline as a data access while retaining different ownership metadata.
 
+@fig-multicycle-controller draws the schedule above as a controller. Follow it from the fetch request to the commit and back, and notice which exits depend on a handshake.
+
+![Phases of the illustrative multicycle schedule. Each phase leaves when the event on its exit line occurs; ALU instructions skip the data phases, and a load or store takes them. The schedule is a teaching example, not Wally’s pipeline.](../../figures/microarchitecture-multicycle-controller.svg){#fig-multicycle-controller width=100% fig-alt="A loop of seven controller phases from fetch request to commit, with a shortcut for ALU instructions"}
+
 An FSM transition must follow the actual handshake. Remaining in a request state while its target is ready can resend the request every cycle. After acceptance, move to a waiting state or clear its pending-valid flag. An accepted store is not repeated merely because the processor waits for its acknowledgement.
 
 ### Commit and exactly-once effects

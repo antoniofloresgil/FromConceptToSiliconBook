@@ -59,6 +59,10 @@ The book also reports that the Sail model was substantially slower than Spike in
 Example 3 builds the comparison on a stand-in for the processor and stops short of wiring it into the Wally testbench. Wiring it in is the natural next step; follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
 
 
+@fig-reference-comparison summarizes the arrangement: one ELF, several executors and one comparison.
+
+![The same ELF runs on the functional reference models and on the RTL under test, and a comparator reports the first differing signature word or retired instruction. The RTL box stands for the log that a testbench writes at its commit point.](../../figures/reference-model-comparison.svg){#fig-reference-comparison width=100% fig-alt="One ELF feeding Spike, a Sail model and the RTL under test, each feeding a comparator"}
+
 ## Implementation
 
 ### Configure equivalent environments

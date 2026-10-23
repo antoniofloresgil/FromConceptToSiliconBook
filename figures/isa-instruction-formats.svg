@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="712" viewBox="0 0 960 712" role="img" aria-labelledby="title desc">
+<title id="title">RV32I instruction formats</title><desc id="desc">32-bit base words • bit 31 at the left • dashed outline = immediate bits</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="712" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">RV32I instruction formats</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">32-bit base words • bit 31 at the left • dashed outline = immediate bits</text>
+<text x="108" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">31</text>
+<text x="290" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">24</text>
+<text x="420" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">19</text>
+<text x="550" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">14</text>
+<text x="628" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">11</text>
+<text x="758" y="126" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">6</text>
+<text x="932" y="126" font-size="18" text-anchor="end" fill="#172b3a" font-weight="normal">0</text>
+<text x="36" y="171" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">R</text>
+<rect x="105" y="138" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="195.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">funct7</text>
+<rect x="287" y="138" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="351.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs2</text>
+<rect x="417" y="138" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="481.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs1</text>
+<rect x="547" y="138" width="76" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="585.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">funct3</text>
+<rect x="625" y="138" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="689.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rd</text>
+<rect x="755" y="138" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="169" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<text x="36" y="241" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">I</text>
+<rect x="105" y="208" width="310" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="260.0" y="239" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[11:0]</text>
+<rect x="417" y="208" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="481.0" y="239" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs1</text>
+<rect x="547" y="208" width="76" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="585.0" y="239" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">funct3</text>
+<rect x="625" y="208" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="689.0" y="239" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rd</text>
+<rect x="755" y="208" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="239" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<text x="36" y="311" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">S</text>
+<rect x="105" y="278" width="180" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="195.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[11:5]</text>
+<rect x="287" y="278" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="351.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs2</text>
+<rect x="417" y="278" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="481.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs1</text>
+<rect x="547" y="278" width="76" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="585.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">funct3</text>
+<rect x="625" y="278" width="128" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="689.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[4:0]</text>
+<rect x="755" y="278" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="309" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<text x="36" y="381" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">B</text>
+<rect x="105" y="348" width="180" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="195.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[12|10:5]</text>
+<rect x="287" y="348" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="351.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs2</text>
+<rect x="417" y="348" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="481.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rs1</text>
+<rect x="547" y="348" width="76" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="585.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">funct3</text>
+<rect x="625" y="348" width="128" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="689.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[4:1|11]</text>
+<rect x="755" y="348" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="379" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<text x="36" y="451" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">U</text>
+<rect x="105" y="418" width="518" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="364.0" y="449" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[31:12]</text>
+<rect x="625" y="418" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="689.0" y="449" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rd</text>
+<rect x="755" y="418" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="449" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<text x="36" y="521" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">J</text>
+<rect x="105" y="488" width="518" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="364.0" y="519" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">imm[20|10:1|11|19:12]</text>
+<rect x="625" y="488" width="128" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="689.0" y="519" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">rd</text>
+<rect x="755" y="488" width="180" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="845.0" y="519" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">opcode</text>
+<rect x="28" y="564" width="904" height="128" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="592" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">R register arithmetic • I immediate ALU, loads, jalr • S stores • B branches • U lui,</text>
+<text x="44" y="617" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">auipc • J jal.</text>
+<text x="44" y="642" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">B and J show the instruction bits an immediate comes from; the text reassembles them,</text>
+<text x="44" y="667" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">sign-extends and adds the implied zero bit.</text>
+</g></svg>

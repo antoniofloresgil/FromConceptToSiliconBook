@@ -97,6 +97,10 @@ A base instruction word is 32 bits. Common register fields occupy fixed position
 | U | `lui`, `auipc` | Upper 20 bits followed by twelve zero bits |
 | J | `jal` | Signed displacement assembled from several fields |
 
+Follow @fig-isa-formats from bit 31 to bit 0. The register fields stay in the same place across formats, and only the immediate fields move.
+
+![RV32I base instruction formats drawn to bit scale. Dashed fields hold immediate bits; B and J list the instruction-bit groups that their immediates are reassembled from, without the implied zero bit or the sign extension. The funct fields and the opcode select the operation.](../../figures/isa-instruction-formats.svg){#fig-isa-formats width=100% fig-alt="Six 32-bit instruction formats R, I, S, B, U and J with their bit fields"}
+
 The branch and jump immediates are wiring permutations, not numbers obtained by taking one contiguous instruction slice. For RV32, their reconstruction can be written:
 
 ```text

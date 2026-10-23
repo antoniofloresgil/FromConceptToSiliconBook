@@ -6,17 +6,11 @@ Hardware debug gives an external agent controlled access to a running RISC-V sys
 
 The RISC-V Debug Specification separates the architectural interface from its transport. A debugger such as GDB normally communicates through a probe and a Debug Transport Module (DTM), often using JTAG. The DTM reaches a Debug Module (DM) through the Debug Module Interface (DMI). The DM controls one or more harts and may access the SoC system bus. The hart implements Debug Mode and the required debug CSRs. The current ratified specification is version 1.0, revised in February 2025 [@riscvDebugSpec].
 
-```text
-GDB ─► OpenOCD/debug server ─► probe ─► JTAG DTM ─► DMI ─► Debug Module
-                                                               │
-                         ┌─────────────────────────────────────┼─────────────────────┐
-                         │                                     │                     │
-                     halt/resume                         abstract commands     System Bus Access
-                         │                                     │                     │
-                    RISC-V hart ◄── debug ROM / program buffer ┘                SoC interconnect
-```
+Follow @fig-debug-architecture from the debugger to the hart.
 
-This chapter focuses on the digital design behind that diagram. It uses the RISC-V specification as the architectural contract and NEORV32 as the principal open-source implementation example: its on-chip debugger combines a Debug Module (DM), a JTAG Debug Transport Module (DTM), and an execution-based CPU Debug Mode compatible with the Minimal RISC-V Debug Specification 1.0 [@neorv32Ocd]. PULP `riscv-dbg` and CV32E40P are useful comparison points for the earlier 0.13.2 generation. The emphasis is on a system that can be verified and integrated, not only on connecting a JTAG header.
+![Debug architecture. A debugger such as GDB reaches the Debug Module through a debug server, a probe, a JTAG DTM and the DMI; the module controls the hart and reaches memory through System Bus Access. The dashed box marks the lifecycle and authentication policy discussed under security and lifecycle design.](../../figures/debug-architecture.svg){#fig-debug-architecture width=100% fig-alt="A chain from debugger, probe, JTAG DTM and debug module to the hart, with system bus access and a policy box"}
+
+This chapter focuses on the digital design behind that figure. It uses the RISC-V specification as the architectural contract and NEORV32 as the principal open-source implementation example: its on-chip debugger combines a Debug Module (DM), a JTAG Debug Transport Module (DTM), and an execution-based CPU Debug Mode compatible with the Minimal RISC-V Debug Specification 1.0 [@neorv32Ocd]. PULP `riscv-dbg` and CV32E40P are useful comparison points for the earlier 0.13.2 generation. The emphasis is on a system that can be verified and integrated, not only on connecting a JTAG header.
 
 The lifecycle and system-level security argument is synthesized in @sec-hardware-security, which keeps these debug mechanisms here and combines their authorization with boot, CPU and DMA protection.
 

@@ -79,6 +79,10 @@ Each row below shows interface values immediately before an active edge:
 
 The observer counts A once, B once and C once. B appearing in three rows is not three requests. Changing B to C before its handshake violates the contract even if the receiver later becomes ready.
 
+Follow @fig-ready-valid along the rows of the table: B is held for two intervals and transferred once.
+
+![The ready/valid example of the table above, as a waveform. Values are sampled just before each rising edge, and a dot marks an edge where valid and ready are both high. The example is conceptual and does not describe a particular implementation’s timing.](../../figures/pipelines-ready-valid-waveform.svg){#fig-ready-valid width=100% fig-alt="Waveforms of valid, ready, payload and the transfer marker over edges 0 to 5"}
+
 An item can remain valid indefinitely under indefinite backpressure without violating safety. Eventual completion needs additional progress assumptions: the receiver eventually has capacity, arbitration eventually grants service and any external memory eventually responds.
 
 ### Fixed and elastic pipelines

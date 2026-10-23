@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="533" viewBox="0 0 960 533" role="img" aria-labelledby="title desc">
+<title id="title">Debug: transport, module and hart</title><desc id="desc">Execution-based design • from the debugger to the hart through the DTM and the DM</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="533" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Debug: transport, module and hart</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Execution-based design • from the debugger to the hart through the DTM and the DM</text>
+<rect x="28" y="100" width="140" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="98.0" y="142.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Debugger</text>
+<text x="98.0" y="168.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">GDB, OpenOCD</text>
+<rect x="219" y="100" width="140" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="289.0" y="142.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Probe</text>
+<text x="289.0" y="168.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">host to target</text>
+<path d="M168 147H219" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="410" y="100" width="140" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="142.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">JTAG DTM</text>
+<text x="480.0" y="168.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">transport</text>
+<path d="M359 147H410" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="601" y="100" width="140" height="95" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="671.0" y="142.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">DM</text>
+<text x="671.0" y="168.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">run control</text>
+<path d="M550 147H601" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="792" y="100" width="140" height="95" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<rect x="797" y="105" width="130" height="85" rx="7" fill="none" stroke="#28705c"/>
+<text x="862.0" y="142.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Hart</text>
+<text x="862.0" y="168.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Debug Mode</text>
+<path d="M741 147H792" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="385" y="134" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">JTAG</text>
+<text x="576" y="134" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">DMI</text>
+<rect x="601" y="290" width="331" height="95" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M608 297H925" stroke="#28705c" stroke-width="5"/>
+<text x="766.5" y="332.5" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">System Bus Access</text>
+<text x="766.5" y="358.5" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">SoC interconnect</text>
+<path d="M671 195V290" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="681" y="250" font-size="18" text-anchor="start" fill="#28705c" font-weight="normal">SBA</text>
+<rect x="28" y="290" width="520" height="95" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="44" y="322" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">Policy: lifecycle and authentication decide what</text>
+<text x="44" y="348" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">the debug path may do; a DMI request is not trusted.</text>
+<path d="M548 337H601" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<rect x="28" y="410" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">DM = Debug Module; DMI = Debug Module Interface. Abstract commands reach the</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">registers through a debug ROM and the program buffer; System Bus Access</text>
+<text x="44" y="488" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">reads memory without running the hart.</text>
+</g></svg>

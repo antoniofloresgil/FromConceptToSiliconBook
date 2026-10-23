@@ -122,6 +122,10 @@ After validating the leaf and permissions, form the physical address from the le
 
 The worked example uses root table `0x80010000`, second-level table `0x80011000` and data page `0x80012000`. For VA `0x40000120`, VPN[1]=256, VPN[0]=0 and offset=`0x120`. The root entry is at `0x80010400`; its next-table pointer leads to the leaf at `0x80011000`. Translation produces PA `0x80012120`.
 
+Follow @fig-sv32-walk from the virtual-address fields to the physical address: `satp` locates the root table, a non-leaf entry names the next table, and the leaf names the page.
+
+![The worked Sv32 translation of this section. VPN[1] indexes the root table, VPN[0] indexes the level-0 table and the offset is added to the page address. Permission checks, the accessed and dirty bits and the TLB are omitted; they are discussed below.](../../figures/mmu-sv32-two-level-walk.svg){#fig-sv32-walk width=100% fig-alt="A virtual address split into three fields, two page tables and a data page, ending in a physical address"}
+
 | Location | PTE value | Interpretation |
 | --- | --- | --- |
 | Root[256], `0x80010400` | `0x20004401` | Pointer to table `0x80011000` |

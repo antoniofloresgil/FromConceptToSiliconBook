@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620" role="img" aria-labelledby="title desc">
+<title id="title">Sv32: a two-level walk for a 4 KiB page</title><desc id="desc">Worked example from the chapter • VA 0x40000120 translates to PA 0x80012120</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="620" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Sv32: a two-level walk for a 4 KiB page</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Worked example from the chapter • VA 0x40000120 translates to PA 0x80012120</text>
+<text x="28" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Virtual address 0x40000120</text>
+<rect x="65" y="112" width="258" height="54" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="194.0" y="134" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">VPN[1]  31:22</text>
+<text x="194.0" y="156" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">= 256</text>
+<rect x="325" y="112" width="258" height="54" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="454.0" y="134" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">VPN[0]  21:12</text>
+<text x="454.0" y="156" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">= 0</text>
+<rect x="585" y="112" width="310" height="54" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="740.0" y="134" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">offset  11:0</text>
+<text x="740.0" y="156" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">= 0x120</text>
+<rect x="28" y="255" width="180" height="110" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="118.0" y="305.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">satp.PPN</text>
+<text x="118.0" y="331.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">root = PPN × 4 KiB</text>
+<rect x="260" y="255" width="210" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="365.0" y="293.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Root table</text>
+<text x="365.0" y="319.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x80010000</text>
+<text x="365.0" y="345.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[256] → 0x20004401</text>
+<rect x="520" y="255" width="210" height="110" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="625.0" y="293.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Level-0 table</text>
+<text x="625.0" y="319.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x80011000</text>
+<text x="625.0" y="345.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[0] → 0x200048c7</text>
+<rect x="780" y="255" width="152" height="110" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<path d="M788 358H810" stroke="#28705c" stroke-width="2"/>
+<path d="M788 351H810" stroke="#28705c" stroke-width="2"/>
+<text x="856.0" y="305.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Data page</text>
+<text x="856.0" y="331.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x80012000</text>
+<path d="M208 310H260" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<path d="M470 310H520" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M730 310H780" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M194.0 166V210H365V255" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M454.0 166V210H625V255" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M740.0 166V210H856V255" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="238" y="298" font-size="18" text-anchor="middle" fill="#a34624" font-weight="bold">1</text>
+<text x="495" y="298" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<text x="755" y="298" font-size="18" text-anchor="middle" fill="#28705c" font-weight="bold">3</text>
+<path d="M856 365V425" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<rect x="520" y="425" width="412" height="76" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="726.0" y="458.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Physical address 0x80012120</text>
+<text x="726.0" y="484.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">page 0x80012000 + offset 0x120</text>
+<text x="28" y="410" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">1  satp locates the root table</text>
+<text x="28" y="440" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">2  a non-leaf PTE names the next table</text>
+<text x="28" y="470" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">3  the leaf PTE names the page</text>
+<rect x="28" y="520" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="548" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">An invalid entry, a denied permission or a misaligned superpage is a page fault; a</text>
+<text x="44" y="573" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">failing physical read is an access fault.</text>
+</g></svg>

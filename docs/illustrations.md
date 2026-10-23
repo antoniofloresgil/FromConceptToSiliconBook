@@ -51,13 +51,14 @@ reports and original-resolution files.
 ## Maintenance
 
 Edit the relevant generator, regenerate the SVG and manifest, inspect the changed
-assets, then update their reviewed hashes. In addition to the existing generators:
+assets, then update their reviewed hashes. In addition to the existing generators (`explanatory.py` draws the conceptual figures of the foundations, protocol, MMU, FPGA-flow, PMU, debug, Verilator and reference-model discussions):
 
 ```sh
 python tools/figures/visual_language.py
 python tools/figures/visual_language.py --check
 python tools/figures/async_fifo.py --check
 python tools/figures/reusable_ip.py --check
+python tools/figures/explanatory.py --check
 python -m unittest discover -s tools/figures -p 'test_*.py'
 python tools/figures/print_audit.py --check
 ```

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="693" viewBox="0 0 960 693" role="img" aria-labelledby="title desc">
+<title id="title">From a netlist to a configured FPGA</title><desc id="desc">Open Xilinx 7-series flow for the Nexys Video • each arrow is an inspectable file</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="693" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">From a netlist to a configured FPGA</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Open Xilinx 7-series flow for the Nexys Video • each arrow is an inspectable file</text>
+<rect x="28" y="95" width="250" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="125.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Yosys netlist</text>
+<text x="153.0" y="151.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">nexysvideo.json</text>
+<rect x="28" y="185" width="250" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="215.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">XDC constraints</text>
+<text x="153.0" y="241.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clocks, pins, IO standards</text>
+<rect x="28" y="275" width="250" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="305.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Chip database</text>
+<text x="153.0" y="331.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">X-Ray, one exact part</text>
+<rect x="330" y="150" width="250" height="130" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="455.0" y="198.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">nextpnr-xilinx</text>
+<text x="455.0" y="224.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">pack, place, route</text>
+<text x="455.0" y="250.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">timing at --freq</text>
+<path d="M278 130H304V215H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M278 220H304V215H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M278 310H304V215H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="650" y="95" width="282" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="791.0" y="125.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Routed netlist</text>
+<text x="791.0" y="151.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">nexysvideo-routed.json</text>
+<rect x="650" y="185" width="282" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="791.0" y="215.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Report</text>
+<text x="791.0" y="241.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">nexysvideo-report.json</text>
+<rect x="650" y="275" width="282" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="791.0" y="305.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">FASM</text>
+<text x="791.0" y="331.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">nexysvideo.fasm</text>
+<path d="M580 215H615V130H650" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M580 215H615V220H650" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M580 215H615V310H650" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="330" y="305" width="250" height="62" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="455" y="331" font-size="18" text-anchor="middle" fill="#a34624" font-weight="bold">Timing not met?</text>
+<text x="455" y="355" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">change RTL or constraints</text>
+<path d="M791 345V415H520" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<rect x="350" y="380" width="170" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="435.0" y="410.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">fasm2frames</text>
+<text x="435.0" y="436.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">X-Ray database</text>
+<rect x="105" y="380" width="200" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="205.0" y="410.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">xc7frames2bit</text>
+<text x="205.0" y="436.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">serialize frames</text>
+<path d="M350 415H305" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="105" y="500" width="200" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="205.0" y="530.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">.bit</text>
+<text x="205.0" y="556.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">configuration image</text>
+<path d="M205 450V500" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="500" width="250" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="347" y="512" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="347" y="524" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="347" y="536" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="475.0" y="530.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">openFPGALoader</text>
+<text x="475.0" y="556.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">program the board</text>
+<path d="M305 535H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="595" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="623" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">FASM lists features; it is not the bitstream. A report that meets timing</text>
+<text x="44" y="648" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">does not show that the board works.</text>
+</g></svg>

@@ -30,6 +30,10 @@ For short code on a simple in-order core, `mcycle` and `minstret` may be enough.
 
 ## RISC-V Counter Architecture
 
+@fig-pmu-counter follows one event from its source to a software read; the sections below describe each box.
+
+![The path of one performance counter. The event selector and mcountinhibit are machine-mode controls; software reads the counter through a CSR, and on RV32 reads the high half, the low half and the high half again. The event encoding is implementation-defined, as the text explains.](../../figures/pmu-counter-path.svg){#fig-pmu-counter width=100% fig-alt="Event sources feeding a selector and a counter, with the inhibit control and the CSR read path to software"}
+
 ### Base counters and extensions
 
 RISC-V defines three base counter names in the unprivileged CSR space:

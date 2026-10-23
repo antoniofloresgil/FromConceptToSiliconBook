@@ -8,6 +8,10 @@
 
 Verilator is an open-source compiler for Verilog and SystemVerilog models. It checks RTL and translates supported constructs into C++ or SystemC. A native compiler then builds an executable that performs the simulation. The build and simulation are separate stages: editing the RTL requires rebuilding the executable.
 
+@fig-verilator-flow shows the two stages for the accumulator used in this chapter.
+
+![Build and run flow of the accumulator example. Verilator translates the RTL into a C++ model, a C++ compiler builds it together with the harness, and the executable reports a result and writes a trace. A warning under -Wall stops the build before any simulation.](../../figures/verilator-build-and-run.svg){#fig-verilator-flow width=100% fig-alt="Verilator, generated C++ model, compiler, executable and result for the accumulator example"}
+
 In a C++ flow, the test harness supplies inputs, clock transitions, and checks. The generated model exposes top-level ports, and `eval()` evaluates its behavior. Tracing can record waveforms for debugging. See the official [overview](https://verilator.org/guide/latest/overview.html) and [model API guide](https://verilator.org/guide/latest/connecting.html).
 
 This chapter develops an original clocked accumulator example. It follows the create–compile–run progression of the official [C++ example](https://verilator.org/guide/latest/example_cc.html), adding reset, enable, overflow checks, and a reference model. Consult the [user guide](https://verilator.org/guide/latest/index.html) for the installed version's supported constructs.

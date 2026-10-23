@@ -80,6 +80,10 @@ Use @sec-verification-methodology to review clocks, I/O constraints, routed reso
 
 FASM is not the hardware configuration itself. It records enabled FPGA features in a textual form. `fasm2frames` converts those features into frame data using the Project X-Ray database, and `xc7frames2bit` serializes frame data into the `.bit` configuration file for the exact part.
 
+@fig-xilinx-flow follows the files from the Yosys netlist to a configured board.
+
+![From the Yosys netlist to a configured FPGA in the open Xilinx 7-series flow. nextpnr-xilinx writes the routed netlist, a report and the FASM file; fasm2frames and xc7frames2bit turn the FASM features into the bitstream that a programmer loads. The figure shows the file flow and not the run time of any step.](../../figures/nextpnr-xilinx-to-bitstream.svg){#fig-xilinx-flow width=100% fig-alt="Inputs to nextpnr-xilinx, its three output files and the path from FASM to a programmed board"}
+
 The full CVW command is deliberately short because the generated artifacts carry the detail:
 
 ```sh

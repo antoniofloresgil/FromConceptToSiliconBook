@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="663" viewBox="0 0 960 663" role="img" aria-labelledby="title desc">
+<title id="title">From a description to the circuit it implies</title><desc id="desc">The process type decides what is built; a declaration alone does not</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="663" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">From a description to the circuit it implies</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The process type decides what is built; a declaration alone does not</text>
+<rect x="28" y="100" width="330" height="110" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="150.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">always_comb</text>
+<text x="193.0" y="176.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">y = a &amp; b;</text>
+<rect x="28" y="250" width="330" height="110" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="300.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">always_ff @(posedge clk)</text>
+<text x="193.0" y="326.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">q &lt;= d;</text>
+<rect x="28" y="400" width="330" height="110" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="450.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">two chained nonblocking</text>
+<text x="193.0" y="476.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">s1 &lt;= d;  s2 &lt;= s1;</text>
+<path d="M358 155H430" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="430" y="115" width="250" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="555.0" y="150.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Combinational logic</text>
+<text x="555.0" y="176.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no storage, no clock</text>
+<path d="M680 155H760" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="780" y="162" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">y</text>
+<path d="M358 305H430" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="430" y="265" width="250" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="555.0" y="300.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Flip-flop</text>
+<text x="555.0" y="326.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">samples d on clk edge</text>
+<path d="M444 345l10-14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<path d="M680 305H760" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="780" y="312" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">q</text>
+<path d="M358 455H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="400" y="415" width="150" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="475.0" y="450.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Flip-flop</text>
+<text x="475.0" y="476.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">s1</text>
+<path d="M550 455H590" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="590" y="415" width="150" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="665.0" y="450.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Flip-flop</text>
+<text x="665.0" y="476.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">s2</text>
+<path d="M740 455H800" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="820" y="462" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">s2</text>
+<path d="M414 495l10-14l10 14M604 495l10-14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<rect x="28" y="540" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="568" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Both assignments in the last row update on the same edge, so s2 holds</text>
+<text x="44" y="593" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">what d was two edges ago. A combinational process that leaves an output</text>
+<text x="44" y="618" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">unassigned on some path describes a latch.</text>
+</g></svg>

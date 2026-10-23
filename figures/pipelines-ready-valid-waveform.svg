@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="543" viewBox="0 0 960 543" role="img" aria-labelledby="title desc">
+<title id="title">Ready/valid: an item is transferred once</title><desc id="desc">Values just before each rising edge • a dot marks valid and ready both high</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="543" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Ready/valid: an item is transferred once</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Values just before each rising edge • a dot marks valid and ready both high</text>
+<path d="M292 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="292" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<path d="M418 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="418" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<path d="M544 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="544" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M670 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="670" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<path d="M796 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="796" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4</text>
+<path d="M922 110V350" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="922" y="97" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<text x="28" y="97" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Edge →</text>
+<text x="28" y="155" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">valid</text>
+<path d=" M166 136H292 L292 136H418 L418 136H544 L544 136H670 L670 136H796 L796 162H922" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="28" y="217" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">ready</text>
+<path d=" M166 198H292 L292 224H418 L418 224H544 L544 198H670 L670 198H796 L796 198H922" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="28" y="279" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">payload</text>
+<rect x="170" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="229.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">A</text>
+<rect x="296" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="355.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">B</text>
+<rect x="422" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="481.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">B</text>
+<rect x="548" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="607.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">B</text>
+<rect x="674" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="733.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">C</text>
+<rect x="800" y="255" width="118" height="34" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="859.0" y="279" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">—</text>
+<text x="28" y="341" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">transfer</text>
+<circle cx="292" cy="336" r="8" fill="#28705c"/>
+<circle cx="670" cy="336" r="8" fill="#28705c"/>
+<circle cx="796" cy="336" r="8" fill="#28705c"/>
+<text x="229.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Accept A</text>
+<text x="355.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Hold B</text>
+<text x="481.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Hold B</text>
+<text x="607.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Accept B</text>
+<text x="733.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Accept C</text>
+<text x="859.0" y="395" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">No transfer</text>
+<rect x="28" y="420" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="448" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">B stays valid and unchanged until it is accepted at edge 3.</text>
+<text x="44" y="473" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">B in three intervals is one request; the observer counts A, B and C once.</text>
+<text x="44" y="498" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Changing B to C before its handshake would break the contract.</text>
+</g></svg>
