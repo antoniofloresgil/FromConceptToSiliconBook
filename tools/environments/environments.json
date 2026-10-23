@@ -16,7 +16,9 @@
     "oss_cad_release": "2026-10-14",
     "oss_cad_sha256": "a6ccc6b96b2d985336a1061c78b2fd2bdd73e0f68690da17db88e00457881a11",
     "quarto_version": "1.10.19",
-    "quarto_sha256": "7f0c4769e7f0e55f50d922f44b18db5118fb388d2b8fd27291fe1f8beafb43eb"
+    "quarto_sha256": "7f0c4769e7f0e55f50d922f44b18db5118fb388d2b8fd27291fe1f8beafb43eb",
+    "nextpnr_xilinx_revision": "8f178fc6a6d4dfbc57bef66c3ccff34d558047d5",
+    "prjxray_revision": "c9f02d8576042325425824647ab5555b1bc77833"
   },
   "scope": {
     "exclude": [
@@ -275,7 +277,10 @@
       ],
       "pattern": "(QEMU )\\d+\\.\\d+\\.\\d+",
       "replacement": "\\g<1>{qemu_version}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
     },
     {
       "id": "linux-prose",
@@ -287,7 +292,10 @@
       ],
       "pattern": "(\\bLinux )\\d+\\.\\d+(?![\\d.])",
       "replacement": "\\g<1>{linux_version}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
     },
     {
       "id": "firtool-prose",
@@ -299,7 +307,10 @@
       ],
       "pattern": "(firtool[` ]{1,3})\\d+\\.\\d+\\.\\d+",
       "replacement": "\\g<1>{firtool_version}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
     },
     {
       "id": "sbt-prose",
@@ -311,7 +322,10 @@
       ],
       "pattern": "(\\bSBT )\\d+\\.\\d+\\.\\d+",
       "replacement": "\\g<1>{sbt_version}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
     },
     {
       "id": "oss-cad-prose",
@@ -321,9 +335,12 @@
         "chapters/*",
         "appendices/*"
       ],
-      "pattern": "(OSS CAD Suite )\\d{4}-\\d{2}-\\d{2}",
+      "pattern": "(OSS CAD Suite (?:Release )?)\\d{4}-\\d{2}-\\d{2}",
       "replacement": "\\g<1>{oss_cad_release}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
     },
     {
       "id": "quarto-prose",
@@ -335,7 +352,48 @@
       ],
       "pattern": "(Quarto (?:to \\*\\*)?)\\d+\\.\\d+\\.\\d+",
       "replacement": "\\g<1>{quarto_version}",
-      "mode": "prose"
+      "mode": "prose",
+      "advisory": [
+        "references.bib"
+      ]
+    },
+    {
+      "id": "nextpnr-xilinx-checkout",
+      "files": [
+        "labs/17-complete-case/Dockerfile.xc7"
+      ],
+      "pattern": "(git checkout )[0-9a-f]{40}",
+      "replacement": "\\g<1>{nextpnr_xilinx_revision}"
+    },
+    {
+      "id": "prjxray-install",
+      "files": [
+        "labs/17-complete-case/Dockerfile.xc7"
+      ],
+      "pattern": "(f4pga/prjxray/archive/)[0-9a-f]{40}(\\.tar\\.gz)",
+      "replacement": "\\g<1>{prjxray_revision}\\g<2>"
+    },
+    {
+      "id": "nextpnr-xilinx-profile",
+      "files": [
+        "labs/17-complete-case/nexys-profile.json"
+      ],
+      "pattern": "(\"nextpnr_revision\":\\s*\")[0-9a-f]{40}",
+      "replacement": "\\g<1>{nextpnr_xilinx_revision}"
+    },
+    {
+      "id": "nextpnr-xilinx-prose",
+      "mode": "prose",
+      "files": [
+        "appendices/*",
+        "chapters/*",
+        "labs/*/README.md"
+      ],
+      "pattern": "(nextpnr-Xilinx revision (?:is )?`)[0-9a-f]{40}",
+      "replacement": "\\g<1>{nextpnr_xilinx_revision}"
     }
-  ]
+  ],
+  "notes": {
+    "nextpnr_xilinx_revision": "Wally pins this revision for its Nexys Video recipe; confirm it there before changing it."
+  }
 }

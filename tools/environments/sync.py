@@ -5,6 +5,9 @@ manifest; `write` rewrites the editable copies. Copies inside recorded evidence
 are counted but never rewritten: they belong to the run that produced them. A
 rule with `"mode": "prose"` covers sentences that name a pin: `check` fails on a
 stale mention, `write` leaves it for a human to reread against the new baseline.
+A rule's `advisory` globs name files (the bibliography) whose mentions cite a
+specific version of upstream documentation: they are listed, never rewritten,
+and do not fail `check`.
 """
 import argparse
 from fnmatch import fnmatch
@@ -53,8 +56,9 @@ def expand(template, values):
 
 
 def classify(name, rule, scope):
-    """'edit', 'recorded' or None for a tracked path under one rule."""
+    """'edit', 'recorded', 'advisory' or None for a tracked path under one rule."""
     if matches(name, scope['exclude']): return None
+    if matches(name, rule.get('advisory', [])): return 'advisory'
     if 'files' in rule and not matches(name, rule['files']): return None
     return 'recorded' if matches(name, scope['evidence']) else 'edit'
 
@@ -66,9 +70,9 @@ def rewrite(text, rule, values):
 
 
 def scan(root, manifest):
-    """Return {rule id: {'edit': [(path, copies, stale)], 'recorded': [...]}}."""
+    """Return {rule id: {'edit': [(path, copies, stale)], 'recorded': [...], 'advisory': [...]}}."""
     values, scope = manifest['values'], manifest['scope']
-    result = {rule['id']: {'edit': [], 'recorded': []} for rule in manifest['rules']}
+    result = {rule['id']: {'edit': [], 'recorded': [], 'advisory': []} for rule in manifest['rules']}
     for name in tracked(root):
         path = root / name
         if not path.is_file(): continue
@@ -99,7 +103,8 @@ def report(result, prose=frozenset()):
         copies = sum(item[1] for item in editable)
         stale = [item for item in editable if item[2]]
         print(f"{rule_id}: {copies} editable copies in {len(editable)} files, "
-              f"{len(recorded)} recorded evidence files")
+              f"{len(recorded)} recorded evidence files" +
+              (f", {len(groups['advisory'])} advisory files" if groups['advisory'] else ''))
         if not copies:
             failures += 1
             print('  rule matches nothing: fix the pattern or its file list')
@@ -107,6 +112,8 @@ def report(result, prose=frozenset()):
             failures += 1
             print(f'  differs from the manifest: {name}' +
                   (' (reread the sentence against the new baseline)' if rule_id in prose else ''))
+        for name, _, count in groups['advisory']:
+            if count: print(f'  note, cites another version: {name} (not a failure)')
     return failures
 
 
@@ -145,6 +152,9 @@ def main(argv=None):
     for rule_id in sorted(prose_rules(manifest)):
         for name, _, count in stale[rule_id]['edit']:
             if count: print(f'review by hand: {name} ({rule_id})')
+    for rule_id, groups in stale.items():
+        for name, _, count in groups['advisory']:
+            if count: print(f'review if it still cites the baseline: {name} ({rule_id})')
     print('Recorded evidence was not touched; rerun the affected labs (docs/versioning.md, step 3).')
     return 0
 

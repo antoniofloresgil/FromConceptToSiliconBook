@@ -68,6 +68,21 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(sync.write(self.root, current, dry_run=False), 0)
         self.assertEqual((self.root / 'guide.md').read_text(), 'Uses QEMU 8.2.2 here.\n')
 
+    def test_advisory_file_is_listed_but_does_not_fail(self):
+        (self.root / 'refs.bib').write_text('title = {QEMU 8.2.2}\n')
+        subprocess.check_call(['git', 'add', '-A'], cwd=self.root)
+        rule = {'id': 'qemu', 'mode': 'prose', 'files': ['*.md'], 'advisory': ['*.bib'],
+                'pattern': r'(QEMU )\d+\.\d+\.\d+', 'replacement': r'\g<1>{qemu}'}
+        current = manifest(NEW, [rule])
+        current['values']['qemu'] = '9.0.0'
+        (self.root / 'guide.md').write_text('Uses QEMU 9.0.0 here.\n')
+        subprocess.check_call(['git', 'add', '-A'], cwd=self.root)
+        result = sync.scan(self.root, current)
+        self.assertEqual(result['qemu']['advisory'], [('refs.bib', 1, 1)])
+        self.assertEqual(sync.report(result, {'qemu'}), 0)
+        self.assertEqual(sync.write(self.root, current, dry_run=False), 0)
+        self.assertEqual((self.root / 'refs.bib').read_text(), 'title = {QEMU 8.2.2}\n')
+
     def test_filter_derives_compact_date(self):
         self.assertEqual(sync.expand('{release}/{release:nodash}', {'release': '2026-10-14'}),
                          '2026-10-14/20261014')
