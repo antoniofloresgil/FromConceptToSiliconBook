@@ -96,7 +96,8 @@ digests, and the versions and hashes of downloaded archives.
 `tools/environments/sync.py` rewrites the editable copies from it and fails on any
 that differ. Three kinds of copy are kept apart. Machine pins are rewritten.
 Sentences that name a pin are only checked, because the claim has to be reread
-against the new baseline. Recorded evidence (`reference/`, audits, the validated
+against the new baseline; bibliography entries that cite a version of upstream
+documentation are listed as a reminder and never fail the check. Recorded evidence (`reference/`, audits, the validated
 environment) keeps the value of the run that produced it and is never rewritten.
 A pin without a rule is still maintained in the file that owns it. The manifest
 states which versions the repository uses; it does not promise that newer

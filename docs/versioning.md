@@ -46,8 +46,10 @@ source change:
    ones pass.
 4. Update every chapter sentence that names the old version or relies on its
    behavior, and the recorded environment. `sync.py write` lists the sentences it
-   found for the tools it covers; reread each one against the new baseline, since
-   a changed version can also change the claim.
+   found for the tools it covers, plus the bibliography entries that still cite
+   the old version; reread each one against the new baseline, since a changed
+   version can also change the claim and an entry may deliberately keep citing
+   the documentation of the version that was validated.
 5. Keep the previous baseline's evidence readable until the new one passes.
 
 Review the upstream releases of the tools the book names once a year, before the
