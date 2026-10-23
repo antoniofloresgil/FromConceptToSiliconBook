@@ -189,6 +189,7 @@ def run_lab(name, session):
         cases = ET.parse(result).getroot().findall(".//testcase")
         if not cases or any(case.find("failure") is not None or case.find("error") is not None or case.find("skipped") is not None for case in cases):
             raise RuntimeError("cocotb produced no successful complete test suite")
+        session.execute([sys.executable, folder / "cocotb_mutation_check.py", session.directory / "mutation"], timeout=900)
     elif name == "dotproduct":
         session.execute([sys.executable, folder / "vectors.py", session.directory, session.seed])
         for maximum in (256, 16):

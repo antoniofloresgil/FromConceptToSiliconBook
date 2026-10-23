@@ -219,6 +219,74 @@ The build produces `sim_build/` and a `results.xml` test report. These, the virt
 
 cocotb can also use Verilator, but version compatibility matters: cocotb 2.0.1 requires Verilator 5.036 or later. The 5.020 installation used for the earlier standalone C++ experiment is therefore insufficient for this cocotb backend. After installing a compatible version, try `make SIM=verilator`; that variant has not been validated here. See the [backend requirements](https://docs.cocotb.org/en/v2.0.1/simulator_support.html).
 
+### Break the design on purpose
+
+The same faults the [Verilator chapter](verilator.qmd) injects can be run against this test, which lets you compare the two environments. Start with overflow that also fires at the exact maximum. In `examples/verilator/accumulator.sv`, replace the overflow assignment with:
+
+```systemverilog
+Overflow <= Enable && (ExtendedSum >= 17'd65535);
+```
+
+Rerun `make SIM=icarus`. The assertion message carries everything needed to find the problem:
+
+```text
+AssertionError: cycle=11, stimulus=(0, 0, 1, 65535), actual=(65535, 1, 1), expected=(65535, 1, 0)
+```
+
+The stimulus tuple is `(reset, clear, enable, operand)` and the two result tuples are `(sum, valid, overflow)`, so the line says that on the twelfth vector the sum and `Valid` agree with the reference and `Overflow` is raised when it should not be. That is why the scoreboard builds its message from the stimulus and both tuples: a failure that names its own inputs can be reproduced without opening the waveform. Restore the original line and the test is back to `PASS: 114 cycles checked (seed=2026)`.
+
+### Random stimulus catches some faults and misses others
+
+This test differs from the Verilator harness in one important way: after the 14 directed vectors it appends 100 pseudo-random ones from a seeded generator. Two further faults show what that buys. First, overflow that ignores `Enable`:
+
+```systemverilog
+Overflow <= ExtendedSum[16];
+```
+
+The Verilator harness passed this fault, because none of its fixed vectors had a disabled cycle with a carrying operand. Here the random part finds it within a few cycles:
+
+```text
+AssertionError: cycle=17, stimulus=(0, 0, 0, 58937), actual=(64343, 0, 1), expected=(64343, 0, 0)
+```
+
+Second, `Valid` that also requires a nonzero operand:
+
+```systemverilog
+Valid    <= Enable && (Operand != 0);
+```
+
+This one passes. The fault only shows when `Enable` is high and the operand is exactly zero, one value out of 65,536, and a hundred random vectors will almost never draw it. Add three directed vectors before the final reset vector, the same three the Verilator chapter adds:
+
+```python
+        (0, 0, 1, 40000),
+        (0, 0, 0, 40000),
+        (0, 0, 1, 0),
+```
+
+The unmodified RTL still passes, now with `PASS: 117 cycles checked (seed=2026)`, and the fault is caught on the last of the three:
+
+```text
+AssertionError: cycle=15, stimulus=(0, 0, 1, 0), actual=(40000, 0, 0), expected=(40000, 1, 0)
+```
+
+Random and directed stimulus therefore complement each other. Random vectors reach combinations nobody listed, and directed vectors reach the rare boundary values that random draws almost never hit. A seed makes the random part repeatable, which is why it is recorded with every failure.
+
+The last fault, `Clear` ignored, shows how the tools differ. Verilator refused to build it, because `-Wall` reports an unused signal. Icarus has no such check, so the fault runs, and the scoreboard catches it on the directed vector that exercises `Clear` over `Enable`:
+
+```text
+AssertionError: cycle=5, stimulus=(0, 1, 1, 100), actual=(114, 1, 0), expected=(0, 0, 0)
+```
+
+| Fault introduced | Supplied test (14 directed + 100 random) | With three added vectors |
+| --- | --- | --- |
+| Overflow also at exactly 65535 | fails | fails |
+| Overflow never clears | fails | fails |
+| Overflow ignores `Enable` | fails | fails |
+| `Valid` requires a nonzero operand | **passes** | fails |
+| `Clear` ignored | fails | fails |
+
+This table is a **checked recipe**. `python labs/run.py run cocotb` builds every variant from [cocotb_mutation_check.py](../../labs/05-verification/cocotb_mutation_check.py), runs both versions of the test with the same fault list as the Verilator check, and fails if any outcome differs from the table.
+
 ### 6. Extend verification
 
 1. [Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-cocotb-01 .learning-activity} — Deliberately make overflow sticky in the RTL. Rerun the test and confirm a disabled cycle detects the error.
@@ -235,10 +303,11 @@ A useful deliverable includes the RTL revision, dependency versions, test seed, 
 
 - Python stimulus and scoreboards still need a precise RTL timing contract.
 - Transactions should be checked at acceptance/completion boundaries.
+- Random stimulus reaches combinations nobody listed, and directed vectors reach the rare boundary values it almost never draws.
 
 ## What you should now be able to explain {#review-cocotb-explain .unnumbered .unlisted}
 
-Explain why waiting for a clock event and sampling settled values are separate scheduling decisions.
+Explain why waiting for a clock event and sampling settled values are separate scheduling decisions, and name one fault that random stimulus alone is likely to miss.
 
 ## Common mistakes {#review-cocotb-mistakes .unnumbered .unlisted}
 
