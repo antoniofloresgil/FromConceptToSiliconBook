@@ -14,7 +14,7 @@ The book can be read as a reference or followed through one of three routes. It 
 | **[Complete SoC](#sec-complete-soc-route)** | integrate a processor, peripherals and firmware, then take the design to an FPGA | [CORE-V Wally](chapters/02-risc-v-cores/core-v-wally.qmd), after the Foundations chapters | A software-controlled system with firmware and interrupt evidence, plus an FPGA implementation dossier at a stated boundary |
 | **[ASIC Design](#sec-asic-design-route)** | follow a verified block through placement, routing and physical checks | [VLSI design](chapters/06-asic-implementation/vlsi-design.qmd), with a verified RTL block in hand | A block taken to GDSII, with its configuration, reports and an acceptance decision |
 
-: {tbl-colwidths="[16,28,22,34]"}
+: {tbl-colwidths="[21,26,19,34]"}
 
 No route needs a physical FPGA; the [route without a board](labs/NO-FPGA.md) keeps the simulation and report-analysis work. Each route is described below, and the [route map](learning-paths.qmd#sec-route-map) gives a step-by-step sequence for each.
 
