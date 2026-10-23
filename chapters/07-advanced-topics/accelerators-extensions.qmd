@@ -449,20 +449,6 @@ An accelerator is a bus master and potentially a privileged data-exfiltration pa
 
 In a system with untrusted software, an experimental engine should not sit directly on trusted memory. Begin with a bounded memory window and a machine-mode test. Add an IOMMU or kernel-managed buffers before exposing the device to independent processes.
 
-## Hands-on Experiments
-
-1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-01 .learning-activity} — Profile a scalar FIR in Wally simulation. Record cycles, instructions, cache events and the input size at which the kernel dominates.
-2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-02 .learning-activity} — Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit. Verify impulses, random inputs and saturation cases.
-3. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-03 .learning-activity} — Add only the MMIO register block and a no-DMA local-memory mode. Verify start, busy, done, error and reset before connecting a bus master.
-4. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-04 .learning-activity} — Add the single-outstanding-request DMA adapter. Randomize memory latency and inject read/write errors.
-5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-05 .learning-activity} — Integrate the peripheral into a Wally configuration at a documented address and route its interrupt. Run the driver in simulation.
-6. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-06 .learning-activity} — Synthesize for Nexys Video. Compare DSP, LUT, BRAM, frequency and PMU measurements with the software baseline.
-7. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-07 .learning-activity} — Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
-
-Without an FPGA, experiments 1–5 and 7 remain RTL/firmware simulation activities with the stated harness adaptations. For experiment 6, synthesize and, if the XC7 environment is available, place-and-route without programming. Compare simulated software/accelerator cycles separately from device timing/resources. If that flow is unavailable, submit your generic synthesis analysis plus the instructor-provided report comparison from [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). Do not attribute a supplied design's timing or resource counts to your FIR. Use @sec-executable-project for a checked real-Wally accelerator starting point and identify the additional FIR implementation/integration work.
-
-The reusable outcome is not only a filter. It is a disciplined template for deciding whether a computation belongs in software, a standard extension, a custom instruction or a DMA-capable peripheral, and for proving that the resulting hardware improves the complete system.
-
 ## Executable cross-course reference
 
 The advanced continuation @sec-multicore examines what changes when another hart shares the accelerator and memory: coherent/non-coherent paths, software ownership, interrupts and verification. It is outside the compulsory twelve-week project.
@@ -478,6 +464,20 @@ The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-pro
 @fig-dotproduct-complete-architecture follows the [actual register endpoint](../../labs/10-dotproduct/rtl/dotproduct_axi.sv) and [engine](../../labs/10-dotproduct/rtl/dotproduct_engine.sv), and not the earlier FIR design proposal. The Linux/Wally extension uses MMIO base `0x10080000`; the IP consumes offsets and its DMA window is separately parameterized. Platform arbitration, interrupt routing and driver buffer ownership belong outside the IP. This baseline has no burst pipeline or automatic CPU-cache snooping.
 
 Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.
+
+## Hands-on Experiments
+
+1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-01 .learning-activity} — Profile a scalar FIR in Wally simulation. Record cycles, instructions, cache events and the input size at which the kernel dominates.
+2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-02 .learning-activity} — Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit. Verify impulses, random inputs and saturation cases.
+3. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-03 .learning-activity} — Add only the MMIO register block and a no-DMA local-memory mode. Verify start, busy, done, error and reset before connecting a bus master.
+4. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-04 .learning-activity} — Add the single-outstanding-request DMA adapter. Randomize memory latency and inject read/write errors.
+5. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-05 .learning-activity} — Integrate the peripheral into a Wally configuration at a documented address and route its interrupt. Run the driver in simulation.
+6. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-06 .learning-activity} — Synthesize for Nexys Video. Compare DSP, LUT, BRAM, frequency and PMU measurements with the software baseline.
+7. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-07 .learning-activity} — Evaluate an alternative custom packed-dot-product instruction. Compare it with MMIO FIR for short and long buffers; identify the break-even point.
+
+Without an FPGA, experiments 1–5 and 7 remain RTL/firmware simulation activities with the stated harness adaptations. For experiment 6, synthesize and, if the XC7 environment is available, place-and-route without programming. Compare simulated software/accelerator cycles separately from device timing/resources. If that flow is unavailable, submit your generic synthesis analysis plus the instructor-provided report comparison from [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board). Do not attribute a supplied design's timing or resource counts to your FIR. Use @sec-executable-project for a checked real-Wally accelerator starting point and identify the additional FIR implementation/integration work.
+
+The reusable outcome is not only a filter. It is a disciplined template for deciding whether a computation belongs in software, a standard extension, a custom instruction or a DMA-capable peripheral, and for proving that the resulting hardware improves the complete system.
 
 <!-- chapter-review:accelerators-extensions -->
 

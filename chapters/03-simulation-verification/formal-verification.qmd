@@ -210,7 +210,7 @@ The example is an explicit practice outside the nine `run all` entries and runs 
 
 To progress from the FIFO to AXI4-Lite, treat each channel as an ownership contract. AW and W can arrive independently, so they need separate acceptance records. A B response follows a paired address/data request; a stalled B/R response retains its payload. An event register may have side effects only on the specified accepted access. Reuse the FIFO's retained-output reasoning, but add pairing, byte strobes, outstanding-count limits, reset cancellation and error semantics before claiming a protocol proof. The existing [AXI4-Lite lab](../../labs/04-mmio/README.md) and the bounded control checks in @sec-executable-project provide the next design boundary. Their bounded results stand on their own, without this FIFO's induction result.
 
-## Hands-on experiments
+## Hands-on Experiments
 
 1. [Core · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-01 .learning-activity} — Reproduce all tasks and identify which outputs are bounded results, unbounded safety/equivalence results, witnesses and expected negative controls. Annotate the first useful handshake in each VCD.
 2. [Core option · P4 · C1](../../learning-paths.qmd#sec-path-labels){#act-formal-verification-02 .learning-activity} — Remove one representation invariant in a student copy. Determine whether BMC still passes while induction becomes inconclusive; explain the candidate unreachable state instead of weakening the environment to obtain a green result.

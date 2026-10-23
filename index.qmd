@@ -8,11 +8,13 @@ For daily consultation, use the [technical glossary](glossary.qmd), [index of te
 
 Diagrams use labels, containment, arrow styles and ordering as well as color. Dense pipeline signal names have enlarged detail views. Physical captures show actual geometry: in grayscale, use the accompanying named path, resource and timing reports for exact identities and values, and open the original image for a detailed layer inspection.
 
-Technical chapters develop their topics through three levels:
+Most technical chapters develop their topics through three levels:
 
 1. **Concepts** explains the foundations independently of a particular tool or implementation.
 2. **Implementation** connects those foundations to SystemVerilog examples and real designs, especially CORE-V Wally.
 3. **Hands-on Experiments** provides a plan for reproducible simulation, verification, synthesis, or performance experiments.
+
+Some chapters adapt this pattern to their subject. A comparison of processors has no single implementation to build, and a chapter that follows a specification may move from concepts straight to experiments.
 
 The chapters develop reusable RTL, SoC interfaces, verification, FPGA implementation, ASIC implementation, and selected advanced topics. The [final project review](summary.qmd) brings those topics together through expected evidence and individual defence questions. Experiment instructions state their prerequisites; rendering the book does not run the hardware toolchains.
 

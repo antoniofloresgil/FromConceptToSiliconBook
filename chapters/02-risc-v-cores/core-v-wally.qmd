@@ -304,6 +304,10 @@ A useful trace table contains instruction PC, instruction validity, request acce
 
 The repository's declared RTL license is Solderpad Hardware License 2.1, with the stated Apache 2.0 option [@cvwLicense]. That declaration is not a license for the publisher's PDF. The new overview is an original vector layout with its technical sources identified in the caption and SVG metadata; it is not presented as a newly relicensed extraction of a textbook page.
 
+## Verification scope of this teaching core
+
+Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt, trap and privileged machinery is deliberately omitted, so a passing teaching-core test says nothing about those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios. Neither experiment qualifies every Wally configuration, architecturally or microarchitecturally. A retirement comparator and broader feature/coverage plan remain explicit integration work.
+
 ## Hands-on Experiments
 
 1. [Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-01 .learning-activity} — Run a five-instruction dependency chain and annotate which forwarding path supplies each operand.
@@ -322,10 +326,6 @@ The repository's declared RTL license is Solderpad Hardware License 2.1, with th
 Each report should include the RTL revision, selected configuration, loader/firmware convention, minimal disassembly, annotated waveforms and pass/fail criteria. These are integration exercises; reading the diagrams alone does not validate a board or operating-system configuration.
 
 The simplified pipeline establishes instruction timing and hazards. The complete-SoC view adds memory ownership, device effects and privileged redirection. The following chapters develop these contracts with simulation tools and detailed subsystem implementations.
-
-## Verification scope of this teaching core
-
-Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt, trap and privileged machinery is deliberately omitted, so a passing teaching-core test says nothing about those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios. Neither experiment qualifies every Wally configuration, architecturally or microarchitecturally. A retirement comparator and broader feature/coverage plan remain explicit integration work.
 
 <!-- chapter-review:core-v-wally -->
 

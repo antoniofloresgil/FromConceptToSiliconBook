@@ -223,7 +223,7 @@ Each 64-bit counter costs flip-flops plus an incrementer. Event multiplexers add
 
 Expose counters deliberately. User-mode access can help benchmarking but may reveal cache or branch behavior across protection boundaries. On a single-core teaching FPGA this may be an acceptable documented choice; on a system running mutually untrusted software, leave counters machine-only or implement access policy and filtering. Treat PMU access as part of the threat model, alongside debug enablement.
 
-## Verification and Experiments
+## Verification
 
 ### Directed RTL tests
 
@@ -255,7 +255,11 @@ Run the same bare-metal benchmark in Wally simulation and on the synthesized boa
 
 If numbers differ, first check that the two builds use the same cache, branch-predictor, memory and reset configuration. Then inspect firmware placement and external-memory behavior. A single unrepeatable FPGA result is not a basis for tuning RTL.
 
-### Hands-on experiments
+### Verify events separately from architectural correctness
+
+The performance methodology in @sec-verification-methodology requires defined event semantics, counter width/overflow, inhibition, privilege access and measurement boundaries. Use a short workload with independently predictable events, including stalls/flushes, and check whether speculative work or retired work is counted. Match configuration and start/stop windows when comparing variants. Spike/Sail numerical agreement does not establish Wally cycle/cache/predictor counts, and simulation-only observation does not prove that synthesized hardware exposes the same PMU interface.
+
+## Hands-on Experiments
 
 1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-01 .learning-activity} — Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache events around a CoreMark or Embench region. Compute CPI and annotate the event definitions.
 2. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-02 .learning-activity} — Build an RV32 program that reads `mcycle` using the high-low-high sequence. Force a low-half wrap in simulation and verify that a naïve low/high read can fail.
@@ -268,10 +272,6 @@ If numbers differ, first check that the two builds use the same cache, branch-pr
 Without a physical FPGA, keep experiments 1–4 and 7 in RTL simulation with self-checking counter/event tests. For experiment 5, run device implementation without programming or analyse instructor-provided baseline/PMU reports as in [Lab 07](../../labs/07-implementation/README.md#without-a-physical-board); your generic synthesis result is separate evidence. Replace experiment 6 with five repeat runs of the same RTL workload/configuration and recorded seeds/reset/ROI conditions. Report cycle/event min/median/max and explain deterministic equality or modelled wait-state variation. This tests the measurement procedure, not board jitter, achieved frequency or power. The checked divider study in [Lab 11](../../labs/11-dse/README.md) supplies a runnable real-Wally CSR/ROI starting point; a five-counter profile and UART transport remain student implementation work. Submit the counter checks, repeated results and missing physical-correlation plan under the same coursework rubric.
 
 The result is a PMU that is useful at both stages: rich internal evidence during Wally simulation and a smaller, architecturally documented measurement service on actual FPGA hardware.
-
-### Verify events separately from architectural correctness
-
-The performance methodology in @sec-verification-methodology requires defined event semantics, counter width/overflow, inhibition, privilege access and measurement boundaries. Use a short workload with independently predictable events, including stalls/flushes, and check whether speculative work or retired work is counted. Match configuration and start/stop windows when comparing variants. Spike/Sail numerical agreement does not establish Wally cycle/cache/predictor counts, and simulation-only observation does not prove that synthesized hardware exposes the same PMU interface.
 
 <!-- chapter-review:pmu -->
 
