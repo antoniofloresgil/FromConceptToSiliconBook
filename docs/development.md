@@ -72,7 +72,10 @@ extracted ZIP without chapter sources. A report verifier alone is not a rerun.
 For a pin change, run `python tools/environments/sync.py check` and
 `python tools/environments/test_sync.py`; the check also runs in the labs
 workflow. It confirms that the copies agree, not that the new tool works: rerun
-the affected labs. Version identities, tool-version changes and the
+the affected labs. After rebuilding the teaching image, run
+`python labs/tools/check_environment.py` inside it: it compares the installed
+versions with `labs/validated-environment.json`, so a package that moved since the
+last validation is reported instead of going unnoticed. Version identities, tool-version changes and the
 course-edition policy are in [versioning.md](versioning.md).
 
 For a clean-environment reproduction review, follow the

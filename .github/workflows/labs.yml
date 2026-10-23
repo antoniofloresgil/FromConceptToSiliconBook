@@ -24,6 +24,7 @@ jobs:
           python tools/environments/test_sync.py
           python labs/tools/check_recipes.py
           python labs/tools/test_recipes.py
+          python labs/tools/test_environment.py
           python labs/tools/test_package.py
           python tools/figures/architecture.py --check
           python tools/figures/visual_language.py --check
@@ -54,6 +55,8 @@ jobs:
           persist-credentials: false
       - name: Build teaching container
         run: docker build -f labs/Dockerfile -t from-concept-labs:ci .
+      - name: Confirm installed tools equal the validated baseline
+        run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/tools/check_environment.py
       - name: Run reference labs offline
         # Match the runner's ownership so later host steps can write evidence.
         run: docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp --mount "type=bind,source=$PWD,target=/work" from-concept-labs:ci python labs/run.py run all --seed 2026

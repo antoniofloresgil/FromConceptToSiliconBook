@@ -85,7 +85,7 @@ python labs/run.py pack
 
 Preserve the unit report: the Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/wally-platform`, producing `labs/build/wally-platform/report.json`. The collector consumes both reports. DSE writes separate results; CI additionally places its builds under `dse-platform/`.
 
-`labs/validated-environment.json` records the tested baseline. Run `python labs/tools/verify_harness.py` to confirm that a deliberately broken FIFO fails the tests; its expected failure evidence stays under `labs/build/fault-injection/`, preserving the reference report.
+`labs/validated-environment.json` records the tested baseline. Inside the teaching image, `python labs/tools/check_environment.py` compares the installed tool versions with it and fails on any difference or missing tool; CI runs it before the labs. It checks versions only, so it is not a lab run. Run `python labs/tools/verify_harness.py` to confirm that a deliberately broken FIFO fails the tests; its expected failure evidence stays under `labs/build/fault-injection/`, preserving the reference report.
 
 ## Sources and student work
 

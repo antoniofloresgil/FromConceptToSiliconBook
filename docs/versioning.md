@@ -41,7 +41,10 @@ source change:
    `python tools/environments/sync.py write`; it rewrites the Dockerfiles,
    workflows, manifests and lab code that repeat it. Then update the dependency
    record of a pin the manifest does not cover, and rebuild the image.
-3. Rerun the affected labs and regenerate the retained evidence. The sync leaves
+3. Rerun the affected labs and regenerate the retained evidence. Inside the
+   rebuilt teaching image, `labs/tools/check_environment.py` lists every tool whose
+   version differs from the recorded baseline; update that record only through the
+   rerun, never to make the check pass. The sync leaves
    recorded evidence as it was, so the old results stay readable until the new
    ones pass.
 4. Update every chapter sentence that names the old version or relies on its
