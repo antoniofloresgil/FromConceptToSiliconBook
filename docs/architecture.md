@@ -103,6 +103,17 @@ A pin without a rule is still maintained in the file that owns it. The manifest
 states which versions the repository uses; it does not promise that newer
 releases work. See [versioning.md](versioning.md) for the change procedure.
 
+The Ubuntu packages of the laboratory images are not version-pinned: only the
+base image is. `labs/tools/check_environment.py` detects a package that has moved
+away from the validated baseline, and that detection is the accepted control for
+now. If drift appears, escalate in this order. First, point APT at a dated
+Ubuntu snapshot (one manifest value; the base image has no CA certificates, so
+install them from the default archive before switching sources). Second, if a
+course edition must rebuild without the snapshot service or with per-package
+guarantees, hash-lock the packages as the publication environment already does.
+Either changes the image identity, so the laboratories are rerun and the
+validated record updated through that rerun.
+
 ## Editorial identity
 
 The approved Design Flow identity uses the author's selected, unmodified layered
