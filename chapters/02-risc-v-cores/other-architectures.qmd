@@ -1,8 +1,8 @@
 # Other Open-Source RISC-V Architectures {#sec-other-riscv-architectures}
 
-The previous chapter used a simplified, five-stage CORE-V Wally pipeline to explain how instructions, operands and control signals advance through a processor. Real open-source RISC-V projects make different choices. Some minimize logic and accept several cycles per instruction; others add caches and virtual memory to run a rich operating system; research cores pursue multiple instructions per cycle and out-of-order execution. The ISA lets them run compatible programs where their implemented extensions and platform services overlap. It does not require the same pipeline, memory interface or performance.
+Real open-source RISC-V projects make different choices. Some minimize logic and accept several cycles per instruction; others add caches and virtual memory to run a rich operating system; research cores pursue multiple instructions per cycle and out-of-order execution. The ISA lets them run compatible programs where their implemented extensions and platform services overlap. It does not require the same pipeline, memory interface or performance.
 
-This chapter studies six useful reference points: PicoRV32, Ibex, CORE-V CV32E40P, CVA6, BOOM and XiangShan. The last is a high-performance processor project developed in China and written in Chisel. Wally remains the comparison baseline throughout. The objective is to learn how to read and select a core, not to rank unrelated implementations by an isolated frequency or benchmark score.
+This chapter studies six useful reference points: PicoRV32, Ibex, CORE-V CV32E40P, CVA6, BOOM and XiangShan. The last is a high-performance processor project developed in China and written in Chisel. The simplified five-stage Wally pipeline of the previous chapter remains the comparison baseline throughout. The objective is to learn how to read and select a core, not to rank unrelated implementations by an isolated frequency or benchmark score.
 
 ## Concepts: What Is Being Compared?
 

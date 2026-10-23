@@ -4,11 +4,11 @@
 
 ### Architectural simulation and its purpose
 
-This chapter summarizes the discussion of Spike and Sail in *RISC-V System-on-Chip Design* [@harrisRiscvSoc], principally Sections 3.3 and 3.5, with the testing context from Section 3.7 and the comparison methodology from Section 5.6. The worked program is an original exercise for this book.
-
 An instruction-set simulator (ISS) executes a program according to the architectural meaning of its instructions. It maintains the program counter, registers, memory, privilege state, and relevant control and status registers (CSRs). For an addition, it computes the architecturally visible result; for a branch, it selects the next instruction address. This makes an ISS useful before hardware exists and as a reference when checking an implementation.
 
 Architectural behavior and microarchitectural behavior answer different questions. An ISS can tell us what an instruction should write, but it does not normally tell us how many clock cycles a particular pipeline needs, which forwarding path is used, or whether a cache misses. Spike and the Sail simulator discussed in the book are functional models, not cycle-accurate implementations of Wally. A matching result therefore supports functional correctness, while timing, throughput, and physical implementation require other measurements.
+
+This chapter summarizes the discussion of Spike and Sail in *RISC-V System-on-Chip Design* [@harrisRiscvSoc], principally Sections 3.3 and 3.5, with the testing context from Section 3.7 and the comparison methodology from Section 5.6. The worked program is an original exercise for this book.
 
 A reference model is also not an infallible oracle. Its revision, configuration, assumptions, and supported specification versions matter. When a disagreement appears, first establish whether the models are executing the same program in the same architectural environment. Only then classify it as an RTL defect, a reference-model issue, or a legal implementation difference.
 
