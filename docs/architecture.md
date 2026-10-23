@@ -88,6 +88,20 @@ screen first; PDF legibility is checked against a checklist and does not dictate
 how text is written. Do not maintain a separate frozen HTML copy per course. See
 [versioning.md](versioning.md).
 
+## Tool and image pins
+
+`tools/environments/environments.json` owns the pins that Dockerfiles, workflows,
+lab manifests, lab code and recipe contracts repeat: the edition tag, base-image
+digests, and the versions and hashes of downloaded archives.
+`tools/environments/sync.py` rewrites the editable copies from it and fails on any
+that differ. Three kinds of copy are kept apart. Machine pins are rewritten.
+Sentences that name a pin are only checked, because the claim has to be reread
+against the new baseline. Recorded evidence (`reference/`, audits, the validated
+environment) keeps the value of the run that produced it and is never rewritten.
+A pin without a rule is still maintained in the file that owns it. The manifest
+states which versions the repository uses; it does not promise that newer
+releases work. See [versioning.md](versioning.md) for the change procedure.
+
 ## Editorial identity
 
 The approved Design Flow identity uses the author's selected, unmodified layered

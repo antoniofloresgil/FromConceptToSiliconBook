@@ -14,7 +14,8 @@ how a stable edition is offered to a course. Architectural decisions live in
   `from-concept-labs:2026.10`) and a recorded image identity. The validated
   versions of the laboratory tools are in `labs/validated-environment.json`, and
   the publishing toolchain is pinned by `tools/book/Dockerfile` and
-  `tools/book/ubuntu-packages.lock`.
+  `tools/book/ubuntu-packages.lock`. The pins that several files repeat have one
+  source, `tools/environments/environments.json`.
 - **Evidence.** Reference results under `labs/*/reference/` belong to the source,
   tool and configuration that produced them. A changed input makes a new
   candidate with its own evidence; reference results are never edited to match.
@@ -36,10 +37,17 @@ not a promise about newer releases. A version changes only as a deliberate
 source change:
 
 1. State why (a defect, an end of support, a needed feature).
-2. Update the image pin and its dependency record, and rebuild the image.
-3. Rerun the affected labs and regenerate the retained evidence.
+2. Change the value in `tools/environments/environments.json` and run
+   `python tools/environments/sync.py write`; it rewrites the Dockerfiles,
+   workflows, manifests and lab code that repeat it. Then update the dependency
+   record of a pin the manifest does not cover, and rebuild the image.
+3. Rerun the affected labs and regenerate the retained evidence. The sync leaves
+   recorded evidence as it was, so the old results stay readable until the new
+   ones pass.
 4. Update every chapter sentence that names the old version or relies on its
-   behavior, and the recorded environment.
+   behavior, and the recorded environment. `sync.py write` lists the sentences it
+   found for the tools it covers; reread each one against the new baseline, since
+   a changed version can also change the claim.
 5. Keep the previous baseline's evidence readable until the new one passes.
 
 Review the upstream releases of the tools the book names once a year, before the

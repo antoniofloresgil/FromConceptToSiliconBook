@@ -20,6 +20,7 @@ duplicating those decisions or the executable recipes.
 | Figure source, provenance and visual review | [Illustration conventions](illustrations.md), SVG/generators, [`print-review.json`](../tools/figures/print-review.json), `NOTICE.md` and the [review procedure](consultation-and-print.md) |
 | Declared retained waveform inputs/downloads | [`tools/book/retained-resources.json`](../tools/book/retained-resources.json); the snapshot excludes other generated waveforms |
 | Publication environment | [`tools/book/Dockerfile`](../tools/book/Dockerfile), package lock and [publisher guide](../tools/book/README.md) |
+| Edition tag, base-image digests and the versions/hashes of downloaded archives that several files repeat | [`environments.json`](../tools/environments/environments.json), applied by [`sync.py`](../tools/environments/sync.py); edit the manifest, then run `python tools/environments/sync.py write` |
 
 Do not duplicate tool pins, release hashes, report metrics, lab counts or page
 numbers in project-knowledge files. Read the corresponding manifest, catalogue
@@ -68,8 +69,11 @@ and figure changes, follow [consultation-and-print.md](consultation-and-print.md
 When packaging changes, run `python labs/tools/test_package.py` to test the actual
 extracted ZIP without chapter sources. A report verifier alone is not a rerun.
 
-Version identities, tool-version changes and the course-edition policy are in
-[versioning.md](versioning.md).
+For a pin change, run `python tools/environments/sync.py check` and
+`python tools/environments/test_sync.py`; the check also runs in the labs
+workflow. It confirms that the copies agree, not that the new tool works: rerun
+the affected labs. Version identities, tool-version changes and the
+course-edition policy are in [versioning.md](versioning.md).
 
 For a clean-environment reproduction review, follow the
 [audit protocol](../tools/reproducibility/README.md). It specifies fresh-source
