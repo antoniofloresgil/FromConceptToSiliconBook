@@ -1,0 +1,16 @@
+{
+  "purpose": "Recorded Spike retirement log of examples/reference-models/check.elf, used offline by divergence_demo.py",
+  "command": "spike --isa=rv64i --log-commits --log=spike.log check.elf",
+  "trimmed": "kept up to and including the first self-jump (jal x0, 0) of the program's halt loop",
+  "spike": "Spike RISC-V ISA Simulator 1.1.1-dev",
+  "compiler": "riscv64-unknown-elf-gcc 13.2.0",
+  "image": "wallysoc/toolchains_wally:latest",
+  "image_id": "sha256:d57c46159d13e75bdb3d934c9542fe55fcdd8dc91d2fd7902653f54583a67b54",
+  "image_repo_digest": "wallysoc/toolchains_wally@sha256:77587d8337d1e290c51c8896d0ef4edeeb6f680afdfbb73fc0e1c1ad2f30c369",
+  "elf": "examples/reference-models/check.elf",
+  "elf_sha256": "5e866661a15a03400bb382b45aba679bb2a44cbfcc60d22fcc9acc3e0d274946",
+  "log": "labs/06-isa/reference/spike-check.commit.log",
+  "log_sha256": "298bcdf1134771017a273f129f62ec5068f96b4352014a81a9cb55acfcf7fb9e",
+  "recorded_on": "2026-10-23",
+  "refresh": "run divergence_demo.py with --spike spike --record inside that image as root, then update the hashes here"
+}

@@ -1,6 +1,6 @@
 # Experiments, Tools, and Requirements {.unnumbered}
 
-This consultation matrix includes all 230 classified activities, including short reviews and project milestones. Select an activity by its stable ID and follow the link to the instructions and cost label. These are **prerequisites and contracts to check**, not a record of completed proof or tool execution. Page profiles list the tool choices used in that topic; a paper review does not require installing every listed tool. The individual instructions decide which alternative is needed.
+This consultation matrix includes all 231 classified activities, including short reviews and project milestones. Select an activity by its stable ID and follow the link to the instructions and cost label. These are **prerequisites and contracts to check**, not a record of completed proof or tool execution. Page profiles list the tool choices used in that topic; a paper review does not require installing every listed tool. The individual instructions decide which alternative is needed.
 
 Download the [complete experiment matrix as CSV](downloads/experiment-matrix.csv) to filter by tool, requirement, role, compute class or lab. The [laboratory index](lab-index.qmd) gives environment entry points; the [learning-path guide](learning-paths.qmd) explains P0–P5 and C0–C3.
 
@@ -203,6 +203,7 @@ Where relevant, **Related project obligations** reuses the DP identifiers in the
 | [spike-sail-review — Short chapter reflection](chapters/03-simulation-verification/spike-sail.qmd#act-spike-sail-review) | preparation / C0 |
 | [spike-example — Example 1: run and debug with Spike](chapters/03-simulation-verification/spike-sail.qmd#act-spike-example) | option / C2 build / C1 run |
 | [sail-example — Example 2: run and trace with Sail](chapters/03-simulation-verification/spike-sail.qmd#act-sail-example) | advanced / C2 build / C1 run |
+| [spike-divergence — Example 3: find the first divergent instruction](chapters/03-simulation-verification/spike-sail.qmd#act-spike-divergence) | option / C1 |
 | [isa-differential — Diagnose and extend the experiment](chapters/03-simulation-verification/spike-sail.qmd#act-isa-differential) | advanced / C1 local / C2 system |
 
 **Lab entry points:** [06-isa](lab-index.qmd#lab-06-isa), [09-privileged-mmu](lab-index.qmd#lab-09-privileged-mmu).

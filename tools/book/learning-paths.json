@@ -2511,6 +2511,19 @@
       "notes": "Separate Sail model/tool acquisition; preserve the selected model revision."
     },
     {
+      "id": "spike-divergence",
+      "page": "chapters/03-simulation-verification/spike-sail.qmd",
+      "kind": "heading",
+      "anchor": "### Example 3: find the first divergent instruction",
+      "group": "guided",
+      "title": "Example 3: find the first divergent instruction",
+      "role": "option",
+      "practice": "P2",
+      "cost": "C1",
+      "hardware": "none",
+      "notes": "Offline comparison against a recorded Spike log; the stand-in is not RTL. Producing a new Spike log needs the toolchain image."
+    },
+    {
       "id": "isa-differential",
       "page": "chapters/03-simulation-verification/spike-sail.qmd",
       "kind": "heading",

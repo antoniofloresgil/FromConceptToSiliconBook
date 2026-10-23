@@ -56,7 +56,7 @@ The book also reports that the Sail model was substantially slower than Spike in
 
 ### From reference execution to differential verification
 
-The examples here run architectural models and stop short of wiring a retirement comparator into the Wally testbench. That is the natural next step, and follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
+Example 3 builds the comparison on a stand-in for the processor and stops short of wiring it into the Wally testbench. Wiring it in is the natural next step; follow @sec-verification-methodology: match ISA/privilege/memory settings, align committed instructions and trap events, and compare register/CSR/memory effects under a documented nondeterminism policy. Pipeline cycles and reference-model steps need not coincide. Counter, device and interrupt differences require explicit synchronization or narrowly justified exclusions. Keep signature tests as fast checks while stating which unrecorded intermediate effects they can miss.
 
 
 ## Implementation
@@ -198,6 +198,67 @@ The shared program was compiled and run successfully using Spike 1.1.1-dev and t
 
 Signature formatting matters: different granularities may split or reverse groups within a wider word. Use matching eight-byte granularity here. For other tools, compare decoded values using the documented byte ordering; rearranging lines until the text matches hides real differences.
 
+### Example 3: find the first divergent instruction
+
+[Core option · P2 · C1](../../learning-paths.qmd#sec-path-labels){#act-spike-divergence .learning-activity}
+
+A signature says that a design is wrong, not where. This example finds the retired instruction at which a faulty implementation first departs from Spike. The implementation is a small Python model, `labs/06-isa/retire_model.py`, that executes the RV64I instructions of `check.elf` and writes one line per retired instruction in the shape of Spike's commit log. It is **not RTL**; it stands for the log a processor testbench writes at its commit point. With `--fault slt-unsigned` it carries a defect the reference does not have: `slt` and `slti` compare as unsigned numbers.
+
+**Checked recipe:** the Spike log was recorded with Spike 1.1.1-dev in the `wallysoc/toolchains_wally` toolchain image, and `labs/06-isa/reference/spike-run.json` records the command, the image identity and the hashes. The comparison itself runs offline against that recorded log, so it needs only Python.
+
+Spike writes the reference log with:
+
+```bash
+spike --isa=rv64i --log-commits --log=spike.log check.elf
+```
+
+Each line is a retired instruction: the privilege level, the PC, the encoding, and then its architectural effect, a register write or a memory access.
+
+```text
+core   0: 3 0x0000000080000028 (0x0012a613) x12 0x0000000000000001
+core   0: 3 0x0000000080000034 (0x00a3b023) mem 0x0000000080002000 0x0000000000000025
+```
+
+Two things in Spike's log are artifacts of the simulator and not of the program. The first five instructions run in Spike's boot ROM at `0x1000`, before the ELF entry, and after the final store the halt loop repeats until Spike notices the `tohost` write. A comparator therefore needs an alignment policy: start at the first retirement of the ELF entry (`0x80000000`) and stop at the first self-jump. Nothing else is skipped.
+
+First check the comparator on a model that is correct. A tool that never passes on healthy input tells you nothing when it fails:
+
+```text
+healthy stand-in: identical: 43 retired instructions compared
+```
+
+Now the seeded fault. Looking only at the final result, the run produces a wrong signature:
+
+```text
+healthy signature: matches expected.signature
+faulty signature: differs at word(s) 3
+```
+
+The third word is the signed comparison, but a signature points at a stored word and not at an instruction, and in a long program that distance is large. The retirement comparison goes straight to the instruction:
+
+```text
+FIRST DIVERGENCE at retired instruction #25 (counting from the start pc), pc 0x0000000080000028, encoding 0x0012a613
+  differing: destination value
+  reference: core   0: 3 0x0000000080000028 (0x0012a613) x12 0x0000000000000001
+  dut:       core   0: 3 0x0000000080000028 (0x0012a613) x12 0x0000000000000000
+  last matching instructions:
+    core   0: 3 0x000000008000001c (0x00128293) x5  0x0000000000000007
+    core   0: 3 0x0000000080000020 (0xfe62cce3)
+    core   0: 3 0x0000000080000024 (0xfff00293) x5  0xffffffffffffffff
+```
+
+Read it in the order a debugger would. The encoding `0x0012a613` is `slti a2,t0,1` in the disassembly. The PC and encoding match, so both models fetched and decoded the same instruction. Only the destination value differs. Every earlier instruction matched, including `li t0,-1`, which left `0xffffffffffffffff` in `t0` in both, so the operand was identical and the fault is in the comparison itself: the reference treats `-1 < 1` as true, and the faulty model, comparing unsigned, sees `0xffff…ffff < 1` as false. Everything that follows is a consequence. The faulty run goes on to the `failed` label and writes 3 to `tohost`, one instruction fewer than the healthy run, but fixing the later symptoms would hide the cause. The rule is to repair the first divergence and rerun.
+
+To run it, from the repository root:
+
+```bash
+python labs/06-isa/divergence_demo.py labs/build/divergence
+```
+
+The script exits with an error if the healthy model differs from Spike, if the fault is not found at `0x80000028`, or if the signature check disagrees. With Spike installed, add `--spike spike` to produce the reference live instead of reading the recorded one.
+
+Real RTL adds three things this stand-in does not have. A pipeline retires through a commit stage, so the logger must sit at that point and see instructions in program order, never wrong-path ones. Interrupts, timers and device reads need the synchronization the earlier sections describe, or the reference and the processor diverge for environmental reasons. And CSR updates and traps become further effects on each line to compare. Replacing `retire_model.py` with the log from your testbench leaves the comparator unchanged.
+
 ### Diagnose and extend the experiment
 
 [Advanced · C1 local / C2 system](../../learning-paths.qmd#sec-path-labels){#act-isa-differential .learning-activity}
@@ -213,6 +274,7 @@ Finally, run the program on a configured RTL core and compare the defined signat
 ## Key ideas {#review-spike-sail-ideas .unnumbered .unlisted}
 
 - An ISA reference checks architectural behavior; RTL cycle timing is a different question.
+- A signature locates a wrong word; a retirement comparison locates the first wrong instruction.
 - Model version, ISA configuration and execution environment must agree.
 
 ## What you should now be able to explain {#review-spike-sail-explain .unnumbered .unlisted}

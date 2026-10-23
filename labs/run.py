@@ -171,6 +171,8 @@ def run_lab(name, session):
         session.execute(["ld.lld", "-m", "elf32lriscv", "--no-relax", "-T", folder / "isa_demo.ld",
                          session.directory / "isa_demo.o", "-o", session.directory / "isa_demo.elf"])
         session.execute([sys.executable, folder / "check_signature.py", session.directory / "isa_demo.elf"])
+        session.execute([sys.executable, folder / "test_divergence.py"])
+        session.execute([sys.executable, folder / "divergence_demo.py", session.directory / "divergence"])
     elif name == "verilator":
         objects = session.directory / "obj_dir"
         session.execute(["verilator", "--cc", "--exe", "--build", "--trace", "-Wall",
