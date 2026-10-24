@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="613" viewBox="0 0 960 613" role="img" aria-labelledby="title desc">
+<title id="title">A worked setup and hold budget for one register path</title><desc id="desc">Invented teaching values, not accumulator measurements • positive skew of 0.05 ns • not to scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="613" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A worked setup and hold budget for one register path</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Invented teaching values, not accumulator measurements • positive skew of 0.05 ns • not to scale</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Setup at a period of 3.00 ns</text>
+<rect x="28" y="120" width="132" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="94" y="148" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clock-to-Q</text>
+<text x="94" y="172" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.20 ns</text>
+<text x="178" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">+</text>
+<rect x="196" y="120" width="132" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="262" y="148" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">data</text>
+<text x="262" y="172" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">2.50 ns</text>
+<text x="346" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">+</text>
+<rect x="364" y="120" width="132" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="430" y="148" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">setup</text>
+<text x="430" y="172" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.15 ns</text>
+<text x="514" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">+</text>
+<rect x="532" y="120" width="132" height="64" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="598" y="148" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">uncertainty</text>
+<text x="598" y="172" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.10 ns</text>
+<text x="682" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">-</text>
+<rect x="700" y="120" width="132" height="64" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="766" y="148" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">skew</text>
+<text x="766" y="172" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.05 ns</text>
+<rect x="28" y="210" width="300" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="178" y="245" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">required time 2.90 ns</text>
+<text x="350" y="245" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">&lt;</text>
+<rect x="380" y="210" width="250" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="505" y="245" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">period T = 3.00 ns</text>
+<text x="655" y="245" font-size="24" text-anchor="start" fill="#172b3a" font-weight="bold">=&gt;</text>
+<rect x="700" y="210" width="232" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="816" y="245" font-size="20" text-anchor="middle" fill="#28705c" font-weight="bold">slack 0.10 ns</text>
+<text x="28" y="325" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Hold, with the same skew</text>
+<rect x="28" y="345" width="190" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="123" y="373" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">min clock-to-Q</text>
+<text x="123" y="397" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.06 ns</text>
+<text x="235" y="385" font-size="24" text-anchor="start" fill="#172b3a" font-weight="bold">+</text>
+<rect x="258" y="345" width="190" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="353" y="373" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">min data</text>
+<text x="353" y="397" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.04 ns</text>
+<text x="465" y="385" font-size="24" text-anchor="start" fill="#172b3a" font-weight="bold">=</text>
+<rect x="490" y="345" width="130" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="555" y="385" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">0.10 ns</text>
+<text x="633" y="385" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">&lt;</text>
+<rect x="660" y="345" width="272" height="64" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="796" y="373" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">hold 0.05 + U 0.03</text>
+<text x="796" y="397" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">+ skew 0.05 = 0.13 ns</text>
+<rect x="660" y="425" width="272" height="44" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="796" y="454" font-size="20" text-anchor="middle" fill="#a34624" font-weight="bold">violation 0.03 ns</text>
+<rect x="28" y="490" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="518" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A longer period does not change the hold inequality: repair it with inserted delay or a</text>
+<text x="44" y="543" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">revised clock or data path. Real STA uses the required corners and the detailed clock</text>
+<text x="44" y="568" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">paths.</text>
+</g></svg>

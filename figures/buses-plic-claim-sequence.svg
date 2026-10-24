@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="623" viewBox="0 0 960 623" role="img" aria-labelledby="title desc">
+<title id="title">PLIC service: claim, service, order, complete</title><desc id="desc">Teaching context 0 (machine mode) • claim and completion share the register at offset 0x200004</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="623" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">PLIC service: claim, service, order, complete</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Teaching context 0 (machine mode) • claim and completion share the register at offset 0x200004</text>
+<rect x="65" y="90" width="170" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="150.0" y="122.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Device</text>
+<path d="M150 140V505" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="395" y="90" width="170" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="122.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">PLIC</text>
+<path d="M480 140V505" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="725" y="90" width="170" height="50" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="810.0" y="122.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Hart software</text>
+<path d="M810 140V505" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M150 185H480" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="315.0" y="176" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1  source asserts (level)</text>
+<path d="M480 235H810" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="645.0" y="226" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">2  external interrupt, then trap</text>
+<path d="M810 285H480" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="645.0" y="276" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3  read claim</text>
+<path d="M480 335H810" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="645.0" y="326" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4  returns the source ID</text>
+<path d="M810 395H150" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="330" y="386" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5  service, clear the condition</text>
+<path d="M810 445H480" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="645.0" y="436" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">6  fence, then write the ID</text>
+<text x="496" y="360" font-size="18" text-anchor="start" fill="#28705c" font-weight="normal">claim clears the pending bit</text>
+<text x="496" y="474" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">if the source is still high,</text>
+<text x="496" y="498" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">it can interrupt again</text>
+<rect x="28" y="525" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="553" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Claim has a side effect and is not a read of the pending bitmap; completion does not</text>
+<text x="44" y="578" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">remove the device&#x27;s own condition. ID 0 means no claimed interrupt.</text>
+</g></svg>

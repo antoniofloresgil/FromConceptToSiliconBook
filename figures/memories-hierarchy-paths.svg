@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="533" viewBox="0 0 960 533" role="img" aria-labelledby="title desc">
+<title id="title">Three access paths from the core</title><desc id="desc">Alternatives, not a mandatory sequence • check the selected configuration for the levels it has</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="533" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Three access paths from the core</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Alternatives, not a mandatory sequence • check the selected configuration for the levels it has</text>
+<rect x="28" y="120" width="150" height="230" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="33" y="125" width="140" height="220" rx="7" fill="none" stroke="#24577a"/>
+<text x="103.0" y="230.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU</text>
+<text x="103.0" y="256.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">registers</text>
+<rect x="250" y="100" width="280" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M258 174H280" stroke="#24577a" stroke-width="2"/>
+<path d="M258 169H280" stroke="#24577a" stroke-width="2"/>
+<path d="M258 164H280" stroke="#24577a" stroke-width="2"/>
+<text x="390.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">IROM or L1 I-cache</text>
+<text x="390.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">instruction path</text>
+<path d="M178 235H214V140H250" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="250" y="205" width="280" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M258 279H280" stroke="#24577a" stroke-width="2"/>
+<path d="M258 274H280" stroke="#24577a" stroke-width="2"/>
+<path d="M258 269H280" stroke="#24577a" stroke-width="2"/>
+<text x="390.0" y="240.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">DTIM or L1 D-cache</text>
+<text x="390.0" y="266.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">load/store path</text>
+<path d="M178 235H214V245H250" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="250" y="310" width="280" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="390.0" y="345.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Uncached path</text>
+<text x="390.0" y="371.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">device access</text>
+<path d="M178 235H214V350H250" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="590" y="100" width="140" height="290" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M597 107H723" stroke="#24577a" stroke-width="5"/>
+<text x="660.0" y="228.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Bus</text>
+<text x="660.0" y="254.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">selects a</text>
+<text x="660.0" y="280.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">target</text>
+<path d="M530 140H590" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M530 245H590" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M530 350H590" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="790" y="130" width="142" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M798 213H820" stroke="#24577a" stroke-width="2"/>
+<path d="M798 206H820" stroke="#24577a" stroke-width="2"/>
+<text x="861.0" y="170.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Main</text>
+<text x="861.0" y="196.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">memory</text>
+<rect x="790" y="280" width="142" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="787" y="292" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="787" y="304" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="787" y="316" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="861.0" y="320.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Peripheral</text>
+<text x="861.0" y="346.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">registers</text>
+<path d="M730 175H790" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M730 325H790" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="410" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A tightly integrated memory is directly addressed storage with predictable timing; a</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">cache holds automatically selected copies. Device registers use the uncached path on</text>
+<text x="44" y="488" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">purpose.</text>
+</g></svg>

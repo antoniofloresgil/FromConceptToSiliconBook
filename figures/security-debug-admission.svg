@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="593" viewBox="0 0 960 593" role="img" aria-labelledby="title desc">
+<title id="title">Lifecycle decides what the debug path may do</title><desc id="desc">The teaching guard admits halt and bus requests • lifecycle and authentication are trusted inputs</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="593" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Lifecycle decides what the debug path may do</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The teaching guard admits halt and bus requests • lifecycle and authentication are trusted inputs</text>
+<rect x="28" y="100" width="390" height="68" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="223.0" y="129.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Manufacturing, test</text>
+<text x="223.0" y="155.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">test access under production-test rules</text>
+<path d="M223 168V192" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="192" width="390" height="68" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="223.0" y="221.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Development</text>
+<text x="223.0" y="247.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">authenticated sessions inspect broadly</text>
+<path d="M223 260V284" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="284" width="390" height="68" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="223.0" y="313.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Production</text>
+<text x="223.0" y="339.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">restricted health and status only</text>
+<path d="M223 352V376" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="376" width="390" height="68" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="223.0" y="405.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Service, return</text>
+<text x="223.0" y="431.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">erase customer secrets first</text>
+<rect x="450" y="100" width="260" height="178" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="580" y="130" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">permit requires</text>
+<text x="466" y="160" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">no reset</text>
+<text x="466" y="184" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">lifecycle == 2&#x27;b01</text>
+<text x="466" y="208" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">authenticated</text>
+<text x="466" y="232" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">not locked</text>
+<text x="466" y="256" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">no lock request</text>
+<path d="M710 180H750" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="750" y="135" width="182" height="90" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="841.0" y="175.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">permit</text>
+<text x="841.0" y="201.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">AND of all</text>
+<path d="M841 225V290H570V320" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M841 290V320" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="450" y="320" width="240" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="570.0" y="350.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">halt_grant</text>
+<text x="570.0" y="376.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">permit AND halt_request</text>
+<rect x="700" y="320" width="232" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="816.0" y="350.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">bus_grant</text>
+<text x="816.0" y="376.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">permit AND bus_request</text>
+<rect x="28" y="470" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="498" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The sticky runtime lock lasts until reset; production stays closed because its lifecycle</text>
+<text x="44" y="523" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">value is disallowed. The guard admits requests: it does not drain accepted work, hide</text>
+<text x="44" y="548" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">returned data or sanitize state.</text>
+</g></svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="588" viewBox="0 0 960 588" role="img" aria-labelledby="title desc">
+<title id="title">Check the whole span of a DMA descriptor, not only A</title><desc id="desc">Window [B, L) with B = 0x80008000 and L = 0x8000c000 • axis not to scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="588" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Check the whole span of a DMA descriptor, not only A</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Window [B, L) with B = 0x80008000 and L = 0x8000c000 • axis not to scale</text>
+<rect x="520" y="120" width="280" height="300" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="520" y="110" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">B</text>
+<text x="800" y="110" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">L</text>
+<text x="28" y="156" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">accepted</text>
+<text x="28" y="182" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A &gt;= B and A + N &lt;= L</text>
+<rect x="560" y="140" width="140" height="34" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="630.0" y="164" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A to A+N</text>
+<text x="28" y="226" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">rejected</text>
+<text x="28" y="252" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">starts inside, ends outside</text>
+<rect x="700" y="210" width="180" height="34" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="790.0" y="234" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A to A+N</text>
+<text x="28" y="296" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">rejected</text>
+<text x="28" y="322" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">starts below B</text>
+<rect x="420" y="280" width="180" height="34" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="510.0" y="304" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A to A+N</text>
+<text x="28" y="366" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">rejected</text>
+<text x="28" y="392" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A + N overflows</text>
+<rect x="836" y="350" width="96" height="34" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="884.0" y="374" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A to A+N</text>
+<text x="28" y="440" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Testing only A would accept the second row; wider arithmetic exposes the carry-out of the fourth.</text>
+<rect x="28" y="465" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="493" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Source spans are 4 x length bytes because operands move as four-byte words, not 2 x</text>
+<text x="44" y="518" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">length. Validate actual transactions, including padding and stride, rather than an</text>
+<text x="44" y="543" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">abstract element type.</text>
+</g></svg>

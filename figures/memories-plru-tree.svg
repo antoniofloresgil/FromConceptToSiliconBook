@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="513" viewBox="0 0 960 513" role="img" aria-labelledby="title desc">
+<title id="title">Tree pseudo-LRU for four ways</title><desc id="desc">Bits are root / left / right • each bit points toward the subtree chosen for eviction • all ways valid</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="513" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Tree pseudo-LRU for four ways</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Bits are root / left / right • each bit points toward the subtree chosen for eviction • all ways valid</text>
+<text x="112" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Initial</text>
+<path d="M112 154L68 191" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M112 154L156 191" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M68 219L46 271" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M68 219L90 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M156 219L134 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M156 219L178 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<circle cx="112" cy="140" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="112" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="68" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="68" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="156" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="156" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<rect x="29" y="271" width="34" height="30" rx="5" fill="#fff3e9" stroke="#a34624" stroke-width="4"/>
+<text x="46" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<rect x="73" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="90" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="117" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="134" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<rect x="161" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="178" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<text x="112" y="335" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">000</text>
+<text x="112" y="362" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">victim: way 0</text>
+<text x="296" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Access way 0</text>
+<path d="M296 154L252 191" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M296 154L340 191" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M252 219L230 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M252 219L274 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M340 219L318 271" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M340 219L362 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<circle cx="296" cy="140" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="296" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<circle cx="252" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="252" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<circle cx="340" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="340" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<rect x="213" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="230" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="257" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="274" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="301" y="271" width="34" height="30" rx="5" fill="#fff3e9" stroke="#a34624" stroke-width="4"/>
+<text x="318" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<rect x="345" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="362" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<text x="296" y="335" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">110</text>
+<text x="296" y="362" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">victim: way 2</text>
+<text x="480" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Access way 2</text>
+<path d="M480 154L436 191" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M480 154L524 191" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M436 219L414 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M436 219L458 271" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M524 219L502 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M524 219L546 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<circle cx="480" cy="140" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="480" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="436" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="436" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<circle cx="524" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="524" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<rect x="397" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="414" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="441" y="271" width="34" height="30" rx="5" fill="#fff3e9" stroke="#a34624" stroke-width="4"/>
+<text x="458" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<rect x="485" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="502" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<rect x="529" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="546" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<text x="480" y="335" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">011</text>
+<text x="480" y="362" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">victim: way 1</text>
+<text x="664" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Access way 1</text>
+<path d="M664 154L620 191" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M664 154L708 191" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M620 219L598 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M620 219L642 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M708 219L686 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M708 219L730 271" stroke="#a34624" stroke-width="4" fill="none"/>
+<circle cx="664" cy="140" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="664" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<circle cx="620" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="620" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="708" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="708" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<rect x="581" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="598" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="625" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="642" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="669" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="686" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<rect x="713" y="271" width="34" height="30" rx="5" fill="#fff3e9" stroke="#a34624" stroke-width="4"/>
+<text x="730" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<text x="664" y="335" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">101</text>
+<text x="664" y="362" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">victim: way 3</text>
+<text x="848" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Access way 3</text>
+<path d="M848 154L804 191" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M848 154L892 191" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M804 219L782 271" stroke="#a34624" stroke-width="4" fill="none"/>
+<path d="M804 219L826 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M892 219L870 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<path d="M892 219L914 271" stroke="#172b3a" stroke-width="1.2" fill="none"/>
+<circle cx="848" cy="140" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="848" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="804" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="804" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<circle cx="892" cy="205" r="15" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="892" y="211" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<rect x="765" y="271" width="34" height="30" rx="5" fill="#fff3e9" stroke="#a34624" stroke-width="4"/>
+<text x="782" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<rect x="809" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="826" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="853" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="870" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<rect x="897" y="271" width="34" height="30" rx="5" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="914" y="292" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<text x="848" y="335" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">000</text>
+<text x="848" y="362" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">victim: way 0</text>
+<rect x="28" y="390" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="418" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A hit flips the bits on its path to point away from the accessed way. The tree stores an</text>
+<text x="44" y="443" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">approximation, not the whole history, and needs forwarding when an update overlaps a</text>
+<text x="44" y="468" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">lookup.</text>
+</g></svg>

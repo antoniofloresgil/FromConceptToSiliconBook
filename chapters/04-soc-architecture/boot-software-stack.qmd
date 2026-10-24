@@ -59,6 +59,10 @@ MEMORY { payload (rwx) : ORIGIN = 0x80200000, LENGTH = 1M }
 
 The complete [linker script](../../labs/12-boot/link.ld) includes text, read-only data, initialized data, BSS and stack sections. `NOLOAD` reserves address space without storing an initialized byte sequence in the image. Startup explicitly clears BSS; the stack must remain outside that loop. If code runs from ROM but initialized data belongs in SRAM, the script must express separate load and execution addresses and startup must copy the data. The practice runs its loaded code/data in RAM and does not need that ROM-to-SRAM copy.
 
+@fig-boot-memory-plan shows the placement of the checked practice and the owners that must stay disjoint.
+
+![Placement of the checked QEMU practice in one RAM: OpenSBI at the DRAM base and the supervisor payload window at 0x80200000, holding text, data, BSS and the 16 KiB stack. A DTB and later buffers must not overlap them. The drawing is not to scale, and the addresses belong to that configuration.](../../figures/boot-memory-plan.svg){#fig-boot-memory-plan width=100% fig-alt="RAM regions for OpenSBI, a one-mebibyte supervisor payload window with its sections and stack, and boxes for the DTB and other buffers"}
+
 For each image, record physical load address, entry address, footprint including zero-filled memory, privilege at entry, ISA/ABI and permitted overlap. A build map alone cannot detect overlap with a separately loaded DTB or initramfs. Check the combined placement plan, including alignment and temporary decompression buffers.
 
 ### Startup before C
@@ -80,6 +84,10 @@ OpenSBI supports three useful packaging styles [@bootOpenSbiFirmware]:
 | `FW_DYNAMIC` | Information supplied by the preceding loader | Loader supplies the next entry/mode information at runtime |
 | `FW_JUMP` | Build-time configured next-stage address | Another agent must already have loaded that stage |
 | `FW_PAYLOAD` | Next-stage binary embedded with firmware | Convenient combined image, with explicit placement and size constraints |
+
+@fig-boot-firmware-packaging shows who supplies the next-stage information in each of the three styles.
+
+![The three OpenSBI packaging styles: FW_DYNAMIC takes the next-stage information from a loader at run time, FW_JUMP fixes the address at build time and needs another agent to have loaded the stage, and FW_PAYLOAD embeds the next stage in the firmware image. The next stage is usually entered in supervisor mode.](../../figures/boot-firmware-packaging.svg){#fig-boot-firmware-packaging width=100% fig-alt="Three rows linking a provider of next-stage information to a firmware type and the next stage"}
 
 For dynamic firmware, the preceding loader supplies a pointer to its dynamic-information structure in `a2`; hart ID and DTB address use `a0` and `a1`. These arguments belong to firmware entry, and the later SBI `ecall` argument convention is a different one.
 
@@ -110,6 +118,10 @@ SRST defines reset types and successful nonreturning shutdown behavior; DBCN is 
 Probe optional extensions instead of inferring them from an OpenSBI banner. The BASE extension returns an encoded specification version and an implementation ID; those are different from the OpenSBI software release [@bootSbiBase]. The practice probes TIME and SRST before using them, and checks that an unsupported EID produces `SBI_ERR_NOT_SUPPORTED` (`-2`).
 
 TIME accepts an absolute timer value; it is not a relative delay or a CPU-cycle count. The checked payload requests the maximum deadline to clear the pending timer condition. It does not enable supervisor interrupts or claim to test delivery. An RV32 implementation splits a 64-bit time value across argument registers; copying this RV64 wrapper unchanged into RV32 would be incorrect [@bootSbiTime].
+
+@fig-boot-sbi-boundaries separates the two uses of ecall.
+
+![An application system call follows the operating-system ABI and an SBI call follows the SBI ABI, although both use ecall. An SBI call passes the extension ID in a7, the function ID in a6 and arguments in a0 to a5, and returns an error in a0 and a value in a1. Firmware entry uses a different register convention.](../../figures/boot-sbi-boundaries.svg){#fig-boot-sbi-boundaries width=100% fig-alt="An application, a kernel and resident firmware with ecall arrows between them and the register convention of an SBI call"}
 
 Finally, an application system call and an SBI call are distinct even though both can use `ecall`. A U-mode application requests a kernel service according to the OS ABI. The S-mode kernel requests a platform service according to SBI. Forwarding arbitrary user requests into firmware would collapse that trust boundary.
 

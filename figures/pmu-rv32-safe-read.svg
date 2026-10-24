@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="528" viewBox="0 0 960 528" role="img" aria-labelledby="title desc">
+<title id="title">Why an RV32 counter read repeats the high half</title><desc id="desc">A 64-bit counter wraps its low half between two reads • high, low, high, then compare</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="528" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Why an RV32 counter read repeats the high half</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A 64-bit counter wraps its low half between two reads • high, low, high, then compare</text>
+<rect x="28" y="105" width="470" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="263" y="140" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">counter 0x00000000 FFFFFFFF</text>
+<rect x="498" y="105" width="434" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="715" y="140" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">counter 0x00000001 00000000</text>
+<path d="M498 95V175" fill="none" stroke="#a34624" stroke-width="1.2"/>
+<text x="498" y="90" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">low half wraps</text>
+<path d="M300 215V175" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="300" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">csrr mcycleh</text>
+<text x="300" y="266" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">hi0 = 0</text>
+<path d="M640 215V175" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="640" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">csrr mcycle</text>
+<text x="640" y="266" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">lo = 0x00000000</text>
+<path d="M830 215V175" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="830" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">csrr mcycleh</text>
+<text x="830" y="266" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">hi1 = 1</text>
+<rect x="28" y="310" width="904" height="96" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="44" y="338" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Without the check, {hi0, lo} = 0x00000000 00000000:</text>
+<text x="44" y="364" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">the value jumped back by about 4.29 billion counts.</text>
+<text x="44" y="390" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">With it, hi0 != hi1, so the loop repeats and returns a consistent value.</text>
+<rect x="28" y="430" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="458" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The same pattern applies to minstret and every RV32 hpmcounter. For a short window,</text>
+<text x="44" y="483" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">still keep the 64-bit difference: a 32-bit delta can wrap.</text>
+</g></svg>

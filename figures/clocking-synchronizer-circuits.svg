@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="593" viewBox="0 0 960 593" role="img" aria-labelledby="title desc">
+<title id="title">Two small synchronizers and what each one does</title><desc id="desc">Single-bit level and reset release • neither carries a multi-bit word or a short pulse</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="593" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Two small synchronizers and what each one does</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Single-bit level and reset release • neither carries a multi-bit word or a short pulse</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Bit synchronizer for a level</text>
+<path d="M300 108V250" stroke="#172b3a" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="290" y="128" font-size="18" text-anchor="end" fill="#172b3a" font-weight="normal">other domain</text>
+<text x="310" y="128" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">clk domain</text>
+<text x="28" y="190" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">AsyncIn</text>
+<path d="M120 185H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="340" y="150" width="120" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="192.0" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">Meta</text>
+<path d="M352 220l10 -14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<path d="M460 185H540" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="540" y="150" width="120" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="600.0" y="192.0" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">Sync</text>
+<path d="M552 220l10 -14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<path d="M660 185H760" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="770" y="192" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">SyncOut</text>
+<text x="400" y="250" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">may be metastable</text>
+<text x="600" y="278" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">first value the logic may use</text>
+<text x="28" y="330" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Reset-release synchronizer</text>
+<text x="28" y="400" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">ResetNAsync</text>
+<text x="28" y="424" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">asserts at once</text>
+<rect x="340" y="370" width="120" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="412.0" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">Rel[0]</text>
+<path d="M352 440l10 -14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<rect x="540" y="370" width="120" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="600.0" y="412.0" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">Rel[1]</text>
+<path d="M552 440l10 -14l10 14" fill="none" stroke="#24577a" stroke-width="2"/>
+<path d="M300 405H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="300" y="392" font-size="18" text-anchor="end" fill="#172b3a" font-weight="normal">tied to 1</text>
+<path d="M200 380V340H400" fill="none" stroke="#a34624" stroke-width="1.2"/>
+<path d="M460 405H540" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M660 405H760" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="770" y="412" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">ResetN</text>
+<path d="M400 340V370" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<path d="M600 340V370" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<path d="M400 340H600" fill="none" stroke="#a34624" stroke-width="1.2"/>
+<text x="500" y="330" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">asynchronous clear</text>
+<rect x="28" y="470" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="498" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The first flip-flop stays unpredictable; a second stage lowers the chance that it</text>
+<text x="44" y="523" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">propagates. Each clock domain needs its own release synchronizer, and the protocol must</text>
+<text x="44" y="548" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">tolerate the added delay.</text>
+</g></svg>

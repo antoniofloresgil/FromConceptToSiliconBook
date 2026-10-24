@@ -31,6 +31,7 @@ jobs:
           python tools/figures/async_fifo.py --check
           python tools/figures/reusable_ip.py --check
           python tools/figures/explanatory.py --check
+          python tools/figures/concepts.py --check
           python -m unittest discover -s tools/figures -p 'test_*.py'
           python tools/figures/print_details.py --check
           python tools/figures/print_audit.py --check

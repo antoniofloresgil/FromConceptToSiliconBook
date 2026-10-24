@@ -16,15 +16,9 @@ The Linux integration in @sec-linux-accelerator makes DMA ownership concrete: a 
 
 Large memories are economical per bit but are not necessarily fast enough to supply every processor access. A hierarchy keeps frequently needed information near execution and moves less frequently used information to larger storage. An L1 instruction cache and an L1 data cache serve different traffic, even when they use similar storage cells.
 
-```text
-CPU registers
-   |
-   +-- instruction path -- IROM or L1 instruction cache --+
-   |                                                     |
-   +-- load/store path --- DTIM or L1 data cache ---------+-- bus -- main memory
-   |                                                     |
-   +-- device access ------- uncached path ---------------+-- peripheral registers
-```
+@fig-memories-hierarchy-paths shows three alternative paths from the core.
+
+![Instruction, load/store and device access paths from the core. A tightly integrated memory (IROM or DTIM) is directly addressed storage with predictable timing, a cache holds automatically selected copies, and device registers use an uncached path. The paths are alternatives, not a mandatory sequence, and the selected Wally configuration decides which levels exist.](../../figures/memories-hierarchy-paths.svg){#fig-memories-hierarchy-paths width=100% fig-alt="A CPU reaching an instruction memory or cache, a data memory or cache and an uncached path, all connecting through a bus to main memory and peripheral registers"}
 
 This diagram presents alternatives, not a mandatory sequence. A tightly integrated memory is directly addressed storage with predictable access timing, whereas a cache holds automatically selected copies of other memory. Main memory may be on-chip RAM, external DRAM or a simulation model. Other systems can have additional cache levels, so check the chosen Wally configuration to see which ones it has.
 
@@ -78,6 +72,10 @@ Where the required behavior differs from a primitive, the wrapper may insert byp
 
 Byte masks must also be explicit. In a little-endian 32-bit word `0x11223344`, increasing byte addresses contain `44`, `33`, `22`, `11`. A masked write of `0xAABBCCDD` with mask `0101` changes the word to `0x11BB33DD`. The mask is a lane enable, not the data value to be stored.
 
+@fig-memories-byte-lane-mask works through the masked write of the previous paragraph.
+
+![A masked write into a little-endian 32-bit word. The mask 0101 enables byte lanes 0 and 2, so 0xAABBCCDD changes 0x11223344 into 0x11BB33DD; the mask selects lanes and is not data.](../../figures/memories-byte-lane-mask.svg){#fig-memories-byte-lane-mask width=100% fig-alt="Four byte lanes of the stored word, the write data, the mask and the resulting word"}
+
 ### Reset, initialization and validity
 
 Clearing every array element on reset can prevent efficient FPGA RAM inference or require thousands of resettable registers. Most SRAM macros do not provide an instantaneous array-wide clear. Reset the interface state that needs a defined starting point and initialize contents through a supported image-loading or software mechanism.
@@ -110,11 +108,9 @@ $$
 
 An address separates into tag, set index and line offset. The offset contains both byte-lane and word-within-line information. Tags identify which memory block occupies a selected location.
 
-```text
-Physical byte address:  |              tag              | set | offset |
-                                                        chooses   chooses
-                                                         row       byte
-```
+@fig-memories-cache-address-lookup splits an address for the teaching cache and follows the lookup.
+
+![Address fields and lookup of the 4 KiB, two-way teaching cache with 64-byte lines. The set field selects one row in each way, each way compares its stored tag, and the hit vector selects the data; three addresses with different tags map to set 0. The geometry is the example of this chapter, not an assertion about every Wally configuration.](../../figures/memories-cache-address-lookup.svg){#fig-memories-cache-address-lookup width=100% fig-alt="A 32-bit address divided into tag, set, word and byte fields, two ways compared in parallel and a data multiplexer, with three example addresses that map to the same set"}
 
 For a teaching 4 KiB, two-way cache with 64-byte lines, $S=32$, the offset is six bits and the index is five bits. With a 32-bit physical address, the tag is 21 bits:
 
@@ -163,6 +159,10 @@ For four ways, a binary tree uses three direction bits. Interpret each bit as po
 | Access way 2 | `011` | 1 |
 | Access way 1 | `101` | 3 |
 | Access way 3 | `000` | 0 |
+
+@fig-memories-plru-tree draws the five states of the table as trees.
+
+![Tree pseudo-LRU for four ways, following the table: the bits are root, left and right, and each bit points toward the subtree chosen for eviction. A hit flips the bits on its path to point away from the accessed way. All ways are assumed valid.](../../figures/memories-plru-tree.svg){#fig-memories-plru-tree width=100% fig-alt="Five small binary trees showing the replacement bits and the victim way after each access"}
 
 The tree encodes a useful approximation, not the full history. Its state also needs forwarding when a recent update and a new lookup overlap. A replacement unit that selects the right victim in isolated tests can fail on back-to-back accesses if it reads stale state.
 
@@ -233,6 +233,10 @@ $$
 where $a_D$ is data accesses per instruction. For a hit-only CPI of 1.1, instruction miss rate 1%, data access fraction 30%, data miss rate 4% and 25-cycle penalties, the estimate is 1.65. It assumes the counted stalls add without overlap; shared-bus contention, dirty evictions and page walks may require a more detailed model.
 
 Execution time is $N_{\mathrm{instructions}}\mathrm{CPI}/f$. Reducing misses is helpful only in context: a larger cache that reduces CPI but greatly lowers frequency may lose overall. Distinguish model predictions from cycle measurements and post-implementation frequency.
+
+@fig-memories-amat-breakdown stacks the terms of the three worked estimates above.
+
+![The three estimates of this section as stacked bars: an AMAT of 2.0 for one level, an AMAT of 1.8 for the two-level example and a CPI estimate of 1.65. The values are model arithmetic from the text, not measurements, and bar length is proportional to cycles.](../../figures/memories-amat-breakdown.svg){#fig-memories-amat-breakdown width=100% fig-alt="Three horizontal stacked bars splitting a one-level AMAT, a two-level AMAT and a CPI estimate into hit, miss and base terms"}
 
 ### Cache maintenance, instruction visibility and DMA
 

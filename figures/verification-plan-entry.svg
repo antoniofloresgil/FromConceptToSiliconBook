@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="608" viewBox="0 0 960 608" role="img" aria-labelledby="title desc">
+<title id="title">What one entry of a verification plan contains</title><desc id="desc">Example row DP-NUM of the dot-product project • an unexecuted row stays visible in the plan</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="608" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">What one entry of a verification plan contains</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Example row DP-NUM of the dot-product project • an unexecuted row stays visible in the plan</text>
+<rect x="28" y="95" width="330" height="66" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="123.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">1  Requirement</text>
+<text x="193.0" y="149.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ID, source, statement</text>
+<rect x="400" y="95" width="532" height="66" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="416" y="124" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">DP-NUM: low 16-bit signed samples</text>
+<text x="416" y="150" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">accumulate exactly into 64 bits</text>
+<path d="M358 128H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M193 161V177" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="28" y="177" width="330" height="66" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="205.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">2  Level and environment</text>
+<text x="193.0" y="231.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">where it runs, assumptions</text>
+<rect x="400" y="177" width="532" height="66" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="416" y="206" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">named per entry, with trust and</text>
+<text x="416" y="232" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">reset assumptions</text>
+<path d="M358 210H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M193 243V259" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="28" y="259" width="330" height="66" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="287.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">3  Stimulus</text>
+<text x="193.0" y="313.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">including a failure case</text>
+<rect x="400" y="259" width="532" height="66" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="416" y="288" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">signed extremes, mixed signs,</text>
+<text x="416" y="314" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">noisy upper bits, every length</text>
+<path d="M358 292H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M193 325V341" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="28" y="341" width="330" height="66" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="369.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">4  Checker and observation</text>
+<text x="193.0" y="395.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">oracle and expected outcome</text>
+<rect x="400" y="341" width="532" height="66" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="416" y="370" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">independent Python model; both</text>
+<text x="416" y="396" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">result words after success</text>
+<path d="M358 374H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M193 407V423" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<rect x="28" y="423" width="330" height="66" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="451.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">5  Coverage and evidence</text>
+<text x="193.0" y="477.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">status and references</text>
+<rect x="400" y="423" width="532" height="66" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="416" y="452" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">result status plus immutable</text>
+<text x="416" y="478" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">evidence references</text>
+<path d="M358 456H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="510" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="538" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Review the plan for omitted features as well as omitted tests: a checker that disagrees</text>
+<text x="44" y="563" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">with the specification is a verification defect even when every regression is green.</text>
+</g></svg>

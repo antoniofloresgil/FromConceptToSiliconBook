@@ -107,6 +107,10 @@ Use sized literals where bit width is meaningful. `'0` fills the destination wit
 | Parameterized mask | Can width or shift reach an invalid range? |
 | Byte extraction | Are bit index and byte-address interpretation consistent? |
 
+@fig-sv-width-and-shift shows the two examples of this section.
+
+![Two worked examples of width and signedness. Extending the operands to 17 bits keeps the carry of 0xFFFF + 0x0001 that a 16-bit destination loses, and a logical right shift of 0x80000000 gives 0x40000000 while an arithmetic shift copies the sign bit and gives 0xc0000000.](../../figures/sv-width-and-shift.svg){#fig-sv-width-and-shift width=100% fig-alt="An addition with extended operands and three versions of a right shift"}
+
 ### Packed fields, arrays and endianness
 
 Packed dimensions describe one bit-vector representation. Unpacked dimensions describe an array of elements. These declarations have different roles:
@@ -129,6 +133,10 @@ request_t PendingRequest;
 A packed vector's bit order is not a statement of memory endianness. Mapping a word to four byte addresses is an interface convention. The foundation ISA example assumes little-endian storage; byte-lane wiring and image loaders must implement that convention explicitly.
 
 Indexed part-selects such as `Data[8*lane +: 8]` select eight increasing bit positions from a base index. The width is fixed; the base may vary. Prove that the index stays in range. An out-of-range selection does not implement address wrapping or an architectural misalignment handler.
+
+@fig-sv-packed-struct-and-arrays contrasts a packed struct with an array of words.
+
+![request_t is one packed 77-bit value whose declaration order fixes its bit layout, Word is one packed vector and Words is an array of sixteen separate elements. Field widths are not drawn to scale, and bit order is not a statement of memory endianness.](../../figures/sv-packed-struct-and-arrays.svg){#fig-sv-packed-struct-and-arrays width=100% fig-alt="A struct of five fields, a single vector and an array of sixteen elements"}
 
 ### Legal parameters and elaboration
 

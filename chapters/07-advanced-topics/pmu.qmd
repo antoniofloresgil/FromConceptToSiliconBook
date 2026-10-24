@@ -83,6 +83,10 @@ static inline uint64_t read_mcycle64(void) {
 }
 ```
 
+@fig-pmu-rv32-safe-read shows what the high, low, high loop protects against.
+
+![An RV32 read of a 64-bit counter whose low half wraps between the reads, using a constructed example. Without the check the assembled value is 0x00000000 00000000, about 4.29 billion counts too early; because hi0 differs from hi1, the loop repeats.](../../figures/pmu-rv32-safe-read.svg){#fig-pmu-rv32-safe-read width=100% fig-alt="A counter timeline with the low half wrapping and three CSR reads that return inconsistent halves"}
+
 The same pattern applies to `minstret` and every RV32 `hpmcounterN`. It avoids a value assembled from the high word before wraparound and the low word after wraparound. For a short measurement window, wraparound is still a real possibility if software stores only a 32-bit delta.
 
 ## CORE-V Wally: Current Counter Infrastructure

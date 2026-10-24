@@ -59,6 +59,10 @@ The same design appears in several forms during implementation. Understanding th
 | SPEF | Extracted resistance and capacitance | Post-route timing and power analysis |
 | GDSII | Exact polygons for all relevant layers | Layout viewing, physical verification and tapeout handoff |
 
+@fig-openroad-views-matrix shows which activity uses which view.
+
+![The views of the table above against four groups of activities: simulation and synthesis, timing analysis, placement and routing, and verification and hand-off. A dot marks the primary use; mismatched Liberty, LEF and GDSII views can give a run that looks successful and is invalid.](../../figures/openroad-views-matrix.svg){#fig-openroad-views-matrix width=100% fig-alt="A grid of nine views against four activities with dots for primary use"}
+
 Liberty and LEF are complementary. A Liberty file can tell the timer that a NAND gate is fast enough, but it does not tell the placer how wide the gate is or where its pins are. A LEF can describe those pins and the routing blockages but says nothing about delay. Supplying mismatched Liberty, LEF and GDSII views is a frequent cause of apparently successful but invalid runs. Freeze their PDK and library revision together.
 
 ### A direct-flow mental model
@@ -504,6 +508,10 @@ A smaller area alone is not a physical improvement. A valid comparison keeps the
 ## Failure diagnosis
 
 Physical-design failures are information. The correct response is to locate the first stage where the design becomes invalid, then repair the relevant input.
+
+@fig-openroad-failure-triage orders the symptoms by the stage that usually owns them.
+
+![Common symptoms grouped by the flow stage that usually owns the repair, each with its first check. Locate the first stage where the design becomes invalid, then change one input and compare with the baseline.](../../figures/openroad-failure-triage.svg){#fig-openroad-failure-triage width=100% fig-alt="Five flow stages with their characteristic symptoms and first checks"}
 
 | Symptom | Likely cause | First checks | Typical correction |
 | --- | --- | --- | --- |

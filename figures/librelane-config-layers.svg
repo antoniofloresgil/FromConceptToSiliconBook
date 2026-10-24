@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="563" viewBox="0 0 960 563" role="img" aria-labelledby="title desc">
+<title id="title">How LibreLane resolves one configuration</title><desc id="desc">Each layer overrides the one below it • the result is fixed for the run</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="563" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">How LibreLane resolves one configuration</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Each layer overrides the one below it • the result is fixed for the run</text>
+<rect x="28" y="100" width="400" height="66" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="228.0" y="128.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Command-line flags</text>
+<text x="228.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">temporary overrides</text>
+<path d="M228 180V166" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="180" width="400" height="66" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="228.0" y="208.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Design file</text>
+<text x="228.0" y="234.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clock, sources, utilization, pins</text>
+<path d="M228 260V246" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="260" width="400" height="66" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="228.0" y="288.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">PDK and cell library</text>
+<text x="228.0" y="314.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">technology-specific values</text>
+<path d="M228 340V326" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="340" width="400" height="66" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="228.0" y="368.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Built-in flow</text>
+<text x="228.0" y="394.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">defaults</text>
+<rect x="560" y="180" width="372" height="110" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="746.0" y="218.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">resolved.json</text>
+<text x="746.0" y="244.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">validated and immutable</text>
+<text x="746.0" y="270.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">for the run</text>
+<path d="M428 133H470" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M428 213H470" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M428 293H470" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M428 373H470" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M470 133V373" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<path d="M470 235H560" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="560" y="320" width="372" height="100" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="576" y="352" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Write design intent only.</text>
+<text x="576" y="378" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Inspect resolved.json for what</text>
+<text x="576" y="404" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">you did not write yourself.</text>
+<rect x="28" y="440" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="468" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A successful SKY130 configuration does not transfer unchanged to another process: re-</text>
+<text x="44" y="493" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">evaluate the clock target, utilization, I/O requirements, macro views, power intent and</text>
+<text x="44" y="518" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">sign-off criteria.</text>
+</g></svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="508" viewBox="0 0 960 508" role="img" aria-labelledby="title desc">
+<title id="title">Delegation chooses the handler for a synchronous exception</title><desc id="desc">A trap taken in M-mode stays in M-mode • delegation is not an interrupt enable</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="508" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Delegation chooses the handler for a synchronous exception</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A trap taken in M-mode stays in M-mode • delegation is not an interrupt enable</text>
+<rect x="28" y="155" width="270" height="140" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="163.0" y="196.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Exception in U or S</text>
+<text x="163.0" y="222.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ecall: code 8 from U,</text>
+<text x="163.0" y="248.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">9 from S</text>
+<text x="163.0" y="274.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">page fault, illegal instruction</text>
+<rect x="350" y="175" width="190" height="100" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="445.0" y="208.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">medeleg</text>
+<text x="445.0" y="234.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">bit for this cause</text>
+<text x="445.0" y="260.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">set?</text>
+<path d="M298 225H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="620" y="100" width="312" height="110" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="776.0" y="138.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">S-mode handler</text>
+<text x="776.0" y="164.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stvec, sepc, scause, stval</text>
+<text x="776.0" y="190.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">return with sret</text>
+<rect x="620" y="240" width="312" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="776.0" y="278.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">M-mode handler</text>
+<text x="776.0" y="304.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">mtvec, mepc, mcause, mtval</text>
+<text x="776.0" y="330.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">return with mret</text>
+<path d="M540 205H580V155H620" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<path d="M540 245H580V295H620" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="560" y="196" font-size="18" text-anchor="middle" fill="#28705c" font-weight="bold">yes</text>
+<text x="560" y="268" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">no</text>
+<rect x="28" y="385" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="413" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The experiment delegates only the store page fault (cause 15), so its final S-mode ecall</text>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">stays machine-handled. Read medeleg back: the implementation decides which bits it</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">accepts.</text>
+</g></svg>

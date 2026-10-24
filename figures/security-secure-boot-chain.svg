@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="608" viewBox="0 0 960 608" role="img" aria-labelledby="title desc">
+<title id="title">A minimal secure boot chain, as a proposal</title><desc id="desc">Template of the chapter, not executable firmware • the anchor is a small trusted first stage</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="608" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A minimal secure boot chain, as a proposal</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Template of the chapter, not executable firmware • the anchor is a small trusted first stage</text>
+<rect x="28" y="100" width="285" height="250" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="170" y="132" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">1  Check</text>
+<text x="170" y="168" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">bounded manifest parser</text>
+<text x="170" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">key from protected policy</text>
+<text x="170" y="224" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">validate sizes, entry,</text>
+<text x="170" y="252" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">version, platform</text>
+<text x="170" y="280" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">authenticate manifest</text>
+<text x="170" y="308" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">and image digests</text>
+<path d="M313 225H335" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="335" y="100" width="285" height="250" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="477" y="132" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">2  Protect and install</text>
+<text x="477" y="168" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">load into an isolated</text>
+<text x="477" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">destination</text>
+<text x="477" y="224" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">block untrusted writers</text>
+<text x="477" y="252" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">install memory, DMA and</text>
+<text x="477" y="280" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">debug policy</text>
+<text x="477" y="308" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">record the measurement</text>
+<path d="M620 225H642" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="642" y="100" width="285" height="250" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="784" y="132" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">3  Enter or recover</text>
+<text x="784" y="168" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">enter the authorized</text>
+<text x="784" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stage</text>
+<text x="784" y="224" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">otherwise use an</text>
+<text x="784" y="252" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">authenticated recovery</text>
+<text x="784" y="280" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">image and record it</text>
+<rect x="28" y="375" width="904" height="80" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="405" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The manifest binds identity, version, load and entry addresses, lengths and hashes,</text>
+<text x="44" y="431" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">platform features and the next-stage policy. Authenticating bytes alone is not enough.</text>
+<rect x="28" y="485" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="513" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Keep DMA inactive and debug writes rejected between validation and execution. Test</text>
+<text x="44" y="538" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">corruption, unknown keys, malformed lengths, old versions and interrupted updates, and a</text>
+<text x="44" y="563" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">known-valid image as a reachability case.</text>
+</g></svg>

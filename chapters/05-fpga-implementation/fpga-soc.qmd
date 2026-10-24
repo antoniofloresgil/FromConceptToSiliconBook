@@ -39,6 +39,10 @@ Treat the following claims differently:
 | DDR controller initializes | `init_done`, calibration logs and memory test |
 | Linux/DDR3 subsystem works | Sustained hardware software tests, not only synthesis |
 
+@fig-fpga-evidence-ladder restates the table of claims and evidence.
+
+![Six claims about the open FPGA target and the evidence each one needs. A bitstream that configures the part is a different milestone from a validated external-memory system.](../../figures/fpga-evidence-ladder.svg){#fig-fpga-evidence-ladder width=100% fig-alt="Six claims from RTL compiles to Linux and DDR3 work, each linked to its evidence"}
+
 The documented branch builds and programs a full open bitstream on Nexys Video and reports timing at 40 MHz. At the stated snapshot, DDR3 hardware bring-up remains unresolved: the LiteDRAM service CPU does not yet execute its initialization firmware, so `init_done` and `init_error` stay low. That is valuable engineering information, and the book reports it openly. A generated bitstream is a different milestone from a validated external-memory system [@cvwLiteDram].
 
 ### Board validation is an additional integration level
@@ -121,21 +125,11 @@ These details illustrate an important FPGA-prototype principle: an adapter is no
 
 ### Clock and reset plan
 
-The board clock enters through the 100 MHz constrained port. LiteDRAM creates a shared system clock at 40 MHz for Wally and the DDR controller. This removes a bus CDC, but it creates a reset dependency:
+The board clock enters through the 100 MHz constrained port. LiteDRAM creates a shared system clock at 40 MHz for Wally and the DDR controller. This removes a bus CDC, but it creates a reset dependency.
 
-```text
-board power/reset
-       |
-clock source and clock primitive lock
-       |
-LiteDRAM reset release -> service firmware -> DDR init/leveling
-       |
-    init_done && !init_error
-       |
-      release Wally reset
-       |
-Wally boot ROM -> UART/GPIO software milestone
-```
+@fig-fpga-reset-release-chain follows the reset dependency from power-up to the first software milestone.
+
+![Reset release when Wally depends on DDR3. LiteDRAM must finish initialization and report init_done without init_error before the reset of Wally is released; a PLL lock alone is too early. A test that uses only internal ROM and RAM may choose a documented mode that does not wait, and the two cases must be kept apart.](../../figures/fpga-reset-release-chain.svg){#fig-fpga-reset-release-chain width=100% fig-alt="A chain of eight steps from board power to a software milestone with two side notes"}
 
 If Wally will use DDR3 immediately, a PLL lock alone is too early to release it. Conversely, a test that only uses internal ROM/RAM may choose an explicitly documented mode that does not wait for DDR. Keep the two cases separate: a reset workaround can make a blink test pass while invalidating the intended memory-system test.
 

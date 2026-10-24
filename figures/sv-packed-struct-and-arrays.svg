@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="638" viewBox="0 0 960 638" role="img" aria-labelledby="title desc">
+<title id="title">Packed layout versus an array of elements</title><desc id="desc">The declaration order of a packed struct fixes its bit layout • field widths are not drawn to scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="638" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Packed layout versus an array of elements</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The declaration order of a packed struct fixes its bit layout • field widths are not drawn to scale</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">request_t: one packed 77-bit value, first field at the top</text>
+<rect x="28" y="125" width="96" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="76.0" y="154" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">write</text>
+<text x="76.0" y="178" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[76]</text>
+<rect x="128" y="125" width="146" height="64" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="201.0" y="154" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">tag</text>
+<text x="201.0" y="178" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[75:68]</text>
+<rect x="278" y="125" width="246" height="64" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="401.0" y="154" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">address</text>
+<text x="401.0" y="178" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[67:36]</text>
+<rect x="528" y="125" width="246" height="64" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="651.0" y="154" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">data</text>
+<text x="651.0" y="178" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[35:4]</text>
+<rect x="778" y="125" width="150" height="64" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="853.0" y="154" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">byte_enable</text>
+<text x="853.0" y="178" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">[3:0]</text>
+<text x="28" y="220" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">bit 76</text>
+<text x="932" y="220" font-size="18" text-anchor="end" fill="#172b3a" font-weight="normal">bit 0</text>
+<text x="28" y="275" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Word: one packed vector</text>
+<rect x="28" y="290" width="904" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480" y="320" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">logic [31:0] Word</text>
+<text x="28" y="380" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Words [0:15]: sixteen separate elements</text>
+<rect x="28" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="81" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[0]</text>
+<rect x="141" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="194" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[1]</text>
+<rect x="254" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="307" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[2]</text>
+<rect x="367" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="420" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[3]</text>
+<rect x="480" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="533" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[4]</text>
+<rect x="593" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="646" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[5]</text>
+<rect x="706" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="759" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[6]</text>
+<rect x="819" y="397" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="872" y="427" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[7]</text>
+<rect x="28" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="81" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[8]</text>
+<rect x="141" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="194" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[9]</text>
+<rect x="254" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="307" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[10]</text>
+<rect x="367" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="420" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[11]</text>
+<rect x="480" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="533" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[12]</text>
+<rect x="593" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="646" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[13]</text>
+<rect x="706" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="759" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[14]</text>
+<rect x="819" y="451" width="107" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="872" y="481" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Words[15]</text>
+<rect x="28" y="515" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="543" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A packed vector&#x27;s bit order is not a statement of memory endianness: mapping a word to</text>
+<text x="44" y="568" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">byte addresses is an interface convention that byte-lane wiring and loaders must</text>
+<text x="44" y="593" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">implement.</text>
+</g></svg>

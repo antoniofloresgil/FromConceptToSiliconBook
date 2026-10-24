@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="478" viewBox="0 0 960 478" role="img" aria-labelledby="title desc">
+<title id="title">Time per instruction = clock period x CPI</title><desc id="desc">Invented values that demonstrate the equation • not measurements of Wally or of any FPGA</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="478" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Time per instruction = clock period x CPI</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Invented values that demonstrate the equation • not measurements of Wally or of any FPGA</text>
+<text x="28" y="135" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">Single cycle</text>
+<rect x="190" y="105" width="500.0" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="704.0" y="135" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">20 ns per instruction</text>
+<text x="190" y="177" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">period 20 ns, CPI 1</text>
+<text x="28" y="227" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">Multicycle</text>
+<rect x="190" y="197" width="500.0" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="704.0" y="227" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">20 ns per instruction</text>
+<text x="190" y="269" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">period 5 ns, CPI 4</text>
+<text x="28" y="319" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">Pipelined</text>
+<rect x="190" y="289" width="150.0" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="354.0" y="319" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">6 ns per instruction</text>
+<text x="190" y="361" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">period 5 ns, CPI 1.2</text>
+<rect x="28" y="380" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="408" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A faster clock alone does not make a faster program: compare instruction count, CPI and</text>
+<text x="44" y="433" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">clock period together.</text>
+</g></svg>

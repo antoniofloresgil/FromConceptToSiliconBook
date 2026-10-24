@@ -327,6 +327,10 @@ The apparent simplicity of a four-line configuration can be misleading. LibreLan
 
 This layering allows a common SystemVerilog design to be evaluated under several PDKs while keeping technology-specific facts in the appropriate place. It also means that a local YAML file does not need to reproduce every PDK default. Specify values that express design intent--clock, sources, core utilization, macro placement, pin plan and justified overrides--and inspect `resolved.json` for the rest.
 
+@fig-librelane-config-layers shows the four layers of the resolved configuration.
+
+![LibreLane resolves the built-in flow defaults, the PDK and cell library values, the design file and command-line overrides, in that order of increasing priority, into an immutable resolved.json for the run. Write design intent in the design file and inspect resolved.json for the rest.](../../figures/librelane-config-layers.svg){#fig-librelane-config-layers width=100% fig-alt="Four configuration layers feeding resolved.json"}
+
 ### States, steps and checkpoints
 
 Each LibreLane step consumes a state containing the available design views and produces an updated state. A synthesis step adds a mapped netlist; a floorplan step adds physical geometry; a routing step produces a routed layout; sign-off-oriented steps add GDSII, reports and check results. This structure makes restart and targeted debugging possible without converting the entire flow into a collection of untracked shell commands.
@@ -374,6 +378,10 @@ A complete run contains far more useful information than its final GDSII. LibreL
 | State/checkpoint | Captures the views that allow a later step or GUI to reopen the design | What was the placed/routed design when the failure happened? |
 | Metrics | Supplies comparable values for design-space exploration and CI | Did an RTL change worsen area or slack? |
 | Final views | Gives DEF, GDSII, netlist, SPEF and other physical handoff products | What exactly was exported? |
+
+@fig-librelane-run-evidence shows how states and evidence accumulate along a run.
+
+![A LibreLane run is a chain of steps, each consuming and extending a state, and each leaving logs, reports, checkpoints, metrics and final views under its run tag. The step names are grouped here, and the directory names depend on the release.](../../figures/librelane-run-evidence.svg){#fig-librelane-run-evidence width=100% fig-alt="Five flow steps and six kinds of evidence kept for each run tag"}
 
 Start at the earliest failing checker, not at the last line of the console. For example, a final hold checker failure can be investigated through the post-route STA report, extracted parasitics and routed state. An LVS failure should be investigated through the corresponding Netgen, extraction and stream-out logs. A later checker often reports the symptom; the earlier step tells you the cause.
 

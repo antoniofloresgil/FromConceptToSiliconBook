@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="548" viewBox="0 0 960 548" role="img" aria-labelledby="title desc">
+<title id="title">A GDSII file is one part of the tapeout evidence</title><desc id="desc">The decision needs more than the layout • provider requirements come from the foundry or shuttle</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="548" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A GDSII file is one part of the tapeout evidence</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The decision needs more than the layout • provider requirements come from the foundry or shuttle</text>
+<rect x="340" y="215" width="280" height="100" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="248.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Tapeout decision</text>
+<text x="480.0" y="274.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a reproducible</text>
+<text x="480.0" y="300.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">evidence package</text>
+<rect x="28" y="100" width="270" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="163.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">GDSII layout</text>
+<text x="163.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">necessary, not sufficient</text>
+<rect x="345" y="100" width="270" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Physical verification</text>
+<text x="480.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clean DRC, LVS, antenna</text>
+<rect x="662" y="100" width="270" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Timing and power</text>
+<text x="797.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">reviewed budget</text>
+<rect x="28" y="350" width="270" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="163.0" y="385.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Package and pad ring</text>
+<text x="163.0" y="411.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">integration, ESD, bumps</text>
+<rect x="632" y="350" width="300" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="782.0" y="385.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Foundry requirements</text>
+<text x="782.0" y="411.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">current submission rules</text>
+<path d="M163 180V215H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M480 180V215" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M797 180V215H620" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M163 350V315H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M782 350V315H620" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="450" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="478" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">An open PDK and an MPW announcement are a good start; current eligibility and acceptance</text>
+<text x="44" y="503" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">come from the provider, and a local flow result is not a standing right to manufacture.</text>
+</g></svg>

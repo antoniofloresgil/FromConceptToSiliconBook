@@ -53,6 +53,10 @@ Yosys uses a pass-based internal representation called RTLIL. A script is more u
 5. **Technology mapping.** `techmap`, `abc`/`abc9`, flip-flop legalization and memory mapping implement the design using FPGA primitives. For Xilinx 7-series, `synth_xilinx -arch xc7` targets LUTs, flip-flops, carry chains, BRAM and selected hard primitives [@yosysSynthXilinx].
 6. **Netlist export and reporting.** `write_json` supplies nextpnr with cells, nets and attributes. `stat` and the synthesis log report estimated resource use. They are estimates before placement and routing, not a timing sign-off.
 
+@fig-yosys-pass-pipeline orders the six phases.
+
+![The six phases of Yosys in the open Nexys Video flow, from the frontend to the JSON netlist for nextpnr. The resource report is an estimate before placement and routing, not timing sign-off.](../../figures/yosys-pass-pipeline.svg){#fig-yosys-pass-pipeline width=100% fig-alt="Six boxes from frontend and elaboration to export and report"}
+
 The packaged `synth_xilinx` command is a maintained synthesis recipe, not a magic command: inspect it with `yosys -p "help synth_xilinx"` in the installed version. Scripts should pin versions because tool upgrades can improve mapping, reject previously tolerated RTL or alter a report.
 
 ### Hardware that must be inferred deliberately
@@ -67,6 +71,10 @@ An FPGA implementation benefits from expressing intent in RTL.
 | Array with synchronous access | Block RAM or distributed RAM | Does the coding pattern match the primitive? |
 | Multiply/accumulate | DSP block or LUT logic | Is `-nodsp` intentional? |
 | Clock generation | Dedicated PLL/MMCM and buffers | Is the primitive supported and constrained? |
+
+@fig-yosys-rtl-intent-to-resource restates the table as a mapping with its review questions.
+
+![RTL intent, the FPGA resource it should map to and the question to ask in review, for six common cases on the Xilinx 7-series target.](../../figures/yosys-rtl-intent-to-resource.svg){#fig-yosys-rtl-intent-to-resource width=100% fig-alt="Six rows linking an RTL intent to an FPGA resource and a review question"}
 
 BRAM, DSP and clock resources are limited physical blocks. A design that synthesizes successfully can still fail later because it uses too many of one resource, because an inferred RAM no longer matches the required read behavior, or because a high-fanout reset/control signal has poor routing. Resource reports are therefore a design-review input, not a success badge.
 

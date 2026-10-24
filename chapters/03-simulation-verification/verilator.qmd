@@ -34,6 +34,10 @@ Reset and clear have priority over enable. Valid marks an accepted addition, not
 
 The C++ reference uses a wider integer and explicit modulo arithmetic. It checks every cycle, including stalls and resets, rather than treating a plausible waveform as a passing test.
 
+@fig-verilator-accumulator-sequence applies the contract table to one sequence.
+
+![An illustrative eight-cycle sequence through the accumulator contract: reset beats enable in cycle 1, clear beats enable in cycle 5, and 60000 + 10000 wraps to 4464 with a one-cycle overflow report in cycle 7. The sequence is derived from the contract and is not the vector list of the harness.](../../figures/verilator-accumulator-sequence.svg){#fig-verilator-accumulator-sequence width=100% fig-alt="A table of reset, clear, enable and operand inputs with sum, valid and overflow outputs over eight cycles"}
+
 ### The simulator's place in the verification plan
 
 The C++ scoreboard below checks numerical and control behavior at unit level, under the contract in @sec-verification-methodology. Waveforms are the quickest way to understand the first failure, but a PASS vouches only for the scenarios that ran. Keep the automatic comparisons, the timeout and the failing exit status when you add traces or random traffic, so a broken run cannot look like a quiet one. Look at each warning on its merits: a build that tolerates warnings is not a clean lint result. Record the initialization/X-handling and assertion options you used, since they change what a PASS means. Code coverage is a good pointer to logic your tests never reached, but functional bins from the contract and an independent oracle still decide whether the behavior is right [@verificationVerilator].

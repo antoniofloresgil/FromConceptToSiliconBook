@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="533" viewBox="0 0 960 533" role="img" aria-labelledby="title desc">
+<title id="title">Who owns the buffers during a DMA job</title><desc id="desc">The ownership protocol matters as much as the arithmetic • numbered steps follow the chapter</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="533" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Who owns the buffers during a DMA job</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The ownership protocol matters as much as the arithmetic • numbered steps follow the chapter</text>
+<rect x="28" y="140" width="330" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193" y="182" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">software owns the buffers</text>
+<rect x="358" y="140" width="300" height="70" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="508" y="182" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">hardware owns them</text>
+<rect x="658" y="140" width="274" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="795" y="182" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">software owns again</text>
+<circle cx="80" cy="116" r="14" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="80" y="122" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<circle cx="193" cy="116" r="14" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="193" y="122" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<circle cx="320" cy="116" r="14" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="320" y="122" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<circle cx="508" cy="116" r="14" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="508" y="122" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">4</text>
+<circle cx="720" cy="116" r="14" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="720" y="122" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">5</text>
+<text x="28" y="255" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">1  allocate aligned source, destination and coefficient buffers</text>
+<text x="28" y="283" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">2  write the data; do the required cache maintenance</text>
+<text x="28" y="311" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">3  program the descriptor and write START</text>
+<text x="28" y="339" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">4  hardware reads and writes until DONE or an error</text>
+<text x="28" y="367" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">5  observe DONE, do post-DMA maintenance, consume the output</text>
+<rect x="28" y="410" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The protocol keeps software from changing coefficients while hardware reads them, and</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">keeps the accelerator from overwriting a buffer that the CPU still treats as live. A</text>
+<text x="44" y="488" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">fence orders accesses; it does not write back dirty lines.</text>
+</g></svg>

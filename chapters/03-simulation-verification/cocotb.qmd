@@ -8,6 +8,10 @@ cocotb is an open-source framework for verifying HDL designs with Python. The ci
 
 An `async def` test can suspend on a trigger with `await`. Other tasks and the simulator continue until that trigger occurs. A DUT handle provides access to signals using `.value`. The `@cocotb.test()` decorator identifies a test; a failed Python assertion records a failure. The [quickstart](https://docs.cocotb.org/en/v2.0.1/quickstart.html) introduces this workflow.
 
+@fig-cocotb-architecture shows where cocotb sits between the Python test and the HDL simulator.
+
+![Python coroutines drive and check the design through cocotb triggers and signal handles while an HDL simulator executes the RTL. cocotb is not a simulator, and the evidence is the Python assertions with a non-zero exit status.](../../figures/cocotb-architecture.svg){#fig-cocotb-architecture width=100% fig-alt="A Python test, cocotb and an HDL simulator running the RTL, with an evidence box"}
+
 ### Advantages and boundaries
 
 Using Python makes it straightforward to express a reference calculation, generate transactions, and analyze results. For example, the accumulator test below uses ordinary integer arithmetic and a local pseudo-random generator. Python's libraries can also help build models for packet formats, numerical algorithms, or file-based datasets.
@@ -286,6 +290,10 @@ AssertionError: cycle=5, stimulus=(0, 1, 1, 100), actual=(114, 1, 0), expected=(
 | `Clear` ignored | fails | fails |
 
 This table is a **checked recipe**. `python labs/run.py run cocotb` builds every variant from [cocotb_mutation_check.py](../../labs/05-verification/cocotb_mutation_check.py), runs both versions of the test with the same fault list as the Verilator check, and fails if any outcome differs from the table.
+
+@fig-cocotb-directed-random-vectors summarizes what the two kinds of vectors found.
+
+![The accumulator test applies 14 directed vectors and then 100 seeded random vectors. The directed part finds overflow at the exact maximum at cycle 11, the random part finds overflow that ignores Enable at cycle 17, and a Valid fault that needs a zero operand is almost never drawn by random stimulus until directed vectors are added.](../../figures/cocotb-directed-random-vectors.svg){#fig-cocotb-directed-random-vectors width=100% fig-alt="A bar of directed and random vectors with markers for two faults found"}
 
 ### Extend verification
 

@@ -53,6 +53,10 @@ For an access-related page fault in the demonstration, the handler verifies `sca
 
 For example, setting `medeleg[15]` allows an S-mode store page fault to enter S-mode. The processor updates supervisor trap state and enters `stvec`. Clearing the bit routes that exception to M-mode instead, using machine trap state. Read back the register to determine whether the implementation accepts the delegation.
 
+@fig-mmu-trap-delegation shows how the delegation bit routes a synchronous exception.
+
+![Routing of a synchronous exception from U or S mode. If the medeleg bit for its cause is set, the supervisor handler runs through stvec and returns with sret; otherwise the machine handler runs through mtvec and returns with mret. A trap taken in M mode stays in M mode. The figure omits interrupts and nesting.](../../figures/mmu-trap-delegation.svg){#fig-mmu-trap-delegation width=100% fig-alt="An exception from U or S mode passes a delegation decision to either an S-mode or an M-mode handler"}
+
 Delegation is not an interrupt enable. An interrupt additionally depends on the applicable pending and enable state and the current privilege. Use the CLINT/PLIC discussion in @sec-buses-interrupts for its origin and acknowledgement protocol. The current experiment delegates only the store page fault; its final S-mode `ecall` remains a machine-handled event.
 
 ### Translation, protection and memory attributes {#translation-protection-and-memory-attributes}
@@ -101,6 +105,10 @@ An Sv32 PTE stores PPN at bits 31:10, software-reserved RSW at bits 9:8, and D/A
 | G | Global | Affects ASID matching and invalidation scope |
 | A | Accessed | Records or requires handling of page use |
 | D | Dirty | Records or requires handling of writes |
+
+@fig-mmu-pte-bits shows the entry layout and the kinds of entry.
+
+![An Sv32 page-table entry: the physical page number in bits 31:10, software bits in 9:8, and D, A, G, U, X, W, R and V in bits 7:0. V = 0 rejects the entry, R = W = X = 0 with V = 1 points to the next-level table, a legal R/W/X combination is a leaf, and W = 1 with R = 0 is reserved. Field widths are not drawn to scale.](../../figures/mmu-pte-bits.svg){#fig-mmu-pte-bits width=100% fig-alt="A page-table entry split into the page number, software bits and eight flag bits, with four rows that classify the entry"}
 
 A valid entry with R=W=X=0 points to another table. A leaf has an executable or readable mapping with legal permissions. A non-leaf must also respect reserved-bit rules; in this baseline its U/A/D fields are zero. PTE RSW bits are reserved for software and carry no hardware access permission.
 

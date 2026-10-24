@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+<title id="title">Reset release when Wally depends on DDR3</title><desc id="desc">The shared 40 MHz clock removes a bus crossing but creates a reset dependency</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="640" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Reset release when Wally depends on DDR3</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The shared 40 MHz clock removes a bus crossing but creates a reset dependency</text>
+<rect x="28" y="95" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="124" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">Board power and reset</text>
+<path d="M253 139V161" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="161" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="190" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">Clock source; clock primitive locks</text>
+<path d="M253 205V227" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="227" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="256" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">LiteDRAM reset released</text>
+<path d="M253 271V293" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="293" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="322" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">Service firmware: DDR init, leveling</text>
+<path d="M253 337V359" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="359" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="388" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">init_done and not init_error</text>
+<path d="M253 403V425" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="425" width="450" height="44" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="454" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Wally reset released</text>
+<path d="M253 469V491" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="491" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="520" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">Wally boot ROM executes</text>
+<path d="M253 535V557" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="557" width="450" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="253" y="586" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="normal">UART or GPIO software milestone</text>
+<rect x="520" y="160" width="412" height="90" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="536" y="193" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">A PLL lock alone is too early to</text>
+<text x="536" y="219" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">release Wally when it needs DDR3.</text>
+<rect x="520" y="380" width="412" height="116" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="536" y="413" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A test that uses only internal ROM and</text>
+<text x="536" y="439" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">RAM may use a documented mode that</text>
+<text x="536" y="465" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">does not wait. Keep the two cases apart.</text>
+<path d="M478 205H520" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M478 425H520" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#data)"/>
+</g></svg>

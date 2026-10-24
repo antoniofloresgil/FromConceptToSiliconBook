@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="568" viewBox="0 0 960 568" role="img" aria-labelledby="title desc">
+<title id="title">Three ways to reach the target</title><desc id="desc">Each mechanism raises its own integration question</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="568" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Three ways to reach the target</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Each mechanism raises its own integration question</text>
+<rect x="28" y="100" width="285" height="200" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="170" y="134" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Abstract commands</text>
+<text x="170" y="172" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">halted hart</text>
+<text x="170" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">register and CSR access</text>
+<text x="170" y="228" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">through data registers</text>
+<text x="170" y="256" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">poll busy, check cmderr</text>
+<rect x="28" y="345" width="285" height="76" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="170" y="376" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">What does cmderr</text>
+<text x="170" y="402" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">report?</text>
+<rect x="340" y="100" width="285" height="200" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="482" y="134" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Program buffer</text>
+<text x="482" y="172" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">halted hart executes</text>
+<text x="482" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a short sequence</text>
+<text x="482" y="228" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">an implicit ebreak</text>
+<text x="482" y="256" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ends it</text>
+<rect x="340" y="345" width="285" height="76" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="482" y="376" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">What state may it</text>
+<text x="482" y="402" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">clobber?</text>
+<rect x="652" y="100" width="285" height="200" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="794" y="134" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">System Bus Access</text>
+<text x="794" y="172" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the DM is a bus manager</text>
+<text x="794" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no hart involved</text>
+<text x="794" y="228" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">works while a hart runs</text>
+<text x="794" y="256" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">physical addresses</text>
+<rect x="652" y="345" width="285" height="76" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="794" y="376" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Identity, coherency,</text>
+<text x="794" y="402" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">side effects?</text>
+<text x="28" y="332" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Integration question</text>
+<rect x="28" y="445" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="473" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Run-control debug does not expose every internal wire: if post-silicon work needs</text>
+<text x="44" y="498" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">microarchitectural events, add trace or performance counters. SBA data may not be</text>
+<text x="44" y="523" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">coherent with what each hart observes.</text>
+</g></svg>

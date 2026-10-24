@@ -48,10 +48,18 @@ manufacturing qualification or new timing/power results. Dense physical views
 remain overviews; exact endpoints, constraints and values belong to the linked
 reports and original-resolution files.
 
+## Adding a conceptual figure
+
+Add a function to the `concepts_*.py` module of its chapter group and list it in that module's `FIGURES`; reuse `Drawing`
+and keep every label at 18 units or more. Show the worked numbers of the chapter, label invented values as invented and
+state the scope in the caption. Then run `python tools/figures/concepts.py`, inspect the rendered SVG in color and
+grayscale, embed it with a `#fig-` identifier, alternative text and an `@fig-` reference in the prose, and update its
+reviewed hash in `print-review.json`. Avoid square brackets, braces and double quotes in captions and alternative text.
+
 ## Maintenance
 
 Edit the relevant generator, regenerate the SVG and manifest, inspect the changed
-assets, then update their reviewed hashes. In addition to the existing generators (`explanatory.py` draws the conceptual figures of the foundations, protocol, MMU, FPGA-flow, PMU, debug, Verilator and reference-model discussions):
+assets, then update their reviewed hashes. In addition to the existing generators (`explanatory.py` draws the conceptual figures of the foundations, protocol, MMU, FPGA-flow, PMU, debug, Verilator and reference-model discussions; `concepts.py` draws the additional conceptual figures of the technical chapters from the `concepts_*.py` modules, one per chapter group):
 
 ```sh
 python tools/figures/visual_language.py
@@ -59,6 +67,7 @@ python tools/figures/visual_language.py --check
 python tools/figures/async_fifo.py --check
 python tools/figures/reusable_ip.py --check
 python tools/figures/explanatory.py --check
+python tools/figures/concepts.py --check
 python -m unittest discover -s tools/figures -p 'test_*.py'
 python tools/figures/print_audit.py --check
 ```

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="653" viewBox="0 0 960 653" role="img" aria-labelledby="title desc">
+<title id="title">Setup and hold: two different races against the clock</title><desc id="desc">One register-to-register path • not to scale • slack is what remains after the stated terms</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="653" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Setup and hold: two different races against the clock</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">One register-to-register path • not to scale • slack is what remains after the stated terms</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Setup: the slowest data must arrive before the capture edge</text>
+<path d="M190 132V300" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="190" y="126" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">launch edge</text>
+<path d="M790 132V300" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="790" y="126" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">capture edge</text>
+<rect x="190" y="150" width="76" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="228.0" y="180" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">T cq</text>
+<rect x="270" y="150" width="156" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="348.0" y="180" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">T comb</text>
+<rect x="430" y="150" width="76" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="468.0" y="180" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">T route</text>
+<rect x="510" y="150" width="90" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="555" y="180" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">slack</text>
+<rect x="604" y="150" width="186" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="697.0" y="180" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">T setup + margin</text>
+<path d="M190 245H790" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M790 245H190" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="490.0" y="236" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">clock period T clk</text>
+<text x="28" y="340" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Hold: the fastest data must not arrive before the same edge has done its job</text>
+<path d="M190 392V500" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="190" y="384" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">same edge</text>
+<rect x="190" y="410" width="160" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="270" y="440" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">T hold + margin</text>
+<rect x="354" y="410" width="120" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="414" y="440" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">hold slack</text>
+<rect x="190" y="468" width="284" height="36" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="332" y="494" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">fastest cq + comb + route</text>
+<rect x="28" y="530" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A slower clock repairs a setup failure, never a hold failure: hold depends on minimum</text>
+<text x="44" y="583" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">delays at one edge. A design can meet setup and still fail hold, so both reports are</text>
+<text x="44" y="608" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">required.</text>
+</g></svg>

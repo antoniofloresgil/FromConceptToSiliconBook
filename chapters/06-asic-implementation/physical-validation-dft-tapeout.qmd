@@ -211,18 +211,11 @@ For a small educational SoC, start with an external clock and accessible reset, 
 
 Tapeout freezes the files accepted for mask preparation. The provider defines the exact requirements, process option, decks, integration harness and deliverable formats. An open PDK and an MPW announcement are a good start, and current eligibility and fabrication acceptance come from the provider. Obtain the applicable submission rules for the selected programme [@skywaterPdkDocs].
 
-The following is a suggested evidence layout, not a universal foundry specification:
+The following is a suggested evidence layout, not a universal foundry specification.
 
-```text
-release-candidate/
-  manifest.json
-  design/             # final layout and netlists
-  constraints/        # functional and test-mode budgets
-  reports/            # STA, DRC, LVS, antenna, density, PDN, DFT
-  integration/        # pad/package mapping and macro inventory
-  test/               # patterns, protocol and bring-up instructions
-  checksums.sha256
-```
+@fig-physical-release-candidate-layout shows the suggested evidence layout.
+
+![A suggested layout for the tapeout evidence: manifest, design, constraints, reports, integration, test and checksums. It is not a universal foundry specification, because the provider defines its own deliverables.](../../figures/physical-release-candidate-layout.svg){#fig-physical-release-candidate-layout width=100% fig-alt="Seven entries of a release directory with what each contains"}
 
 The manifest records design/top identity, RTL revision, tool and PDK versions, library and macro revisions, required corners/modes, source provenance and check status. It also identifies licenses and redistribution restrictions for included IP. Test patterns and firmware must correspond to the same netlist and register map as the chip.
 

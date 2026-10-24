@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="610" viewBox="0 0 960 610" role="img" aria-labelledby="title desc">
+<title id="title">A suggested layout for the tapeout evidence</title><desc id="desc">Not a universal foundry specification • the provider defines its own deliverables</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="610" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A suggested layout for the tapeout evidence</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Not a universal foundry specification • the provider defines its own deliverables</text>
+<rect x="28" y="100" width="260" height="48" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="131" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">manifest.json</text>
+<rect x="310" y="100" width="622" height="48" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="131" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">identities, versions, corners, check status, licenses</text>
+<rect x="28" y="158" width="260" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="189" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">design/</text>
+<rect x="310" y="158" width="622" height="48" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="189" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">final layout and netlists</text>
+<rect x="28" y="216" width="260" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="247" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">constraints/</text>
+<rect x="310" y="216" width="622" height="48" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="247" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">functional and test-mode timing budgets</text>
+<rect x="28" y="274" width="260" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="305" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">reports/</text>
+<rect x="310" y="274" width="622" height="48" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="305" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">STA, DRC, LVS, antenna, density, PDN, DFT</text>
+<rect x="28" y="332" width="260" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="363" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">integration/</text>
+<rect x="310" y="332" width="622" height="48" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="363" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">pad and package mapping, macro inventory</text>
+<rect x="28" y="390" width="260" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="421" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">test/</text>
+<rect x="310" y="390" width="622" height="48" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="421" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">patterns, protocol, bring-up instructions</text>
+<rect x="28" y="448" width="260" height="48" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="158" y="479" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">checksums.sha256</text>
+<rect x="310" y="448" width="622" height="48" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="326" y="479" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">integrity of every file above</text>
+<rect x="28" y="512" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="540" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Keep unresolved items visible, and make the test patterns and firmware correspond to the</text>
+<text x="44" y="565" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">same design identity. Accepting a waiver belongs to the project and the provider.</text>
+</g></svg>

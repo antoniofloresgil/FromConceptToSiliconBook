@@ -99,12 +99,11 @@ Define precedence when software clearing coincides with a new event. The teachin
 
 A UART sends a serial frame without a shared clock. In the common **8N1** format, the line idles high, a low start bit begins a frame, eight data bits follow least-significant bit first, and one high stop bit ends it. No parity bit is included. Both ends must agree on the format and rate [@harrisRiscvSoc].
 
-For byte `0x53`, the transmitted data-bit order is `1, 1, 0, 0, 1, 0, 1, 0`:
+For byte `0x53`, the transmitted data-bit order is `1, 1, 0, 0, 1, 0, 1, 0`.
 
-```text
-       idle | start | D0 D1 D2 D3 D4 D5 D6 D7 | stop | idle
-level    1  |   0   |  1  1  0  0  1  0  1  0 |   1  |  1
-```
+@fig-peripherals-uart-frame draws the frame of byte 0x53 and shows where the receiver samples.
+
+![An 8N1 UART frame for 0x53. The line idles high, a low start bit begins the frame, eight data bits follow least-significant first and one high stop bit ends it; the receiver samples near the middle of each interval. Ten baud intervals carry eight payload bits. The drawing is conceptual and does not show oversampling.](../../figures/peripherals-uart-frame.svg){#fig-peripherals-uart-frame width=100% fig-alt="A waveform with idle, start, eight data bits and stop, with a sampling dot in each bit interval"}
 
 The receiver detects a start transition, validates it and samples near each bit's center. Oversampling supplies finer timing and can support noise filtering. A synchronizer protects the input path, while the baud rate and the stop bit still need their own checks.
 
@@ -139,6 +138,10 @@ An RX FIFO decouples wire arrival from processor service. A TX FIFO decouples so
 
 A generic sixteen-byte FIFO at continuous 115,200-baud 8N1 traffic fills from empty in roughly 1.39 ms. If an interrupt is raised with twelve occupied entries, only four byte times—about 347 microseconds—remain before capacity is exhausted, ignoring bytes already in flight. Budget interrupt masking, arbitration, handler entry and actual service time.
 
+@fig-peripherals-uart-fifo-deadline draws the arithmetic of the previous paragraph.
+
+![A 16-entry receive FIFO under continuous 8N1 traffic at 115,200 baud. One byte takes about 86.8 microseconds, so the FIFO fills from empty in about 1.39 ms; if the interrupt is raised with 12 entries, about 347 microseconds remain, ignoring bytes already in flight. The values are the example of this chapter.](../../figures/peripherals-uart-fifo-deadline.svg){#fig-peripherals-uart-fifo-deadline width=100% fig-alt="A row of sixteen FIFO slots with twelve filled and the time left to fill the last four"}
+
 Internal ready/valid backpressure cannot pause an external UART sender. RTS/CTS may do so when implemented and wired, with allowance for in-flight data. A two-wire board console without handshake needs sufficient buffering and a bounded traffic/service policy. Moving data into a software ring buffer only shifts the bottleneck if the application remains slower than the sender.
 
 The distinction between transmit-ready and transmit-complete matters. A holding register/FIFO can accept more data while the shift register still transmits. Wait for full transmitter-empty state before changing baud, disabling a pin or assuming the last stop bit has finished.
@@ -165,6 +168,10 @@ Different devices share clock/data-out lines when separate selects isolate them.
 | 1 | 0 | 1 | Trailing, falling | Leading, rising |
 | 2 | 1 | 0 | Leading, falling | Trailing, rising |
 | 3 | 1 | 1 | Trailing, rising | Leading, falling |
+
+@fig-peripherals-spi-modes shows the sample and shift edges of the four modes.
+
+![SPI modes 0 to 3. CPOL gives the idle level of SCK and CPHA chooses whether data is sampled on the leading or the trailing edge, where the leading edge is the first edge away from idle. Filled dots mark sample edges and open circles mark shift edges. The figure shows three clock pulses and no particular device timing.](../../figures/peripherals-spi-modes.svg){#fig-peripherals-spi-modes width=100% fig-alt="Four clock waveforms for the SPI modes with sample and shift edges marked"}
 
 In CPHA=0, the first data bit must already be available before the first sample edge. Sampling and shifting on the same edge in a simplistic loopback can pass simulation while failing an external device's setup/hold timing.
 

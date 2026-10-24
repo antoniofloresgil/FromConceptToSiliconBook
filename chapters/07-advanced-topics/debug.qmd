@@ -147,6 +147,10 @@ SBA is powerful because it can read memory while a hart runs and can access peri
 
 An SBA test must prove more than a successful RAM read. It should cover alignment, each supported access size, error propagation, auto-increment, accesses while the bus is busy, peripheral side effects and the security policy for protected address ranges.
 
+@fig-debug-access-mechanisms compares the three access mechanisms and the question each one raises.
+
+![Abstract commands and the program buffer act through a halted hart, while System Bus Access lets the Debug Module reach memory and peripherals without involving a hart. Each raises its own integration question: command error reporting, state clobbered by a sequence, and bus identity, coherency and side effects.](../../figures/debug-access-mechanisms.svg){#fig-debug-access-mechanisms width=100% fig-alt="Three columns for abstract commands, program buffer and system bus access with an integration question below each"}
+
 ### Triggers and breakpoints
 
 The Trigger Module provides hardware events that can enter Debug Mode or cause other configured actions. A common trigger is an instruction-address match, the hardware basis for a breakpoint. Data/address watchpoints and other trigger types are optional. NEORV32 can implement up to 16 optional hardware triggers through its `Sdtrig` support [@neorv32Ocd]. CV32E40P documents one instruction-address match trigger and exposes the relevant trigger CSRs; its documented trigger configuration is intentionally limited [@cv32e40pDebug].
@@ -194,6 +198,10 @@ At an architectural level, a debugger halts a core, reads `x10`, writes a new va
 6. Write data0; access-register write x10; poll completion/error.
 7. Set resumereq; observe transition back to running.
 ```
+
+@fig-debug-halt-read-resume shows the sequence between the debugger, the Debug Module and the hart.
+
+![Halt, read x10, write it back and resume through the Debug Module with abstract commands. The debugger sets haltreq and polls dmstatus, issues an access-register command and polls abstractcs.busy and cmderr before reading data0, writes data0 and the write command, and finally sets resumereq. The figure is architectural and omits the DMI and JTAG transport.](../../figures/debug-halt-read-resume.svg){#fig-debug-halt-read-resume width=100% fig-alt="A sequence between debugger, Debug Module and hart with seven numbered steps"}
 
 This sequence becomes verification scenarios at several boundaries. At the JTAG/DMI boundary, requests must be serialized and errors reported. At the DM/hart boundary, halt and resume requests must not be lost across clocks/resets. At the architectural boundary, `dpc`, `dcsr`, register contents and executed instructions must have the specified result.
 

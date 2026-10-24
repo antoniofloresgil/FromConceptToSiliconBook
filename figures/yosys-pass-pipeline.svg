@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="553" viewBox="0 0 960 553" role="img" aria-labelledby="title desc">
+<title id="title">What Yosys does between RTL and the netlist for nextpnr</title><desc id="desc">Six phases of the open Nexys Video flow • the result is a technology-mapped JSON netlist</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="553" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">What Yosys does between RTL and the netlist for nextpnr</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Six phases of the open Nexys Video flow • the result is a technology-mapped JSON netlist</text>
+<rect x="28" y="105" width="290" height="120" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="173.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">1  Frontend</text>
+<text x="173.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">read_slang, parameters</text>
+<text x="173.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">include paths, top level</text>
+<path d="M318 165H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="340" y="105" width="290" height="120" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="485.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">2  Hierarchy, checks</text>
+<text x="485.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">hierarchy -top, check</text>
+<text x="485.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">undriven or multiply driven</text>
+<path d="M630 165H652" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="652" y="105" width="290" height="120" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">3  Process lowering</text>
+<text x="797.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">proc: muxes, flip-flops</text>
+<text x="797.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a latch is an RTL defect</text>
+<rect x="28" y="275" width="290" height="120" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="173.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">4  Coarse-grain</text>
+<text x="173.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">constants, widths, dead</text>
+<text x="173.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">logic, FSM, memories</text>
+<path d="M318 335H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="340" y="275" width="290" height="120" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="485.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">5  Technology mapping</text>
+<text x="485.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">synth_xilinx -arch xc7</text>
+<text x="485.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">LUTs, carry, BRAM, DSP</text>
+<path d="M630 335H652" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="652" y="275" width="290" height="120" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">6  Export, report</text>
+<text x="797.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">write_json for nextpnr</text>
+<text x="797.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stat: an estimate</text>
+<path d="M787 225V250H173V275" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="430" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="458" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Run a simulator or linter first: synthesis only checks that the design is synthesizable.</text>
+<text x="44" y="483" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The resource report is a design-review input, not timing sign-off, and tool upgrades can</text>
+<text x="44" y="508" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">change both mapping and warnings, so pin versions.</text>
+</g></svg>

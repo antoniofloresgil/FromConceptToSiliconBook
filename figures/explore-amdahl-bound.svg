@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-labelledby="title desc">
+<title id="title">A bound tells you where to measure first</title><desc id="desc">Worked example of the chapter • invented profile • S = 1 / ((1 - p) + p / s)</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="440" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A bound tells you where to measure first</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Worked example of the chapter • invented profile • S = 1 / ((1 - p) + p / s)</text>
+<text x="28" y="100" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">Baseline application time</text>
+<rect x="60" y="115" width="758" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="440" y="145" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">everything else, 95 percent</text>
+<rect x="820" y="115" width="40" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="840" y="106" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">division 5%</text>
+<text x="28" y="215" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">Division cost eliminated completely</text>
+<rect x="60" y="230" width="758" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="440" y="260" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">unchanged 95 percent</text>
+<text x="60" y="305" font-size="19" text-anchor="start" fill="#28705c" font-weight="bold">speedup at most 1.053x, however good the divider</text>
+<rect x="28" y="335" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="363" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A large divider gain can be irrelevant to the application. Frequency, overhead and</text>
+<text x="44" y="388" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">contention come on top of the bound, so measure them.</text>
+</g></svg>

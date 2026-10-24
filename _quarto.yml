@@ -8,6 +8,7 @@ project:
     - python tools/figures/async_fifo.py --check
     - python tools/figures/reusable_ip.py --check
     - python tools/figures/explanatory.py --check
+    - python tools/figures/concepts.py --check
     - python tools/figures/print_audit.py --check
     - python tools/book/learning_paths.py --check --export downloads/learning-activities.csv
     - python tools/book/reference.py

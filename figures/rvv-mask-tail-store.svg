@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="538" viewBox="0 0 960 538" role="img" aria-labelledby="title desc">
+<title id="title">Active, masked-off and tail elements in a masked store</title><desc id="desc">Eight element slots, vl = 6 • the destination array starts with a sentinel S everywhere</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="538" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Active, masked-off and tail elements in a masked store</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Eight element slots, vl = 6 • the destination array starts with a sentinel S everywhere</text>
+<text x="208.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">0</text>
+<text x="304.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<text x="400.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<text x="496.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<text x="592.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">4</text>
+<text x="688.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">5</text>
+<text x="784.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">6</text>
+<text x="880.0" y="100" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">7</text>
+<text x="28" y="147" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">input</text>
+<rect x="164" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="208.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<rect x="260" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="304.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">-1</text>
+<rect x="356" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<rect x="452" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="496.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="548" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="592.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">7</text>
+<rect x="644" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="688.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">-2</text>
+<rect x="740" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="784.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">tail</text>
+<rect x="836" y="116" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="880.0" y="146" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">tail</text>
+<text x="28" y="213" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">mask v0</text>
+<rect x="164" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="208.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="260" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="304.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="356" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="452" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="496.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="548" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="592.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<rect x="644" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="688.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<rect x="740" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="784.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">-</text>
+<rect x="836" y="182" width="88" height="46" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="880.0" y="212" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">-</text>
+<text x="28" y="279" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">action</text>
+<rect x="164" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="208.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">store</text>
+<rect x="260" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="304.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">skip</text>
+<rect x="356" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">store</text>
+<rect x="452" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="496.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">skip</text>
+<rect x="548" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="592.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">store</text>
+<rect x="644" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="688.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">skip</text>
+<rect x="740" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="784.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no store</text>
+<rect x="836" y="248" width="88" height="46" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="880.0" y="278" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no store</text>
+<text x="28" y="345" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">destination</text>
+<rect x="164" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="208.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<rect x="260" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="304.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S</text>
+<rect x="356" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="400.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">5</text>
+<rect x="452" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="496.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S</text>
+<rect x="548" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="592.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">7</text>
+<rect x="644" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="688.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S</text>
+<rect x="740" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="784.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S</text>
+<rect x="836" y="314" width="88" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="880.0" y="344" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S</text>
+<path d="M164 395H732" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M732 395H164" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="448" y="388" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">vl = 6 active elements</text>
+<rect x="28" y="415" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="443" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A masked-off element is not written, and tail elements generate no stores. Choosing a</text>
+<text x="44" y="468" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">mask-agnostic policy gives no permission to clear the unused destination locations; the</text>
+<text x="44" y="493" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">lab checks guards around the output range.</text>
+</g></svg>

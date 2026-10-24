@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="695" viewBox="0 0 960 695" role="img" aria-labelledby="title desc">
+<title id="title">Find the first stage where the design becomes invalid</title><desc id="desc">Symptom, first check and the stage that usually owns the repair</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="695" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Find the first stage where the design becomes invalid</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Symptom, first check and the stage that usually owns the repair</text>
+<rect x="28" y="100" width="200" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="151.0" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Read and link</text>
+<rect x="250" y="100" width="682" height="90" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="266" y="134" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">cells cannot be linked: check_setup, synthesis log</text>
+<text x="266" y="160" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">no clock or zero sinks: report_clocks, SDC port names</text>
+<rect x="28" y="204" width="200" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="255.0" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Floorplan, place</text>
+<rect x="250" y="204" width="682" height="90" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="266" y="238" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">illegal cells: check_placement, rows and site</text>
+<text x="266" y="264" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">routing overflow: congestion report, add whitespace</text>
+<rect x="28" y="308" width="200" height="64" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="346.0" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Clock tree</text>
+<rect x="250" y="308" width="682" height="64" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="266" y="342" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">hold failure after CTS: minimum-delay report, hold repair</text>
+<rect x="28" y="386" width="200" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="437.0" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Route, extract</text>
+<rect x="250" y="386" width="682" height="90" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="266" y="420" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">setup failure after route: compare pre- and post-route paths</text>
+<text x="266" y="446" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">antenna or DRC markers: detailed-route report</text>
+<rect x="28" y="490" width="200" height="64" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="528.0" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Hand-off</text>
+<rect x="250" y="490" width="682" height="64" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="266" y="524" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">great reports but no fabrication path: tapeout checklist</text>
+<rect x="28" y="572" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="600" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Modify one controlled input, keep the reports and compare with the baseline. A failed</text>
+<text x="44" y="625" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">endpoint after routing may call for RTL, a constraint, a larger die or a different pin</text>
+<text x="44" y="650" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">location.</text>
+</g></svg>

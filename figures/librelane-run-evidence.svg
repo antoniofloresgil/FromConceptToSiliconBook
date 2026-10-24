@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="580" viewBox="0 0 960 580" role="img" aria-labelledby="title desc">
+<title id="title">A run is a chain of states, and each step leaves evidence</title><desc id="desc">Find the earliest invalid step, not the last line of the console</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="580" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A run is a chain of states, and each step leaves evidence</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Find the earliest invalid step, not the last line of the console</text>
+<rect x="28" y="100" width="168" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="112.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Synthesis</text>
+<text x="112.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">adds netlist</text>
+<path d="M196 140H212" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="212" y="100" width="168" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="296.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Floorplan</text>
+<text x="296.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">adds geometry</text>
+<path d="M380 140H396" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="396" y="100" width="168" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Placement</text>
+<text x="480.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">adds placed cells</text>
+<path d="M564 140H580" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="580" y="100" width="168" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="664.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Routing</text>
+<text x="664.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">adds routes</text>
+<path d="M748 140H764" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="764" y="100" width="168" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="848.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Sign-off</text>
+<text x="848.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">adds GDSII</text>
+<text x="28" y="225" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Evidence kept for every run tag</text>
+<rect x="28" y="245" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="173.0" y="280.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">resolved.json</text>
+<text x="173.0" y="306.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">which library and clock</text>
+<rect x="334" y="245" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="479.0" y="280.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Per-step log</text>
+<text x="479.0" y="306.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">first warning or error</text>
+<rect x="640" y="245" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="785.0" y="280.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Per-step report</text>
+<text x="785.0" y="306.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">timing, area, DRC, LVS</text>
+<rect x="28" y="341" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="173.0" y="376.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">State or checkpoint</text>
+<text x="173.0" y="402.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">reopen the design</text>
+<rect x="334" y="341" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="479.0" y="376.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Metrics</text>
+<text x="479.0" y="402.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">compare runs, CI gates</text>
+<rect x="640" y="341" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="785.0" y="376.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Final views</text>
+<text x="785.0" y="402.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">DEF, GDSII, netlist, SPEF</text>
+<rect x="28" y="450" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="478" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Use a unique run tag for every experiment, never reuse one after changing RTL or</text>
+<text x="44" y="503" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">configuration, and keep generated files out of the source repository: commit the inputs,</text>
+<text x="44" y="528" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">a short results summary and the scripts.</text>
+</g></svg>

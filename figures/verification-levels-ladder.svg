@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="753" viewBox="0 0 960 753" role="img" aria-labelledby="title desc">
+<title id="title">Ten levels of verification, each with its own question</title><desc id="desc">A chain of contracts: a downstream pass cannot make up for a missing upstream obligation</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="753" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Ten levels of verification, each with its own question</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A chain of contracts: a downstream pass cannot make up for a missing upstream obligation</text>
+<rect x="28" y="92" width="904" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="115" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="62" y="122" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<text x="94" y="122" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Static analysis, elaboration</text>
+<text x="430" y="122" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Does it elaborate and mean what we intend?</text>
+<rect x="28" y="144" width="904" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="167" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="62" y="174" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<text x="94" y="174" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Self-checking unit tests</text>
+<text x="430" y="174" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Does the block meet its contract?</text>
+<rect x="28" y="196" width="904" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="219" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="62" y="226" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<text x="94" y="226" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Assertions and formal</text>
+<text x="430" y="226" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Do the properties hold, bounded or proven?</text>
+<rect x="28" y="248" width="904" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="271" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="62" y="278" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">4</text>
+<text x="94" y="278" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Coverage</text>
+<text x="430" y="278" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">What did the tests actually reach?</text>
+<rect x="28" y="300" width="904" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="323" r="17" fill="white" stroke="#28705c" stroke-width="2"/>
+<text x="62" y="330" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">5</text>
+<text x="94" y="330" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Processor architecture</text>
+<text x="430" y="330" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Are the visible instruction effects correct?</text>
+<rect x="28" y="352" width="904" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="375" r="17" fill="white" stroke="#28705c" stroke-width="2"/>
+<text x="62" y="382" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">6</text>
+<text x="94" y="382" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Subsystem, firmware, SoC</text>
+<text x="430" y="382" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Do blocks, firmware and interrupts interact?</text>
+<rect x="28" y="404" width="904" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="427" r="17" fill="white" stroke="#a34624" stroke-width="2"/>
+<text x="62" y="434" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">7</text>
+<text x="94" y="434" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Synthesis and equivalence</text>
+<text x="430" y="434" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Did the transformation keep the behavior?</text>
+<rect x="28" y="456" width="904" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="479" r="17" fill="white" stroke="#a34624" stroke-width="2"/>
+<text x="62" y="486" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">8</text>
+<text x="94" y="486" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Clocks, CDC/RDC, STA</text>
+<text x="430" y="486" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Are timing and crossing contracts met?</text>
+<rect x="28" y="508" width="904" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="531" r="17" fill="white" stroke="#a34624" stroke-width="2"/>
+<text x="62" y="538" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">9</text>
+<text x="94" y="538" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">FPGA and ASIC physical</text>
+<text x="430" y="538" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Do geometry and electrical rules hold?</text>
+<rect x="28" y="560" width="904" height="46" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<circle cx="62" cy="583" r="17" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="62" y="590" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">10</text>
+<text x="94" y="590" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Silicon and production test</text>
+<text x="430" y="590" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Does the real part work; which parts pass?</text>
+<text x="28" y="640" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Levels 1-4: RTL unit • 5-6: processor and system • 7-9: implementation • 10: the device</text>
+<rect x="28" y="655" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="683" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Each level needs its own evidence: LVS can match the wrong netlist, and a booting FPGA</text>
+<text x="44" y="708" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">can still hide an arithmetic corner case.</text>
+</g></svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="638" viewBox="0 0 960 638" role="img" aria-labelledby="title desc">
+<title id="title">Where to accelerate: six choices, from the compiler to DMA</title><desc id="desc">Operand locality and latency drive the choice • a longer job moves down the list</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="638" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Where to accelerate: six choices, from the compiler to DMA</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Operand locality and latency drive the choice • a longer job moves down the list</text>
+<text x="28" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Choice</text>
+<text x="310" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Best suited to</text>
+<text x="660" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Main cost</text>
+<rect x="28" y="112" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="135.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Better compiler</text>
+<text x="153.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">or algorithm</text>
+<rect x="310" y="112" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="135.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Irregular code,</text>
+<text x="470.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">small kernels</text>
+<path d="M278 142.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="112" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="135.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">No hardware</text>
+<text x="797.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">specialization</text>
+<path d="M630 142.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="182" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="205.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Standard RISC-V</text>
+<text x="153.0" y="231.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">extension</text>
+<rect x="310" y="182" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="205.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A common operation with</text>
+<text x="470.0" y="231.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ratified semantics</text>
+<path d="M278 212.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="182" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="205.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Larger core and</text>
+<text x="797.0" y="231.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">toolchain target</text>
+<path d="M630 212.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="252" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="288.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Custom instruction</text>
+<rect x="310" y="252" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="275.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Short register-to-register</text>
+<text x="470.0" y="301.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">operation</text>
+<path d="M278 282.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="252" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="275.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Pipeline and</text>
+<text x="797.0" y="301.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">toolchain change</text>
+<path d="M630 282.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="322" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="345.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Internal</text>
+<text x="153.0" y="371.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">functional unit</text>
+<rect x="310" y="322" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="345.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Core-local</text>
+<text x="470.0" y="371.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">multicycle operation</text>
+<path d="M278 352.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="322" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="345.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Stalls, forwarding,</text>
+<text x="797.0" y="371.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">exceptions</text>
+<path d="M630 352.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="392" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="428.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">MMIO accelerator</text>
+<rect x="310" y="392" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="415.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Longer job with</text>
+<text x="470.0" y="441.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">explicit control</text>
+<path d="M278 422.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="392" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="415.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Driver, transfer,</text>
+<text x="797.0" y="441.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">synchronization</text>
+<path d="M630 422.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="462" width="250" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">DMA-capable</text>
+<text x="153.0" y="511.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">accelerator</text>
+<rect x="310" y="462" width="320" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="470.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Large streaming</text>
+<text x="470.0" y="511.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">buffers</text>
+<path d="M278 492.0H310" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="662" y="462" width="270" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="797.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Arbitration, coherence,</text>
+<text x="797.0" y="511.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">protection</text>
+<path d="M630 492.0H662" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="540" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="568" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A population count belongs in the instruction datapath; a 1024-sample filter has</text>
+<text x="44" y="593" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">descriptors, buffers and a completion event, so it fits an MMIO or DMA engine.</text>
+</g></svg>

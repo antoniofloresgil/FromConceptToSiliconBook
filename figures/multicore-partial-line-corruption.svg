@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="533" viewBox="0 0 960 533" role="img" aria-labelledby="title desc">
+<title id="title">A shared line lets a stale word overwrite the result</title><desc id="desc">Result word and CPU flag share one line • sequence is timing-dependent, so a small test can pass</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="533" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A shared line lets a stale word overwrite the result</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Result word and CPU flag share one line • sequence is timing-dependent, so a small test can pass</text>
+<text x="163" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">1  CPU writes the flag</text>
+<text x="28" y="135" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPU cache line</text>
+<rect x="28" y="145" width="270" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="163" y="182" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">result 0</text>
+<text x="163" y="210" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">flag 1 (new)</text>
+<text x="28" y="275" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">RAM</text>
+<rect x="28" y="285" width="270" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="163" y="322" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">result 0</text>
+<text x="163" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">flag 0</text>
+<text x="469" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">2  DMA writes the result</text>
+<text x="334" y="135" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPU cache line</text>
+<rect x="334" y="145" width="270" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="469" y="182" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">result 0 (stale)</text>
+<text x="469" y="210" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">flag 1</text>
+<text x="334" y="275" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">RAM</text>
+<rect x="334" y="285" width="270" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="469" y="322" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">result 49</text>
+<text x="469" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">flag 0</text>
+<text x="469" y="262" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">DMA write</text>
+<path d="M469 268V285" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#memory)"/>
+<text x="775" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">3  Dirty line is evicted</text>
+<text x="640" y="135" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPU cache line</text>
+<rect x="640" y="145" width="270" height="90" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="775" y="182" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">line leaves</text>
+<text x="775" y="210" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the cache</text>
+<text x="640" y="275" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">RAM</text>
+<rect x="640" y="285" width="270" height="90" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="775" y="322" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">result 0 (lost 49)</text>
+<text x="775" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">flag 1</text>
+<text x="775" y="262" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">writeback</text>
+<path d="M775 268V285" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<rect x="28" y="410" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Extra fences cannot make a partial dirty writeback merge correctly. Allocate and align</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">independently owned regions at the maintenance granularity of the real target, and keep</text>
+<text x="44" y="488" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">CPU-only state out of device payload lines.</text>
+</g></svg>

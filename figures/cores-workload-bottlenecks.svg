@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="583" viewBox="0 0 960 583" role="img" aria-labelledby="title desc">
+<title id="title">Four workloads, four different bottlenecks</title><desc id="desc">One benchmark can reward an architectural accident • separate the pressures on purpose</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="583" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Four workloads, four different bottlenecks</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">One benchmark can reward an architectural accident • separate the pressures on purpose</text>
+<text x="28" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Workload</text>
+<text x="300" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Dominant pressure</text>
+<text x="622" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Signal to examine</text>
+<rect x="28" y="112" width="240" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="148.0" y="140.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Register-only</text>
+<text x="148.0" y="166.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">reduction</text>
+<rect x="300" y="112" width="290" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="445.0" y="140.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Arithmetic throughput</text>
+<text x="445.0" y="166.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">and dependencies</text>
+<path d="M268 147.0H300" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="622" y="112" width="290" height="70" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="767.0" y="140.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">CPI, multiplier and</text>
+<text x="767.0" y="166.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">divider latency</text>
+<path d="M590 147.0H622" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="196" width="240" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="148.0" y="224.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Branch-heavy</text>
+<text x="148.0" y="250.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">parser</text>
+<rect x="300" y="196" width="290" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="445.0" y="224.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Predictor and</text>
+<text x="445.0" y="250.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">misprediction recovery</text>
+<path d="M268 231.0H300" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="622" y="196" width="290" height="70" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="767.0" y="224.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Taken branches, flush</text>
+<text x="767.0" y="250.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">cycles</text>
+<path d="M590 231.0H622" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="280" width="240" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="148.0" y="321.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Pointer chase</text>
+<rect x="300" y="280" width="290" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="445.0" y="308.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Dependent memory</text>
+<text x="445.0" y="334.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">latency</text>
+<path d="M268 315.0H300" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="622" y="280" width="290" height="70" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="767.0" y="308.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Load-to-use delay,</text>
+<text x="767.0" y="334.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">miss service time</text>
+<path d="M590 315.0H622" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="364" width="240" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="148.0" y="392.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Independent array</text>
+<text x="148.0" y="418.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">streams</text>
+<rect x="300" y="364" width="290" height="70" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="445.0" y="392.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Memory bandwidth</text>
+<text x="445.0" y="418.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">and concurrency</text>
+<path d="M268 399.0H300" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="622" y="364" width="290" height="70" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="767.0" y="392.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Outstanding requests,</text>
+<text x="767.0" y="418.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">misses, bytes per cycle</text>
+<path d="M590 399.0H622" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="460" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="488" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">If PicoRV32 and Wally differ strongly in the register-only test but little in the</text>
+<text x="44" y="513" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">pointer chase, memory latency probably dominates the latter. Hold memory latency fixed</text>
+<text x="44" y="538" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">and separate cold start from steady state.</text>
+</g></svg>

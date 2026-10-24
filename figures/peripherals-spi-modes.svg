@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="758" viewBox="0 0 960 758" role="img" aria-labelledby="title desc">
+<title id="title">SPI modes: where the clock samples and where it shifts</title><desc id="desc">Leading means the first edge away from idle • filled dot = sample edge • open circle = shift edge</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="758" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">SPI modes: where the clock samples and where it shifts</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Leading means the first edge away from idle • filled dot = sample edge • open circle = shift edge</text>
+<text x="28" y="126" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Mode 0</text>
+<text x="28" y="152" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPOL 0, CPHA 0</text>
+<path d="M220 146H280V90H332V146H384V90H436V146H488V90H540V146H592H652" fill="none" stroke="#24577a" stroke-width="3"/>
+<circle cx="280" cy="118.0" r="8" fill="#28705c"/>
+<circle cx="332" cy="118.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="384" cy="118.0" r="8" fill="#28705c"/>
+<circle cx="436" cy="118.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="488" cy="118.0" r="8" fill="#28705c"/>
+<circle cx="540" cy="118.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<text x="672" y="124" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">SCK</text>
+<text x="28" y="261" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Mode 1</text>
+<text x="28" y="287" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPOL 0, CPHA 1</text>
+<path d="M220 281H280V225H332V281H384V225H436V281H488V225H540V281H592H652" fill="none" stroke="#24577a" stroke-width="3"/>
+<circle cx="332" cy="253.0" r="8" fill="#28705c"/>
+<circle cx="280" cy="253.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="436" cy="253.0" r="8" fill="#28705c"/>
+<circle cx="384" cy="253.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="540" cy="253.0" r="8" fill="#28705c"/>
+<circle cx="488" cy="253.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<text x="672" y="259" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">SCK</text>
+<text x="28" y="396" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Mode 2</text>
+<text x="28" y="422" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPOL 1, CPHA 0</text>
+<path d="M220 360H280V416H332V360H384V416H436V360H488V416H540V360H592H652" fill="none" stroke="#24577a" stroke-width="3"/>
+<circle cx="280" cy="388.0" r="8" fill="#28705c"/>
+<circle cx="332" cy="388.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="384" cy="388.0" r="8" fill="#28705c"/>
+<circle cx="436" cy="388.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="488" cy="388.0" r="8" fill="#28705c"/>
+<circle cx="540" cy="388.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<text x="672" y="394" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">SCK</text>
+<text x="28" y="531" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Mode 3</text>
+<text x="28" y="557" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">CPOL 1, CPHA 1</text>
+<path d="M220 495H280V551H332V495H384V551H436V495H488V551H540V495H592H652" fill="none" stroke="#24577a" stroke-width="3"/>
+<circle cx="332" cy="523.0" r="8" fill="#28705c"/>
+<circle cx="280" cy="523.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="436" cy="523.0" r="8" fill="#28705c"/>
+<circle cx="384" cy="523.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<circle cx="540" cy="523.0" r="8" fill="#28705c"/>
+<circle cx="488" cy="523.0" r="8" fill="white" stroke="#a34624" stroke-width="3"/>
+<text x="672" y="529" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">SCK</text>
+<rect x="28" y="660" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="688" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">In CPHA 0 the first data bit must already be available before the first sample edge. Bit</text>
+<text x="44" y="713" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">order, frame length and select polarity come from the device specification.</text>
+</g></svg>

@@ -65,6 +65,10 @@ Assembly uses both architectural names and ABI aliases. The alias helps a human 
 
 For the standard integer calling convention, a callee preserves callee-saved registers it modifies. A caller saves live caller-saved values if a call might overwrite them. The ordinary stack alignment is 16 bytes; reduced-register conventions have separate rules. These conventions are specified by the processor-specific ABI, rather than inferred from a pipeline diagram [@riscvPsabi].
 
+@fig-isa-register-map shows the architectural state of one RV32I hart with the ABI aliases of the table above.
+
+![The program counter and the 32 integer registers of an RV32I hart, grouped by the ABI role of their alias. Register x0 always reads zero. The figure shows programming-model state and not a register-file circuit.](../../figures/isa-register-map.svg){#fig-isa-register-map width=100% fig-alt="A program counter and a grid of 32 integer registers with their ABI names"}
+
 ### RV32I instruction families
 
 Organize the base instructions by their effects before studying encodings. The following table is a reading guide, not an exhaustive decoder specification.
@@ -126,6 +130,10 @@ This book's teaching systems use little-endian data storage. Storing `0x12345678
 `LB` sign-extends an eight-bit value; `LBU` zero-extends it. Reading byte `0xfd` yields `0xfffffffd` with `LB` and `0x000000fd` with `LBU`. A byte store changes one byte without changing its neighbours. The LSU and byte-enable logic implement these effects over a potentially wider memory port.
 
 Natural alignment places halfwords at multiples of two and words at multiples of four. Whether a misaligned data access is handled or traps depends on the execution environment. A teaching design that supports only aligned accesses should reject the others explicitly; silently dropping the low address bits turns a software bug into a wrong answer that is hard to trace. Accesses that cross a device or protection boundary need the same care, since they are not just two harmless RAM reads.
+
+@fig-isa-load-store-bytes works through the byte-order and sign-extension examples.
+
+![A word store of 0x12345678 places 78, 56, 34 and 12 at increasing byte addresses in a little-endian system. Loading the byte 0xfd gives 0xfffffffd with LB, which sign-extends, and 0x000000fd with LBU, which zero-extends.](../../figures/isa-load-store-bytes.svg){#fig-isa-load-store-bytes width=100% fig-alt="Four stored bytes at increasing addresses and the two load results"}
 
 ### Control flow and PC-relative addressing
 

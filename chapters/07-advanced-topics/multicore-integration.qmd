@@ -96,6 +96,10 @@ Suppose memory initially contains operand value 0. Hart 0 changes it to 7 and re
 | Incorrect launch | Retain the dirty line | Order MMIO start after earlier accesses | DMA can still read RAM value 0 |
 | Repaired handoff | Complete the required platform visibility action | Launch only after ownership transfer completes | DMA reads 7 at the defined observation point |
 
+@fig-multicore-dirty-input-trace draws the table above as a trace in time.
+
+![The dirty-input failure of this section. Hart 0 stores operand 7 and keeps the line dirty, hart 1 can read 7 through the CPU coherence mechanism, and a non-snooping DMA read still returns the old 0 from RAM. The repair completes the platform visibility action before the doorbell. The figure is conceptual and does not model a specific cache.](../../figures/multicore-dirty-input-trace.svg){#fig-multicore-dirty-input-trace width=100% fig-alt="A grid of hart 0, hart 1 and RAM or DMA over five steps, with the wrong read of 0 highlighted and the repaired read of 7"}
+
 A fence can establish required ordering between actions already defined by the platform. It does not by itself write this dirty cache line back to RAM. A lock can ensure that only one task submits the job, but also does not perform that writeback. These are different failures from publishing a token before initializing a descriptor.
 
 The second hart introduces a particularly revealing maintenance mistake: cleaning only hart 1's local cache when hart 0 owns the dirty data. Whether a particular architectural cache-block operation covers a coherent domain is defined by the implementation and ISA contract; it cannot be guessed from the executing hart. The finite model in Lab 20 deliberately models a **local-only** action and shows why it is insufficient. It does not claim that every RISC-V `cbo.clean` is local-only. Zicbom defines operations in relation to coherent agents and a common observation point [@multicoreCmo].
@@ -113,6 +117,10 @@ Specify what completion means in the accelerator. The last write request being i
 A buffer can be byte-disjoint and still share cache lines with CPU-owned control data. Imagine a result word and a flag in the same line. The CPU modifies the flag, retaining an older copy of the result word in that dirty line. DMA updates the result in RAM. A later CPU writeback can overwrite the device's new result with its stale word.
 
 The resulting value can depend on eviction timing, so a small test may appear to work until unrelated traffic creates pressure. Extra fences cannot make a partial dirty writeback merge correctly. Design allocation and ownership at the maintenance granularity: separate independently owned regions, align their boundaries appropriately, and prohibit dirty aliases during the device-owned interval. An assumed 64-byte alignment in a teaching example is not a substitute for identifying the real target's granularity.
+
+@fig-multicore-partial-line-corruption shows how a stale word can survive in a shared line.
+
+![A result word and a CPU flag share one cache line. The CPU writes the flag and keeps an older copy of the result in the dirty line, the DMA engine writes the new result 49 to RAM, and a later eviction writes the stale result back over it. The outcome depends on eviction timing, so a small test can pass.](../../figures/multicore-partial-line-corruption.svg){#fig-multicore-partial-line-corruption width=100% fig-alt="Three steps showing a cache line and RAM contents until the stale result overwrites the device result"}
 
 | Object | Writer during the device interval | Other accesses allowed? | Return condition |
 | --- | --- | --- | --- |
@@ -144,6 +152,10 @@ Timeouts are especially dangerous across harts. A second task can only reuse the
 Adding the strongest fence to every access is the wrong place to begin. Draw the required chain: initialize payload, publish ownership, acquire ownership on the submitting hart, prepare DMA-visible state, order the doorbell, observe device completion, establish CPU visibility, publish the result, and finally permit reuse. Different edges involve different agents and APIs.
 
 RVWMO is the baseline memory model for ordinary shared memory; the A extension supplies atomic operations and ordering annotations. Those architectural mechanisms must be connected to the compiler's concurrency rules and the platform's device-access rules [@multicoreRvwmo; @multicoreAtomics]. A C data race is not repaired merely because the processor eventually executes a fence. Use language atomics or kernel synchronization primitives for CPU communication, and the appropriate MMIO/DMA APIs for device communication.
+
+@fig-multicore-job-lifecycle puts each ordering edge on its own step of the lifecycle.
+
+![The job lifecycle of this section: initialize, publish, acquire, prepare the DMA-visible state, ring the doorbell, observe completion, establish CPU visibility and acknowledge. Blue steps use CPU-to-CPU synchronization with language atomics; orange steps hand the job to the device through the platform DMA API and ordered device accessors. The next iteration may start only after the acknowledgement.](../../figures/multicore-job-lifecycle.svg){#fig-multicore-job-lifecycle width=100% fig-alt="Eight lifecycle steps in two rows colored by whether they synchronize CPUs or hand work to a device"}
 
 In Lab 20, the producer writes a shared job before a release store of its epoch. The worker waits until an acquire load observes that epoch, then submits the stable job through the driver. The worker publishes completion with another release store; the producer acquires it before reading the result or changing the job. The acknowledgement is essential: it prevents the next producer iteration from modifying data that the worker or driver still uses.
 

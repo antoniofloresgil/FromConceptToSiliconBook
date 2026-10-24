@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+<title id="title">Each FPGA claim needs its own evidence</title><desc id="desc">A bitstream that configures is a different milestone from a validated memory system</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="560" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Each FPGA claim needs its own evidence</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A bitstream that configures is a different milestone from a validated memory system</text>
+<text x="28" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Claim</text>
+<text x="412" y="100" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Evidence required</text>
+<rect x="28" y="112" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="146.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">RTL compiles</text>
+<rect x="400" y="112" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="133.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Yosys log and a reproducible</text>
+<text x="650.0" y="159.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">source list</text>
+<path d="M368 140.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="178" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="212.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Routes at 40 MHz</text>
+<rect x="400" y="178" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="199.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">nextpnr timing report for the</text>
+<text x="650.0" y="225.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stated clocks</text>
+<path d="M368 206.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="244" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="278.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Bitstream configures</text>
+<rect x="400" y="244" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="265.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Programmer result and the board</text>
+<text x="650.0" y="291.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">DONE indication</text>
+<path d="M368 272.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="310" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Wally runs from internal ROM</text>
+<rect x="400" y="310" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="331.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">UART or LED software milestone,</text>
+<text x="650.0" y="357.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">or a debug observation</text>
+<path d="M368 338.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="376" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="410.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">DDR controller initializes</text>
+<rect x="400" y="376" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="397.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">init_done, calibration logs and</text>
+<text x="650.0" y="423.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a memory test</text>
+<path d="M368 404.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="442" width="340" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="198.0" y="476.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">Linux and DDR3 work</text>
+<rect x="400" y="442" width="500" height="56" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="650.0" y="463.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Sustained hardware and software</text>
+<text x="650.0" y="489.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">tests, not only synthesis</text>
+<path d="M368 470.0H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+</g></svg>

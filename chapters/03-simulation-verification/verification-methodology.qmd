@@ -40,6 +40,10 @@ For the dot-product project, separate numerical behavior from transport and poli
 4. Checker/oracle, observation point and expected outcome.
 5. Coverage obligation, result status and immutable evidence references.
 
+@fig-verification-plan-entry shows the five parts of an entry, using the DP-NUM row as the example.
+
+![The five parts of a verification plan entry, with the DP-NUM example of the dot-product project: requirement, level and environment, stimulus, checker and observation, and coverage and evidence.](../../figures/verification-plan-entry.svg){#fig-verification-plan-entry width=100% fig-alt="Five plan entry parts with an example for each"}
+
 Review the plan for omitted features as well as omitted tests. Ask another reader to derive the required outputs for three examples. A checker that disagrees with the specification is a verification defect, even when every regression is green.
 
 | Example ID | Requirement | Stimulus | Checker and observation |
@@ -71,6 +75,10 @@ The expected model needs its own small tests. Check negative times positive, min
 For a complete local progression from assertions and assumptions to BMC, induction, useful-traffic witnesses, a real counterexample, repair/regression and sequential equivalence, use @sec-formal-verification. Its two-entry FIFO is an executable preparation exercise for P4. The broader hierarchy and project obligations below remain separate: proving that FIFO does not close accelerator equivalence or whole-core correctness.
 
 @sec-complete-case applies this hierarchy to the same dot-product RTL through Wally firmware and both physical targets. Its common manifest and collector prevent mixing source revisions or stale stage artifacts; its actual results also show why successful tests, positive setup, layout stream-out and product acceptance are separate conclusions.
+
+@fig-verification-levels-ladder lists the ten levels of this section with the question each one answers.
+
+![Ten levels of verification, from static analysis of the RTL to production test of manufactured parts. Each level answers its own question, so a pass at one level cannot replace evidence at another.](../../figures/verification-levels-ladder.svg){#fig-verification-levels-ladder width=100% fig-alt="Ten numbered levels with the question each one answers"}
 
 ### Level 1: static analysis, elaboration and RTL semantics
 

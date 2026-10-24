@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="548" viewBox="0 0 960 548" role="img" aria-labelledby="title desc">
+<title id="title">From core to uncore: a request path and an event path</title><desc id="desc">Solid blue = request and response • dashed orange = interrupt request, not a bus transaction</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="548" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">From core to uncore: a request path and an event path</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Solid blue = request and response • dashed orange = interrupt request, not a bus transaction</text>
+<rect x="28" y="100" width="190" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="123.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">IFU</text>
+<text x="123.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">instruction fetch</text>
+<rect x="28" y="200" width="190" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="123.0" y="235.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">LSU</text>
+<text x="123.0" y="261.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">loads and stores</text>
+<rect x="290" y="100" width="190" height="180" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M297 107H473" stroke="#24577a" stroke-width="5"/>
+<text x="385.0" y="161.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Interconnect</text>
+<text x="385.0" y="187.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">decode the address</text>
+<text x="385.0" y="213.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">arbitrate</text>
+<text x="385.0" y="239.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">route responses</text>
+<path d="M218 140H252V160H290" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M218 240H252V220H290" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="550" y="100" width="180" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<path d="M558 173H580" stroke="#24577a" stroke-width="2"/>
+<path d="M558 166H580" stroke="#24577a" stroke-width="2"/>
+<text x="640.0" y="135.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Memory</text>
+<text x="640.0" y="161.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">RAM or boot ROM</text>
+<rect x="550" y="200" width="180" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="640.0" y="235.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Bridge</text>
+<text x="640.0" y="261.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">to the register bus</text>
+<path d="M480 140H550" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M480 240H550" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="790" y="200" width="142" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="787" y="212" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="787" y="224" width="6" height="6" fill="white" stroke="#24577a"/>
+<rect x="787" y="236" width="6" height="6" fill="white" stroke="#24577a"/>
+<text x="861.0" y="235.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Peripheral</text>
+<text x="861.0" y="261.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">registers</text>
+<path d="M730 240H790" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="550" y="330" width="180" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="640.0" y="360.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Interrupt</text>
+<text x="640.0" y="386.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">controller</text>
+<rect x="28" y="330" width="250" height="70" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="360.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">CPU trap logic</text>
+<text x="153.0" y="386.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">pending, enable, entry</text>
+<path d="M861 280V365H730" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<path d="M550 365H278" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="846" y="316" font-size="18" text-anchor="end" fill="#a34624" font-weight="normal">event from the device</text>
+<text x="414" y="352" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">interrupt request</text>
+<rect x="28" y="425" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="453" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Software uses the bus to configure interrupt generation and to service a source. The</text>
+<text x="44" y="478" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">request itself travels on the event path, so a register read can happen with interrupts</text>
+<text x="44" y="503" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">disabled.</text>
+</g></svg>

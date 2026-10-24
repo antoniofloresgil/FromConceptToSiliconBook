@@ -276,6 +276,10 @@ These questions create a progression from PicoRV32's simple handshake, through W
 
 Consider two loads followed by an independent add. On a single-outstanding, blocking-memory core, the second load waits for the first response and the add may not start. A nonblocking cache and instruction window can permit useful work while data is pending. But if both loads miss in the same narrow downstream port, overlap may still be limited. This is why counting “execution units” cannot substitute for measuring memory-level parallelism.
 
+@fig-cores-two-loads-and-add draws the example of two loads and an independent add.
+
+![Two loads followed by an independent add. On a blocking cache with one outstanding load the add waits behind both loads and finishes at 13 units; with a nonblocking cache and an instruction window the loads overlap and the add executes early, finishing at 7. The units are invented and retirement order is not drawn.](../../figures/cores-two-loads-and-add.svg){#fig-cores-two-loads-and-add width=100% fig-alt="Two timelines of load 1, load 2 and an add with and without overlap"}
+
 ### Traps and precise architectural state
 
 The simplified Wally chapter omitted exceptions so that its hazard/forwarding path could be studied first. Real cores must report illegal instructions, access faults, misaligned operations, page faults and interrupts according to their implemented privileged architecture. The difficulty grows with the amount of in-flight work.
@@ -347,6 +351,10 @@ One benchmark can reward an architectural accident. A more informative suite del
 | Branch-heavy parser | Predictor and recovery | Taken branches, mispredictions, flush cycles |
 | Pointer chase | Dependent memory latency | Load-to-use delay, miss service time |
 | Independent array streams | Memory bandwidth/concurrency | Outstanding requests, cache misses, bytes/cycle |
+
+@fig-cores-workload-bottlenecks restates the table of four workloads.
+
+![Four workloads and the pressure each one puts on a core, with the signal to examine: dependencies, branch recovery, dependent memory latency and independent memory streams.](../../figures/cores-workload-bottlenecks.svg){#fig-cores-workload-bottlenecks width=100% fig-alt="Four workloads linked to a dominant pressure and a signal to examine"}
 
 If PicoRV32 and Wally differ strongly in the register-only test but little in pointer chasing, memory latency may dominate the latter. If BOOM or XiangShan gains on independent streams but not pointer chasing, the larger window is probably finding parallel memory operations where the program permits them. Such interpretations are hypotheses until the relevant counters or traces support them.
 

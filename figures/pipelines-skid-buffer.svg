@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="510" viewBox="0 0 960 510" role="img" aria-labelledby="title desc">
+<title id="title">A skid buffer absorbs the item sent during the stop delay</title><desc id="desc">Conceptual two-entry buffer • four snapshots • the source sees ready one cycle late</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="510" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">A skid buffer absorbs the item sent during the stop delay</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Conceptual two-entry buffer • four snapshots • the source sees ready one cycle late</text>
+<text x="128" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">1  flowing</text>
+<rect x="28" y="120" width="200" height="56" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="128" y="156" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">output  A</text>
+<rect x="28" y="190" width="200" height="56" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="128" y="226" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">skid  empty</text>
+<text x="128" y="285" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">ready high</text>
+<text x="128" y="310" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A is the output item</text>
+<text x="356" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">2  sink stops</text>
+<rect x="256" y="120" width="200" height="56" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="356" y="156" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">output  A</text>
+<rect x="256" y="190" width="200" height="56" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="356" y="226" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">skid  B</text>
+<text x="356" y="285" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">ready low,</text>
+<text x="356" y="310" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">seen one cycle late</text>
+<text x="584" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">3  source holds</text>
+<rect x="484" y="120" width="200" height="56" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="584" y="156" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">output  A</text>
+<rect x="484" y="190" width="200" height="56" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="584" y="226" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">skid  B</text>
+<text x="584" y="285" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">ready low</text>
+<text x="584" y="310" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">source keeps C</text>
+<text x="812" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">4  sink resumes</text>
+<rect x="712" y="120" width="200" height="56" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="812" y="156" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">output  B</text>
+<rect x="712" y="190" width="200" height="56" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="812" y="226" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">skid  empty</text>
+<text x="812" y="285" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">ready high</text>
+<text x="812" y="310" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A left, B moved up</text>
+<rect x="28" y="340" width="904" height="56" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="375" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Link accepts R items per cycle and reports a stop after B cycles: reserve at least R x B entries.</text>
+<rect x="28" y="412" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="440" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A skid buffer fixes local timing and elasticity. It cannot compensate for a consumer</text>
+<text x="44" y="465" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">that is slower for good, and a full-state recovery bubble is possible.</text>
+</g></svg>

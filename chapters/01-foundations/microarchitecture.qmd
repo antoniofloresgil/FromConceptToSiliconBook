@@ -43,14 +43,9 @@ Implementation state is still essential to correctness. Resetting an FSM while l
 
 A datapath combines registers, arithmetic operators, comparators and multiplexers. Registers retain values across edges. Multiplexers choose sources. Arithmetic generates candidate results. A controller selects those candidates and enables updates.
 
-```text
-                         +--> register operands --+
-instruction --> decode --+                       +--> ALU --> result selection
-                         +--> immediate ----------+                 |
-memory response ----------------------------------------------------+
-                                                                   |
-                                                              register write
-```
+@fig-microarchitecture-datapath-dependencies draws the value dependencies of a datapath.
+
+![Value dependencies of a datapath before any register is placed: the instruction is decoded, the register operands and the immediate feed the ALU, and a selection chooses between the ALU result and the memory response for the register write. An arrow is a dependency, not proof that the path is combinational.](../../figures/microarchitecture-datapath-dependencies.svg){#fig-microarchitecture-datapath-dependencies width=100% fig-alt="Instruction, decode, operands and immediate feeding an ALU, a result selection and a register write"}
 
 An arrow is a value dependency, not proof that the whole path is combinational. Decide where registers belong and annotate the number of cycles between boundaries. For each mux, list its sources and the control condition choosing each source.
 
@@ -150,6 +145,10 @@ $$
 Instruction count depends on the binary and ISA choices; cycles per instruction depend on execution, memory and control behavior; clock period depends on the implemented critical path. Compare all three terms. A faster clock does not alone establish a faster program.
 
 For illustration, a design with 20 ns period and CPI 1 spends 20 ns per instruction on average. A multicycle variant at 5 ns with CPI 4 has the same average. A pipelined variant at 5 ns and CPI 1.2 averages 6 ns. These invented values demonstrate the equation; they are not measurements of Wally or any FPGA.
+
+@fig-microarchitecture-execution-time-bars draws the three variants of the example.
+
+![Time per instruction as clock period times CPI for the three invented variants: 20 ns for the single-cycle design, 20 ns for the multicycle design and 6 ns for the pipelined design. The values demonstrate the equation and are not measurements.](../../figures/microarchitecture-execution-time-bars.svg){#fig-microarchitecture-execution-time-bars width=100% fig-alt="Three bars for single cycle, multicycle and pipelined time per instruction"}
 
 Dynamic power depends on switching activity, capacitance, voltage and frequency. More units can add switched capacitance even when instruction throughput improves. Clock enables can reduce activity in inactive datapaths, while physical clock gating has technology-specific requirements described in the timing chapter.
 

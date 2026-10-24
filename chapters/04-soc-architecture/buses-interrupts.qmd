@@ -16,15 +16,9 @@ For an executable software endpoint, follow @sec-linux-accelerator: Device Tree 
 
 The core executes instructions and maintains architectural state. The **uncore** surrounds it with interconnect, memories and peripheral interfaces. The instruction fetch unit (IFU) requests executable data; the load/store unit (LSU) requests or writes data. Interconnect selects a destination and returns the response to the correct requester.
 
-```text
-IFU requests ----+                    +---- memory / boot ROM
-                +-- interconnect ----+
-LSU requests ---+                    +---- bridge ---- peripheral registers
-                                                        |
-                                                        event
-                                                          |
-CPU trap logic <-------- interrupt controller <------------+
-```
+@fig-buses-core-to-uncore draws the two paths: a request leaves the core through the interconnect to memory or a bridge, and an interrupt request reaches the trap logic through a separate controller.
+
+![Request path and event path from the core to its peripherals. Solid arrows carry requests and responses; dashed arrows carry an interrupt request, which is not a memory transaction. The drawing is conceptual and does not show a particular Wally configuration.](../../figures/buses-core-to-uncore.svg){#fig-buses-core-to-uncore width=100% fig-alt="IFU and LSU feed an interconnect that reaches memory and a bridge to peripheral registers, while a peripheral event reaches the CPU trap logic through an interrupt controller"}
 
 The outward transaction and inward event are different paths. A register read can occur with interrupts disabled; an interrupt can become pending without a simultaneous bus access. Software uses the bus to configure interrupt generation and later to service a source, but the interrupt request itself is not a memory transaction.
 
@@ -150,6 +144,10 @@ This fragment captures controls; it is not a complete responder. The `HREADY` en
 AHB bursts begin with `NONSEQ`, followed by related `SEQ` transfers. A four-word incrementing burst accesses, for example, `0x80000100`, `0x80000104`, `0x80000108`, `0x8000010C`. Every beat still obeys completion and wait rules. Cache-line traffic benefits from bursts, but a peripheral is not required to become a fast memory just because burst controls are present.
 
 Arbitration selects which controller proceeds. Fixed priority is simple but can starve other traffic; round-robin improves fairness. Bursts, locks and slow responders also influence worst-case service time. A high average bandwidth still leaves open whether an interrupt-driven control loop gets bounded access latency.
+
+Compare the two worked examples with @fig-buses-apb-ahb-phases: APB completes one transfer before the next begins, while AHB lets the next address overlap the previous data phase.
+
+![The APB and AHB timing tables of this chapter drawn as waveforms. Each column is the interval before its numbered rising edge. APB holds the payload through two wait cycles and completes once on edge 4; AHB overlaps the address of the next transfer with the data phase of the previous one, and HREADY low at edge 2 holds both. The figure is conceptual and does not describe the timing of a particular implementation.](../../figures/buses-apb-ahb-phases.svg){#fig-buses-apb-ahb-phases width=100% fig-alt="APB signals PSEL, PENABLE and PREADY over five edges, and AHB address and data phases for transfers A, B and C with HREADY"}
 
 ### AXI: why independent channels matter
 
@@ -348,10 +346,9 @@ Polling repeatedly reads status; an interrupt lets the processor do other work u
 
 An **exception** is associated with an instruction, such as an illegal opcode; an **interrupt** reports a device or timer event external to that instruction's execution. A **trap** transfers control to handle either. RISC-V trap entry is architectural behavior, not an ordinary function call [@harrisRiscvSoc; @riscvPrivilegedSpec].
 
-```text
-event -> device pending/local enable -> controller pending/priority/enable
-      -> CPU pending/enable -> handler -> device service -> completion
-```
+@fig-buses-interrupt-gates follows the chain from a device event to trap entry. Each gate can hold a request pending without delivering it.
+
+![Machine-mode interrupt path of this chapter. A GPIO or UART source passes the PLIC, while the CLINT timer and software bits reach the hart directly; each class has a pending bit in mip, and a trap is taken only when the matching mie bit and mstatus.MIE allow it. The cause codes are 11, 7 and 3. The drawing is conceptual and does not show every Wally context.](../../figures/buses-interrupt-gates.svg){#fig-buses-interrupt-gates width=100% fig-alt="Three interrupt sources reach mip bits for external, timer and software interrupts, which pass an enable stage before a trap is taken"}
 
 Disabling a delivery gate does not necessarily clear pending state. A pulse needs retention or a suitable crossing protocol; a two-flop level synchronizer is not general pulse capture. A pending bit records at least one event, not event multiplicity. Use a counter or FIFO when every occurrence matters.
 
@@ -378,6 +375,10 @@ Hardware records cause/PC, updates privilege and enables, and redirects executio
 Direct `mtvec` sends all traps to one base. Vectored mode uses cause-derived offsets for interrupts while exceptions still enter at the base. The examples use direct mode. A `wfi` loop rechecks its work condition, because waiting is no substitute for a correct event and enable contract.
 
 For a pipeline, a precise trap must avoid unintended younger effects and duplicate older operations. An MMIO store already accepted by a device may be irreversible. Bus ownership and trap control must therefore agree about when an instruction can be interrupted or resumed.
+
+@fig-buses-trap-entry-return shows what the hardware does when a trap is taken and what mret restores.
+
+![Machine-mode trap entry and return with direct mtvec. Hardware records the resume address and cause, saves and clears the interrupt enable and the previous privilege, and jumps to the handler base; software saves the registers it clobbers, and mret restores the state. The figure is conceptual: nesting, stack switching and vectored mode are not drawn.](../../figures/buses-trap-entry-return.svg){#fig-buses-trap-entry-return width=100% fig-alt="Hardware at trap entry, handler software and mret as three steps with the state each one changes"}
 
 ### Bus and interrupt verification at two boundaries
 
@@ -639,6 +640,10 @@ static void external_service(void) {
 ```
 
 Configure device state and controller registers before globally enabling CPU interrupts. An unexpected-source policy should diagnose or mask a stuck request instead of completing it endlessly. The functions above are integration points, not complete GPIO/UART drivers: FIFO handling and software queues belong to the peripherals chapter.
+
+@fig-buses-plic-claim-sequence orders the stages of PLIC service on one time axis.
+
+![One PLIC service for machine context 0. A level source is claimed with a read, serviced by software, ordered with a fence and completed with a write of the same ID to the same register; if the source is still asserted it can interrupt again. The offsets are the illustrative ones of this chapter.](../../figures/buses-plic-claim-sequence.svg){#fig-buses-plic-claim-sequence width=100% fig-alt="Sequence between device, PLIC and hart software: the source asserts, an interrupt is raised, the claim is read, an ID is returned, the device is serviced and the completion is written"}
 
 PLIC priority differs from the CPU's priority among timer, software and external interrupt classes. Raising a UART's PLIC priority does not define its priority against all local timer interrupts. These are distinct arbitration layers.
 

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="663" viewBox="0 0 960 663" role="img" aria-labelledby="title desc">
+<title id="title">Measure four intervals separately</title><desc id="desc">One job from input ready to output consumed • axis not to scale</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="663" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Measure four intervals separately</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">One job from input ready to output consumed • axis not to scale</text>
+<path d="M60 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="60" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="60" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">1</text>
+<path d="M170 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="170" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="170" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">2</text>
+<path d="M330 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="330" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="330" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">3</text>
+<path d="M580 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="580" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="580" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">4</text>
+<path d="M780 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="780" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="780" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">5</text>
+<path d="M900 128V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<circle cx="900" cy="112" r="14" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="900" y="118" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">6</text>
+<rect x="170" y="140" width="160" height="36" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="182" y="165" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Driver setup</text>
+<rect x="330" y="188" width="250" height="36" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="342" y="213" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Engine active</text>
+<rect x="580" y="236" width="200" height="36" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="592" y="261" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Interrupt handling</text>
+<rect x="60" y="284" width="840" height="36" rx="10" fill="white" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="72" y="309" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Whole application</text>
+<text x="28" y="352" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">What each interval diagnoses</text>
+<text x="28" y="382" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Driver setup: software and MMIO overhead</text>
+<text x="28" y="408" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Engine active: DMA and compute throughput</text>
+<text x="28" y="434" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Interrupt handling: scheduling and ISR overhead</text>
+<text x="28" y="460" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Whole application: the user-visible benefit</text>
+<text x="28" y="494" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">1 input ready   2 first register write   3 START accepted</text>
+<text x="28" y="518" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">4 DONE sticky   5 driver completes   6 output consumed</text>
+<rect x="28" y="540" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="568" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Engine-active time against scalar software time leaves out the cost the user pays;</text>
+<text x="44" y="593" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">compare the full operation. For very short buffers setup can dominate and a custom</text>
+<text x="44" y="618" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">instruction can win.</text>
+</g></svg>

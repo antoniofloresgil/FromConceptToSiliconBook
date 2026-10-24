@@ -44,6 +44,10 @@ where $C$ is cycles, $I$ retired instructions and $f$ implemented operating freq
 
 Suppose A takes 10,000 cycles at 50 MHz and B takes 8,000 at 35 MHz. Their times are 200 µs and about 228.6 µs. B reduces cycles by 20%, yet increases time. These values illustrate arithmetic; they are not Wally measurements.
 
+@fig-explore-cycles-versus-time draws the example above.
+
+![Design B takes 20 percent fewer cycles than design A and still takes longer: 8,000 cycles at 35 MHz is about 228.6 microseconds, while 10,000 cycles at 50 MHz is 200 microseconds. The values are invented to illustrate the arithmetic and are not Wally measurements.](../../figures/explore-cycles-versus-time.svg){#fig-explore-cycles-versus-time width=100% fig-alt="Bars comparing cycles and time for designs A and B"}
+
 | Metric | Meaning | Required qualification |
 | --- | --- | --- |
 | Cycles / retired instructions | Executed work within a window | Counter semantics, ROI and software identity |
@@ -65,6 +69,10 @@ S=\frac{1}{(1-p)+p/s}.
 $$
 
 If division occupies 5% of application time, eliminating its cost yields at most about 1.053× speedup under those assumptions. A large divider gain can be irrelevant to the application. The bound tells you where to measure first, and frequency, overhead and contention are left to the measurement.
+
+@fig-explore-amdahl-bound draws the 5 percent example.
+
+![If division is 5 percent of application time, eliminating its cost completely gives a speedup of at most about 1.053. The profile is invented, and the bound ignores frequency, overhead and contention.](../../figures/explore-amdahl-bound.svg){#fig-explore-amdahl-bound width=100% fig-alt="A baseline time bar with a five percent division segment and a shorter bar after the division cost is removed"}
 
 For accelerators, include setup, ownership transfer, DMA, computation and completion handling. Engine throughput can conceal poor small-job latency. The dot-product measurements in @sec-executable-project include setup/polling/result access, while their memory assumptions still need physical-platform validation.
 
@@ -110,6 +118,10 @@ The current Wally FPGA path does not expose the simulation logger as a hardware 
 One-factor studies support an initial explanation: control compiler, inputs, memory latency and other parameters. Then examine interactions such as capacity × memory latency, predictor size × branch pattern, or unit structure × achieved clock.
 
 For A and B, compare baseline, A-only, B-only and A+B. A's benefit may depend on B. Full factorial studies grow rapidly. Prune illegal/infeasible combinations before expensive evaluation, preserving reasons. Failed builds and wrong results remain part of the record.
+
+@fig-explore-factor-grid shows the four corners of a two-factor study.
+
+![For factors A and B, compare the baseline, A only, B only and A plus B before crediting either one, because the benefit of A can depend on B. Illegal or infeasible combinations are pruned with their reasons recorded.](../../figures/explore-factor-grid.svg){#fig-explore-factor-grid width=100% fig-alt="A two-by-two grid with baseline, A only, B only and A plus B"}
 
 Use coarse sweeps before refinement. Sampling and surrogate models can reduce evaluations, but a predicted optimum needs correctness and implementation checks. Keep fitted, validation and decision-confirmation points separate. Training-set agreement is weak evidence of generalization.
 

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="610" viewBox="0 0 960 610" role="img" aria-labelledby="title desc">
+<title id="title">Width and signedness are part of the circuit</title><desc id="desc">Worked examples of the chapter • operand extension, then logical and arithmetic shift</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="610" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Width and signedness are part of the circuit</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Worked examples of the chapter • operand extension, then logical and arithmetic shift</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Addition: extend the operands to keep the carry</text>
+<text x="28" y="156" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Left</text>
+<rect x="110" y="125" width="130" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="175" y="154" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">0xFFFF</text>
+<text x="252" y="154" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">16 bits</text>
+<text x="28" y="212" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Right</text>
+<rect x="110" y="181" width="130" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="175" y="210" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">0x0001</text>
+<text x="252" y="210" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">16 bits</text>
+<rect x="400" y="125" width="210" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="505.0" y="170.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">{1&#x27;b0, Left} +</text>
+<text x="505.0" y="196.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">{1&#x27;b0, Right}</text>
+<path d="M350 175H400" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="700" y="125" width="232" height="44" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="816" y="154" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">0x10000</text>
+<text x="816" y="190" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">17-bit WideSum</text>
+<rect x="700" y="215" width="232" height="44" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="816" y="244" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">0x0000</text>
+<text x="816" y="280" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">carry lost in 16 bits</text>
+<path d="M610 160H700" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M610 200H655V237H700" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#event)"/>
+<text x="28" y="345" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Right shift by one of Data = 32&#x27;h80000000</text>
+<rect x="28" y="370" width="290" height="100" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="173" y="400" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Data</text>
+<text x="173" y="430" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">1000 0000 ...</text>
+<text x="173" y="457" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x80000000</text>
+<rect x="334" y="370" width="290" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="479" y="400" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Data &gt;&gt; 1</text>
+<text x="479" y="430" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">0100 0000 ...</text>
+<text x="479" y="457" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0x40000000</text>
+<rect x="640" y="370" width="290" height="100" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="785" y="400" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">$signed(Data) &gt;&gt;&gt; 1</text>
+<text x="785" y="430" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="normal">1100 0000 ...</text>
+<text x="785" y="457" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0xc0000000</text>
+<text x="334" y="494" font-size="18" text-anchor="start" fill="#28705c" font-weight="normal">zero fills from the left</text>
+<text x="640" y="494" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">the sign bit is copied</text>
+<rect x="28" y="512" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="540" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The register declaration cannot tell which instruction is executing, so a RISC-V ALU</text>
+<text x="44" y="565" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">provides both shifts. Sized literals and explicit extension keep widths unambiguous.</text>
+</g></svg>

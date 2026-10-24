@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="603" viewBox="0 0 960 603" role="img" aria-labelledby="title desc">
+<title id="title">Put the ordering edges on the job lifecycle</title><desc id="desc">One producer hart, one submitting hart, one DMA engine • each edge uses its own mechanism</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="603" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Put the ordering edges on the job lifecycle</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">One producer hart, one submitting hart, one DMA engine • each edge uses its own mechanism</text>
+<rect x="28" y="110" width="208" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="132.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">1  Initialize</text>
+<text x="132.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the payload</text>
+<text x="132.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">producer hart</text>
+<path d="M236 165H256" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="256" y="110" width="208" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="360.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">2  Publish</text>
+<text x="360.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">release store of</text>
+<text x="360.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the epoch</text>
+<path d="M464 165H484" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="484" y="110" width="208" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="588.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">3  Acquire</text>
+<text x="588.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">load sees the epoch</text>
+<text x="588.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">submitting hart</text>
+<path d="M692 165H712" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="712" y="110" width="208" height="110" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="816.0" y="148.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">4  Prepare</text>
+<text x="816.0" y="174.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">DMA-visible state</text>
+<text x="816.0" y="200.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">platform DMA API</text>
+<rect x="28" y="280" width="208" height="110" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="132.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">5  Doorbell</text>
+<text x="132.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ordered MMIO write</text>
+<text x="132.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">device accessor</text>
+<path d="M236 335H256" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="256" y="280" width="208" height="110" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="360.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">6  Completion</text>
+<text x="360.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">observed by the</text>
+<text x="360.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">driver</text>
+<path d="M464 335H484" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="484" y="280" width="208" height="110" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="588.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">7  CPU visibility</text>
+<text x="588.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">established for</text>
+<text x="588.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the result</text>
+<path d="M692 335H712" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="712" y="280" width="208" height="110" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="816.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">8  Acknowledge</text>
+<text x="816.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">release store;</text>
+<text x="816.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">producer acquires</text>
+<path d="M820 220V250H132V280" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="28" y="420" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Blue edges: CPU-to-CPU synchronization with language atomics. Orange edges: CPU-to-device handoff.</text>
+<text x="28" y="446" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Only after step 8 may the next iteration change the job.</text>
+<rect x="28" y="480" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="508" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A release operation used for CPU-to-CPU publication is not a universal MMIO barrier, and</text>
+<text x="44" y="533" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">a lock among harts does not exclude the DMA engine. The driver turns software ownership</text>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">into a hardware rule.</text>
+</g></svg>

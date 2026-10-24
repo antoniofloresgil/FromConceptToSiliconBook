@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="603" viewBox="0 0 960 603" role="img" aria-labelledby="title desc">
+<title id="title">An Sv32 page-table entry and how to read it</title><desc id="desc">Field widths are not drawn to scale • bit 31 at the left</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="603" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">An Sv32 page-table entry and how to read it</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Field widths are not drawn to scale • bit 31 at the left</text>
+<rect x="28" y="100" width="376" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="216.0" y="137" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">PPN [31:10], 22 bits</text>
+<rect x="408" y="100" width="56" height="60" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="436.0" y="137" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">RSW</text>
+<rect x="468" y="100" width="54" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="495" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">D</text>
+<rect x="526" y="100" width="54" height="60" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="553" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">A</text>
+<rect x="584" y="100" width="54" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="611" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">G</text>
+<rect x="642" y="100" width="54" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="669" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">U</text>
+<rect x="700" y="100" width="54" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="727" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">X</text>
+<rect x="758" y="100" width="54" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="785" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">W</text>
+<rect x="816" y="100" width="54" height="60" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="843" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">R</text>
+<rect x="874" y="100" width="54" height="60" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="901" y="140" font-size="22" text-anchor="middle" fill="#172b3a" font-weight="bold">V</text>
+<text x="28" y="190" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">V valid • R read • W write • X execute • U user • G global • A accessed • D dirty</text>
+<text x="28" y="216" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">RSW (bits 9:8) is reserved for software and carries no permission.</text>
+<rect x="28" y="250" width="290" height="44" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="173" y="279" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">V = 0</text>
+<path d="M318 272H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="250" width="582" height="44" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="366" y="279" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">entry rejected: page fault</text>
+<rect x="28" y="304" width="290" height="44" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="173" y="333" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">V = 1, R = W = X = 0</text>
+<path d="M318 326H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="304" width="582" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="366" y="333" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">pointer to the next-level table (U, A, D zero in the baseline)</text>
+<rect x="28" y="358" width="290" height="44" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="173" y="387" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">V = 1, legal R/W/X</text>
+<path d="M318 380H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="358" width="582" height="44" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="366" y="387" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">leaf: a mapping with these permissions</text>
+<rect x="28" y="412" width="290" height="44" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="173" y="441" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">W = 1 with R = 0</text>
+<path d="M318 434H350" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="350" y="412" width="582" height="44" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="366" y="441" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">reserved encoding</text>
+<rect x="28" y="480" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="508" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A and D record page use and modification in the PTE; they are not the dirty bits of a</text>
+<text x="44" y="533" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">cache line. A TLB caches the translation, so a changed PTE needs sfence.vma before the</text>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">next local translation relies on it.</text>
+</g></svg>

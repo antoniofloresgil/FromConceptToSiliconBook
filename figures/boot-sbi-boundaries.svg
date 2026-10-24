@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="538" viewBox="0 0 960 538" role="img" aria-labelledby="title desc">
+<title id="title">Two different ecalls, two different contracts</title><desc id="desc">An application system call and an SBI call both use ecall but ask different layers</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="538" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Two different ecalls, two different contracts</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">An application system call and an SBI call both use ecall but ask different layers</text>
+<rect x="28" y="110" width="250" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="155.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Application</text>
+<text x="153.0" y="181.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">U-mode</text>
+<rect x="355" y="110" width="250" height="100" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="155.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Kernel</text>
+<text x="480.0" y="181.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">S-mode</text>
+<rect x="682" y="110" width="250" height="100" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="807.0" y="155.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">OpenSBI</text>
+<text x="807.0" y="181.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">M-mode, resident</text>
+<path d="M278 140H355" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M605 140H682" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M355 185H278" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#memory)"/>
+<path d="M682 185H605" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#memory)"/>
+<text x="316" y="128" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ecall</text>
+<text x="643" y="128" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">ecall</text>
+<text x="28" y="242" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">operating-system ABI</text>
+<text x="355" y="242" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">SBI ABI</text>
+<rect x="355" y="258" width="577" height="160" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="372" y="288" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">a7 = extension ID, a6 = function ID</text>
+<text x="372" y="314" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">a0 to a5 = arguments</text>
+<text x="372" y="340" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">returns a0 = error code, a1 = value</text>
+<text x="372" y="366" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">(the value is not meaningful on an error)</text>
+<text x="372" y="400" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">BASE 0x10 • TIME • IPI • RFENCE • HSM • SRST • DBCN</text>
+<rect x="28" y="258" width="305" height="160" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="288" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The kernel serves user</text>
+<text x="44" y="314" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">requests; arbitrary user</text>
+<text x="44" y="340" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">requests are not forwarded</text>
+<text x="44" y="366" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">into firmware.</text>
+<rect x="28" y="440" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="468" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Firmware entry uses a0 = hart ID, a1 = DTB and, for dynamic firmware, a2 = dynamic</text>
+<text x="44" y="493" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">information. This is a different convention from the one used by later SBI calls.</text>
+</g></svg>

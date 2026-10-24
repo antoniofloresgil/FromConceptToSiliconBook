@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="753" viewBox="0 0 960 753" role="img" aria-labelledby="title desc">
+<title id="title">APB and AHB: how consecutive transfers use their phases</title><desc id="desc">Each column is the interval before its numbered rising edge • worked examples of the chapter</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="753" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">APB and AHB: how consecutive transfers use their phases</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Each column is the interval before its numbered rising edge • worked examples of the chapter</text>
+<text x="28" y="100" font-size="22" text-anchor="start" fill="#172b3a" font-weight="bold">APB: one transfer with two wait cycles</text>
+<path d="M338 120V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="264.0" y="124" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<path d="M486 120V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="412.0" y="124" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M634 120V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="560.0" y="124" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<path d="M782 120V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="708.0" y="124" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4</text>
+<path d="M930 120V330" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="856.0" y="124" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<text x="264.0" y="150" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Setup</text>
+<text x="412.0" y="150" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Access, wait</text>
+<text x="560.0" y="150" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Access, wait</text>
+<text x="708.0" y="150" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Access, ready</text>
+<text x="856.0" y="150" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">Idle or Setup</text>
+<text x="28" y="205" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">PSEL</text>
+<path d="M190 186H338" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M338 186H486" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M486 186H634" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M634 186H782" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M782 212H930" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M782 186V212" stroke="#24577a" stroke-width="2.5"/>
+<text x="28" y="260" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">PENABLE</text>
+<path d="M190 267H338" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M338 241H486" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M338 241V267" stroke="#24577a" stroke-width="2.5"/>
+<path d="M486 241H634" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M634 241H782" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M782 267H930" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M782 241V267" stroke="#24577a" stroke-width="2.5"/>
+<text x="28" y="315" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">PREADY</text>
+<path d="M196 309H332" stroke="#172b3a" stroke-width="1.2" stroke-dasharray="3 4"/>
+<path d="M338 322H486" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M486 322H634" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M634 296H782" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M634 296V322" stroke="#24577a" stroke-width="2.5"/>
+<path d="M788 309H924" stroke="#172b3a" stroke-width="1.2" stroke-dasharray="3 4"/>
+<circle cx="782" cy="326" r="8" fill="#28705c"/>
+<text x="708.0" y="352" font-size="18" text-anchor="middle" fill="#28705c" font-weight="normal">one access completes</text>
+<text x="28" y="400" font-size="22" text-anchor="start" fill="#172b3a" font-weight="bold">AHB: the next address overlaps the previous data phase</text>
+<path d="M338 420V610" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="264.0" y="424" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<path d="M486 420V610" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="412.0" y="424" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M634 420V610" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="560.0" y="424" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<path d="M782 420V610" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="708.0" y="424" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4</text>
+<path d="M930 420V610" fill="none" stroke="#24577a" stroke-width="1.2"/>
+<text x="856.0" y="424" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<text x="28" y="482" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">address</text>
+<text x="28" y="542" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">data</text>
+<rect x="196" y="450" width="136" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="264.0" y="479" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A</text>
+<rect x="344" y="450" width="136" height="44" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="412.0" y="479" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">B</text>
+<rect x="492" y="450" width="136" height="44" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="560.0" y="479" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">B held</text>
+<rect x="640" y="450" width="136" height="44" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="708.0" y="479" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">C</text>
+<text x="856.0" y="479" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">idle</text>
+<text x="264.0" y="539" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">none</text>
+<rect x="344" y="510" width="136" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="412.0" y="539" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A waits</text>
+<rect x="492" y="510" width="136" height="44" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="560.0" y="539" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A done</text>
+<rect x="640" y="510" width="136" height="44" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="708.0" y="539" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">B done</text>
+<rect x="788" y="510" width="136" height="44" rx="10" fill="white" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="856.0" y="539" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">C done</text>
+<text x="28" y="595" font-size="20" text-anchor="start" fill="#172b3a" font-weight="normal">HREADY</text>
+<path d="M190 576H338" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M338 602H486" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M338 576V602" stroke="#24577a" stroke-width="2.5"/>
+<path d="M486 576H634" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M486 576V602" stroke="#24577a" stroke-width="2.5"/>
+<path d="M634 576H782" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<path d="M782 576H930" fill="none" stroke="#24577a" stroke-width="2.5"/>
+<rect x="28" y="630" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="658" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">APB never overlaps transfers. AHB overlaps address and data phases, but a stalled data</text>
+<text x="44" y="683" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">phase still holds back every later address; AXI removes that coupling with independent</text>
+<text x="44" y="708" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">channels.</text>
+</g></svg>

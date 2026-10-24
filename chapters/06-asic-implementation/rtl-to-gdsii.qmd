@@ -14,6 +14,10 @@ The process design kit (PDK) is the contract between the designer and the foundr
 
 The final GDSII is necessary, and a chip is ready only when more is in place. The tapeout decision also needs clean physical-verification results, a reviewed timing and power budget, the required package and pad-ring integration, and the foundry's current submission requirements. A successful run is therefore a reproducible evidence package, and the layout file is one part of it.
 
+@fig-rtl-to-gdsii-evidence-package shows what a tapeout decision needs besides the layout.
+
+![The inputs of a tapeout decision: the GDSII layout, clean physical verification, a reviewed timing and power budget, package and pad-ring integration, and the current requirements of the foundry. The layout file is necessary but not sufficient.](../../figures/rtl-to-gdsii-evidence-package.svg){#fig-rtl-to-gdsii-evidence-package width=100% fig-alt="Five inputs converging on a tapeout decision"}
+
 | Stage | Main question | Typical result |
 | --- | --- | --- |
 | RTL and constraints | Does the intended synchronous design behave correctly? | SystemVerilog, tests and SDC |

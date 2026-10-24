@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="603" viewBox="0 0 960 603" role="img" aria-labelledby="title desc">
+<title id="title">Where OpenSBI learns what to run next</title><desc id="desc">Three packaging styles • the next stage must exist in memory before firmware jumps to it</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="603" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Where OpenSBI learns what to run next</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Three packaging styles • the next stage must exist in memory before firmware jumps to it</text>
+<rect x="28" y="100" width="190" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="123.0" y="140.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Loader</text>
+<text x="123.0" y="166.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">provides it</text>
+<rect x="330" y="100" width="270" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="465.0" y="128.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">FW_DYNAMIC</text>
+<text x="465.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a loader tells firmware</text>
+<text x="465.0" y="180.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">at run time (pointer in a2)</text>
+<rect x="720" y="100" width="212" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="826.0" y="140.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Next stage</text>
+<text x="826.0" y="166.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">usually S-mode</text>
+<path d="M218 145H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M600 145H720" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="230" width="190" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="123.0" y="270.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Another agent</text>
+<text x="123.0" y="296.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">provides it</text>
+<rect x="330" y="230" width="270" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="465.0" y="258.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">FW_JUMP</text>
+<text x="465.0" y="284.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">next-stage address fixed</text>
+<text x="465.0" y="310.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">at build time</text>
+<rect x="720" y="230" width="212" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="826.0" y="270.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Next stage</text>
+<text x="826.0" y="296.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">usually S-mode</text>
+<path d="M218 275H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M600 275H720" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="360" width="190" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="123.0" y="400.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Build step</text>
+<text x="123.0" y="426.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">provides it</text>
+<rect x="330" y="360" width="270" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="465.0" y="388.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">FW_PAYLOAD</text>
+<text x="465.0" y="414.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">next stage embedded</text>
+<text x="465.0" y="440.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">inside the firmware image</text>
+<rect x="720" y="360" width="212" height="90" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="826.0" y="400.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Next stage</text>
+<text x="826.0" y="426.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">usually S-mode</text>
+<path d="M218 405H330" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M600 405H720" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<rect x="28" y="480" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="508" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Choose one on purpose: a real Wally boot ROM has to provide the services QEMU supplies</text>
+<text x="44" y="533" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">here, or adopt a different packaging style. Placement and size limits remain the</text>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">integrator&#x27;s responsibility.</text>
+</g></svg>

@@ -253,6 +253,10 @@ FIRST DIVERGENCE at retired instruction #25 (counting from the start pc), pc 0x0
 
 Read it in the order a debugger would. The encoding `0x0012a613` is `slti a2,t0,1` in the disassembly. The PC and encoding match, so both models fetched and decoded the same instruction. Only the destination value differs. Every earlier instruction matched, including `li t0,-1`, which left `0xffffffffffffffff` in `t0` in both, so the operand was identical and the fault is in the comparison itself: the reference treats `-1 < 1` as true, and the faulty model, comparing unsigned, sees `0xffff…ffff < 1` as false. Everything that follows is a consequence. The faulty run goes on to the `failed` label and writes 3 to `tohost`, one instruction fewer than the healthy run, but fixing the later symptoms would hide the cause. The rule is to repair the first divergence and rerun.
 
+@fig-reference-first-divergence contrasts the signature view with the retirement view.
+
+![The recorded divergence of the faulty stand-in. A signature only reports that stored word 3 differs; the retirement log shows that instruction 25, slti at 0x80000028, writes 0 to x12 where Spike writes 1, after 24 matching instructions.](../../figures/reference-first-divergence.svg){#fig-reference-first-divergence width=100% fig-alt="A signature mismatch and a retirement log with the first differing instruction highlighted"}
+
 To run it, from the repository root:
 
 ```bash

@@ -160,6 +160,10 @@ For a link that accepts at most $R$ items per cycle and reports a stop after $B$
 | Deeper FIFO | Absorb bursts and temporary mismatch | Finite capacity and implementation cost |
 | Credit-controlled link | Account for remote capacity | Credit tracking and initialization |
 
+@fig-pipelines-skid-buffer follows one item through the stop delay.
+
+![A conceptual two-entry skid buffer in four snapshots. When the sink stops, the registered ready reaches the source one cycle late, so the source can still send one more item; the skid entry holds it until the sink resumes. A link that accepts R items per cycle and reports a stop after B cycles needs at least R × B entries.](../../figures/pipelines-skid-buffer.svg){#fig-pipelines-skid-buffer width=100% fig-alt="Four snapshots of an output register and a skid register as the sink stops and resumes"}
+
 A skid buffer solves local timing and elasticity. It cannot compensate for a permanently slower consumer. A deeper FIFO absorbs a larger transient mismatch but also eventually fills.
 
 ### Credit-based flow control
@@ -401,10 +405,9 @@ RAM contents are not initialized or reset. Write each location before reading wh
 
 The complete subsystem puts a request FIFO before the service and a response FIFO after it. The client can submit several requests while earlier ones wait or complete. Packed payloads keep metadata aligned across each boundary.
 
-```text
-Client --> [request FIFO] --> [delayed memory]
-Client <-- [response FIFO] <--       |
-```
+@fig-pipelines-queued-capacity shows a congested snapshot of the subsystem and why its capacity is 2D + 1.
+
+![Request FIFO, service and response FIFO with depth D = 2, after the consumer has paused. Two queued requests, one retained operation or result and two queued responses give at most 2D + 1 = 5 outstanding items, and the source keeps any request that was not accepted. The drawing is conceptual and does not show the handshake signals.](../../figures/pipelines-queued-capacity.svg){#fig-pipelines-queued-capacity width=100% fig-alt="A client, a request FIFO, a service and a response FIFO in a loop, with the number of items each holds and a total of 2D plus 1"}
 
 ```systemverilog
 module queued_memory #(

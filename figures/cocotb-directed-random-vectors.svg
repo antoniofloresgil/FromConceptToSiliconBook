@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="508" viewBox="0 0 960 508" role="img" aria-labelledby="title desc">
+<title id="title">What directed and random vectors each find</title><desc id="desc">The accumulator test: 14 directed vectors, then 100 seeded random vectors • three seeded faults</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="508" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">What directed and random vectors each find</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The accumulator test: 14 directed vectors, then 100 seeded random vectors • three seeded faults</text>
+<rect x="64" y="150" width="100.17543859649122" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<rect x="166.17543859649123" y="150" width="729.8245614035087" height="48" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="115.08771929824562" y="180" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">directed</text>
+<text x="531.0877192982456" y="180" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">100 pseudo-random vectors, seed 2026</text>
+<text x="64.0" y="226" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<text x="166.17543859649123" y="226" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">14</text>
+<text x="896.0" y="226" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">114</text>
+<text x="28" y="250" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">vector index</text>
+<path d="M147.9298245614035 148V108" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<text x="161.9298245614035" y="106" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">cycle 11: overflow also at the exact maximum</text>
+<path d="M191.71929824561403 148V136" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<text x="205.71929824561403" y="134" font-size="18" text-anchor="start" fill="#a34624" font-weight="normal">cycle 17: overflow ignores Enable</text>
+<rect x="28" y="290" width="904" height="100" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="322" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Valid also requires a nonzero operand: no marker. Only Enable high with operand 0 differs,</text>
+<text x="44" y="348" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">one value in 65,536, so a hundred random vectors almost never draw it.</text>
+<text x="44" y="374" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">Three added directed vectors expose it.</text>
+<rect x="28" y="410" width="904" height="78" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Random stimulus works best with a coverage plan, a reproducible seed and bounded</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">execution; directed vectors cover the boundaries it will not reach.</text>
+</g></svg>

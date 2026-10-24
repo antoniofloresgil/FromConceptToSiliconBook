@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+<title id="title">Where the cycles go: three worked estimates</title><desc id="desc">Model arithmetic of the chapter, not measurements • bar length is proportional to cycles</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="480" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Where the cycles go: three worked estimates</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Model arithmetic of the chapter, not measurements • bar length is proportional to cycles</text>
+<text x="28" y="92" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">AMAT, one level</text>
+<rect x="28" y="100" width="376.0" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="216.0" y="130" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">hit 1</text>
+<rect x="408.0" y="100" width="376.0" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.0" y="130" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">misses 1</text>
+<text x="28" y="172" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">total 2.0 = 1 + 0.05 x 20</text>
+<text x="28" y="202" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">AMAT, two levels</text>
+<rect x="28" y="210" width="376.0" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="216.0" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">L1 1</text>
+<rect x="408.0" y="210" width="110.0" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="463.0" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">L2 0.3</text>
+<rect x="522.0" y="210" width="186.0" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="615.0" y="240" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">mem 0.5</text>
+<text x="28" y="282" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">total 1.8 = 1 + 0.05 x (6 + 0.2 x 50)</text>
+<text x="28" y="312" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">CPI estimate</text>
+<rect x="28" y="320" width="414.00000000000006" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="235.00000000000003" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">base 1.1</text>
+<rect x="446.00000000000006" y="320" width="91.0" height="46" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="491.50000000000006" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">I 0.25</text>
+<rect x="541.0" y="320" width="110.0" height="46" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="596.0" y="350" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">D 0.3</text>
+<text x="28" y="392" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">total 1.65 = 1.1 + 0.01 x 25 + 0.3 x 0.04 x 25</text>
+<text x="28" y="440" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">L2 = 0.05 x 6 • mem = 0.05 x 0.2 x 50 • I = instruction misses • D = data misses</text>
+</g></svg>

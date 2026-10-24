@@ -28,6 +28,10 @@ Our RTL state is initially unconstrained. The harness assumes reset on the first
 | `assume(A)` | Which environment behaviors are admitted? | A producer retains an unaccepted valid request unless reset cancels it |
 | `cover(C)` | Is an interesting scenario reachable? | A reset epoch contains full occupancy, simultaneous transfer and subsequent empty occupancy |
 
+@fig-formal-assert-assume-cover shows where each construct sits around the design.
+
+![Assumptions restrict the environment, the design and harness define the transition system, assertions state the obligations and cover witnesses show that useful traffic is reachable. Over-constraining the environment makes a proof vacuous, so a cover witness is part of the argument.](../../figures/formal-assert-assume-cover.svg){#fig-formal-assert-assume-cover width=100% fig-alt="An assume box feeding a design box which feeds assert and cover boxes"}
+
 Yosys's formal frontend accepts immediate assertions and sampled-history helpers such as `$past`. The harness uses a `past_valid` flag before consulting previous-cycle values. These small clocked properties do not require the full concurrent SVA language; frontend support should be checked before adopting a richer syntax [@formalSbyVerilog].
 
 An assumption is part of the interface contract. Leave `out_data` correctness and legal occupancy as DUT obligations rather than assuming them. Likewise, if the consumer is assumed to always accept data, the proof that data cannot be lost under backpressure becomes empty. The default safety/equivalence task leaves `out_ready` unconstrained and permits later resets. Producer stability is the only traffic restriction beyond initial reset.
@@ -47,6 +51,10 @@ An unbounded liveness claim requires a precise fairness condition and an engine/
 Bounded model checking (BMC) searches transitions up to a finite horizon. A counterexample within that horizon is useful evidence of failure in the model. A successful twelve-step check means no modeled violation was found within those steps; it supplies no universal horizon by itself.
 
 Induction adds a different argument. A base case establishes the properties from the specified initial state. The inductive step establishes that the candidate invariants preserve themselves across the next transition, assuming they held over the induction window. A completed base and step can establish an unbounded safety result for the modeled system. If induction reaches its limit without a proof, the result is inconclusive, and that is worth saying plainly.
+
+@fig-formal-bmc-induction contrasts a bounded check with an inductive proof.
+
+![A twelve-step bounded check searches transitions from reset up to a horizon and reports no violation within it. Induction adds a base case and an inductive step and ends in a proof for the modeled system, a counterexample or an inconclusive result, which should be stated plainly.](../../figures/formal-bmc-induction.svg){#fig-formal-bmc-induction width=100% fig-alt="A chain of thirteen states for bounded checking and boxes for base case, inductive step and the three outcomes"}
 
 Induction may explore states that are unreachable from reset. For example, two FIFOs can have equal occupancies while the ring pointers address unrelated data. Output equality alone may not be inductive. We strengthen the invariant with the relationship between occupancy, pointers and the two representations' occupied slots. These are additional assertions to prove, not assumptions inserted to hide a mismatch.
 

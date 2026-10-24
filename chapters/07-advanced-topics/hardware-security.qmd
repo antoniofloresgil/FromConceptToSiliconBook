@@ -223,6 +223,10 @@ $$A \ge B, \quad A+N \le L, \quad \text{no address-width overflow},$$
 
 where B and L are the permitted lower and exclusive upper bounds. The RTL uses wider arithmetic to make carry-out visible. Testing only A would permit an access starting inside the window but ending outside it.
 
+@fig-security-dma-window-check shows why the whole span of a descriptor must be checked.
+
+![A descriptor window from B up to but not including L, and four jobs: one inside the window is accepted, while one that starts inside and ends outside, one that starts below B and one whose address arithmetic overflows are rejected. Testing only the start address would accept the second. The axis is not to scale.](../../figures/security-dma-window-check.svg){#fig-security-dma-window-check width=100% fig-alt="An address window with one accepted job and three rejected jobs drawn as bars"}
+
 Once accepted, the descriptor is copied to active fields and cannot be rewritten while the job owns them. Assertion checks also constrain emitted addresses to the window. This is a useful defense in depth for a trusted engine: both admission and actual address generation have evidence.
 
 For a compromised engine threat, insert an independently trusted enforcement point. It must cover read and write channels, identities, burst spans, IDs/responses, reset and error behavior. Dropping an unauthorized request without completing its protocol can deadlock a master and become an availability problem. Define whether denial generates an error response, a controlled termination or an escalation.
@@ -237,6 +241,10 @@ assign permit = !reset && lifecycle == 2'b01 && authenticated
 assign halt_grant = permit && halt_request;
 assign bus_grant = permit && bus_request;
 ```
+
+@fig-security-debug-admission relates the lifecycle states to the teaching guard.
+
+![Lifecycle states commonly distinguish test, development, production and service access, and the teaching guard turns them into grants: permit requires no reset, the development encoding, an authenticated session and no lock, and it gates both the halt grant and the bus grant. The lifecycle and authentication inputs come from trusted logic that this guard does not implement.](../../figures/security-debug-admission.svg){#fig-security-debug-admission width=100% fig-alt="Four lifecycle states beside the conditions that form permit and the two grants it gates"}
 
 The complete [guard](../../labs/14-security/debug_guard.sv) adds the sticky state and formal properties. `authenticated` is not a password comparator or a public input from JTAG. Its producer is a trusted authentication/lifecycle subsystem whose challenge, credential storage, session lifetime and reset behavior must be designed separately. The two-bit lifecycle encoding is a readable teaching interface, not a fault-hardened OTP lifecycle controller.
 
@@ -262,6 +270,10 @@ install memory, DMA and debug policy
 record the measurement and handoff state
 enter the authorized stage; otherwise use authenticated recovery
 ```
+
+@fig-security-secure-boot-chain groups the steps above into three phases.
+
+![The minimal secure boot chain proposed here, in three phases: check the manifest and the images, protect and install them, then enter the authorized stage or recover. The manifest binds the execution inputs and not only the bytes. This is a proposal and not an existing feature of the Wally repository.](../../figures/security-secure-boot-chain.svg){#fig-security-secure-boot-chain width=100% fig-alt="Three phases of a boot chain with their steps and a strip describing the manifest contents"}
 
 This is an implementation template, not executable secure-boot firmware. The practical Linux chain currently checks reproducibility/functional behavior; it does not implement this trust anchor, signature validation or rollback storage. Retain that distinction in a project release.
 

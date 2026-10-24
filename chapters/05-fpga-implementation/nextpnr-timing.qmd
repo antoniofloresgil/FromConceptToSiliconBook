@@ -211,6 +211,10 @@ When timing fails, begin with the reported endpoints; changing random tool optio
 | Cross-module ready/valid loop | Break the combinational loop with an elastic register or pipeline stage |
 | Slow external interface path | Add valid IO timing constraints and pipeline at the interface if protocol permits |
 
+@fig-nextpnr-critical-path-triage lists the common patterns and the smallest response to each.
+
+![Six critical-path patterns and the RTL or architecture response that addresses each. Read the reported endpoints first; retiming is an architectural change unless the interface contract tolerates it.](../../figures/nextpnr-critical-path-triage.svg){#fig-nextpnr-critical-path-triage width=100% fig-alt="Six critical-path patterns paired with a response"}
+
 Retiming may change latency and reset behavior; it is an architectural change unless the interface contract explicitly tolerates it. A RISC-V core cannot arbitrarily insert a cycle into a trap, cache, bus response or forwarding path. Start by preserving observable protocol behavior, then rerun simulation and formal/property checks before relying on the new timing report.
 
 The frequency number emitted by nextpnr should be read as a result under a stated model. It does not include unknown board-level effects, incorrect constraints or unanalysed high-speed domains. A laboratory prototype should aim for margin, particularly when temperature, voltage and USB power conditions differ from the development desktop.

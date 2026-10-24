@@ -64,6 +64,10 @@ For a path, let $G$ be the product of logical efforts, $B$ the product of branch
 
 Consider an inverter path with $H=64$ and no branching. One stage has electrical effort 64. Three stages sized with capacitance ratios 4, 4 and 4 divide that load more evenly. Four stages reduce each ratio to about 2.83 but add another stage's parasitic delay. The optimum is not obtained simply by maximizing the number of buffers. Also check the required logical polarity: an odd number of inverters changes the function.
 
+@fig-vlsi-logical-effort-stages draws the three options of the example.
+
+![The same load of 64 driven through one, three or four inverter stages with no branching. Three stages with ratios of 4, 4 and 4 distribute the effort evenly; four stages reduce each ratio to about 2.83 but add another parasitic delay. The sizes are illustrative.](../../figures/vlsi-logical-effort-stages.svg){#fig-vlsi-logical-effort-stages width=100% fig-alt="Three inverter chains with the relative capacitance at each node"}
+
 FO4 denotes an inverter driving four equivalent inverter inputs. It is a useful reference delay for comparing logic depth within a characterized environment. Expressing a path in FO4 units does not remove wiring, slew, supply or process effects, and it is not a direct conversion from an FPGA timing result to ASIC frequency. Use it to reason about architecture, then use characterized STA to verify the implementation.
 
 ### Wires are part of the architecture
@@ -204,6 +208,10 @@ t_{cq,\min}+t_{data,\min}\geq t_{hold}+U_{hold}+t_{skew}.
 $$
 
 With 0.06 ns clock-to-Q, 0.04 ns minimum data delay, 0.05 ns hold and 0.03 ns uncertainty, the same 0.05 ns skew produces a 0.03 ns hold violation. A longer period does not change that inequality. Inserted delay cells or a revised clock/data implementation are possible repairs. These numbers are a budget exercise, not measured accumulator results; real STA accounts for the chosen corners and detailed clock paths.
+
+@fig-vlsi-timing-budget lays out the terms of the setup and hold example.
+
+![The setup and hold budget of this section: 2.90 ns required against a 3.00 ns period leaves 0.10 ns of setup slack, while 0.10 ns of minimum arrival against 0.13 ns required gives a 0.03 ns hold violation that a longer period does not remove. The values are invented and the layout is not to scale.](../../figures/vlsi-timing-budget.svg){#fig-vlsi-timing-budget width=100% fig-alt="Equations of setup and hold terms with the resulting slack and violation"}
 
 ### Define a physical experiment
 

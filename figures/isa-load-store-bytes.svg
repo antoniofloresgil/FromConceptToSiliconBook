@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="588" viewBox="0 0 960 588" role="img" aria-labelledby="title desc">
+<title id="title">Little-endian bytes and the two ways to load a byte</title><desc id="desc">sw of 0x12345678 at an aligned address A • LB sign-extends, LBU zero-extends</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="588" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Little-endian bytes and the two ways to load a byte</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">sw of 0x12345678 at an aligned address A • LB sign-extends, LBU zero-extends</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">sw x5, 0(A) with x5 = 0x12345678</text>
+<rect x="190" y="125" width="170" height="52" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="275" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">78</text>
+<text x="275" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A</text>
+<rect x="375" y="125" width="170" height="52" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="460" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">56</text>
+<text x="460" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A+1</text>
+<rect x="560" y="125" width="170" height="52" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="645" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">34</text>
+<text x="645" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A+2</text>
+<rect x="745" y="125" width="170" height="52" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="830" y="160" font-size="24" text-anchor="middle" fill="#172b3a" font-weight="bold">12</text>
+<text x="830" y="200" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">A+3</text>
+<text x="28" y="160" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">byte value</text>
+<text x="28" y="200" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">byte address</text>
+<text x="28" y="262" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Loading the byte 0xfd (1111 1101) into a 32-bit register</text>
+<text x="28" y="323" font-size="22" text-anchor="start" fill="#172b3a" font-weight="bold">LB</text>
+<rect x="100" y="290" width="480" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="340" y="321" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">24 copies of bit 7 (1)</text>
+<rect x="584" y="290" width="150" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="659" y="321" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">1111 1101</text>
+<text x="750" y="321" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">= 0xfffffffd</text>
+<text x="28" y="403" font-size="22" text-anchor="start" fill="#172b3a" font-weight="bold">LBU</text>
+<rect x="100" y="370" width="480" height="48" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="340" y="401" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">24 zero bits</text>
+<rect x="584" y="370" width="150" height="48" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="659" y="401" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">1111 1101</text>
+<text x="750" y="401" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">= 0x000000fd</text>
+<rect x="28" y="465" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="493" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A byte store changes one byte and leaves its neighbours alone. A misaligned access</text>
+<text x="44" y="518" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">either traps or is handled, depending on the execution environment; silently dropping</text>
+<text x="44" y="543" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">the low address bits hides a software bug.</text>
+</g></svg>

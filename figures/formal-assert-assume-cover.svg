@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+<title id="title">Assume, assert and cover around one design</title><desc id="desc">FIFO example of the chapter • the solver explores symbolic inputs, not one generated sequence</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="520" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Assume, assert and cover around one design</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">FIFO example of the chapter • the solver explores symbolic inputs, not one generated sequence</text>
+<rect x="28" y="130" width="250" height="140" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="153.0" y="171.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">assume A</text>
+<text x="153.0" y="197.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the environment:</text>
+<text x="153.0" y="223.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">producer holds an</text>
+<text x="153.0" y="249.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">unaccepted request</text>
+<rect x="340" y="130" width="250" height="140" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="465.0" y="183.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Design + harness</text>
+<text x="465.0" y="209.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">initial state I</text>
+<text x="465.0" y="235.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">next-state function T</text>
+<rect x="650" y="100" width="282" height="100" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="791.0" y="133.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">assert P</text>
+<text x="791.0" y="159.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">occupancy &lt;= capacity</text>
+<text x="791.0" y="185.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stalled output keeps its item</text>
+<rect x="650" y="230" width="282" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="791.0" y="263.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">cover C</text>
+<text x="791.0" y="289.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">full, exchange, then empty</text>
+<text x="791.0" y="315.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">must be reachable</text>
+<path d="M278 200H340" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M590 170H650" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M590 235H650" fill="none" stroke="#28705c" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#memory)"/>
+<rect x="28" y="360" width="904" height="128" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="388" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">An assumption is part of the interface contract. Assuming that the consumer always</text>
+<text x="44" y="413" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">accepts data, or that no input arrives, makes the proof empty; the cover witness shows</text>
+<text x="44" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">that useful traffic is still admitted. A guarantee becomes another block&#x27;s assumption</text>
+<text x="44" y="463" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">only after the connection and reset contract have been checked.</text>
+</g></svg>

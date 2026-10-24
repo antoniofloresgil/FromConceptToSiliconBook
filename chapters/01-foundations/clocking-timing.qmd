@@ -51,6 +51,10 @@ Signals should cross between unrelated domains only through a deliberate clock-d
 | Independent streaming clocks | Asynchronous FIFO with Gray-coded pointers | Requires correct pointer synchronization and overflow/underflow policy |
 | Related clocks with known phase | Explicit generated-clock constraints | Relationship must be true in hardware, not assumed |
 
+@fig-clocking-crossing-chooser maps each kind of crossing to its mechanism and limit.
+
+![What crosses a domain boundary decides the mechanism: a slowly changing bit, a pulse, multi-bit data with control, a streaming interface or related clocks. Each mechanism has a limit to design around.](../../figures/clocking-crossing-chooser.svg){#fig-clocking-crossing-chooser width=100% fig-alt="Five kinds of crossing linked to a mechanism and its limit"}
+
 Metastability cannot be eliminated by RTL. What a synchronizer does is lower the probability that a metastable first-stage output propagates; the first flip-flop itself stays unpredictable. The architecture therefore has to tolerate the synchronizer's latency, and the verification plan tests the protocol, since a digital simulation will never display analog metastability.
 
 ### Reset is a clocking problem too {#reset-is-a-clocking-problem-too}
@@ -96,6 +100,10 @@ $$
 T_{cq,min} + T_{comb,min} + T_{route,min} \geq T_{hold} + T_{uncertainty} + T_{skew,hold}
 $$
 Hold failures are not repaired by reducing the clock frequency. They are minimum-delay failures caused by paths that are too fast relative to the clock arrival relationship. Typical repairs add delay, buffer the data path, adjust clock skew within the clock methodology, or change logic deliberately. A design can meet setup timing and still fail hold timing; both reports are required.
+
+@fig-clocking-setup-hold-timing draws the two inequalities as races against the clock.
+
+![Setup and hold for one register-to-register path. For setup, the slowest data path plus the setup requirement and margin must fit in the clock period; for hold, the fastest data path must outlast the hold requirement at the same edge. The drawing is not to scale.](../../figures/clocking-setup-hold-timing.svg){#fig-clocking-setup-hold-timing width=100% fig-alt="A setup timeline with path terms, slack and setup requirement, and a hold timeline with hold slack"}
 
 ### Slack, corners and modes {#slack-corners-and-modes}
 
@@ -341,6 +349,10 @@ endmodule
 ```
 
 Each clock domain needs its own release synchronizer. The design must tolerate the additional two-cycle delay and prevent protocols from interpreting the release difference between domains as a valid transaction.
+
+@fig-clocking-synchronizer-circuits draws the two circuits above.
+
+![A two-flop bit synchronizer for a level signal and a reset-release synchronizer with asynchronous assertion. The first flip-flop may be metastable, the second is the first value the logic may use, and each clock domain needs its own release synchronizer. Neither carries a multi-bit word or a short pulse.](../../figures/clocking-synchronizer-circuits.svg){#fig-clocking-synchronizer-circuits width=100% fig-alt="Two flip-flops in series crossing a clock domain boundary and two flip-flops with an asynchronous reset"}
 
 ## A complete asynchronous FIFO {#sec-async-fifo}
 

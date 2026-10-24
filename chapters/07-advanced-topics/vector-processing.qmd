@@ -111,6 +111,10 @@ vmsgt.vx v0, v2, zero
 vse16.v v2, (a1), v0.t
 ```
 
+@fig-rvv-mask-tail-store shows the active, masked-off and tail elements of this kernel with illustrative values.
+
+![A masked copy of positive elements with vl = 6 over eight element slots, using illustrative values. Elements 0, 2 and 4 are active and selected, so they are stored; elements 1, 3 and 5 are active but masked off and keep the sentinel S; elements 6 and 7 are tail elements and generate no stores. A mask-agnostic policy gives no permission to clear the unused locations.](../../figures/rvv-mask-tail-store.svg){#fig-rvv-mask-tail-store width=100% fig-alt="Input values, mask bits, store action and destination contents for eight element slots"}
+
 This kernel loads every active input element, then masks the stores. It is not a masked-load demonstration and cannot safely point its unmasked load at invalid memory. The test also checks guards around the output range, so a tail-store defect cannot be hidden by comparing only active results.
 
 ### Loads, stores and the memory system

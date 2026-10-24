@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="498" viewBox="0 0 960 498" role="img" aria-labelledby="title desc">
+<title id="title">How long software has before a 16-byte UART FIFO overflows</title><desc id="desc">Continuous 8N1 traffic at 115,200 baud • one byte takes about 86.8 microseconds</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="498" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">How long software has before a 16-byte UART FIFO overflows</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Continuous 8N1 traffic at 115,200 baud • one byte takes about 86.8 microseconds</text>
+<text x="28" y="100" font-size="20" text-anchor="start" fill="#172b3a" font-weight="bold">RX FIFO, 16 entries</text>
+<rect x="70" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="93.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="120" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="143.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="170" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="193.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="220" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="243.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="270" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="293.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="320" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="343.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="370" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="393.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="420" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="443.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="470" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="493.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="520" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="543.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="570" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="593.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="620" y="125" width="46" height="46" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="643.0" y="154.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">■</text>
+<rect x="670" y="125" width="46" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<rect x="720" y="125" width="46" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<rect x="770" y="125" width="46" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<rect x="820" y="125" width="46" height="46" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="8 5"/>
+<path d="M668 118V108" fill="none" stroke="#a34624" stroke-width="1.2"/>
+<text x="668" y="105" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">interrupt raised at 12 entries</text>
+<path d="M70 200H866" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<path d="M866 200H70" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="470" y="192" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">empty to full: 16 byte times, about 1.39 ms</text>
+<path d="M670 262H866" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<path d="M866 262H670" fill="none" stroke="#a34624" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#event)"/>
+<text x="770" y="292" font-size="18" text-anchor="middle" fill="#a34624" font-weight="normal">4 byte times,</text>
+<text x="770" y="316" font-size="18" text-anchor="middle" fill="#a34624" font-weight="bold">about 347 us</text>
+<text x="70" y="292" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">The deadline must cover interrupt masking, arbitration,</text>
+<text x="70" y="316" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">handler entry and the actual service time, minus bytes</text>
+<text x="70" y="340" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">already in flight.</text>
+<rect x="28" y="375" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="403" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">Internal ready/valid backpressure cannot pause an external UART sender. RTS/CTS can when</text>
+<text x="44" y="428" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">it is implemented and wired; otherwise buffering and a bounded service policy have to</text>
+<text x="44" y="453" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">cover the gap.</text>
+</g></svg>

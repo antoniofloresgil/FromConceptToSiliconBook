@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="643" viewBox="0 0 960 643" role="img" aria-labelledby="title desc">
+<title id="title">Dirty input: the CPUs agree, the accelerator does not</title><desc id="desc">Operand starts at 0 • hart 0 writes 7 • a non-snooping DMA read reaches backing memory</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="643" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Dirty input: the CPUs agree, the accelerator does not</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Operand starts at 0 • hart 0 writes 7 • a non-snooping DMA read reaches backing memory</text>
+<text x="227.0" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Initial</text>
+<text x="387.0" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Produce</text>
+<text x="547.0" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Publish</text>
+<text x="707.0" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Bad launch</text>
+<text x="867.0" y="100" font-size="19" text-anchor="middle" fill="#172b3a" font-weight="bold">Repaired</text>
+<text x="28" y="178" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Hart 0</text>
+<rect x="150" y="118" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="227.0" y="170" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no modified</text>
+<text x="227.0" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">copy</text>
+<rect x="310" y="118" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="387.0" y="170" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">store 7;</text>
+<text x="387.0" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">line is dirty</text>
+<rect x="470" y="118" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="547.0" y="170" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">release the</text>
+<text x="547.0" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">job token</text>
+<rect x="630" y="118" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="707.0" y="170" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">keeps the</text>
+<text x="707.0" y="196" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">dirty line</text>
+<rect x="790" y="118" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="867.0" y="157" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">completes the</text>
+<text x="867.0" y="183" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">visibility</text>
+<text x="867.0" y="209" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">action</text>
+<text x="28" y="308" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Hart 1</text>
+<rect x="150" y="248" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="227.0" y="300" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no modified</text>
+<text x="227.0" y="326" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">copy</text>
+<rect x="310" y="248" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="387.0" y="300" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">waits for</text>
+<text x="387.0" y="326" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the token</text>
+<rect x="470" y="248" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="547.0" y="287" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">acquire token;</text>
+<text x="547.0" y="313" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">CPU load</text>
+<text x="547.0" y="339" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">sees 7</text>
+<rect x="630" y="248" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="707.0" y="300" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">orders the</text>
+<text x="707.0" y="326" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">MMIO start</text>
+<rect x="790" y="248" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="867.0" y="300" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">launches after</text>
+<text x="867.0" y="326" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the handoff</text>
+<text x="28" y="438" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">RAM / DMA</text>
+<rect x="150" y="378" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="227.0" y="443" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">operand 0</text>
+<rect x="310" y="378" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="387.0" y="443" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">RAM still 0</text>
+<rect x="470" y="378" width="154" height="118" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="547.0" y="443" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">RAM still 0</text>
+<rect x="630" y="378" width="154" height="118" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="707.0" y="430" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">DMA reads 0</text>
+<text x="707.0" y="456" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">(wrong)</text>
+<rect x="790" y="378" width="154" height="118" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="867.0" y="443" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="bold">DMA reads 7</text>
+<rect x="28" y="520" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="548" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A fence orders accesses the platform already defines, and a lock serializes submitters;</text>
+<text x="44" y="573" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">neither writes the dirty line back. The repair is the platform visibility action before</text>
+<text x="44" y="598" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">the doorbell.</text>
+</g></svg>

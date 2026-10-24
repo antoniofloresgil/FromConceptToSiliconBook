@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="548" viewBox="0 0 960 548" role="img" aria-labelledby="title desc">
+<title id="title">One RAM, several owners that must stay disjoint</title><desc id="desc">Placement of the checked QEMU practice, not to scale • other SoCs choose other addresses</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="548" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">One RAM, several owners that must stay disjoint</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Placement of the checked QEMU practice, not to scale • other SoCs choose other addresses</text>
+<text x="28" y="105" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">DRAM base</text>
+<text x="28" y="125" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">0x80000000</text>
+<rect x="200" y="90" width="420" height="90" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="410.0" y="118.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">OpenSBI firmware</text>
+<text x="410.0" y="144.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">resident in M-mode</text>
+<text x="410.0" y="170.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">keeps servicing SBI calls</text>
+<text x="28" y="235" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">payload</text>
+<text x="28" y="255" font-size="18" text-anchor="start" fill="#172b3a" font-weight="bold">0x80200000</text>
+<rect x="200" y="210" width="420" height="190" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="410" y="238" font-size="20" text-anchor="middle" fill="#172b3a" font-weight="bold">Supervisor payload window, 1 MiB</text>
+<rect x="220" y="252" width="380" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="410" y="274" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">text, rodata</text>
+<rect x="220" y="286" width="380" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="410" y="308" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">data</text>
+<rect x="220" y="320" width="380" height="30" rx="10" fill="white" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="410" y="342" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">BSS (cleared at startup)</text>
+<rect x="220" y="354" width="380" height="30" rx="10" fill="white" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="410" y="376" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">stack, 16 KiB</text>
+<rect x="680" y="90" width="252" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="806.0" y="118.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">DTB</text>
+<text x="806.0" y="144.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">placement recorded</text>
+<text x="806.0" y="170.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">in the plan</text>
+<rect x="680" y="210" width="252" height="90" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="806.0" y="238.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">initramfs, buffers</text>
+<text x="806.0" y="264.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">DMA and kernel data</text>
+<text x="806.0" y="290.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">in later experiments</text>
+<text x="680" y="335" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">Their addresses depend on the</text>
+<text x="680" y="359" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">experiment and must not overlap</text>
+<text x="680" y="383" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">the regions at the left.</text>
+<rect x="28" y="425" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="453" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">A hardware region says where bytes can live, not who owns them. Check the combined</text>
+<text x="44" y="478" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">placement plan, including alignment and temporary buffers, because a link map cannot see</text>
+<text x="44" y="503" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">a separately loaded DTB.</text>
+</g></svg>

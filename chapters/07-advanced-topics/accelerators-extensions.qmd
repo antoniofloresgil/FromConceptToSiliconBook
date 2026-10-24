@@ -25,6 +25,10 @@ There are several places to accelerate a computation:
 | MMIO accelerator | Longer job with explicit control | Driver, transfer and synchronization overhead |
 | DMA-capable accelerator | Large streaming buffers | Memory arbitration, coherence and protection |
 
+@fig-accel-design-space orders the choices by how far the work leaves the core.
+
+![The six places to accelerate a computation, the work each one suits and its main cost. The list runs from no hardware change to a DMA-capable bus master, and a longer job with larger buffers moves down it.](../../figures/accel-design-space.svg){#fig-accel-design-space width=100% fig-alt="Six rows from compiler or algorithm to DMA-capable accelerator with what each suits and what it costs"}
+
 The right choice is driven by operand locality and latency. A single-cycle population count belongs naturally in the instruction datapath. A 1024-sample filter has descriptors, buffers and a completion event, so it fits an MMIO engine much better. A vector extension is an attractive standard solution for data-parallel work when its implementation and software ecosystem are justified; it is not a zero-cost replacement for a small scalar core [@riscvVectorSpec].
 
 ### A quantitative decision rule
@@ -212,6 +216,10 @@ Use a software-visible ownership protocol:
 4. Hardware owns the buffers until completion/error.
 5. Software observes `DONE`, performs required post-DMA cache maintenance and consumes output.
 
+@fig-accel-buffer-ownership marks who owns the buffers at each step.
+
+![Buffer ownership during one DMA job: software owns the buffers while it allocates, writes data, does cache maintenance and programs the descriptor, hardware owns them from START until DONE or an error, and software owns them again to do post-DMA maintenance and consume the output.](../../figures/accel-buffer-ownership.svg){#fig-accel-buffer-ownership width=100% fig-alt="A bar divided into software, hardware and software ownership with five numbered steps"}
+
 The protocol is as important as the FIR arithmetic. It prevents software from changing coefficients while hardware reads them and prevents an accelerator from overwriting a buffer the CPU still treats as live.
 
 ### Coherence and ordering
@@ -374,6 +382,10 @@ Measure four intervals separately:
 | Engine active | `START` accepted to `DONE` sticky | DMA and compute throughput |
 | Interrupt handling | `DONE` to driver completion | scheduling and ISR overhead |
 | Whole application | input ready to output consumed | user-visible benefit |
+
+@fig-accel-measured-intervals places the four intervals on one job.
+
+![The four intervals to measure for one accelerated job: driver setup from the first register write to START accepted, engine active from START accepted to DONE, interrupt handling from DONE to driver completion, and the whole application from input ready to output consumed. The axis is not to scale.](../../figures/accel-measured-intervals.svg){#fig-accel-measured-intervals width=100% fig-alt="A timeline with six numbered events and bars for the four intervals"}
 
 For very short buffers, setup can dominate and a custom instruction can win. For long buffers, DMA amortizes setup and lets the CPU work concurrently. Engine-active time compared against scalar software time leaves out the cost the software user actually pays, so compare the full operation.
 

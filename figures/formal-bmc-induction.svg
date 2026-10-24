@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="653" viewBox="0 0 960 653" role="img" aria-labelledby="title desc">
+<title id="title">Bounded checking and induction answer different questions</title><desc id="desc">A twelve-step check is bounded; an unbounded result needs a base case and an inductive step</desc>
+<defs>
+<marker id="data" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#24577a"/></marker>
+<marker id="event" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#a34624"/></marker>
+<marker id="memory" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#28705c"/></marker>
+</defs>
+<rect width="960" height="653" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b3a">
+<text x="28" y="33" font-size="26" text-anchor="start" fill="#172b3a" font-weight="bold">Bounded checking and induction answer different questions</text>
+<text x="28" y="62" font-size="18" text-anchor="start" fill="#172b3a" font-weight="normal">A twelve-step check is bounded; an unbounded result needs a base case and an inductive step</text>
+<text x="28" y="100" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Bounded model checking, horizon 12</text>
+<circle cx="70" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="70" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">0</text>
+<circle cx="136" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="136" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">1</text>
+<path d="M87 160H119" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="202" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="202" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">2</text>
+<path d="M153 160H185" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="268" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="268" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">3</text>
+<path d="M219 160H251" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="334" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="334" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">4</text>
+<path d="M285 160H317" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="400" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="400" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">5</text>
+<path d="M351 160H383" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="466" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="466" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">6</text>
+<path d="M417 160H449" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="532" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="532" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">7</text>
+<path d="M483 160H515" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="598" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="598" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">8</text>
+<path d="M549 160H581" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="664" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="664" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">9</text>
+<path d="M615 160H647" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="730" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="730" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">10</text>
+<path d="M681 160H713" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="796" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="796" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">11</text>
+<path d="M747 160H779" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<circle cx="862" cy="160" r="17" fill="white" stroke="#24577a" stroke-width="2"/>
+<text x="862" y="166" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">12</text>
+<path d="M813 160H845" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="70" y="205" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">reset</text>
+<text x="500" y="205" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">no violation found within these steps: a bounded result</text>
+<text x="28" y="265" font-size="21" text-anchor="start" fill="#172b3a" font-weight="bold">Induction</text>
+<rect x="28" y="285" width="430" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="243.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Base case</text>
+<text x="243.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the properties hold from</text>
+<text x="243.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">the specified initial state</text>
+<rect x="502" y="285" width="430" height="100" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="717.0" y="318.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Inductive step</text>
+<text x="717.0" y="344.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">invariants that hold over the window</text>
+<text x="717.0" y="370.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">still hold after the next transition</text>
+<path d="M458 335H502" fill="none" stroke="#24577a" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#data)"/>
+<text x="28" y="412" font-size="19" text-anchor="start" fill="#172b3a" font-weight="bold">Possible outcomes</text>
+<rect x="28" y="424" width="290" height="80" rx="10" fill="#edf7f1" stroke="#28705c" stroke-width="2" stroke-dasharray="none"/>
+<text x="173.0" y="459.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Proved</text>
+<text x="173.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">for the modeled system</text>
+<rect x="335" y="424" width="290" height="80" rx="10" fill="#fff3e9" stroke="#a34624" stroke-width="2" stroke-dasharray="none"/>
+<text x="480.0" y="459.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Counterexample</text>
+<text x="480.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">a failing trace</text>
+<rect x="642" y="424" width="290" height="80" rx="10" fill="#eef5fa" stroke="#24577a" stroke-width="2" stroke-dasharray="none"/>
+<text x="787.0" y="459.0" font-size="21" text-anchor="middle" fill="#172b3a" font-weight="bold">Inconclusive</text>
+<text x="787.0" y="485.0" font-size="18" text-anchor="middle" fill="#172b3a" font-weight="normal">say so plainly</text>
+<rect x="28" y="530" width="904" height="103" rx="10" fill="#f2f4f6" stroke="#172b3a" stroke-width="2" stroke-dasharray="none"/>
+<text x="44" y="558" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">The step may start from states unreachable from reset, for example equal occupancies</text>
+<text x="44" y="583" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">with unrelated pointers. Strengthen the invariant with the relationship that is missing;</text>
+<text x="44" y="608" font-size="19" text-anchor="start" fill="#172b3a" font-weight="normal">never assume the mismatch away.</text>
+</g></svg>
