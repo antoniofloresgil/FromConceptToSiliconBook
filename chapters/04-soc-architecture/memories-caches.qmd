@@ -31,6 +31,8 @@ This diagram presents alternatives, not a mandatory sequence. A tightly integrat
 | ROM/boot memory | Initial instructions or constants | Image generation and startup address |
 | DRAM | Large main memory | Controller, refresh, calibration and variable service |
 
+: Storage technologies, their useful role and integration issue {#tbl-memories-caches-storage-technologies-useful-role}
+
 SRAM retains its contents while powered without DRAM-style refresh. DRAM provides greater density but needs a controller and refresh; row state and competing requests influence service time. Neither is accurately represented for performance purposes by assigning a single convenient combinational expression to a read-data signal.
 
 Technology selection also affects the clock budget. A cache's hit path includes array access, tag comparison and data selection, not only SRAM access time. A larger cache can reduce misses yet lower achievable frequency. Evaluate program execution time and implementation cost together.
@@ -51,6 +53,8 @@ Before writing RTL, specify the storage interface. The client must know which ed
 | Initialization | Boot image, software writes, unknown contents? |
 | Error | Out-of-range access, parity/ECC failure, unsupported size? |
 
+: Properties of a memory interface that must be resolved {#tbl-memories-caches-properties-memory-interface-must}
+
 **Word address** and **byte address** are not interchangeable. A 256 × 32-bit memory holds 1 KiB. Its eight-bit word index selects one of 256 entries, while a byte-addressed system needs ten offset bits to describe all bytes. The low two byte-address bits select a lane inside a 32-bit word; passing the full byte address into the array index silently changes the mapping.
 
 A synchronous read is more than an extra delay on a combinational read. The accepted address stays associated with its returned data, so a stall after acceptance cannot let a newer address replace the pending response, and the processor keeps the load's destination and controls alongside it.
@@ -65,6 +69,8 @@ A single read/write port cannot independently service two unrelated addresses on
 | Write-first | Value after the write, respecting supported masks |
 | No-change | Previous output retained |
 | Undefined/unsupported | Client must avoid the collision |
+
+: Read-during-write modes {#tbl-memories-caches-read-during-write-modes}
 
 A registered address followed by a combinational array output can behave differently from a registered data output. Simulation statements, inferred primitives and SRAM macro models must agree. A wrapper's name or comment is not reliable evidence of its collision mode, so inspect the actual assignments and the backend's specification.
 
@@ -122,6 +128,8 @@ For a teaching 4 KiB, two-way cache with 64-byte lines, $S=32$, the offset is si
 | `[5:2]` | 32-bit word position |
 | `[1:0]` | Byte position within that word |
 
+: Address bit fields of the teaching cache {#tbl-memories-caches-address-bit-fields-teaching}
+
 Addresses `0x80000000`, `0x80000800` and `0x80001000` map to the same set but different tags. Two can coexist in this two-way cache; repeatedly cycling through all three can cause conflict misses. The formula describes the teaching geometry, not an assertion that every Wally configuration has these dimensions.
 
 Wally can use physical-address widths different from XLEN. A 34-bit physical address with the same geometry needs a 23-bit tag. Calculate tags from the implemented physical address, not from a guessed C pointer width.
@@ -137,6 +145,8 @@ A direct-mapped cache has one way per set: each line has exactly one possible ho
 | Direct mapped | One location | Simple lookup; more conflicts |
 | Set associative | One of A ways in its set | Comparators, selection and replacement state |
 | Fully associative | Any line | Expensive search for larger capacities |
+
+: Direct-mapped, set-associative and fully associative placement {#tbl-memories-caches-direct-mapped-set-associative}
 
 For a set-associative hit, exactly one valid way should match. A duplicate-tag bug can make two ways return different copies of the same physical line. A hit vector should be one-hot or zero, and the read-data mux must select the corresponding way.
 
@@ -160,7 +170,9 @@ For four ways, a binary tree uses three direction bits. Interpret each bit as po
 | Access way 1 | `101` | 3 |
 | Access way 3 | `000` | 0 |
 
-@fig-memories-plru-tree draws the five states of the table as trees.
+: Pseudo-LRU state and next victim after each access {#tbl-memories-caches-pseudo-lru-state-next}
+
+@fig-memories-plru-tree draws the five states of @tbl-memories-caches-pseudo-lru-state-next as trees.
 
 ![Tree pseudo-LRU for four ways, following the table: the bits are root, left and right, and each bit points toward the subtree chosen for eviction. A hit flips the bits on its path to point away from the accessed way. All ways are assumed valid.](../../figures/memories-plru-tree.svg){#fig-memories-plru-tree width=100% fig-alt="Five small binary trees showing the replacement bits and the victim way after each access"}
 
@@ -178,6 +190,8 @@ The store-miss allocation choice is separate:
 | Write-through, no allocate | Update cache and next level | Write next level without installing |
 | Write-back, allocate | Update cache, set dirty | Fetch/install, merge store, set dirty |
 | Write-back, no allocate | Update existing line, set dirty | Bypass miss according to design |
+
+: Write policies for store hits and store misses {#tbl-memories-caches-write-policies-store-hits}
 
 Write-back with write allocation is a useful model for Wally's data-cache path. A partial store miss first obtains the untouched bytes, then merges the selected bytes. Replacing the whole line with a repeated store value destroys neighboring memory contents.
 
@@ -330,6 +344,8 @@ The nonblocking assignments evaluate the pre-edge word for RespData, while selec
 | 3 | RespReady=1 | Consume response; slot becomes empty |
 | 4 | Accept next request | New response produced |
 
+: Sampling edges, actions and state of the retained-response memory {#tbl-memories-caches-sampling-edges-actions-state}
+
 Changing ReqAddress after edge 1 cannot change the captured result. Reset during a waiting write response does not undo the already applied write; system-level reset policy must account for that distinction. RespData is irrelevant when RespValid is zero, including immediately after reset.
 
 This RTL is an inference candidate, not a guarantee of a physical RAM mapping. Synthesize it and inspect the resulting cells. A backend that cannot implement the specified collision mode needs an adaptation or a revised contract; passing functional simulation alone is insufficient.
@@ -347,6 +363,8 @@ For an ASIC, a wrapper can select a characterized SRAM macro. Its externally vis
 | LEF abstract | Outline, pins and routing obstructions |
 | GDS/OASIS layout | Final physical geometry |
 | Netlist/SPICE views, as required | Connectivity and physical verification |
+
+: Macro artifacts needed to integrate an ASIC memory {#tbl-memories-caches-macro-artifacts-needed-integrate}
 
 A simulation model is only one view, and the others have to exist and agree with it. Match instance pins and dimensions across views. Account for macro placement, power connections and access to pins during floorplanning; a dense cache can become routing-limited even when the logical capacity fits.
 
@@ -368,6 +386,8 @@ Chapter 10 decomposes Wally's configurable cache into a top-level module, ways, 
 | `src/ifu/ifu.sv` | Fetch, instruction cache and instruction spills |
 | `src/ebu/ahbcacheinterface.sv` | Bus beats, line buffer and acknowledgements |
 | `src/generic/mem/` | Generic arrays and selected memory implementations |
+
+: Wally memory-system sources and their responsibilities {#tbl-memories-caches-wally-memory-system-sources}
 
 The inspected cache uses shared configurable RTL for I$ and D$. READ_ONLY_CACHE disables store-related paths for the instruction instance. The cache top level combines per-way hit/data outputs, forms line-wide byte masks, merges stores into fetched data and chooses refill versus victim addresses [@cvwCache].
 
@@ -414,6 +434,8 @@ On a dirty miss, the controller retains the requesting operation and selects a v
 | Refill | Incoming memory block | Every required beat captured |
 | Install | Requested line and store mask | No premature valid; untouched bytes retained |
 | Return | Original load/store | No lost response or duplicate store |
+
+: Phases of a dirty miss and the identity each must keep {#tbl-memories-caches-phases-dirty-miss-identity}
 
 The AHB cache interface tracks beats and provides a line-sized FetchBuffer and completion indication. A 64-byte line on a 32-bit bus needs sixteen beats; on a 64-bit bus it needs eight. Beat progress follows accepted bus transfers, not an assumed uninterrupted clock count [@cvwCacheBus].
 
@@ -555,6 +577,8 @@ Save `sync_memory` as `sync_memory.sv` and create a testbench with an independen
 | Reset after completed writes | Contents retained, response validity cleared |
 | No accepted request | No storage modification |
 
+: Tests of the synchronous memory and the property each checks {#tbl-memories-caches-tests-synchronous-memory-property}
+
 Randomize addresses, masks and response waits. A scoreboard should update its reference once per accepted write and compare responses using their accepted request identity. Testing only final memory contents can miss an extra acknowledgement or a response belonging to another address.
 
 Simulate with a four-state tool when investigating unwritten values, and compare with the two-state simulator used elsewhere. Document the differences, since a zero returned by one environment says nothing about initialization in hardware.
@@ -596,6 +620,8 @@ Use the Python model to create sequential, repeated, stride and conflicting trac
 | Partial store, dirty eviction, later reload | Mask merge and old-address writeback |
 | Clean, invalidate, reload | Preservation and refill after maintenance |
 
+: Traces of the geometry experiment and the mechanism each exposes {#tbl-memories-caches-traces-geometry-experiment-mechanism}
+
 Compare every returned load to an independent initialized-memory oracle. After cleaning, compare backing memory to all expected committed stores, including untouched bytes. Verify that a second clean without new writes adds no writebacks.
 
 The three-address two-way conflict can occur even though the whole cache has ample unused space. Conversely, a sequential scan larger than capacity can still obtain most words from a line after its first miss. Use those observations to explain why allocation size alone does not determine miss behavior.
@@ -616,6 +642,8 @@ Record physical address, set/tag, hit-way vector, valid/dirty state, victim, con
 | Dirty miss | Victim address/data before refill |
 | Uncached MMIO | Bypass and absence of unintended adjacent reads |
 | Store followed by load | Structural hazard distinguished from cache miss |
+
+: Cases to observe in the Wally hit and miss waveforms {#tbl-memories-caches-cases-observe-wally-hit}
 
 Count misses on the design's event definition, not once per stalled cycle. The cache exports access/miss signals, but their sampled semantics and any available counter implementation must be checked for the chosen revision. Preserve trace-derived measurements if software-visible performance counters are unavailable.
 

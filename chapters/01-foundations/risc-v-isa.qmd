@@ -18,6 +18,8 @@ Three contracts cooperate to run a program:
 | Application binary interface (ABI) | Register conventions, data layout and binary interfaces | Internal implementation of arithmetic or memory |
 | Platform/execution environment | Memory map, startup and device/service conventions | Many internal implementation choices |
 
+: ISA, ABI and platform: what each contract defines and leaves open {#tbl-risc-v-isa-isa-abi-platform-contract}
+
 An ISA instruction that stores a word does not specify which address is a UART. The platform defines that address and the peripheral's register behavior. The ABI can specify which registers carry function arguments without making those register roles mandatory for every assembly program.
 
 An ELF binary also depends on its loading environment. A freestanding program linked for a simulation RAM is not automatically a Linux executable or a board boot image. Later simulation and FPGA chapters add those environments; here we make every address assumption visible.
@@ -47,6 +49,8 @@ Signedness affects comparisons and right shifts. `SLT` and `BLT` interpret opera
 | Logical right shift by one | `0x7fffffff` |
 | Arithmetic right shift by one | `0xffffffff` |
 
+: Signed and unsigned results for the same bit pattern {#tbl-risc-v-isa-signed-unsigned-results-same}
+
 For register shifts in RV32I, the effective shift amount comes from the low five bits of the second operand. A host-language model that shifts by the entire register value gets this wrong, which is a classic way for a reference model to disagree with correct hardware. Encoding checks matter too: an immediate shift borrows part of its apparent immediate field to select the operation.
 
 ### Register names and the calling convention
@@ -63,15 +67,17 @@ Assembly uses both architectural names and ABI aliases. The alias helps a human 
 | `x8`, `x9`, `x18`–`x27` | `s0`–`s11` | Callee-saved values; `s0` can be frame pointer |
 | `x10`–`x17` | `a0`–`a7` | Arguments; `a0` and `a1` also carry returns |
 
+: Integer registers, ABI aliases and conventional use {#tbl-risc-v-isa-integer-registers-abi-aliases}
+
 For the standard integer calling convention, a callee preserves callee-saved registers it modifies. A caller saves live caller-saved values if a call might overwrite them. The ordinary stack alignment is 16 bytes; reduced-register conventions have separate rules. These conventions are specified by the processor-specific ABI, rather than inferred from a pipeline diagram [@riscvPsabi].
 
-@fig-isa-register-map shows the architectural state of one RV32I hart with the ABI aliases of the table above.
+@fig-isa-register-map shows the architectural state of one RV32I hart with the ABI aliases of @tbl-risc-v-isa-integer-registers-abi-aliases.
 
 ![The program counter and the 32 integer registers of an RV32I hart, grouped by the ABI role of their alias. Register x0 always reads zero. The figure shows programming-model state and not a register-file circuit.](../../figures/isa-register-map.svg){#fig-isa-register-map width=100% fig-alt="A program counter and a grid of 32 integer registers with their ABI names"}
 
 ### RV32I instruction families
 
-Organize the base instructions by their effects before studying encodings. The following table is a reading guide, not an exhaustive decoder specification.
+Organize the base instructions by their effects before studying encodings. @tbl-risc-v-isa-rv32i-instruction-families-main is a reading guide, not an exhaustive decoder specification.
 
 | Family | Examples | Main effect |
 |---|---|---|
@@ -85,6 +91,8 @@ Organize the base instructions by their effects before studying encodings. The f
 | Conditional branches | `beq`, `bne`, `blt`, `bge`, unsigned variants | Choose sequential or target PC |
 | Jumps | `jal`, `jalr` | Redirect execution and optionally save a link |
 | Ordering/environment | `fence`, `ecall`, `ebreak` | Ordering or execution-environment interaction |
+
+: RV32I instruction families and their main effects {#tbl-risc-v-isa-rv32i-instruction-families-main}
 
 Only loads and stores in this basic programming model access ordinary data memory. An `add` does not implicitly read a memory operand. A store has no integer destination register; a branch compares operands but ordinarily does not write an integer result. These distinctions become control enables in the next foundation chapter.
 
@@ -100,6 +108,8 @@ A base instruction word is 32 bits. Common register fields occupy fixed position
 | B | Conditional branches | Signed displacement with implied low zero bit |
 | U | `lui`, `auipc` | Upper 20 bits followed by twelve zero bits |
 | J | `jal` | Signed displacement assembled from several fields |
+
+: Instruction formats, typical use and immediate fields {#tbl-risc-v-isa-instruction-formats-typical-use}
 
 Follow @fig-isa-formats from bit 31 to bit 0. The register fields stay in the same place across formats, and only the immediate fields move.
 
@@ -157,6 +167,8 @@ An assembler can accept mnemonics that are not separate ISA encodings:
 | `ret` | `jalr x0, 0(ra)` |
 | `li rd, constant` | One or more instructions depending on value |
 | `la rd, symbol` | Address materialization with relocations; depends on code model |
+
+: Pseudoinstructions and their typical expansions {#tbl-risc-v-isa-pseudoinstructions-typical-expansions}
 
 Disassemble the linked ELF, not just the object file, when checking actual control-flow offsets and addresses. Relaxation can shorten sequences, and enabled compressed instructions can change instruction lengths. The exercise below disables both to make the first trace easier to predict.
 
@@ -301,6 +313,8 @@ The assembler/compiler and linker are separate dependencies. Whichever flow is c
 | `0x80001100` | `0x00000010` | -3 + 7 + 10 + 2 = 16 |
 | `0x80001104` | `0xfffffffd` | Sign extension of the low byte of -3 |
 | `0x80001108` | `0x000000fd` | Zero extension of that same byte |
+
+: Signature bytes of the freestanding program and the reason for each value {#tbl-risc-v-isa-signature-bytes-freestanding-program}
 
 Configure the harness to stop when execution reaches symbol `stop`, then read the signature. Do not expect the self-loop to terminate a simulator automatically. A timeout detects failure to reach the completion point. The instruction writing `zero` must leave `x0` unchanged.
 

@@ -20,7 +20,9 @@ Privilege modes separate trusted platform control, operating-system control and 
 | S | `01` | Kernel, page tables, process management and supervisor traps | Operates under machine policy and physical protection |
 | U | `00` | Applications | Cannot directly perform privileged control operations |
 
-The encoding `10` is reserved in this model. Debug Mode, discussed in @sec-riscv-debug, has its own entry and behavior; it is not an extra ordinary execution mode in this table. The current privilege is hardware state that changes through reset, traps and return instructions. Jumping to an address containing kernel code does not itself change privilege.
+: Privilege modes, encodings and responsibilities {#tbl-privileged-mmu-privilege-modes-encodings-responsibilities}
+
+The encoding `10` is reserved in this model. Debug Mode, discussed in @sec-riscv-debug, has its own entry and behavior; it is not an extra ordinary execution mode in @tbl-privileged-mmu-privilege-modes-encodings-responsibilities. The current privilege is hardware state that changes through reset, traps and return instructions. Jumping to an address containing kernel code does not itself change privilege.
 
 A CSR instruction is also subject to access rules. Some CSR addresses are read-only, and some require a minimum privilege. Unsupported accesses can raise an illegal-instruction exception. Writable fields may be WARL, so not every bit pattern software writes is supported. When adapting a program to another implementation, read back the important setup state to see what was actually accepted.
 
@@ -42,6 +44,8 @@ An `ecall` requests service from the execution environment. Its synchronous exce
 | `mtval` | `stval` | Additional trap information, where defined |
 | `mstatus.MPP/MPIE/MIE` | `sstatus.SPP/SPIE/SIE` | Saved privilege and interrupt state |
 | `mscratch` | `sscratch` | Software scratch state for entry conventions |
+
+: Machine and supervisor trap state {#tbl-privileged-mmu-machine-supervisor-trap-state}
 
 The cause CSR's highest bit distinguishes interrupts from synchronous exceptions. Cause 15 with that bit clear is a store/AMO page fault. That is a page fault, and interrupt number 15 is a different event. Trap-value information is cause-specific, so a `tval` value is not always a memory address.
 
@@ -73,6 +77,8 @@ Keep three mechanisms distinct:
 | PMP | Permission for a physical region under machine policy | Denying supervisor access to firmware storage |
 | PMA | Physical region's attributes and supported operations | Uncached, non-idempotent MMIO |
 
+: Translation, protection and memory-attribute mechanisms {#tbl-privileged-mmu-translation-protection-memory-attribute}
+
 A writable PTE cannot override a physical PMP denial. A PMP-granted region does not override a read-only PTE when translation applies. A virtual mapping of MMIO must still respect physical attributes and side effects. A translation result is therefore an intermediate result, not a promise that the physical transaction is legal.
 
 ### `satp` and effective privilege
@@ -93,6 +99,8 @@ Sv32 divides a 32-bit virtual address into ten-bit VPN[1], ten-bit VPN[0] and tw
 | VPN[0] | 21:12 | Next-table index for a 4 KiB page |
 | Offset | 11:0 | Untranslated byte offset |
 
+: Sv32 virtual address fields {#tbl-privileged-mmu-sv32-virtual-address-fields}
+
 An Sv32 PTE stores PPN at bits 31:10, software-reserved RSW at bits 9:8, and D/A/G/U/X/W/R/V at bits 7:0:
 
 | Bit | Meaning | Consequence |
@@ -105,6 +113,8 @@ An Sv32 PTE stores PPN at bits 31:10, software-reserved RSW at bits 9:8, and D/A
 | G | Global | Affects ASID matching and invalidation scope |
 | A | Accessed | Records or requires handling of page use |
 | D | Dirty | Records or requires handling of writes |
+
+: Sv32 page-table entry bits and their consequence {#tbl-privileged-mmu-sv32-page-table-entry}
 
 @fig-mmu-pte-bits shows the entry layout and the kinds of entry.
 
@@ -140,6 +150,8 @@ Follow @fig-sv32-walk from the virtual-address fields to the physical address: `
 | Leaf[0], `0x80011000` | `0x200048c7` | Data page `0x80012000`, R/W, A/D set, U=0 |
 | Leaf[1], `0x80011004` | `0x20004843` | Same physical page, read-only, A set, U=0 |
 | Root[512], `0x80010800` | `0x200000cf` | Identity-mapped 4 MiB region for supervisor code/data |
+
+: Page-table entries visited by the worked two-level walk {#tbl-privileged-mmu-page-table-entries-visited}
 
 The second alias at `0x40001000` has a different virtual page but the same physical data. A store through it must fault. The writable identity mapping is convenient for trusted teaching firmware; it means this demonstration is not an isolation design for hostile supervisor software.
 
@@ -179,6 +191,8 @@ The demonstration uses ASID zero and `sfence.vma zero, zero` for conservative lo
 | Load | 13 | 5 |
 | Store/AMO | 15 | 7 |
 
+: Page-fault and access-fault codes by original operation {#tbl-privileged-mmu-page-fault-access-fault}
+
 A page fault can result from an invalid entry, denied virtual permissions, misaligned superpage or A/D handling. A physical access fault can arise from PMA/PMP or a failing physical transaction, including one needed to read a PTE. The reported operation stays the original instruction, load or store, so the application never sees the walker's reads as loads of its own.
 
 Recovering software has several choices: repair a mapping and retry the faulting instruction, emulate an operation where legal, reject a request, or terminate the affected process. Retrying normally leaves the saved PC at the faulting instruction. The example instead skips one deliberately denied, known four-byte store after validating its identity. That is a test convention, not a general page-fault handler. Blindly adding four fails for compressed instructions and can hide a real fault.
@@ -210,6 +224,8 @@ Use `git show` against the pinned revision, which does not depend on whatever fi
 | `src/mmu/tlb/tlb.sv`, `tlbcontrol.sv` | Matching, permission checks, misses and A/D handling |
 | `src/mmu/hptw.sv` | Shared walker, table addresses, ownership and completion |
 | `src/ifu/ifu.sv`, `src/lsu/lsu.sv` | Instruction/data requests, stalls and precise side effects |
+
+: Wally RTL sources for privilege and translation {#tbl-privileged-mmu-wally-rtl-sources-privilege}
 
 At this revision, `rv32gc` has `S_SUPPORTED=1`, `SV32_SUPPORTED=1`, `SVADU_SUPPORTED=1` and 16 PMP entries. These are elaboration choices, and the board configuration may expose different features [@cvwMmuBaseline].
 
@@ -264,6 +280,8 @@ S-mode then reads the read-only alias. It must still return `0x55667788`: the de
 | 2 | `0000000f` | Store page fault entered supervisor handler |
 | 3 | `40001000` | Trap value identifies the virtual alias |
 | 4 | `00000001` | Expected fault location checked and handler completed |
+
+: Signature words of the privilege journey and what each requires {#tbl-privileged-mmu-signature-words-privilege-journey}
 
 Both the process exit and signature comparison must pass. A nonzero simulator result, timeout or stale signature is a failure. The HTIF mailboxes are a simulator convention; porting this test to Wally requires its documented loader and termination interface.
 

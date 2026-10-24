@@ -20,6 +20,8 @@ There are two practical ways to harden a SystemVerilog block with this ecosystem
 | Main risk | The author must maintain all technology details and stage ordering | Defaults can obscure a physical decision unless reports/configuration are reviewed |
 | Common practice | Prototype a command sequence, then keep it in version control | Run the stabilized configuration in CI and compare QoR reports |
 
+: Direct OpenROAD compared with the LibreLane-managed flow {#tbl-openroad-direct-openroad-compared-librelane}
+
 For a small block, direct OpenROAD is the best way to learn why a floorplan, PDN or clock tree is needed. For a larger design, the LibreLane option reduces accidental variation. A robust project can use both: develop and debug a Tcl experiment directly, then transfer the justified parameters into the managed configuration. The LibreLane chapter describes its project structure and commands. With either approach, you still read the timing, routing and physical-verification reports.
 
 ![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-openroad-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter a direct OpenROAD physical implementation flow and produce GDSII"}
@@ -41,6 +43,8 @@ OpenROAD contains engines for the central digital back-end tasks:
 | Routing | Global routing and TritonRoute detailed routing | Connect nets with legal tracks, wires and vias |
 | Finishing | Extraction, antenna checks, fill support and reports | Prepare physical data for final verification |
 
+: OpenROAD activities and the engines that provide them {#tbl-openroad-openroad-activities-engines-provide}
+
 Turning RTL into a tapeout takes more than running the application. It needs a PDK, characterized cell libraries, realistic timing and I/O constraints, a power intent, and decisions about the die, pins, macros and packaging. In particular, a foundry's final DRC/LVS deck, pad-ring requirements, ESD rules, package co-design and acceptance review remain separate steps. OpenROAD is an implementation engine, and its output is validated in the context of the target technology.
 
 ### The views that join RTL to geometry
@@ -58,6 +62,8 @@ The same design appears in several forms during implementation. Understanding th
 | SDC | Clocks, I/O delays, uncertainties and timing exceptions | Static timing analysis |
 | SPEF | Extracted resistance and capacitance | Post-route timing and power analysis |
 | GDSII | Exact polygons for all relevant layers | Layout viewing, physical verification and tapeout handoff |
+
+: Views that join RTL to geometry and who uses them {#tbl-openroad-views-join-rtl-geometry}
 
 @fig-openroad-views-matrix shows which activity uses which view.
 
@@ -523,6 +529,8 @@ Physical-design failures are information. The correct response is to locate the 
 | Hold failure after CTS | Fast data path relative to clock arrival | Minimum-delay report | Apply hold repair; never hide it with an unjustified exception |
 | Repeated antenna/DRC markers | Routing/resource or rule issue | Detailed-route report and GUI markers | Use PDK-approved repair, change route/floorplan |
 | Great reports but no fabrication path | Missing sign-off, pads, package, or accepted PDK flow | Tapeout checklist | Complete integration and foundry requirements |
+
+: Failure symptoms, likely causes, first checks and corrections {#tbl-openroad-failure-symptoms-likely-causes}
 
 ## Hands-on Experiments
 

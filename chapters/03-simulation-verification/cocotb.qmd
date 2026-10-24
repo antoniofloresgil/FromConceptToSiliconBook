@@ -289,7 +289,9 @@ AssertionError: cycle=5, stimulus=(0, 1, 1, 100), actual=(114, 1, 0), expected=(
 | `Valid` requires a nonzero operand | **passes** | fails |
 | `Clear` ignored | fails | fails |
 
-This table is a **checked recipe**. `python labs/run.py run cocotb` builds every variant from [cocotb_mutation_check.py](../../labs/05-verification/cocotb_mutation_check.py), runs both versions of the test with the same fault list as the Verilator check, and fails if any outcome differs from the table.
+: Faults introduced and what the supplied vectors and the added vectors detect {#tbl-cocotb-faults-introduced-supplied-vectors}
+
+@tbl-cocotb-faults-introduced-supplied-vectors is a **checked recipe**. `python labs/run.py run cocotb` builds every variant from [cocotb_mutation_check.py](../../labs/05-verification/cocotb_mutation_check.py), runs both versions of the test with the same fault list as the Verilator check, and fails if any outcome differs from @tbl-cocotb-faults-introduced-supplied-vectors.
 
 @fig-cocotb-directed-random-vectors summarizes what the two kinds of vectors found.
 

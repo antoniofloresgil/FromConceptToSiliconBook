@@ -17,6 +17,8 @@ Bare-metal bring-up and Linux expose different platform requirements. The small 
 | Bare-metal firmware | M-mode startup and application; optionally a lower-mode payload | Stack, sections, trap vectors, drivers and reset behavior | Application signature and controlled interrupt/error tests |
 | Conventional Linux with OpenSBI | M-mode resident firmware enters an S-mode kernel, which starts U-mode processes | Linux-compatible CPU configuration, memory, SBI services, hardware description and root filesystem | Kernel boot, PID 1, application output and device tests |
 
+: Bare-metal and Linux entry, platform work and evidence of success {#tbl-boot-software-stack-bare-metal-linux-entry}
+
 For the Linux path, firmware first establishes machine policy, then enters the supervisor kernel. `Spike → Linux` is not a universal command: a particular machine model, firmware and peripheral environment must be selected. The executable reference uses QEMU so that those platform inputs can be stated together.
 
 This separation is pedagogically useful. Start with a tiny image and known UART, introduce a supervisor handoff, then add memory management and an OS. When every component is introduced at once, a bad linker address can look like a page-table error and a missing console driver can look like a dead processor.
@@ -85,6 +87,8 @@ OpenSBI supports three useful packaging styles [@bootOpenSbiFirmware]:
 | `FW_JUMP` | Build-time configured next-stage address | Another agent must already have loaded that stage |
 | `FW_PAYLOAD` | Next-stage binary embedded with firmware | Convenient combined image, with explicit placement and size constraints |
 
+: OpenSBI firmware types and where the next-stage information comes from {#tbl-boot-software-stack-opensbi-firmware-types-where}
+
 @fig-boot-firmware-packaging shows who supplies the next-stage information in each of the three styles.
 
 ![The three OpenSBI packaging styles: FW_DYNAMIC takes the next-stage information from a loader at run time, FW_JUMP fixes the address at build time and needs another agent to have loaded the stage, and FW_PAYLOAD embeds the next stage in the firmware image. The next stage is usually entered in supervisor mode.](../../figures/boot-firmware-packaging.svg){#fig-boot-firmware-packaging width=100% fig-alt="Three rows linking a provider of next-stage information to a firmware type and the next stage"}
@@ -113,6 +117,8 @@ The modern SBI ABI places extension ID in `a7`, function ID in `a6`, and argumen
 | SRST | `0x53525354` | Shutdown or reboot | Platform lifecycle control |
 | DBCN | `0x4442434E` | Debug-console operations, when implemented | Firmware console access without a private UART driver |
 
+: SBI services, extension IDs and why the kernel needs each {#tbl-boot-software-stack-sbi-services-extension-ids}
+
 SRST defines reset types and successful nonreturning shutdown behavior; DBCN is the modern debug-console extension, distinct from legacy console calls [@bootSbiReset; @bootSbiConsole].
 
 Probe optional extensions instead of inferring them from an OpenSBI banner. The BASE extension returns an encoded specification version and an implementation ID; those are different from the OpenSBI software release [@bootSbiBase]. The practice probes TIME and SRST before using them, and checks that an unsupported EID produces `SBI_ERR_NOT_SUPPORTED` (`-2`).
@@ -137,6 +143,8 @@ The timer/software-interrupt path and the device-interrupt path serve different 
 | ACLINT | A modular alternative for local interrupt/timer functions | Match actual blocks and bindings; do not rename a CLINT node blindly |
 | PLIC | External interrupt prioritization and claim/complete | Source number, trigger behavior and M/S context mapping |
 | APLIC with IMSIC in an AIA system | Alternative external-interrupt architecture using direct delivery or message-signalled paths | CPU extensions, topology, firmware and OS drivers must agree |
+
+: Interrupt and timer components of the boot stack and their integration checks {#tbl-boot-software-stack-interrupt-timer-components-boot}
 
 These devices were introduced in the buses chapter. Here the question is whether firmware and the kernel can operate the exact instance present in the SoC. Declaring a device in a DTB cannot create missing hardware. Likewise, substituting APLIC for PLIC requires more than changing a base address [@bootInterruptBindings].
 
@@ -335,6 +343,8 @@ If no Linux output appears, verify the firmware handoff and kernel console confi
 | Root filesystem/init failure | Archive, executable ABI, permissions and dependencies | Initramfs listing and ELF program/interpreter headers |
 | Userspace works, accelerator fails | Binding, DMA mapping, interrupt ownership and error path | Driver logs, bus trace and known buffer contents |
 
+: Last visible check, next boundary to inspect and useful evidence {#tbl-boot-software-stack-last-visible-check-next}
+
 Keep each diagnostic tied to the last confirmed transition. Rebuilding the whole stack before preserving a failure log destroys useful evidence and can introduce a second defect.
 
 ### Experiment 3: Linux, a driver and the accelerator {#sec-linux-accelerator}
@@ -357,6 +367,8 @@ In this minimal image the application also serves as PID 1: it mounts `/dev`, `/
 | User boundary | Fixed-width ioctl structure; arrays copied through the kernel, no user physical pointers |
 | Completion | IRQ acknowledgement/completion or bounded polling; DONE follows both result writes |
 | Failure | Invalid arguments, device DMA error, suppressed IRQ, timeout and quarantine |
+
+: Boundaries of the Linux accelerator experiment and how each is implemented {#tbl-boot-software-stack-boundaries-linux-accelerator-experiment}
 
 This is a **new Linux platform profile**. The tiny bare-metal DMA window lies near resident firmware and is not reused. The manifest locks the same accelerator RTL revision while declaring the changed DMA parameters, RV64 OS and PLIC route. The measured physical implementation and bare-metal cycle ratios in @sec-complete-case remain observations of their original profiles.
 
@@ -391,6 +403,8 @@ The preserved author run completed all three Linux boots and seven direct model 
 | 32 | 1.6 | 793.2 | 759.1 | 528.7 |
 | 128 | 36.6 | 764.4 | 728.4 | 470.8 |
 | 256 | 4.0 | 384.3 | 353.6 | 2267.5 |
+
+: Single QEMU observations of the accelerator run, in microseconds {#tbl-boot-software-stack-single-qemu-observations-accelerator}
 
 The irregular software column is useful evidence of emulator translation, warm-up and host scheduling effects. Increasing N does not give a smooth timing curve in this short run. Ask students which intervals include copies and system calls, why a 10 µs modeled device delay does not imply a 10 µs ioctl, and what repeated measurements and hardware evidence would be needed before selecting an implementation.
 
@@ -440,6 +454,8 @@ These are single **Wally CPU/RTL simulation observations in microseconds**, usin
 | 128 | 24.61 | 145.78 | 72.89 | 158.59 |
 | 256 | 47.00 | 165.78 | 73.17 | 176.05 |
 
+: Single Wally CPU and RTL simulation observations, in microseconds {#tbl-boot-software-stack-single-wally-cpu-rtl}
+
 The fixture's behavioral second RAM port supplies DMA without a synthesized arbiter or DDR timing. These intervals describe this simulated system. They cannot establish a physical-board speedup, a qualified 100 MHz implementation or energy per operation. Compare copies, cold/warm cache effects and interrupt/polling overhead before proposing a change to the accelerator.
 
 Wally is configurable. A Linux-oriented build requires the selected privilege/translation support and instruction features, sufficient RAM, a timer and interrupt path, a console and appropriate memory permissions. An RV32 bare-metal accelerator configuration is not automatically an RV64 Linux configuration. Begin from the pinned source and the actual integrated platform used in the earlier chapters.
@@ -458,6 +474,8 @@ Some addresses resemble QEMU `virt`; that resemblance is no guarantee of binary 
 | Kernel bring-up | Compatible ISA, MMU, console and interrupt configuration | Linux progress checkpoints and no unexplained faults |
 | Userspace | Root filesystem, executable ABI and libraries | PID 1 and application marker |
 | Accelerator use | Driver, DMA ownership/coherency and interrupt handling | Correct results, rejection/error tests and cleanup |
+
+: Steps for porting the boot contract to Wally and their acceptance evidence {#tbl-boot-software-stack-steps-porting-boot-contract}
 
 Run software-oriented bring-up in QEMU first, then use RTL to verify Wally-specific behavior and FPGA to validate the implemented system. QEMU's functional execution cannot establish Wally timing, DDR training, pin correctness or a DMA coherency guarantee. RTL simulation exposes those logical interfaces but may be too slow for a full distribution boot. Select a minimal kernel/initramfs and retain staged checkpoints to keep failures local.
 

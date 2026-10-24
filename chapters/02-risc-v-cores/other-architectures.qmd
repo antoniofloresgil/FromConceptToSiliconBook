@@ -18,6 +18,8 @@ The **instruction set architecture** specifies programmer-visible instructions a
 | Can it fit this FPGA? | RTL plus target implementation | LUT, BRAM, DSP, clocking, routing |
 | Can it be integrated with our SoC? | Interfaces and system contracts | Reset, bus, interrupt, debug, address map |
 
+: Questions that separate ISA, microarchitecture and platform {#tbl-other-architectures-questions-separate-isa-microarchitecture}
+
 Even `RV32IMC` is insufficient as a whole-system description. A board needs a reset vector, executable memory, a console path and usually timers and interrupt wiring. A core that handles traps in its own unconventional way may execute simple programs but need extra work to support a conventional software stack. Conversely, a core can implement a rich privileged ISA while a reduced demonstration configuration omits the surrounding platform.
 
 The Wally datapath in the preceding chapter is explicitly pedagogical: it omits traps and privileged modes. The full CORE-V Wally repository is a configurable processor with substantially more features. This chapter names which of those two objects is being compared. The five-stage **teaching pipeline** is useful for datapath reasoning; a **full Wally configuration** is required for system-level feature comparisons [@cvwRepository].
@@ -36,6 +38,8 @@ Before selecting a core, define a comparison sheet with the same fields for ever
 | Implementation | Source language, generator, dependencies, timing and area? |
 | Evidence | Version, tested configurations, tests, workload, silicon/FPGA status? |
 
+: Axes of the core comparison sheet {#tbl-other-architectures-axes-core-comparison-sheet}
+
 These axes are connected. A two-stage core can have a high clock frequency yet execute a load in several cycles. A wider out-of-order machine can retire more than one instruction per cycle but use much more logic and power. A core with a superb front end will still stall if its memory system cannot supply instructions. The useful performance quantity for a fixed program is approximately
 
 $$
@@ -49,7 +53,7 @@ where the instruction count, CPI and achievable clock frequency all depend on co
 
 In @fig-core-organizations, locate where an instruction waits for operands or memory before comparing frequency. The OoO organization in @fig-ooo-window adds readiness-based issue and ordered retirement; it is not another row with directly comparable stage latency.
 
-The following table gives **design intent**, not a benchmark result. Exact supported features depend on the selected commit and configuration.
+@tbl-other-architectures-design-intent-compared-cores gives **design intent**, not a benchmark result. Exact supported features depend on the selected commit and configuration.
 
 | Core | Main design intent | Execution style | RTL description | What it teaches |
 |---|---|---|---|---|
@@ -60,6 +64,8 @@ The following table gives **design intent**, not a benchmark result. Exact suppo
 | CVA6 | Application-oriented core | Single issue, in-order issue/commit | SystemVerilog | Long-latency units and privileged software |
 | BOOM | Research/academic high performance | Superscalar out-of-order | Chisel | Rename, issue queues and reorder buffer |
 | XiangShan | High-performance open processor | Wide out-of-order | Chisel | Industrial-scale generator and verification |
+
+: Design intent of the compared cores {#tbl-other-architectures-design-intent-compared-cores}
 
 Do not read “more stages” as “better.” Pipeline depth, issue width, target frequency and memory organization answer different bottlenecks. A small controller for a UART and GPIO can be more appropriate than a wide out-of-order core even if the latter runs a benchmark faster.
 
@@ -159,6 +165,8 @@ This does **not** make CVA6 a general out-of-order-issue core. Issue remains in 
 | In-order issue | Instructions enter execution according to program order |
 | Out-of-order completion | Functional units return results at different times |
 | In-order commit | Architectural effects become visible in program order |
+
+: Properties of CVA6 issue order {#tbl-other-architectures-properties-cva6-issue-order}
 
 This separation helps explain why scoreboards and commit logic exist before introducing register renaming and issue queues. A core can accept long-latency units without being a superscalar out-of-order processor.
 
@@ -323,6 +331,8 @@ One universal benchmark matrix would be unfair. PicoRV32, Ibex and CV32E40P can 
 | Application RV64 | Common user-space workloads and OS image | IPC/CPI, misses, throughput | Large platform and compiler differences |
 | Microarchitecture lesson | Hand-constructed dependency sequences | Stage/window behavior | Explains mechanism, not application speed |
 
+: Comparison groups, common work and caveats {#tbl-other-architectures-comparison-groups-common-work}
+
 Use the lowest shared ISA subset when the objective is to compare core execution. If the purpose is to evaluate a core's extension, add a second, clearly labeled run using its optimized binary. Mixing standard and custom binaries in one performance ranking attributes compiler and ISA differences to the pipeline.
 
 ### A controlled RV32 experiment
@@ -352,7 +362,9 @@ One benchmark can reward an architectural accident. A more informative suite del
 | Pointer chase | Dependent memory latency | Load-to-use delay, miss service time |
 | Independent array streams | Memory bandwidth/concurrency | Outstanding requests, cache misses, bytes/cycle |
 
-@fig-cores-workload-bottlenecks restates the table of four workloads.
+: Four workloads, their dominant pressure and the signal to examine {#tbl-other-architectures-four-workloads-dominant-pressure}
+
+@fig-cores-workload-bottlenecks restates @tbl-other-architectures-four-workloads-dominant-pressure.
 
 ![Four workloads and the pressure each one puts on a core, with the signal to examine: dependencies, branch recovery, dependent memory latency and independent memory streams.](../../figures/cores-workload-bottlenecks.svg){#fig-cores-workload-bottlenecks width=100% fig-alt="Four workloads linked to a dominant pressure and a signal to examine"}
 
@@ -399,6 +411,8 @@ The manifest belongs beside logs and generated reports. If the synthesis tool ch
 |---|---|---|---|---:|---:|---:|---|---|
 | Candidate A | RV32I | array reduction | yes/no | measured | measured | computed | measured | Memory latency stated |
 | Candidate B | RV32I | same binary | yes/no | measured | measured | computed | measured | Same constraints |
+
+: Template for the results table of a core comparison {#tbl-other-architectures-template-results-table-core}
 
 When a measurement is missing, leave the gap visible instead of filling it with a marketing number from another FPGA, process or workload. A published benchmark is a good source of hypotheses, but the comparative conclusion has to come from the controlled experiment.
 

@@ -46,6 +46,8 @@ The bus connects the processor to a controller; UART or SPI connects that contro
 | Pads/board | Pin direction, voltage standard, constraints and connections |
 | Software | Initialization, ownership, buffering and recovery |
 
+: Layers of a peripheral and the contract of each {#tbl-peripherals-layers-peripheral-contract}
+
 Start with a register specification and timing diagrams before integrating a processor. A standalone bus testbench and external-device model make defects easier to localize than a full software workload that fails silently.
 
 ### Registers are not ordinary RAM {#registers-are-not-ordinary-ram}
@@ -60,6 +62,8 @@ Control registers configure future behavior. Status registers expose device stat
 | W1C | GPIO pending bits | Write only the events being acknowledged |
 | Read-to-consume | UART/SPI receive data | Save the result of the first successful read |
 | Banked address | UART divisor/data selection | Serialize reconfiguration and normal access |
+
+: Register behaviors and their driver implication {#tbl-peripherals-register-behaviors-driver-implication}
 
 Read-modify-write can lose an update if an interrupt handler changes the same register between the read and write. Set/clear aliases provide atomic bit operations when implemented; otherwise software needs a critical section or another ownership rule. A C `volatile` qualifier does not make a read-modify-write sequence atomic.
 
@@ -134,6 +138,8 @@ Measure generated bit periods in simulation. A divider counting zero through N i
 | Overrun | New data arrives without enough receive capacity | Define which data is lost and record the loss |
 | Break | Line remains low across a prolonged frame interval | Distinguish from a normal zero byte |
 
+: UART error conditions, their meaning and the required policy {#tbl-peripherals-uart-error-conditions-meaning}
+
 An RX FIFO decouples wire arrival from processor service. A TX FIFO decouples software writes from serialization. Their usable capacities and full/empty definitions must be checked, not inferred only from array declarations.
 
 A generic sixteen-byte FIFO at continuous 115,200-baud 8N1 traffic fills from empty in roughly 1.39 ms. If an interrupt is raised with twelve occupied entries, only four byte times—about 347 microseconds—remain before capacity is exhausted, ignoring bytes already in flight. Budget interrupt masking, arbitration, handler entry and actual service time.
@@ -168,6 +174,8 @@ Different devices share clock/data-out lines when separate selects isolate them.
 | 1 | 0 | 1 | Trailing, falling | Leading, rising |
 | 2 | 1 | 0 | Leading, falling | Trailing, rising |
 | 3 | 1 | 1 | Trailing, rising | Leading, falling |
+
+: SPI modes with clock polarity, phase and edges {#tbl-peripherals-spi-modes-clock-polarity}
 
 @fig-peripherals-spi-modes shows the sample and shift edges of the four modes.
 
@@ -240,6 +248,8 @@ The uncore decodes physical regions and connects its AHB–APB bridge to enabled
 | `src/uncore/pwm_apb.sv` | PWM counter, comparators and events |
 | `src/uncore/uncore.sv` | System wiring and conditional instantiation |
 
+: Wally APB peripheral sources and their responsibilities {#tbl-peripherals-wally-apb-peripheral-sources}
+
 GPIO_SUPPORTED, UART_SUPPORTED, SPI_SUPPORTED, SDC_SUPPORTED and PWM_SUPPORTED are configuration decisions. Base addresses, GPIO function routing and PLIC IDs must agree with firmware. A disabled block does not become available because a driver writes its usual address.
 
 ### GPIO registers and implementation limits
@@ -259,6 +269,8 @@ The book's representative GPIO base is 0x10060000. Important offsets in Wally in
 | `0x38`, `0x3C` | iof_en, iof_sel | Alternate-function routing |
 | `0x40` | out_xor | Output polarity inversion |
 
+: GPIO registers and their purpose {#tbl-peripherals-gpio-registers-purpose}
+
 The inspected RTL implements these event paths despite an older header comment suggesting otherwise. Its pending clear branch takes precedence over event setting during that write. Pull-up/drive-strength features listed in the related device family map are not automatically implemented here. Use actual statements and backend wiring as evidence [@cvwGpio].
 
 For a GPIO-only application, configure safe output values before output enables, enable monitored inputs, clear unwanted startup events and then enable selected local/PLIC/CPU interrupt gates. With pin muxing, record which peripheral owns each pin and what reset returns it to.
@@ -277,6 +289,8 @@ This eight-pin module implements a rising-event GPIO subset. It uses 32-bit APB 
 | `0x1C` | Read/W1C | Rising pending; new event wins over clear |
 | `0x44` | WO | Set selected OUTPUT_VAL bits |
 | `0x48` | WO | Clear selected OUTPUT_VAL bits |
+
+: Registers of the teaching APB GPIO {#tbl-peripherals-registers-teaching-apb-gpio}
 
 Unaligned/unknown offsets and disallowed read/write directions return PSLVERR. Upper data bits are reserved; other byte strobes have no effect. The block has no falling/level event modes, debounce or alternate-function mux. PinOut and PinEnable connect separately to the top-level I/O implementation.
 
@@ -431,6 +445,8 @@ Wally's UART register bank is byte-addressed at the book's representative base 0
 | `6` | MSR | Modem status and change indicators |
 | `7` | SCR | Scratch register |
 
+: Wally 16550-style UART registers {#tbl-peripherals-wally-16550-style-uart}
+
 The correct 8N1 value is LCR=0x03; setting DLAB while retaining 8N1 gives 0x83. A one-bit error here can redirect an intended data write to the wrong register bank, so take the value from the RTL and register definition and not from an ambiguous binary literal [@harrisRiscvSoc; @cvwUart].
 
 The inspected UART provides framing, synchronization, FIFO and interrupt logic. THRE indicates holding/FIFO readiness, while TEMT also accounts for the shift register. Reads of status/identification/data can have side effects, so an interrupt handler must preserve and act on its observations [@cvwUart].
@@ -506,6 +522,8 @@ The inspected SPI is SiFive-style, with clock/phase controls, four selects, adju
 | `0x48`, `0x4C` | txdata, rxdata | TX full / RX empty in bit 31; data in low byte |
 | `0x50`, `0x54` | txmark, rxmark | FIFO watermarks |
 | `0x70`, `0x74` | ie, ip | Bit 0 TX watermark; bit 1 RX watermark |
+
+: Wally SPI registers and their use {#tbl-peripherals-wally-spi-registers-use}
 
 For an eight-bit MSB-first mode-0 transfer, configure the supported frame format, divider and selection before queuing data. Use 32-bit accesses. The example below assumes the receive FIFO has no stale frames and one driver owns the controller; it builds on MMIO32/io_fence above.
 
@@ -600,6 +618,8 @@ Save the teaching modules in a local experiment directory. For GPIO, use an APB 
 | Input rises while local IRQ disabled | Pending retained if input capture enabled |
 | Enable local IRQ later | Retained pending event requests service |
 | Event coincides with W1C | New event preserved in teaching module |
+
+: Cases of the register and GPIO experiment {#tbl-peripherals-cases-register-gpio-experiment}
 
 Change PinIn away from clock edges and wait for the defined synchronizer/history latency. Repeat with bounce-like input sequences. Count sampled events, because not every external transition is captured. Compare the clear-race case with Wally's actual RTL and document the different policy.
 

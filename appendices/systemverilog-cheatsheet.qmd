@@ -24,6 +24,8 @@ The following tables focus on common RTL and verification constructs. Examples a
 | `interface`, `endinterface` | Bundle related interface signals. Check frontend support. | `interface link; logic Valid, Ready; endinterface` |
 | `modport` | Describe access directions through an interface view. | `modport sender(output Valid, input Ready);` inside `link` |
 
+: Keywords for modules, types and configuration {#tbl-systemverilog-cheatsheet-keywords-modules-types-configuration}
+
 ## Processes, decisions, and replication
 
 | Keyword(s) | Explanation | Small use case |
@@ -52,6 +54,8 @@ The following tables focus on common RTL and verification constructs. Examples a
 | `task`, `endtask` | Reusable procedure; testbench tasks may consume time. | `task automatic wait_edge; @(posedge clk); endtask` |
 | `automatic` | Give each call its own local storage. | `task automatic send(input logic [7:0] Value); ... endtask` |
 
+: Keywords for processes, decisions and replication {#tbl-systemverilog-cheatsheet-keywords-processes-decisions-replication}
+
 ## Verification
 
 | Keyword(s) | Explanation | Small use case |
@@ -65,6 +69,8 @@ The following tables focus on common RTL and verification constructs. Examples a
 | `class`, `endclass` | Define a verification object type; normally not synthesizable. | `class transaction; rand bit [7:0] Data; endclass` |
 | `rand`, `constraint` | Declare randomized fields and legal-value constraints. | `rand bit [3:0] Length; constraint range_c { Length inside {[1:8]}; }` inside a class |
 | `inside` | Test membership in a set or range. | `assert (Mode inside {2'd0, 2'd1});` |
+
+: Keywords for verification {#tbl-systemverilog-cheatsheet-keywords-verification}
 
 ## Number formats
 
@@ -85,6 +91,8 @@ Sized integer literals use the format `<width>'[s]<base><digits>`. The width is 
 | `8'b10xx_zz01` | A sized binary pattern containing unknown and high-impedance digits. | Use in four-state simulation to investigate initialization or bus behavior |
 | `3.125`, `2.5e-3` | Real-number literals; normally used in testbenches and calculations rather than RTL datapaths. | `real Period = 2.5e-3;` |
 | `10ns`, `250ps` | Time literals with explicit units; rounding depends on the enclosing time precision. | `#10ns;` in a testbench |
+
+: Number formats {#tbl-systemverilog-cheatsheet-number-formats}
 
 Size is not the same as value: `8'd255` is 255, while `8'shFF` has the same eight bits but is signed -1. Values that do not fit their specified width lose their most significant bits; for example, `4'h1F` truncates to `4'hF` and should trigger a tool warning. When a value is assigned to a wider destination, extension depends on expression width and signedness. Use explicit widths, types, and casts when combining signed and unsigned operands.
 
@@ -108,5 +116,7 @@ Directives begin with a backtick; system functions/tasks begin with `$`. Operato
 | `$readmemh` | Load hexadecimal values into a memory model; synthesis support varies. | `initial $readmemh("image.hex", Memory);` |
 | `$stable` | Sampled-value stability test in an assertion. | `Valid && !Ready \|=> $stable(Data)` |
 | backtick `include`, `define`, `ifdef` | Source insertion, textual macros, and conditional preprocessing. | A backtick `include` followed by `"config.svh"` |
+
+: Common syntax that is not a reserved keyword {#tbl-systemverilog-cheatsheet-common-syntax-not-reserved}
 
 Wally's coding style deliberately uses a narrower subset than this table. In particular, a synthesizable function is legal SystemVerilog even when a project's style favors modules instead. Verify tool support and project conventions separately.

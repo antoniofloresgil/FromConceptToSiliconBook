@@ -20,6 +20,8 @@ Start every experiment with a question and a boundary. Examples are:
 | Does division dominate? | divide-busy cycles, `instret` | fraction of elapsed execution occupied |
 | Did a compiler option change code quality? | `instret`, cycles, code size | instructions/work item and CPI |
 
+: Measurement questions, minimum measurements and derived quantities {#tbl-pmu-measurement-questions-minimum-measurements}
+
 A counter has no meaning without a definition. “Cache miss” may mean a request that starts a miss, every cycle during refill, a writeback, or a request later squashed by a pipeline flush. Define the event at a pipeline boundary and specify whether it is counted once per occurrence or once per cycle.
 
 ### Counters are observations, not the workload
@@ -43,6 +45,8 @@ RISC-V defines three base counter names in the unprivileged CSR space:
 | `cycle` (`0xC00`) | `mcycle` (`0xB00`) | Cycle counter |
 | `time` (`0xC01`) | — | Shadow of the platform timer, not a PMU event counter |
 | `instret` (`0xC02`) | `minstret` (`0xB02`) | Retired-instruction counter |
+
+: Unprivileged and machine counter CSRs {#tbl-pmu-unprivileged-machine-counter-csrs}
 
 `Zicntr` identifies the base counter extension. On RV32, the corresponding `cycleh` and `instreth` CSRs expose the upper 32 bits; software must use a stable high-low-high read sequence to obtain a coherent 64-bit value. On RV64, a single CSR read provides the 64-bit value. `time` reflects the platform timebase and need not run at core-clock frequency, so it is a different quantity from `cycle`.
 
@@ -123,6 +127,8 @@ For FPGA experiments, the target should be explicit:
 | Interactive lab demonstration | Selected counters shown through UART or LEDs, not raw wide values |
 | Post-silicon/system profiling | Documented PMU ABI plus debug/trace transport and access control |
 
+: Collection methods for each FPGA experiment target {#tbl-pmu-collection-methods-fpga-experiment}
+
 ## Proposed FPGA PMU for Wally
 
 The following is an integration plan and says nothing about the current upstream FPGA bitstream. It keeps Wally's existing CSR machinery where possible and adds only the missing configuration, semantics and export path.
@@ -138,6 +144,8 @@ For the Nexys Video prototype, begin with five 64-bit counters:
 | `mhpmcounter3` | Branch predictor wrong | Control-flow quality |
 | `mhpmcounter4` | D-cache miss or D-cache stall cycles | Data-memory bottleneck |
 | `mhpmcounter5` | I-cache miss or I-cache stall cycles | Instruction-supply bottleneck |
+
+: Counters of the proposed PMU profile and their rationale {#tbl-pmu-counters-proposed-pmu-profile}
 
 Use `COUNTERS=6` for this minimal profile. If cache or branch prediction is disabled, map the corresponding slot to zero and document that choice; reusing an event number silently would mislead. A 64-bit physical counter avoids frequent wraparound on an FPGA, although an RV32 core still accesses it through low/high CSR halves.
 
@@ -248,6 +256,8 @@ Verify semantics before running a benchmark. A concise test matrix is:
 | CSR software write | Written counter value is visible at the correct boundary |
 | RV32 carry | Low-half wrap increments high half; stable read works |
 | Lower privilege read | Allowed or traps according to `mcounteren`/`scounteren` |
+
+: Directed RTL test cases and their expected result {#tbl-pmu-directed-rtl-test-cases}
 
 Add SystemVerilog assertions for invariants such as “an inhibited counter does not change except on its permitted CSR write” and “a generic counter cannot increment when its selector is zero.” Compare event totals with a reference scoreboard driven from the same defined pipeline events, not from ad hoc waveform observations.
 

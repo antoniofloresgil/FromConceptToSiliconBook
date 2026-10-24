@@ -14,6 +14,8 @@ Treat multicore integration as a set of contracts across boundaries. Three quest
 | Memory ordering | Which visibility and completion relationships are required across different accesses? | Coherence of each individual cache line |
 | Software synchronization | Who may access/reuse an object, and how is that permission communicated? | A coherent interconnect without an ownership protocol |
 
+: Integration questions, what the design must state and the mechanism that answers {#tbl-multicore-integration-integration-questions-design-must}
+
 The running example has two harts and the book's signed dot-product accelerator. Hart 0 produces a job, hart 1 submits it, and DMA reads operands and writes the result in shared memory. The engineering question is whether every transition has a justified visibility, ordering and lifetime rule. The answer depends on the actual agents and paths, not on the number of CPUs in a configuration file.
 
 ## Multicore integration challenges {#multicore-integration-challenges}
@@ -66,6 +68,8 @@ Ordinary AXI4 carries reads and writes with independent channels and ordering ru
 | ID or width adapter | Can split/merged transactions be reconstructed without aliasing? | Outstanding-ID scoreboard and boundary cases |
 | Clock/reset crossing | Which state and credits survive a partial reset? | CDC/reset analysis plus interrupted-transaction tests |
 
+: Boundaries to review for TileLink, AXI and CHI {#tbl-multicore-integration-boundaries-review-tilelink-axi}
+
 Avoid making an adapter silently stronger than its implementation. Adding an attribute bit cannot create missing probe channels or a home-node directory. Likewise, declaring a request cacheable is not the same as making its requester a participant in the coherence protocol. At the software boundary, `dma-coherent` is a statement about the supplied platform contract; adding it to Device Tree does not implement that contract.
 
 ### Arbitration and physical topology interact
@@ -96,7 +100,9 @@ Suppose memory initially contains operand value 0. Hart 0 changes it to 7 and re
 | Incorrect launch | Retain the dirty line | Order MMIO start after earlier accesses | DMA can still read RAM value 0 |
 | Repaired handoff | Complete the required platform visibility action | Launch only after ownership transfer completes | DMA reads 7 at the defined observation point |
 
-@fig-multicore-dirty-input-trace draws the table above as a trace in time.
+: Steps of the dirty-input failure across two harts {#tbl-multicore-integration-steps-dirty-input-failure}
+
+@fig-multicore-dirty-input-trace draws @tbl-multicore-integration-steps-dirty-input-failure as a trace in time.
 
 ![The dirty-input failure of this section. Hart 0 stores operand 7 and keeps the line dirty, hart 1 can read 7 through the CPU coherence mechanism, and a non-snooping DMA read still returns the old 0 from RAM. The repair completes the platform visibility action before the doorbell. The figure is conceptual and does not model a specific cache.](../../figures/multicore-dirty-input-trace.svg){#fig-multicore-dirty-input-trace width=100% fig-alt="A grid of hart 0, hart 1 and RAM or DMA over five steps, with the wrong read of 0 highlighted and the repaired read of 7"}
 
@@ -128,6 +134,8 @@ The resulting value can depend on eviction timing, so a small test may appear to
 | Output payload | Device | CPU must obey the selected visibility/ownership policy | Completion and synchronization for CPU consumption |
 | Submission metadata | Submission owner until published | Device reads only after publication | Descriptor retired or explicitly reclaimed |
 | CPU-only queue state | CPU participants under software synchronization | Keep it outside independently maintained device payload lines | Its own release/acquire or lock protocol |
+
+: Ownership of buffer objects during the device interval {#tbl-multicore-integration-ownership-buffer-objects-during}
 
 ### Use platform DMA APIs rather than instruction recipes
 
@@ -231,6 +239,8 @@ Test the integration contract at more than one level. A coherence-controller uni
 | Error and recovery | Fail a response, delay an interrupt, reset an owner | Error drains safely or remains explicitly quarantined |
 | System management | Start/stop a hart or move interrupt affinity | No abandoned request or unserviceable completion |
 
+: Verification matrix of boundaries, experiments and observable evidence {#tbl-multicore-integration-verification-matrix-boundaries-experiments}
+
 Use acceptance-based scoreboards. A requested transfer does not enter the outstanding set until accepted. A result is not retired until the specified completion point. Track source/transaction identity across adapters and include generation when the interface provides one. If a response is legal out of order, compare by identity, because FIFO return order may not hold.
 
 The numerical oracle must remain independent of descriptor/control code. Give simultaneous clients distinct data patterns so that swapped results cannot pass by coincidence. Vary lengths, signed extrema, operand strides and reuse. Keep at least one case whose output differs strongly from initialized memory and from the previous job; repeated zero results are a poor stale-data detector.
@@ -276,6 +286,8 @@ Use matched configurations and a fixed workload. Record affinity, worker count, 
 | One hart progresses and another rarely does | Affinity, priority or eligibility | Inspect grant counts and interrupt/service routing |
 | Average latency improves but deadline misses rise | Contention bursts or long ownership handoffs | Measure tails under the declared interference workload |
 
+: Observations, candidate bottlenecks and next controlled experiment {#tbl-multicore-integration-observations-candidate-bottlenecks-next}
+
 A useful first accounting model is:
 
 $$
@@ -312,6 +324,8 @@ The application then exercises two concurrent callers with 16 private jobs per C
 | 96 independent numerical/status checks | Correct modeled DMA jobs across handoff and contending-call phases | RTL coherence/probe-channel correctness |
 | Exact DMA transaction totals | No missing/extra modeled operand/result transfers | Physical bus timing and retries |
 | Emulator elapsed intervals | The observed software/model run | Hardware speedup, cache-miss latency or energy |
+
+: Evidence of Experiment A and what remains outside it {#tbl-multicore-integration-evidence-experiment-remains-outside}
 
 The userspace shared job is not a zero-copy DMA buffer. The driver copies operands into its kernel-owned DMA allocation and copies the result back. This distinction is essential: the live run checks the software ownership/driver path, while the stale-cache examples belong to the separate explicit models. QEMU's shared-RAM device accesses do not create real private-cache dirty-owner scenarios.
 

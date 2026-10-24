@@ -11,6 +11,7 @@ duplicating those decisions or the executable recipes.
 | --- | --- |
 | Book order, formats, resources, date and PDF download | [`_quarto.yml`](../_quarto.yml); retain `date: today` and the HTML PDF-download entry |
 | Editorial identity, page layout, selected artwork and generated PDF/HTML styles | [`palette.json`](../design/identity/palette.json), [`pdf-layout.json`](../design/identity/pdf-layout.json), [`selected-artwork.json`](../design/identity/selected-artwork.json) and [`styles/templates/`](../styles/templates/) via [`identity.py`](../tools/design/identity.py); see the [template guide](../styles/README.md). PDF structure uses the maintained `styles/` template partials and [`pdf-structure.lua`](../tools/book/pdf-structure.lua). See the [identity guide](../design/identity/README.md) |
+| Table captions and `@tbl-` references | `: Caption {#tbl-name}` after each pipe table, checked by [`check_tables.py`](../tools/book/check_tables.py); name tables by what they show, not by position |
 | Activity IDs, visible role/compute labels and activity CSV | [`learning-paths.json`](../tools/book/learning-paths.json) and [`learning_paths.py`](../tools/book/learning_paths.py) |
 | Glossary, term/lab indexes and experiment matrix | [`reference-data.json`](../tools/book/reference-data.json) and [`reference.py`](../tools/book/reference.py) |
 | Runnable chapter listings and lab catalogue | [`catalog.py`](../labs/tools/catalog.py), referenced QMD listings and lab source files |

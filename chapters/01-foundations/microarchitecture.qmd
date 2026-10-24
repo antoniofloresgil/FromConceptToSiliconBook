@@ -35,6 +35,8 @@ This is not a sequencing diagram. It does not require a physical adder for each 
 | Cache tags and valid bits | Manage copies in the memory hierarchy |
 | Pending-response flag | Tracks transport work not yet consumed |
 
+: Architectural and implementation state of a teaching core {#tbl-microarchitecture-architectural-implementation-state-teaching}
+
 A physical PC register might temporarily hold a predicted address while another register records the retiring instruction's PC. To compare with a sequential reference, pick the architectural observation point deliberately; the internal signal that happens to be called PC is rarely it.
 
 Implementation state is still essential to correctness. Resetting an FSM while leaving a valid pending write can create an unintended effect. Conversely, the base ISA does not require reset to clear the whole register file, so startup software should not depend on whatever the registers happen to contain.
@@ -64,7 +66,9 @@ A controller does more than choose an ALU operation. It determines which instruc
 | Branch | Register comparison | Target or sequential PC | PC update |
 | Jump | PC-relative or register-relative target | Link address | PC and optional register update |
 
-The table should also contain legality and exception decisions in a complete design. An unsupported opcode needs its own defined response, because otherwise it inherits stale controls from an earlier instruction. Defaulting every unrecognized encoding to addition is tempting: the decoder looks functional while quietly doing the wrong thing.
+: Operand selection, result selection and side effect by instruction category {#tbl-microarchitecture-operand-selection-result-selection}
+
+@tbl-microarchitecture-operand-selection-result-selection should also contain legality and exception decisions in a complete design. An unsupported opcode needs its own defined response, because otherwise it inherits stale controls from an earlier instruction. Defaulting every unrecognized encoding to addition is tempting: the decoder looks functional while quietly doing the wrong thing.
 
 Control signals that cause writes require particularly careful defaults. A combinational block with an omitted output assignment can infer a latch; stale `memory_write` is more damaging than stale temporary arithmetic data. Keep an explicit instruction-valid condition attached to side effects.
 
@@ -107,6 +111,8 @@ One possible controller uses the following phases. It is an illustrative schedul
 | Data request | Present a load/store transaction once | Request accepted |
 | Data wait | Await data or write completion | Response accepted |
 | Commit | Apply permitted architectural updates | Return to fetch |
+
+: Phases of the illustrative multicycle controller {#tbl-microarchitecture-phases-illustrative-multicycle-controller}
 
 ALU instructions can skip the data phases. A variable-latency unit can extend execute. The fetch path can use the same transport discipline as a data access while retaining different ownership metadata.
 
@@ -328,6 +334,8 @@ A practical integration table records the destination register, instruction PC, 
 | Combinational unit | Input/output checks, including width extremes | Does not exercise transaction scheduling |
 | Sequential unit | Handshake, reset and retained-result tests | Does not prove instruction decode or retirement |
 | Architectural execution | Committed effects compared with a reference | Needs platform modelling and observation rules |
+
+: Verification boundaries of a microarchitecture, with evidence and limit {#tbl-microarchitecture-verification-boundaries-microarchitecture-evidence}
 
 The simulation chapters provide tools for these checks. The later synthesis and physical flows show that a verified behavioral implementation is also realizable under constraints. Passing one boundary does not silently certify the others.
 

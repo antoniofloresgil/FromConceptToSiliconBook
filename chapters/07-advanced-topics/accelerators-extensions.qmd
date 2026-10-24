@@ -25,6 +25,8 @@ There are several places to accelerate a computation:
 | MMIO accelerator | Longer job with explicit control | Driver, transfer and synchronization overhead |
 | DMA-capable accelerator | Large streaming buffers | Memory arbitration, coherence and protection |
 
+: Places to accelerate a computation, best use and main cost {#tbl-accelerators-extensions-places-accelerate-computation-best}
+
 @fig-accel-design-space orders the choices by how far the work leaves the core.
 
 ![The six places to accelerate a computation, the work each one suits and its main cost. The list runs from no hardware change to a DMA-capable bus master, and a longer job with larger buffers moves down it.](../../figures/accel-design-space.svg){#fig-accel-design-space width=100% fig-alt="Six rows from compiler or algorithm to DMA-capable accelerator with what each suits and what it costs"}
@@ -58,6 +60,8 @@ RISC-V extensions express a software-visible contract that compilers, operating 
 | `V` / `Zve*` | Explicit vector data parallelism |
 | Scalar/vector crypto extensions | Common cryptographic transforms with defined semantics |
 | CMO extensions | Cache-management operations where platform support exists |
+
+: Standard extension families and their relevance to acceleration {#tbl-accelerators-extensions-standard-extension-families-relevance}
 
 Using a ratified extension avoids inventing assembler syntax, compiler intrinsics, ABI conventions and debugger behavior. It also means that a binary advertises its requirements through the standard ISA naming conventions [@riscvIsaNaming]. The trade-off is implementation scope: adding `V`, for example, entails vector registers, vector state, traps, context handling and a substantial verification task.
 
@@ -165,6 +169,8 @@ The accelerator needs a base address, register map, access widths, reset values 
 | `0x18` | `NTAPS` | RW | Number of coefficients |
 | `0x1C` | `IRQ_STATUS` | RO/W1C | Completion/error cause |
 
+: Registers of the accelerator peripheral contract {#tbl-accelerators-extensions-registers-accelerator-peripheral-contract}
+
 `START` must be specified as write-one-to-start and accepted only while idle. A write while `BUSY` either returns an error or is ignored; choose one behavior and test it. `DONE` is sticky until software clears it, allowing polling code to observe a short completion pulse. Define address alignment and maximum length in the hardware contract instead of allowing an implementation-dependent wraparound.
 
 ### Bus integration in Wally
@@ -235,6 +241,8 @@ For a first single-core FPGA prototype, choose one of these explicit policies:
 | Software clean/invalidate protocol | Reuses normal memory | Error-prone; needs cache-maintenance support |
 | Hardware-coherent DMA | Best programming model | Substantial cache/interconnect complexity |
 
+: Cache policies for DMA buffers, advantages and costs {#tbl-accelerators-extensions-cache-policies-dma-buffers}
+
 A `fence` orders accesses and neither writes dirty cache lines back nor invalidates stale data; ordering and cache maintenance are separate concerns. If cache-management instructions are implemented, define the required clean/invalidate sequence for the exact Wally configuration. For the first FIR prototype, on-chip uncached memory or a D-cache-disabled configuration is the most straightforward correctness baseline.
 
 ### Address translation and protection
@@ -295,6 +303,8 @@ Split the design into three modules:
 | `fir_regs` | Bus protocol, registers, status and interrupt bits |
 | `fir_engine` | FSM, arithmetic and descriptor validation |
 | `fir_dma` | Read/write master protocol, responses and error conversion |
+
+: Modules of the FIR accelerator and their responsibility {#tbl-accelerators-extensions-modules-fir-accelerator-responsibility}
 
 Use ready/valid handshakes across module boundaries. The engine issues a read request only when it can accept the response; the DMA retains address/control until accepted; the response carries valid data/error exactly once. Avoid a combinational path from downstream ready back to a source that already depends on it through the FSM.
 
@@ -366,6 +376,8 @@ The proposed FIR peripheral does not require altering Wally's ISA or pipeline. I
 | FPGA top | Include the RTL source manifest; no new board pins are needed for an internal accelerator |
 | Verification | Add unit, bus, SoC and software tests to the normal regression |
 
+: Changes to a Wally-based SoC for the FIR peripheral {#tbl-accelerators-extensions-changes-wally-based-soc}
+
 If the selected Wally configuration has a cache, locate the DMA path on the physical memory side and document its coherence policy. If it has no cache, the first integration avoids a major class of bugs but must still handle normal bus arbitration and response errors. A physical address decodes either to accelerator registers or to ordinary RAM, never to both.
 
 For an optional custom `dot2` instruction, changes instead concentrate in the core: instruction decode, execute control, result mux, pipeline control, forwarding, hazard logic, illegal-instruction decode and instruction tests. Keep the FIR peripheral and `dot2` experiment in different configuration flags. This makes it possible to quantify the benefit/cost of each strategy independently.
@@ -382,6 +394,8 @@ Measure four intervals separately:
 | Engine active | `START` accepted to `DONE` sticky | DMA and compute throughput |
 | Interrupt handling | `DONE` to driver completion | scheduling and ISR overhead |
 | Whole application | input ready to output consumed | user-visible benefit |
+
+: Intervals to measure for an accelerated job and what each diagnoses {#tbl-accelerators-extensions-intervals-measure-accelerated-job}
 
 @fig-accel-measured-intervals places the four intervals on one job.
 
@@ -414,6 +428,8 @@ The correct next step is the one indicated by counters. If PMU data shows bus st
 | SoC integration | Address decode, interrupt routing, cache policy and driver test |
 | FPGA | Resource use, timing closure, UART result and repeated board execution |
 
+: Levels of the layered verification plan and their evidence {#tbl-accelerators-extensions-levels-layered-verification-plan}
+
 Assertions should encode protocol invariants. Examples: a busy engine cannot accept `START`; `DONE` remains asserted until cleared; every accepted DMA read has at most one response; and an error suppresses later output writes. Randomize memory latency and inject errors in simulation. A design that works only with zero-latency memory is not a DMA engine.
 
 ### Test software is part of the IP
@@ -442,6 +458,8 @@ Before creating a bitstream, review the accelerator as a system component:
 | Is the core still correct under stalls? | SoC regression with randomized responses |
 | Is FPGA timing acceptable? | Yosys and nextpnr reports versus baseline |
 | Is the result reproducible? | Source/tool/firmware/bitstream hashes |
+
+: Integration review questions for the accelerator and their evidence {#tbl-accelerators-extensions-integration-review-questions-accelerator}
 
 This checklist prevents the common failure mode in which an RTL datapath is correct but its first real workload fails because a status bit, memory barrier or reset transition was unspecified.
 

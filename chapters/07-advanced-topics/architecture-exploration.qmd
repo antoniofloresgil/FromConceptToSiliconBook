@@ -22,6 +22,8 @@ Separate objectives from constraints. Objectives can minimize time, energy per j
 | Integration obligation | Preserve boot/memory/driver interfaces | Platform tests and consistent software contract |
 | Release constraint | Complete applicable checks | Current requirement/evidence dossier |
 
+: Elements of the decision and the evidence each needs {#tbl-architecture-exploration-elements-decision-evidence-needs}
+
 Write a falsifiable hypothesis: increasing divider work per cycle reduces a division-heavy region, but may increase cost or reduce achievable frequency. “A bigger core is faster” changes too many conditions to explain the result.
 
 ### Architecture, microarchitecture and implementation
@@ -57,6 +59,8 @@ Suppose A takes 10,000 cycles at 50 MHz and B takes 8,000 at 35 MHz. Their times
 | Resources / area | Technology-dependent cost | Units, mapping and implementation stage |
 | Energy / power | Energy per work / energy-use rate | Activity, voltage, clock and model/measurement scope |
 | Verification effort | Qualification complexity | Features, regression and integration obligations |
+
+: Performance metrics, their meaning and required qualification {#tbl-architecture-exploration-performance-metrics-meaning-required}
 
 For miss count $M$, $\mathrm{MPKI}=1000M/I$. Miss rate uses accesses instead. Neither captures cost alone, because an overlapped miss and a blocking refill affect execution differently. State whether events are speculative, architectural, per instruction, per beat or per cycle. Stall categories can overlap, so adding them up does not partition execution time.
 
@@ -98,6 +102,8 @@ Start with a predictable mechanism test, then a representative kernel and applic
 | Strided/conflicting access | Mapping and associativity | Stride, sets and translation |
 | Branch-heavy control | Prediction and redirects | Pattern, addresses and code layout |
 | Application/IP workflow | End-to-end interaction | Same useful work and completion policy |
+
+: Workload classes, mechanisms and controls {#tbl-architecture-exploration-workload-classes-mechanisms-controls}
 
 Save compiler options, executable/input hashes and relevant disassembly. Recompile only when part of the comparison, retaining both binaries. Changed instruction mix can explain more than the hardware parameter.
 
@@ -149,6 +155,8 @@ Families can include small uncached RV32, RV32 with a memory hierarchy and riche
 | ISA/XLEN | Base/extensions and `XLEN` | ABI/compiler, numerical and privilege contract |
 | Observation | `COUNTERS` and counter extensions | Event definitions and board access |
 | Platform | Memory/bus/peripheral fields | Boot/map, ownership and clock/reset |
+
+: Configuration axes, Wally controls and the conditions to preserve {#tbl-architecture-exploration-configuration-axes-wally-controls}
 
 A configuration can elaborate yet violate firmware assumptions. A deeper pipeline is an RTL redesign with new hazards/exception obligations, not a ready-made Wally parameter sweep. Account for engineering and verification cost when choosing a feasible course experiment.
 
@@ -226,6 +234,8 @@ These measurements used seed 2026, pinned source and the teaching environment (V
 | 2 | 7,534 | 847 | 8.895 | 1.000 |
 | 4 | 5,550 | 847 | 6.553 | 1.357 |
 
+: Measured results of the divider study {#tbl-architecture-exploration-measured-results-divider-study}
+
 Equal retired counts and one binary support an isolated unit comparison. Reduction agrees with the hypothesis for this operand distribution/ROI. It is not divider-only latency: loads, stores, control and instrumentation remain. Sequential counter reads are not atomic multi-counter capture; this is an instrumented-window CPI.
 
 None is physically implemented by this experiment. The simulation clock says nothing about FPGA frequency, resources, energy or timing closure. Four bits/cycle wins the cycle comparison; the deployable choice remains open until physical costs and application workloads are measured. The finite experiment falls short of complete ISA qualification.
@@ -275,6 +285,8 @@ Membership is not release approval. A nondominated design may violate a worst-wo
 | small-cache | 10,000 / 15,000 / 16,000 | 48 | 23,000 / 60 / 8 |
 | large-cache | 10,000 / 12,000 / 15,000 | 35 | 33,000 / 100 / 8 |
 | too-large | 9,000 / 11,000 / 14,000 | 40 | 55,000 / 160 / 8 |
+
+: Illustrative cache and frequency candidates, with invented data {#tbl-architecture-exploration-illustrative-cache-frequency-candidates}
 
 For memory, small-cache takes 312.5 µs and large-cache about 342.9 µs. Fewer cycles lose their benefit through lower frequency. Illustrative allocated budgets of 50,000 LUT and 150 BRAM reject too-large. These are not device-capacity claims; resource units must match the report.
 

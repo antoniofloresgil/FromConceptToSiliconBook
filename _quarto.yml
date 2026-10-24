@@ -10,6 +10,7 @@ project:
     - python tools/figures/explanatory.py --check
     - python tools/figures/concepts.py --check
     - python tools/figures/print_audit.py --check
+    - python tools/book/check_tables.py
     - python tools/book/learning_paths.py --check --export downloads/learning-activities.csv
     - python tools/book/reference.py
     - python labs/run.py pack

@@ -26,6 +26,8 @@ Functional verification asks whether a design implements its specified behavior.
 | FPGA or first silicon | Does the actual platform operate in the intended environment? | Board tests, bring-up, characterization, measured limits | One device or one operating point is a sample |
 | Manufactured devices | Which individual parts satisfy the production test specification? | Scan/ATPG, memory test, electrical tests and binning | Fault coverage is not functional-specification coverage |
 
+: Verification boundaries, suitable evidence and the limit of each {#tbl-verification-methodology-verification-boundaries-suitable-evidence}
+
 These boundaries form a chain of contracts, and each link needs its own check. A downstream pass cannot make up for a missing upstream obligation: LVS can match the wrong netlist, and a booting FPGA can still hide an arithmetic corner-case defect. The reverse holds too, since a functional PASS says nothing about timing, legal geometry or test access.
 
 ### Write a verification plan before expanding the RTL
@@ -53,6 +55,8 @@ Review the plan for omitted features as well as omitted tests. Ask another reade
 | DP-POLICY | Invalid descriptors produce no DMA traffic | Length, alignment, full-range, wrap and overlap boundaries | ERROR_CODE plus unchanged accepted AR/AW counts |
 | DP-DONE | Success follows both successful result write responses | Independent AW/W stalls and second-write fault | Response scoreboard, DONE assertion and firmware acceptance rule |
 | DP-SYS | Wally controls and receives completion from the IP | Real firmware polling and machine-external interrupt job | CPU result comparison, trap acknowledgement and finish mailbox |
+
+: Example plan entries for the dot-product project {#tbl-verification-methodology-example-plan-entries-dot}
 
 The supplied plan under `labs/verification/` also lists unexecuted equivalence, CDC/RDC, FPGA, physical and manufacturing obligations. An unexecuted row remains visible; a plan is not a certificate of completion.
 
@@ -123,6 +127,8 @@ Coverage measures a defined observation space. It cannot establish that the spec
 | Code/structural coverage | Executed statements/branches, toggles or states, as supported by the tool | Locate implementation behavior that the tests did not exercise |
 | Functional coverage | Contract-defined scenarios and selected crosses | Determine which specified behaviors were reached |
 | Fault coverage | Detected faults in a declared manufacturing fault model | Assess sensitivity of production-test patterns |
+
+: Coverage measures and how to interpret them {#tbl-verification-methodology-coverage-measures-interpret-them}
 
 For the project, functional bins include supported lengths, operand sign classes, address/data arrival order, response stalls, descriptor rejection classes, DMA read/write errors, reset during activity, IRQ acknowledgement and the second reusable configuration. Useful crosses include terminal outcome × interrupt enable, channel order × stall, and descriptor class × traffic suppression. Generating every cross indiscriminately wastes effort, so review which combinations are meaningful and reachable.
 

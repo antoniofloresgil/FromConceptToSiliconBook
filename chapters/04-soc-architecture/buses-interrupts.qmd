@@ -36,6 +36,8 @@ In **memory-mapped I/O (MMIO)**, a peripheral occupies an address region. Ordina
 | GPIO | `0x10060000` | Pin control and event state |
 | Main RAM | `0x80000000` | Program and data storage |
 
+: Representative platform base addresses and their purpose {#tbl-buses-interrupts-representative-platform-base-addresses}
+
 A register table must also state offset, access width, reset value, permissions and side effects. **Read-only**, **read/write** and **write-one-to-clear (W1C)** registers differ: writing one to a W1C bit requests clearing, while writing zero leaves it unchanged. Reading a FIFO data register may consume an entry. Duplicate accesses can therefore corrupt behavior even when the final register value looks correct.
 
 MMIO needs appropriate memory attributes: a speculative read could consume data, and a cache hit could hide a changing device status. C `volatile` helps the compiler but configures neither these attributes nor every hardware ordering requirement. Address decoding does not enforce privilege or protection either, so access checks need explicit hardware.
@@ -52,6 +54,8 @@ A transaction defines what is requested, when it is accepted, when it completes 
 | Completion | Read result or write response | Requester advances prematurely |
 | Status | Success/error | Failure mistaken for valid data |
 | Association | Saved selection, queue entry, ID | Response matched incorrectly |
+
+: Items of a transaction contract and the failure when each is missing {#tbl-buses-interrupts-items-transaction-contract-failure}
 
 **Latency** is time from request to response; **throughput** is completed work per unit time. A memory might return its first word after four cycles and then one word per cycle. A simple peripheral might take two cycles per access and accept no overlap. Bus design has to treat the two separately.
 
@@ -71,6 +75,8 @@ The Advanced Peripheral Bus suits low-bandwidth register interfaces. Each transf
 | `PRDATA`, `PREADY` | Device | Read result and completion |
 | `PSLVERR`, where supported | Device | Error at completion |
 
+: APB signals, their drivers and meaning {#tbl-buses-interrupts-apb-signals-drivers-meaning}
+
 During Setup the controller asserts `PSEL`, drives address, direction and write payload, and leaves `PENABLE` low. In Access it raises `PENABLE`. If `PREADY` is low, it keeps selection and payload stable. Completion occurs on a rising edge with `PSEL`, `PENABLE` and `PREADY` high. Another transfer requires another Setup phase, including a cycle with `PENABLE` low.
 
 Throughout this chapter, each timing-table row describes the interval **before** its numbered sampling edge.
@@ -82,6 +88,8 @@ Throughout this chapter, each timing-table row describes the interval **before**
 | 3 | Access, waiting | 1 | 1 | 0 | Hold payload |
 | 4 | Access, ready | 1 | 1 | 1 | One access completes |
 | 5 | Idle or new Setup | 0 or 1 | 0 | irrelevant | No completion |
+
+: APB timing example with two wait cycles {#tbl-buses-interrupts-apb-timing-example-two}
 
 A straightforward register frontend derives its operation enables from completion:
 
@@ -113,6 +121,8 @@ The Advanced High-performance Bus overlaps consecutive address and data phases. 
 | `HREADY` | Completion selected by interconnect |
 | `HRESP` | Response status |
 
+: AHB signals and their purpose {#tbl-buses-interrupts-ahb-signals-purpose}
+
 The address currently visible can belong to the **next transaction**, while data and completion belong to the previous one. A response multiplexer must retain the accepted selection. Using the live address to select data can return B's response while A still owns the data phase.
 
 | Edge | Address phase | Data phase | `HREADY` | Consequence |
@@ -122,6 +132,8 @@ The address currently visible can belong to the **next transaction**, while data
 | 3 | B, held | A, complete | 1 | Complete A; accept B |
 | 4 | C | B, complete | 1 | Complete B; accept C |
 | 5 | Idle | C, complete | 1 | Complete C |
+
+: AHB pipelined transfers with one wait {#tbl-buses-interrupts-ahb-pipelined-transfers-one}
 
 For writes, `HWDATA` belongs to the data phase. If A writes and B reads, live `HWRITE` can already describe B while A's data is transferred. Keep the accepted direction along with the destination. In a simple AHB-Lite responder, selection, `HTRANS[1]` and `HREADY` identify an accepted active address phase:
 
@@ -169,6 +181,8 @@ The **manager** initiates a transaction and the **subordinate** responds. These 
 | W | Manager → subordinate | `WDATA`, `WSTRB`, `WLAST` | Write beats |
 | B | Subordinate → manager | `BRESP`, `BID` | One write response |
 
+: AXI channels, payload direction and purpose {#tbl-buses-interrupts-axi-channels-payload-direction}
+
 Each row has its own VALID/READY pair. The manager produces `ARVALID` but consumes `RVALID`. A read uses AR and R; a write uses AW, W and B. There is no additional B response for a read.
 
 ```text
@@ -194,6 +208,8 @@ A channel transfers on a rising `ACLK` edge when VALID and READY are high. The s
 | 4 | 1 | 1 | B | Yes |
 | 5 | 0 | 1 | irrelevant | No |
 
+: VALID/READY handshake example {#tbl-buses-interrupts-valid-ready-handshake-example}
+
 Consecutive transfers do not require a low VALID cycle. After edge 3 the source may offer B immediately because A was accepted. READY while VALID is low acknowledges nothing. A teaching assertion for a stalled AXI4 write-data channel is:
 
 ```systemverilog
@@ -215,6 +231,8 @@ AW and W are independent: address first, data first and simultaneous arrival are
 | 4 | Use retained address/data once | None | Response produced after edge |
 | 5 | None | None | VALID=1, READY=0: retain status |
 | 6 | None | None | Response accepted |
+
+: Arrival orders of the AW and W channels and the B response {#tbl-buses-interrupts-arrival-orders-aw-w}
 
 Exchanging address and data arrival must not break the design. Each accepted payload needs storage or an equivalent control mechanism. AXI4 requires B to follow acceptance of the write address and final data beat; in Lite the only beat is also the final beat. Address acceptance alone cannot generate a successful write response.
 
@@ -252,6 +270,8 @@ An address describes an entire burst: `AxLEN + 1` beats, `2^AxSIZE` bytes per be
 | `AWBURST` | INCR |
 | `WLAST` | High on the fourth beat |
 
+: AXI4 burst fields for a four-beat 32-bit write {#tbl-buses-interrupts-axi4-burst-fields-four}
+
 The effective addresses are `0x80000100`, `0x80000104`, `0x80000108` and `0x8000010C`. There is one AW transfer, four W transfers and one B response. A read has one AR and four R transfers, ending with RLAST. A **beat** is not a whole **transaction**.
 
 AXI4 INCR bursts can have up to 256 beats and must not cross a 4 KiB boundary. Size, alignment and address progression must also be legal; an eight-byte beat cannot fit a four-byte data port. Begin with aligned, full-width INCR accesses before implementing narrow, unaligned or wrapping traffic.
@@ -282,6 +302,8 @@ AXI reports outcome on R for reads and B for writes. Interpret the response alon
 | `01` | EXOKAY | Successful exclusive access where that feature exists |
 | `10` | SLVERR | Destination reports an access failure |
 | `11` | DECERR | Interconnect cannot route the access appropriately |
+
+: AXI response encodings and their interpretation {#tbl-buses-interrupts-axi-response-encodings-interpretation}
 
 AXI4-Lite does not support exclusive accesses or EXOKAY responses. In a full AXI design, exclusive-access outcomes require their own semantics; ordinary software cannot read every OKAY as a successful exclusive update. This chapter's register example uses only OKAY and SLVERR [@armAxi4Spec].
 
@@ -328,6 +350,8 @@ Choose the interface for the endpoint's actual traffic rather than for the large
 | AXI4 | Bursts, memory and multiple controllers | Queues, IDs, routing and ordering |
 | AXI4-Stream | Packet/sample transport | Stream buffering and packet boundaries |
 
+: Bus interfaces, their useful role and main design responsibility {#tbl-buses-interrupts-bus-interfaces-useful-role}
+
 These protocols describe communication, not the processor ISA or a required vendor toolchain. A RISC-V core can use AMBA interfaces, and an AXI peripheral need not depend on a proprietary FPGA development flow. The costs are RTL complexity, storage, timing and verification.
 
 A bridge preserves transaction meaning, not just signal names. AXI4-Lite-to-APB conversion retains AW and W separately, runs Setup/Access, then produces B. It retains AR and read results until R acceptance. A serialized bridge also arbitrates its read/write paths.
@@ -368,6 +392,8 @@ The examples use one hart in M-mode with nested interrupts disabled. @sec-privil
 | `mepc` | Resume address |
 | `mstatus.MPIE`, `MPP` | Saved enable and privilege state |
 
+: Machine-mode CSRs and fields and their roles {#tbl-buses-interrupts-machine-mode-csrs-fields}
+
 Machine software, timer and external interrupt cause codes are 3, 7 and 11. The high bit of `mcause`, at an XLEN-dependent position, identifies an interrupt. Comparing the entire CSR to integer 11 therefore does not detect a machine external interrupt.
 
 Hardware records cause/PC, updates privilege and enables, and redirects execution. It does not automatically save all integer registers to a stack. Entry software preserves the state it clobbers; `mret` returns architecturally, whereas `ret` follows the function-call convention. Install a valid stack and handler first, and only then enable interrupts.
@@ -400,6 +426,8 @@ The book's Sections 9.5.1–9.5.5 cover IFU/LSU interfaces, the EBU, uncore and 
 | `src/uncore/plic_apb.sv` | Source IDs, pending state, priorities and contexts |
 | `src/privileged/trap.sv` and CSR logic | Interrupt enables and acceptance |
 
+: Wally source files of the request path and what to inspect in each {#tbl-buses-interrupts-wally-source-files-request}
+
 The inspected EBU prioritizes LSU requests over IFU requests and retains delayed IFU address-phase information. Its output follows AHB-style phases; the IFU does not write through this interface. Fixed LSU priority is a concrete policy when analyzing instruction-fetch delay [@cvwEbu].
 
 In the uncore, decoded physical-address regions select memories or the AHB–APB bridge. Delayed selection controls returned data/completion across wait states. APB connects CLINT, PLIC, GPIO and other enabled devices. The no-region completion path is made ready to avoid permanent blockage [@cvwUncore].
@@ -420,6 +448,8 @@ The following event peripheral demonstrates channel independence without changin
 | `0x04` | IRQ_ENABLE | RW / 0 | Bit 0 enables the request |
 | `0x08` | IRQ_PENDING | Read, W1C / 0 | Bit 0 retains an event |
 | `0x0C` | EVENT_COUNT | RO / 0 | Sampled events, modulo $2^{32}$ |
+
+: Registers of the teaching AXI4-Lite endpoint {#tbl-buses-interrupts-registers-teaching-axi4-lite}
 
 The module joins accepted AW/W payloads exactly once, updates the bank and holds B until accepted. It snapshots read data when accepting AR and holds R. Invalid local offsets, unaligned addresses and writes to EVENT_COUNT return `SLVERR`. An interconnect normally returns `DECERR` for an unmapped **region**, which is a different error boundary.
 
@@ -539,6 +569,8 @@ The Core Local Interruptor exposes `msip`, `mtimecmp` and `mtime`. The latter tw
 | `0x4000` | `mtimecmp` | Next deadline |
 | `0xBFF8` | `mtime` | System time |
 
+: CLINT registers of hart 0 {#tbl-buses-interrupts-clint-registers-hart-0}
+
 A platform timer needs a declared frequency. It can run independently of the processor in a general SoC, requiring CDC. In the inspected Wally `clint_apb.sv`, the counter advances on `PCLK`; comments discuss future separate-clock synchronization. An independent real-time clock should be called implemented only when it is, and a time-related input on a surrounding module does not make it so [@harrisRiscvSoc; @cvwRepository].
 
 RV32 cannot read a 64-bit counter with one ordinary load. A low-half rollover between loads can produce an inconsistent value. Reading high–low–high and retrying if the high half changes solves that problem under the declared device-access ordering:
@@ -603,6 +635,8 @@ Service has four stages: read claim, service the device, order device operations
 | `0x002000` | First context-0 enable bitmap |
 | `0x200000` | Context-0 threshold |
 | `0x200004` | Claim on read, completion on write |
+
+: Illustrative PLIC register offsets for machine context 0 {#tbl-buses-interrupts-illustrative-plic-register-offsets}
 
 These registers are 32 bits even on RV64. Device width and hart XLEN are separate facts. The code below builds on MMIO32/io_fence above and assumes both source IDs are below 32, context 0 maps to M-mode, and the device service functions implement their documented clearing behavior.
 
@@ -700,6 +734,8 @@ Save the module as `event_axil.sv` in a local experiment directory. Use a testbe
 | 8 | Event coincident with clear commit | Pending remains 1, count increments |
 | 9 | Write EVENT_COUNT or offset `0x02` | SLVERR, no corruption |
 
+: Steps that verify the register bank {#tbl-buses-interrupts-steps-verify-register-bank}
+
 For step 8 align the event with internal commit, not merely AW acceptance. Commit occurs after both payload slots are full. Record the relevant edges so the test exercises the intended race.
 
 ### Experiment 2: independent channels and response stalls
@@ -718,6 +754,8 @@ On reads, accept AR, stall RREADY and modify the underlying device state while R
 | No repeated side effect while B waits | Duplicate operation |
 | One R for each accepted AR | Lost read |
 | Reset clears pending ownership | Stale operation after reset |
+
+: Invariants of the independent-channel experiment and the defect each detects {#tbl-buses-interrupts-invariants-independent-channel-experiment}
 
 A watchdog detects lack of progress, but liveness needs environmental assumptions. A manager that holds BREADY low forever cannot demand eventual acceptance of B. State bounded-stall assumptions without weakening stability checks.
 
@@ -746,6 +784,8 @@ Then compare outstanding depths using a declared memory latency. Count accepted 
 | C | Aligned bursts | Burst service and address overhead |
 | D | Random response stalls | Buffer occupancy and correctness |
 
+: Controlled changes and measurements of the burst experiment {#tbl-buses-interrupts-controlled-changes-measurements-burst}
+
 Keep width, clock and memory behavior fixed. A model that accepts requests into an unlimited queue overstates the benefit of depth. Keep the failed points and protocol errors in the report, along with the maximum throughput.
 
 ### Experiment 5: timer and external interrupts on Wally
@@ -768,6 +808,8 @@ Next route GPIO through the PLIC: configure its local event registers, priority,
 | Event during W1C | Defined precedence preserved |
 | Expired timer after service | Deadline policy avoids interrupt storm |
 | Interrupt near MMIO write | No duplicated irreversible access |
+
+: Interrupt cases and the property to verify in each {#tbl-buses-interrupts-interrupt-cases-property-verify}
 
 For the last case, let foreground code write numbered values to a counting device while interrupts are injected at varying cycles. Its trace must contain the intended sequence exactly once per committed write. A final output value alone can hide a duplicate write to the same register.
 

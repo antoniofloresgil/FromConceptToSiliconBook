@@ -18,6 +18,8 @@ The result is a useful division of responsibilities:
 | Magic, KLayout and Netgen | Stream-out and physical verification activities supported by the PDK |
 | LibreLane run directory | Preserve states, reports, metrics and resolved settings |
 
+: Layers of the implementation flow and their responsibilities {#tbl-librelane-layers-implementation-flow-responsibilities}
+
 LibreLane therefore makes a flow repeatable; it does not make an incorrect specification correct or make a PDK production-qualified. Every timing constraint, macro view, I/O assumption, physical-verification result and tapeout requirement still needs engineering review.
 
 ![Conceptual RTL-to-GDSII flow with synthesis, placement, clock-tree synthesis, routing and separate verification feedback paths. Tool names identify responsibilities; the drawing does not assert that a particular implementation passed its gates.](../../figures/rtl-to-gdsii-flow.svg){#fig-librelane-rtl-to-gdsii-flow fig-alt="SystemVerilog RTL and a PDK enter the managed ASIC implementation flow and produce GDSII"}
@@ -35,6 +37,8 @@ The preceding chapter used OpenROAD directly so that every floorplan, placement,
 | Best use | Learning, experiments, unusual physical flows | Repeated hardening, CI, shared projects and conventional macros |
 | Main artifact | Tcl, OpenDB/DEF checkpoints and hand-written reports | Resolved configuration, step states, metrics, reports and final views |
 | Main danger | Missing a dependency or an implementation stage | Treating defaults and green logs as a sign-off decision |
+
+: Direct OpenROAD compared with the LibreLane Classic flow {#tbl-librelane-direct-openroad-compared-librelane}
 
 Use direct OpenROAD when the sequence itself is the subject of the work. Use LibreLane when the main question is whether a defined SystemVerilog block can be hardened reproducibly with a known PDK and a conventional flow. A mature project often uses both: investigation in a direct Tcl prototype and stable regression runs through LibreLane.
 
@@ -130,6 +134,8 @@ At minimum, a synchronous digital macro needs the following:
 | `CLOCK_PERIOD` | Clock period in ns | `10.0` |
 | `PDK` | Manufacturing PDK, if overriding the default | `sky130A` |
 | `STD_CELL_LIBRARY` | Standard-cell family, if overriding the default | `sky130_fd_sc_hd` |
+
+: Variables of the minimum LibreLane configuration {#tbl-librelane-variables-minimum-librelane-configuration}
 
 Variables can be scoped to a PDK or standard-cell library. That is useful when the same RTL is evaluated in several technologies. LibreLane evaluates a nested `pdk::sky130A` section only for that PDK and a nested `scl::...` section only for the matching cell library. Simple expressions can derive a placement density from a core-utilization target [@librelaneConfiguration].
 
@@ -265,6 +271,8 @@ LibreLane resolves configuration, checks the PDK and source files, then drives t
 | Clock/routing | CTS, setup/hold repair, global/detailed routing, antenna checks | CTS metrics, route DRCs, post-route timing |
 | Sign-off support | RC extraction, multi-corner STA, stream-out, DRC, LVS, XOR/density as supported | GDSII, DRC/LVS reports and manufacturability summary |
 
+: Flow regions, representative work and the evidence to review {#tbl-librelane-flow-regions-representative-work}
+
 The Classic flow's step list is public and should be consulted for the installed release. A project can disable or substitute a step only when it has a documented reason and an equivalent verification plan [@librelaneClassic].
 
 ### Step 5: inspect the result, as the exit code is not enough
@@ -319,6 +327,8 @@ At the end of a run, commit the small inputs: the YAML configuration, pin-order 
 | Verification result | DRC, LVS, antenna and density status, with justified waivers |
 | Reproduction command | Exact command and run tag |
 
+: Items of the implementation record and their example evidence {#tbl-librelane-items-implementation-record-example}
+
 ## How LibreLane maps configuration to implementation
 
 ### Configuration layering
@@ -364,6 +374,8 @@ For example, a project might disable a stream-out tool only when the selected PD
 | DRC/LVS/antenna errors | Specific checker report and layout viewer | Technology, routing, stream-out or connectivity issue | Repair upstream input and rerun affected flow stages |
 | Different results on another machine | `resolved.json`, environment and PDK metadata | Different tool/PDK versions or a missing input | Pin environment and rerun from clean checkout |
 
+: LibreLane debugging observations, where to look and likely cause {#tbl-librelane-librelane-debugging-observations-where}
+
 ## Reading a LibreLane run
 
 ### Treat the run directory as engineering evidence
@@ -378,6 +390,8 @@ A complete run contains far more useful information than its final GDSII. LibreL
 | State/checkpoint | Captures the views that allow a later step or GUI to reopen the design | What was the placed/routed design when the failure happened? |
 | Metrics | Supplies comparable values for design-space exploration and CI | Did an RTL change worsen area or slack? |
 | Final views | Gives DEF, GDSII, netlist, SPEF and other physical handoff products | What exactly was exported? |
+
+: Run evidence, why it matters and the question it answers {#tbl-librelane-run-evidence-why-matters}
 
 @fig-librelane-run-evidence shows how states and evidence accumulate along a run.
 
@@ -419,6 +433,8 @@ LibreLane is especially useful in CI because the resolved configuration and metr
 | Timing | No setup/hold violations at required corners | Prevents a faster-looking but invalid netlist |
 | Physical | No unreviewed route, DRC, LVS or antenna errors | Preserves manufacturing legality evidence |
 | QoR trend | Area and negative slack stay within reviewed limits | Detects regressions that still technically complete |
+
+: Quality gates for continuous integration {#tbl-librelane-quality-gates-continuous-integration}
 
 Thresholds should be project-specific. A small educational accumulator can require zero violations; a larger SoC may permit a temporary, documented waiver during development but must clear it before tapeout. CI should publish reports and resolved configuration so a reviewer can distinguish a real improvement from an environment change.
 

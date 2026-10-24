@@ -28,6 +28,8 @@ For a balanced fixed-latency pipeline with $K$ stages, initiation interval one a
 | Peak item throughput | 100 million/s | Requires available input and output capacity |
 | Payload bandwidth | 400 MB/s for 32-bit items | Excludes protocol overhead |
 
+: Latency, initiation interval and bandwidth in a worked example {#tbl-pipelines-latency-initiation-interval-bandwidth}
+
 Breaking a long logic path into stages can increase frequency, but registers introduce clock-to-output delay, setup requirements and routing. An extra stage that raises frequency but increases initiation interval may reduce bandwidth. Evaluate frequency and completed operations together.
 
 ### Payload, metadata and ownership
@@ -62,6 +64,8 @@ For the lossless transaction interfaces in this chapter, once a source presents 
 | 1 | 0 | Item waits; source retains it |
 | 1 | 1 | One item transfers |
 
+: Meaning of each valid and ready combination at the edge {#tbl-pipelines-meaning-valid-ready-combination}
+
 The source decides to assert `valid` without waiting for `ready`; if it waited, a destination that waits for `valid` before advertising readiness would form a deadlock. Keeping `valid` asserted until transfer also prevents repeated short pulses from missing readiness. LaForest summarizes these handshake rules [@laforestHandshake]. For AXI channels, Arm specifies the corresponding requirements and dependencies [@armAxi4Spec]. Here they form a local transport contract; bus transaction assembly remains separate.
 
 ### Reading a waveform
@@ -77,9 +81,11 @@ Each row below shows interface values immediately before an active edge:
 | 4 | 1 | 1 | C | Accept C |
 | 5 | 0 | 1 | unspecified | No transfer |
 
+: Ready/valid transfers over six edges {#tbl-pipelines-ready-valid-transfers-six}
+
 The observer counts A once, B once and C once. B appearing in three rows is not three requests. Changing B to C before its handshake violates the contract even if the receiver later becomes ready.
 
-Follow @fig-ready-valid along the rows of the table: B is held for two intervals and transferred once.
+Follow @fig-ready-valid along the rows of @tbl-pipelines-ready-valid-transfers-six: B is held for two intervals and transferred once.
 
 ![The ready/valid example of the table above, as a waveform. Values are sampled just before each rising edge, and a dot marks an edge where valid and ready are both high. The example is conceptual and does not describe a particular implementation’s timing.](../../figures/pipelines-ready-valid-waveform.svg){#fig-ready-valid width=100% fig-alt="Waveforms of valid, ready, payload and the transfer marker over edges 0 to 5"}
 
@@ -160,6 +166,8 @@ For a link that accepts at most $R$ items per cycle and reports a stop after $B$
 | Deeper FIFO | Absorb bursts and temporary mismatch | Finite capacity and implementation cost |
 | Credit-controlled link | Account for remote capacity | Credit tracking and initialization |
 
+: Buffering mechanisms, their purpose and limitation {#tbl-pipelines-buffering-mechanisms-purpose-limitation}
+
 @fig-pipelines-skid-buffer follows one item through the stop delay.
 
 ![A conceptual two-entry skid buffer in four snapshots. When the sink stops, the registered ready reaches the source one cycle late, so the source can still send one more item; the skid entry holds it until the sink resumes. A link that accepts R items per cycle and reports a stop after B cycles needs at least R × B entries.](../../figures/pipelines-skid-buffer.svg){#fig-pipelines-skid-buffer width=100% fig-alt="Four snapshots of an output register and a skid register as the sink stops and resumes"}
@@ -221,6 +229,8 @@ An ordered service returns responses in request order; it can carry tags to make
 | Multiple operations, ordered responses | Context/tag FIFO |
 | Multiple operations, reordered responses | Outstanding table indexed by tag |
 | Reordered results, ordered observation | Completion storage and ordering queue |
+
+: Ordering scenarios and the bookkeeping each needs {#tbl-pipelines-ordering-scenarios-bookkeeping-needs}
 
 A tag can be reused only once its earlier operation can no longer respond, or when a generation field tells the two apart. Identifier width bounds the encoding space and provides no storage for that many operations.
 
@@ -488,6 +498,8 @@ Suppose a depth-two response FIFO already holds two results and the client deass
 | Next input offered | Backpressures source | Retains result | Still full |
 | Consumer resumes | Capacity returns over later edges | Eventually transfers result | Starts draining |
 
+: Events during congestion in the queued subsystem {#tbl-pipelines-events-during-congestion-queued}
+
 No item is deleted to recover space. The source retains its unaccepted request. Since the FIFO conservatively refuses input while full, the retained service response cannot transfer on the first edge popping a full response FIFO. Capacity becomes visible the next cycle. This documented tradeoff explains the recovery bubble.
 
 ### Extending to multiple active reads
@@ -576,6 +588,8 @@ Compare depths two, four and eight under short bursts, a continuous source and p
 | Outstanding occupancy | Accepted requests minus accepted responses |
 | Source backpressure | Cycles with `req_valid && !req_ready` |
 | Consumer starvation | Cycles with `rsp_ready && !rsp_valid` |
+
+: Measurements of the latency and throughput experiment {#tbl-pipelines-measurements-latency-throughput-experiment}
 
 Larger queues reduce burst-source waiting without necessarily improving saturated execution rate. They can increase queueing latency. Explain results using the serial initiation interval; more entries do not always improve performance.
 

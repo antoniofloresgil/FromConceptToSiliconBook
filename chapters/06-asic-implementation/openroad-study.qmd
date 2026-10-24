@@ -23,6 +23,8 @@ The study SDC uses 20 ps clock uncertainty, input delays of 100 ps maximum and 2
 | `global` | Propagated | Global-route estimate | Routing guides, estimated setup/hold |
 | `routed` | Propagated | Detailed-route OpenRCX extraction imported through SPEF | Detailed-route DRC report, extracted timing, SPEF, DEF, ODB |
 
+: Checkpoints of the study with their clock model, interconnect model and retained evidence {#tbl-openroad-study-checkpoints-study-clock-model}
+
 The extraction sequence is explicit:
 
 ```tcl
@@ -69,6 +71,9 @@ The complete [CSV](../../labs/16-openroad-study/reference/summary.csv) and [JSON
 | 55% | 0.91 | 478.80 | −59.36 | +6.17 | **−1.46** | −48.10 |
 | 55% | 1.00 | 478.80 | +30.64 | +96.17 | +88.54 | −48.10 |
 | 80% | 0.85 / 1.00 / 1.15 | 316.01 | Placement rejected | — | — | — |
+
+: Measured sweep over target utilization and clock period {#tbl-openroad-study-measured-sweep-target-utilization}
+
 <!-- /openroad-study-results -->
 
 At either feasible utilization, adding 150 ps to the period adds approximately 150 ps to setup slack. It leaves hold essentially unchanged because hold checks the same-edge minimum-delay relation. At a common period, the smaller 65% core is not automatically faster than the 45% core. The path, routing and loading determine the result; area reduction alone cannot establish a performance improvement. This is one fixed-netlist study, not a statistical conclusion across placement seeds, technologies or architectures.
@@ -113,6 +118,8 @@ Use the [post-CTS setup report](../../labs/16-openroad-study/reference/u55-p0.91
 | Capture required time after uncertainty/setup | 915.60 ps | 915.74 ps | +0.14 ps |
 | Setup slack | **+6.17 ps** | **−1.46 ps** | **−7.63 ps** |
 
+: Setup slack of the worked path after clock-tree synthesis and after routing {#tbl-openroad-study-setup-slack-worked-path}
+
 The per-arc sums use the printed five-decimal-place nanosecond values and therefore have rounding error relative to the timer's accumulated arrival. The extracted budget is `915.74 − 917.20 = −1.46 ps`. The capture budget includes the 910 ps period, approximately 62.43 ps clock insertion, 20 ps uncertainty and 36.69 ps library setup time. The [path-pin list](../../labs/16-openroad-study/reference/u55-p0.91/critical-path-pins.txt) identifies the objects highlighted in the image.
 <!-- /openroad-study-path -->
 
@@ -134,6 +141,8 @@ The evidence supports several different experiments, each addressing a different
 | Short `Enable` path fails hold | Use a controlled hold-repair pass with legal delay cells/buffering and placement/routing updates | Every affected setup/hold endpoint; adding delay can consume setup margin |
 | Shared reset/clear control exceeds capacitance | Buffer/resize or restructure the control fanout while preserving synchronous reset/clear priority | Slew, fanout/capacitance, setup/hold, logic correctness and added placement area |
 | Requested 80% floorplan cannot place | Increase whitespace or reduce the cell demand, then inspect the new density and routing | First successful placement, routing completion and fresh extracted timing |
+
+: Observations, candidate changes and what must be checked {#tbl-openroad-study-observations-candidate-changes-must}
 
 A pipeline is a proposed architectural modification here, not an already measured repair. The accumulator contains feedback; inserting a register into that feedback without a new recurrence changes its result sequence. A safer candidate separates input pre-addition from accumulation and defines the additional latency explicitly. A carry-save accumulator also changes the stored representation and may require a final carry-propagate step; it needs a new contract if results are no longer visible every cycle. Check whether synthesis already performs the proposed compression before claiming that an RTL rewrite improves the hardware.
 

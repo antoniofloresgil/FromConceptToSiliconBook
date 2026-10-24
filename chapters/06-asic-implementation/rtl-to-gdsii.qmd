@@ -27,6 +27,8 @@ The final GDSII is necessary, and a chip is ready only when more is in place. Th
 | Routing and extraction | Can all nets be connected with real wires and vias? | Routed DEF/GDS and SPEF parasitics |
 | Sign-off | Is the result legal and electrically consistent? | DRC/LVS/antenna, STA and reports |
 
+: Stages of the RTL-to-GDSII flow, their question and result {#tbl-rtl-to-gdsii-stages-rtl-gdsii-flow}
+
 ## The open ASIC stack {#the-open-asic-stack}
 
 LibreLane provides the current orchestration layer: configuration, reproducible tool invocations, intermediate databases and reports. It joins tools such as Yosys for synthesis, OpenSTA for timing, OpenROAD for physical implementation, and Magic, KLayout or Netgen for physical checks. OpenROAD is the engine responsible for floorplanning, placement, clock-tree synthesis and routing. OpenLane is the earlier flow from which the ecosystem evolved; use LibreLane for a new workflow and consult its current documentation for its supported tools and configuration format.

@@ -46,6 +46,8 @@ Keep register capacity, active work and execution throughput separate:
 | AVL | Application's requested element count | Usually the remaining loop length |
 | `vlenb` | Read-only register length in bytes | `VLEN / 8` |
 
+: Vector vocabulary: VLEN, ELEN, SEW, LMUL, VLMAX, vl and AVL {#tbl-vector-processing-vector-vocabulary-vlen-elen}
+
 The terms describe the software-visible model [@riscvVectorSpec]. A program normally requests a format and a count through `vsetvli`; it uses the returned `vl`. It need not discover VLEN and build a private table of unrolled loops. Reading `vlenb` is useful for diagnostics and state management, but it is not the foundation of a portable data-processing loop.
 
 For VLEN = 128, SEW = 16 and LMUL = 1, VLMAX is eight. Changing SEW to 32 with the same LMUL halves the capacity to four elements. Changing both to SEW = 32 and LMUL = 2 restores capacity to eight, at the cost of grouping two registers. These calculations explain the widening example later.
@@ -131,6 +133,8 @@ Segment operations load or store several fields associated with each element. Ch
 | Constant stride | Regular fields/columns | How many lines or banks are touched per vector? |
 | Indexed | Indirect lookup or sparse data | How are addresses generated and faults/order tracked? |
 | Segmented | Interleaved records | Can multiple fields be supplied without excessive bank conflicts? |
+
+: Access styles, suitable data organization and hardware question {#tbl-vector-processing-access-styles-suitable-data}
 
 Vectorizing an access leaves it exactly as coherent with a device as before, keeps address translation in force and leaves MMIO ordering rules unchanged. An ordinary array loop over side-effecting peripheral registers needs a precise access contract first. Fault-only-first loads provide a specialized mechanism for reducing the active count under defined conditions; they are not a general promise to ignore invalid accesses. Their use and restart behavior belong to a more advanced memory experiment than the contiguous arrays here.
 
@@ -275,6 +279,8 @@ The final project's accelerator transfers operands as 32-bit memory words and us
 | RVV software | Standard programmable array operations | Vector unit/register cost, memory bandwidth and context overhead |
 | Custom instruction | Compact interface for a focused operation | Core/toolchain change and issue/retirement constraints |
 | AXI/DMA engine | Independent streaming work and specialized datapath | Driver setup, ownership, transfers, arbitration and completion |
+
+: RVV compared with the AXI/DMA accelerator {#tbl-vector-processing-rvv-compared-axi-dma}
 
 For the int16 dot product, two input streams deliver four bytes per product. Ignoring reuse, a memory bandwidth B bytes/s bounds the input-fed product rate by B/4. More multipliers cannot exceed that bound without improving data delivery. Cache reuse, packed loads or on-chip buffering can change the effective bandwidth, but the accounting must identify that change.
 

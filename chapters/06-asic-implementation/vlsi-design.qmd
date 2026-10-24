@@ -118,6 +118,8 @@ Manufactured devices differ from nominal models. Voltage and temperature change 
 | Interconnect | Which extracted resistance/capacitance conditions are used? | Extraction model and RC corner |
 | Mode | Are functional, test and low-power states constrained correctly? | Mode-specific clocks, constants and exceptions |
 
+: Dimensions of corner analysis and the evidence each needs {#tbl-vlsi-design-dimensions-corner-analysis-evidence}
+
 One named slow corner does not always govern setup, and one fast corner does not always govern hold. Actual paths combine clock and data behavior, cell types and wires. Temperature dependence can also vary with technology and voltage. Analyze the combinations required by the selected methodology. Larger industrial flows may use on-chip variation models and common-clock-path pessimism removal; support and qualification must be verified for the chosen tools.
 
 ### Dynamic power, leakage and energy {#dynamic-power-leakage-and-energy}
@@ -181,7 +183,9 @@ Choose the same PDK and standard-cell library used by the OpenROAD example. Reco
 | Selected NAND | Complement of AND | From cell LEF | Per pin | Compare the input arcs | Logic mapping |
 | Selected DFF | Edge-triggered state | From cell LEF | Clock and data separately | Setup/hold and clock-to-Q | Pipeline state |
 
-The nominal numbers in this chapter are illustrations, and the table should be filled from the technology files: the exercise is to recover the technology facts and connect representations. Verify units in every file: capacitance units, timing units and LEF dimensions can differ from the units used in a report.
+: Properties to read from a technology cell {#tbl-vlsi-design-properties-read-technology-cell}
+
+The nominal numbers in this chapter are illustrations, and @tbl-vlsi-design-properties-read-technology-cell should be filled from the technology files: the exercise is to recover the technology facts and connect representations. Verify units in every file: capacitance units, timing units and LEF dimensions can differ from the units used in a report.
 
 ### Follow the accumulator's feedback path
 

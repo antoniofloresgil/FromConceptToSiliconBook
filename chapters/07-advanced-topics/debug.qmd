@@ -29,6 +29,8 @@ Therefore state the exact debug-specification version and implemented feature se
 | Which triggers are implemented? | Determines breakpoint/watchpoint capability |
 | How is access authenticated or disabled? | Defines the security and lifecycle policy |
 
+: Questions that fix the debug specification and implementation claims {#tbl-debug-questions-fix-debug-specification}
+
 ### Debug Mode is distinct from privilege modes
 
 Debug Mode is separate from U/S/VS/M privilege modes. When a hart enters Debug Mode it stops normal program execution and starts a debug control sequence. Debug CSRs, such as `dcsr` and `dpc`, describe and control that state. Normal software cannot freely use debug state as an ordinary runtime service; implementations must enforce the specified access restrictions.
@@ -52,6 +54,8 @@ The DM sees each selectable hart as exactly one of four states: **nonexistent**,
 | Unavailable | Present but cannot currently participate, often during reset/power-up | Wait or reset according to policy |
 | Running | Executing normal program code | Request halt, inspect nonintrusive state only if supported |
 | Halted | In Debug Mode under DM control | Read/write registers, execute debug sequences, resume |
+
+: Hart states and the typical debugger action in each {#tbl-debug-hart-states-typical-debugger}
 
 The DM selects a hart with `hartsel`; it can halt and resume selected harts through `haltreq` and `resumereq`. In a multicore system, system-level debug must define whether all harts stop together, only one stops, or a halt request affects a coherent group. Halting a producer while a consumer continues can deadlock an interconnect protocol or leave a shared peripheral in an unusual state. These are integration decisions above the basic register interface.
 
@@ -79,6 +83,8 @@ Important DM register groups include:
 | `data0` ... | Data registers used by abstract commands |
 | `progbuf0` ... | Optional program buffer instructions |
 | `sbcs`, `sbaddress`, `sbdata` | Optional system-bus access control, address and data |
+
+: Debug Module register groups and their role {#tbl-debug-debug-module-register-groups}
 
 The DM is active only when `dmactive` is asserted. Deactivating it resets DM state as defined by the specification. This is useful for recovering a stuck debug transaction, and the SoC still needs its own reset policy. Decide whether DM state survives system reset, how a debugger observes `havereset`, and whether reset can be requested per hart or for the non-debug module.
 
@@ -144,6 +150,8 @@ SBA is powerful because it can read memory while a hart runs and can access peri
 | Side effects | Which memory-mapped reads/writes are safe during debug? |
 | Address visibility | Can debug access secure RAM, boot ROM, key storage or fuse controllers? |
 | Error handling | How do timeout, alignment and bus errors map to `sberror` and host diagnostics? |
+
+: Integration questions for System Bus Access {#tbl-debug-integration-questions-system-bus}
 
 An SBA test must prove more than a successful RAM read. It should cover alignment, each supported access size, error propagation, auto-increment, accesses while the bus is busy, peripheral side effects and the security policy for protected address ranges.
 
@@ -237,6 +245,8 @@ Debug access is often more privileged than ordinary software. A debugger that ca
 | Field service | Narrow authenticated access, possibly without SBA to secure regions |
 | RMA/return | Explicit unlock process with destructive erase or owner authorization |
 
+: Lifecycle states and the example debug policy for each {#tbl-debug-lifecycle-states-example-debug}
+
 Decide independently whether to disable the DTM, DM, SBA, triggers and debug ROM. Disabling only JTAG may leave another DTM or an internal software path. Disabling the DM may still leave test logic. Lock bits must themselves have a reset and permanence policy: can a warm reset reopen debug, is the lock one-time programmable, and can fault injection bypass the state machine?
 
 Model policy in verification. Attempt prohibited DMI operations, SBA access to secure regions, reset while locked, and transitions between lifecycle states. Verify that errors are visible and that no request changes architectural state when it should be rejected.
@@ -256,6 +266,8 @@ Test each layer independently before relying on a debugger session:
 | SBA | Widths, alignment, auto-increment, timeout, side-effect registers, coherency and firewall denial |
 | Security | Disabled/authenticated modes, lifecycle locks and prohibited address access |
 
+: Layers of debug tests and their directed checks {#tbl-debug-layers-debug-tests-directed}
+
 Use a reference debugger stack where possible. NEORV32 documents use of OpenOCD and GNU GDB through its JTAG on-chip debugger [@neorv32Usage]. `riscv-dbg` reports OpenOCD compliance tests, custom testbench coverage and `riscv-tests/debug` as complementary validation methods [@pulpRiscvDbg]. A project integrating either approach must still test its own clock/reset wiring, address map, debug ROM, bus adapters and security controls.
 
 ### Debug versus manufacturing test and trace
@@ -267,6 +279,8 @@ Run-control debug, scan/BIST and trace solve different problems:
 | Run-control debug | Stop/control software-visible execution | Architectural registers, memory, CSRs and selected triggers |
 | Scan/BIST | Detect manufacturing defects | Scan chains, memories and structural test logic |
 | Trace | Reconstruct execution history/performance | Retired instructions, branches, buses or microarchitectural events |
+
+: Run-control debug, scan or BIST and trace compared {#tbl-debug-run-control-debug-scan}
 
 Their access paths can overlap, and each must respect the security lifecycle. A halted processor snapshot may not explain a transient cache, bus or clock problem, and trace and performance counters complement debug.
 

@@ -24,6 +24,8 @@ The open target comprises:
 | AHB-to-Wishbone bridge | Connects Wally external memory transactions to LiteDRAM |
 | Yosys/nextpnr-Xilinx/Project X-Ray | Synthesis, physical implementation and bitstream conversion |
 
+: Blocks of the open FPGA target and their role {#tbl-fpga-soc-blocks-open-fpga-target}
+
 The branch calls this a *reduced* configuration. That description matters: the existing Vivado-oriented Wally tops use vendor-generated clocking and memory IP. Those encrypted or implementation-specific outputs cannot simply be imported into a free flow. The open path therefore supplies its own board wrapper and uses LiteX/LiteDRAM instead of Vivado's Memory Interface Generator (MIG).
 
 ### A trustworthy evidence hierarchy
@@ -39,7 +41,9 @@ Treat the following claims differently:
 | DDR controller initializes | `init_done`, calibration logs and memory test |
 | Linux/DDR3 subsystem works | Sustained hardware software tests, not only synthesis |
 
-@fig-fpga-evidence-ladder restates the table of claims and evidence.
+: Claims about the FPGA target and the evidence each needs {#tbl-fpga-soc-claims-about-fpga-target}
+
+@fig-fpga-evidence-ladder restates @tbl-fpga-soc-claims-about-fpga-target.
 
 ![Six claims about the open FPGA target and the evidence each one needs. A bitstream that configures the part is a different milestone from a validated external-memory system.](../../figures/fpga-evidence-ladder.svg){#fig-fpga-evidence-ladder width=100% fig-alt="Six claims from RTL compiles to Linux and DDR3 work, each linked to its evidence"}
 
@@ -146,6 +150,8 @@ After `make FLOW=opensource nexysvideo`, inspect the following sequence:
 | Frames/bitstream | `.frames`, `.bit` | Does the part identity match the board? |
 | Hardware | DONE, LEDs, UART | Which boot milestone actually occurred? |
 
+: Build steps, artifacts and the question to ask of each {#tbl-fpga-soc-build-steps-artifacts-question}
+
 The branch includes five LED telemetry signals during open-flow bring-up. They expose clock activity, DDR initialization done/error, service-CPU activity and UART activity. This turns a black-screen failure into an ordered diagnostic decision: first establish clock/reset, then execution of initialization firmware, then DDR status, then Wally boot.
 
 ### Program the board and observe it
@@ -212,6 +218,8 @@ Hardware bring-up is faster when each observation has a clear owner. The followi
 | First firmware | UART/LED boot marker | CPU fetch, ROM image, reset or peripheral wiring |
 | DDR3 | Calibration then memory test | PHY, controller, clocking or bridge integration |
 
+: Tests by integration layer and where a failure usually lies {#tbl-fpga-soc-tests-integration-layer-where}
+
 Write expected observations before running the test. For example, if Wally is correctly held until DDR is ready, an absent UART banner is expected while `init_done` is low; it cannot tell a failed Wally core from a deliberate reset dependency. Temporary LEDs make this dependency visible and prevent wrong conclusions.
 
 ### Reproducibility and release record
@@ -255,6 +263,8 @@ When changing the Wally core configuration, repeat the complete evidence ladder.
 | 5: telemetry | Drive ready/error/reset conditions in a wrapper bench and check corresponding logical indicators. Diagnose a held-low `init_done` condition. State any clock/controller abstractions explicitly |
 | 6: timing | Compare your 40/50 MHz implementation reports or supplied reports for the same design. Explain the critical path, slack and unresolved clocks; generic Yosys resources supply no achieved MHz |
 | 7: limits | Submit a checkpoint matrix for simulation, synthesis, route, bitstream, programming, internal-memory execution and DDR. Identify fixture results, supplied evidence and physical checks still unexecuted |
+
+: Experiments and their alternatives without a board {#tbl-fpga-soc-experiments-alternatives-without-board}
 
 The wrapper/UART/bridge benches are student adaptations; the package does not supply a complete Nexys Video simulation. If primitive simulation models are unavailable, test the generic logic separately and list primitive/clock/IO qualification as unresolved. In particular, the checked accelerator fixture does not validate the AHB-to-Wishbone DDR bridge. Use its runnable core/IP path for the project demonstration while retaining the bridge exercise's own scope. The [common alternative guide](../../labs/NO-FPGA.md) defines equivalent coursework evidence and instructor-provided report requirements.
 

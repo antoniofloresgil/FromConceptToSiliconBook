@@ -30,6 +30,8 @@ The accumulator uses a rising-edge clock and unsigned 16-bit operands:
 | Enable asserted | Previous sum plus operand, modulo 65536 | One | One if addition exceeds 65535 |
 | Otherwise | Previous sum retained | Zero | Zero |
 
+: Accumulator behavior at the rising edge {#tbl-verilator-accumulator-behavior-rising-edge}
+
 Reset and clear have priority over enable. Valid marks an accepted addition, not merely a nonzero stored result. Overflow is a one-cycle report for an addition; it is not a sticky flag.
 
 The C++ reference uses a wider integer and explicit modulo arithmetic. It checks every cycle, including stalls and resets, rather than treating a plausible waveform as a passing test.
@@ -274,6 +276,8 @@ verilator --cc --exe --build -j 2 -Wall --trace \
 | `--top-module accumulator` | Select the intended top module |
 | `-CFLAGS "-std=c++17"` | Select C++17 for the C++ compilation |
 
+: Verilator options and their role in the build {#tbl-verilator-verilator-options-role-build}
+
 The translation/build flow follows the official [C++ walkthrough](https://verilator.org/guide/latest/example_cc.html). Inspect warnings rather than disabling them indiscriminately. Generated sources and the executable are placed in `obj_dir/`.
 
 ### Reading the generated model
@@ -362,7 +366,9 @@ The lesson is about the vectors and not about these two faults. A hand-written l
 | `Valid` requires a nonzero operand | **passes** | fails |
 | `Clear` ignored | build stops at lint | build stops at lint |
 
-This table is a **checked recipe**. `python labs/run.py run verilator` builds every variant from [mutation_check.py](../../labs/05-verification/mutation_check.py) against both harnesses and fails if any outcome differs from the table.
+: Faults introduced and the vector sets that expose them {#tbl-verilator-faults-introduced-vector-sets}
+
+@tbl-verilator-faults-introduced-vector-sets is a **checked recipe**. `python labs/run.py run verilator` builds every variant from [mutation_check.py](../../labs/05-verification/mutation_check.py) against both harnesses and fails if any outcome differs from @tbl-verilator-faults-introduced-vector-sets.
 
 ### Let lint speak first
 

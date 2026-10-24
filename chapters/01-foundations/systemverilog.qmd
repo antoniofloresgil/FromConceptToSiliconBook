@@ -30,6 +30,8 @@ Classic Verilog's `wire` and `reg` declarations often confused beginners because
 | Related declarations repeated across files | `package`, `import`, `struct` | Shared types and structured configuration |
 | Procedural testbench checks | Assertions and temporal properties | Checks can express behavior across clock cycles |
 
+: Classic Verilog constructs and their SystemVerilog counterparts {#tbl-systemverilog-classic-verilog-constructs-systemverilog}
+
 SystemVerilog also adds classes, constrained randomization, coverage, and other verification facilities. Those features are what make test environments productive, but a synthesizable processor datapath is normally written in the plainer RTL subset. File extensions such as `.sv` select language mode in many tools, so it pays to confirm which frontend and language subset you are really using before relying on a feature.
 
 ### Think in hardware before writing code
@@ -70,6 +72,8 @@ Dimensions before the identifier are packed; dimensions after it describe an unp
 | `{Upper, Lower}` | Concatenate two vectors |
 | `{{8{Offset[7]}}, Offset[7:0]}` | Sign-extend an 8-bit slice to 16 bits |
 
+: Common SystemVerilog expressions and their meaning {#tbl-systemverilog-common-systemverilog-expressions-meaning}
+
 Bitwise operators (`&`, `\|`, `^`, `~`) operate on individual bits. Logical operators (`&&`, `\|\|`, `!`) evaluate truth values. A unary reduction such as `\|Word` reduces a vector to one bit. In a four-state simulator, `==` can return unknown, whereas `===` compares unknown and high-impedance values explicitly; case equality is useful in testbench checks.
 
 ### Expression width and signedness are part of the circuit
@@ -106,6 +110,8 @@ Use sized literals where bit width is meaningful. `'0` fills the destination wit
 | Arithmetic shift | Is the left operand signed before `>>>`? |
 | Parameterized mask | Can width or shift reach an invalid range? |
 | Byte extraction | Are bit index and byte-address interpretation consistent? |
+
+: Review questions for width and signedness {#tbl-systemverilog-review-questions-width-signedness}
 
 @fig-sv-width-and-shift shows the two examples of this section.
 
@@ -391,6 +397,8 @@ SystemVerilog remains the implementation language used throughout this book. Und
 | Direct SystemVerilog | HDL parameters, constant functions and `generate` constructs specialize modules | Elaborated RTL derived from the written `.sv` |
 | Chisel → FIRRTL/CIRCT → SystemVerilog | Scala constructs a circuit using Chisel; the hardware compiler lowers it | Generated `.sv`, then the usual RTL frontend and synthesis flow |
 | Parameterized generation | Scripts/templates or generators emit configured RTL; HDL elaboration specializes parameters and `generate` branches | One concrete configuration, with its generated files and parameter manifest |
+
+: Execution routes of hardware generators and what each implements {#tbl-systemverilog-execution-routes-hardware-generators}
 
 These routes overlap: SystemVerilog already supports parameterized hardware, and a Chisel program is itself a generator. A Python/template generator can emit SystemVerilog without introducing FIRRTL. A Scala `if` selects which hardware to construct; Chisel `when` constructs conditional hardware behavior. A static loop may instantiate many adders. Neither implies that one software instruction runs inside the eventual FPGA on each clock edge.
 

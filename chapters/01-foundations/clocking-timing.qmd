@@ -51,6 +51,8 @@ Signals should cross between unrelated domains only through a deliberate clock-d
 | Independent streaming clocks | Asynchronous FIFO with Gray-coded pointers | Requires correct pointer synchronization and overflow/underflow policy |
 | Related clocks with known phase | Explicit generated-clock constraints | Relationship must be true in hardware, not assumed |
 
+: Clock-domain crossing mechanisms and their limits {#tbl-clocking-timing-clock-domain-crossing-mechanisms}
+
 @fig-clocking-crossing-chooser maps each kind of crossing to its mechanism and limit.
 
 ![What crosses a domain boundary decides the mechanism: a slowly changing bit, a pulse, multi-bit data with control, a streaming interface or related clocks. Each mechanism has a limit to design around.](../../figures/clocking-crossing-chooser.svg){#fig-clocking-crossing-chooser width=100% fig-alt="Five kinds of crossing linked to a mechanism and its limit"}
@@ -120,6 +122,8 @@ Timing results must state the implementation context:
 | Worst setup and hold slack | Shows whether both requirements are met |
 | Unconstrained paths and exceptions | Reveals timing that was not checked normally |
 
+: Context that every timing result must record {#tbl-clocking-timing-context-every-timing-result}
+
 An FPGA slack at one speed grade and an ASIC slack at another corner measure different physical situations, so only runs with the same stated assumptions are comparable.
 
 ## From RTL to constraints
@@ -133,6 +137,8 @@ Make a clock/reset table before entering tool commands. For each clock, identify
 | `clk_sys` | Board oscillator or PLL | 100 MHz | Core/interconnect | Primary clock | Reset release synchronized to `clk_sys` |
 | `clk_uart` | Clock-enable, not a new clock | 16× baud tick | UART logic | Derived enable in `clk_sys` domain | Follows `clk_sys` reset |
 | `clk_ext` | External device | Device interface | Asynchronous unless characterized | No assumed relation | Synchronize controls/data protocol |
+
+: Template for a clock and reset inventory {#tbl-clocking-timing-template-clock-reset-inventory}
 
 Prefer a clock enable to fabricating a slow local clock for simple rate division. A clock enable keeps logic in one domain and avoids unnecessary generated-clock and CDC complexity:
 
@@ -211,6 +217,8 @@ Three related terms are often confused:
 | Clock latency | Delay from source definition to a sequential clock pin | Changes the absolute arrival time; after CTS it is part of the clock-path report |
 | Clock skew | Difference in latency at two sequential clock pins | Changes time available for setup and hold on their data path |
 | Jitter | Edge-to-edge variation of a clock source | Reduces the reliable timing budget and is modeled as uncertainty/margin |
+
+: Clock quality terms and their consequence for timing {#tbl-clocking-timing-clock-quality-terms-consequence}
 
 Before clock-tree synthesis, an implementation can use an ideal clock model. That is useful for logical optimization, but it cannot expose the actual latency/skew caused by buffers and wires. After CTS, clocks are propagated through the generated tree and timing analysis uses their physical arrival information. A path that passes with an ideal clock can fail after CTS; a path that passes after CTS can still fail after detailed routing and extraction.
 
@@ -378,6 +386,8 @@ The complete [RTL](../../labs/24-async-fifo/async_fifo.sv) separates three respo
 | Reset | Common active-low asynchronous assertion; local synchronized release; unread items discarded |
 | Memory view | Write-clocked array with combinational read; invalid output is zero |
 
+: Asynchronous FIFO boundaries and their contracts {#tbl-clocking-timing-asynchronous-fifo-boundaries-contracts}
+
 Each side sees only its own ready/valid pair. Keep `w_ready` out of any other source clock, and keep `r_valid` from acting as permission in the write domain. If data has tags, byte enables or an end-of-packet marker, include them in the stored word. Crossing metadata independently can break correspondence even when every individual signal is synchronized.
 
 ### Binary addresses, Gray publication and wrap {#binary-addresses-gray-publication-and-wrap}
@@ -395,6 +405,8 @@ For depth four, the three-bit sequence begins:
 | `010` | `011` | Two accepted writes |
 | `011` | `010` | Three accepted writes |
 | `100` | `110` | Four writes: same slot address, one lap ahead |
+
+: Binary and Gray pointer sequence for depth four {#tbl-clocking-timing-binary-gray-pointer-sequence}
 
 The published **source** Gray pointer changes at most one bit per accepted increment, including wrap; it holds when no transfer occurs. Register the encoded value before it crosses. A combinational binary-to-Gray network can glitch while binary bits settle, defeating the intended source-transition property.
 
@@ -466,6 +478,8 @@ The recorded [results](../../labs/24-async-fifo/reference/results.json) conserve
 | Binary publication | Source Gray assertion rejects the change | Ideal simulation does not prove binary CDC safety |
 | Release bypass | Detected release with stopped clock | No recovery/removal characterization |
 
+: Checked outcomes of the asynchronous FIFO experiment {#tbl-clocking-timing-checked-outcomes-asynchronous-fifo}
+
 For a short design review, explain the three-bit full target, one conservative flag delay and one reset-discarded word. Then propose a synchronous-memory adapter or a packet-level reset policy and identify the new tests it needs. Keep the original regression passing before you claim the extension. The compact auditor checks recorded sources, transcripts and generic netlists without rerunning tools, so its verdict covers these digital checks and stops short of physical CDC/RDC qualification.
 
 ## Verification and analysis
@@ -512,6 +526,8 @@ A transaction channel contains forward data/valid paths and a backward capacity 
 | Memory address to synchronous read port | Present the accepted address on time | Which memory-port setup requirement applies? |
 | Memory result and tag to consumer | Preserve item correspondence | Are data and metadata captured under the same contract? |
 | Clock enable to register | Update only on the specified cycle | Does enable timing meet the mapped cell requirement? |
+
+: Timing questions for a transaction interface {#tbl-clocking-timing-timing-questions-transaction-interface}
 
 The iterative arithmetic unit in the microarchitecture chapter takes several cycles, but its accumulator feedback is used at **every** work edge. It is therefore an ordinary single-cycle timing path. An operation taking 32 cycles does not justify declaring its internal adder a 32-cycle multicycle path.
 

@@ -19,6 +19,8 @@ A design can fail at several boundaries. Functional verification asks whether it
 | LVS | Extracted circuit versus reference | Open, short, missing or wrong device | Timing closure and full geometric legality |
 | Manufacturing test | Each physical die | Stuck-at, delay, memory or interface defect | Exhaustive product validation |
 
+: Verification activities, the object examined and what a pass does not establish {#tbl-physical-validation-dft-tapeout-verification-activities-object-examined}
+
 Passing one row cannot substitute for the others. A booting RISC-V program proves a useful functional milestone but can leave an unexercised arithmetic fault undetected. A DRC-clean layout can implement the wrong netlist. A matching LVS result can describe a chip that fails hold or cannot be tested economically.
 
 ![Evidence needed between implementation and fabricated silicon. Original diagram for this chapter, organized using the verification and test distinctions in Weste and Harris, Chapters 14 and 15.](../../figures/asic-validation-evidence.svg){#fig-asic-validation-evidence fig-alt="A release layout is checked for geometry, connectivity, timing and power, then reviewed with DFT, package and test information before fabrication and silicon bring-up"}
@@ -86,6 +88,8 @@ Create a release-candidate directory containing a manifest and references to the
 | DRC/antenna/density | Final GDS, top and rule decks | Complete checker summaries and marker databases |
 | LVS | Final layout extraction and compatible reference | Matching result with stated hierarchical exclusions |
 | Power integrity | PDN, sources and load assumptions | Reviewed connectivity, voltage drop and current evidence |
+
+: Checks of the accumulator validation record and their acceptance evidence {#tbl-physical-validation-dft-tapeout-checks-accumulator-validation-record}
 
 When using LibreLane, find these products in its run states, logs and reports rather than guessing an old output pathname. The Classic flow includes several physical checks, but its exact supported checks and configuration are release- and PDK-dependent [@librelaneClassic]. A checker you install is not thereby approved for fabrication, and the deck needs the provider's approval.
 
@@ -239,7 +243,7 @@ Archive die/package identity, board revision, instrument settings, firmware hash
 
 [Core · P5 · C0 review / C3 rerun](../../learning-paths.qmd#sec-path-labels){#act-physical-validation-dft-tapeout-01 .learning-activity}
 
-Use one guided accumulator physical run and assemble the check table above. Include the top identity and file hashes. Mark a missing check as not run. Select one actual marker or failing path, document its cause, repair its input and show the new result. Deliver both candidates so the change is reviewable.
+Use one guided accumulator physical run and assemble the checks of @tbl-physical-validation-dft-tapeout-checks-accumulator-validation-record. Include the top identity and file hashes. Mark a missing check as not run. Select one actual marker or failing path, document its cause, repair its input and show the new result. Deliver both candidates so the change is reviewable.
 
 ### Experiment 2: verify scan ordering
 

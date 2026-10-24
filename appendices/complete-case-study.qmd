@@ -22,6 +22,8 @@ The [common manifest](../labs/17-complete-case/manifest.json) identifies release
 | Wally dependency | Fork `antoniofloresgil/cvw`, revision `3b30ba6b6519bd2c26c1437e6d61f632a35cef6c` |
 | Firmware control slot | `0x10060000` |
 
+: Shared items of the baseline contract {#tbl-complete-case-study-shared-items-baseline-contract}
+
 The manifest also records **declared stage differences**. The reuse simulation exercises maximum lengths 256 and 16. Bounded control checking uses maximum 16 with a 20-cycle bound; the engine proof uses one pair and a 24-cycle bound. Those checks use the same RTL revision, but they do not prove every baseline job unboundedly. FPGA and ASIC both implement maximum 256. The physical targets and I/O assumptions necessarily differ and are separate named profiles; a shared manifest does not pretend that two technologies have the same constraints or cost units.
 
 The manifest fixes the design and its interpretation. Each tool report separately records command lines, image/tool identity, recipe hashes and output hashes. A changed RTL file requires a new release and new evidence. Editing a manifest hash to match a changed file does not transfer the old proof or implementation result: the old stage's manifest fingerprint then no longer matches.
@@ -37,6 +39,8 @@ The manifest fixes the design and its interpretation. Each tool report separatel
 | FPGA | Technology mapping, dedicated arithmetic and timing | ECP5 and Nexys Video mapping/routing reports, actual placement maps and explicit boundary costs |
 | ASIC | Views, floorplan, CTS, routing, extraction and stream-out | Nangate45 routed block, extracted STA, power model, GDSII readback and GUI exports |
 | Engineering decision | Controlled comparison, reproducibility and IP release | Joined result dossier, limitations and an acceptance decision |
+
+: Book stages, reused concepts and concrete evidence {#tbl-complete-case-study-book-stages-reused-concepts}
 
 Read the relevant chapters at each boundary; the 6 ECTS course has no room for every extension. P1–P4 establish the IP, checks and firmware. P5 uses the physical reports and release analysis within its existing workload. Complete-core formal refinement, physical integration of Wally and memories, board bring-up and fabrication remain extensions.
 
@@ -98,6 +102,8 @@ The following results were extracted from the completed firmware run with the ma
 | 128 | 10504 | 1275 | 8.24× |
 | 256 | 21000 | 2490 | 8.43× |
 
+: Software and accelerator cycles by vector length in the Wally SoC {#tbl-complete-case-study-software-accelerator-cycles-vector}
+
 The [machine-readable cycle table](../labs/17-complete-case/reference/cycles.csv) preserves the exact values. The complete firmware run reaches its PASS mailbox after 53,153 simulated cycles, including initialization, all polling jobs, an interrupt job and invalid-descriptor handling. That total covers the whole run, so it is not the latency of one dot product.
 
 The accelerator wins on longer jobs and loses on the single-pair case because setup/completion overhead matters. Its reported interval includes register setup, DMA, polling and result access. The CPU memory is zero-wait in this fixture while DMA has modeled waits; the shared array is not a synthesized arbitration fabric. These are measurements in the documented cycle model, not board throughput or whole-chip energy.
@@ -122,6 +128,8 @@ The IP is routed **out of context**: no board I/O buffers, package pin assignmen
 | Post-route estimated Fmax | **86.99 MHz** |
 | 100 MHz setup target | **Failed** |
 | FPGA power | Not estimated by the supplied tool flow |
+
+: Extracted FPGA resources and results of the out-of-context IP {#tbl-complete-case-study-extracted-fpga-resources-results}
 
 `TRELLIS_COMB` is the backend's LUT/carry resource accounting, not a square-micrometre area. Zero BRAM does not mean that the complete workload needs no memory: operand/result RAM belongs to the integration platform, outside this IP implementation. The [actual timing/utilization JSON](../labs/17-complete-case/reference/fpga/timing.json) retains the full reported resource categories and critical paths.
 
@@ -155,6 +163,8 @@ The [completed Nexys dossier](../labs/17-complete-case/reference/nexys/results.j
 | Post-route estimated Fmax | **85.42 MHz** |
 | 100 MHz target | **Failed** |
 | Power | Not estimated |
+
+: Extracted Nexys Video results {#tbl-complete-case-study-extracted-nexys-video-results}
 
 The backend's `SLICE_LUTX` count is not interchangeable with a vendor LUT6 utilization figure. Its packed design contains 625 `LUT1` cells in addition to the 1,523 mapped LUT2–LUT6 primitives; packing introduces inversion/feed-through logic. Its capacity list also enumerates alternative BELs. Use the actual reported resource categories, not an inferred percentage against a mismatched capacity. A direct LUT-area comparison against the bare ECP5 IP would also mix implementation boundaries.
 
@@ -209,9 +219,11 @@ Use @fig-complete-case-clocktree with its numbered reading notes and the [origin
 | Detailed-router DRC report | Empty final report for that router's checks |
 | Full physical qualification | Open |
 
+: Extracted ASIC geometry and timing results {#tbl-complete-case-study-extracted-asic-geometry-timing}
+
 The setup-only limit is `1000 / (10 − 4.04594)` MHz under the unchanged block budgets, single timing corner and extracted geometry. It is a **setup-only figure and no validated operating Fmax**: hold is negative, electrical limits are violated, and neither multi-corner nor complete-SoC timing has closed. Large slew violations also limit confidence in a timing extrapolation outside characterized operating conditions. A positive setup number alone does not make this an accepted implementation.
 
-The [setup report](../labs/17-complete-case/reference/asic/routed-setup.rpt), [hold report](../labs/17-complete-case/reference/asic/routed-hold.rpt), [electrical report](../labs/17-complete-case/reference/asic/routed-limits.rpt) and [GDS readback record](../labs/17-complete-case/reference/asic/gds-readback.json) provide the evidence behind the table. The GDS contains a block boundary, not pads, package or complete SoC geometry. It uses a teaching/reference technology rather than a fabrication qualification.
+The [setup report](../labs/17-complete-case/reference/asic/routed-setup.rpt), [hold report](../labs/17-complete-case/reference/asic/routed-hold.rpt), [electrical report](../labs/17-complete-case/reference/asic/routed-limits.rpt) and [GDS readback record](../labs/17-complete-case/reference/asic/gds-readback.json) provide the evidence behind @tbl-complete-case-study-extracted-asic-geometry-timing. The GDS contains a block boundary, not pads, package or complete SoC geometry. It uses a teaching/reference technology rather than a fabrication qualification.
 
 ## Power estimates and the meaning of consumption
 
@@ -224,6 +236,8 @@ The [ASIC power report](../labs/17-complete-case/reference/asic/power.rpt) is ge
 | Leakage | 0.159 mW |
 | Total | **0.857 mW** |
 | Clock-group contribution, included in total | approximately 0.223 mW / 26.1% |
+
+: ASIC power estimate by component {#tbl-complete-case-study-asic-power-estimate-component}
 
 The clock contribution is already part of the total and is counted once. The power estimate is evaluated at 100 MHz, not at the setup-derived 167.95 MHz limit. No energy-per-dot-product claim follows from multiplying this vectorless block power by the virtual SoC cycle counts: those observations have different activity, memory and implementation boundaries.
 
@@ -242,6 +256,8 @@ The [joined dossier](../labs/17-complete-case/reference/results.json) connects a
 | Is ASIC timing closed? | No: positive setup coexists with negative hold and electrical violations |
 | Is power known for both technologies? | ASIC has a vectorless estimate; FPGA consumption remains unestimated |
 | Has a complete Wally SoC been physically qualified? | No; integration here is executable RTL simulation |
+
+: Acceptance questions of the joined result and the decision each supports {#tbl-complete-case-study-acceptance-questions-joined-result}
 
 A defensible decision is to retain the functional IP as a verified baseline while declining a 100 MHz FPGA release and a timing-qualified ASIC release. For FPGA, inspect the critical path and compare an explicitly constrained lower-clock candidate against an RTL change. For ASIC, repair electrical fanout/slew and hold before treating a setup-frequency extrapolation as a usable clock. Every repair needs fresh correctness and physical evidence.
 
@@ -270,12 +286,16 @@ The acceptance gate requires nonnegative extracted setup/hold, zero reported sle
 | Lower clock, 75 MHz | +7.89736 | −0.01845 | 48 | Reject |
 | Physical repair, 100 MHz | **+5.20410** | **+0.02968** | **0** | Accept in declared scope |
 
+: ASIC candidates compared on setup, hold and electrical violations {#tbl-complete-case-study-asic-candidates-compared-setup}
+
 | ASIC candidate | Cell area (µm²) | Vectorless power (mW) |
 | --- | ---: | ---: |
 | Historical baseline, 100 MHz | 7,355 | 0.857 |
 | Comparable baseline, 100 MHz | 7,350 | 0.846 |
 | Lower clock, 75 MHz | 7,350 | 0.674 |
 | Physical repair, 100 MHz | **7,811** | **0.860** |
+
+: ASIC candidates compared on cell area and vectorless power {#tbl-complete-case-study-asic-candidates-compared-cell}
 
 The last three rows have the same mapped-input hash. Their identical negative hold result before repair makes the distinction particularly clear: the longer period helps setup while leaving the minimum-delay problem intact. Relative to the comparable baseline, repair adds 461 µm² of cells, approximately 6.3%, within the same core. Power remains a vectorless model estimate with the limitations discussed below.
 
@@ -302,6 +322,8 @@ The separate [engine candidate](../labs/21-physical-closure/dotproduct_engine.sv
 | Nexys Video, original RTL, slower target | 75 MHz | 85.42 MHz | +1.63 ns | Pass at 75 MHz |
 | Nexys Video, registered product plus fixture | 100 MHz | **102.13 MHz** | +0.21 ns | Pass at 100 MHz |
 
+: Targets and candidates of the shorter arithmetic path {#tbl-complete-case-study-targets-candidates-shorter-arithmetic}
+
 Period margins are calculated as requested period minus the period implied by the routed clock limit. They express this nextpnr clock model, without adding a board I/O/CDC/vendor signoff claim. ECP5 remains an out-of-context LFE5U25F block; Nexys remains the XC7A200T implementation with the existing serial boundary fixture, `-nodsp` LUT multiplication and the same pin assignments. Resource columns from these two boundaries must not be treated as a technology-normalized area comparison.
 
 The Nexys result restores the requested 100 MHz clock objective. The ECP5 result is especially instructive: registering the product improves frequency, but the worst path moves into descriptor/destination-address validation, from `dst` to `active_dst`. Its preserved critical path contains approximately 3.62 ns of logic and 6.04 ns of routing, excluding the separate clock-to-Q/setup contributions. The original ECP5 arithmetic path contains approximately 7.14 ns of logic and 3.83 ns of routing. Another arithmetic pipeline stage would not directly target the new worst path.
@@ -316,6 +338,8 @@ The next ECP5 experiment would stage descriptor validation before starting DMA, 
 | Nexys `SLICE_LUTX` | 2,148 | 2,140 |
 | Nexys `SLICE_FFX` | 916 | 948 |
 | Nexys `CARRY4` | 102 | 102 |
+
+: Routed resources of the original and the registered-product RTL {#tbl-complete-case-study-routed-resources-original-registered}
 
 These are actual nextpnr resource categories, not gate-equivalent area or FPGA power estimates. The additional product register is visible in the flip-flop counts. Small LUT changes also reflect elaboration and mapping around the new state; the added state is not free.
 
@@ -353,6 +377,8 @@ The repaired netlist must also pass the [mapped/routed functional equivalence ch
 | Reject slow ASIC | Hold remains negative and electrical violations remain | Lower frequency alone cannot close this candidate |
 | Accept repaired ASIC against the declared block gate | Extracted setup/hold/electrical checks, router DRC, equivalence, GDS readback | Manufacturing/multi-corner/full-SoC qualification remains open |
 
+: Decisions, evidence and consequences of the candidates {#tbl-complete-case-study-decisions-evidence-consequences-candidates}
+
 For assessment, explain the causal path from one baseline failure to one chosen repair. Compare the contemporaneous ASIC baseline, slow and repaired reports with their common mapped-netlist hash. Explain why the extra product register helps Nexys yet does not close ECP5, and state an application-latency test that could change the choice between 75 MHz original RTL and 100 MHz modified RTL. Finally list precisely which checks would still be required before deployment on a board or fabrication of a complete SoC. A useful release decision includes its accepted scope, measured costs and open obligations.
 
 ## Actual GDS DRC/LVS and power/body finishing {#sec-layout-verification}
@@ -373,8 +399,6 @@ The finishing candidate reruns `global_connect`, fills free sites conservatively
 
 The flow re-extracts SPEF from the finished database, reruns timing/electrical/constraint checks and streams a new GDS. The historical Lab 21 artifacts remain intact. The [collected result](../labs/22-layout-verification/reference/results.json), [power-terminal audit](../labs/22-layout-verification/reference/power-connectivity.json), [fresh timing report](../labs/22-layout-verification/reference/timing.json) and [command/technology record](../labs/22-layout-verification/reference/report.json) bind this continuation to the original repaired block.
 
-::: {tbl-colwidths="[48,30,22]"}
-
 | Obligation | Original timing-repaired layout | Finished candidate |
 | --- | ---: | ---: |
 | DRC categories reported | 129 | 129 |
@@ -388,7 +412,7 @@ The flow re-extracts SPEF from the finished database, reruns timing/electrical/c
 | Reported electrical violations | 0 | **0** |
 | Foundry manufacturing qualification | Open | **Open** |
 
-:::
+: Obligations before and after the finishing step {#tbl-complete-case-study-obligations-finishing-step tbl-colwidths="[48,30,22]"}
 
 The matched finished circuits contain **44,471 MOS devices**, with the same device-class counts, 23,394 nets and 293 retained pins on both sides after consistent simplification. Device extraction follows active/poly/wells, contacts and metal/via geometry; the reference is the exported CDL plus the actual cell CDL. The unchanged timing values are fresh extracted results under the same single-corner model, not a transfer of a number from the older report. The physical-only finish leaves the functional signal implementation unchanged.
 

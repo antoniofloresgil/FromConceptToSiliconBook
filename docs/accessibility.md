@@ -31,7 +31,11 @@ references. Keep alphabetical headings separate from adjacent Markdown lists.
 Expose the matrix as CSV for filtering outside the rendered book.
 
 Use headings and meaningful captions/alternative descriptions so the material
-can be navigated without depending on a figure's visual appearance. Keep HTML
+can be navigated without depending on a figure's visual appearance. Every pipe
+table carries a caption and a `#tbl-` identifier (`: Caption {#tbl-name}`) so that
+a screen reader announces it and the text can cite it with `@tbl-name`;
+`tools/book/check_tables.py` rejects an uncaptioned table, a duplicate identifier
+and a reference without a table. Keep HTML
 local heading navigation while avoiding hundreds of redundant PDF contents rows.
 
 The HTML reading column must shrink on narrow screens. Contain horizontal

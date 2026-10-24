@@ -27,6 +27,8 @@ cd FromConceptToSiliconBook
 | **Adaptation template** | Review external versions, paths, technology or API options first | Physical Tcl, board programming, modern Sail command, gem5 sketch |
 | **Exercise** | Implement/extend a design or check and produce new evidence | New accelerator features and full-SoC scenarios |
 
+: Recipe status values, their meaning and examples {#tbl-reproducible-labs-recipe-status-values-meaning}
+
 Source export, synthesis, tool discovery and full physical qualification are different boundaries. A block inherits its section's stated scope, not an automatic claim of execution.
 
 Start at the repository/extracted-package root unless stated otherwise. `cd` changes the directory for subsequent commands. Bash/WSL uses `\` for continuation; PowerShell uses a backtick. Prompts, output listings and angle-bracket placeholders are not shell commands. Paths and HDL ports are case-sensitive on Linux.
@@ -47,6 +49,8 @@ Start at the repository/extracted-package root unless stated otherwise. `cd` cha
 | `dotproduct-wally` | Real Wally, AHB adapter and firmware | Explicit external entry: polling, interrupt handler and result/cycle checks |
 | `mmu` | Sv32 aliases, S-mode and a delegated store page fault | Separate Spike test with expected signature; guided Wally trace |
 | `dse` | Controlled actual Wally divider sweep and illustrative Pareto analysis | Checked explicit script with external clone; outside `run all` |
+
+: Entry points, their scope and automatic evidence {#tbl-reproducible-labs-entry-points-scope-automatic}
 
 `run all` executes the nine automatic entries. A missing board, PDK or unfinished accelerator is never counted as a pass. An automatic result covers the tested boundary, and the other requirements of the subsystem need their own checks.
 
@@ -144,6 +148,8 @@ The Python development package supplies the shared library cocotb embeds. If `fi
 | cocotb standalone test | cocotb 2.0.1, Python 3.9+, Icarus 11+; checked Icarus 12.0 | Its Makefile defaults to Icarus and shared one-operand RTL |
 | Standalone Verilator | Checked 5.020 for C++ and Wally fixtures | Does not meet cocotb 2.0.1's separate Verilator-backend minimum |
 
+: Shared interfaces, exact versions and the checked boundary {#tbl-reproducible-labs-shared-interfaces-exact-versions}
+
 Both designs use the top name `accumulator`, but their ports and operand contracts differ. The physical YAML/SDC uses `Clk` and references the implementation RTL. Running the earlier cocotb test only checks its own source. See `labs/recipe-contracts.json` and run `python labs/tools/check_recipes.py` for static case/path/port/version checks. It also checks Linux Docker flags and Wally's report namespace; it does not execute external tools or validate a new technology.
 
 Local unit runs write `labs/build/report.json`. The Wally recipe sets `LAB_BUILD_DIR=/work/labs/build/wally-platform` so the system report is `labs/build/wally-platform/report.json`; native Linux sets the equivalent path `labs/build/wally-platform`. Preserve both for the evidence collector. DSE writes `labs/build/dse/results.json` locally; CI uses its separate `dse-platform/` namespace.
@@ -199,6 +205,8 @@ This is an executable application of the plan in @sec-verification-methodology. 
 | Synthesis | Flattened generic mapping of the default 256-element-capacity configuration | Structural error, unintended latch or failed synthesis |
 | Reports | Compare mapped cell count with the reviewed budget; recheck source identity | Excessive logic growth or changed inputs |
 
+: Stages of the hardware CI, the check each executes and its rejection condition {#tbl-reproducible-labs-stages-hardware-ci-check}
+
 The elaborated [contract](../labs/25-hardware-ci/contract.json) records port names, directions, widths, signedness and default parameters. It catches a changed interface even if a testbench happens not to exercise the affected bits. It does not encode every AXI or register semantic rule. Independent transactions and assertions check those behaviors. An intended ABI change needs explicit integration/test review, not an edit that makes the old checker agree automatically.
 
 Lint also needs an explicit policy. The preserved RTL produces six reviewed diagnostics: four implicit unsigned address extensions in 33-bit range comparisons, the unused engine-busy indication, and the unused upper half of a 32-bit DMA operand. The runner uses `-Wno-fatal` to collect diagnostics, then compares the **exact reviewed multiset** of warning codes, source filenames and messages. Additional, changed or missing messages fail. It does not globally accept a warning category. Logs retain all six observations, and an intentional cleanup requires updating the reviewed expectation.
@@ -228,6 +236,8 @@ The [recorded dossier](../labs/25-hardware-ci/reference/negative-results.json) c
 | Insert a deliberately false formal assertion | Formal | Failed bounded assertion and VCD counterexample |
 | Add a retained unused 256-bit counter | Reports | **6,668 cells**, exceeding the **5,946** limit |
 
+: Modifications that must be rejected, the first failing stage and the evidence {#tbl-reproducible-labs-modifications-must-be-rejected}
+
 The last candidate passes lint, elaboration, simulation, bounded formal checks and synthesis. Its counter is deliberately retained so optimization cannot remove the experiment. It demonstrates a cost regression that functional tests alone would accept. The false assertion is a sensitivity test for the formal stage, not a previously hidden defect in the healthy accelerator. The [positive run](../labs/25-hardware-ci/reference/positive/report.json) passes all six stages at 5,662 cells.
 
 Reproduce the positive run with the ordinary lab image using the Linux/WSL or PowerShell commands in the guide. Sources are mounted read-only; a separate writable mount receives results. Run `negative.py` in the same environment to challenge all four gates. Alternatively, `verify_reference.py` audits the delivered transcripts, source/artifact hashes, actual generic netlists and failure outcomes using Python only. Auditing recorded evidence is not rerunning EDA tools.
@@ -241,6 +251,8 @@ The publication workflow calls the dedicated [accelerator workflow](../labs/25-h
 | Per change | Main push / pull request; lint through generic synthesis | Interface, independent tests, bounded proof/witness, cell budget; no routed timing |
 | Wider functional campaign | Existing laboratory/Wally jobs; explicit additional configurations | Broader software/system evidence; no inherited whole-core proof |
 | Physical implementation | Explicit dispatch of the separate physical workflow; other FPGA/ASIC sweeps through Labs 21–22 | Fresh routing/extraction and target-specific acceptance; longer runtime and additional images/PDK |
+
+: Workflow tiers, their trigger and scope, and the evidence limit {#tbl-reproducible-labs-workflow-tiers-trigger-scope}
 
 The new manual [ASIC workflow](../labs/25-hardware-ci/reference/workflows/physical-regression.yml) first requires a fresh fast gate at the same Git revision. It then uses the pinned ORFS image to implement the Lab 21 repaired 100 MHz block and check mapped/routed equivalence. `physical_gate.py` requires nonnegative extracted setup and hold, zero reported electrical violations, no unconstrained-path report, an empty final router DRC report and valid nonempty GDS readback. Its scope is Nangate45 typical with the block's supplied interface budgets. Reference-PDK transistor LVS and geometry DRC retain their separate Lab 22 campaign; manufacturing qualification remains open.
 
@@ -274,6 +286,8 @@ The ZIP contains `SHA256SUMS.json`; `check` also verifies those checksums when r
 | Architectural models | [Spike](https://github.com/riscv-software-src/riscv-isa-sim), [Sail RISC-V](https://github.com/riscv/sail-riscv) | Separate matching ISA/platform reference experiments |
 | OpenROAD flow | [OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts) | Technology-specific synthesis and physical implementation |
 | LibreLane | [librelane/librelane](https://github.com/librelane/librelane) | Managed RTL-to-GDSII environment and flow configuration |
+
+: External repositories and environments and how each is used {#tbl-reproducible-labs-external-repositories-environments-used}
 
 For the Wally baseline inspected in this book:
 

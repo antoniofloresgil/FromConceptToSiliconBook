@@ -56,6 +56,8 @@ For a same-clock register-to-register path, the available time is the period aft
 | Unconstrained clock/path | The tool cannot establish the required relationship | Add/correct constraints before trusting the build |
 | Passed at a lower frequency | Functional configuration may be useful for bring-up | Do not claim the higher target is closed |
 
+: Timing results, their interpretation and the action for each {#tbl-nextpnr-timing-timing-results-interpretation-action}
+
 Timing closure shows that the paths meet their constraints, and functional correctness, CDC safety and DDR calibration are separate questions. In the other direction, an RTL simulation with correct behavior says nothing about delay through an actual FPGA. A trustworthy result needs both forms of evidence.
 
 ### Routed FPGA verification and timing closure
@@ -77,6 +79,8 @@ Use @sec-verification-methodology to review clocks, I/O constraints, routed reso
 | `nexysvideo-routed.json` | Netlist after packing, placement and routing |
 | `nexysvideo-report.json` | Resource, placement and timing-report data |
 | `nexysvideo.fasm` | Human-readable FPGA assembly features |
+
+: Files used by nextpnr-xilinx and their purpose {#tbl-nextpnr-timing-files-used-nextpnr-xilinx}
 
 FASM is not the hardware configuration itself. It records enabled FPGA features in a textual form. `fasm2frames` converts those features into frame data using the Project X-Ray database, and `xc7frames2bit` serializes frame data into the `.bit` configuration file for the exact part.
 
@@ -211,6 +215,8 @@ When timing fails, begin with the reported endpoints; changing random tool optio
 | Cross-module ready/valid loop | Break the combinational loop with an elastic register or pipeline stage |
 | Slow external interface path | Add valid IO timing constraints and pipeline at the interface if protocol permits |
 
+: Critical-path patterns and the RTL or architecture response {#tbl-nextpnr-timing-critical-path-patterns-rtl}
+
 @fig-nextpnr-critical-path-triage lists the common patterns and the smallest response to each.
 
 ![Six critical-path patterns and the RTL or architecture response that addresses each. Read the reported endpoints first; retiming is an architectural change unless the interface contract tolerates it.](../../figures/nextpnr-critical-path-triage.svg){#fig-nextpnr-critical-path-triage width=100% fig-alt="Six critical-path patterns paired with a response"}
@@ -230,6 +236,8 @@ Large FPGA systems rarely have a single clock. The Nexys Video Wally example con
 | IDELAY/DDR related | DDR PHY clocking | Delay/serializer resources | Correct primitive configuration and explicit timing review |
 | JTAG/USB/UART inputs | External asynchronous sources | Debug/serial receiver | Synchronizer or protocol crossing, not ordinary STA |
 
+: Clock domains, sources, consumers and the evidence each needs {#tbl-nextpnr-timing-clock-domains-sources-consumers}
+
 Declaring clocks asynchronous because a report is inconvenient hides problems. Asynchronous groups are valid only where a real CDC protocol carries data. Generated clocks need an understood parent and ratio, because an unconstrained divided clock makes its paths invisible to analysis. External inputs and outputs require input/output delay assumptions relative to a reference clock when their protocol is synchronous.
 
 ### Physical programming diagnostics
@@ -243,6 +251,8 @@ If `openFPGALoader` cannot find the cable, first check USB enumeration and permi
 | DONE absent | Bitstream part identity, configuration mode and power/reset state |
 | DONE present, no UART | Clock/reset LED, port/baud configuration and firmware image hash |
 | Board works once only | Distinguish volatile SRAM from flash configuration and record power-cycle behavior |
+
+: Programming symptoms and the first evidence to collect {#tbl-nextpnr-timing-programming-symptoms-first-evidence}
 
 Keep USB/JTAG access out of any build script that continuous integration also uses. Building a `.bit` is repeatable in CI, whereas touching a physical board is a separate lab action that someone observes.
 

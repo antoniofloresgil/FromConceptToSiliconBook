@@ -40,6 +40,8 @@ Before invoking any tool, make the compilation contract explicit:
 | Firmware | Boot image in on-chip memories and LiteDRAM service firmware when DDR3 is enabled |
 | Result | JSON for nextpnr, then FASM/frames and a `.bit` file |
 
+: Compilation contract for the Nexys Video example {#tbl-yosys-compilation-contract-nexys-video}
+
 The chosen top level is a board wrapper, not the processor core. It instantiates the selected CORE-V Wally configuration, memories, reset logic and board peripherals, and exports only physical signals such as clock, reset, UART, LEDs and DDR3 pins. Keeping the board layer separate prevents a pin edit from leaking into reusable processor RTL.
 
 ### What Yosys does
@@ -72,7 +74,9 @@ An FPGA implementation benefits from expressing intent in RTL.
 | Multiply/accumulate | DSP block or LUT logic | Is `-nodsp` intentional? |
 | Clock generation | Dedicated PLL/MMCM and buffers | Is the primitive supported and constrained? |
 
-@fig-yosys-rtl-intent-to-resource restates the table as a mapping with its review questions.
+: RTL intent, expected FPGA resource and review question {#tbl-yosys-rtl-intent-expected-fpga}
+
+@fig-yosys-rtl-intent-to-resource restates @tbl-yosys-rtl-intent-expected-fpga as a mapping with its review questions.
 
 ![RTL intent, the FPGA resource it should map to and the question to ask in review, for six common cases on the Xilinx 7-series target.](../../figures/yosys-rtl-intent-to-resource.svg){#fig-yosys-rtl-intent-to-resource width=100% fig-alt="Six rows linking an RTL intent to an FPGA resource and a review question"}
 
@@ -183,6 +187,8 @@ Keep the following artifacts with every bitstream:
 | Firmware hashes | Which software is embedded in memories |
 | Git commit and tool versions | Rebuild provenance |
 
+: Synthesis artifacts to keep with every bitstream {#tbl-yosys-synthesis-artifacts-keep-every}
+
 A zero exit code means the tools finished, and the processor may still be wrong. Compare the resource trend with the previous build, because unexpected changes in LUT, BRAM or flip-flop count frequently expose a missing source file, different parameter override or an accidentally optimized-away peripheral. Run simulation and ISA/software tests before FPGA compilation, then use the board to validate integration and physical interfaces.
 
 ### SystemVerilog boundary and reproducible source sets
@@ -215,11 +221,13 @@ Use reports to formulate a narrow hypothesis, then test one change at a time:
 | DSP use is zero | Mapping option forbids it or operands are unsuitable | Check `-nodsp`, widths and signed multiply coding |
 | Many resettable flops | Reset was applied broadly | Decide which state genuinely needs architectural reset |
 
+: Observations, likely causes and productive next steps for optimization {#tbl-yosys-observations-likely-causes-productive}
+
 For equivalence-sensitive work, compare a simulation of the RTL against a simulation of the mapped netlist, or use formal equivalence when the design/toolchain supports it. This is particularly valuable after RAM inference, reset refactoring or aggressive parameter changes. It catches mismatches at the logical boundary before place-and-route makes the artifacts much larger.
 
 ### Three surprises, diagnosed
 
-The table above lists likely causes. Here are three of them reproduced on small modules, so that each cause comes with the evidence that identifies it. They run on the Yosys in the laboratory container (version 0.33); the counts belong to that version and to the flow named in each case, and a different Yosys release can report different numbers for the same module.
+@tbl-yosys-observations-likely-causes-productive lists likely causes. Here are three of them reproduced on small modules, so that each cause comes with the evidence that identifies it. They run on the Yosys in the laboratory container (version 0.33); the counts belong to that version and to the flow named in each case, and a different Yosys release can report different numbers for the same module.
 
 **A counter that vanished.** The module below registers `a` into `y` and also contains a 16-bit counter that nothing observes:
 
@@ -243,7 +251,7 @@ endmodule
 yosys -p 'read_verilog -sv counter_unobserved.sv; synth -top counter_unobserved; stat'
 ```
 
-The report shows 8 cells, all of them `$_DFF_P_`, and they are the eight bits of `y`. The counter has no flip-flops and no incrementer, because logic that drives no output is removed. That is the right result for this module, and the symptom to recognize in a real design is the one in the table: a block that consumes zero logic. Give the counter an observable output and it returns:
+The report shows 8 cells, all of them `$_DFF_P_`, and they are the eight bits of `y`. The counter has no flip-flops and no incrementer, because logic that drives no output is removed. That is the right result for this module, and the symptom to recognize in a real design is the one in @tbl-yosys-observations-likely-causes-productive: a block that consumes zero logic. Give the counter an observable output and it returns:
 
 ```systemverilog
 module counter_observed(
@@ -301,7 +309,7 @@ endmodule
 yosys -p 'read_verilog -sv ram_async.sv; synth_xilinx -family xc7 -top ram_async; stat'
 ```
 
-With the asynchronous read, the XC7 flow builds the memory from distributed LUT RAM: 32 `RAM256X1S` primitives and 12 LUTs, and no block RAM. The arithmetic matches the memory: each primitive holds 256 bits, four of them make a 1,024-deep bit, and eight bits need 32. The 12 LUTs are the surrounding logic, 4 `LUT3` and 8 `LUT6`, which fits one write decode per slice and a four-way read multiplexer per bit. With the registered read, the same flow reports one `RAMB18E1` and no LUT RAM. Block RAM has a registered output, so an asynchronous read cannot map to it, and the registered read changes the design: the data now arrives one cycle later, and the logic that consumes it has to expect that. This is the row "BRAM count unexpectedly drops" in the table, and why the fourth hands-on exercise asks you to confirm the latency in simulation after changing a memory style.
+With the asynchronous read, the XC7 flow builds the memory from distributed LUT RAM: 32 `RAM256X1S` primitives and 12 LUTs, and no block RAM. The arithmetic matches the memory: each primitive holds 256 bits, four of them make a 1,024-deep bit, and eight bits need 32. The 12 LUTs are the surrounding logic, 4 `LUT3` and 8 `LUT6`, which fits one write decode per slice and a four-way read multiplexer per bit. With the registered read, the same flow reports one `RAMB18E1` and no LUT RAM. Block RAM has a registered output, so an asynchronous read cannot map to it, and the registered read changes the design: the data now arrives one cycle later, and the logic that consumes it has to expect that. This is the row "BRAM count unexpectedly drops" in @tbl-yosys-observations-likely-causes-productive, and why the fourth hands-on exercise asks you to confirm the latency in simulation after changing a memory style.
 
 **A latch the tool rejects, or quietly builds.** A combinational block that forgets to assign `q` when `en` is low describes a latch:
 
@@ -364,7 +372,9 @@ Read the log and not only the exit code, since the `always @*` case shows the la
 | `latch_comb`, `latch_star` | latch gate | error at `proc`; assertion failure |
 | `latch_fixed` | latch gate | passes |
 
-This table is a **checked recipe**. `python labs/run.py run synthesis` synthesizes every module in [labs/07-implementation/surprises/](../../labs/07-implementation/surprises/) and fails if any outcome differs from it.
+: Three synthesis surprises compared across flows {#tbl-yosys-three-synthesis-surprises-compared}
+
+@tbl-yosys-three-synthesis-surprises-compared is a **checked recipe**. `python labs/run.py run synthesis` synthesizes every module in [labs/07-implementation/surprises/](../../labs/07-implementation/surprises/) and fails if any outcome differs from it.
 
 ### Reports for architecture decisions
 

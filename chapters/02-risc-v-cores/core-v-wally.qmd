@@ -22,6 +22,8 @@ Pipelining divides the work into stages separated by registers. Once filled, the
 | Memory (M) | Load/store transaction | loaded data, ALU result, writeback controls |
 | Writeback (W) | Select and write architectural result | register-file write enable, destination, data |
 
+: Pipeline stages, their responsibilities and typical outputs {#tbl-core-v-wally-pipeline-stages-responsibilities-typical}
+
 Pipeline registers preserve both data and its meaning. For example, a load instruction carries its destination-register number and `result-from-memory` control from Decode to Writeback. Losing a control bit is as serious as losing an operand: the correct value could be written to the wrong register or at the wrong time.
 
 ## The Simplified Wally Pipeline
@@ -81,6 +83,8 @@ Pipelining creates hazards because stages overlap.
 | Control hazard | Conditional branch changes PC | Flush wrong-path instruction(s), redirect Fetch |
 | Structural hazard | One memory port serves fetch and load/store | Separate memories/ports or explicit arbitration |
 
+: Hazard types and the simplified Wally response {#tbl-core-v-wally-hazard-types-simplified-wally}
+
 A stall holds selected pipeline registers and prevents side effects from being duplicated. A flush replaces an instruction with a benign bubble by clearing its controls. The two actions solve different problems: holding a wrong-path instruction keeps the bug alive, while flushing a valid load response throws data away. Define enables and clears per pipeline register and verify them with short instruction sequences before running large programs.
 
 ## What the Simplified Version Omits
@@ -138,6 +142,8 @@ The configuration name is a directory label, not a complete manifest of every op
 | Reset PC | `0x80000000` | The first instruction is fetched from the RAM region |
 | Uncore targets | RAM, boot ROM, CLINT, PLIC, UART, GPIO and other peripherals enabled | Both transaction and interrupt paths are present |
 
+: Choices that fix one Wally configuration and their consequence {#tbl-core-v-wally-choices-fix-one-wally}
+
 `config/shared/config-shared.vh` derives additional fields, including the physical-address width. RV32 has a 32-bit integer width but this Wally configuration derives a 34-bit physical-address width. Internal addresses keep their full width, even though the program only sees 32-bit registers.
 
 This baseline permits following cache misses, MMIO and interrupts in one configuration. Whether a particular FPGA has enough resources, or whether an operating-system image boots, depends on further platform work. The [FPGA SoC chapter](../05-fpga-implementation/fpga-soc.qmd) selects a different wrapper, memory implementation and configuration for its target.
@@ -165,6 +171,8 @@ The repository diagram provides a complementary stage-oriented view [@cvwReposit
 | `src/uncore/uncore.sv` | Decode target regions, bridge to APB and select responses | Which target is selected for this physical address? |
 | `src/privileged/` | CSR, privilege, exception and interrupt control | Which event can redirect execution at a safe boundary? |
 
+: RTL locations of the functional map and the first question to ask of each {#tbl-core-v-wally-rtl-locations-functional-map}
+
 The top module connects `MTimerInt`, `MSwInt`, `MExtInt` and `SExtInt` from the uncore to the core. The uncore is conditionally instantiated when `P.BUS_SUPPORTED` is true [@cvwBridgeSoc; @cvwBridgeCore]. These structural facts explain why changing a configuration can remove a whole path, not merely alter its performance.
 
 The diagram does not prescribe where every block sits in the five pipeline stages. Some units span stages, while cache refill and bus state evolve across many clock edges. Follow instruction-valid and completion signals in addition to stage suffixes.
@@ -183,6 +191,8 @@ For this baseline, the main decoded regions include:
 | SPI | `0x10040000` | 4 KiB region | Serial controller registers |
 | GPIO | `0x10060000` | 256-byte region | Input, output and event registers |
 | Uncore RAM | `0x80000000` | 128 MiB decoded region | Program and data storage in this model |
+
+: Main decoded address regions of the baseline {#tbl-core-v-wally-main-decoded-address-regions}
 
 The configuration encodes ranges as base-plus-range masks. A decoded region only reserves address space: the eventual FPGA need not contain 128 MiB of on-chip SRAM, and not every byte of a peripheral window is an implemented register. Check storage resources and register offsets separately.
 
@@ -229,6 +239,8 @@ Consider a machine-mode `lw x5, 0(x10)` with `x10=0x80002000`, a valid aligned a
 | Load result accepted | LSU can finish the request | Every later instruction is safe to commit |
 | Architectural writeback | `x5` receives the requested value | Physical timing is met on a board |
 
+: What each observation of the RAM-load journey establishes and what it does not {#tbl-core-v-wally-observation-ram-load-journey}
+
 This distinction makes waveforms interpretable. A bus address visible for several cycles is not necessarily several accesses, and a stalled pipeline is not necessarily deadlocked. Count completed transfers and follow retained ownership.
 
 ### Journey 2: an MMIO write to GPIO
@@ -273,6 +285,8 @@ For hart zero, the conventional offsets in this implementation place `mtimecmp` 
 | Trap entered | `mcause`, `mepc`, `mstatus` and handler PC |
 | Handler services source | New deadline and absence of unintended repeated MMIO effects |
 | `mret` resumes | Restored software state and next committed foreground instruction |
+
+: Events to record while following a timer interrupt {#tbl-core-v-wally-events-record-while-following}
 
 Interrupt latency includes source generation, qualification, pipeline/memory constraints, handler instruction access and software context save. It is not simply the number of flip-flops between CLINT and the core. A cache miss in handler fetch can contribute to the measured latency.
 

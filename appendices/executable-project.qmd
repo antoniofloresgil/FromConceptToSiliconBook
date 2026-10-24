@@ -89,6 +89,8 @@ The direct interrupt connection is a single-source teaching route. It does not d
 | Formal reasoning | Bounded RTL assertions and a reachable completion witness | No unbounded proof or AXI certification |
 | IP strengthening | Manifest, model, firmware, constraints, generic netlist and hashes; separate locked physical dossier in @sec-complete-case | No inserted scan or complete-SoC physical qualification |
 
+: Requirements, executable evidence and the remaining boundary {#tbl-executable-project-requirements-executable-evidence-remaining}
+
 Formal control checks use a 20-cycle bound with symbolic inputs. The engine is checked separately for 24 cycles with a fixed valid one-pair descriptor. A SAT witness reaches DONE, avoiding a completion property that only passes because completion was unreachable. The property set checks retained payloads, active descriptor stability, bounded DMA addresses and terminal-write ordering. State the bound and assumptions when presenting these results; simulation covers long jobs and firmware integration.
 
 Run the deliberate defect checks separately:
@@ -181,6 +183,8 @@ The underlying RTL permits a configurable maximum length and trusted DMA bounds.
 | `course` | 256 | AXI subsystem | Every accepted job length 1–256, protocol/error suite, generic synthesis |
 | `course` | 256 | Real RV32 Wally fixture | Five polling lengths, interrupt job and rejected descriptor |
 
+: Configuration profiles and the claim each one supports {#tbl-executable-project-configuration-profiles-claim-one}
+
 The runner refuses unknown profile names and rejects the compact profile for the current Wally firmware fixture. A parameter value that elaborates successfully is not automatically supported. A new window also needs model storage, linker placement, ownership and protection checks; changing a top-level parameter alone does not discharge them.
 
 The supported numerical contract remains signed 16-bit operands in 32-bit words and an exact 64-bit sum. Maximum length affects descriptor admission; it does not change sample format or add saturation. Record unsupported tuples explicitly and require a new evidence entry before advertising them. This keeps configuration freedom useful to an integrator instead of turning every parameter into an untested promise.
@@ -221,6 +225,8 @@ Checksums detect changes only relative to a trusted identity. A party that can r
 | Constraints | Example clock and interface-delay SDC | Replace budgets with actual clocks, loads, reset/CDC contracts |
 | FPGA view | No new board implementation for release 1.1.0 | Pin/device/clock constraints, route/timing and board evidence |
 | ASIC view | No new mapped netlist, LEF or GDS for release 1.1.0 | Technology/corner lock, extracted timing, power, DRC/LVS and DFT |
+
+: Logical and physical deliverables and the integrator next step {#tbl-executable-project-logical-physical-deliverables-integrator}
 
 A reusable soft IP need not bundle a technology-specific hard macro, but it must identify which views exist. An example 10 ns clock is a requested budget and not an achieved frequency, and a generic netlist is not yet a placed implementation. Historical results in @sec-complete-case and @sec-layout-verification show how to document physical evidence, but belong to their own hashes. The newly generated endpoint cannot inherit their area, timing, power or DRC/LVS status merely because it preserves register behavior.
 

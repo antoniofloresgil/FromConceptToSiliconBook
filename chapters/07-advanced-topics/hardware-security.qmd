@@ -23,6 +23,8 @@ An asset can be data, authority or a service. A cryptographic key is sensitive d
 | Debug authority | Lifecycle-dependent authorization | Approved development access or constrained service access |
 | Device identity and ownership state | Authenticity and freshness | Provision/transfer ownership according to the lifecycle policy |
 
+: Course assets, their security objective and authorized operation {#tbl-hardware-security-course-assets-security-objective}
+
 The application determines what is secret. A buffer containing public benchmark inputs does not need the same confidentiality treatment as a private signing key. Conversely, a public boot policy can still require strong integrity. The final project's matrix should name those distinctions rather than assign one generic security level to every register.
 
 ### Threat models define capabilities, not just attacker names
@@ -39,6 +41,8 @@ Record what is excluded and why. A digital RTL simulation cannot measure laser-f
 | Malicious device/master | Addresses, transaction timing, IDs and errors at its interface | Responses and accessible memory | Enforce independent interconnect permissions |
 | Board access | External image storage, reset and permitted debug pins | Console/debug outputs and externally available traces | Test boot/lifecycle policy across resets and image replacement |
 | Physical adversary | Defined fault/measurement capabilities | Power/EM/timing or fault responses | Qualify physical assumptions and separate silicon/board evidence |
+
+: Threat profiles, controlled inputs, observations and consequence for verification {#tbl-hardware-security-threat-profiles-controlled-inputs}
 
 OpenTitan's security material is useful because it treats roots of trust, provisioning, ownership and lifecycle as one architecture, instead of equating security with a cipher block [@securityOtOverview]. The course proposal borrows that discipline without copying OpenTitan's complete feature set or implying equivalent assurance.
 
@@ -196,6 +200,8 @@ The trust hierarchy for this proposal is: immutable/protected boot policy establ
 | Debug → halt/system bus | Lifecycle/auth admission plus bus policy | Teaching guard checked; actual DTM/DM/SBA integration remains an exercise |
 | Boot storage → execution | Anchored authentication and protected handoff | Functional Linux boot exists; secure-boot architecture is a proposal |
 | Secret-dependent execution → observer | Defined leakage policy and qualified countermeasures | Synthetic cache observation only; no physical/leakage qualification |
+
+: Trust boundaries, proposed owner and enforcement, and existing evidence {#tbl-hardware-security-trust-boundaries-proposed-owner}
 
 This matrix avoids an aggregate “secure” label. A module can pass its tests while an unimplemented system boundary remains open. Release documentation should carry the missing obligation instead of converting it into a successful status by omission.
 
@@ -395,6 +401,8 @@ The observer primes one line in every set. The victim then reads a disjoint addr
 | 1 | Observer line remains cached | Victim did not evict this direct-mapped set |
 | 12 | Observer line was displaced | Victim touched a conflicting address in this set |
 
+: Probe cost, model interpretation and observer inference in the timing demonstration {#tbl-hardware-security-probe-cost-model-interpretation}
+
 The script repeats for all sixteen synthetic secrets and saves the observation vectors in `timing.json`. It then runs a uniform-address victim that touches every set in the same order. The observer receives the same vector for every secret, removing this particular modelled channel at an explicit memory-work cost.
 
 This result is a useful multi-execution observation, not a physical constant-time qualification. Another cache organization, scheduler, speculative path, data-dependent unit or power measurement could expose a different channel. For a Wally extension, first establish a validated timing/PMU observation path, then collect repeated traces with a documented platform and noise model. Keep that physical/RTL measurement separate from the deterministic model output.
@@ -427,6 +435,8 @@ Deliver an asset/threat matrix, the trust-boundary diagram, policy ownership/res
 | Secret-dependent cache access can leak an observation | Deterministic synthetic timing vectors | Validated platform measurements and a specific physical/channel model |
 | Only approved stages execute | Architecture/negative-test plan | Implemented protected root, signature verification, rollback and recovery tests |
 | Keys resist selected physical attacks | Stated assumptions and design review | Qualified crypto/key storage, fault/leakage evaluation and lifecycle/DFT evidence |
+
+: Release evidence requirements for the final security review {#tbl-hardware-security-release-evidence-requirements-final}
 
 The methodology in @sec-verification-methodology applies to the whole dossier. Separate safety properties, information-flow observations, bounded formal evidence, integration tests and physical evaluation. A successful build or synthesis run does not make an unmeasured channel secure.
 

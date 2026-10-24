@@ -16,6 +16,8 @@ Pipeline suffixes identify where a value belongs:
 | `M` | Memory | `IEUResultM` |
 | `W` | Writeback | `RegWriteW` |
 
+: Pipeline stage suffixes of signal names {#tbl-wally-style-pipeline-stage-suffixes-signal}
+
 Signals produced inside the pipeline retain their originating-stage suffix when crossing unit boundaries. Controls produced outside it use the stage where they apply, such as `StallD`. Signals unrelated to a pipeline stage need no stage suffix. Prefixes distinguish source units: `IEU`, `IFU`, `LSU`, `FPU`, and `MDU` help identify related results from different blocks.
 
 Reserve bidirectional `inout tri` connections for genuine external interfaces. Inside the chip, prefer directional connections and multiplexers. Keep arrays internal where practical; explicit `var logic` ports can identify variable array interfaces when an array must cross a boundary.
