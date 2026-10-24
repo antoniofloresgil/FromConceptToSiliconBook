@@ -110,6 +110,22 @@ Assertions localize violations near their cause. For a valid/ready source, retai
 
 Distinguish an environment assumption from a DUT guarantee. If the DMA is the source of AW, stable AW under stall is its assertion. If a formal harness assumes stable AW from an external CPU master, it is constraining the environment. The one assumption to avoid is the very DUT behavior the proof is meant to establish. Record assumptions about target responses, clocks, reset, IDs, transaction counts and valid configuration.
 
+A concurrent SystemVerilog assertion (SVA) states a property over clock cycles, so it checks behavior across time. An immediate assertion is evaluated when its statement executes, like an `if`, and suits a combinational check or a procedural testbench. A concurrent assertion has three parts: a clocking event, an optional `disable iff` condition that switches it off during reset, and a property built from an antecedent and a consequent. The teaching assertion for a stalled AXI write-data channel in @sec-buses-interrupts shows all three, next to a `cover` property that asks whether the interesting case happens at all:
+
+```systemverilog
+assert property (@(posedge ACLK) disable iff (!ARESETn)
+  WVALID && !WREADY |=> WVALID && $stable({WDATA, WSTRB, WLAST}));
+
+cover property (@(posedge ACLK) disable iff (!ARESETn)
+  WVALID && !WREADY);
+```
+
+Read the assertion as: if the source offers a beat and the target is not ready, then in the next cycle the beat is still offered and its payload is unchanged. The operator `|->` starts the consequent in the same cycle as the antecedent, and `|=>` starts it one cycle later. `$stable(x)` is true when `x` equals its value in the previous cycle, and `$rose(x)` when it went from 0 to 1. Sequences add `##1`, a wait of one cycle. Every expression is sampled just before the clock edge, the same convention as the timing tables of this book, where each row describes the interval before its numbered edge.
+
+An implication passes whenever its antecedent never occurs, so the assertion above is also satisfied by a design that never stalls. The `cover` property shows that a stall is reachable; if it never is, the assertion has not checked what you think it checked. The same syntax with `assume property` constrains the environment in a formal harness, which is the assumption-versus-guarantee distinction made above.
+
+Support for concurrent assertions differs between simulators and formal frontends. In the teaching image, Verilator 5.020 with `--assert` accepts the implication, `$stable` and `cover property` above, and the assertion fails at the first stall in which the payload changes, whereas it rejects the `##` cycle delay of sequences and Icarus Verilog rejects these assertions altogether. The Yosys formal flow of this book uses immediate assertions with `$past`. Check the documentation of the installed version before adopting a construct, and confirm that each assertion can fail by injecting a defect, as the Verilator and cocotb chapters do for their scoreboards.
+
 Safety says that a bad event never occurs. Liveness says that a desired event eventually occurs. A DMA master cannot guarantee completion when the target can hold READY low forever. An eventual-completion property needs explicit fairness or bounded-response assumptions. Test robustness under stalls separately from any claim about progress under a responsive environment.
 
 Bounded model checking examines behavior to a stated depth. An unbounded proof needs a sound method and its stated initialization/induction assumptions. A reachability/cover result finds a permitted trace; it does not prove every trace correct. SymbiYosys separates these task modes in its reference documentation [@hsdFormalTasks]. Unknown, timeout and unproven obligations remain unresolved.
