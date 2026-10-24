@@ -1,0 +1,62 @@
+/*-- scss:defaults --*/
+$body-bg: #f5f2eb;
+$body-color: #182b3a;
+$link-color: #1b6f93;
+$presentation-font-size-root: 34px;
+$presentation-heading-font: "DejaVu Sans", "Segoe UI", Verdana, sans-serif;
+$font-family-sans-serif: "DejaVu Serif", Georgia, serif;
+$font-family-monospace: "DejaVu Sans Mono", Consolas, monospace;
+$presentation-heading-color: #101f30;
+$presentation-heading-font-weight: 700;
+$presentation-h1-font-size: 2.1em;
+$presentation-h2-font-size: 1.35em;
+$code-block-bg: #101f30;
+$code-block-color: #f5f2eb;
+$selection-bg: #4dd8ff;
+
+/*-- scss:rules --*/
+.reveal .slides section { text-align: left; }
+
+.reveal h2 {
+  border-bottom: 4px solid #f5b544;
+  padding-bottom: 0.15em;
+  margin-bottom: 0.6em;
+}
+
+.reveal ul { margin-top: 0.3em; }
+.reveal ul li { margin-bottom: 0.5em; line-height: 1.35; }
+.reveal ul li::marker { color: #b57b0f; }
+
+/* Section dividers use the night palette. */
+.reveal .slide-background.has-dark-background,
+.reveal section.title-slide { text-align: left; }
+
+#title-slide { padding-left: 0.5em; }
+#title-slide .title { color: #4dd8ff; font-size: 1.9em; }
+#title-slide .subtitle { color: #f5b544; font-size: 0.9em; }
+#title-slide .author { color: #b5c3cd; font-size: 0.7em; }
+
+.reveal section.level1 h1 {
+  color: #4dd8ff;
+  font-size: 2.2em;
+  border-left: 10px solid #f5b544;
+  padding-left: 0.4em;
+  margin-top: 2.4em;
+}
+
+.reveal table { font-size: 0.8em; border-collapse: collapse; width: 100%; }
+.reveal table th { background: #101f30; color: #f5f2eb; padding: 0.35em 0.6em; text-align: left; }
+.reveal table td { padding: 0.35em 0.6em; border-bottom: 1px solid #34495c; }
+
+.reveal pre { box-shadow: none; width: 100%; font-size: 0.7em; }
+.reveal pre code { max-height: 520px; padding: 0.8em 1em; }
+.reveal code { color: #8a4b00; }
+.reveal pre code, .reveal pre code span { color: inherit; }
+
+.reveal figure { margin: 0; }
+.reveal figure img { max-height: 470px; background: #fff; border: 1px solid #34495c; }
+.reveal figcaption { font-size: 0.55em; color: #34495c; }
+
+.reveal .footer { color: #34495c; font-size: 0.5em; }
+.reveal .slide-number { color: #34495c; font-size: 0.55em; }
+.reveal .progress { color: #f5b544; }

@@ -1,0 +1,24 @@
+project:
+  type: default
+  output-dir: _site
+  render:
+    - "decks/*.qmd"
+
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    embed-resources: true
+    slide-number: c/t
+    width: 1280
+    height: 720
+    margin: 0.06
+    transition: none
+    center: false
+    hash: true
+    controls: true
+    progress: true
+    preview-links: false
+    code-line-numbers: false
+    code-copy: false
+    toc: false
+    footer: "From Concept to Silicon · Antonio Flores Gil"
