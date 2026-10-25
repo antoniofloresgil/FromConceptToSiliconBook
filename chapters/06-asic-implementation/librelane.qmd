@@ -1,6 +1,6 @@
 # Integrated ASIC Flow with LibreLane {#sec-librelane}
 
-## Concepts
+## Concepts {#librelane-concepts}
 
 LibreLane is open-source infrastructure for building and running digital ASIC implementation flows. It is the maintained successor to the OpenLane 2 codebase, now under the stewardship of the FOSSi Foundation. Rather than replacing the tools studied in the preceding chapter, it coordinates them: a reference flow named **Classic** runs a design through Yosys, OpenROAD, Magic, KLayout, Netgen and a set of checks to obtain a GDSII for suitable digital designs [@librelaneClassic].
 
@@ -454,7 +454,7 @@ Before declaring the accumulator or a larger SystemVerilog block fabrication-rea
 
 The Google/SkyWater open PDK made the technology collateral inspectable, and open MPW programmes demonstrated that community designs could be fabricated. It does not turn a local flow result into a standing right to manufacture. Use the foundry or shuttle's current rules and acceptance process together with the evidence produced by LibreLane.
 
-## Hands-on Experiments
+## Hands-on Experiments {#librelane-hands-on-experiments}
 
 For a book-wide IP example, use the common source/configuration manifest in @sec-complete-case. Its measured ASIC route uses direct OpenROAD and KLayout, and no LibreLane run is claimed. A managed-flow extension should consume the same three RTL modules and baseline parameters, declare a compatible PDK/library/SDC profile, and regenerate every result. Do not transplant the Nangate45 area/power/timing into a SKY130 LibreLane report or infer sign-off from the existing GDS readback.
 

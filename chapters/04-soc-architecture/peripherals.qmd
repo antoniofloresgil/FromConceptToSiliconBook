@@ -10,7 +10,7 @@ The teaching GPIO, byte FIFO and PWM modules and the C drivers for them are chec
 
 The subsequent chapter, @sec-boot-stack, connects these device contracts to reset firmware, OpenSBI, the device tree, OS drivers and Linux userspace.
 
-## Concepts
+## Concepts {#peripherals-concepts}
 
 ![Selected representative platform base addresses, not a complete memory map or a scale drawing. UART and GPIO retain distinct bases; the accelerator platform extension decodes 0x10080000 and forwards register offsets to the unchanged IP. RAM is a separate target.](../../figures/visual-mmio-map.svg){#fig-platform-mmio-map width=100%}
 
@@ -231,7 +231,7 @@ These boundaries help select an IP block: start from the required external proto
 Following @sec-verification-methodology, test register semantics, side effects and protocol behavior separately. Check W1C/event coincidence, masks, FIFO overflow/underflow, response errors and interrupt clearing. Drive meaningful external serial/timer stimuli; a loopback can conceal two mutually compensating protocol defects. Firmware adds volatile accesses, ordering and timeout/recovery obligations. Compare at defined transfer/sample events and retain a minimized boundary-case regression. Real pin electrical behavior and board clock accuracy remain physical-platform checks.
 
 
-## Implementation
+## Implementation {#peripherals-implementation}
 
 ### Wally's APB peripheral organization {#wallys-apb-peripheral-organization}
 
@@ -600,7 +600,7 @@ SPI peripherals connected through expansion headers need the board's pin/voltage
 
 Begin bring-up with a known LED state, a periodic hardware waveform and a short UART message. Then check UART receive and external SPI traffic. An internal loopback verifies logic but cannot prove connector routing, physical voltage or external-device compatibility. Use waveform capture for clock/select/data timing when debugging the board.
 
-## Hands-on Experiments
+## Hands-on Experiments {#peripherals-hands-on-experiments}
 
 ### Experiment 1: register and GPIO contract
 
@@ -673,7 +673,7 @@ At 100 samples/s with 32-byte records, the payload is 3,200 bytes/s, below a 115
 
 Exercise simultaneous button/timer/UART requests, long interrupt-masked intervals and external-device timeouts. Trace device conditions, local enable, PLIC delivery, handler actions and queue occupancy. Check that completing PLIC service does not leave a permanently active source causing an interrupt storm.
 
-### Deliverables
+### Deliverables {#peripherals-deliverables}
 
 @sec-reusable-ip continues this integration work with an autonomous IP release: generated register views, a supported configuration matrix, dependency locks and unchanged accelerator RTL used in AXI and Wally environments. It turns the peripheral contract into a third-party handoff, which is a step beyond another device example.
 

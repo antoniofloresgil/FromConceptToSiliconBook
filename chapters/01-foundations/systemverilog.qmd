@@ -4,7 +4,7 @@ Many of the first bugs in SystemVerilog are not syntax errors: a latch where a w
 
 The small modules in it, a word selector, an enabled sample pipeline, a request controller, an elastic slice and an instruction decoder, are exercised by `python labs/run.py run foundations` in the [laboratory package](../../appendices/reproducible-labs.qmd).
 
-## Concepts
+## Concepts {#systemverilog-concepts}
 
 []{#ref-systemverilog-concepts .reference-destination}
 
@@ -201,7 +201,7 @@ A ready/valid channel transfers an item when both signals are high at the sampli
 Use @sec-verification-methodology to turn each RTL example into explicit obligations: widths/signedness, combinational completeness, clock-edge state updates, reset priority and enable behavior. Elaborate a second legal parameter value, then test boundary operands and simultaneous controls against an independently derived result. A synthesizable module and a successful compile are distinct from a verified behavior. Include four-state/reset checks where unknown initialization matters; choosing `logic` does not eliminate X/Z semantics.
 
 
-## Implementation
+## Implementation {#systemverilog-implementation}
 
 ### A parameterized combinational block
 
@@ -428,7 +428,7 @@ Retain the generator revision, parameters, Scala/plugin/backend versions, compil
 
 The practice records generic synthesis statistics for both descriptions. They make a useful structural comparison, but they cannot be converted into FPGA LUTs, ASIC area, frequency or power. To extend the experiment physically, feed the preserved emitted RTL into the same target and constraints as the direct version and retain that new implementation evidence.
 
-## Hands-on Experiments
+## Hands-on Experiments {#systemverilog-hands-on-experiments}
 
 ### Fundamentals exercises
 

@@ -1,6 +1,6 @@
 # Privileged Architecture and the MMU {#sec-privileged-mmu}
 
-## Concepts
+## Concepts {#privileged-mmu-concepts}
 
 The simplified processor in @sec-core-v-wally executes instructions without the privileged machinery of a complete Wally core. The buses chapter introduces machine-mode interrupts, while the memory chapter introduces translation and protection where they interact with caches. This chapter completes the connection: who may execute an operation, how virtual addresses become physical addresses, and how a rejected operation transfers control to privileged software.
 
@@ -210,7 +210,7 @@ Translation state and PMP policy both belong in a configuration record. Testing 
 The plan in @sec-verification-methodology applies at the fault boundary as well as normal retirement. Check cause, fault address, saved PC, privilege/delegation and return behavior, and ensure that a faulting store produces no forbidden memory side effect. Add permission/page-boundary cases and TLB invalidation scenarios with matching reference-model configuration. The supplied Spike signature establishes its stated architectural scenario; it is not an executed Wally page-table-walker regression or a complete PMP/MMU security proof. Keep those integration obligations distinct.
 
 
-## Implementation
+## Implementation {#privileged-mmu-implementation}
 
 ### Follow the Wally RTL
 
@@ -285,7 +285,7 @@ S-mode then reads the read-only alias. It must still return `0x55667788`: the de
 
 Both the process exit and signature comparison must pass. A nonzero simulator result, timeout or stale signature is a failure. The HTIF mailboxes are a simulator convention; porting this test to Wally requires its documented loader and termination interface.
 
-## Hands-on Experiments
+## Hands-on Experiments {#privileged-mmu-hands-on-experiments}
 
 ### Experiment 1: calculate before executing
 

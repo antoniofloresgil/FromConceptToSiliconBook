@@ -113,7 +113,7 @@ The firmware prints software and accelerator end-to-end cycle counts for the sam
 
 The unchanged reference is a starting point and is not the final assessed project. Students should specify and demonstrate a defensible extension, preserve regression tests, add evidence for its new contract, and identify every produced, supplied and missing IP view. The existing coursework rubric and individual defence apply.
 
-## Verification plan and evidence collection
+## Verification plan and evidence collection {#executable-project-verification-plan-and-evidence-collection}
 
 Use @sec-verification-methodology for the requirement-driven hierarchy from RTL to physical release and production test. The package includes `labs/verification/project-plan.json`, a reusable plan template and an evidence collector. After the standalone and real Wally runs, generate `verification-evidence.json` using the commands in that chapter. Current source/artifact identities and expected checker completions are checked; equivalence, measured cross coverage, timing, physical and manufacturing obligations remain visible where unexecuted. This dossier complements the runner report rather than turning a simulation PASS into a physical qualification.
 

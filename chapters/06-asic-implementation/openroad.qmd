@@ -1,6 +1,6 @@
 # Physical Design with OpenROAD {#sec-openroad}
 
-## Concepts
+## Concepts {#openroad-concepts}
 
 OpenROAD is an open-source application for the physical implementation of digital integrated circuits. Its purpose is to take a synthesizable hardware design and the views supplied by a technology, then produce a placed and routed layout that can be checked for manufacturing. The project was launched in June 2018 within DARPA's IDEA programme; its name expands to *Foundations and Realization of Open, Accessible Design*. The original objective was ambitious: an autonomous, no-human-in-the-loop RTL-to-GDSII flow with a turnaround close to 24 hours [@openroadProject].
 
@@ -187,7 +187,7 @@ openroad -gui -db results/placed.odb
 
 The command-line application supports a Tcl interface and limited Python support. Tcl is the correct choice for the full physical flow; Python support is primarily for database operations [@openroadApplication].
 
-### Constraints are part of the design
+### Constraints are part of the design {#openroad-constraints-are-part-of-the-design}
 
 A module named `clk` is not a clock until the timing model says so. The minimum useful SDC defines a clock and input/output assumptions. For a 10 ns clock with one nanosecond of uncertainty:
 
@@ -532,7 +532,7 @@ Physical-design failures are information. The correct response is to locate the 
 
 : Failure symptoms, likely causes, first checks and corrections {#tbl-openroad-failure-symptoms-likely-causes}
 
-## Hands-on Experiments
+## Hands-on Experiments {#openroad-hands-on-experiments}
 
 After the accumulator study, follow @sec-complete-case to implement the same dot-product IP used by the book's verification and Wally firmware activities. It has its own locked maximum-256 configuration, Nangate45 placement/CTS/routing, extracted timing/vectorless power and KLayout GDSII stream-out/readback. Use those actual block results to distinguish an implemented layout from timing/foundry qualification.
 
@@ -562,7 +562,7 @@ Return to the baseline floorplan and reduce the clock period in 1 ns steps. Iden
 
 Make a `README` for the run containing the OpenROAD version, host/container identity, PDK commit, library/corner, RTL commit, complete SDC, command line, configuration variables and a report summary. A peer should be able to reproduce the same `DEF` and explain any remaining differences caused by tool nondeterminism or environment changes.
 
-## Further reading
+## Further reading {#openroad-further-reading}
 
 The official OpenROAD documentation is the command reference for the installed release. Its built-in `man` pages and online module pages should take priority over old blog posts and command snippets. The project documents examples from synthesizable RTL through detailed routing for Nangate45 and SKY130HD technologies, which are useful references when adapting a direct Tcl flow [@openroadApplication]. The next chapter, @sec-openroad-study, runs a measured campaign on the same accumulator and turns its failures into a closure method; the LibreLane chapter then returns to a managed flow that packages a similar sequence for repeated runs.
 

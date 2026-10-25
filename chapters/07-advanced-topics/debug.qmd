@@ -1,6 +1,6 @@
 # Hardware Debug for RISC-V {#sec-riscv-debug}
 
-## Concepts
+## Concepts {#debug-concepts}
 
 Hardware debug gives an external agent controlled access to a running RISC-V system. It can stop one or more harts, inspect and modify registers, examine memory, execute small debug programs, reset selected harts and resume execution. That capability is essential for board bring-up, firmware development, post-silicon diagnosis and laboratory teaching. It is also a privileged access path that can bypass normal software privilege and protection mechanisms, so it must be designed as both a functional and a security feature.
 
@@ -288,7 +288,7 @@ Their access paths can overlap, and each must respect the security lifecycle. A 
 
 Use @sec-verification-methodology to plan debug entry/exit, halt/resume, register/memory access, reset and error cases. Check architectural effects at the specified halted/retirement boundaries rather than comparing deliberately stopped execution to a free-running reference by cycle. Verify that debug accesses and authentication/lifecycle policy cannot bypass the intended protection contract; a working debugger alone does not establish that policy. Manufacturing test access and architectural debug share observability concerns but remain different interfaces and qualification tasks.
 
-## Hands-on Experiments
+## Hands-on Experiments {#debug-hands-on-experiments}
 
 ### Experiment 1: capability inventory
 
@@ -320,7 +320,7 @@ Use SBA to read/write ordinary RAM, then test an unaligned access, an unsupporte
 
 Model development and production lifecycle states. In production, attempt JTAG DMI access, halt request, abstract register access and SBA reads of a protected memory. Verify that the implementation rejects every forbidden route and that warm reset does not accidentally re-enable it. Record the threat model and what physical attacks the RTL test does not cover.
 
-## Further reading
+## Further reading {#debug-further-reading}
 
 Use the ratified [RISC-V Debug Specification](https://docs.riscv.org/reference/debug/_attachments/riscv-debug-specification.pdf) as the architectural source of truth, then consult the [NEORV32 on-chip debugger documentation](https://github.com/stnolting/neorv32/blob/main/docs/datasheet/on_chip_debugger.adoc) and its [OpenOCD/GDB guide](https://github.com/stnolting/neorv32/blob/main/docs/userguide/using_ocd.adoc) for a 1.0 implementation and host workflow. The [PULP `riscv-dbg` repository](https://github.com/pulp-platform/riscv-dbg/) documents a reusable execution-based 0.13.2 comparison, while the [CV32E40P debug manual](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/cv32e40p_v1.8.0/debug.html) shows a concrete 0.13.2 hart-facing interface. Keep the specification version visible in every integration and verification plan.
 

@@ -4,7 +4,7 @@ A design that simulates correctly can still fail on a board, because nobody told
 
 The reset-release and bit-synchronizer modules built here are simulated by `python labs/run.py run foundations` in the [laboratory package](../../appendices/reproducible-labs.qmd). A digital run shows the protocol working; it cannot measure metastability, and the chapter says where that limit matters.
 
-## Concepts
+## Concepts {#clocking-timing-concepts}
 
 Digital hardware is only synchronous when a timing contract makes it synchronous. SystemVerilog can describe a register with `always_ff @(posedge clk)`, but that syntax creates no physical clock network and says nothing about how fast the circuit must run. The contract connects three levels of design:
 
@@ -543,7 +543,7 @@ For an FPGA, confirm that the clock pin, clock distribution and IO constraints m
 
 When changing a configurable core, audit the paths affected by the new feature. A multiply option can change execution timing; a cache option can introduce array and comparison paths; a debug interface can create a new asynchronous boundary. Reusing an old constraint file without this review can leave new paths unconstrained.
 
-## Hands-on Experiments
+## Hands-on Experiments {#clocking-timing-hands-on-experiments}
 
 ### Experiment 1: create and audit an SDC file
 

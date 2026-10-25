@@ -4,7 +4,7 @@
 
 []{#ref-fpga .reference-destination}
 
-## Concepts
+## Concepts {#fpga-soc-concepts}
 
 The preceding chapters describe a generic open FPGA flow. This chapter follows a concrete and more demanding case: a reduced CORE-V Wally RISC-V SoC on Digilent's Nexys Video. The example is taken from the `opensource-fpga-bitstream` branch of CVW, where the entire FPGA build avoids Vivado dependencies [@cvwOpenSourceFpga].
 
@@ -54,7 +54,7 @@ The documented branch builds and programs a full open bitstream on Nexys Video a
 The methodology in @sec-verification-methodology adds physical programming, oscillator/reset, I/O, memory-controller and firmware checks after RTL and routed-design checks. Record board revision, bitstream hash, clock/voltage conditions and the expected observable result. Begin with a small known-good interface before a full workload, then test timeouts and recovery. The Wally AXI/DMA simulation fixture supplies useful functional tests but does not contain this chapter's real board fabric or establish DDR3 calibration/timing. FPGA operation also does not qualify an ASIC's layout or fabrication test.
 
 
-## Implementation
+## Implementation {#fpga-soc-implementation}
 
 **Recipe status: adaptation template.** The board workflow depends on the external pinned Wally checkout, toolchain/database, USB permissions and actual Nexys Video. The book's RTL simulation fixtures stop short of physical programming and DDR3 bring-up. Board observations and unresolved integration tasks remain exercises with explicit evidence.
 
@@ -242,7 +242,7 @@ The next logical additions are an interrupt-driven timer test, GPIO input deboun
 
 When changing the Wally core configuration, repeat the complete evidence ladder. A cache or bus-width change can alter the AHB traffic assumptions used by the Wishbone bridge. A faster target clock can invalidate the current LiteDRAM shared-domain choice. An optional debug block can affect reset behavior and JTAG pins. The proper conclusion is thus configuration-specific: “this commit and configuration met these checks on this board,” and not a broad claim about all Wally implementations.
 
-## Hands-on Experiments
+## Hands-on Experiments {#fpga-soc-hands-on-experiments}
 
 1. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-01 .learning-activity} — **Reproduce the bitstream.** Build the branch unchanged, archive the output directory and compare its bitstream hash across two clean builds with the same tool/database versions.
 2. [Advanced · C3 · board](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-02 .learning-activity} — **Prove the board wrapper.** Start from a GPIO/LED-only configuration and verify pin mapping before adding the processor. Check the reset polarity with an LED or UART message.
@@ -252,7 +252,7 @@ When changing the Wally core configuration, repeat the complete evidence ladder.
 6. [Advanced · C3](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-06 .learning-activity} — **Timing discipline.** Compare the 40 MHz report with an attempted 50 MHz run. Identify the critical path and decide whether a pipeline change, architecture change or lower target is justified.
 7. [Core · P5 · C0](../../learning-paths.qmd#sec-path-labels){#act-fpga-soc-07 .learning-activity} — **State limitations honestly.** In a project report distinguish: bitstream generated, configuration completed, internal-ROM software ran, DDR initialized and DDR tested. Do not collapse these milestones into “FPGA implementation works.”
 
-### Alternatives without a board
+### Alternatives without a board {#fpga-soc-alternatives-without-a-board}
 
 | Experiment | Alternative activity and deliverable |
 | --- | --- |

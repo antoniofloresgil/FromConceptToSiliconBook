@@ -1,6 +1,6 @@
 # Verification Methodology Across the Design Hierarchy {#sec-verification-methodology}
 
-## Concepts
+## Concepts {#verification-methodology-concepts}
 
 A hardware verification result is a claim about a particular requirement, representation, configuration and environment. It becomes useful engineering evidence when another person can identify what was exercised, how correctness was checked and which assumptions limit the conclusion. A program printing PASS, a solver finding no counterexample, and a clean layout report answer different questions.
 
@@ -74,7 +74,7 @@ Independent verification uses a different derivation, not merely another program
 
 The expected model needs its own small tests. Check negative times positive, minimum signed operands, a positive sum crossing 32 bits, ignored upper bits and a descriptor at the window boundary. Review model/test data and checker source separately from the DUT. Introduce a deliberate fault into an isolated RTL copy and confirm that an unchanged checker rejects it. Mutation detection demonstrates sensitivity to that particular defect; it is not a numerical measure of complete verification.
 
-## Implementation
+## Implementation {#verification-methodology-implementation}
 
 For a complete local progression from assertions and assumptions to BMC, induction, useful-traffic witnesses, a real counterexample, repair/regression and sequential equivalence, use @sec-formal-verification. Its two-entry FIFO is an executable preparation exercise for P4. The broader hierarchy and project obligations below remain separate: proving that FIFO does not close accelerator equivalence or whole-core correctness.
 
@@ -224,7 +224,7 @@ For a complete accelerator example, @sec-hardware-ci connects lint, elaboration,
 
 Use separate result statuses: **pass**, **fail**, **not_run**, **unknown** and **not_applicable**. Attach a rationale to the latter three; require review before accepting an exclusion. Closure is a review of the plan's applicable obligations, uncovered bins, unresolved results, waivers and current evidence. A single green dashboard is not the closure argument.
 
-## Hands-on Experiments
+## Hands-on Experiments {#verification-methodology-hands-on-experiments}
 
 ### Experiment 1: write and challenge the plan
 

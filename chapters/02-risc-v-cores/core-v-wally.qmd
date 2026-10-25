@@ -322,7 +322,7 @@ The repository's declared RTL license is Solderpad Hardware License 2.1, with th
 
 Use @sec-verification-methodology to separate pipeline control, numerical/ISA behavior and full privileged-SoC claims. For the simplified core here, test hazards, forwarding, synchronous-memory latency, stalled requests, redirects and suppression of wrong-path stores against the implemented ISA subset. Interrupt, trap and privileged machinery is deliberately omitted, so a passing teaching-core test says nothing about those features. The separate executable project's real Wally firmware platform verifies its specific AXI/DMA/interrupt scenarios. Neither experiment qualifies every Wally configuration, architecturally or microarchitecturally. A retirement comparator and broader feature/coverage plan remain explicit integration work.
 
-## Hands-on Experiments
+## Hands-on Experiments {#core-v-wally-hands-on-experiments}
 
 1. [Core option · P3 · C1](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-01 .learning-activity} — Run a five-instruction dependency chain and annotate which forwarding path supplies each operand.
 2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-core-v-wally-02 .learning-activity} — Change the data-memory model from combinational to synchronous. Observe the failing load-use sequence, then add the required stall/control alignment.

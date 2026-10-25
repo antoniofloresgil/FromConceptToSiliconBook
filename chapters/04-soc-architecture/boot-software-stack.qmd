@@ -6,7 +6,7 @@ This chapter closes the gap between @sec-privileged-mmu and physical implementat
 
 The normative references are the RISC-V privileged and SBI specifications, the Linux boot contract and the Devicetree Specification. QEMU and OpenSBI provide the concrete software platform [@riscvPrivilegedSpec; @bootSbiAbi; @bootLinuxContract; @bootDeviceTree]. The practical baseline deliberately uses QEMU's `virt` platform; it does not assert that the same binaries boot the book's FPGA Wally platform unchanged.
 
-## Concepts
+## Concepts {#boot-software-stack-concepts}
 
 ### From bare-metal bring-up to Linux
 
@@ -73,7 +73,7 @@ The practice's entry code preserves `a0` and `a1`, disables supervisor interrupt
 
 That is enough for this one-hart supervisor payload. A reusable startup also defines trap handling, section-copy behavior, TLS if used and a policy for additional harts. Allocating the same stack to multiple harts or clearing BSS while another hart uses it produces failures that can appear only after concurrency starts. The checked practice fixes `-smp 1` instead of pretending to solve those issues.
 
-## Implementation
+## Implementation {#boot-software-stack-implementation}
 
 ### Machine firmware and the supervisor handoff {#machine-firmware-and-the-supervisor-handoff}
 
@@ -199,7 +199,7 @@ For first bring-up, use a minimal initramfs containing a static `/init`. A `newc
 
 The small Linux exercise below mounts `/proc` and `/sys`, prints a marker and remains alive as PID 1. It is enough to demonstrate U-mode execution. A useful interactive system can instead contain BusyBox, device nodes or devtmpfs setup and a shell. Buildroot can generate a coordinated toolchain, kernel and root filesystem; keep its configuration and version so the image is never unexplained [@bootBuildroot].
 
-## Hands-on Experiments
+## Hands-on Experiments {#boot-software-stack-hands-on-experiments}
 
 ### Experiment 1: checked QEMU → OpenSBI → supervisor payload
 

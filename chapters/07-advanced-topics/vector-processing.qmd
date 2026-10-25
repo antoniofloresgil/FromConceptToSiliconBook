@@ -6,7 +6,7 @@ This chapter introduces the ratified **V extension, version 1.0**, then follows 
 
 The reference is the vector specification [@riscvVectorSpec]. Toolchain and calling-convention details are checked separately: instruction support, C intrinsics and the ABI are related but distinct interfaces [@rvvLlvmUsage; @rvvGccIntrinsics; @rvvCallingConvention]. By the end, the reader should be able to explain vector configuration, trace a strip-mined loop, reason about inactive elements, choose arithmetic widths and propose a fair comparison with a dedicated accelerator.
 
-## Concepts
+## Concepts {#vector-processing-concepts}
 
 []{#ref-vector-processing-concepts .reference-destination}
 
@@ -152,7 +152,7 @@ Each signed 16-bit product fits in signed 32-bit storage, but the sum need not. 
 
 For floating-point kernels, mathematical equality does not automatically imply identical bits. An unordered reduction may reassociate additions; fused multiply-add also changes rounding relative to separate multiply and add. State whether the application requires bitwise identity, a defined ordered operation, or an error tolerance. Fixed-point saturation and rounding similarly require their own contract. The integer practice avoids those ambiguities and provides an exact oracle.
 
-## Implementation
+## Implementation {#vector-processing-implementation}
 
 ### A dot product that preserves vector length
 
@@ -209,7 +209,7 @@ This statement concerns the inspected revision and configurations. A later branc
 
 For a proposed Wally vector integration, specify at least the architectural feature subset, register organization, scalar/vector issue interface, execution lanes, LSU transaction/restart policy and exception behavior. Reuse the existing scalar core where appropriate, but treat retirement and memory ownership as architectural contracts. A queued vector request has to be cancelled by a kill or reset in a way that writes stale data.
 
-## Hands-on Experiments
+## Hands-on Experiments {#vector-processing-hands-on-experiments}
 
 ### Reproduce the checked functional example
 

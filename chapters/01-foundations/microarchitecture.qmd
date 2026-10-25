@@ -6,7 +6,7 @@ This chapter establishes the reasoning tools needed before studying Wally. It fo
 
 The units built here, an ALU, a register file and an iterative multiplier, are checked by `python labs/run.py run foundations` in the [laboratory package](../../appendices/reproducible-labs.qmd). The multiplier is tested at widths 1, 8 and 32, with every operand pair at width 8, and the test covers its latency, its output stalls and a reset in the middle of an operation.
 
-## Concepts
+## Concepts {#microarchitecture-concepts}
 
 ### Start with a state transition
 
@@ -173,7 +173,7 @@ For functional comparison, observe retired architectural effects. For performanc
 The plan in @sec-verification-methodology separates numerical correctness from latency, initiation interval, state retention and handshake obligations. Use the same independent arithmetic oracle for alternative datapaths, but compare at their specified completion events rather than forcing equal cycle timing. Check minimum/maximum signed operands, overflow conventions, reset/enable overlap and repeated operations. Review whether a multicycle unit may accept another request while active. Performance comparisons require matching workloads and a measured transaction/cycle window.
 
 
-## Implementation
+## Implementation {#microarchitecture-implementation}
 
 ### A complete RV32 arithmetic unit
 
@@ -339,7 +339,7 @@ A practical integration table records the destination register, instruction PC, 
 
 The simulation chapters provide tools for these checks. The later synthesis and physical flows show that a verified behavioral implementation is also realizable under constraints. Passing one boundary does not silently certify the others.
 
-## Hands-on Experiments
+## Hands-on Experiments {#microarchitecture-hands-on-experiments}
 
 ### Experiment 1: derive an effect table
 

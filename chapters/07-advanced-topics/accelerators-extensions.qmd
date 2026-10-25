@@ -495,7 +495,7 @@ The complete Wally-controlled AXI/DMA dot-product project in @sec-executable-pro
 
 Use @sec-verification-methodology to update the plan before changing precision, interface, concurrency or execution mode. Retain an independent numerical model, then add protocol/ownership checks for the new contract. A burst or multiple-outstanding extension needs boundary, ID/order, response-capacity and error-drain coverage that the single-beat project does not supply. Add meaningful formal properties and antecedent witnesses, and test invalid descriptors and partial results in firmware. Reusing a passing baseline does not transfer its claim to newly enabled behavior.
 
-## Hands-on Experiments
+## Hands-on Experiments {#accelerators-extensions-hands-on-experiments}
 
 1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-01 .learning-activity} — Profile a scalar FIR in Wally simulation. Record cycles, instructions, cache events and the input size at which the kernel dominates.
 2. [Advanced · C1](../../learning-paths.qmd#sec-path-labels){#act-accelerators-extensions-02 .learning-activity} — Implement the bit-exact C reference and a one-MAC-per-cycle RTL unit. Verify impulses, random inputs and saturation cases.

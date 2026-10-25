@@ -305,7 +305,7 @@ Before interpreting a miss, retry or stall counter, identify the event definitio
 
 Use conservation checks as well as performance totals. Accepted jobs should equal completed plus explicitly outstanding jobs; accepted response beats should match the applicable request shapes. A throughput increase accompanied by missing responses is a correctness failure. The practice checks exact DMA read/write counts in addition to numerical results, while retaining its clear limitation that QEMU supplies no hardware cache or NoC timing model.
 
-## Hands-on Experiments
+## Hands-on Experiments {#multicore-integration-hands-on-experiments}
 
 ### Experiment A: two Linux CPUs and the existing DMA accelerator
 

@@ -1,6 +1,6 @@
 # Verification with cocotb
 
-## Concepts
+## Concepts {#cocotb-concepts}
 
 ### What cocotb is
 
@@ -37,12 +37,12 @@ Inputs are driven on the falling edge, leaving them stable before the next risin
 Apply @sec-verification-methodology by separating the task that drives a request from the monitor that observes its actual acceptance and the scoreboard that checks completion. Model from the written contract rather than copying RTL branches. Preserve the existing edge/read-only sampling discipline, then add bounded stalls, reset/error scenarios and requirement-defined coverage. Python assertions and a nonzero exit status are the functional evidence; a generated XML file by itself cannot tell you whether any test was skipped. Record seed, simulator, cocotb version and configuration with each result.
 
 
-## Implementation
+## Implementation {#cocotb-implementation}
 
 **Recipe status:** the supplied accumulator test is a **checked recipe** with cocotb 2.0.1 and Icarus 12.0. Its standalone Python minimum is 3.9; the laboratory runner requires 3.10+. Other simulator/install choices are **adaptation templates**. Preserve the example tree and run Make from `examples/cocotb/` with its environment active.
 
 
-### Download the example files
+### Download the example files {#cocotb-download-the-example-files}
 
 - [test_accumulator.py](../../examples/cocotb/test_accumulator.py): Python testbench.
 - [Makefile](../../examples/cocotb/Makefile): simulator build configuration.
@@ -198,7 +198,7 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 It selects the HDL source, top module, Python test module, and simulator. The timing defaults provide a 1 ns unit and 1 ps precision for the RTL without adding delay controls to its source. The included cocotb rules compile the HDL and launch the Python test in the simulator. See the [Makefile build reference](https://docs.cocotb.org/en/v2.0.1/building.html).
 
-## Hands-on Experiments
+## Hands-on Experiments {#cocotb-hands-on-experiments}
 
 ### Run the test
 
@@ -223,7 +223,7 @@ The build produces `sim_build/` and a `results.xml` test report. These, the virt
 
 cocotb can also use Verilator, but version compatibility matters: cocotb 2.0.1 requires Verilator 5.036 or later. The 5.020 installation used for the earlier standalone C++ experiment is therefore insufficient for this cocotb backend. After installing a compatible version, try `make SIM=verilator`; that variant has not been validated here. See the [backend requirements](https://docs.cocotb.org/en/v2.0.1/simulator_support.html).
 
-### Break the design on purpose
+### Break the design on purpose {#cocotb-break-the-design-on-purpose}
 
 The same faults the [Verilator chapter](verilator.qmd) injects can be run against this test, which lets you compare the two environments. Start with overflow that also fires at the exact maximum. In `examples/verilator/accumulator.sv`, replace the overflow assignment with:
 

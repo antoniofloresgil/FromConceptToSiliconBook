@@ -1,6 +1,6 @@
 # Physical Validation, DFT and Preparation for Fabrication {#sec-physical-validation}
 
-## Concepts
+## Concepts {#physical-validation-dft-tapeout-concepts}
 
 The OpenROAD and LibreLane chapters explain how a design acquires placement, clock distribution, routes and layout files. This chapter explains how to decide what those files demonstrate, how to make manufactured devices testable, and how to assemble a fabrication submission. The worked context is the same SystemVerilog accumulator, followed by the additional requirements of a Wally-based SoC.
 
@@ -72,7 +72,7 @@ For every check, preserve the input hash, tool version, deck version, scope, sta
 The common hierarchy in @sec-verification-methodology makes this chapter's reports downstream evidence for identified requirements. Preserve the upstream functional/equivalence claims and explicitly mark any missing technology checks. Keep functional coverage, structural coverage and manufacturing fault coverage separate, with their models and denominators. Scan ordering alone is not ATPG effectiveness, first-silicon boot is not production screening, and router DRC is not the entire qualified layout rule set. Release review combines the applicable results and scoped waivers rather than replacing them with a single flow exit code.
 
 
-## Implementation
+## Implementation {#physical-validation-dft-tapeout-implementation}
 
 ### Build a validation record for the accumulator
 
@@ -237,7 +237,7 @@ Characterization sweeps voltage, frequency and temperature within permitted cond
 
 Archive die/package identity, board revision, instrument settings, firmware hash, measurements and errata. Physical results complete the learning cycle: use them to update constraints, models and the next design revision. Fabrication is a beginning for validation of real devices, not the final line of an implementation log.
 
-## Hands-on Experiments
+## Hands-on Experiments {#physical-validation-dft-tapeout-hands-on-experiments}
 
 ### Experiment 1: a validation dossier
 

@@ -17,6 +17,9 @@ jobs:
         run: |
           python tools/book/check_tables.py
           python tools/book/test_tables.py
+          python tools/book/subject_index.py
+          python tools/book/test_sections.py
+          python tools/book/test_subject_index.py
           python tools/book/learning_paths.py --check
           python tools/book/test_learning_paths.py
           python tools/book/reference.py

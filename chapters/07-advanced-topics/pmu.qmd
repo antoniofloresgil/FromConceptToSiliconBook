@@ -1,6 +1,6 @@
 # Performance Monitoring Units {#sec-pmu}
 
-## Concepts
+## Concepts {#pmu-concepts}
 
 []{#ref-pmu-concepts .reference-destination}
 
@@ -239,7 +239,7 @@ Each 64-bit counter costs flip-flops plus an incrementer. Event multiplexers add
 
 Expose counters deliberately. User-mode access can help benchmarking but may reveal cache or branch behavior across protection boundaries. On a single-core teaching FPGA this may be an acceptable documented choice; on a system running mutually untrusted software, leave counters machine-only or implement access policy and filtering. Treat PMU access as part of the threat model, alongside debug enablement.
 
-## Verification
+## Verification {#pmu-verification}
 
 ### Directed RTL tests
 
@@ -277,7 +277,7 @@ If numbers differ, first check that the two builds use the same cache, branch-pr
 
 The performance methodology in @sec-verification-methodology requires defined event semantics, counter width/overflow, inhibition, privilege access and measurement boundaries. Use a short workload with independently predictable events, including stalls/flushes, and check whether speculative work or retired work is counted. Match configuration and start/stop windows when comparing variants. Spike/Sail numerical agreement does not establish Wally cycle/cache/predictor counts, and simulation-only observation does not prove that synthesized hardware exposes the same PMU interface.
 
-## Hands-on Experiments
+## Hands-on Experiments {#pmu-hands-on-experiments}
 
 1. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-01 .learning-activity} — Use the existing Wally simulation logger to collect `mcycle`, `minstret`, branch-prediction and cache events around a CoreMark or Embench region. Compute CPI and annotate the event definitions.
 2. [Advanced · C2](../../learning-paths.qmd#sec-path-labels){#act-pmu-02 .learning-activity} — Build an RV32 program that reads `mcycle` using the high-low-high sequence. Force a low-half wrap in simulation and verify that a naïve low/high read can fail.

@@ -10,7 +10,7 @@ The synchronous RAM and the Python cache model developed here are checked by `py
 
 The Linux integration in @sec-linux-accelerator makes DMA ownership concrete: a reserved pool, DMA addresses, coherent allocation, ordering barriers and timeout quarantine. Its advanced Wally profile starts with D-cache disabled; enabling it requires a new verified cache/DMA contract.
 
-## Concepts
+## Concepts {#memories-caches-concepts}
 
 ### Memory hierarchy and technology
 
@@ -285,7 +285,7 @@ The limit is per-way capacity, not necessarily total cache capacity. A 4 KiB, tw
 Use @sec-verification-methodology to separate architectural data correctness from internal cache policy and performance. A byte-addressed independent memory oracle tracks committed writes and expected loads. Exercise line/set boundaries, masks, dirty eviction, refill errors, invalidation and backpressure; check writeback contents, not just hit/miss counts. Model uninitialized contents and reset persistence explicitly. For DMA integration, specify ownership/coherence or uncached buffers, then test visibility after completion. A functional cache model does not verify synchronous SRAM timing, CDC or a physical memory controller.
 
 
-## Implementation
+## Implementation {#memories-caches-implementation}
 
 ### A synchronous memory with retained responses
 
@@ -560,7 +560,7 @@ Addresses 0x100 and 0x140 conflict in the direct-mapped organization. A dirty ev
 
 The model's writeback count includes both eviction and explicit clean operations. A timing estimator would need to distinguish their service, plus dirty versus clean misses. Returning a value directly from this Python function models neither a synchronous hit cycle nor FPGA frequency.
 
-## Hands-on Experiments
+## Hands-on Experiments {#memories-caches-hands-on-experiments}
 
 ### Experiment 1: validate synchronous memory semantics
 

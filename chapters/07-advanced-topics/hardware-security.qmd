@@ -6,7 +6,7 @@ This chapter synthesizes the protections developed throughout the book. Keep the
 
 The chapter follows a threat model through implementation decisions and five experiments: architectural PMP denial, unauthorized DMA requests, debug admission, a cache-observation demonstration and a bounded formal security property. References include the RISC-V privileged architecture, OpenTitan's public architecture/design documents, firmware-resiliency guidance and primary side-channel/speculation research [@riscvPrivilegedSpec; @securityOtOverview; @securityNistFirmware; @securitySpectre]. These references inform the discussion; none certifies the teaching platform.
 
-## Concepts
+## Concepts {#hardware-security-concepts}
 
 ### Security objectives and the assets they protect
 
@@ -184,7 +184,7 @@ OpenTitan's AES and key-manager documentation illustrates hardware responsibilit
 
 An AXI crypto block has the same descriptor, DMA and reset obligations as the arithmetic accelerator, plus confidentiality of keys and intermediate state. Returning diagnostic registers or leaving key shares visible through scan can defeat an otherwise correct cipher. Completion/error timing and fault responses can also become observations. Use established cryptographic implementations and separately qualify their integration; writing an educational cipher does not produce a production cryptographic core.
 
-## Implementation
+## Implementation {#hardware-security-implementation}
 
 ### A security architecture for the Wally platform
 
@@ -301,7 +301,7 @@ The monitor itself is security-critical. Protect its policy registers, reset and
 
 For IP reuse, document assumptions alongside guarantees. The DMA engine's guarantee depends on validated latched descriptors and a trusted policy window; the debug guard's guarantee depends on trusted lifecycle/authentication inputs; a cryptographic block's guarantee depends on key/entropy/control interfaces. SoC integration has to discharge those assumptions, and a pile of module PASS reports does not do that.
 
-## Hands-on Experiments
+## Hands-on Experiments {#hardware-security-hands-on-experiments}
 
 ### Environments and evidence boundaries
 

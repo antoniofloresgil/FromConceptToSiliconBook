@@ -1,6 +1,6 @@
 # From SystemVerilog RTL to GDSII {#sec-rtl-gdsii}
 
-## Concepts
+## Concepts {#rtl-to-gdsii-concepts}
 
 An ASIC flow translates a verified hardware description into the geometric layers from which a foundry makes masks and wafers. The source is ordinary **SystemVerilog RTL**: modules, parameters, clock/reset contracts, assertions and a top-level interface. Unlike an FPGA implementation, it must be mapped to the transistors and interconnect layers of one specific manufacturing process.
 
@@ -48,7 +48,7 @@ Fabrication remains accessible through commercial or institutional routes. In an
 Use the hierarchy and evidence plan in @sec-verification-methodology alongside the process flow. Identify the RTL reference before synthesis, require an explicit equivalence result when claiming behavioral preservation, and repeat affected checks after scan insertion or ECOs. At physical release, require current geometry/connectivity, extraction, timing and electrical evidence tied to the checked layout/netlist/views. Stream-out success and a GDS file are deliverables, not a complete release argument. Manufacturing test and silicon characterization have separate plans and acceptance criteria.
 
 
-## Implementation
+## Implementation {#rtl-to-gdsii-implementation}
 
 []{#ref-rtl-to-gdsii-implementation .reference-destination}
 
@@ -78,7 +78,7 @@ Design-rule checking (DRC) verifies the geometry against manufacturing rules. La
 
 The handoff package normally contains the final GDSII, netlist, constraints, reports, checksums, PDK and tool versions, pad-ring and package information, and any waivers with their rationale. A foundry may apply additional proprietary checks before accepting a tapeout. A local flow that reaches a GDSII output is a milestone; fabrication readiness depends on the whole package.
 
-## Hands-on Experiments
+## Hands-on Experiments {#rtl-to-gdsii-hands-on-experiments}
 
 ### Experiment: harden a small SystemVerilog block
 

@@ -6,7 +6,7 @@ This chapter develops the integer programming model and the encodings needed to 
 
 To check what you read here, `python labs/run.py run isa` in the [laboratory package](../../appendices/reproducible-labs.qmd) assembles a short RV32I program and compares its signature with the expected one. `python labs/run.py run foundations` tests the immediate decoder against every I and S immediate, every branch offset and the jump and upper-immediate boundaries.
 
-## Concepts
+## Concepts {#risc-v-isa-concepts}
 
 ### ISA, ABI and platform {#isa-abi-and-platform}
 
@@ -196,7 +196,7 @@ The architectural order seen by software is not necessarily the same as every in
 
 C `volatile` only constrains what the compiler may do with an access. It does not synchronize harts or guarantee device ordering, which still require hardware fences and the platform's rules. `FENCE.I` is similarly narrow: it belongs to `Zifencei` and makes writes visible to the local instruction fetch, but it neither flushes the data cache in general nor notifies other harts [@riscvZifenceiFoundation].
 
-## Implementation
+## Implementation {#risc-v-isa-implementation}
 
 ### A complete RV32 immediate generator
 
@@ -326,7 +326,7 @@ For `sw x5, 4(x10)`, read the base and store operand, compute the byte address, 
 
 Once the state transition is clear, the implementation is free to take one cycle or several. Compare against the reference at the level of architectural effects; a functional simulator has no pipeline stages to reproduce.
 
-## Hands-on Experiments
+## Hands-on Experiments {#risc-v-isa-hands-on-experiments}
 
 ### Experiment 1: reconstruct immediate values
 

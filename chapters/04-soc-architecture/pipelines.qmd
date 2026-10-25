@@ -8,7 +8,7 @@ The discussion connects synchronous-memory timing in Chapter 7 of *RISC-V System
 
 The queues and the delayed-memory engine below are checked by `python labs/run.py run transport` in the [laboratory package](../../appendices/reproducible-labs.qmd), at queue depths 2, 3 and 8, with 500 memory operations and 5,000 FIFO cycles per configuration and a consumer that stays stopped until both queues fill.
 
-## Concepts
+## Concepts {#pipelines-concepts}
 
 ### Latency, initiation interval and throughput
 
@@ -271,7 +271,7 @@ Ready/valid here assumes a shared clock. For different clocks, use an asynchrono
 The transport methodology in @sec-verification-methodology observes accepted requests and consumed responses. Track outstanding work with an independent queue, check payload retention during stalls, and assert the applicable ordering/ID rules. Cross queue occupancy with simultaneous push/pop, downstream stalls and reset. Reset can cancel protocol state under the contract while already committed memory writes remain. A correct unit FIFO leaves the assembled arbiter, memory adapter and recovery policy unverified, so add an end-to-end transaction scoreboard at that boundary.
 
 
-## Implementation
+## Implementation {#pipelines-implementation}
 
 ### A FIFO without a backward readiness chain
 
@@ -522,7 +522,7 @@ Inspect `src/ebu/ebu.sv` and its controller-input instances. Trace simultaneous 
 
 The textbook's synchronous-memory pipeline changes address availability of results to the processor [@harrisRiscvSoc]. This chapter supplies the complementary view of storage, ownership and completion across transport paths.
 
-## Hands-on Experiments
+## Hands-on Experiments {#pipelines-hands-on-experiments}
 
 ### Preparing reproducible simulation
 

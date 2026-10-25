@@ -2,7 +2,7 @@
 
 []{#ref-verilator .reference-destination}
 
-## Concepts
+## Concepts {#verilator-concepts}
 
 ### What Verilator does
 
@@ -45,12 +45,12 @@ The C++ reference uses a wider integer and explicit modulo arithmetic. It checks
 The C++ scoreboard below checks numerical and control behavior at unit level, under the contract in @sec-verification-methodology. Waveforms are the quickest way to understand the first failure, but a PASS vouches only for the scenarios that ran. Keep the automatic comparisons, the timeout and the failing exit status when you add traces or random traffic, so a broken run cannot look like a quiet one. Look at each warning on its merits: a build that tolerates warnings is not a clean lint result. Record the initialization/X-handling and assertion options you used, since they change what a PASS means. Code coverage is a good pointer to logic your tests never reached, but functional bins from the contract and an independent oracle still decide whether the behavior is right [@verificationVerilator].
 
 
-## Implementation
+## Implementation {#verilator-implementation}
 
 **Recipe status:** the supplied one-operand RTL/C++ build and 14-cycle check are a **checked recipe** (Verilator 5.020 baseline), and so are the faulty variants and the 17-vector extension in the sections that follow. Installation/source-build choices are **adaptation templates**; width/random-stimulus changes are **exercises**. Keep the stated example working directory, or use the root-level `verilator` lab entry.
 
 
-### Download the example files
+### Download the example files {#verilator-download-the-example-files}
 
 - [accumulator.sv](../../examples/verilator/accumulator.sv): SystemVerilog design.
 - [sim_main.cpp](../../examples/verilator/sim_main.cpp): C++ test harness.
@@ -251,7 +251,7 @@ The test avoids checking old values before clocked updates are evaluated. Its re
 
 No HDL delay controls are used, so this harness does not require `--timing`. Advancing context time alone does not toggle the clock: the assignments and `eval()` calls do that. The five-unit increments label waveform phases; they do not model gate delays or establish timing closure.
 
-## Hands-on Experiments
+## Hands-on Experiments {#verilator-hands-on-experiments}
 
 ### Compile the model and harness
 
@@ -307,7 +307,7 @@ gtkwave accumulator.vcd
 
 Inspect `clk`, `reset`, `Clear`, `Enable`, `Operand`, `Sum`, `Valid`, and `Overflow`. Use the waveform to explain a failed check, while retaining the automatic reference comparison as the pass criterion. Generated files are excluded by the example's local `.gitignore`.
 
-### Break the design on purpose
+### Break the design on purpose {#verilator-break-the-design-on-purpose}
 
 A test that has never failed has never shown it can. Exercise 1 asks you to break the overflow logic; here is what that looks like. In `accumulator.sv`, replace the overflow assignment with one that also reports the exact maximum:
 

@@ -1,6 +1,6 @@
 # Digital VLSI Design Fundamentals {#sec-vlsi-design}
 
-## Concepts
+## Concepts {#vlsi-design-concepts}
 
 An RTL description specifies state and transformations. A silicon implementation must realize them using transistors, wires, supplies and clocks that have finite resistance, capacitance and manufacturing variation. This chapter connects the microarchitectural choices made earlier in the book to those physical costs. It prepares the reader to interpret the OpenROAD and LibreLane experiments and not just execute their commands.
 
@@ -171,7 +171,7 @@ Hierarchical design hardens blocks independently and integrates their abstracts 
 Use @sec-verification-methodology to connect cell/circuit characterization to the digital hierarchy. Check that cell Boolean behavior, pin polarity, timing arcs, reset and power views agree with the intended circuit. Custom circuits require appropriate transient/DC and PVT scenarios with the technology models; standard-cell integration relies on identified characterized views and their permitted use. RTL arithmetic tests say nothing about transistor noise margins or lifetime reliability. Record model/corner identity and carry the resulting interface assumptions into STA and physical review.
 
 
-## Implementation
+## Implementation {#vlsi-design-implementation}
 
 ### Read one technology cell before running a flow
 
@@ -225,7 +225,7 @@ Choose one controlled change: clock target, core utilization, register placement
 
 For example, compare the original accumulator with a pipelined arithmetic implementation. The latter changes result latency and may need additional handling of feedback dependencies; inserting a register into the feedback sum no longer gives one accumulated update per cycle. State the new protocol and verify it before comparing PPA. An area or frequency improvement is irrelevant if the two circuits perform different work.
 
-## Hands-on Experiments
+## Hands-on Experiments {#vlsi-design-hands-on-experiments}
 
 ### Experiment 1: electrical load and cell size
 

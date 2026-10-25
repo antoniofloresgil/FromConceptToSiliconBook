@@ -4,7 +4,7 @@
 
 []{#ref-netlist .reference-destination}
 
-## Concepts
+## Concepts {#yosys-concepts}
 
 An FPGA implementation turns a parameterized RTL design into the configuration bits of a particular device. It is a compilation flow, but the target is not a generic gate library: it has LUTs, flip-flops, block RAMs, DSP blocks, clock networks, IO banks and programmable routing. The device selected for this chapter is the AMD/Xilinx Artix-7 `xc7a200tsbg484-1` on the Digilent Nexys Video board.
 
@@ -87,7 +87,7 @@ BRAM, DSP and clock resources are limited physical blocks. A design that synthes
 The synthesis boundary in @sec-verification-methodology distinguishes clean elaboration, inferred storage, resource mapping and equivalence. Compile legal parameter/wrapper variants and review technology primitive/memory inference. Keep the reference RTL and mapped netlist identities with the synthesis configuration. A netlist and a resource report are good checkpoints, and an RTL-equivalence claim needs an explicit comparison flow with correct cell and memory models and a reset/state correspondence. Changed arithmetic mapping or retiming also needs the appropriate numerical/latency contract.
 
 
-## Implementation
+## Implementation {#yosys-implementation}
 
 **Recipe status:** the generic teaching-module synthesis is checked through `python labs/run.py run synthesis`. The pinned XC7 toolchain/platform commands are **adaptation templates** requiring the external repository/databases; this chapter does not qualify a complete board build. Standalone designs that are not supplied are **exercises**.
 
@@ -382,7 +382,7 @@ Synthesis data can guide microarchitecture only when experiments are controlled.
 
 FPGA LUT counts do not convert into ASIC area or power. The FPGA measurement is valuable as a comparison: it tells you how this RTL maps to this device under this implementation flow. A cache that consumes BRAM but reduces instruction-bus activity can be a good FPGA trade-off even when its ASIC cost would be evaluated differently.
 
-## Hands-on Experiments
+## Hands-on Experiments {#yosys-hands-on-experiments}
 
 For the book-wide component rather than the small introductory examples, use @sec-complete-case. It maps the same tested dot-product RTL to ECP5 and, in @sec-nexys-complete-case, to the actual Nexys Video Artix-7 with a serial boundary fixture. The Nexys report separates accelerator and fixture mapping costs and explains the executed `-nodsp` choice. Both targets have real placement/routing and explicit timing failures; their counts do not describe the complete Wally platform.
 

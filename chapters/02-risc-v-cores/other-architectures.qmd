@@ -440,7 +440,7 @@ License and provenance also matter for reuse. Record the exact repository and li
 
 Use @sec-verification-methodology to compare evidence as well as architecture. Identify the exact generated/elaborated configuration, available unit/ISA/system regressions, retirement comparison, coverage and physical validation. An open source tree or a booting operating system is not, by itself, the same qualification on every core. Chisel generation adds a representation boundary: preserve generator inputs and emitted RTL identity, then check the resulting hardware contract. Out-of-order cores require commit-aligned checking, wrong-path side-effect suppression, dependency recovery and ordered memory effects; the reduced Wally project's single-outstanding DMA tests never exercise those mechanisms.
 
-## Hands-on Experiments
+## Hands-on Experiments {#other-architectures-hands-on-experiments}
 
 ### Experiment 1: compact versus pipelined
 

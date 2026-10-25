@@ -10,7 +10,7 @@ The AXI4-Lite endpoint, the APB GPIO, a byte FIFO, a PWM unit and their C driver
 
 For an executable software endpoint, follow @sec-linux-accelerator: Device Tree discovery, MMIO, PLIC completion, a kernel IRQ handler, DMA ownership and an ioctl application. The QEMU model checks the software contract; the advanced Wally route exposes the actual RTL control/interrupt path.
 
-## Concepts
+## Concepts {#buses-interrupts-concepts}
 
 ### From core to uncore
 
@@ -411,7 +411,7 @@ For a pipeline, a precise trap must avoid unintended younger effects and duplica
 Apply @sec-verification-methodology first to each endpoint/adapter, then to the assembled address map and interrupt route. Independently monitor channel acceptance, retained payloads, IDs/order, byte strobes, error responses and outstanding capacity. Exercise AW/W arrival orders, full-range address decoding, burst boundaries where supported and reset with pending traffic. For interrupts, separate source-level assertion/acknowledgement from controller priority, masking, claim/complete and CPU trap entry/return. The executable project's direct `MExtInt` test exercises one interrupt path; PLIC behavior and bus arbitration in a complete SoC need their own tests.
 
 
-## Implementation
+## Implementation {#buses-interrupts-implementation}
 
 ### Following Wally's request path
 
@@ -714,7 +714,7 @@ Compile for the selected ISA/ABI and inspect the assembly. An integer-only exerc
 
 An asynchronous interrupt normally resumes interrupted execution; advancing `mepc` by four would be wrong. Advancing the PC is specific to exceptions, and compressed instructions need not occupy four bytes. The example treats synchronous exceptions as fatal so an invalid access is not accidentally hidden by interrupt handling.
 
-## Hands-on Experiments
+## Hands-on Experiments {#buses-interrupts-hands-on-experiments}
 
 ### Experiment 1: verify the register bank
 
@@ -813,7 +813,7 @@ Next route GPIO through the PLIC: configure its local event registers, priority,
 
 For the last case, let foreground code write numbered values to a counting device while interrupts are injected at varying cycles. Its trace must contain the intended sequence exactly once per committed write. A final output value alone can hide a duplicate write to the same register.
 
-### Deliverables
+### Deliverables {#buses-interrupts-deliverables}
 
 Preserve the register map, clock/reset contract, configuration manifest, bus traces, interrupt traces and scoreboard results. Mark request acceptance, side-effect execution and response acceptance separately. Report queue depth and measured bandwidth with their assumptions. A useful result connects software-visible behavior to exact hardware transactions, providing a repeatable basis for adding a peripheral, bridge or DMA engine.
 
